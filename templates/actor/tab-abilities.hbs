@@ -1,0 +1,20 @@
+<section class="tab abilities {{tab.cssClass}}" data-group="primary" data-tab="abilities">
+  <h2>
+    {{#if isSpellcaster}}
+      {{localize "DND_CUSTOM.Abilities.SpellsTitle"}}
+    {{else}}
+      {{localize "DND_CUSTOM.Abilities.FeaturesTitle"}}
+    {{/if}}
+  </h2>
+
+  <ul class="features-list">
+    {{#each features}}
+    <li data-item-id="{{this.id}}">
+      <strong>{{this.name}}</strong>
+      {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
+    </li>
+    {{else}}
+    <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.Empty"}}</li>
+    {{/each}}
+  </ul>
+</section>
