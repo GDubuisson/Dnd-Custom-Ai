@@ -1,0 +1,90 @@
+{
+  "DND_CUSTOM": {
+    "SheetLabels": {
+      "Character": "Character Sheet"
+    },
+    "Actor": {
+      "Name": "Character name",
+      "Level": "Level",
+      "Class": "Class",
+      "Origin": "Origin",
+      "HP": "Hit Points",
+      "AC": "Armor Class",
+      "Speed": "Speed",
+      "SaveShort": "Save",
+      "ProficiencyBonus": "Proficiency bonus"
+    },
+    "Actions": {
+      "RestShort": "Short rest",
+      "RestLong": "Long rest"
+    },
+    "Chat": {
+      "RestShort": "{name} takes a short rest.",
+      "RestLong": "{name} takes a long rest and regains all hit points."
+    },
+    "Tabs": {
+      "stats": "Stats",
+      "equipment": "Equipment",
+      "inventory": "Inventory",
+      "abilities": "Features",
+      "journal": "Journal"
+    },
+    "Equipment": {
+      "MainHand": "Main hand",
+      "OffHand": "Off hand",
+      "Armor": "Worn armor",
+      "Accessories": "Accessories",
+      "Empty": "No item equipped"
+    },
+    "Inventory": {
+      "Name": "Item",
+      "Quantity": "Qty",
+      "Weight": "Weight",
+      "Equipped": "Equipped",
+      "Empty": "No items in inventory",
+      "CarriedWeight": "Carried weight",
+      "Currency": "Currency"
+    },
+    "Currency": {
+      "pc": "CP",
+      "pa": "SP",
+      "po": "GP",
+      "pp": "PP"
+    },
+    "Abilities": {
+      "str": "Strength",
+      "dex": "Dexterity",
+      "con": "Constitution",
+      "int": "Intelligence",
+      "wis": "Wisdom",
+      "cha": "Charisma",
+      "SpellsTitle": "Spells",
+      "FeaturesTitle": "Features",
+      "Empty": "No feature or spell recorded"
+    },
+    "Skills": {
+      "acrobatics": "Acrobatics",
+      "animalHandling": "Animal Handling",
+      "arcana": "Arcana",
+      "athletics": "Athletics",
+      "deception": "Deception",
+      "history": "History",
+      "insight": "Insight",
+      "intimidation": "Intimidation",
+      "investigation": "Investigation",
+      "medicine": "Medicine",
+      "nature": "Nature",
+      "perception": "Perception",
+      "performance": "Performance",
+      "persuasion": "Persuasion",
+      "religion": "Religion",
+      "sleightOfHand": "Sleight of Hand",
+      "stealth": "Stealth",
+      "survival": "Survival"
+    },
+    "Journal": {
+      "Biography": "Biography",
+      "Notes": "Notes"
+    }
+  }
+}
