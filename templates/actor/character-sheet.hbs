@@ -1,0 +1,47 @@
+<header class="dnd-custom-ai sheet-header">
+  <img class="portrait" src="{{actor.img}}" alt="{{actor.name}}">
+
+  <div class="header-fields">
+    <input type="text" class="actor-name" name="name" value="{{actor.name}}"
+           placeholder="{{localize 'DND_CUSTOM.Actor.Name'}}">
+
+    <div class="header-row">
+      <label>{{localize "DND_CUSTOM.Actor.Level"}}
+        <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.Class"}}
+        <input type="text" name="system.class" value="{{system.class}}">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.Origin"}}
+        <select name="system.origin">
+          <option value="">—</option>
+          {{#each originOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </label>
+    </div>
+
+    <div class="header-row">
+      <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
+        / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.AC"}}
+        <input type="number" name="system.attributes.ac.value" value="{{system.attributes.ac.value}}" min="0">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.Speed"}}
+        <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
+      </label>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" data-action="restShort">
+        <i class="fa-solid fa-mug-hot"></i> {{localize "DND_CUSTOM.Actions.RestShort"}}
+      </button>
+      <button type="button" data-action="restLong">
+        <i class="fa-solid fa-bed"></i> {{localize "DND_CUSTOM.Actions.RestLong"}}
+      </button>
+    </div>
+  </div>
+</header>
