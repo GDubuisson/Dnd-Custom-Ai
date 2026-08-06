@@ -39,6 +39,12 @@ Foundry réel.
   (texte libre), XP rapporté (saisie manuelle, table FI→XP prévue plus tard) et
   butin (réutilise les Items `weapon`/`armor`/`gear`).
 
+### Modifié
+- Champ "Classe" de la fiche de personnage : liste déroulante fermée sur les
+  12 classes officielles D&D 5e (SRD) au lieu d'un champ texte libre. Liste des
+  classes lanceuses de sorts (qui bascule l'onglet en "Sorts") déplacée dans
+  `CONFIG.DND_CUSTOM.spellcastingClasses`.
+
 ### Corrigé
 - Liste des compétences complétée : Perspicacité (Insight) ajoutée, absente de la
   spécification initiale (17 au lieu des 18 compétences standard du D&D 5e).

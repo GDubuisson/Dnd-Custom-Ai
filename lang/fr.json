@@ -38,6 +38,20 @@
       "tg": "Très grand (TG)",
       "gig": "Gigantesque (Gig)"
     },
+    "Classes": {
+      "barbarian": "Barbare",
+      "bard": "Barde",
+      "cleric": "Clerc",
+      "druid": "Druide",
+      "fighter": "Guerrier",
+      "monk": "Moine",
+      "paladin": "Paladin",
+      "ranger": "Rôdeur",
+      "rogue": "Roublard",
+      "sorcerer": "Ensorceleur",
+      "warlock": "Occultiste",
+      "wizard": "Magicien"
+    },
     "Actor": {
       "Name": "Nom du personnage",
       "Level": "Niveau",

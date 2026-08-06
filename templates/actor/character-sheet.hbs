@@ -10,7 +10,12 @@
         <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1">
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Class"}}
-        <input type="text" name="system.class" value="{{system.class}}">
+        <select name="system.class">
+          <option value="">—</option>
+          {{#each classOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+          {{/each}}
+        </select>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Origin"}}
         <select name="system.origin">
