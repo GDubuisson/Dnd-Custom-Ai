@@ -1,0 +1,32 @@
+<section class="tab stats {{tab.cssClass}}" data-group="primary" data-tab="stats">
+  <div class="abilities-grid">
+    {{#each abilities}}
+    <div class="ability-block">
+      <label>{{localize this.label}}</label>
+      <input type="number" name="system.abilities.{{this.key}}.value" value="{{this.value}}" min="1">
+      <span class="mod">{{this.modLabel}}</span>
+      <label class="save-proficiency">
+        <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}}>
+        {{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.save.mod}}
+      </label>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="proficiency-bonus">
+    {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
+  </div>
+
+  <ul class="skills-list">
+    {{#each skills}}
+    <li class="skill {{#if this.proficient}}proficient{{/if}}">
+      <label>
+        <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}}>
+        {{this.label}}
+      </label>
+      <span class="ability-tag">({{this.ability}})</span>
+      <span class="mod">{{this.modLabel}}</span>
+    </li>
+    {{/each}}
+  </ul>
+</section>

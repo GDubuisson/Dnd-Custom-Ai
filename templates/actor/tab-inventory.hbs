@@ -1,0 +1,37 @@
+<section class="tab inventory {{tab.cssClass}}" data-group="primary" data-tab="inventory">
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>{{localize "DND_CUSTOM.Inventory.Name"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Equipped"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each inventoryItems}}
+      <tr data-item-id="{{this.id}}">
+        <td>{{this.name}}</td>
+        <td>{{this.system.quantity}}</td>
+        <td>{{this.system.weight}}</td>
+        <td>{{#if this.system.equipped}}✓{{/if}}</td>
+      </tr>
+      {{else}}
+      <tr><td colspan="4" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="carrying-capacity">
+    {{localize "DND_CUSTOM.Inventory.CarriedWeight"}} : {{carriedWeight}} / {{carryingCapacity}} lb
+  </div>
+
+  <div class="currency">
+    <h3>{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
+    <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.currency.pc" value="{{system.currency.pc}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.currency.pa" value="{{system.currency.pa}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.currency.po" value="{{system.currency.po}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.currency.pp" value="{{system.currency.pp}}" min="0"></label>
+    <span class="currency-total">({{currencyTotalCopper}} {{localize "DND_CUSTOM.Currency.pc"}})</span>
+  </div>
+</section>

@@ -1,0 +1,68 @@
+{
+  "fleuraine": {
+    "label": "Fleuraine",
+    "inspiration": "France",
+    "traits": "Noblesse, chevalerie, droiture, honneur",
+    "abilityBonuses": { "cha": 2, "str": 1 },
+    "skillAdvantages": ["persuasion", "intimidation"],
+    "specialTrait": {
+      "name": "Honneur Inébranlable",
+      "description": "Une fois par combat, si un jet de sauvegarde contre un effet de peur ou de charme échoue, le personnage peut relancer le dé et doit utiliser le nouveau résultat."
+    }
+  },
+  "altenmark": {
+    "label": "Altenmark",
+    "inspiration": "Germanie",
+    "traits": "Force, courage, détermination, discipline",
+    "abilityBonuses": { "str": 2, "con": 1 },
+    "skillAdvantages": ["athletics", "survival"],
+    "specialTrait": {
+      "name": "Discipline de Fer",
+      "description": "Le personnage ne peut jamais être surpris par une embuscade lorsqu'il est en alerte (veille)."
+    }
+  },
+  "lucentia": {
+    "label": "Lucentia",
+    "inspiration": "Italie",
+    "traits": "Charme, éloquence, persuasion, commerce",
+    "abilityBonuses": { "cha": 2, "dex": 1 },
+    "skillAdvantages": ["deception", "performance"],
+    "specialTrait": {
+      "name": "Art de la Parole",
+      "description": "Le personnage peut ajouter son modificateur de Charisme aux tests d'Intimidation ou de Tromperie."
+    }
+  },
+  "ravenmoor": {
+    "label": "Ravenmoor",
+    "inspiration": "Angleterre",
+    "traits": "Loyauté, pragmatisme, stoïcisme, sens du devoir",
+    "abilityBonuses": { "wis": 2, "con": 1 },
+    "skillAdvantages": ["investigation", "perception"],
+    "specialTrait": {
+      "name": "Stoïcisme",
+      "description": "Le personnage peut ignorer les effets de peur, d'effroi ou d'illusions mineures."
+    }
+  },
+  "valdera": {
+    "label": "Valdera",
+    "inspiration": "Espagne",
+    "traits": "Piété, ferveur, passion, ardeur",
+    "abilityBonuses": { "wis": 2, "cha": 1 },
+    "skillAdvantages": ["religion", "athletics"],
+    "specialTrait": {
+      "name": "Ferveur Incarnée",
+      "description": "Une fois par jour, le personnage peut créer une petite flamme (équivalente à une bougie ou une torche) sans matériel."
+    }
+  },
+  "ashar": {
+    "label": "Ashar",
+    "inspiration": "Arabie",
+    "traits": "Sagesse, connaissance, réflexion, patience",
+    "abilityBonuses": { "int": 2, "wis": 1 },
+    "skillAdvantages": ["history", "arcana"],
+    "specialTrait": {
+      "name": "Sagesse Ancienne",
+      "description": "Ajoute son bonus d'intelligence à un jet d'investigation sur quelque chose de magique."
+    }
+  }
+}
