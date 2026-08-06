@@ -30,6 +30,25 @@ DND_CUSTOM.skills = {
   survival: "DND_CUSTOM.Skills.survival"
 };
 
+/** Classes D&D 5e (SRD, 12 classes officielles), utilisées par la fiche de personnage. */
+DND_CUSTOM.classes = {
+  barbarian: "DND_CUSTOM.Classes.barbarian",
+  bard: "DND_CUSTOM.Classes.bard",
+  cleric: "DND_CUSTOM.Classes.cleric",
+  druid: "DND_CUSTOM.Classes.druid",
+  fighter: "DND_CUSTOM.Classes.fighter",
+  monk: "DND_CUSTOM.Classes.monk",
+  paladin: "DND_CUSTOM.Classes.paladin",
+  ranger: "DND_CUSTOM.Classes.ranger",
+  rogue: "DND_CUSTOM.Classes.rogue",
+  sorcerer: "DND_CUSTOM.Classes.sorcerer",
+  warlock: "DND_CUSTOM.Classes.warlock",
+  wizard: "DND_CUSTOM.Classes.wizard"
+};
+
+/** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
+DND_CUSTOM.spellcastingClasses = ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"];
+
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {
   pc: 1,

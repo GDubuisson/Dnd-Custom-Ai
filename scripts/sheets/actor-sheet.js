@@ -13,9 +13,6 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
-const SPELLCASTING_CLASSES = ["magicien", "clerc", "barde", "druide", "ensorceleur", "occultiste", "paladin"];
-
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2. */
 export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
@@ -74,7 +71,13 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       selected: system.origin === key
     }));
 
-    context.isSpellcaster = SPELLCASTING_CLASSES.includes((system.class ?? "").toLowerCase());
+    context.classOptions = Object.entries(DND_CUSTOM.classes).map(([key, labelKey]) => ({
+      key,
+      label: labelKey,
+      selected: system.class === key
+    }));
+
+    context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
 
