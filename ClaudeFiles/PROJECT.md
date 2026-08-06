@@ -116,21 +116,44 @@ Tous les personnages sont des **Humains**. Leurs traits culturels et bonus méca
 - Bloc de texte "Biographie"
 - Bloc de texte "Notes"
 
+## Fiche d'ennemi/PNJ (Actor type `npc`)
+
+Fiche générique distincte de `character`, pour les adversaires et PNJ. Stats simplifiées :
+pas de score de caractéristique ni de maîtrise séparée — un **bonus direct** par caractéristique,
+et la sauvegarde correspondante est toujours égale à ce bonus.
+
+- Nom, type de créature (liste fermée SRD 5e, 14 types : Aberration, Bête, Céleste, Construction,
+  Dragon, Élémentaire, Fée, Fiélon, Géant, Humanoïde, Monstruosité, Vase, Plante, Mort-vivant)
+- Indice de dangerosité (FI) : liste fermée SRD 5e (0, 1/8, 1/4, 1/2, puis paliers entiers 1 à 30)
+- Taille : liste fermée SRD 5e (TP, P, M, G, TG, Gig)
+- Classe d'Armure, Points de Vie (actuels/max), Vitesse
+- Bonus de caractéristiques (Force à Charisme), sauvegarde = bonus de caractéristique
+- Onglet "Capacités spéciales" : deux blocs de texte libre, "Capacités spéciales" et "Particularité"
+- Points d'expérience rapportés : valeur saisie manuellement par le MJ (**table de correspondance
+  FI → XP prévue plus tard**, pas encore implémentée)
+- Onglet "Butin" : objets rapportés (réutilise les Items `weapon`/`armor`/`gear` existants, embarqués
+  sur l'Actor comme pour `character`)
+
 ## Fichiers de référence
 - `system.json` — manifeste du système (métadonnées, compatibilité v14, `documentTypes`, `manifest`/`download`)
-- `scripts/data/*.js` — DataModels (`CharacterData`, `WeaponData`, `ArmorData`, `GearData`, `FeatureData`), schéma de données des Actors/Items
+- `scripts/data/*.js` — DataModels (`CharacterData`, `NpcData`, `WeaponData`, `ArmorData`, `GearData`, `FeatureData`), schéma de données des Actors/Items
 - `scripts/data/origins.json` — données des 6 Origines, externalisées en JSON
-- `scripts/sheets/actor-sheet.js` — `DndCustomActorSheet` (ActorSheetV2 + HandlebarsApplicationMixin)
-- `scripts/helpers/config.js`, `scripts/helpers/rules.js` — constantes `CONFIG.DND_CUSTOM` et règles SRD sourcées (modificateur, bonus de maîtrise, capacité de charge)
-- `/templates/actor/*.hbs` — templates Handlebars des feuilles (un par onglet)
+- `scripts/sheets/actor-sheet.js` — `DndCustomActorSheet` (ActorSheetV2 + HandlebarsApplicationMixin), fiche `character`
+- `scripts/sheets/npc-sheet.js` — `DndCustomNpcSheet` (ActorSheetV2 + HandlebarsApplicationMixin), fiche `npc`
+- `scripts/helpers/config.js`, `scripts/helpers/rules.js` — constantes `CONFIG.DND_CUSTOM` (dont types de créature, tailles, FI sourcés SRD) et règles SRD sourcées (modificateur, bonus de maîtrise, capacité de charge)
+- `/templates/actor/*.hbs` — templates Handlebars des feuilles (un par onglet, préfixe `npc-` pour la fiche d'ennemi/PNJ)
 - `/lang/fr.json`, `/lang/en.json` — traductions
 - `.github/workflows/release.yml` — publication d'une release GitHub (tag + zip + manifest) déclenchée manuellement (workflow_dispatch, entrée `version`)
 
+## Versionnage
+- Le champ `version` de `system.json` est la source de vérité : c'est lui que lit le workflow de release, pas une saisie manuelle.
+- **Après une session de travail sur le projet, incrémenter `version` dans `system.json`** (SemVer : patch pour un correctif, minor pour une fonctionnalité, major réservé à une rupture — rare avant le `1.0.0`), en cohérence avec la section "Non publié" du `CHANGELOG.md`.
+
 ## Publication (release)
 Pour publier une nouvelle version consultable par Foundry via le manifest :
-1. Aller dans l'onglet GitHub Actions du dépôt, lancer le workflow **Release Foundry System** manuellement.
-2. Renseigner le numéro de version (ex : `0.2.0`, sans préfixe `v`).
-3. Le workflow met à jour `version`/`download` dans `system.json`, commit, crée le tag `vX.Y.Z`, construit `system.zip` (contenu du système à la racine de l'archive) et publie une Release GitHub avec `system.json` et `system.zip` en assets.
+1. Vérifier que `version` dans `system.json` a bien été incrémenté (cf. "Versionnage" ci-dessus) et correspond à la section du `CHANGELOG.md` à publier.
+2. Aller dans l'onglet GitHub Actions du dépôt, lancer le workflow **Release Foundry System** manuellement (aucune saisie requise).
+3. Le workflow lit `version` dans `system.json`, met à jour `download` en conséquence, commit, crée le tag `vX.Y.Z`, construit `system.zip` (contenu du système à la racine de l'archive) et publie une Release GitHub avec `system.json` et `system.zip` en assets.
 4. Le champ `manifest` de `system.json` (`.../releases/latest/download/system.json`) reste stable : Foundry l'utilise pour détecter les mises à jour.
 
 ## Points de vigilance particuliers

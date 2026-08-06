@@ -1,7 +1,42 @@
 {
   "DND_CUSTOM": {
     "SheetLabels": {
-      "Character": "Fiche de personnage"
+      "Character": "Fiche de personnage",
+      "Npc": "Fiche d'ennemi/PNJ"
+    },
+    "Npc": {
+      "Name": "Nom",
+      "CreatureType": "Type de créature",
+      "Size": "Taille",
+      "ChallengeRating": "Indice de dangerosité",
+      "XpReward": "Points d'expérience",
+      "SpecialAbilities": "Capacités spéciales",
+      "Particularity": "Particularité",
+      "LootEmpty": "Aucun objet à récupérer"
+    },
+    "CreatureTypes": {
+      "aberration": "Aberration",
+      "beast": "Bête",
+      "celestial": "Céleste",
+      "construct": "Construction",
+      "dragon": "Dragon",
+      "elemental": "Élémentaire",
+      "fey": "Fée",
+      "fiend": "Fiélon",
+      "giant": "Géant",
+      "humanoid": "Humanoïde",
+      "monstrosity": "Monstruosité",
+      "ooze": "Vase",
+      "plant": "Plante",
+      "undead": "Mort-vivant"
+    },
+    "Sizes": {
+      "tp": "Très petit (TP)",
+      "p": "Petit (P)",
+      "m": "Moyen (M)",
+      "g": "Grand (G)",
+      "tg": "Très grand (TG)",
+      "gig": "Gigantesque (Gig)"
     },
     "Actor": {
       "Name": "Nom du personnage",
@@ -27,7 +62,8 @@
       "equipment": "Équipement",
       "inventory": "Inventaire",
       "abilities": "Capacités",
-      "journal": "Journal"
+      "journal": "Journal",
+      "loot": "Butin"
     },
     "Equipment": {
       "MainHand": "Main principale",

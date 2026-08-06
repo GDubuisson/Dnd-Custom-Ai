@@ -1,0 +1,11 @@
+<section class="tab stats {{tab.cssClass}}" data-group="primary" data-tab="stats">
+  <div class="abilities-grid">
+    {{#each abilities}}
+    <div class="ability-block">
+      <label>{{localize this.label}}</label>
+      <input type="number" name="system.abilities.{{this.key}}.mod" value="{{this.mod}}">
+      <span class="mod">{{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.modLabel}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>

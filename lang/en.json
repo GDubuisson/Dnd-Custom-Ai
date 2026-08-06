@@ -1,7 +1,42 @@
 {
   "DND_CUSTOM": {
     "SheetLabels": {
-      "Character": "Character Sheet"
+      "Character": "Character Sheet",
+      "Npc": "NPC / Enemy Sheet"
+    },
+    "Npc": {
+      "Name": "Name",
+      "CreatureType": "Creature type",
+      "Size": "Size",
+      "ChallengeRating": "Challenge Rating",
+      "XpReward": "Experience points",
+      "SpecialAbilities": "Special abilities",
+      "Particularity": "Particularity",
+      "LootEmpty": "No loot to recover"
+    },
+    "CreatureTypes": {
+      "aberration": "Aberration",
+      "beast": "Beast",
+      "celestial": "Celestial",
+      "construct": "Construct",
+      "dragon": "Dragon",
+      "elemental": "Elemental",
+      "fey": "Fey",
+      "fiend": "Fiend",
+      "giant": "Giant",
+      "humanoid": "Humanoid",
+      "monstrosity": "Monstrosity",
+      "ooze": "Ooze",
+      "plant": "Plant",
+      "undead": "Undead"
+    },
+    "Sizes": {
+      "tp": "Tiny (T)",
+      "p": "Small (S)",
+      "m": "Medium (M)",
+      "g": "Large (L)",
+      "tg": "Huge (H)",
+      "gig": "Gargantuan (G)"
     },
     "Actor": {
       "Name": "Character name",
@@ -27,7 +62,8 @@
       "equipment": "Equipment",
       "inventory": "Inventory",
       "abilities": "Features",
-      "journal": "Journal"
+      "journal": "Journal",
+      "loot": "Loot"
     },
     "Equipment": {
       "MainHand": "Main hand",
