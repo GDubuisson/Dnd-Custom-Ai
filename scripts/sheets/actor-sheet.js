@@ -79,6 +79,9 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
 
+    const hp = system.attributes.hp;
+    context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
 
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => {
@@ -132,6 +135,11 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity = carryingCapacity(system.abilities.str.value);
+    context.carryingCapacityPercent = Math.min(
+      100,
+      Math.round((context.carriedWeight / (context.carryingCapacity || 1)) * 100)
+    );
+    context.overCapacity = context.carriedWeight > context.carryingCapacity;
     context.currencyTotalCopper = currencyTotalInCopper(system.currency);
 
     return context;

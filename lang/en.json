@@ -61,7 +61,8 @@
       "AC": "Armor Class",
       "Speed": "Speed",
       "SaveShort": "Save",
-      "ProficiencyBonus": "Proficiency bonus"
+      "ProficiencyBonus": "Proficiency bonus",
+      "SkillsTitle": "Skills"
     },
     "Actions": {
       "RestShort": "Short rest",

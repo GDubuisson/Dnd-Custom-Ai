@@ -1,0 +1,374 @@
+<!DOCTYPE html><html class="light" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Grimoire d'Aventurier - Inventaire</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&amp;family=Literata:ital,wght@0,400;0,700;1,400&amp;family=Work+Sans:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@100..900&amp;family=Literata:wght@100..900&amp;family=Work+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Parchment Texture Effect */
+        .parchment-bg {
+            background-color: #fcf9f0;
+            background-image: radial-gradient(#e5e2da 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+
+        /* Custom Scrollbar for the Grimoire feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1eee5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #80756f;
+            border-radius: 4px;
+        }
+
+        /* Inscribed label inputs */
+        .inscribed-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #271a12;
+            transition: all 0.3s ease;
+        }
+        .inscribed-input:focus {
+            outline: none;
+            border-bottom: 1.5px solid #775a19;
+            box-shadow: 0 4px 6px -4px rgba(119, 90, 25, 0.2);
+        }
+
+        /* Asymmetric Layout Accents */
+        .asymmetric-accent {
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#fed488",
+                        "surface-container-highest": "#e5e2da",
+                        "outline": "#80756f",
+                        "surface": "#fcf9f0",
+                        "on-secondary-fixed": "#261900",
+                        "surface-dim": "#dddad1",
+                        "surface-container-low": "#f6f3ea",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#f7ded0",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#261911",
+                        "tertiary": "#3e0a00",
+                        "on-tertiary-fixed-variant": "#7b2e18",
+                        "surface-container-high": "#ebe8df",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f4f1e8",
+                        "surface-container": "#f1eee5",
+                        "secondary": "#775a19",
+                        "primary-container": "#3e2f26",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fcf9f0",
+                        "surface-variant": "#e5e2da",
+                        "on-surface": "#1c1c17",
+                        "tertiary-container": "#5f1a06",
+                        "on-tertiary-fixed": "#3b0900",
+                        "outline-variant": "#d2c4bd",
+                        "on-background": "#1c1c17",
+                        "tertiary-fixed": "#ffdbd1",
+                        "primary": "#271a12",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ffdea5",
+                        "inverse-primary": "#dac2b5",
+                        "on-primary-fixed-variant": "#54433a",
+                        "on-surface-variant": "#4e4540",
+                        "surface-tint": "#6d5b50",
+                        "primary-fixed-dim": "#dac2b5",
+                        "on-secondary-container": "#785a1a",
+                        "surface-bright": "#fcf9f0",
+                        "tertiary-fixed-dim": "#ffb5a0",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#31312b",
+                        "on-tertiary-container": "#e37e62",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#ac968a",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-padding": "24px",
+                        "gutter": "16px",
+                        "section-gap": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["EB Garamond"],
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "label-sm": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Literata"],
+                        "headline-md": ["EB Garamond"],
+                        "body-lg": ["Literata"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="parchment-bg text-on-surface font-body-md text-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-primary border-b border-secondary/30 flex justify-between items-center px-container-padding h-16 w-full z-50 sticky top-0"><div class="flex items-center gap-6"><div class="flex flex-col"><span class="text-secondary-fixed font-headline-md leading-tight">Valerius Silverleaf</span><span class="text-secondary-fixed-dim font-label-sm uppercase tracking-wider">Niveau 5 Paladin • Noble</span></div><div class="hidden md:flex items-center gap-4 border-l border-secondary/30 pl-6"><div class="flex flex-col"><span class="text-secondary-fixed-dim font-label-sm uppercase">PV</span><span class="text-secondary-fixed font-bold">28/34 <span class="text-secondary-fixed-dim text-[10px]">(+5)</span></span></div><div class="flex flex-col"><span class="text-secondary-fixed-dim font-label-sm uppercase">CA</span><span class="text-secondary-fixed font-bold">16</span></div><div class="flex flex-col"><span class="text-secondary-fixed-dim font-label-sm uppercase">Init</span><span class="text-secondary-fixed font-bold">+3</span></div><div class="flex flex-col"><span class="text-secondary-fixed-dim font-label-sm uppercase">Vitesse</span><span class="text-secondary-fixed font-bold">9m</span></div></div></div><div class="flex gap-4"><button class="bg-secondary-fixed text-on-secondary-fixed px-4 py-1 font-label-sm text-label-sm rounded-lg hover:opacity-80 transition-opacity">Short Rest</button><button class="border border-secondary-fixed text-secondary-fixed px-4 py-1 font-label-sm text-label-sm rounded-lg hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-all">Long Rest</button></div></header>
+<main class="max-w-6xl mx-auto px-4 py-8">
+<!-- Page Title & Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary mb-2">Inventaire &amp; Équipement</h1>
+<p class="font-body-md text-on-surface-variant max-w-2xl italic">Consignez ici chaque relique, chaque ration et chaque pièce d'or amassée lors de vos périples à travers les Royaumes Oubliés.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Capacité de Charge</span>
+<div class="w-48 h-2 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-secondary transition-all duration-500" id="capacity-bar" style="width: 8.66667%;"></div>
+</div>
+<div class="flex gap-2 font-label-sm text-label-sm">
+<span class="text-primary font-bold" id="current-weight-display">6.5 kg</span>
+<span class="text-outline">/ 75.0 kg</span>
+</div>
+</div>
+</div>
+<!-- Inventory Container -->
+<div class="bg-surface-container border border-outline-variant shadow-sm rounded-xl overflow-hidden">
+<!-- Table Header -->
+<div class="grid grid-cols-12 bg-primary-container text-on-primary-container p-4 font-label-sm text-label-sm uppercase tracking-wider hidden md:grid">
+<div class="col-span-4">Nom de l'Objet</div>
+<div class="col-span-3">Description</div>
+<div class="col-span-1 text-center">Quantité</div>
+<div class="col-span-2 text-right">Poids Unitaire (kg)</div>
+<div class="col-span-2 text-right">Total (kg)</div>
+</div>
+<!-- Inventory List -->
+<div class="divide-y divide-outline-variant/30" id="inventory-rows">
+<!-- Template Row 1 -->
+<div class="inventory-row grid grid-cols-1 md:grid-cols-12 p-4 gap-4 items-center hover:bg-surface-container-low transition-colors">
+<div class="md:col-span-4">
+<input class="inscribed-input w-full font-headline-md text-headline-md text-primary" placeholder="Nom de l'objet..." type="text" value="Épée Longue de l'Aube">
+</div>
+<div class="md:col-span-3">
+<input class="inscribed-input w-full font-body-md text-on-surface-variant" placeholder="Brève description..." type="text" value="Lame enchantée, lueur solaire">
+</div>
+<div class="md:col-span-1 flex items-center justify-center gap-2">
+<span class="md:hidden font-label-sm text-outline">Qté:</span>
+<input class="qty-input inscribed-input w-16 text-center font-bold" min="0" onchange="calculateTotals()" type="number" value="1">
+</div>
+<div class="md:col-span-2 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-outline">Poids:</span>
+<input class="unit-weight-input inscribed-input w-24 text-right" min="0" onchange="calculateTotals()" step="0.1" type="number" value="1.5">
+</div>
+<div class="md:col-span-2 text-right font-bold text-secondary flex items-center justify-end gap-2">
+<span class="md:hidden font-label-sm text-outline">Total:</span>
+<span class="row-total">1.5</span> kg
+                        <button class="ml-4 text-error/60 hover:text-error transition-colors" onclick="removeRow(this)">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Template Row 2 -->
+<div class="inventory-row grid grid-cols-1 md:grid-cols-12 p-4 gap-4 items-center hover:bg-surface-container-low transition-colors">
+<div class="md:col-span-4">
+<input class="inscribed-input w-full font-headline-md text-headline-md text-primary" placeholder="Nom de l'objet..." type="text" value="Rations de voyage">
+</div>
+<div class="md:col-span-3">
+<input class="inscribed-input w-full font-body-md text-on-surface-variant" placeholder="Brève description..." type="text" value="Pain de nain et viande séchée">
+</div>
+<div class="md:col-span-1 flex items-center justify-center gap-2">
+<span class="md:hidden font-label-sm text-outline">Qté:</span>
+<input class="qty-input inscribed-input w-16 text-center font-bold" min="0" onchange="calculateTotals()" type="number" value="10">
+</div>
+<div class="md:col-span-2 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-outline">Poids:</span>
+<input class="unit-weight-input inscribed-input w-24 text-right" min="0" onchange="calculateTotals()" step="0.1" type="number" value="0.5">
+</div>
+<div class="md:col-span-2 text-right font-bold text-secondary flex items-center justify-end gap-2">
+<span class="md:hidden font-label-sm text-outline">Total:</span>
+<span class="row-total">5.0</span> kg
+                        <button class="ml-4 text-error/60 hover:text-error transition-colors" onclick="removeRow(this)">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer / Total Row -->
+<div class="bg-surface-container-high p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+<button class="flex items-center gap-2 px-6 py-2 bg-primary text-secondary-fixed rounded-lg font-label-sm text-label-sm uppercase hover:opacity-90 transition-all shadow-md" onclick="addRow()">
+<span class="material-symbols-outlined">add_circle</span>
+                    Ajouter un objet
+                </button>
+<div class="flex items-center gap-8 border-l-0 md:border-l border-outline-variant md:pl-8">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-outline uppercase">Objets Portés</span>
+<span class="font-headline-md text-headline-md text-primary" id="item-count">11</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-outline uppercase">Poids Total Transporté</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-headline-lg text-secondary" id="grand-total-weight">6.5</span>
+<span class="font-headline-md text-headline-md text-secondary">kg</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Asymmetric Detail Cards for Gold/Treasure -->
+<div class="mt-section-gap grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 bg-surface-container border border-outline-variant p-6 rounded-xl flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">auto_stories</span>
+                        Notes d'Équipement
+                    </h3>
+<textarea class="w-full h-32 bg-transparent border-none focus:ring-0 font-body-md text-on-surface-variant italic resize-none" placeholder="Notes sur les objets magiques, conditions de transport..."></textarea>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="text-label-sm font-label-sm text-outline">Dernière modification: Aujourd'hui</span>
+<button class="text-secondary hover:underline font-label-sm text-label-sm">Exporter en PDF</button>
+</div>
+</div>
+<div class="bg-primary-container text-on-primary-container p-6 rounded-xl relative overflow-hidden">
+<!-- Subtle Shader Placeholder Background -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="w-full h-full object-cover" data-alt="A macro photography shot of many ancient gold and silver coins with intricate engravings, shallow depth of field, warm candlelight illuminating the metallic textures, rich mahogany and leather background, high-fantasy aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7O6gTkxwdZtgPTGSfe_yEbPJSMlDyXyf4QFFjYw21TFkXcmgLhd6-iVZAMsTiCcFVhX_rZoRIuK139zFqWXK2ZDZ_wzWMGKVq6XrckiyrdLEcguQsgl2UnON-MwQwgbGReBRKDerN65wZ-eukZXV8dG1Nr2JY8kv9h83SQ1FWgbVanSFfz6xy2h0g6vFi4thFGpMqV47h-8Tm7heAAw4cERE6P_SebSOiF_BkUvh-O53atc4rFHON')"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-6 flex items-center gap-2 relative z-10">
+<span class="material-symbols-outlined">payments</span>
+                    Bourse
+                </h3>
+<div class="space-y-4 relative z-10">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-secondary-fixed-dim">PO (Or)</span>
+<input class="bg-transparent border-none text-right font-headline-md text-secondary-fixed focus:ring-0 w-24" type="number" value="1250">
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-secondary-fixed-dim">PA (Argent)</span>
+<input class="bg-transparent border-none text-right font-headline-md text-secondary-fixed-dim focus:ring-0 w-24" type="number" value="45">
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-secondary-fixed-dim">PC (Cuivre)</span>
+<input class="bg-transparent border-none text-right font-headline-md text-secondary-fixed-dim focus:ring-0 w-24" type="number" value="8">
+</div>
+</div>
+<div class="mt-8 pt-4 border-t border-secondary-fixed-dim/20 relative z-10">
+<p class="text-label-sm font-label-sm text-on-primary-container italic">Total estimé : 1,254.58 po</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-safe bg-surface border-t border-outline-variant shadow-lg z-50"><a href="#" class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1"><span class="material-symbols-outlined">person</span><span class="font-label-sm text-label-sm">Stats</span></a><a href="#" class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1"><span class="material-symbols-outlined">shield</span><span class="font-label-sm text-label-sm">Équipement</span></a><a href="#" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-95 duration-150"><span class="material-symbols-outlined">backpack</span><span class="font-label-sm text-label-sm">Inventaire</span></a><a href="#" class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1"><span class="material-symbols-outlined">auto_stories</span><span class="font-label-sm text-label-sm">Sorts</span></a><a href="#" class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1"><span class="material-symbols-outlined">menu_book</span><span class="font-label-sm text-label-sm">Journal</span></a></nav>
+<script>
+        function calculateTotals() {
+            const rows = document.querySelectorAll('.inventory-row');
+            let grandTotal = 0;
+            let totalItems = 0;
+
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+                const unitWeight = parseFloat(row.querySelector('.unit-weight-input').value) || 0;
+                const total = qty * unitWeight;
+                
+                row.querySelector('.row-total').textContent = total.toFixed(1);
+                grandTotal += total;
+                totalItems += qty;
+            });
+
+            const weightDisplay = document.getElementById('grand-total-weight');
+            const miniWeightDisplay = document.getElementById('current-weight-display');
+            const itemCount = document.getElementById('item-count');
+            const capacityBar = document.getElementById('capacity-bar');
+
+            weightDisplay.textContent = grandTotal.toFixed(1);
+            miniWeightDisplay.textContent = grandTotal.toFixed(1) + ' kg';
+            itemCount.textContent = totalItems;
+
+            // Simple capacity calculation (assuming 75kg limit for visualization)
+            const maxCapacity = 75;
+            const percentage = Math.min((grandTotal / maxCapacity) * 100, 100);
+            capacityBar.style.width = percentage + '%';
+            
+            if (percentage > 90) {
+                capacityBar.classList.remove('bg-secondary');
+                capacityBar.classList.add('bg-error');
+            } else {
+                capacityBar.classList.remove('bg-error');
+                capacityBar.classList.add('bg-secondary');
+            }
+        }
+
+        function addRow() {
+            const container = document.getElementById('inventory-rows');
+            const newRow = document.createElement('div');
+            newRow.className = 'inventory-row grid grid-cols-1 md:grid-cols-12 p-4 gap-4 items-center hover:bg-surface-container-low transition-colors';
+            newRow.innerHTML = `
+                <div class="md:col-span-4">
+                    <input type="text" class="inscribed-input w-full font-headline-md text-headline-md text-primary" placeholder="Nouvel objet...">
+                </div>
+                <div class="md:col-span-3">
+                    <input type="text" class="inscribed-input w-full font-body-md text-on-surface-variant" placeholder="Description...">
+                </div>
+                <div class="md:col-span-1 flex items-center justify-center gap-2">
+                    <span class="md:hidden font-label-sm text-outline">Qté:</span>
+                    <input type="number" value="1" min="0" class="qty-input inscribed-input w-16 text-center font-bold" onchange="calculateTotals()">
+                </div>
+                <div class="md:col-span-2 flex items-center md:justify-end gap-2">
+                    <span class="md:hidden font-label-sm text-outline">Poids:</span>
+                    <input type="number" step="0.1" value="0.0" min="0" class="unit-weight-input inscribed-input w-24 text-right" onchange="calculateTotals()">
+                </div>
+                <div class="md:col-span-2 text-right font-bold text-secondary flex items-center justify-end gap-2">
+                    <span class="md:hidden font-label-sm text-outline">Total:</span>
+                    <span class="row-total">0.0</span> kg
+                    <button class="ml-4 text-error/60 hover:text-error transition-colors" onclick="removeRow(this)">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newRow);
+            calculateTotals();
+        }
+
+        function removeRow(btn) {
+            const row = btn.closest('.inventory-row');
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                row.remove();
+                calculateTotals();
+            }, 300);
+        }
+
+        // Initialize calculation on load
+        window.onload = calculateTotals;
+    </script>
+
+
+</body></html>

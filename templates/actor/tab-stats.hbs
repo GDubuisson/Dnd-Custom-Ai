@@ -1,4 +1,6 @@
 <section class="tab stats {{tab.cssClass}}" data-group="primary" data-tab="stats">
+  <h2 class="tab-title"><i class="fa-solid fa-chart-simple"></i> {{localize "DND_CUSTOM.Tabs.stats"}}</h2>
+
   <div class="abilities-grid">
     {{#each abilities}}
     <div class="ability-block">
@@ -17,6 +19,7 @@
     {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
   </div>
 
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
   <ul class="skills-list">
     {{#each skills}}
     <li class="skill {{#if this.proficient}}proficient{{/if}}">

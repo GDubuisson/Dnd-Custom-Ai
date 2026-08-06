@@ -1,0 +1,278 @@
+<!DOCTYPE html><html class="light" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>Grimoire d'Aventurier - Journal</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Literata:ital,wght@0,200..900;1,200..900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#fed488",
+                    "surface-container-highest": "#e5e2da",
+                    "outline": "#80756f",
+                    "surface": "#fcf9f0",
+                    "on-secondary-fixed": "#261900",
+                    "surface-dim": "#dddad1",
+                    "surface-container-low": "#f6f3ea",
+                    "secondary-fixed-dim": "#e9c176",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#f7ded0",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#261911",
+                    "tertiary": "#3e0a00",
+                    "on-tertiary-fixed-variant": "#7b2e18",
+                    "surface-container-high": "#ebe8df",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f4f1e8",
+                    "surface-container": "#f1eee5",
+                    "secondary": "#775a19",
+                    "primary-container": "#3e2f26",
+                    "on-tertiary": "#ffffff",
+                    "background": "#fcf9f0",
+                    "surface-variant": "#e5e2da",
+                    "on-surface": "#1c1c17",
+                    "tertiary-container": "#5f1a06",
+                    "on-tertiary-fixed": "#3b0900",
+                    "outline-variant": "#d2c4bd",
+                    "on-background": "#1c1c17",
+                    "tertiary-fixed": "#ffdbd1",
+                    "primary": "#271a12",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ffdea5",
+                    "inverse-primary": "#dac2b5",
+                    "on-primary-fixed-variant": "#54433a",
+                    "on-surface-variant": "#4e4540",
+                    "surface-tint": "#6d5b50",
+                    "primary-fixed-dim": "#dac2b5",
+                    "on-secondary-container": "#785a1a",
+                    "surface-bright": "#fcf9f0",
+                    "tertiary-fixed-dim": "#ffb5a0",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#31312b",
+                    "on-tertiary-container": "#e37e62",
+                    "on-secondary-fixed-variant": "#5d4201",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#ac968a",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-padding": "24px",
+                    "gutter": "16px",
+                    "section-gap": "40px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["EB Garamond"],
+                    "headline-lg-mobile": ["EB Garamond"],
+                    "label-sm": ["Work Sans"],
+                    "display-lg": ["EB Garamond"],
+                    "body-md": ["Literata"],
+                    "headline-md": ["EB Garamond"],
+                    "body-lg": ["Literata"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #fcf9f0;
+        color: #1c1c17;
+        font-family: 'Literata', serif;
+        overflow-x: hidden;
+      }
+
+      .parchment-texture {
+        background-color: #fcf9f0;
+        background-image: 
+          radial-gradient(at 10% 10%, rgba(252, 249, 240, 0.5) 0%, transparent 50%),
+          radial-gradient(at 90% 90%, rgba(229, 226, 218, 0.4) 0%, transparent 50%);
+        position: relative;
+      }
+
+      .parchment-texture::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url('https://www.transparenttextures.com/patterns/p6.png');
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .etched-border {
+        border: 1px solid #d2c4bd;
+        box-shadow: inset 0 0 10px rgba(128, 117, 111, 0.05);
+      }
+
+      .gold-rule {
+        border-bottom: 0.5px solid #e9c176;
+      }
+
+      .ink-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #271a12;
+        transition: all 0.3s ease;
+      }
+
+      .ink-input:focus {
+        outline: none;
+        border-bottom-color: #e9c176;
+        box-shadow: 0 4px 6px -4px rgba(233, 193, 118, 0.4);
+      }
+
+      textarea {
+        scrollbar-width: thin;
+        scrollbar-color: #d2c4bd transparent;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+
+      @media (max-width: 768px) {
+        .mobile-scroll-container {
+          height: calc(100vh - 144px);
+          overflow-y: auto;
+          padding-bottom: 80px;
+        }
+      }
+    </style>
+</head>
+<body class="bg-background selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar Shell -->
+<header class="bg-primary dark:bg-primary-container border-b border-secondary/30 flex justify-between items-center px-container-padding h-16 w-full z-50 fixed top-0 left-0"><div class="flex items-center gap-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-fixed text-2xl">auto_stories</span><div class="flex flex-col"><h1 class="font-headline-md text-lg text-secondary-fixed tracking-tight leading-none">Valerius Silverleaf</h1><p class="font-label-sm text-[10px] text-secondary-fixed/70 uppercase tracking-widest">Niveau 5 Paladin • Noble</p></div></div><div class="hidden md:flex items-center gap-4 ml-4 border-l border-secondary/30 pl-4"><div class="flex flex-col"><span class="font-label-sm text-[10px] text-secondary-fixed/60 uppercase">PV</span><span class="font-body-md text-secondary-fixed text-sm">28/34 <span class="text-secondary-fixed/60 text-xs">(+5)</span></span></div><div class="flex flex-col"><span class="font-label-sm text-[10px] text-secondary-fixed/60 uppercase">CA</span><span class="font-body-md text-secondary-fixed text-sm">16</span></div><div class="flex flex-col"><span class="font-label-sm text-[10px] text-secondary-fixed/60 uppercase">Init</span><span class="font-body-md text-secondary-fixed text-sm">+3</span></div><div class="flex flex-col"><span class="font-label-sm text-[10px] text-secondary-fixed/60 uppercase">Vit</span><span class="font-body-md text-secondary-fixed text-sm">9m</span></div></div></div><div class="flex gap-2 md:gap-4"><button class="font-label-sm text-[10px] md:text-label-sm text-secondary-fixed border border-secondary/30 px-2 py-1 rounded hover:bg-secondary/10 transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-xs md:text-sm">bedtime</span><span class="hidden sm:inline">Short Rest</span></button><button class="font-label-sm text-[10px] md:text-label-sm text-secondary-fixed bg-secondary/20 border border-secondary/40 px-2 py-1 rounded hover:bg-secondary/30 transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-xs md:text-sm">hotel</span><span class="hidden sm:inline">Long Rest</span></button></div></header>
+<main class="pt-20 pb-24 md:pb-8 px-container-padding max-w-5xl mx-auto">
+<!-- Character Identity Section -->
+<section class="mb-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="parchment-texture etched-border p-4 rounded-lg flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">ÂGE</label>
+<input class="font-headline-md text-headline-md text-primary ink-input bg-transparent w-full" type="text" value="32 ans">
+</div>
+<div class="parchment-texture etched-border p-4 rounded-lg flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">SEXE</label>
+<input class="font-headline-md text-headline-md text-primary ink-input bg-transparent w-full" type="text" value="Masculin">
+</div>
+<div class="parchment-texture etched-border p-4 rounded-lg flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">TAILLE</label>
+<input class="font-headline-md text-headline-md text-primary ink-input bg-transparent w-full" type="text" value="1m82">
+</div>
+</section>
+<!-- Description & Biography Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-gutter">
+<!-- Description Physique (Editable) -->
+<section class="parchment-texture etched-border p-6 rounded-lg relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-20"></div>
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">visibility</span>
+                        Description physique
+                    </h2>
+<span class="material-symbols-outlined text-outline-variant text-lg">edit</span>
+</div>
+<textarea class="w-full h-48 bg-transparent border-none focus:ring-0 font-body-md text-body-md text-on-surface leading-relaxed resize-none" placeholder="Décrivez les traits marquants de votre personnage...">Un homme aux cheveux grisonnants attachés en une queue de cheval basse. Ses yeux noisette semblent toujours analyser son environnement. Il porte une cicatrice fine qui traverse son arcade sourcilière gauche, vestige d'une rencontre tendue avec un ours-hibou. Ses vêtements de voyage sont de bonne facture mais usés par les kilomètres, teintés de poussière et de souvenirs de route.</textarea>
+</section>
+<!-- Biographie (Read-only) -->
+<section class="parchment-texture etched-border p-6 rounded-lg relative overflow-hidden bg-surface-container-low/30">
+<div class="absolute top-0 right-0 w-16 h-16 bg-secondary-container/10 -rotate-45 translate-x-8 -translate-y-8"></div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary">history_edu</span>
+                    Biographie
+                </h2>
+<div class="font-body-md text-body-md text-on-surface-variant italic leading-relaxed h-48 overflow-y-auto pr-2 custom-scrollbar">
+                    Fils d'un cartographe royal tombé en disgrâce, Alaric a passé sa jeunesse à apprendre l'art des cartes et la survie en milieu hostile. Après la disparition mystérieuse de son père dans les pics givrés, il s'est mis à parcourir le monde pour achever l'Atlas que son géniteur avait commencé. Chaque pas sur la route est pour lui une manière de renouer avec son passé, tout en fuyant les collecteurs de dettes de la capitale qui réclament encore l'or que son père n'a jamais pu rendre.
+                </div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex justify-end">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Archive Scellée</span>
+</div>
+</section>
+</div>
+<!-- Journal Section (Large Area) -->
+<section class="parchment-texture etched-border rounded-lg relative overflow-hidden">
+<div class="bg-primary/5 px-6 py-4 flex justify-between items-center border-b border-outline-variant/30">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">book</span>
+                    Journal de Campagne
+                </h2>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-secondary-container/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-secondary">bookmark_add</span>
+</button>
+<button class="p-2 hover:bg-secondary-container/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-secondary">print</span>
+</button>
+</div>
+</div>
+<div class="p-6 md:p-8">
+<div class="flex gap-4 mb-6">
+<div class="flex-shrink-0 w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary-container font-headline-md">
+                        24
+                    </div>
+<div>
+<p class="font-label-sm text-label-sm text-outline-variant uppercase">Marthal, 1492 CV</p>
+<h3 class="font-headline-md text-headline-md text-primary">La Crypte de l'Ombre Éternelle</h3>
+</div>
+</div>
+<textarea class="w-full min-h-[400px] bg-transparent border-none focus:ring-0 font-body-lg text-body-lg text-on-surface leading-loose resize-y" placeholder="Inscrivez les événements marquants de votre aventure ici...">Nous sommes arrivés aux abords de la forêt des murmures vers le crépuscule. Le druide, Valerius, semblait agité par le silence inhabituel des oiseaux. 
+
+À l'entrée de la crypte, nous avons trouvé les symboles du Culte de l'Oeil. La porte était déjà entrouverte, le givre recouvrant les charnières alors qu'il fait une chaleur étouffante à l'extérieur. 
+
+- Combat contre 3 squelettes en armure : Valerius a failli succomber au souffle fétide de l'un d'eux.
+- Trouvé une gemme d'ambre valant environ 200 po.
+- Énigme des bassins : Il fallait verser du sang (le mien...) pour ouvrir le passage vers le niveau inférieur.
+
+Note pour plus tard : Interroger le marchand de Phandalin sur l'épée brisée retrouvée près de l'autel. Les runes semblent d'origine naine mais la facture est elfe.</textarea>
+</div>
+<!-- Bottom decorative element -->
+<div class="h-12 bg-gradient-to-t from-surface-container-high/50 to-transparent flex items-center justify-center">
+<div class="w-1/3 h-px bg-outline-variant/30"></div>
+<span class="material-symbols-outlined text-outline-variant px-4">ink_pen</span>
+<div class="w-1/3 h-px bg-outline-variant/30"></div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-safe bg-surface border-t border-outline-variant shadow-lg z-50"><a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-full" href="#"><span class="material-symbols-outlined">person</span><span class="font-label-sm text-label-sm">Stats</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-full" href="#"><span class="material-symbols-outlined">shield</span><span class="font-label-sm text-label-sm">Équipement</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-full" href="#"><span class="material-symbols-outlined">backpack</span><span class="font-label-sm text-label-sm">Inventaire</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-full" href="#"><span class="material-symbols-outlined">auto_stories</span><span class="font-label-sm text-label-sm">Sorts</span></a><a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-95 duration-150" href="#"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span><span class="font-label-sm text-label-sm">Journal</span></a></nav>
+<!-- Background Atmospheric Elements -->
+<div class="fixed top-20 right-[-100px] w-[300px] h-[300px] bg-secondary-container/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-24 left-[-100px] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<script>
+        // Simple micro-interaction for input fields
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(ta => {
+            ta.addEventListener('focus', () => {
+                ta.closest('.etched-border').style.borderColor = '#e9c176';
+                ta.closest('.etched-border').style.boxShadow = 'inset 0 0 15px rgba(233, 193, 118, 0.1)';
+            });
+            ta.addEventListener('blur', () => {
+                ta.closest('.etched-border').style.borderColor = '#d2c4bd';
+                ta.closest('.etched-border').style.boxShadow = 'inset 0 0 10px rgba(128, 117, 111, 0.05)';
+            });
+        });
+    </script>
+
+
+</body></html>
