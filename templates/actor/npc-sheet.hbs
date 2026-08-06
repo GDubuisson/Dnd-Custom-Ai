@@ -1,0 +1,48 @@
+<header class="dnd-custom-ai sheet-header">
+  <img class="portrait" src="{{actor.img}}" alt="{{actor.name}}">
+
+  <div class="header-fields">
+    <input type="text" class="actor-name" name="name" value="{{actor.name}}"
+           placeholder="{{localize 'DND_CUSTOM.Npc.Name'}}">
+
+    <div class="header-row">
+      <label>{{localize "DND_CUSTOM.Npc.CreatureType"}}
+        <select name="system.creatureType">
+          {{#each creatureTypeOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+          {{/each}}
+        </select>
+      </label>
+      <label>{{localize "DND_CUSTOM.Npc.Size"}}
+        <select name="system.size">
+          {{#each sizeOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+          {{/each}}
+        </select>
+      </label>
+      <label>{{localize "DND_CUSTOM.Npc.ChallengeRating"}}
+        <select name="system.challengeRating">
+          {{#each challengeRatingOptions}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.value}}</option>
+          {{/each}}
+        </select>
+      </label>
+    </div>
+
+    <div class="header-row">
+      <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
+        / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.AC"}}
+        <input type="number" name="system.attributes.ac.value" value="{{system.attributes.ac.value}}" min="0">
+      </label>
+      <label>{{localize "DND_CUSTOM.Actor.Speed"}}
+        <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
+      </label>
+      <label>{{localize "DND_CUSTOM.Npc.XpReward"}}
+        <input type="number" name="system.xpReward" value="{{system.xpReward}}" min="0">
+      </label>
+    </div>
+  </div>
+</header>

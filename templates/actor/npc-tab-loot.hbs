@@ -1,0 +1,22 @@
+<section class="tab loot {{tab.cssClass}}" data-group="primary" data-tab="loot">
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>{{localize "DND_CUSTOM.Inventory.Name"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each lootItems}}
+      <tr data-item-id="{{this.id}}">
+        <td>{{this.name}}</td>
+        <td>{{this.system.quantity}}</td>
+        <td>{{this.system.weight}}</td>
+      </tr>
+      {{else}}
+      <tr><td colspan="3" class="empty-slot">{{localize "DND_CUSTOM.Npc.LootEmpty"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

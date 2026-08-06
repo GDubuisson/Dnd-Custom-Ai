@@ -116,13 +116,32 @@ Tous les personnages sont des **Humains**. Leurs traits culturels et bonus méca
 - Bloc de texte "Biographie"
 - Bloc de texte "Notes"
 
+## Fiche d'ennemi/PNJ (Actor type `npc`)
+
+Fiche générique distincte de `character`, pour les adversaires et PNJ. Stats simplifiées :
+pas de score de caractéristique ni de maîtrise séparée — un **bonus direct** par caractéristique,
+et la sauvegarde correspondante est toujours égale à ce bonus.
+
+- Nom, type de créature (liste fermée SRD 5e, 14 types : Aberration, Bête, Céleste, Construction,
+  Dragon, Élémentaire, Fée, Fiélon, Géant, Humanoïde, Monstruosité, Vase, Plante, Mort-vivant)
+- Indice de dangerosité (FI) : liste fermée SRD 5e (0, 1/8, 1/4, 1/2, puis paliers entiers 1 à 30)
+- Taille : liste fermée SRD 5e (TP, P, M, G, TG, Gig)
+- Classe d'Armure, Points de Vie (actuels/max), Vitesse
+- Bonus de caractéristiques (Force à Charisme), sauvegarde = bonus de caractéristique
+- Onglet "Capacités spéciales" : deux blocs de texte libre, "Capacités spéciales" et "Particularité"
+- Points d'expérience rapportés : valeur saisie manuellement par le MJ (**table de correspondance
+  FI → XP prévue plus tard**, pas encore implémentée)
+- Onglet "Butin" : objets rapportés (réutilise les Items `weapon`/`armor`/`gear` existants, embarqués
+  sur l'Actor comme pour `character`)
+
 ## Fichiers de référence
 - `system.json` — manifeste du système (métadonnées, compatibilité v14, `documentTypes`, `manifest`/`download`)
-- `scripts/data/*.js` — DataModels (`CharacterData`, `WeaponData`, `ArmorData`, `GearData`, `FeatureData`), schéma de données des Actors/Items
+- `scripts/data/*.js` — DataModels (`CharacterData`, `NpcData`, `WeaponData`, `ArmorData`, `GearData`, `FeatureData`), schéma de données des Actors/Items
 - `scripts/data/origins.json` — données des 6 Origines, externalisées en JSON
-- `scripts/sheets/actor-sheet.js` — `DndCustomActorSheet` (ActorSheetV2 + HandlebarsApplicationMixin)
-- `scripts/helpers/config.js`, `scripts/helpers/rules.js` — constantes `CONFIG.DND_CUSTOM` et règles SRD sourcées (modificateur, bonus de maîtrise, capacité de charge)
-- `/templates/actor/*.hbs` — templates Handlebars des feuilles (un par onglet)
+- `scripts/sheets/actor-sheet.js` — `DndCustomActorSheet` (ActorSheetV2 + HandlebarsApplicationMixin), fiche `character`
+- `scripts/sheets/npc-sheet.js` — `DndCustomNpcSheet` (ActorSheetV2 + HandlebarsApplicationMixin), fiche `npc`
+- `scripts/helpers/config.js`, `scripts/helpers/rules.js` — constantes `CONFIG.DND_CUSTOM` (dont types de créature, tailles, FI sourcés SRD) et règles SRD sourcées (modificateur, bonus de maîtrise, capacité de charge)
+- `/templates/actor/*.hbs` — templates Handlebars des feuilles (un par onglet, préfixe `npc-` pour la fiche d'ennemi/PNJ)
 - `/lang/fr.json`, `/lang/en.json` — traductions
 - `.github/workflows/release.yml` — publication d'une release GitHub (tag + zip + manifest) déclenchée manuellement (workflow_dispatch, entrée `version`)
 
