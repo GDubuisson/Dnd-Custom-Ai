@@ -1,41 +1,45 @@
 <section class="tab equipment {{tab.cssClass}}" data-group="primary" data-tab="equipment">
-  <div class="equipment-slot">
-    <h3>{{localize "DND_CUSTOM.Equipment.MainHand"}}</h3>
-    {{#if equipment.mainHand}}
-      <div class="item-line" data-item-id="{{equipment.mainHand.id}}">{{equipment.mainHand.name}}</div>
-    {{else}}
-      <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
-    {{/if}}
-  </div>
+  <h2 class="tab-title"><i class="fa-solid fa-shield-halved"></i> {{localize "DND_CUSTOM.Tabs.equipment"}}</h2>
 
-  <div class="equipment-slot">
-    <h3>{{localize "DND_CUSTOM.Equipment.OffHand"}}</h3>
-    {{#if equipment.offHand}}
-      <div class="item-line" data-item-id="{{equipment.offHand.id}}">{{equipment.offHand.name}}</div>
-    {{else}}
-      <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
-    {{/if}}
-  </div>
+  <div class="equipment-grid">
+    <div class="equipment-slot">
+      <h3>{{localize "DND_CUSTOM.Equipment.MainHand"}}</h3>
+      {{#if equipment.mainHand}}
+        <div class="item-line" data-item-id="{{equipment.mainHand.id}}">{{equipment.mainHand.name}}</div>
+      {{else}}
+        <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
+      {{/if}}
+    </div>
 
-  <div class="equipment-slot">
-    <h3>{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
-    {{#if equipment.armor}}
-      <div class="item-line" data-item-id="{{equipment.armor.id}}">{{equipment.armor.name}} ({{equipment.armor.system.ac}})</div>
-    {{else}}
-      <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
-    {{/if}}
-  </div>
+    <div class="equipment-slot">
+      <h3>{{localize "DND_CUSTOM.Equipment.OffHand"}}</h3>
+      {{#if equipment.offHand}}
+        <div class="item-line" data-item-id="{{equipment.offHand.id}}">{{equipment.offHand.name}}</div>
+      {{else}}
+        <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
+      {{/if}}
+    </div>
 
-  <div class="equipment-slot">
-    <h3>{{localize "DND_CUSTOM.Equipment.Accessories"}}</h3>
-    {{#if equipment.accessories.length}}
-      <ul>
-        {{#each equipment.accessories}}
-        <li data-item-id="{{this.id}}">{{this.name}}</li>
-        {{/each}}
-      </ul>
-    {{else}}
-      <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
-    {{/if}}
+    <div class="equipment-slot">
+      <h3>{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
+      {{#if equipment.armor}}
+        <div class="item-line" data-item-id="{{equipment.armor.id}}">{{equipment.armor.name}} ({{equipment.armor.system.ac}})</div>
+      {{else}}
+        <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
+      {{/if}}
+    </div>
+
+    <div class="equipment-slot">
+      <h3>{{localize "DND_CUSTOM.Equipment.Accessories"}}</h3>
+      {{#if equipment.accessories.length}}
+        <ul>
+          {{#each equipment.accessories}}
+          <li data-item-id="{{this.id}}">{{this.name}}</li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
+      {{/if}}
+    </div>
   </div>
 </section>

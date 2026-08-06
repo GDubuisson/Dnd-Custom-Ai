@@ -65,6 +65,9 @@ export class DndCustomNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
       selected: system.challengeRating === cr
     }));
 
+    const hp = system.attributes.hp;
+    context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+
     // Sauvegarde = bonus de caractéristique (pas de score ni de maîtrise séparée pour un PNJ).
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => ({
       key,

@@ -1,116 +1,616 @@
+/* Thème "Manuscrit Arcanique" : parchemin, encre et or bruni.
+   Inspiré des maquettes de référence (images/feuilles-personnage/). */
+
+.dnd-custom-ai {
+  --dca-surface: #fcf9f0;
+  --dca-surface-lowest: #ffffff;
+  --dca-surface-low: #f6f3ea;
+  --dca-surface-container: #f1eee5;
+  --dca-surface-high: #ebe8df;
+  --dca-surface-highest: #e5e2da;
+  --dca-on-surface: #1c1c17;
+  --dca-on-surface-variant: #4e4540;
+  --dca-outline: #80756f;
+  --dca-outline-variant: #d2c4bd;
+  --dca-primary: #271a12;
+  --dca-primary-container: #3e2f26;
+  --dca-secondary: #775a19;
+  --dca-secondary-container: #fed488;
+  --dca-on-secondary-container: #785a1a;
+  --dca-secondary-fixed: #ffdea5;
+  --dca-secondary-fixed-dim: #e9c176;
+  --dca-tertiary: #5f1a06;
+  --dca-error: #ba1a1a;
+
+  --dca-font-headline: "EB Garamond", Garamond, "Times New Roman", serif;
+  --dca-font-body: "Literata", Georgia, "Iowan Old Style", serif;
+  --dca-font-label: "Work Sans", "Segoe UI", sans-serif;
+}
+
 .dnd-custom-ai.sheet.actor {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
+  font-family: var(--dca-font-body);
+  color: var(--dca-on-surface);
+  background-color: var(--dca-surface);
+  background-image: radial-gradient(var(--dca-surface-highest) 0.6px, transparent 0.6px);
+  background-size: 16px 16px;
 }
+
+/* ---------- En-tête ("reliure de cuir") ---------- */
 
 .dnd-custom-ai .sheet-header {
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: var(--dca-primary);
+  border-bottom: 2px solid var(--dca-secondary-fixed-dim);
 }
 
 .dnd-custom-ai .sheet-header .portrait {
-  width: 96px;
-  height: 96px;
+  width: 84px;
+  height: 84px;
   object-fit: cover;
-  border: 1px solid var(--color-border-light-tertiary, #999);
+  border-radius: 0.4rem;
+  border: 2px solid var(--dca-secondary-fixed-dim);
 }
 
 .dnd-custom-ai .sheet-header .header-fields {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .dnd-custom-ai .sheet-header .actor-name {
-  font-size: 1.4rem;
-  font-weight: bold;
+  font-family: var(--dca-font-headline);
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--dca-secondary-fixed);
+  padding: 0.1rem 0;
+}
+
+.dnd-custom-ai .sheet-header .actor-name:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header .actor-name::placeholder {
+  color: var(--dca-secondary-fixed-dim);
+  opacity: 0.6;
 }
 
 .dnd-custom-ai .header-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.1rem;
   flex-wrap: wrap;
+}
+
+.dnd-custom-ai .header-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .header-row input,
+.dnd-custom-ai .header-row select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.05rem 0.1rem;
+}
+
+.dnd-custom-ai .header-row input:focus,
+.dnd-custom-ai .header-row select:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .header-row input[type="number"] {
+  width: 3.5rem;
+}
+
+.dnd-custom-ai .hp-field {
+  min-width: 8rem;
+}
+
+.dnd-custom-ai .hp-bar-track {
+  display: block;
+  width: 100%;
+  height: 5px;
+  margin-top: 0.25rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dnd-custom-ai .hp-bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
 }
 
 .dnd-custom-ai .header-actions {
   display: flex;
   gap: 0.5rem;
+  margin-top: 0.15rem;
 }
 
-.dnd-custom-ai .tab {
-  padding: 0.5rem;
+.dnd-custom-ai .header-actions button {
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--dca-secondary-fixed-dim);
+  color: var(--dca-secondary-fixed);
+  transition: background 0.15s ease, color 0.15s ease;
 }
+
+.dnd-custom-ai .header-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dnd-custom-ai .header-actions button[data-action="restLong"] {
+  background: var(--dca-secondary-fixed-dim);
+  color: var(--dca-primary);
+  font-weight: 600;
+}
+
+.dnd-custom-ai .header-actions button[data-action="restLong"]:hover {
+  background: var(--dca-secondary-fixed);
+}
+
+/* ---------- Navigation par onglets ---------- */
+
+.dnd-custom-ai nav.tabs,
+.dnd-custom-ai .sheet-tabs {
+  display: flex;
+  gap: 0.2rem;
+  background: var(--dca-surface-container);
+  border-bottom: 1px solid var(--dca-outline-variant);
+  padding: 0.4rem 0.85rem 0;
+}
+
+.dnd-custom-ai nav.tabs .item,
+.dnd-custom-ai .sheet-tabs .item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dca-on-surface-variant);
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem 0.4rem 0 0;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+}
+
+.dnd-custom-ai nav.tabs .item:hover,
+.dnd-custom-ai .sheet-tabs .item:hover {
+  background: var(--dca-surface-high);
+  color: var(--dca-on-surface);
+}
+
+.dnd-custom-ai nav.tabs .item.active,
+.dnd-custom-ai .sheet-tabs .item.active {
+  background: var(--dca-surface);
+  color: var(--dca-secondary);
+  border-bottom-color: var(--dca-secondary);
+  font-weight: 600;
+}
+
+/* ---------- Contenu des onglets ---------- */
+
+.dnd-custom-ai .tab {
+  padding: 1rem 1.1rem 1.4rem;
+}
+
+.dnd-custom-ai .tab-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.35rem;
+  font-family: var(--dca-font-headline);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--dca-primary);
+  border-bottom: 2px solid var(--dca-secondary-container);
+}
+
+.dnd-custom-ai .tab-title i {
+  color: var(--dca-secondary);
+  font-size: 0.95rem;
+}
+
+.dnd-custom-ai .section-subtitle {
+  margin: 1.1rem 0 0.45rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dca-outline);
+}
+
+.dnd-custom-ai input[type="checkbox"] {
+  accent-color: var(--dca-secondary);
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* ---------- Caractéristiques ---------- */
 
 .dnd-custom-ai .abilities-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.6rem;
 }
 
 .dnd-custom-ai .ability-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--color-border-light-tertiary, #999);
-  border-radius: 4px;
-  padding: 0.35rem;
+  gap: 0.3rem;
+  background: var(--dca-surface-container);
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.5rem 0.55rem;
+}
+
+.dnd-custom-ai .ability-block label {
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .ability-block input[type="number"] {
+  width: 2.9rem;
+  text-align: center;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.35rem;
+  background: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--dca-on-surface-variant);
+  padding: 0.15rem 0;
+}
+
+.dnd-custom-ai .ability-block .mod {
+  font-family: var(--dca-font-headline);
+  font-weight: 600;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  color: var(--dca-primary);
+  white-space: nowrap;
+}
+
+.dnd-custom-ai .ability-block .save-proficiency {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.1rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  color: var(--dca-on-surface-variant);
+}
+
+.dnd-custom-ai .proficiency-bonus {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.9rem 0 0.5rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .dnd-custom-ai .skills-list {
   list-style: none;
-  margin: 0.5rem 0 0;
+  margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .dnd-custom-ai .skills-list .skill {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--dca-surface-lowest);
+  border-bottom: 1px solid var(--dca-outline-variant);
+  border-left: 3px solid transparent;
+  font-size: 0.83rem;
+}
+
+.dnd-custom-ai .skills-list .skill:nth-child(even) {
+  background: var(--dca-surface-low);
+}
+
+.dnd-custom-ai .skills-list .skill:last-child {
+  border-bottom: none;
+}
+
+.dnd-custom-ai .skills-list .skill label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
 }
 
 .dnd-custom-ai .skills-list .skill.proficient {
-  font-weight: bold;
+  border-left-color: var(--dca-secondary);
+  color: var(--dca-primary);
+  font-weight: 600;
+}
+
+.dnd-custom-ai .skills-list .ability-tag {
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--dca-outline);
+}
+
+.dnd-custom-ai .skills-list .mod {
+  min-width: 2rem;
+  margin-left: auto;
+  font-family: var(--dca-font-headline);
+  font-weight: 600;
+  color: var(--dca-secondary);
+  text-align: right;
+}
+
+/* ---------- Équipement ---------- */
+
+.dnd-custom-ai .equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.75rem;
 }
 
 .dnd-custom-ai .equipment-slot {
-  margin-bottom: 0.75rem;
+  background: var(--dca-surface-container);
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.55rem;
+  padding: 0.75rem 0.9rem;
 }
+
+.dnd-custom-ai .equipment-slot h3 {
+  margin: 0 0 0.4rem;
+  font-family: var(--dca-font-headline);
+  font-size: 1rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .equipment-slot .item-line {
+  padding: 0.2rem 0;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.dnd-custom-ai .equipment-slot ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dnd-custom-ai .equipment-slot ul li {
+  padding: 0.2rem 0;
+  font-style: italic;
+}
+
+/* ---------- Inventaire ---------- */
 
 .dnd-custom-ai .inventory-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
-.dnd-custom-ai .inventory-table th,
-.dnd-custom-ai .inventory-table td {
-  border-bottom: 1px solid var(--color-border-light-tertiary, #999);
-  padding: 0.25rem 0.4rem;
+.dnd-custom-ai .inventory-table th {
+  padding: 0.5rem 0.6rem;
+  background: var(--dca-primary-container);
+  color: var(--dca-secondary-fixed-dim);
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   text-align: left;
+}
+
+.dnd-custom-ai .inventory-table td {
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+}
+
+.dnd-custom-ai .inventory-table tr:nth-child(even) td {
+  background: var(--dca-surface-low);
+}
+
+.dnd-custom-ai .carrying-capacity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 1rem 0;
+}
+
+.dnd-custom-ai .carrying-capacity .label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dca-outline);
+}
+
+.dnd-custom-ai .capacity-bar-track {
+  display: block;
+  width: 100%;
+  height: 8px;
+  background: var(--dca-surface-highest);
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dnd-custom-ai .capacity-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--dca-secondary);
+}
+
+.dnd-custom-ai .capacity-bar-fill.over-capacity {
+  background: var(--dca-error);
 }
 
 .dnd-custom-ai .currency {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+  gap: 0.9rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.55rem;
+  background: var(--dca-primary-container);
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .currency h3 {
+  width: 100%;
+  margin: 0 0 0.3rem;
+  font-family: var(--dca-font-headline);
+  font-size: 1rem;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .currency label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
 }
 
 .dnd-custom-ai .currency input {
-  width: 4rem;
+  width: 3.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-weight: 600;
+  text-align: right;
+}
+
+.dnd-custom-ai .currency .currency-total {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+/* ---------- Capacités / Sorts ---------- */
+
+.dnd-custom-ai .features-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dnd-custom-ai .features-list li {
+  background: var(--dca-surface-container);
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.85rem;
+}
+
+.dnd-custom-ai .features-list li strong {
+  font-family: var(--dca-font-headline);
+  font-size: 1rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .features-list .source {
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-outline);
+}
+
+/* ---------- Journal ---------- */
+
+.dnd-custom-ai .journal-block {
+  margin-bottom: 1rem;
+}
+
+.dnd-custom-ai .journal-block h3 {
+  margin: 0 0 0.4rem;
+  font-family: var(--dca-font-headline);
+  font-size: 1.05rem;
+  color: var(--dca-primary);
 }
 
 .dnd-custom-ai .journal-block textarea {
   width: 100%;
   min-height: 8rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.5rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.85rem;
+  resize: vertical;
 }
 
+.dnd-custom-ai .journal-block textarea:focus {
+  outline: none;
+  border-color: var(--dca-secondary);
+  box-shadow: 0 0 0 1px var(--dca-secondary);
+}
+
+/* ---------- Divers ---------- */
+
 .dnd-custom-ai .empty-slot {
-  color: var(--color-text-dark-secondary, #666);
+  color: var(--dca-outline);
   font-style: italic;
+  font-size: 0.85rem;
 }

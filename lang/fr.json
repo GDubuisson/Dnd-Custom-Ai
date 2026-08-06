@@ -61,7 +61,8 @@
       "AC": "Classe d'Armure",
       "Speed": "Vitesse",
       "SaveShort": "Sauv.",
-      "ProficiencyBonus": "Bonus de maîtrise"
+      "ProficiencyBonus": "Bonus de maîtrise",
+      "SkillsTitle": "Compétences"
     },
     "Actions": {
       "RestShort": "Repos court",
