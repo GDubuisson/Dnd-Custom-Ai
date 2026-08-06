@@ -28,9 +28,10 @@ Foundry réel.
   capacité de charge (Force × 15 lb), conversion des monnaies en équivalent PC.
 - Localisation française et anglaise.
 - Feuille de style scopée au système.
-- Workflow GitHub Actions (`workflow_dispatch`) qui tague une version, construit
-  le zip du système et publie une Release GitHub avec `system.json` en asset,
-  pour l'installation/mise à jour de Foundry via le champ `manifest`.
+- Workflow GitHub Actions (`workflow_dispatch`, sans saisie manuelle) qui lit la
+  version depuis `system.json`, tague, construit le zip du système et publie une
+  Release GitHub avec `system.json` en asset, pour l'installation/mise à jour de
+  Foundry via le champ `manifest`.
 - Type d'Actor `npc` (ennemi/PNJ) : modèle de données (`NpcData`) et fiche
   (`DndCustomNpcSheet`) distincts de `character` — type de créature et taille
   (listes SRD 5e), indice de dangerosité (FI, sourcé SRD), CA/PV/vitesse, bonus

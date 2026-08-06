@@ -145,11 +145,15 @@ et la sauvegarde correspondante est toujours égale à ce bonus.
 - `/lang/fr.json`, `/lang/en.json` — traductions
 - `.github/workflows/release.yml` — publication d'une release GitHub (tag + zip + manifest) déclenchée manuellement (workflow_dispatch, entrée `version`)
 
+## Versionnage
+- Le champ `version` de `system.json` est la source de vérité : c'est lui que lit le workflow de release, pas une saisie manuelle.
+- **Après une session de travail sur le projet, incrémenter `version` dans `system.json`** (SemVer : patch pour un correctif, minor pour une fonctionnalité, major réservé à une rupture — rare avant le `1.0.0`), en cohérence avec la section "Non publié" du `CHANGELOG.md`.
+
 ## Publication (release)
 Pour publier une nouvelle version consultable par Foundry via le manifest :
-1. Aller dans l'onglet GitHub Actions du dépôt, lancer le workflow **Release Foundry System** manuellement.
-2. Renseigner le numéro de version (ex : `0.2.0`, sans préfixe `v`).
-3. Le workflow met à jour `version`/`download` dans `system.json`, commit, crée le tag `vX.Y.Z`, construit `system.zip` (contenu du système à la racine de l'archive) et publie une Release GitHub avec `system.json` et `system.zip` en assets.
+1. Vérifier que `version` dans `system.json` a bien été incrémenté (cf. "Versionnage" ci-dessus) et correspond à la section du `CHANGELOG.md` à publier.
+2. Aller dans l'onglet GitHub Actions du dépôt, lancer le workflow **Release Foundry System** manuellement (aucune saisie requise).
+3. Le workflow lit `version` dans `system.json`, met à jour `download` en conséquence, commit, crée le tag `vX.Y.Z`, construit `system.zip` (contenu du système à la racine de l'archive) et publie une Release GitHub avec `system.json` et `system.zip` en assets.
 4. Le champ `manifest` de `system.json` (`.../releases/latest/download/system.json`) reste stable : Foundry l'utilise pour détecter les mises à jour.
 
 ## Points de vigilance particuliers
