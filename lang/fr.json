@@ -58,6 +58,7 @@
       "Class": "Classe",
       "Origin": "Origine",
       "HP": "Points de Vie",
+      "HPTemp": "Points de vie temporaires",
       "AC": "Classe d'Armure",
       "Speed": "Vitesse",
       "SaveShort": "Sauv.",

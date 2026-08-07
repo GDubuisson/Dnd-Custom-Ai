@@ -58,6 +58,7 @@
       "Class": "Class",
       "Origin": "Origin",
       "HP": "Hit Points",
+      "HPTemp": "Temporary hit points",
       "AC": "Armor Class",
       "Speed": "Speed",
       "SaveShort": "Save",
