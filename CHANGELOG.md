@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.3
+## [Non publié] - 0.2.4
 
 ### Ajouté
 - Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de
@@ -29,6 +29,23 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   cuir avec barre de PV, titres d'onglet avec icônes, cartes de
   caractéristiques/équipement/capacités, tableaux d'inventaire et de butin,
   barre de capacité de charge, encart "Bourse" pour les monnaies.
+- Remplacement complet du thème "Manuscrit Arcanique" (jugé pas assez
+  "médiéval") par le thème "Auberge et Grand Chemin" : palette bois vieilli/
+  parchemin taché/cire à cacheter, fond de fiche texturé (taches façon
+  parchemin usé + vignette assombrie sur les bords), en-tête façon poutre de
+  bois (grain), cartes moins arrondies avec léger relief (caractéristiques,
+  équipement, capacités, tableaux), boutons d'action au tracé plus appuyé.
+  Palette et polices restent pilotées par les mêmes variables CSS
+  (`--dca-*`), donc structure/marquage inchangés.
+- Ajout de vraies textures photo (CC0, voir `styles/textures/CREDITS.md`) pour
+  casser les aplats de couleur du thème "Auberge et Grand Chemin" : fibre de
+  parchemin sur le fond de fiche et les cartes (caractéristiques, équipement,
+  capacités, barre d'onglets), veinage de bois sur l'en-tête et l'encart
+  monnaie. Chaque usage superpose un voile de couleur semi-transparent sur la
+  photo pour la raccorder à la palette du thème. Nouveaux fichiers
+  `styles/textures/parchment.jpg` et `styles/textures/wood.jpg` (512×512,
+  redimensionnés/recompressés depuis les sources CC0), référencés via les
+  variables `--dca-texture-parchment` / `--dca-texture-wood`.
 
 ### Corrigé
 - Contraste de texte insuffisant sur les fiches `character`/`npc` : plusieurs
