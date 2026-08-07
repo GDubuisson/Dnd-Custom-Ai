@@ -49,6 +49,29 @@ DND_CUSTOM.classes = {
 /** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
 DND_CUSTOM.spellcastingClasses = ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"];
 
+/** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
+DND_CUSTOM.classHitDice = {
+  barbarian: 12,
+  bard: 8,
+  cleric: 8,
+  druid: 8,
+  fighter: 10,
+  monk: 8,
+  paladin: 10,
+  ranger: 10,
+  rogue: 8,
+  sorcerer: 6,
+  warlock: 8,
+  wizard: 6
+};
+
+/** Vitesse de base (en pieds) : les origines de ce système sont des cultures/régions,
+ *  pas des espèces, donc pas de variation de vitesse par origine pour l'instant. */
+DND_CUSTOM.baseSpeed = 30;
+
+/** Catégories d'armure SRD 5e, déterminant le plafond de bonus de Dex sur la CA. */
+DND_CUSTOM.armorCategories = ["light", "medium", "heavy"];
+
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {
   pc: 1,

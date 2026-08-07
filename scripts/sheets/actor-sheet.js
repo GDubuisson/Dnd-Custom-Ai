@@ -63,6 +63,7 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     context.actor = this.actor;
     context.system = system;
     context.config = DND_CUSTOM;
+    context.isGM = game.user.isGM;
     // Chargées une fois au démarrage par le hook "init" (voir dnd-custom-ai.js).
     context.origins = game.dndCustomAi?.origins ?? {};
     context.originOptions = Object.entries(context.origins).map(([key, origin]) => ({

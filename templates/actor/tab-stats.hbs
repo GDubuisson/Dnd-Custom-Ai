@@ -5,10 +5,10 @@
     {{#each abilities}}
     <div class="ability-block">
       <label>{{localize this.label}}</label>
-      <input type="number" name="system.abilities.{{this.key}}.value" value="{{this.value}}" min="1">
+      <input type="number" name="system.abilities.{{this.key}}.value" value="{{this.value}}" min="1" {{#unless ../isGM}}disabled{{/unless}}>
       <span class="mod">{{this.modLabel}}</span>
       <label class="save-proficiency">
-        <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}}>
+        <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
         {{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.save.mod}}
       </label>
     </div>
@@ -24,7 +24,7 @@
     {{#each skills}}
     <li class="skill {{#if this.proficient}}proficient{{/if}}">
       <label>
-        <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}}>
+        <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
         {{this.label}}
       </label>
       <span class="ability-tag">({{this.ability}})</span>

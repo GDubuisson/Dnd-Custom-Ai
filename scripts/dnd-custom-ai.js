@@ -36,6 +36,31 @@ Hooks.once("init", async () => {
   };
 });
 
+// Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
+// réservés au MJ. Filet de sécurité côté données, en complément du "disabled" côté UI
+// (cf. templates/actor/character-sheet.hbs et tab-stats.hbs) — empêche toute modification
+// qui ne passerait pas par le formulaire standard (macro, console).
+Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
+  if (actor.type !== "character") return;
+  if (game.users.get(userId)?.isGM) return;
+
+  const sys = changes.system;
+  if (!sys) return;
+
+  delete sys.class;
+  delete sys.origin;
+  if (sys.attributes) delete sys.attributes.level;
+  if (sys.abilities) {
+    for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
+  }
+  if (sys.saves) {
+    for (const key of Object.keys(sys.saves)) delete sys.saves[key].proficient;
+  }
+  if (sys.skills) {
+    for (const key of Object.keys(sys.skills)) delete sys.skills[key].proficient;
+  }
+});
+
 async function loadOrigins() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/origins.json`);
   return response.json();

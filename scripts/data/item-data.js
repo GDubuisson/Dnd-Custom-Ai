@@ -30,6 +30,11 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
     return {
       ...physicalItemSchema(),
       ac: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
+      category: new StringField({
+        required: true,
+        initial: "light",
+        choices: ["light", "medium", "heavy"]
+      }),
       slot: new StringField({
         required: true,
         initial: "armor",

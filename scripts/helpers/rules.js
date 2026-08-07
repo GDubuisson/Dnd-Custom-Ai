@@ -34,3 +34,31 @@ export function currencyTotalInCopper(currency) {
 export function formatModifier(mod) {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
+
+/** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
+ *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
+export function maxHitPoints(hitDie, level, conMod) {
+  let total = hitDie + conMod;
+  for (let lvl = 2; lvl <= level; lvl++) {
+    total += Math.max(1, Math.floor(hitDie / 2) + 1 + conMod);
+  }
+  return Math.max(1, total);
+}
+
+/** Bonus de Dex sur la CA selon la catégorie d'armure, SRD 5e : illimité (légère),
+ *  plafonné à +2 (moyenne), aucun (lourde, même si le modificateur est négatif). */
+function dexBonusForArmorCategory(category, dexMod) {
+  if (category === "medium") return Math.min(dexMod, 2);
+  if (category === "heavy") return 0;
+  return dexMod;
+}
+
+/** Classe d'Armure, SRD 5e : 10 + Dex sans armure ; sinon CA de base de l'armure +
+ *  bonus de Dex plafonné selon sa catégorie, + bonus plat du bouclier équipé le cas échéant. */
+export function armorClass(dexMod, equippedArmor, equippedShield) {
+  const base = equippedArmor
+    ? equippedArmor.system.ac + dexBonusForArmorCategory(equippedArmor.system.category, dexMod)
+    : 10 + dexMod;
+  const shieldBonus = equippedShield ? equippedShield.system.ac : 0;
+  return base + shieldBonus;
+}
