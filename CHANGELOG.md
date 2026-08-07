@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.0
+## [Non publié] - 0.2.1
 
 ### Modifié
 - Champ "Classe" de la fiche de personnage : liste déroulante fermée sur les
@@ -18,6 +18,11 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   cuir avec barre de PV, titres d'onglet avec icônes, cartes de
   caractéristiques/équipement/capacités, tableaux d'inventaire et de butin,
   barre de capacité de charge, encart "Bourse" pour les monnaies.
+
+### Corrigé
+- Contenu des onglets coupé lorsque la fenêtre de la fiche est plus petite que
+  le contenu : en-tête et barre d'onglets restent désormais fixes, seul
+  l'onglet actif défile verticalement (`overflow-y: auto`).
 
 ## [0.1.1]
 
