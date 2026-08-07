@@ -237,8 +237,11 @@
 .dnd-custom-ai .sheet-tabs {
   display: flex;
   gap: 0.2rem;
-  background: var(--dca-surface-container);
-  border-bottom: 1px solid var(--dca-outline-variant);
+  background-color: var(--dca-secondary-fixed-dim);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 65%),
+    radial-gradient(rgba(39, 26, 18, 0.14) 0.6px, transparent 0.6px);
+  background-size: auto, 13px 13px;
+  border-bottom: 2px solid var(--dca-outline);
   padding: 0.4rem 0.85rem 0;
 }
 
@@ -251,23 +254,28 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--dca-on-surface-variant);
+  color: var(--dca-primary) !important;
   padding: 0.5rem 0.9rem;
   border-radius: 0.4rem 0.4rem 0 0;
   border-bottom: 2px solid transparent;
   text-decoration: none;
 }
 
+.dnd-custom-ai nav.tabs .item i,
+.dnd-custom-ai .sheet-tabs .item i {
+  color: inherit;
+}
+
 .dnd-custom-ai nav.tabs .item:hover,
 .dnd-custom-ai .sheet-tabs .item:hover {
-  background: var(--dca-surface-high);
-  color: var(--dca-on-surface);
+  background: var(--dca-secondary-fixed);
+  color: var(--dca-primary) !important;
 }
 
 .dnd-custom-ai nav.tabs .item.active,
 .dnd-custom-ai .sheet-tabs .item.active {
   background: var(--dca-surface);
-  color: var(--dca-secondary);
+  color: var(--dca-secondary) !important;
   border-bottom-color: var(--dca-secondary);
   font-weight: 600;
 }
@@ -310,6 +318,25 @@
   accent-color: var(--dca-secondary);
   width: 0.9rem;
   height: 0.9rem;
+}
+
+/* Champs réservés au MJ (caractéristiques, maîtrises, classe/origine/niveau) : désactivés
+   côté joueur (cf. templates, condition `isGM`). */
+.dnd-custom-ai input:disabled,
+.dnd-custom-ai select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* PV max / CA / Vitesse : valeurs calculées, jamais des champs de saisie (cf.
+   CharacterData#prepareDerivedData). Même rendu que les inputs qu'elles remplacent. */
+.dnd-custom-ai .header-row .computed-value,
+.dnd-custom-ai .hp-max-value {
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dca-secondary-fixed);
+  padding: 0.05rem 0.1rem;
 }
 
 /* ---------- Caractéristiques ---------- */

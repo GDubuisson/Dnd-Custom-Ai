@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.2
+## [Non publié] - 0.2.3
 
 ### Ajouté
 - Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de
@@ -40,6 +40,10 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 - Contenu des onglets coupé lorsque la fenêtre de la fiche est plus petite que
   le contenu : en-tête et barre d'onglets restent désormais fixes, seul
   l'onglet actif défile verticalement (`overflow-y: auto`).
+- Libellés et icônes de la barre d'onglets peu lisibles sur leur fond gris-
+  beige plat : fond remplacé par un bandeau or/parchemin texturé et couleur
+  de texte forcée en encre sombre (`!important`, pour prioriser sur les
+  styles d'onglets par défaut de Foundry).
 
 ## [0.1.1]
 

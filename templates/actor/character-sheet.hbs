@@ -7,10 +7,10 @@
 
     <div class="header-row">
       <label>{{localize "DND_CUSTOM.Actor.Level"}}
-        <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1">
+        <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Class"}}
-        <select name="system.class">
+        <select name="system.class" {{#unless isGM}}disabled{{/unless}}>
           <option value="">—</option>
           {{#each classOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
@@ -18,7 +18,7 @@
         </select>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Origin"}}
-        <select name="system.origin">
+        <select name="system.origin" {{#unless isGM}}disabled{{/unless}}>
           <option value="">—</option>
           {{#each originOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -31,16 +31,16 @@
       <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
         <span class="hp-values">
           <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
-          / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
+          / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
           <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
         </span>
         <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.AC"}}
-        <input type="number" name="system.attributes.ac.value" value="{{system.attributes.ac.value}}" min="0">
+        <span class="computed-value">{{system.attributes.ac.value}}</span>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Speed"}}
-        <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
+        <span class="computed-value">{{system.attributes.speed}}</span>
       </label>
     </div>
 
