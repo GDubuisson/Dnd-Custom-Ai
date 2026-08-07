@@ -12,6 +12,9 @@
   --dca-on-surface-variant: #4e4540;
   --dca-outline: #80756f;
   --dca-outline-variant: #d2c4bd;
+  /* Texte secondaire/discret : plus sombre que --dca-outline (réservé aux bordures)
+     pour rester lisible sur le parchemin clair (contraste ~6:1 au lieu de ~4.5:1). */
+  --dca-muted-text: #6b5d52;
   --dca-primary: #271a12;
   --dca-primary-container: #3e2f26;
   --dca-secondary: #775a19;
@@ -111,18 +114,20 @@
 
 .dnd-custom-ai .sheet-header .actor-name::placeholder {
   color: var(--dca-secondary-fixed-dim);
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 .dnd-custom-ai .header-row {
   display: flex;
-  gap: 1.1rem;
-  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .dnd-custom-ai .header-row label {
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
   gap: 0.15rem;
   font-family: var(--dca-font-label);
   font-size: 0.62rem;
@@ -155,6 +160,25 @@
 
 .dnd-custom-ai .hp-field {
   min-width: 8rem;
+}
+
+.dnd-custom-ai .hp-values {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+
+.dnd-custom-ai .hp-temp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  margin-left: 0.35rem;
+  color: var(--dca-secondary-fixed-dim);
+  font-size: 0.85em;
+}
+
+.dnd-custom-ai .hp-temp input[type="number"] {
+  width: 2.2rem;
 }
 
 .dnd-custom-ai .hp-bar-track {
@@ -276,9 +300,10 @@
   margin: 1.1rem 0 0.45rem;
   font-family: var(--dca-font-label);
   font-size: 0.68rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--dca-outline);
+  color: var(--dca-muted-text);
 }
 
 .dnd-custom-ai input[type="checkbox"] {
@@ -304,6 +329,12 @@
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.6rem;
   padding: 0.65rem 0.5rem 0.55rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dnd-custom-ai .ability-block:hover {
+  background: var(--dca-surface-high);
+  border-color: var(--dca-secondary);
 }
 
 .dnd-custom-ai .ability-block label {
@@ -378,6 +409,7 @@
   border-bottom: 1px solid var(--dca-outline-variant);
   border-left: 3px solid transparent;
   font-size: 0.83rem;
+  transition: background 0.15s ease;
 }
 
 .dnd-custom-ai .skills-list .skill:nth-child(even) {
@@ -386,6 +418,10 @@
 
 .dnd-custom-ai .skills-list .skill:last-child {
   border-bottom: none;
+}
+
+.dnd-custom-ai .skills-list .skill:hover {
+  background: var(--dca-surface-high);
 }
 
 .dnd-custom-ai .skills-list .skill label {
@@ -405,7 +441,7 @@
   font-family: var(--dca-font-label);
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: var(--dca-outline);
+  color: var(--dca-muted-text);
 }
 
 .dnd-custom-ai .skills-list .mod {
@@ -430,6 +466,11 @@
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.55rem;
   padding: 0.75rem 0.9rem;
+  transition: border-color 0.15s ease;
+}
+
+.dnd-custom-ai .equipment-slot:hover {
+  border-color: var(--dca-secondary);
 }
 
 .dnd-custom-ai .equipment-slot h3 {
@@ -488,6 +529,10 @@
   background: var(--dca-surface-low);
 }
 
+.dnd-custom-ai .inventory-table tbody tr:hover td {
+  background: var(--dca-surface-high);
+}
+
 .dnd-custom-ai .carrying-capacity {
   display: flex;
   flex-direction: column;
@@ -502,7 +547,7 @@
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--dca-outline);
+  color: var(--dca-muted-text);
 }
 
 .dnd-custom-ai .capacity-bar-track {
@@ -588,6 +633,11 @@
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.5rem;
   padding: 0.6rem 0.85rem;
+  transition: border-color 0.15s ease;
+}
+
+.dnd-custom-ai .features-list li:not(.empty-slot):hover {
+  border-color: var(--dca-secondary);
 }
 
 .dnd-custom-ai .features-list li strong {
@@ -600,7 +650,7 @@
   margin-left: 0.4rem;
   font-size: 0.75rem;
   font-style: italic;
-  color: var(--dca-outline);
+  color: var(--dca-muted-text);
 }
 
 /* ---------- Journal ---------- */
@@ -638,7 +688,7 @@
 /* ---------- Divers ---------- */
 
 .dnd-custom-ai .empty-slot {
-  color: var(--dca-outline);
+  color: var(--dca-muted-text);
   font-style: italic;
   font-size: 0.85rem;
 }

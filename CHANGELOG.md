@@ -5,9 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.1
+## [Non publié] - 0.2.2
+
+### Ajouté
+- Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de
+  personnage : champ affiché entre parenthèses à côté de valeur/max
+  (ex. `12 / 20 (+5)`).
 
 ### Modifié
+- Légère mise en valeur graphique des fiches : survol des cartes de
+  caractéristiques, emplacements d'équipement, capacités, lignes de
+  compétences et lignes d'inventaire (changement de teinte de fond/bordure).
+- En-tête de la fiche de personnage : les deux lignes de champs (Niveau/
+  Classe/Origine puis PV/CA/Vitesse) s'étalent désormais sur toute la largeur
+  de la fenêtre au lieu de rester groupées à gauche.
 - Champ "Classe" de la fiche de personnage : liste déroulante fermée sur les
   12 classes officielles D&D 5e (SRD) au lieu d'un champ texte libre. Liste des
   classes lanceuses de sorts (qui bascule l'onglet en "Sorts") déplacée dans
@@ -20,6 +31,12 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   barre de capacité de charge, encart "Bourse" pour les monnaies.
 
 ### Corrigé
+- Contraste de texte insuffisant sur les fiches `character`/`npc` : plusieurs
+  textes secondaires (sous-titres de section, tag de caractéristique associée,
+  légende de capacité de charge, source de capacité, emplacements vides)
+  utilisaient `--dca-outline`, une couleur de bordure trop claire pour du
+  texte (~4.5:1). Nouvelle variable `--dca-muted-text` dédiée au texte
+  discret, avec un contraste ~6:1 sur le parchemin.
 - Contenu des onglets coupé lorsque la fenêtre de la fiche est plus petite que
   le contenu : en-tête et barre d'onglets restent désormais fixes, seul
   l'onglet actif défile verticalement (`overflow-y: auto`).

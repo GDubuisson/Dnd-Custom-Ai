@@ -54,7 +54,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       attributes: new SchemaField({
         hp: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
-          max: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
+          max: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
+          temp: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         }),
         ac: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
