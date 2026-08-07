@@ -1,33 +1,41 @@
-/* Thème "Manuscrit Arcanique" : parchemin, encre et or bruni.
-   Inspiré des maquettes de référence (images/feuilles-personnage/). */
+/* Thème "Auberge et Grand Chemin" : bois vieilli, parchemin taché et cire à cacheter.
+   Ambiance carnet d'aventurier posé sur une table de taverne (plutôt qu'un manuscrit
+   arcanique précieux) : tons chauds de bois et de cuir, encre brune, accents rouille/cire. */
 
 .dnd-custom-ai {
-  --dca-surface: #fcf9f0;
-  --dca-surface-lowest: #ffffff;
-  --dca-surface-low: #f6f3ea;
-  --dca-surface-container: #f1eee5;
-  --dca-surface-high: #ebe8df;
-  --dca-surface-highest: #e5e2da;
-  --dca-on-surface: #1c1c17;
-  --dca-on-surface-variant: #4e4540;
-  --dca-outline: #80756f;
-  --dca-outline-variant: #d2c4bd;
+  --dca-surface: #e9dcb8;
+  --dca-surface-lowest: #f5ecd2;
+  --dca-surface-low: #e3d4a9;
+  --dca-surface-container: #ddc994;
+  --dca-surface-high: #d3bc80;
+  --dca-surface-highest: #c7ab6c;
+  --dca-on-surface: #2b2011;
+  --dca-on-surface-variant: #4a3820;
+  --dca-outline: #7a5a35;
+  --dca-outline-variant: #b99a63;
   /* Texte secondaire/discret : plus sombre que --dca-outline (réservé aux bordures)
-     pour rester lisible sur le parchemin clair (contraste ~6:1 au lieu de ~4.5:1). */
-  --dca-muted-text: #6b5d52;
-  --dca-primary: #271a12;
-  --dca-primary-container: #3e2f26;
-  --dca-secondary: #775a19;
-  --dca-secondary-container: #fed488;
-  --dca-on-secondary-container: #785a1a;
-  --dca-secondary-fixed: #ffdea5;
-  --dca-secondary-fixed-dim: #e9c176;
-  --dca-tertiary: #5f1a06;
+     pour rester lisible sur le parchemin (contraste ~5.5:1 au lieu de ~3.5:1). */
+  --dca-muted-text: #6b5330;
+  --dca-primary: #3d2b17;
+  --dca-primary-container: #5c4326;
+  --dca-secondary: #7a3712;
+  --dca-secondary-container: #e8c98a;
+  --dca-on-secondary-container: #5c2c0d;
+  --dca-secondary-fixed: #f0dfae;
+  --dca-secondary-fixed-dim: #c99a52;
+  --dca-tertiary: #b3401f;
   --dca-error: #ba1a1a;
 
-  --dca-font-headline: "EB Garamond", Garamond, "Times New Roman", serif;
-  --dca-font-body: "Literata", Georgia, "Iowan Old Style", serif;
+  --dca-font-headline: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  --dca-font-body: "Vollkorn", "Iowan Old Style", Palatino, Georgia, serif;
   --dca-font-label: "Work Sans", "Segoe UI", sans-serif;
+
+  /* Vraies textures photo (CC0, cf. styles/textures/CREDITS.md), réutilisées en
+     couche sur le fond, l'en-tête et les cartes. Chaque usage les recouvre d'un
+     voile de couleur semi-transparent (teintes --dca-*) pour les raccorder à la
+     palette du thème plutôt que d'afficher leurs tons bruts. */
+  --dca-texture-parchment: url("textures/parchment.jpg");
+  --dca-texture-wood: url("textures/wood.jpg");
 }
 
 .dnd-custom-ai.sheet.actor {
@@ -39,8 +47,15 @@
   font-family: var(--dca-font-body);
   color: var(--dca-on-surface);
   background-color: var(--dca-surface);
-  background-image: radial-gradient(var(--dca-surface-highest) 0.6px, transparent 0.6px);
-  background-size: 16px 16px;
+  background-image:
+    radial-gradient(ellipse 45% 35% at 12% 18%, rgba(122, 90, 53, 0.16), transparent 100%),
+    radial-gradient(ellipse 40% 30% at 88% 12%, rgba(92, 67, 38, 0.14), transparent 100%),
+    radial-gradient(ellipse 50% 40% at 78% 82%, rgba(122, 90, 53, 0.15), transparent 100%),
+    radial-gradient(ellipse 40% 32% at 20% 88%, rgba(92, 67, 38, 0.12), transparent 100%),
+    linear-gradient(rgba(233, 220, 184, 0.8), rgba(233, 220, 184, 0.8)),
+    var(--dca-texture-parchment);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 420px 420px;
+  box-shadow: inset 0 0 70px rgba(43, 32, 17, 0.22);
 }
 
 /* En-tête et barre d'onglets restent fixes ; seul le contenu de l'onglet actif défile. */
@@ -69,7 +84,7 @@
   border-radius: 4px;
 }
 
-/* ---------- En-tête ("reliure de cuir") ---------- */
+/* ---------- En-tête ("poutre de bois") ---------- */
 
 .dnd-custom-ai .sheet-header {
   display: flex;
@@ -77,8 +92,13 @@
   align-items: flex-start;
   margin: 0;
   padding: 0.85rem 1rem;
-  background: var(--dca-primary);
-  border-bottom: 2px solid var(--dca-secondary-fixed-dim);
+  background-color: var(--dca-primary);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.12)),
+    linear-gradient(rgba(61, 43, 23, 0.62), rgba(61, 43, 23, 0.62)),
+    var(--dca-texture-wood);
+  background-size: auto, 100% 100%, 260px 260px;
+  border-bottom: 3px solid var(--dca-secondary-fixed-dim);
 }
 
 .dnd-custom-ai .sheet-header .portrait {
@@ -209,10 +229,10 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.35rem 0.75rem;
-  border-radius: 0.3rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   background: transparent;
-  border: 1px solid var(--dca-secondary-fixed-dim);
+  border: 2px solid var(--dca-secondary-fixed-dim);
   color: var(--dca-secondary-fixed);
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -239,8 +259,9 @@
   gap: 0.2rem;
   background-color: var(--dca-secondary-fixed-dim);
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 65%),
-    radial-gradient(rgba(39, 26, 18, 0.14) 0.6px, transparent 0.6px);
-  background-size: auto, 13px 13px;
+    linear-gradient(rgba(201, 154, 82, 0.72), rgba(201, 154, 82, 0.72)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 220px 220px;
   border-bottom: 2px solid var(--dca-outline);
   padding: 0.4rem 0.85rem 0;
 }
@@ -352,15 +373,21 @@
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
-  background: var(--dca-surface-container);
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.1) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.78), rgba(221, 201, 148, 0.78)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 180px 180px;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.6rem;
+  border-radius: 0.3rem;
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 2px rgba(43, 32, 17, 0.18);
   padding: 0.65rem 0.5rem 0.55rem;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .dnd-custom-ai .ability-block:hover {
-  background: var(--dca-surface-high);
+  background-color: var(--dca-surface-high);
   border-color: var(--dca-secondary);
 }
 
@@ -423,7 +450,8 @@
   margin: 0;
   padding: 0;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 1px 2px rgba(43, 32, 17, 0.18);
   overflow: hidden;
 }
 
@@ -489,9 +517,15 @@
 }
 
 .dnd-custom-ai .equipment-slot {
-  background: var(--dca-surface-container);
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.1) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.78), rgba(221, 201, 148, 0.78)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 180px 180px;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.55rem;
+  border-radius: 0.3rem;
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 2px rgba(43, 32, 17, 0.18);
   padding: 0.75rem 0.9rem;
   transition: border-color 0.15s ease;
 }
@@ -531,7 +565,8 @@
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 1px 2px rgba(43, 32, 17, 0.18);
   overflow: hidden;
 }
 
@@ -604,8 +639,12 @@
   gap: 0.9rem;
   margin-top: 1rem;
   padding: 0.85rem 1rem;
-  border-radius: 0.55rem;
-  background: var(--dca-primary-container);
+  border-radius: 0.3rem;
+  background-color: var(--dca-primary-container);
+  background-image:
+    linear-gradient(rgba(92, 67, 38, 0.72), rgba(92, 67, 38, 0.72)),
+    var(--dca-texture-wood);
+  background-size: 100% 100%, 180px 180px;
   color: var(--dca-secondary-fixed-dim);
 }
 
@@ -656,9 +695,15 @@
 }
 
 .dnd-custom-ai .features-list li {
-  background: var(--dca-surface-container);
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.1) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.78), rgba(221, 201, 148, 0.78)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 180px 180px;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 2px rgba(43, 32, 17, 0.18);
   padding: 0.6rem 0.85rem;
   transition: border-color 0.15s ease;
 }
@@ -698,7 +743,7 @@
   min-height: 8rem;
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--dca-outline-variant);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   background: var(--dca-surface-lowest);
   color: var(--dca-on-surface);
   font-family: var(--dca-font-body);
