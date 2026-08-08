@@ -1,0 +1,65 @@
+<div class="vehicle-sheet-root">
+  <header class="vehicle-sheet-header">
+    <img src="{{actor.img}}" alt="{{actor.name}}">
+    <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'TYPES.Actor.vehicle'}}">
+  </header>
+
+  <div class="vehicle-sheet-stats">
+    <label>{{localize "DND_CUSTOM.Actor.Speed"}}
+      <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
+    </label>
+
+    <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
+      <span class="hp-values">
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
+        / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
+      </span>
+      <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
+    </label>
+
+    <label>{{localize "DND_CUSTOM.Actor.CarryCapacity"}}
+      <input type="number" name="system.carryCapacity" value="{{system.carryCapacity}}" min="0" step="0.1">
+    </label>
+  </div>
+
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Inventory.Title"}}</h3>
+
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>{{localize "DND_CUSTOM.Inventory.Name"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each inventoryItems}}
+      <tr data-item-id="{{this.id}}">
+        <td>{{this.name}}</td>
+        <td>{{this.system.quantity}}</td>
+        <td>{{formatWeight this.system.weight}}</td>
+        <td>
+          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="4" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="carrying-capacity">
+    <span class="label">
+      <span>{{localize "DND_CUSTOM.Inventory.CarriedWeight"}}</span>
+      <span>{{formatWeight carriedWeight}} / {{formatWeight system.carryCapacity}}</span>
+    </span>
+    <span class="capacity-bar-track">
+      <span class="capacity-bar-fill {{#if overCapacity}}over-capacity{{/if}}" style="width: {{carryingCapacityPercent}}%"></span>
+    </span>
+  </div>
+
+  <p class="drop-hint">{{localize "DND_CUSTOM.Inventory.DropHint"}}</p>
+</div>

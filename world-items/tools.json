@@ -1,0 +1,434 @@
+[
+  {
+    "name": "Outils d'alchimiste",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 50,
+        "pp": 0
+      },
+      "weight": 3.6,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de brasseur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 20,
+        "pp": 0
+      },
+      "weight": 4.1,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Matériel de calligraphe",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 10,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de charpentier",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 8,
+        "pp": 0
+      },
+      "weight": 2.7,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de cartographe",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 15,
+        "pp": 0
+      },
+      "weight": 2.7,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de cordonnier",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 5,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Ustensiles de cuisinier",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 1,
+        "pp": 0
+      },
+      "weight": 3.6,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de souffleur de verre",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 30,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de joaillier",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 25,
+        "pp": 0
+      },
+      "weight": 0.9,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de tanneur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 5,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de maçon",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 10,
+        "pp": 0
+      },
+      "weight": 3.6,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Matériel de peintre",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 10,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de potier",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 10,
+        "pp": 0
+      },
+      "weight": 1.4,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de forgeron",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 20,
+        "pp": 0
+      },
+      "weight": 3.6,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de bricoleur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 50,
+        "pp": 0
+      },
+      "weight": 4.5,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Métier à tisser",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 1,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de sculpteur sur bois",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 1,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Kit de déguisement",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 25,
+        "pp": 0
+      },
+      "weight": 1.4,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Kit de faussaire",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 15,
+        "pp": 0
+      },
+      "weight": 2.3,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Kit d'herboristerie",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 5,
+        "pp": 0
+      },
+      "weight": 1.4,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de navigateur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 25,
+        "pp": 0
+      },
+      "weight": 0.9,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Kit d'empoisonneur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 50,
+        "pp": 0
+      },
+      "weight": 0.9,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Outils de voleur",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 0,
+        "po": 25,
+        "pp": 0
+      },
+      "weight": 0.45,
+      "useEffect": {
+        "skill": "sleightOfHand",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  },
+  {
+    "name": "Jeu de dés",
+    "type": "tool",
+    "system": {
+      "price": {
+        "pc": 0,
+        "pa": 1,
+        "po": 0,
+        "pp": 0
+      },
+      "weight": 0.05,
+      "useEffect": {
+        "skill": "",
+        "bonus": 0
+      },
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+    }
+  }
+]

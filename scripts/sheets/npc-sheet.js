@@ -1,13 +1,18 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
+import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Feuille d'ennemi/PNJ : ApplicationV2/ActorSheetV2, stats simplifiées (bonus direct, sauvegarde = bonus). */
-export class DndCustomNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+/** Feuille d'ennemi/PNJ : ApplicationV2/ActorSheetV2, stats simplifiées (bonus direct,
+ *  sauvegarde = bonus). Réutilisée telle quelle pour le type "mount" (montures vivantes,
+ *  cf. dnd-custom-ai.js) : même fiche, juste un type d'Actor et un libellé différents. Le
+ *  glisser-déposer (InventoryDragDropMixin) permet d'ajouter/retirer du butin ou de la
+ *  sellerie via l'onglet "Butin". */
+export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "npc"],
     tag: "form",
@@ -77,7 +82,7 @@ export class DndCustomNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
     }));
 
     const items = this.actor.items.contents;
-    context.lootItems = items.filter((item) => ["weapon", "armor", "gear"].includes(item.type));
+    context.lootItems = items.filter((item) => ["weapon", "armor", "gear", "tool"].includes(item.type));
 
     return context;
   }

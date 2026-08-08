@@ -1,10 +1,12 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
-import { WeaponData, ArmorData, GearData, FeatureData, ToolData, VehicleData } from "./data/item-data.js";
+import { VehicleActorData } from "./data/vehicle-actor-data.js";
+import { WeaponData, ArmorData, GearData, FeatureData, ToolData } from "./data/item-data.js";
 import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
 import { DndCustomNpcSheet } from "./sheets/npc-sheet.js";
+import { VehicleActorSheet } from "./sheets/vehicle-actor-sheet.js";
 import {
   WeaponItemSheet,
   ArmorItemSheet,
@@ -12,12 +14,10 @@ import {
   FeatureItemSheet,
   OriginItemSheet,
   ClassItemSheet,
-  ToolItemSheet,
-  VehicleItemSheet
+  ToolItemSheet
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
-import { seedCompendiumFromJson } from "./helpers/compendium-seed.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -28,12 +28,15 @@ Hooks.once("init", async () => {
   // vient de son DataModel, pas d'un template.json (approche dépréciée depuis la V12/V13).
   CONFIG.Actor.dataModels.character = CharacterData;
   CONFIG.Actor.dataModels.npc = NpcData;
+  // Montures vivantes : même modèle de données que "npc" (bloc de stats de créature), cf.
+  // scripts/sheets/npc-sheet.js — seul le type d'Actor et le libellé de fiche diffèrent.
+  CONFIG.Actor.dataModels.mount = NpcData;
+  CONFIG.Actor.dataModels.vehicle = VehicleActorData;
   CONFIG.Item.dataModels.weapon = WeaponData;
   CONFIG.Item.dataModels.armor = ArmorData;
   CONFIG.Item.dataModels.gear = GearData;
   CONFIG.Item.dataModels.feature = FeatureData;
   CONFIG.Item.dataModels.tool = ToolData;
-  CONFIG.Item.dataModels.vehicle = VehicleData;
   // Destinés aux compendiums (system.json > packs), remplis à la main par le MJ depuis
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
@@ -53,6 +56,19 @@ Hooks.once("init", async () => {
     label: "DND_CUSTOM.SheetLabels.Npc"
   });
 
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomNpcSheet, {
+    types: ["mount"],
+    makeDefault: true,
+    width: 726,
+    label: "DND_CUSTOM.SheetLabels.Mount"
+  });
+
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, VehicleActorSheet, {
+    types: ["vehicle"],
+    makeDefault: true,
+    label: "DND_CUSTOM.SheetLabels.Vehicle"
+  });
+
   // Une fiche Handlebars dédiée par type d'Item (cf. ClaudeFiles/ITEMS.md).
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, WeaponItemSheet, { types: ["weapon"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ArmorItemSheet, { types: ["armor"], makeDefault: true });
@@ -61,7 +77,6 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, OriginItemSheet, { types: ["origin"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
-  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, VehicleItemSheet, { types: ["vehicle"], makeDefault: true });
 
   registerHandlebarsHelpers();
 
@@ -76,10 +91,6 @@ Hooks.once("init", async () => {
 // "Origine" de la fiche de personnage.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
-
-  // Test : peuplement du compendium "Équipements" (armures SRD) depuis un JSON versionné
-  // avec le système (cf. scripts/data/armors.json). N'ajoute que les entrées manquantes.
-  await seedCompendiumFromJson("equipements", "scripts/data/armors.json");
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :

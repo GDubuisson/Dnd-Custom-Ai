@@ -2,7 +2,7 @@
   "id": "dnd-custom-ai",
   "title": "D&D Custom - Origines",
   "description": "Système personnalisé pour Foundry VTT, basé sur D&D 5e : une race unique (Humain) dont les traits culturels et mécaniques varient selon un système d'Origines géographiques.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -33,7 +33,9 @@
   "documentTypes": {
     "Actor": {
       "character": {},
-      "npc": {}
+      "npc": {},
+      "mount": {},
+      "vehicle": {}
     },
     "Item": {
       "weapon": {},
@@ -42,8 +44,7 @@
       "feature": {},
       "origin": {},
       "class": {},
-      "tool": {},
-      "vehicle": {}
+      "tool": {}
     }
   },
   "packs": [
@@ -63,50 +64,6 @@
       "label": "Classes",
       "system": "dnd-custom-ai",
       "path": "packs/classes",
-      "type": "Item",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "objets",
-      "label": "Objets",
-      "system": "dnd-custom-ai",
-      "path": "packs/objets",
-      "type": "Item",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "equipements",
-      "label": "Équipements",
-      "system": "dnd-custom-ai",
-      "path": "packs/equipements",
-      "type": "Item",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "outils",
-      "label": "Outils",
-      "system": "dnd-custom-ai",
-      "path": "packs/outils",
-      "type": "Item",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "transports",
-      "label": "Moyens de transport",
-      "system": "dnd-custom-ai",
-      "path": "packs/transports",
       "type": "Item",
       "ownership": {
         "PLAYER": "OBSERVER",

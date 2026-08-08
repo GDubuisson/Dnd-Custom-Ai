@@ -110,19 +110,6 @@ DND_CUSTOM.weaponHandedness = {
   twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
 };
 
-/** Sous-types de moyen de transport (cf. ClaudeFiles/ITEMS.md > Item Moyen de Transport). */
-DND_CUSTOM.transportTypes = {
-  mount: "DND_CUSTOM.Item.TransportTypes.mount",
-  equipment: "DND_CUSTOM.Item.TransportTypes.equipment",
-  tack: "DND_CUSTOM.Item.TransportTypes.tack",
-  landVehicle: "DND_CUSTOM.Item.TransportTypes.landVehicle",
-  boat: "DND_CUSTOM.Item.TransportTypes.boat"
-};
-
-/** Sous-types de moyen de transport pour lesquels vitesse/capacité de charge ont un sens
- *  (cf. ClaudeFiles/ITEMS.md > affichage conditionnel). */
-DND_CUSTOM.transportTypesWithSpeed = ["mount", "landVehicle", "boat"];
-
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {
   pc: 1,

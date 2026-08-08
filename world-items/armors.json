@@ -12,7 +12,7 @@
       "weight": 3.6,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion).</p>"
+      "description": "Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion)."
     }
   },
   {
@@ -28,7 +28,7 @@
       "weight": 4.5,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure légère en cuir bouilli.</p>"
+      "description": "Armure légère en cuir bouilli."
     }
   },
   {
@@ -44,7 +44,7 @@
       "weight": 5.9,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure légère en cuir souple renforcée de rivets métalliques.</p>"
+      "description": "Armure légère en cuir souple renforcée de rivets métalliques."
     }
   },
   {
@@ -60,7 +60,7 @@
       "weight": 5.4,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses.</p>"
+      "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
     }
   },
   {
@@ -76,7 +76,7 @@
       "weight": 9,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure intermédiaire faite d'un tissu serré de petits anneaux de métal.</p>"
+      "description": "Armure intermédiaire faite d'un tissu serré de petits anneaux de métal."
     }
   },
   {
@@ -92,7 +92,7 @@
       "weight": 20.4,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure intermédiaire faite d'écailles métalliques cousues sur du cuir ou du tissu.</p>"
+      "description": "Armure intermédiaire faite d'écailles métalliques cousues sur du cuir ou du tissu."
     }
   },
   {
@@ -108,7 +108,7 @@
       "weight": 9,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Plastron de métal forgé, complété par du cuir souple.</p>"
+      "description": "Plastron de métal forgé, complété par du cuir souple."
     }
   },
   {
@@ -124,7 +124,7 @@
       "weight": 18.1,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres.</p>"
+      "description": "Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres."
     }
   },
   {
@@ -140,7 +140,7 @@
       "weight": 18.1,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure lourde faite d'anneaux de métal cousus sur du cuir.</p>"
+      "description": "Armure lourde faite d'anneaux de métal cousus sur du cuir."
     }
   },
   {
@@ -156,7 +156,7 @@
       "weight": 24.9,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés.</p>"
+      "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
     }
   },
   {
@@ -172,7 +172,7 @@
       "weight": 27.2,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure lourde combinant plaques de métal et cotte de mailles.</p>"
+      "description": "Armure lourde combinant plaques de métal et cotte de mailles."
     }
   },
   {
@@ -188,7 +188,7 @@
       "weight": 29.5,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Armure complète de plates articulées, la protection la plus lourde qui soit.</p>"
+      "description": "Armure complète de plates articulées, la protection la plus lourde qui soit."
     }
   },
   {
@@ -204,7 +204,7 @@
       "weight": 2.7,
       "quantity": 1,
       "equipped": false,
-      "description": "<p>Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure.</p>"
+      "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
     }
   }
 ]

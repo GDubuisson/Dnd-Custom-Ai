@@ -146,24 +146,3 @@ export class ToolData extends foundry.abstract.TypeDataModel {
     };
   }
 }
-
-/** Monture ou véhicule (charrette, bateau...), y compris équipement/sellerie qui leur est
- *  associé : pas transporté dans l'inventaire du personnage (pas de quantité). */
-export class VehicleData extends foundry.abstract.TypeDataModel {
-  static defineSchema() {
-    return {
-      transportType: new StringField({
-        required: true,
-        initial: "mount",
-        choices: ["mount", "equipment", "tack", "landVehicle", "boat"]
-      }),
-      price: currencySchema(),
-      // Vitesse et capacité de charge : pertinents seulement pour Monture/Véhicule à
-      // tractation/Bateau (cf. ITEMS.md, affichage conditionnel côté template).
-      speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 }),
-      carryCapacity: new NumberField({ required: true, min: 0, initial: 0 }),
-      weight: new NumberField({ required: true, min: 0, initial: 0 }),
-      description: new HTMLField({ required: false, blank: true, initial: "" })
-    };
-  }
-}

@@ -10,14 +10,17 @@ import {
   spellSaveDC,
   spellAttackBonus
 } from "../helpers/rules.js";
+import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2. */
-export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+/** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
+ *  Le glisser-déposer d'objets (InventoryDragDropMixin) permet de transférer un objet vers/
+ *  depuis un autre Actor ouvert (ex. la fiche d'un véhicule). */
+export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "character"],
     tag: "form",

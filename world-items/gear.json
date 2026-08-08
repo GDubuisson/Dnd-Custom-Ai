@@ -1,0 +1,152 @@
+[
+  {
+    "name": "Sac à dos",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel."
+    }
+  },
+  {
+    "name": "Corde en chanvre (15 m)",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Torche",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Brûle pendant 1 heure, apportant une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires."
+    }
+  },
+  {
+    "name": "Rations (1 jour)",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Gourde",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
+      "description": "Contient jusqu'à 1,2 litre de liquide."
+    }
+  },
+  {
+    "name": "Sac de couchage",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 3.4,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Silex et pierre",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Utiliser cet objet pour allumer un feu prend une action."
+    }
+  },
+  {
+    "name": "Lanterne à capuchon",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Lumière vive dans un rayon de 9 m et lumière faible sur 9 m supplémentaires. Un flacon d'huile permet 6 heures d'éclairage."
+    }
+  },
+  {
+    "name": "Huile (flacon)",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Trousse de soins",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "10 utilisations. Permet de stabiliser une créature à 0 point de vie sans jet de caractéristique."
+    }
+  },
+  {
+    "name": "Grand sac",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel."
+    }
+  },
+  {
+    "name": "Tente à deux places",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 9,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Marteau",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Grappin",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": ""
+    }
+  },
+  {
+    "name": "Bougie",
+    "type": "gear",
+    "system": {
+      "quantity": 1,
+      "weight": 0,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m."
+    }
+  }
+]

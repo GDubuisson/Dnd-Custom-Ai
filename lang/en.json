@@ -2,7 +2,9 @@
   "DND_CUSTOM": {
     "SheetLabels": {
       "Character": "Character Sheet",
-      "Npc": "NPC / Enemy Sheet"
+      "Npc": "NPC / Enemy Sheet",
+      "Mount": "Mount Sheet",
+      "Vehicle": "Vehicle Sheet"
     },
     "Npc": {
       "Name": "Name",
@@ -70,7 +72,8 @@
       "OriginAdvantageShort": "Advantage",
       "OriginAdvantageTooltip": "Advantage on this check thanks to Origin",
       "ArmorDisadvantageShort": "Disadvantage",
-      "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor"
+      "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor",
+      "CarryCapacity": "Carry Capacity"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -96,13 +99,17 @@
       "Empty": "No item equipped"
     },
     "Inventory": {
+      "Title": "Inventory",
       "Name": "Item",
       "Quantity": "Qty",
       "Weight": "Weight",
       "Equipped": "Equipped",
       "Empty": "No items in inventory",
       "CarriedWeight": "Carried weight",
-      "Currency": "Currency"
+      "Currency": "Currency",
+      "DeleteItem": "Remove",
+      "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
+      "DropError": "Could not move this item (insufficient permissions)."
     },
     "Currency": {
       "pc": "CP",
@@ -174,13 +181,6 @@
         "oneHanded": "One-Handed",
         "twoHanded": "Two-Handed"
       },
-      "TransportTypes": {
-        "mount": "Mount",
-        "equipment": "Tack (Equipment)",
-        "tack": "Tack (Saddlery)",
-        "landVehicle": "Land Vehicle",
-        "boat": "Boat"
-      },
       "Fields": {
         "Price": "Price",
         "Weight": "Weight",
@@ -220,9 +220,6 @@
         "Skill": "Skill",
         "Bonus": "Bonus",
         "DescriptionRP": "Description (roleplay)",
-        "TransportType": "Transport Type",
-        "Speed": "Speed",
-        "CarryCapacity": "Carry Capacity (kg)",
         "Demonym": "Demonym",
         "Language": "Language",
         "Inspiration": "Cultural Inspiration",
@@ -236,6 +233,10 @@
     }
   },
   "TYPES": {
+    "Actor": {
+      "vehicle": "Vehicle",
+      "mount": "Mount"
+    },
     "Item": {
       "weapon": "Weapon",
       "armor": "Armor",
@@ -243,8 +244,7 @@
       "feature": "Feature",
       "origin": "Origin",
       "class": "Class",
-      "tool": "Tool",
-      "vehicle": "Vehicle"
+      "tool": "Tool"
     }
   }
 }

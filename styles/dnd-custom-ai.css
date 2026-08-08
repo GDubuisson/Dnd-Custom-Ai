@@ -1120,3 +1120,105 @@
   width: 3.5rem;
   flex: 0 0 auto;
 }
+
+/* ---------- Fiche de véhicule (charrette, bateau...) : nom/vitesse/PV/capacité + un
+   inventaire partagé alimenté par glisser-déposer entre fiches (cf.
+   scripts/sheets/inventory-drag-drop.js). ---------- */
+
+.dnd-custom-ai.sheet.actor.vehicle {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  font-family: var(--dca-font-body);
+  color: var(--dca-on-surface);
+  background-color: var(--dca-surface);
+  padding: 0.85rem 1rem 1.1rem;
+  gap: 0.6rem;
+}
+
+.dnd-custom-ai .vehicle-sheet-root {
+  display: contents;
+}
+
+.dnd-custom-ai .vehicle-sheet-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dnd-custom-ai .vehicle-sheet-header img {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--dca-outline-variant);
+  object-fit: cover;
+}
+
+.dnd-custom-ai .vehicle-sheet-header input[type="text"] {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--dca-font-headline);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--dca-primary);
+  padding: 0.1rem 0;
+}
+
+.dnd-custom-ai .vehicle-sheet-header input[type="text"]:focus {
+  outline: none;
+  border-bottom: 1px solid var(--dca-secondary);
+}
+
+.dnd-custom-ai .vehicle-sheet-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dnd-custom-ai .vehicle-sheet-stats label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.7rem;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .vehicle-sheet-stats input[type="number"] {
+  width: 5rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.dnd-custom-ai .delete-item-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-error);
+  cursor: pointer;
+}
+
+.dnd-custom-ai .delete-item-btn:hover {
+  background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+}
+
+.dnd-custom-ai .drop-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--dca-muted-text);
+}

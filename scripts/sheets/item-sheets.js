@@ -120,15 +120,3 @@ export class ToolItemSheet extends DndCustomItemSheet {
     form: { template: `systems/${SYSTEM_ID}/templates/item/tool-sheet.hbs` }
   };
 }
-
-export class VehicleItemSheet extends DndCustomItemSheet {
-  static PARTS = {
-    form: { template: `systems/${SYSTEM_ID}/templates/item/vehicle-sheet.hbs` }
-  };
-
-  async _prepareContext(options) {
-    const context = await super._prepareContext(options);
-    context.showSpeedFields = DND_CUSTOM.transportTypesWithSpeed.includes(context.system.transportType);
-    return context;
-  }
-}
