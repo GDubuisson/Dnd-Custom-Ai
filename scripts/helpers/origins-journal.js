@@ -27,7 +27,6 @@ export async function ensureOriginsJournal() {
 function buildOriginsTable(origins) {
   const headers = [
     "DND_CUSTOM.Journal.OriginColumn",
-    "DND_CUSTOM.Journal.InspirationColumn",
     "DND_CUSTOM.Journal.TraitsColumn",
     "DND_CUSTOM.Journal.AbilityBonusesColumn",
     "DND_CUSTOM.Journal.SkillAdvantagesColumn",
@@ -46,7 +45,6 @@ function buildOriginsTable(origins) {
         .join(", ");
       return `<tr>
         <td>${origin.label}</td>
-        <td>${origin.inspiration}</td>
         <td>${origin.traits}</td>
         <td>${bonuses}</td>
         <td>${skills}</td>

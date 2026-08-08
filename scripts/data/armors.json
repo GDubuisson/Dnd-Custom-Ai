@@ -1,0 +1,210 @@
+[
+  {
+    "name": "Gambison",
+    "type": "armor",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "baseAC": 11,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 3.6,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion).</p>"
+    }
+  },
+  {
+    "name": "Cuir",
+    "type": "armor",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "baseAC": 11,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 4.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure légère en cuir bouilli.</p>"
+    }
+  },
+  {
+    "name": "Cuir clouté",
+    "type": "armor",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+      "baseAC": 12,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 5.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure légère en cuir souple renforcée de rivets métalliques.</p>"
+    }
+  },
+  {
+    "name": "Peau",
+    "type": "armor",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "baseAC": 12,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 5.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses.</p>"
+    }
+  },
+  {
+    "name": "Chemise de mailles",
+    "type": "armor",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "baseAC": 13,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure intermédiaire faite d'un tissu serré de petits anneaux de métal.</p>"
+    }
+  },
+  {
+    "name": "Écailles",
+    "type": "armor",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 20.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure intermédiaire faite d'écailles métalliques cousues sur du cuir ou du tissu.</p>"
+    }
+  },
+  {
+    "name": "Cuirasse",
+    "type": "armor",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Plastron de métal forgé, complété par du cuir souple.</p>"
+    }
+  },
+  {
+    "name": "Demi-plate",
+    "type": "armor",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 750, "pp": 0 },
+      "baseAC": 15,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres.</p>"
+    }
+  },
+  {
+    "name": "Cotte de mailles",
+    "type": "armor",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure lourde faite d'anneaux de métal cousus sur du cuir.</p>"
+    }
+  },
+  {
+    "name": "Broigne",
+    "type": "armor",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
+      "baseAC": 16,
+      "strengthRequired": 13,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 24.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés.</p>"
+    }
+  },
+  {
+    "name": "Plates",
+    "type": "armor",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 200, "pp": 0 },
+      "baseAC": 17,
+      "strengthRequired": 15,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 27.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure lourde combinant plaques de métal et cotte de mailles.</p>"
+    }
+  },
+  {
+    "name": "Harnois",
+    "type": "armor",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
+      "baseAC": 18,
+      "strengthRequired": 15,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 29.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Armure complète de plates articulées, la protection la plus lourde qui soit.</p>"
+    }
+  },
+  {
+    "name": "Bouclier",
+    "type": "armor",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "baseAC": 2,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "<p>Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure.</p>"
+    }
+  }
+]
