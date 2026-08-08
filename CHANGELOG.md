@@ -7,6 +7,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- Les 8 fiches d'Item (`templates/item/*.hbs`) ne s'ouvraient pas (erreur console
+  `Template part "form" must render a single HTML element.`) : chaque template avait deux
+  éléments racines (`<header>` puis `<div class="item-sheet-body">`), alors qu'ApplicationV2
+  exige un unique élément racine par PART Handlebars. Les deux sont maintenant enveloppés
+  dans un conteneur unique (`.item-sheet-root`, `display: contents` pour ne pas perturber la
+  mise en page flex existante).
+
+## [0.2.8]
+
 ### Ajouté
 - Fiche d'édition (`ItemSheet`) dédiée pour chacun des 8 types d'Item (arme, armure, objet,
   capacité, origine, classe, outil, moyen de transport), avec un template Handlebars propre
