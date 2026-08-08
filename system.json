@@ -117,7 +117,7 @@
   "primaryTokenAttribute": "attributes.hp",
   "grid": {
     "distance": 5,
-    "units": "ft"
+    "units": "m"
   },
   "url": "https://github.com/GDubuisson/Dnd-Custom-Ai",
   "manifest": "https://github.com/GDubuisson/Dnd-Custom-Ai/releases/latest/download/system.json",
