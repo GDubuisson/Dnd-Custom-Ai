@@ -65,6 +65,18 @@ DND_CUSTOM.classHitDice = {
   wizard: 6
 };
 
+/** Caractéristique d'incantation par classe lanceuse de sorts, SRD 5e. Utilisée pour le DD
+ *  de sauvegarde et le bonus d'attaque des sorts. */
+DND_CUSTOM.spellcastingAbility = {
+  bard: "cha",
+  cleric: "wis",
+  druid: "wis",
+  paladin: "cha",
+  sorcerer: "cha",
+  warlock: "cha",
+  wizard: "int"
+};
+
 /** Vitesse de base (en pieds) : les origines de ce système sont des cultures/régions,
  *  pas des espèces, donc pas de variation de vitesse par origine pour l'instant. */
 DND_CUSTOM.baseSpeed = 30;

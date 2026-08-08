@@ -63,7 +63,12 @@
       "Speed": "Speed",
       "SaveShort": "Save",
       "ProficiencyBonus": "Proficiency bonus",
-      "SkillsTitle": "Skills"
+      "SkillsTitle": "Skills",
+      "Initiative": "Initiative",
+      "PassivePerception": "Passive Perception",
+      "OriginShort": "origin",
+      "OriginAdvantageShort": "Advantage",
+      "OriginAdvantageTooltip": "Advantage on this check thanks to Origin"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -112,7 +117,9 @@
       "cha": "Charisma",
       "SpellsTitle": "Spells",
       "FeaturesTitle": "Features",
-      "Empty": "No feature or spell recorded"
+      "Empty": "No feature or spell recorded",
+      "SpellSaveDC": "Spell save DC",
+      "SpellAttackBonus": "Spell attack bonus"
     },
     "Skills": {
       "acrobatics": "Acrobatics",

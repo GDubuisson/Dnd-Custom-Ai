@@ -8,6 +8,13 @@
     {{/if}}
   </h2>
 
+  {{#if isSpellcaster}}
+  <div class="spellcasting-stats">
+    <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
+    <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
+  </div>
+  {{/if}}
+
   <ul class="features-list">
     {{#each features}}
     <li data-item-id="{{this.id}}">

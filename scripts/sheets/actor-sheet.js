@@ -5,7 +5,10 @@ import {
   carryingCapacity,
   carriedWeight,
   currencyTotalInCopper,
-  formatModifier
+  formatModifier,
+  passivePerception,
+  spellSaveDC,
+  spellAttackBonus
 } from "../helpers/rules.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -80,17 +83,50 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
 
+    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
+    // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
+    // purement informatifs (pas de système de jet de dés automatisé sur cette fiche).
+    const currentOrigin = context.origins[system.origin] ?? null;
+    const originAbilityBonuses = currentOrigin?.abilityBonuses ?? {};
+    const originSkillAdvantages = new Set(currentOrigin?.skillAdvantages ?? []);
+    context.originTrait = currentOrigin?.specialTrait ?? null;
+
     const hp = system.attributes.hp;
     context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
 
+    const dexMod = abilityModifier(system.abilities.dex.total);
+    context.initiative = { mod: dexMod, modLabel: formatModifier(dexMod) };
+
+    const wisMod = abilityModifier(system.abilities.wis.total);
+    context.passivePerception = passivePerception(
+      wisMod,
+      system.skills.perception.proficient,
+      context.proficiencyBonus
+    );
+
+    if (context.isSpellcaster) {
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = abilityModifier(system.abilities[spellAbility].total);
+      context.spellcasting = {
+        ability: spellAbility,
+        abilityLabel: DND_CUSTOM.abilities[spellAbility],
+        dc: spellSaveDC(context.proficiencyBonus, spellAbilityMod),
+        attackBonus: spellAttackBonus(context.proficiencyBonus, spellAbilityMod),
+        attackBonusLabel: formatModifier(spellAttackBonus(context.proficiencyBonus, spellAbilityMod))
+      };
+    }
+
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => {
-      const mod = abilityModifier(ability.value);
+      const mod = abilityModifier(ability.total);
+      const originBonus = originAbilityBonuses[key] ?? 0;
       return {
         key,
         label: DND_CUSTOM.abilities[key],
         value: ability.value,
+        total: ability.total,
+        originBonus,
         mod,
         modLabel: formatModifier(mod),
         save: {
@@ -102,11 +138,12 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
     context.skills = Object.entries(system.skills)
       .map(([key, skill]) => {
-        const abilityMod = abilityModifier(system.abilities[skill.ability].value);
+        const abilityMod = abilityModifier(system.abilities[skill.ability].total);
         const mod = abilityMod + (skill.proficient ? context.proficiencyBonus : 0);
         return {
           key,
           label: game.i18n.localize(DND_CUSTOM.skills[key]),
+          originAdvantage: originSkillAdvantages.has(key),
           ability: skill.ability,
           proficient: skill.proficient,
           mod,
@@ -156,8 +193,11 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     return context;
   }
 
-  /** Repos court : pas de mécanique automatisée pour l'instant (voir PROJECT.md, scope V1). */
+  /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans dépasser le max. */
   static async #onRestShort() {
+    const hp = this.actor.system.attributes.hp;
+    const newValue = Math.min(hp.value + Math.floor(hp.max / 2), hp.max);
+    await this.actor.update({ "system.attributes.hp.value": newValue });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
