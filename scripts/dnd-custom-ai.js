@@ -21,12 +21,14 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],
     makeDefault: true,
+    width: 726,
     label: "DND_CUSTOM.SheetLabels.Character"
   });
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomNpcSheet, {
     types: ["npc"],
     makeDefault: true,
+    width: 726,
     label: "DND_CUSTOM.SheetLabels.Npc"
   });
 
