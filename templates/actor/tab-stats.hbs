@@ -1,53 +1,64 @@
 <section class="tab stats {{tab.cssClass}}" data-group="primary" data-tab="stats">
   <h2 class="tab-title"><i class="fa-solid fa-chart-simple"></i> {{localize "DND_CUSTOM.Tabs.stats"}}</h2>
 
-  <div class="abilities-grid">
-    {{#each abilities}}
-    <div class="ability-block">
-      <label>{{localize this.label}}</label>
-      <input type="number" name="system.abilities.{{this.key}}.value" value="{{this.value}}" min="1" {{#unless ../isGM}}disabled{{/unless}}>
-      {{#if this.originBonus}}
-      <span class="origin-bonus">+{{this.originBonus}} {{localize "DND_CUSTOM.Actor.OriginShort"}} = {{this.total}}</span>
-      {{/if}}
-      <span class="mod">{{this.modLabel}}</span>
-      <label class="save-proficiency">
-        <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-        {{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.save.mod}}
-      </label>
+  <div class="stats-columns">
+    <div class="abilities-column">
+      {{#each abilities}}
+      <div class="ability-card">
+        <div class="ability-card-name">{{localize this.label}}</div>
+        <div class="ability-card-row">
+          <div class="ability-main">
+            <div class="ability-stepper">
+              {{#if ../isGM}}
+              <button type="button" class="ability-btn" data-action="abilityDecrease" data-key="{{this.key}}" aria-label="-">−</button>
+              {{/if}}
+              <span class="ability-value">{{this.total}}</span>
+              {{#if ../isGM}}
+              <button type="button" class="ability-btn" data-action="abilityIncrease" data-key="{{this.key}}" aria-label="+">+</button>
+              {{/if}}
+            </div>
+            {{#if this.originBonus}}
+            <span class="origin-bonus">+{{this.originBonus}} {{localize "DND_CUSTOM.Actor.OriginShort"}}</span>
+            {{/if}}
+          </div>
+          <div class="ability-side">
+            <span class="ability-mod">{{this.modLabel}}</span>
+            <label class="save-proficiency" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+              <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+              {{this.save.mod}}
+            </label>
+          </div>
+        </div>
+      </div>
+      {{/each}}
     </div>
-    {{/each}}
-  </div>
 
-  <div class="proficiency-bonus">
-    {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
-  </div>
+    <div class="skills-column">
+      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
+      <ul class="skills-list">
+        {{#each skills}}
+        <li class="skill {{#if this.proficient}}proficient{{/if}}">
+          <label>
+            <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+            {{this.label}}
+          </label>
+          <span class="ability-tag">({{this.ability}})</span>
+          {{#if this.originAdvantage}}
+          <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
+          {{/if}}
+          <span class="mod">{{this.modLabel}}</span>
+        </li>
+        {{/each}}
+      </ul>
 
-  <div class="derived-stats">
-    <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
-    <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
-  </div>
+      <div class="proficiency-bonus">
+        {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
+      </div>
 
-  {{#if originTrait}}
-  <div class="origin-trait">
-    <strong>{{originTrait.name}}</strong>
-    <p>{{originTrait.description}}</p>
+      <div class="derived-stats">
+        <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
+        <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
+      </div>
+    </div>
   </div>
-  {{/if}}
-
-  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
-  <ul class="skills-list">
-    {{#each skills}}
-    <li class="skill {{#if this.proficient}}proficient{{/if}}">
-      <label>
-        <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-        {{this.label}}
-      </label>
-      <span class="ability-tag">({{this.ability}})</span>
-      {{#if this.originAdvantage}}
-      <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
-      {{/if}}
-      <span class="mod">{{this.modLabel}}</span>
-    </li>
-    {{/each}}
-  </ul>
 </section>

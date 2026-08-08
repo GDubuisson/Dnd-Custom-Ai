@@ -26,7 +26,9 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {
       restShort: DndCustomActorSheet.#onRestShort,
-      restLong: DndCustomActorSheet.#onRestLong
+      restLong: DndCustomActorSheet.#onRestLong,
+      abilityIncrease: DndCustomActorSheet.#onAbilityIncrease,
+      abilityDecrease: DndCustomActorSheet.#onAbilityDecrease
     }
   };
 
@@ -212,5 +214,23 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestLong", { name: this.actor.name })
     });
+  }
+
+  /** Boutons +/- des caractéristiques (réservés au MJ, cf. `isGM` dans le template) :
+   *  modifient la valeur de base ; le bonus d'origine reste appliqué séparément
+   *  (cf. CharacterData#prepareDerivedData). */
+  static async #onAbilityIncrease(event, target) {
+    await this.#adjustAbility(target.dataset.key, 1);
+  }
+
+  static async #onAbilityDecrease(event, target) {
+    await this.#adjustAbility(target.dataset.key, -1);
+  }
+
+  async #adjustAbility(key, delta) {
+    const current = this.actor.system.abilities[key].value;
+    const next = Math.max(1, current + delta);
+    if (next === current) return;
+    await this.actor.update({ [`system.abilities.${key}.value`]: next });
   }
 }
