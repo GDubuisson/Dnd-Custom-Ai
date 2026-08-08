@@ -14,7 +14,7 @@
       <tr data-item-id="{{this.id}}">
         <td>{{this.name}}</td>
         <td>{{this.system.quantity}}</td>
-        <td>{{this.system.weight}}</td>
+        <td>{{formatWeight this.system.weight}}</td>
       </tr>
       {{else}}
       <tr><td colspan="3" class="empty-slot">{{localize "DND_CUSTOM.Npc.LootEmpty"}}</td></tr>

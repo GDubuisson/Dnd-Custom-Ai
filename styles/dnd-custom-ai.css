@@ -684,6 +684,18 @@
   letter-spacing: 0.03em;
 }
 
+.dnd-custom-ai .skills-list .armor-disadvantage-tag {
+  flex: 0 0 auto;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .dnd-custom-ai .skills-list .mod {
   flex: 0 0 auto;
   min-width: 1.6rem;
@@ -959,4 +971,145 @@
   color: var(--dca-muted-text);
   font-style: italic;
   font-size: 0.85rem;
+}
+
+/* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,
+   moyen de transport) : une fiche Handlebars dédiée par type (cf. ClaudeFiles/ITEMS.md),
+   mais un habillage commun simple et cohérent avec le thème "Auberge et Grand Chemin". ---------- */
+
+.dnd-custom-ai.sheet.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  overflow-y: auto;
+  font-family: var(--dca-font-body);
+  color: var(--dca-on-surface);
+  background-color: var(--dca-surface);
+}
+
+.dnd-custom-ai .item-sheet-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px solid var(--dca-secondary-container);
+  flex: 0 0 auto;
+}
+
+.dnd-custom-ai .item-sheet-header img {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--dca-outline-variant);
+  object-fit: cover;
+}
+
+.dnd-custom-ai .item-sheet-header input[type="text"] {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--dca-font-headline);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--dca-primary);
+  padding: 0.1rem 0;
+}
+
+.dnd-custom-ai .item-sheet-header input[type="text"]:focus {
+  outline: none;
+  border-bottom: 1px solid var(--dca-secondary);
+}
+
+.dnd-custom-ai .item-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem 1.1rem;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row.description-row {
+  align-items: flex-start;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row label {
+  flex: 0 0 40%;
+  font-family: var(--dca-font-label);
+  font-size: 0.75rem;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .item-sheet-body .form-row input[type="text"],
+.dnd-custom-ai .item-sheet-body .form-row input[type="number"],
+.dnd-custom-ai .item-sheet-body .form-row select,
+.dnd-custom-ai .item-sheet-body .form-row textarea {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.dnd-custom-ai .item-sheet-body .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.8rem;
+  color: var(--dca-on-surface-variant);
+}
+
+.dnd-custom-ai .item-sheet-body .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.35rem;
+  background: var(--dca-surface-container);
+}
+
+.dnd-custom-ai .item-sheet-body .form-group legend {
+  padding: 0 0.3rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .item-sheet-body .price-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dnd-custom-ai .item-sheet-body .price-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+}
+
+.dnd-custom-ai .item-sheet-body .price-row input {
+  width: 3.5rem;
+  flex: 0 0 auto;
 }

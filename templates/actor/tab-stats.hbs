@@ -46,6 +46,9 @@
           {{#if this.originAdvantage}}
           <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
           {{/if}}
+          {{#if this.armorDisadvantage}}
+          <span class="armor-disadvantage-tag" title="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
+          {{/if}}
           <span class="mod">{{this.modLabel}}</span>
         </li>
         {{/each}}

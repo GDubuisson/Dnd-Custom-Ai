@@ -15,7 +15,7 @@
       <tr data-item-id="{{this.id}}">
         <td>{{this.name}}</td>
         <td>{{this.system.quantity}}</td>
-        <td>{{this.system.weight}}</td>
+        <td>{{formatWeight this.system.weight}}</td>
         <td>{{#if this.system.equipped}}✓{{/if}}</td>
       </tr>
       {{else}}
@@ -27,7 +27,7 @@
   <div class="carrying-capacity">
     <span class="label">
       <span>{{localize "DND_CUSTOM.Inventory.CarriedWeight"}}</span>
-      <span>{{carriedWeight}} / {{carryingCapacity}} lb</span>
+      <span>{{formatWeight carriedWeight}} / {{formatWeight carryingCapacity}}</span>
     </span>
     <span class="capacity-bar-track">
       <span class="capacity-bar-fill {{#if overCapacity}}over-capacity{{/if}}" style="width: {{carryingCapacityPercent}}%"></span>

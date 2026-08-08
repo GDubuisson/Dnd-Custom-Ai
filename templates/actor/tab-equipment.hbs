@@ -23,7 +23,7 @@
     <div class="equipment-slot">
       <h3>{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
       {{#if equipment.armor}}
-        <div class="item-line" data-item-id="{{equipment.armor.id}}">{{equipment.armor.name}} ({{equipment.armor.system.ac}})</div>
+        <div class="item-line" data-item-id="{{equipment.armor.id}}">{{equipment.armor.name}} ({{equipment.armor.system.baseAC}})</div>
       {{else}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
       {{/if}}

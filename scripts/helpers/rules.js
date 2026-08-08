@@ -60,22 +60,28 @@ export function maxHitPoints(hitDie, level, conMod) {
   return Math.max(1, total);
 }
 
-/** Bonus de Dex sur la CA selon la catégorie d'armure, SRD 5e : illimité (légère),
- *  plafonné à +2 (moyenne), aucun (lourde, même si le modificateur est négatif). */
-function dexBonusForArmorCategory(category, dexMod) {
-  if (category === "medium") return Math.min(dexMod, 2);
-  if (category === "heavy") return 0;
+/** Bonus de Dex sur la CA selon le type d'armure, SRD 5e : illimité (légère),
+ *  plafonné à +2 (intermédiaire), aucun (lourde, même si le modificateur est négatif). */
+function dexBonusForArmorType(armorType, dexMod) {
+  if (armorType === "medium") return Math.min(dexMod, 2);
+  if (armorType === "heavy") return 0;
   return dexMod;
 }
 
 /** Classe d'Armure, SRD 5e : 10 + Dex sans armure ; sinon CA de base de l'armure +
- *  bonus de Dex plafonné selon sa catégorie, + bonus plat du bouclier équipé le cas échéant,
+ *  bonus de Dex plafonné selon son type, + bonus plat du bouclier équipé le cas échéant,
  *  + bonus plat des accessoires équipés (anneau/amulette de protection, etc.), le cas échéant. */
 export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories = []) {
   const base = equippedArmor
-    ? equippedArmor.system.ac + dexBonusForArmorCategory(equippedArmor.system.category, dexMod)
+    ? equippedArmor.system.baseAC + dexBonusForArmorType(equippedArmor.system.armorType, dexMod)
     : 10 + dexMod;
-  const shieldBonus = equippedShield ? equippedShield.system.ac : 0;
-  const accessoriesBonus = equippedAccessories.reduce((total, item) => total + item.system.ac, 0);
+  const shieldBonus = equippedShield ? equippedShield.system.baseAC : 0;
+  const accessoriesBonus = equippedAccessories.reduce((total, item) => total + item.system.baseAC, 0);
   return base + shieldBonus + accessoriesBonus;
+}
+
+/** Malus de vitesse SRD 5e si la Force du personnage est inférieure à la Force minimale
+ *  requise par l'armure équipée : -10 pieds (-3 m), sinon aucun malus. */
+export function speedPenalty(strengthRequired, strengthTotal) {
+  return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
 }
