@@ -16,13 +16,22 @@
   {{/if}}
 
   <ul class="features-list">
+    {{#if originTrait}}
+    <li class="origin-trait-item">
+      <strong>{{originTrait.name}}</strong>
+      <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
+      <p>{{originTrait.description}}</p>
+    </li>
+    {{/if}}
     {{#each features}}
     <li data-item-id="{{this.id}}">
       <strong>{{this.name}}</strong>
       {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
     </li>
     {{else}}
+    {{#unless originTrait}}
     <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.Empty"}}</li>
+    {{/unless}}
     {{/each}}
   </ul>
 </section>

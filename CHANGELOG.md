@@ -30,10 +30,22 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   pas encore de jets de dés automatisés.
 - Affichage du trait spécial de l'Origine choisie (nom + description) dans
   l'onglet "Statistiques".
+- Boutons "+"/"-" (réservés au MJ) sur chaque caractéristique de la fiche de
+  personnage, pour ajuster le score de base directement depuis la fiche
+  (le bonus d'Origine reste appliqué séparément par-dessus).
 
 ### Modifié
 - Repos court simplifié (sans réserve de dés de vie) : récupère la moitié
   des PV max (arrondi à l'inférieur), sans dépasser le max.
+- Onglet "Statistiques" de la fiche de personnage : caractéristiques
+  affichées en cartes verticales (valeur finale = base + bonus d'Origine,
+  modificateur et bonus de sauvegarde) et compétences déplacées à droite
+  sur deux colonnes triées par ordre alphabétique. Bonus de maîtrise,
+  Initiative et Perception passive repositionnés sous le tableau de
+  compétences.
+- Trait spécial de l'Origine choisie déplacé de l'onglet "Statistiques" vers
+  l'onglet "Capacités"/"Sorts", où il apparaît en tête de liste comme une
+  capacité à part entière (étiquette "(Origine)").
 - Légère mise en valeur graphique des fiches : survol des cartes de
   caractéristiques, emplacements d'équipement, capacités, lignes de
   compétences et lignes d'inventaire (changement de teinte de fond/bordure).
