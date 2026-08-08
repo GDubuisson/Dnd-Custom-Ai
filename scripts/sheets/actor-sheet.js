@@ -146,6 +146,9 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           key,
           label: game.i18n.localize(DND_CUSTOM.skills[key]),
           originAdvantage: originSkillAdvantages.has(key),
+          // Désavantage imposé par l'armure équipée (SRD 5e) : ne concerne que la Discrétion
+          // (cf. CharacterData#prepareDerivedData > this.stealthDisadvantage).
+          armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
           ability: skill.ability,
           proficient: skill.proficient,
           mod,
@@ -159,7 +162,9 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
-    context.inventoryItems = items.filter((item) => ["weapon", "armor", "gear"].includes(item.type));
+    context.inventoryItems = items.filter((item) =>
+      ["weapon", "armor", "gear", "tool"].includes(item.type)
+    );
 
     // Répartit les armes/armures équipées dans leurs emplacements (main principale/secondaire,
     // armure, accessoires) pour l'onglet "Équipement".
@@ -174,7 +179,7 @@ export class DndCustomActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     };
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
-    context.carryingCapacity = carryingCapacity(system.abilities.str.value);
+    context.carryingCapacity = carryingCapacity(system.abilities.str.total, "kg");
     context.carryingCapacityPercent = Math.min(
       100,
       Math.round((context.carriedWeight / (context.carryingCapacity || 1)) * 100)

@@ -68,7 +68,9 @@
       "PassivePerception": "Perception passive",
       "OriginShort": "orig.",
       "OriginAdvantageShort": "Avantage",
-      "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine"
+      "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine",
+      "ArmorDisadvantageShort": "Désavantage",
+      "ArmorDisadvantageTooltip": "Désavantage sur ce test à cause de l'armure équipée"
     },
     "Actions": {
       "RestShort": "Repos court",
@@ -151,6 +153,99 @@
       "AbilityBonusesColumn": "Bonus de caractéristiques",
       "SkillAdvantagesColumn": "Compétences avantagées",
       "SpecialTraitColumn": "Trait spécial"
+    },
+    "Item": {
+      "ArmorTypes": {
+        "light": "Légère",
+        "medium": "Intermédiaire",
+        "heavy": "Lourde"
+      },
+      "WeaponTypes": {
+        "meleeSimple": "Corps-à-corps courante",
+        "meleeMartial": "Corps-à-corps de guerre",
+        "rangedSimple": "À distance courante",
+        "rangedMartial": "À distance de guerre"
+      },
+      "DamageTypes": {
+        "bludgeoning": "Contondant",
+        "piercing": "Perforant",
+        "slashing": "Tranchant"
+      },
+      "WeaponHandedness": {
+        "oneHanded": "Une main",
+        "twoHanded": "Deux mains"
+      },
+      "TransportTypes": {
+        "mount": "Monture",
+        "equipment": "Équipement",
+        "tack": "Sellerie",
+        "landVehicle": "Véhicule à tractation",
+        "boat": "Bateau"
+      },
+      "Fields": {
+        "Price": "Prix",
+        "Weight": "Poids",
+        "Quantity": "Quantité",
+        "Description": "Description",
+        "Equipped": "Équipé",
+        "Slot": "Emplacement",
+        "WeaponType": "Type d'arme",
+        "ArmorType": "Type d'armure",
+        "Damage": "Dégâts",
+        "DamageDice": "Dé de dégâts",
+        "DamageType": "Type de dégâts",
+        "DamageVersatile": "Dégâts (deux mains)",
+        "Properties": "Propriétés",
+        "Handedness": "Prise en main",
+        "Versatile": "Polyvalente",
+        "Finesse": "Finesse",
+        "Light": "Légère",
+        "Thrown": "Lancer",
+        "Heavy": "Lourde",
+        "Reach": "Allonge",
+        "Reload": "Rechargement",
+        "ReloadValue": "Nb. de tirs avant rechargement",
+        "Range": "Portée",
+        "RangeNormal": "Portée normale (m)",
+        "RangeLong": "Portée maximale (m)",
+        "Special": "Spéciale",
+        "BaseAC": "CA de base",
+        "StrengthRequired": "Force requise",
+        "StealthDisadvantage": "Désavantage aux tests de Discrétion",
+        "Class": "Classe",
+        "Level": "Niveau",
+        "RequiresRoll": "Nécessite un jet",
+        "RollFormula": "Formule de jet",
+        "Source": "Source",
+        "UseEffect": "Effet à l'utilisation",
+        "Skill": "Compétence",
+        "Bonus": "Bonus",
+        "DescriptionRP": "Description (roleplay)",
+        "TransportType": "Type de transport",
+        "Speed": "Vitesse",
+        "CarryCapacity": "Capacité de charge (kg)",
+        "Demonym": "Gentilé",
+        "Language": "Langue",
+        "Inspiration": "Inspiration culturelle",
+        "Traits": "Traits culturels",
+        "AbilityBonuses": "Bonus de caractéristiques",
+        "SkillAdvantages": "Compétences avantagées",
+        "SpecialTrait": "Trait spécial",
+        "SpecialTraitName": "Nom du trait",
+        "SpecialTraitDescription": "Description du trait"
+      }
+    }
+  },
+  "TYPES": {
+    "Item": {
+      "weapon": "Arme",
+      "armor": "Armure",
+      "gear": "Objet",
+      "feature": "Capacité",
+      "origin": "Origine",
+      "class": "Classe",
+      "tool": "Outil",
+      "vehicle": "Moyen de transport"
     }
   }
 }

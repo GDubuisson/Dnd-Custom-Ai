@@ -1,0 +1,61 @@
+<header class="item-sheet-header">
+  <img src="{{item.img}}" alt="{{item.name}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.armor'}}">
+</header>
+
+<div class="item-sheet-body">
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ArmorType"}}</label>
+    <select name="system.armorType">{{selectOptions config.armorTypes selected=system.armorType localize=true}}</select>
+  </div>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Slot"}}</label>
+    <select name="system.slot">{{selectOptions slotOptions selected=system.slot localize=true}}</select>
+  </div>
+
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.Price"}}</legend>
+    <div class="price-row">
+      <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.price.pp" value="{{system.price.pp}}" min="0"></label>
+      <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.price.po" value="{{system.price.po}}" min="0"></label>
+      <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.price.pa" value="{{system.price.pa}}" min="0"></label>
+      <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.price.pc" value="{{system.price.pc}}" min="0"></label>
+    </div>
+  </fieldset>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.BaseAC"}}</label>
+    <input type="number" name="system.baseAC" value="{{system.baseAC}}" min="0">
+  </div>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.StrengthRequired"}}</label>
+    <input type="number" name="system.strengthRequired" value="{{system.strengthRequired}}" min="0">
+  </div>
+
+  <label class="checkbox-row">
+    <input type="checkbox" name="system.stealthDisadvantage" {{#if system.stealthDisadvantage}}checked{{/if}}>
+    {{localize "DND_CUSTOM.Item.Fields.StealthDisadvantage"}}
+  </label>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Weight"}}</label>
+    <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.01">
+  </div>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Quantity"}}</label>
+    <input type="number" name="system.quantity" value="{{system.quantity}}" min="0">
+  </div>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Equipped"}}</label>
+    <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}>
+  </div>
+
+  <div class="form-row description-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
+    <textarea name="system.description">{{system.description}}</textarea>
+  </div>
+</div>

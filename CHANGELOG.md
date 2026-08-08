@@ -8,6 +8,49 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- Fiche d'édition (`ItemSheet`) dédiée pour chacun des 8 types d'Item (arme, armure, objet,
+  capacité, origine, classe, outil, moyen de transport), avec un template Handlebars propre
+  à chaque type (`templates/item/*.hbs`, `scripts/sheets/item-sheets.js`), remplaçant la
+  fiche générique par défaut de Foundry. Structure des champs alignée sur
+  `ClaudeFiles/ITEMS.md` :
+  - Arme : type d'arme, prix, dégâts (dé + type), dégâts à deux mains (si Polyvalente),
+    propriétés complètes (prise en main, polyvalente, finesse, légère, lancer, lourde,
+    allonge, rechargement, portée, spéciale).
+  - Armure : type d'armure (renommé depuis `category`), CA de base (renommée depuis `ac`),
+    Force requise, désavantage aux tests de Discrétion.
+  - Outil : prix, poids, effet à l'utilisation (compétence + bonus).
+  - Moyen de transport : sous-type (monture/équipement/sellerie/véhicule à tractation/
+    bateau), vitesse et capacité de charge affichées seulement pour les sous-types concernés.
+  - Origine : gentilé, langue, description historique, en plus des champs mécaniques
+    existants.
+  - Capacité : référence vers une classe (liste dynamique des Items `class` du monde),
+    niveau d'acquisition, jet de dé conditionnel.
+- Étiquettes `TYPES.Item.*` en français/anglais pour les 8 types d'Item (affichées par
+  Foundry dans la boîte de dialogue de création d'Item).
+- Malus de vitesse (-10 pieds) si la Force du personnage est inférieure à la Force requise
+  par l'armure équipée (SRD 5e), et étiquette "Désavantage" sur la compétence Discrétion si
+  l'armure équipée l'impose — même principe visuel que l'étiquette "Avantage" d'Origine.
+- Sous-schéma monnaie partagé (`scripts/data/shared-schema.js`) entre la monnaie de l'Actor
+  et le prix de tout Item vendable.
+- Convention de poids unique en kilogrammes dans toutes les données système, avec affichage
+  automatique en grammes en dessous de 100 g (helper Handlebars `formatWeight`). La capacité
+  de charge et le poids transporté de l'onglet Inventaire (qui inclut désormais aussi les
+  Outils) suivent cette même convention.
+
+### Modifié
+- Renommage `armor.system.ac` → `baseAC` et `armor.system.category` → `armorType`
+  (`scripts/data/item-data.js`, `scripts/helpers/rules.js`, `templates/actor/tab-equipment.hbs`)
+  pour correspondre à `ClaudeFiles/ITEMS.md` ; comportement de calcul de CA inchangé.
+- Simplifié : l'Item `class` reste nom + description pour cette phase (retrait des champs
+  dé de vie/lanceur de sorts ajoutés puis retirés dans la même session — validé dans
+  `ClaudeFiles/ITEMS.md`, la fiche de personnage continue de lire
+  `CONFIG.DND_CUSTOM.classHitDice`/`.spellcastingClasses`).
+- Corrigé au passage : la capacité de charge de l'onglet Inventaire utilisait la Force de
+  base du personnage au lieu de la Force totale (bonus d'Origine inclus).
+
+## [0.2.7]
+
+### Ajouté
 - Type d'Item `origin` (`scripts/data/origin-data.js`) : inspiration culturelle, traits,
   bonus de caractéristiques, avantages de compétences, trait spécial. Destiné au nouveau
   compendium "Origines" (`packs/origines`, déclaré dans `system.json`), à peupler à la main

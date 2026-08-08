@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { abilityModifier, maxHitPoints, armorClass } from "../helpers/rules.js";
+import { abilityModifier, maxHitPoints, armorClass, speedPenalty } from "../helpers/rules.js";
+import { currencySchema } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
 
@@ -76,12 +77,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           Object.entries(SKILL_ABILITIES).map(([key, ability]) => [key, skillField(ability)])
         )
       ),
-      currency: new SchemaField({
-        pc: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        pa: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        po: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        pp: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
-      }),
+      currency: currencySchema(),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
     };
@@ -115,7 +111,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const dexMod = abilityModifier(this.abilities.dex.total);
     this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
 
-    this.attributes.speed = DND_CUSTOM.baseSpeed;
+    const strengthRequired = equippedArmor?.system.strengthRequired ?? 0;
+    this.attributes.speed = DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total);
+
+    // Désavantage aux tests de Discrétion imposé par l'armure équipée (SRD 5e) : donnée
+    // dérivée non persistée, exposée pour l'affichage (cf. actor-sheet.js > context.skills).
+    this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
   }
 }
 

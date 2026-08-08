@@ -81,8 +81,47 @@ DND_CUSTOM.spellcastingAbility = {
  *  pas des espèces, donc pas de variation de vitesse par origine pour l'instant. */
 DND_CUSTOM.baseSpeed = 30;
 
-/** Catégories d'armure SRD 5e, déterminant le plafond de bonus de Dex sur la CA. */
-DND_CUSTOM.armorCategories = ["light", "medium", "heavy"];
+/** Types d'armure SRD 5e, déterminant le plafond de bonus de Dex sur la CA
+ *  (cf. scripts/helpers/rules.js > armorClass). */
+DND_CUSTOM.armorTypes = {
+  light: "DND_CUSTOM.Item.ArmorTypes.light",
+  medium: "DND_CUSTOM.Item.ArmorTypes.medium",
+  heavy: "DND_CUSTOM.Item.ArmorTypes.heavy"
+};
+
+/** Catégories d'armes SRD 5e (courante/de guerre, corps-à-corps/à distance). */
+DND_CUSTOM.weaponTypes = {
+  meleeSimple: "DND_CUSTOM.Item.WeaponTypes.meleeSimple",
+  meleeMartial: "DND_CUSTOM.Item.WeaponTypes.meleeMartial",
+  rangedSimple: "DND_CUSTOM.Item.WeaponTypes.rangedSimple",
+  rangedMartial: "DND_CUSTOM.Item.WeaponTypes.rangedMartial"
+};
+
+/** Types de dégâts physiques SRD 5e. */
+DND_CUSTOM.damageTypes = {
+  bludgeoning: "DND_CUSTOM.Item.DamageTypes.bludgeoning",
+  piercing: "DND_CUSTOM.Item.DamageTypes.piercing",
+  slashing: "DND_CUSTOM.Item.DamageTypes.slashing"
+};
+
+/** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */
+DND_CUSTOM.weaponHandedness = {
+  oneHanded: "DND_CUSTOM.Item.WeaponHandedness.oneHanded",
+  twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
+};
+
+/** Sous-types de moyen de transport (cf. ClaudeFiles/ITEMS.md > Item Moyen de Transport). */
+DND_CUSTOM.transportTypes = {
+  mount: "DND_CUSTOM.Item.TransportTypes.mount",
+  equipment: "DND_CUSTOM.Item.TransportTypes.equipment",
+  tack: "DND_CUSTOM.Item.TransportTypes.tack",
+  landVehicle: "DND_CUSTOM.Item.TransportTypes.landVehicle",
+  boat: "DND_CUSTOM.Item.TransportTypes.boat"
+};
+
+/** Sous-types de moyen de transport pour lesquels vitesse/capacité de charge ont un sens
+ *  (cf. ClaudeFiles/ITEMS.md > affichage conditionnel). */
+DND_CUSTOM.transportTypesWithSpeed = ["mount", "landVehicle", "boat"];
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {

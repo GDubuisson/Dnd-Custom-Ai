@@ -68,7 +68,9 @@
       "PassivePerception": "Passive Perception",
       "OriginShort": "origin",
       "OriginAdvantageShort": "Advantage",
-      "OriginAdvantageTooltip": "Advantage on this check thanks to Origin"
+      "OriginAdvantageTooltip": "Advantage on this check thanks to Origin",
+      "ArmorDisadvantageShort": "Disadvantage",
+      "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -151,6 +153,99 @@
       "AbilityBonusesColumn": "Ability Bonuses",
       "SkillAdvantagesColumn": "Skill Advantages",
       "SpecialTraitColumn": "Special Trait"
+    },
+    "Item": {
+      "ArmorTypes": {
+        "light": "Light",
+        "medium": "Medium",
+        "heavy": "Heavy"
+      },
+      "WeaponTypes": {
+        "meleeSimple": "Simple Melee",
+        "meleeMartial": "Martial Melee",
+        "rangedSimple": "Simple Ranged",
+        "rangedMartial": "Martial Ranged"
+      },
+      "DamageTypes": {
+        "bludgeoning": "Bludgeoning",
+        "piercing": "Piercing",
+        "slashing": "Slashing"
+      },
+      "WeaponHandedness": {
+        "oneHanded": "One-Handed",
+        "twoHanded": "Two-Handed"
+      },
+      "TransportTypes": {
+        "mount": "Mount",
+        "equipment": "Tack (Equipment)",
+        "tack": "Tack (Saddlery)",
+        "landVehicle": "Land Vehicle",
+        "boat": "Boat"
+      },
+      "Fields": {
+        "Price": "Price",
+        "Weight": "Weight",
+        "Quantity": "Quantity",
+        "Description": "Description",
+        "Equipped": "Equipped",
+        "Slot": "Slot",
+        "WeaponType": "Weapon Type",
+        "ArmorType": "Armor Type",
+        "Damage": "Damage",
+        "DamageDice": "Damage Dice",
+        "DamageType": "Damage Type",
+        "DamageVersatile": "Versatile Damage",
+        "Properties": "Properties",
+        "Handedness": "Handedness",
+        "Versatile": "Versatile",
+        "Finesse": "Finesse",
+        "Light": "Light",
+        "Thrown": "Thrown",
+        "Heavy": "Heavy",
+        "Reach": "Reach",
+        "Reload": "Reload",
+        "ReloadValue": "Shots before reload",
+        "Range": "Range",
+        "RangeNormal": "Normal Range (m)",
+        "RangeLong": "Long Range (m)",
+        "Special": "Special",
+        "BaseAC": "Base AC",
+        "StrengthRequired": "Strength Required",
+        "StealthDisadvantage": "Stealth Disadvantage",
+        "Class": "Class",
+        "Level": "Level",
+        "RequiresRoll": "Requires a Roll",
+        "RollFormula": "Roll Formula",
+        "Source": "Source",
+        "UseEffect": "Effect when used",
+        "Skill": "Skill",
+        "Bonus": "Bonus",
+        "DescriptionRP": "Description (roleplay)",
+        "TransportType": "Transport Type",
+        "Speed": "Speed",
+        "CarryCapacity": "Carry Capacity (kg)",
+        "Demonym": "Demonym",
+        "Language": "Language",
+        "Inspiration": "Cultural Inspiration",
+        "Traits": "Cultural Traits",
+        "AbilityBonuses": "Ability Bonuses",
+        "SkillAdvantages": "Skill Advantages",
+        "SpecialTrait": "Special Trait",
+        "SpecialTraitName": "Trait Name",
+        "SpecialTraitDescription": "Trait Description"
+      }
+    }
+  },
+  "TYPES": {
+    "Item": {
+      "weapon": "Weapon",
+      "armor": "Armor",
+      "gear": "Gear",
+      "feature": "Feature",
+      "origin": "Origin",
+      "class": "Class",
+      "tool": "Tool",
+      "vehicle": "Vehicle"
     }
   }
 }

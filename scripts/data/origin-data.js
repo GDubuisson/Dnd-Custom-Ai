@@ -14,12 +14,16 @@ function abilityBonusesSchema() {
 /** Type d'Item "origin" : une des 6 nations géographiques remplaçant les races classiques
  *  (cf. system.json > documentTypes.Item.origin). Destiné à être rangé dans le compendium
  *  "Origines" (system.json > packs), à la place des données jusqu'ici externalisées dans
- *  scripts/data/origins.json. */
+ *  scripts/data/origins.json. L'illustration (ITEMS.md > champ "image") réutilise le champ
+ *  natif `img` de l'Item, pas de champ dédié. */
 export class OriginData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       inspiration: new StringField({ required: false, blank: true, initial: "" }),
+      demonym: new StringField({ required: false, blank: true, initial: "" }),
+      language: new StringField({ required: false, blank: true, initial: "" }),
       traits: new StringField({ required: false, blank: true, initial: "" }),
+      description: new HTMLField({ required: false, blank: true, initial: "" }),
       abilityBonuses: abilityBonusesSchema(),
       skillAdvantages: new SetField(new StringField({ choices: Object.keys(SKILL_ABILITIES) })),
       specialTrait: new SchemaField({

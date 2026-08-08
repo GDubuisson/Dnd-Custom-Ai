@@ -5,7 +5,18 @@ import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
 import { DndCustomNpcSheet } from "./sheets/npc-sheet.js";
+import {
+  WeaponItemSheet,
+  ArmorItemSheet,
+  GearItemSheet,
+  FeatureItemSheet,
+  OriginItemSheet,
+  ClassItemSheet,
+  ToolItemSheet,
+  VehicleItemSheet
+} from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
+import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -40,6 +51,18 @@ Hooks.once("init", async () => {
     width: 726,
     label: "DND_CUSTOM.SheetLabels.Npc"
   });
+
+  // Une fiche Handlebars dédiée par type d'Item (cf. ClaudeFiles/ITEMS.md).
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, WeaponItemSheet, { types: ["weapon"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ArmorItemSheet, { types: ["armor"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, GearItemSheet, { types: ["gear"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, FeatureItemSheet, { types: ["feature"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, OriginItemSheet, { types: ["origin"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, VehicleItemSheet, { types: ["vehicle"], makeDefault: true });
+
+  registerHandlebarsHelpers();
 
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").
   game.dndCustomAi = {
