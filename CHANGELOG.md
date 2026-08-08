@@ -7,6 +7,22 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.3.0]
+
+### Ajouté
+- Peuplement automatique de compendium depuis un JSON versionné avec le système
+  (`scripts/helpers/compendium-seed.js`, `seedCompendiumFromJson`) : au démarrage du monde,
+  ajoute les entrées manquantes (comparaison par nom) sans jamais écraser une entrée déjà
+  présente. Testé sur le compendium "Équipements", peuplé avec les 13 armures SRD 5e
+  (`scripts/data/armors.json`).
+
+### Modifié
+- Retiré la colonne "Inspiration" du Journal "Comparatif des Origines"
+  (`scripts/helpers/origins-journal.js`). Le champ `inspiration` de l'Origine reste
+  disponible sur sa fiche d'Item, seul l'affichage dans le tableau change ; un Journal déjà
+  créé dans un monde existant n'est pas régénéré automatiquement (il faudrait le supprimer à
+  la main pour qu'il soit recréé sans cette colonne).
+
 ### Corrigé
 - Les 8 fiches d'Item (`templates/item/*.hbs`) ne s'ouvraient pas (erreur console
   `Template part "form" must render a single HTML element.`) : chaque template avait deux

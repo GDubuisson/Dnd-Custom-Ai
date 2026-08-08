@@ -17,6 +17,7 @@ import {
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
+import { seedCompendiumFromJson } from "./helpers/compendium-seed.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -75,6 +76,10 @@ Hooks.once("init", async () => {
 // "Origine" de la fiche de personnage.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
+
+  // Test : peuplement du compendium "Équipements" (armures SRD) depuis un JSON versionné
+  // avec le système (cf. scripts/data/armors.json). N'ajoute que les entrées manquantes.
+  await seedCompendiumFromJson("equipements", "scripts/data/armors.json");
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
