@@ -18,6 +18,14 @@ export async function seedCompendiumFromJson(packName, sourcePath) {
   const missing = entries.filter((entry) => !existingNames.has(entry.name));
   if (!missing.length) return;
 
+  // Les compendiums de système sont verrouillés par défaut (protection contre les
+  // modifications accidentelles) : on déverrouille le temps de l'écriture, puis on
+  // restaure l'état initial pour ne rien changer aux habitudes du MJ.
+  const wasLocked = pack.locked;
+  if (wasLocked) await pack.configure({ locked: false });
+
   await Item.createDocuments(missing, { pack: pack.collection });
   console.log(`${SYSTEM_ID} | ${missing.length} entrée(s) ajoutée(s) au compendium "${packName}" depuis ${sourcePath}`);
+
+  if (wasLocked) await pack.configure({ locked: true });
 }
