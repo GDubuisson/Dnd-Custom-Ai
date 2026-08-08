@@ -5,7 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.4
+## [Non publié]
+
+### Ajouté
+- Type d'Item `origin` (`scripts/data/origin-data.js`) : inspiration culturelle, traits,
+  bonus de caractéristiques, avantages de compétences, trait spécial. Destiné au nouveau
+  compendium "Origines" (`packs/origines`, déclaré dans `system.json`), à peupler à la main
+  depuis l'interface Foundry (les 6 Origines restent pour l'instant lues depuis
+  `scripts/data/origins.json` par la fiche de personnage — reliage au compendium prévu en
+  suivi une fois celui-ci peuplé).
+- Journal "Comparatif des Origines" auto-créé au premier chargement du monde (MJ
+  uniquement) : tableau récapitulant, pour chacune des 6 Origines, l'inspiration culturelle,
+  les traits, les bonus de caractéristiques, les compétences avantagées et le trait spécial.
+
+## [0.2.6]
 
 ### Ajouté
 - Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de

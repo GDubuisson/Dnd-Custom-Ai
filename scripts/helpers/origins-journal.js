@@ -1,0 +1,59 @@
+import { DND_CUSTOM } from "./config.js";
+
+/** Crée (une seule fois, si absent) un Journal récapitulant les différences entre les 6
+ *  Origines, à partir de game.dndCustomAi.origins (cf. scripts/data/origins.json). N'écrase
+ *  jamais un Journal existant du même nom, pour ne pas effacer les modifications du MJ. */
+export async function ensureOriginsJournal() {
+  if (!game.user.isGM) return;
+
+  const title = game.i18n.localize("DND_CUSTOM.Journal.OriginsComparisonTitle");
+  if (game.journal.getName(title)) return;
+
+  const origins = game.dndCustomAi?.origins ?? {};
+  if (!Object.keys(origins).length) return;
+
+  await JournalEntry.create({
+    name: title,
+    pages: [
+      {
+        name: title,
+        type: "text",
+        text: { format: 1, content: buildOriginsTable(origins) }
+      }
+    ]
+  });
+}
+
+function buildOriginsTable(origins) {
+  const headers = [
+    "DND_CUSTOM.Journal.OriginColumn",
+    "DND_CUSTOM.Journal.InspirationColumn",
+    "DND_CUSTOM.Journal.TraitsColumn",
+    "DND_CUSTOM.Journal.AbilityBonusesColumn",
+    "DND_CUSTOM.Journal.SkillAdvantagesColumn",
+    "DND_CUSTOM.Journal.SpecialTraitColumn"
+  ]
+    .map((key) => `<th>${game.i18n.localize(key)}</th>`)
+    .join("");
+
+  const rows = Object.values(origins)
+    .map((origin) => {
+      const bonuses = Object.entries(origin.abilityBonuses)
+        .map(([key, value]) => `${game.i18n.localize(DND_CUSTOM.abilities[key])} +${value}`)
+        .join(", ");
+      const skills = origin.skillAdvantages
+        .map((key) => game.i18n.localize(DND_CUSTOM.skills[key]))
+        .join(", ");
+      return `<tr>
+        <td>${origin.label}</td>
+        <td>${origin.inspiration}</td>
+        <td>${origin.traits}</td>
+        <td>${bonuses}</td>
+        <td>${skills}</td>
+        <td><strong>${origin.specialTrait.name}</strong><br>${origin.specialTrait.description}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `<table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+}

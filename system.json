@@ -39,9 +39,23 @@
       "weapon": {},
       "armor": {},
       "gear": {},
-      "feature": {}
+      "feature": {},
+      "origin": {}
     }
   },
+  "packs": [
+    {
+      "name": "origines",
+      "label": "Origines",
+      "system": "dnd-custom-ai",
+      "path": "packs/origines",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
   "primaryTokenAttribute": "attributes.hp",
   "gridDistance": 5,
   "gridUnits": "ft",

@@ -1,8 +1,10 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
 import { WeaponData, ArmorData, GearData, FeatureData } from "./data/item-data.js";
+import { OriginData } from "./data/origin-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
 import { DndCustomNpcSheet } from "./sheets/npc-sheet.js";
+import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -17,6 +19,9 @@ Hooks.once("init", async () => {
   CONFIG.Item.dataModels.armor = ArmorData;
   CONFIG.Item.dataModels.gear = GearData;
   CONFIG.Item.dataModels.feature = FeatureData;
+  // Destiné au compendium "Origines" (system.json > packs), rempli à la main par le MJ
+  // depuis l'interface Foundry (cf. données actuelles dans scripts/data/origins.json).
+  CONFIG.Item.dataModels.origin = OriginData;
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],
@@ -36,6 +41,13 @@ Hooks.once("init", async () => {
   game.dndCustomAi = {
     origins: await loadOrigins()
   };
+});
+
+// Journal de référence (MJ) récapitulant les différences entre Origines : créé une seule
+// fois, au premier chargement du monde, à partir des mêmes données que le sélecteur
+// "Origine" de la fiche de personnage.
+Hooks.once("ready", async () => {
+  await ensureOriginsJournal();
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
