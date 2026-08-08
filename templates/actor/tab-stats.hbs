@@ -6,6 +6,9 @@
     <div class="ability-block">
       <label>{{localize this.label}}</label>
       <input type="number" name="system.abilities.{{this.key}}.value" value="{{this.value}}" min="1" {{#unless ../isGM}}disabled{{/unless}}>
+      {{#if this.originBonus}}
+      <span class="origin-bonus">+{{this.originBonus}} {{localize "DND_CUSTOM.Actor.OriginShort"}} = {{this.total}}</span>
+      {{/if}}
       <span class="mod">{{this.modLabel}}</span>
       <label class="save-proficiency">
         <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
@@ -19,6 +22,18 @@
     {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
   </div>
 
+  <div class="derived-stats">
+    <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
+    <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
+  </div>
+
+  {{#if originTrait}}
+  <div class="origin-trait">
+    <strong>{{originTrait.name}}</strong>
+    <p>{{originTrait.description}}</p>
+  </div>
+  {{/if}}
+
   <h3 class="section-subtitle">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
   <ul class="skills-list">
     {{#each skills}}
@@ -28,6 +43,9 @@
         {{this.label}}
       </label>
       <span class="ability-tag">({{this.ability}})</span>
+      {{#if this.originAdvantage}}
+      <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
+      {{/if}}
       <span class="mod">{{this.modLabel}}</span>
     </li>
     {{/each}}

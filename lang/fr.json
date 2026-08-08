@@ -63,7 +63,12 @@
       "Speed": "Vitesse",
       "SaveShort": "Sauv.",
       "ProficiencyBonus": "Bonus de maîtrise",
-      "SkillsTitle": "Compétences"
+      "SkillsTitle": "Compétences",
+      "Initiative": "Initiative",
+      "PassivePerception": "Perception passive",
+      "OriginShort": "orig.",
+      "OriginAdvantageShort": "Avantage",
+      "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine"
     },
     "Actions": {
       "RestShort": "Repos court",
@@ -112,7 +117,9 @@
       "cha": "Charisme",
       "SpellsTitle": "Sorts",
       "FeaturesTitle": "Capacités",
-      "Empty": "Aucune capacité ou sort enregistré"
+      "Empty": "Aucune capacité ou sort enregistré",
+      "SpellSaveDC": "DD de sauvegarde",
+      "SpellAttackBonus": "Bonus d'attaque"
     },
     "Skills": {
       "acrobatics": "Acrobaties",

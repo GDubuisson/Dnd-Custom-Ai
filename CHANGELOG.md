@@ -11,8 +11,29 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 - Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de
   personnage : champ affiché entre parenthèses à côté de valeur/max
   (ex. `12 / 20 (+5)`).
+- Calcul automatique de la Classe d'Armure : prise en compte des accessoires
+  équipés (`slot: "accessory"`, ex. anneau/amulette de protection), en plus de
+  l'armure et du bouclier déjà gérés.
+- Initiative (mod. de Dextérité) et Perception passive (10 + mod. de Sagesse +
+  bonus de maîtrise si la compétence est maîtrisée), affichées dans l'onglet
+  "Statistiques".
+- DD de sauvegarde des sorts et bonus d'attaque des sorts, affichés dans
+  l'onglet "Sorts" pour les classes lanceuses.
+- Application automatique des bonus de caractéristiques d'Origine (ex.
+  Charisme +2/Force +1 pour Fleuraine) : nouveau champ dérivé
+  `system.abilities.*.total` (base + bonus), utilisé pour tous les
+  modificateurs (compétences, sauvegardes, PV, CA, Initiative, Perception
+  passive, sorts). Le score de base saisi par le MJ reste inchangé et
+  affiché séparément.
+- Indicateur "Avantage" sur les compétences bénéficiant de l'avantage
+  d'Origine (`skillAdvantages`) : purement informatif, la fiche ne gérant
+  pas encore de jets de dés automatisés.
+- Affichage du trait spécial de l'Origine choisie (nom + description) dans
+  l'onglet "Statistiques".
 
 ### Modifié
+- Repos court simplifié (sans réserve de dés de vie) : récupère la moitié
+  des PV max (arrondi à l'inférieur), sans dépasser le max.
 - Légère mise en valeur graphique des fiches : survol des cartes de
   caractéristiques, emplacements d'équipement, capacités, lignes de
   compétences et lignes d'inventaire (changement de teinte de fond/bordure).

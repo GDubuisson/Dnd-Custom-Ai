@@ -35,6 +35,21 @@ export function formatModifier(mod) {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
+/** Perception passive, SRD 5e : 10 + mod Sagesse + bonus de maîtrise si Perception maîtrisée. */
+export function passivePerception(wisMod, perceptionProficient, proficiencyBonusValue) {
+  return 10 + wisMod + (perceptionProficient ? proficiencyBonusValue : 0);
+}
+
+/** DD de sauvegarde des sorts, SRD 5e : 8 + bonus de maîtrise + mod de la caractéristique d'incantation. */
+export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
+  return 8 + proficiencyBonusValue + spellcastingAbilityMod;
+}
+
+/** Bonus d'attaque des sorts, SRD 5e : bonus de maîtrise + mod de la caractéristique d'incantation. */
+export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) {
+  return proficiencyBonusValue + spellcastingAbilityMod;
+}
+
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
  *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
 export function maxHitPoints(hitDie, level, conMod) {
@@ -54,11 +69,13 @@ function dexBonusForArmorCategory(category, dexMod) {
 }
 
 /** Classe d'Armure, SRD 5e : 10 + Dex sans armure ; sinon CA de base de l'armure +
- *  bonus de Dex plafonné selon sa catégorie, + bonus plat du bouclier équipé le cas échéant. */
-export function armorClass(dexMod, equippedArmor, equippedShield) {
+ *  bonus de Dex plafonné selon sa catégorie, + bonus plat du bouclier équipé le cas échéant,
+ *  + bonus plat des accessoires équipés (anneau/amulette de protection, etc.), le cas échéant. */
+export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories = []) {
   const base = equippedArmor
     ? equippedArmor.system.ac + dexBonusForArmorCategory(equippedArmor.system.category, dexMod)
     : 10 + dexMod;
   const shieldBonus = equippedShield ? equippedShield.system.ac : 0;
-  return base + shieldBonus;
+  const accessoriesBonus = equippedAccessories.reduce((total, item) => total + item.system.ac, 0);
+  return base + shieldBonus + accessoriesBonus;
 }

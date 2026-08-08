@@ -29,7 +29,8 @@ const SKILL_ABILITIES = {
 
 function abilityField() {
   return new SchemaField({
-    value: new NumberField({ required: true, integer: true, min: 1, initial: 10 })
+    value: new NumberField({ required: true, integer: true, min: 1, initial: 10 }),
+    total: new NumberField({ required: true, integer: true, min: 1, initial: 10 })
   });
 }
 
@@ -86,10 +87,16 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     };
   }
 
-  /** PV max, CA et Vitesse sont entièrement dérivés (classe/niveau/CON, Dex + armure
-   *  équipée, constante de base) : jamais des valeurs saisies, ni par le joueur ni par
-   *  le MJ. Recalculés à chaque préparation de l'Actor, donc toujours à jour. */
+  /** PV max, CA et Vitesse sont entièrement dérivés (classe/niveau/CON, Dex + armure/
+   *  bouclier/accessoires équipés, constante de base) : jamais des valeurs saisies, ni
+   *  par le joueur ni par le MJ. Recalculés à chaque préparation de l'Actor, donc toujours à jour. */
   prepareDerivedData() {
+    const originData = game.dndCustomAi?.origins?.[this.origin];
+    const originBonuses = originData?.abilityBonuses ?? {};
+    for (const key of ABILITY_KEYS) {
+      this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0);
+    }
+
     const items = this.parent?.items ?? [];
     const equippedArmor = items.find(
       (item) => item.type === "armor" && item.system.slot === "armor" && item.system.equipped
@@ -97,13 +104,16 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const equippedShield = items.find(
       (item) => item.type === "armor" && item.system.slot === "offHand" && item.system.equipped
     );
+    const equippedAccessories = items.filter(
+      (item) => item.type === "armor" && item.system.slot === "accessory" && item.system.equipped
+    );
 
     const hitDie = DND_CUSTOM.classHitDice[this.class] ?? 8;
-    const conMod = abilityModifier(this.abilities.con.value);
+    const conMod = abilityModifier(this.abilities.con.total);
     this.attributes.hp.max = maxHitPoints(hitDie, this.attributes.level, conMod);
 
-    const dexMod = abilityModifier(this.abilities.dex.value);
-    this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield);
+    const dexMod = abilityModifier(this.abilities.dex.total);
+    this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
 
     this.attributes.speed = DND_CUSTOM.baseSpeed;
   }
