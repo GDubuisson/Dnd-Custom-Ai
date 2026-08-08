@@ -988,6 +988,13 @@
   background-color: var(--dca-surface);
 }
 
+/* Chaque PART Handlebars (ApplicationV2) doit rendre un unique élément racine : ce wrapper
+   n'existe que pour satisfaire cette contrainte, sans participer à la mise en page (le
+   header et le corps de la fiche restent les enfants flex directs de .sheet.item). */
+.dnd-custom-ai .item-sheet-root {
+  display: contents;
+}
+
 .dnd-custom-ai .item-sheet-header {
   display: flex;
   align-items: center;
