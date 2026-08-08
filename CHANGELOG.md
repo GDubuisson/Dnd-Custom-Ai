@@ -17,6 +17,18 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 - Journal "Comparatif des Origines" auto-créé au premier chargement du monde (MJ
   uniquement) : tableau récapitulant, pour chacune des 6 Origines, l'inspiration culturelle,
   les traits, les bonus de caractéristiques, les compétences avantagées et le trait spécial.
+- Types d'Item `class`, `tool` et `vehicle`, et 5 nouveaux compendiums vides déclarés dans
+  `system.json` (`packs/classes`, `packs/objets`, `packs/equipements`, `packs/outils`,
+  `packs/transports`) à peupler à la main depuis l'interface Foundry :
+  - `class` (`scripts/data/class-data.js`) : dé de vie, lanceur de sorts ou non,
+    description — pas encore relié à la fiche (système de classes non finalisé).
+  - `tool` (`scripts/data/item-data.js`) : objet physique accordant un bonus à une
+    compétence (ex. outils de voleur) ; bonus non encore appliqué automatiquement sur la
+    fiche.
+  - `vehicle` (`scripts/data/item-data.js`) : monture ou véhicule (charrette, bateau...)
+    avec vitesse, capacité, CA et PV simplifiés.
+  - Le compendium "Objets" est destiné aux Items `gear` existants, "Équipements" aux
+    `weapon`/`armor` existants (aucun nouveau type nécessaire pour ces deux-là).
 
 ## [0.2.6]
 

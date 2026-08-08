@@ -40,7 +40,10 @@
       "armor": {},
       "gear": {},
       "feature": {},
-      "origin": {}
+      "origin": {},
+      "class": {},
+      "tool": {},
+      "vehicle": {}
     }
   },
   "packs": [
@@ -49,6 +52,61 @@
       "label": "Origines",
       "system": "dnd-custom-ai",
       "path": "packs/origines",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes",
+      "label": "Classes",
+      "system": "dnd-custom-ai",
+      "path": "packs/classes",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "objets",
+      "label": "Objets",
+      "system": "dnd-custom-ai",
+      "path": "packs/objets",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "equipements",
+      "label": "Équipements",
+      "system": "dnd-custom-ai",
+      "path": "packs/equipements",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "outils",
+      "label": "Outils",
+      "system": "dnd-custom-ai",
+      "path": "packs/outils",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "transports",
+      "label": "Moyens de transport",
+      "system": "dnd-custom-ai",
+      "path": "packs/transports",
       "type": "Item",
       "ownership": {
         "PLAYER": "OBSERVER",

@@ -1,7 +1,8 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
-import { WeaponData, ArmorData, GearData, FeatureData } from "./data/item-data.js";
+import { WeaponData, ArmorData, GearData, FeatureData, ToolData, VehicleData } from "./data/item-data.js";
 import { OriginData } from "./data/origin-data.js";
+import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
 import { DndCustomNpcSheet } from "./sheets/npc-sheet.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
@@ -19,9 +20,12 @@ Hooks.once("init", async () => {
   CONFIG.Item.dataModels.armor = ArmorData;
   CONFIG.Item.dataModels.gear = GearData;
   CONFIG.Item.dataModels.feature = FeatureData;
-  // Destiné au compendium "Origines" (system.json > packs), rempli à la main par le MJ
-  // depuis l'interface Foundry (cf. données actuelles dans scripts/data/origins.json).
+  CONFIG.Item.dataModels.tool = ToolData;
+  CONFIG.Item.dataModels.vehicle = VehicleData;
+  // Destinés aux compendiums (system.json > packs), remplis à la main par le MJ depuis
+  // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
+  CONFIG.Item.dataModels.class = ClassData;
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],
