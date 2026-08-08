@@ -7,6 +7,12 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- `seedCompendiumFromJson` échouait (`You may not create documents in the locked compendium`)
+  : les compendiums de système sont verrouillés par défaut. La fonction déverrouille
+  désormais temporairement le compendium le temps de l'écriture, puis restaure son état de
+  verrouillage initial.
+
 ## [0.3.0]
 
 ### Ajouté
