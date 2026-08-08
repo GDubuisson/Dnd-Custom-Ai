@@ -5,7 +5,32 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié] - 0.2.4
+## [Non publié]
+
+### Ajouté
+- Type d'Item `origin` (`scripts/data/origin-data.js`) : inspiration culturelle, traits,
+  bonus de caractéristiques, avantages de compétences, trait spécial. Destiné au nouveau
+  compendium "Origines" (`packs/origines`, déclaré dans `system.json`), à peupler à la main
+  depuis l'interface Foundry (les 6 Origines restent pour l'instant lues depuis
+  `scripts/data/origins.json` par la fiche de personnage — reliage au compendium prévu en
+  suivi une fois celui-ci peuplé).
+- Journal "Comparatif des Origines" auto-créé au premier chargement du monde (MJ
+  uniquement) : tableau récapitulant, pour chacune des 6 Origines, l'inspiration culturelle,
+  les traits, les bonus de caractéristiques, les compétences avantagées et le trait spécial.
+- Types d'Item `class`, `tool` et `vehicle`, et 5 nouveaux compendiums vides déclarés dans
+  `system.json` (`packs/classes`, `packs/objets`, `packs/equipements`, `packs/outils`,
+  `packs/transports`) à peupler à la main depuis l'interface Foundry :
+  - `class` (`scripts/data/class-data.js`) : dé de vie, lanceur de sorts ou non,
+    description — pas encore relié à la fiche (système de classes non finalisé).
+  - `tool` (`scripts/data/item-data.js`) : objet physique accordant un bonus à une
+    compétence (ex. outils de voleur) ; bonus non encore appliqué automatiquement sur la
+    fiche.
+  - `vehicle` (`scripts/data/item-data.js`) : monture ou véhicule (charrette, bateau...)
+    avec vitesse, capacité, CA et PV simplifiés.
+  - Le compendium "Objets" est destiné aux Items `gear` existants, "Équipements" aux
+    `weapon`/`armor` existants (aucun nouveau type nécessaire pour ces deux-là).
+
+## [0.2.6]
 
 ### Ajouté
 - Points de vie temporaires (`system.attributes.hp.temp`) sur la fiche de

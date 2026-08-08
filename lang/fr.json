@@ -143,7 +143,14 @@
     },
     "Journal": {
       "Biography": "Biographie",
-      "Notes": "Notes"
+      "Notes": "Notes",
+      "OriginsComparisonTitle": "Comparatif des Origines",
+      "OriginColumn": "Origine",
+      "InspirationColumn": "Inspiration",
+      "TraitsColumn": "Traits culturels",
+      "AbilityBonusesColumn": "Bonus de caractéristiques",
+      "SkillAdvantagesColumn": "Compétences avantagées",
+      "SpecialTraitColumn": "Trait spécial"
     }
   }
 }

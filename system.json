@@ -2,7 +2,7 @@
   "id": "dnd-custom-ai",
   "title": "D&D Custom - Origines",
   "description": "Système personnalisé pour Foundry VTT, basé sur D&D 5e : une race unique (Humain) dont les traits culturels et mécaniques varient selon un système d'Origines géographiques.",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -39,14 +39,86 @@
       "weapon": {},
       "armor": {},
       "gear": {},
-      "feature": {}
+      "feature": {},
+      "origin": {},
+      "class": {},
+      "tool": {},
+      "vehicle": {}
     }
   },
+  "packs": [
+    {
+      "name": "origines",
+      "label": "Origines",
+      "system": "dnd-custom-ai",
+      "path": "packs/origines",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes",
+      "label": "Classes",
+      "system": "dnd-custom-ai",
+      "path": "packs/classes",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "objets",
+      "label": "Objets",
+      "system": "dnd-custom-ai",
+      "path": "packs/objets",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "equipements",
+      "label": "Équipements",
+      "system": "dnd-custom-ai",
+      "path": "packs/equipements",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "outils",
+      "label": "Outils",
+      "system": "dnd-custom-ai",
+      "path": "packs/outils",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "transports",
+      "label": "Moyens de transport",
+      "system": "dnd-custom-ai",
+      "path": "packs/transports",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
   "primaryTokenAttribute": "attributes.hp",
   "gridDistance": 5,
   "gridUnits": "ft",
   "url": "https://github.com/GDubuisson/Dnd-Custom-Ai",
   "manifest": "https://github.com/GDubuisson/Dnd-Custom-Ai/releases/latest/download/system.json",
-  "download": "https://github.com/GDubuisson/Dnd-Custom-Ai/releases/download/v0.2.6/system.zip",
+  "download": "https://github.com/GDubuisson/Dnd-Custom-Ai/releases/download/v0.2.7/system.zip",
   "bugs": "https://github.com/GDubuisson/Dnd-Custom-Ai/issues"
 }
