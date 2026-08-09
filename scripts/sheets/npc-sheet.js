@@ -22,7 +22,8 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {
       rollAbility: DndCustomNpcSheet.#onRollAbility,
-      toggleCondition: DndCustomNpcSheet.#onToggleCondition
+      toggleCondition: DndCustomNpcSheet.#onToggleCondition,
+      rollInitiative: DndCustomNpcSheet.#onRollInitiative
     }
   };
 
@@ -128,5 +129,10 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
    *  l'ActiveEffect correspondante (méthode native Foundry). */
   static async #onToggleCondition(event, target) {
     await this.actor.toggleStatusEffect(target.dataset.key);
+  }
+
+  /** Jet d'Initiative : cf. DndCustomActorSheet#onRollInitiative (même mécanisme natif Foundry). */
+  static async #onRollInitiative() {
+    await this.actor.rollInitiative({ createCombatants: true });
   }
 }

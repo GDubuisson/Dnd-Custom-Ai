@@ -151,6 +151,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // dérivée non persistée, exposée pour l'affichage (cf. actor-sheet.js > context.skills).
     this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
 
+    // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
+    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
+    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json).
+    this.attributes.initiativeMod = dexMod;
+
     // Emplacements de sorts max (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
     // seul `max` est recalculé à chaque préparation.
     const maxSlots = spellSlotsForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);

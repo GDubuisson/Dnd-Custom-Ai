@@ -77,7 +77,8 @@
     },
     "Actions": {
       "RestShort": "Short rest",
-      "RestLong": "Long rest"
+      "RestLong": "Long rest",
+      "RollInitiative": "Initiative"
     },
     "Roll": {
       "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
@@ -89,7 +90,8 @@
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
       "Advantage": "Advantage",
-      "Disadvantage": "Disadvantage"
+      "Disadvantage": "Disadvantage",
+      "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {
       "RestShort": "{name} takes a short rest.",

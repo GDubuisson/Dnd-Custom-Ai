@@ -93,7 +93,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       toggleCondition: DndCustomActorSheet.#onToggleCondition,
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
-      castSpell: DndCustomActorSheet.#onCastSpell
+      castSpell: DndCustomActorSheet.#onCastSpell,
+      rollInitiative: DndCustomActorSheet.#onRollInitiative
     }
   };
 
@@ -386,6 +387,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const next = Math.max(1, current + delta);
     if (next === current) return;
     await this.actor.update({ [`system.abilities.${key}.value`]: next });
+  }
+
+  /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée
+   *  le Combattant si besoin (sur la scène active) et met à jour le Combat Tracker — pas de
+   *  logique maison, on branche juste la formule système (cf. system.json > "initiative"). */
+  static async #onRollInitiative() {
+    await this.actor.rollInitiative({ createCombatants: true });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =

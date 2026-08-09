@@ -73,6 +73,7 @@
     }
   ],
   "primaryTokenAttribute": "attributes.hp",
+  "initiative": "1d20 + @attributes.initiativeMod",
   "grid": {
     "distance": 5,
     "units": "m"

@@ -77,7 +77,8 @@
     },
     "Actions": {
       "RestShort": "Repos court",
-      "RestLong": "Repos long"
+      "RestLong": "Repos long",
+      "RollInitiative": "Initiative"
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
@@ -89,7 +90,8 @@
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
       "Advantage": "Avantage",
-      "Disadvantage": "Désavantage"
+      "Disadvantage": "Désavantage",
+      "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
     },
     "Chat": {
       "RestShort": "{name} prend un repos court.",

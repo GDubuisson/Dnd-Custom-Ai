@@ -616,17 +616,28 @@
 }
 
 .dnd-custom-ai .derived-stats span,
+.dnd-custom-ai .derived-stats button,
 .dnd-custom-ai .spellcasting-stats span {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
+  border: none;
   background: var(--dca-secondary-container);
   color: var(--dca-on-secondary-container);
   font-family: var(--dca-font-label);
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+.dnd-custom-ai .derived-stats button {
+  cursor: pointer;
+}
+
+.dnd-custom-ai .derived-stats button:hover {
+  background: var(--dca-secondary);
+  color: var(--dca-surface-lowest);
 }
 
 .dnd-custom-ai .conditions-panel {
