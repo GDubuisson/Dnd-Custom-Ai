@@ -1535,3 +1535,39 @@
 .dnd-apply-damage-btn:hover {
   filter: brightness(1.1);
 }
+
+/* ---------- Assistant de création de personnage ---------- */
+
+.dnd-custom-ai .wizard-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.dnd-custom-ai .wizard-intro {
+  margin-top: 0;
+}
+
+.dnd-custom-ai .wizard-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.2rem 0.8rem;
+}
+
+.dnd-custom-ai .wizard-body button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: var(--dca-secondary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .wizard-body button[type="submit"]:hover {
+  background: var(--dca-primary);
+}

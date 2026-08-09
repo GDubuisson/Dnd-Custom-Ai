@@ -200,6 +200,21 @@
     "Spells": {
       "NoSlotAvailable": "Aucun emplacement de sort disponible à ce niveau."
     },
+    "Wizard": {
+      "Title": "Assistant de création de personnage",
+      "OpenButton": "Créer un personnage",
+      "OpenTooltip": "Choisissez Origine, Classe, caractéristiques et maîtrises de compétences.",
+      "Intro": "Répartissez le tableau standard (15/14/13/12/10/8) sur vos 6 caractéristiques et choisissez vos maîtrises de compétences. Les jets de sauvegarde maîtrisés sont déterminés automatiquement par la classe choisie.",
+      "CharacterName": "Nom du personnage",
+      "AbilitiesTitle": "Caractéristiques",
+      "AbilitiesHelp": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
+      "SkillsTitle": "Maîtrises de compétences",
+      "SkillsHelp": "Le nombre de compétences à choisir dépend de la classe sélectionnée.",
+      "Submit": "Créer le personnage",
+      "InvalidAbilities": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
+      "InvalidSkillCount": "Choisissez exactement {count} compétence(s) pour cette classe.",
+      "Created": "{name} est prêt à l'aventure !"
+    },
     "Conditions": {
       "Title": "États",
       "Exhaustion": "Exhaustion",

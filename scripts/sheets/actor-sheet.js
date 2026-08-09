@@ -18,6 +18,7 @@ import {
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
+import { CharacterCreationWizard } from "./character-creation-wizard.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -96,7 +97,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
       castSpell: DndCustomActorSheet.#onCastSpell,
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
-      levelUp: DndCustomActorSheet.#onLevelUp
+      levelUp: DndCustomActorSheet.#onLevelUp,
+      openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard
     }
   };
 
@@ -407,6 +409,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
     });
+  }
+
+  /** Ouvre l'assistant de création de personnage pour cet Actor (cf.
+   *  character-creation-wizard.js) : accessible à tout propriétaire, pas seulement au MJ. */
+  static async #onOpenCreationWizard() {
+    new CharacterCreationWizard(this.actor).render(true);
   }
 
   /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée

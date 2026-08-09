@@ -200,6 +200,21 @@
     "Spells": {
       "NoSlotAvailable": "No spell slot available at this level."
     },
+    "Wizard": {
+      "Title": "Character Creation Wizard",
+      "OpenButton": "Create a character",
+      "OpenTooltip": "Choose Origin, Class, abilities and skill proficiencies.",
+      "Intro": "Assign the standard array (15/14/13/12/10/8) to your 6 abilities and choose your skill proficiencies. Saving throw proficiencies are set automatically from the chosen class.",
+      "CharacterName": "Character name",
+      "AbilitiesTitle": "Abilities",
+      "AbilitiesHelp": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
+      "SkillsTitle": "Skill proficiencies",
+      "SkillsHelp": "The number of skills to choose depends on the selected class.",
+      "Submit": "Create character",
+      "InvalidAbilities": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
+      "InvalidSkillCount": "Choose exactly {count} skill(s) for this class.",
+      "Created": "{name} is ready for adventure!"
+    },
     "Conditions": {
       "Title": "Conditions",
       "Exhaustion": "Exhaustion",

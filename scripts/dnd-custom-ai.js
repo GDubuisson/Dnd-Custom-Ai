@@ -138,6 +138,11 @@ Hooks.once("ready", async () => {
 Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   if (actor.type !== "character") return;
   if (game.users.get(userId)?.isGM) return;
+  // Exception délibérée : l'assistant de création de personnage (character-creation-
+  // wizard.js) est le seul flux autorisé à laisser un joueur fixer ces champs lui-même,
+  // en marquant explicitement son update via cette option — jamais via le formulaire
+  // normal de la fiche (qui reste verrouillé/`disabled` côté template pour un non-MJ).
+  if (options.dndCustomWizard) return;
 
   const sys = changes.system;
   if (!sys) return;

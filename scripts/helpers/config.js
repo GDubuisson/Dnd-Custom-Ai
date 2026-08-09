@@ -65,6 +65,41 @@ DND_CUSTOM.classHitDice = {
   wizard: 6
 };
 
+/** Nombre de compétences à choisir à la création, par classe, SRD 5e ("Skills" de chaque
+ *  classe). Utilisé par l'assistant de création de personnage. */
+DND_CUSTOM.classSkillChoices = {
+  barbarian: 2,
+  bard: 3,
+  cleric: 2,
+  druid: 2,
+  fighter: 2,
+  monk: 2,
+  paladin: 2,
+  ranger: 3,
+  rogue: 4,
+  sorcerer: 2,
+  warlock: 2,
+  wizard: 2
+};
+
+/** Caractéristiques de jets de sauvegarde maîtrisées par classe, SRD 5e ("Saving Throws" de
+ *  chaque classe) : fixe, pas un choix du joueur. Utilisé par l'assistant de création de
+ *  personnage. */
+DND_CUSTOM.classSavingThrows = {
+  barbarian: ["str", "con"],
+  bard: ["dex", "cha"],
+  cleric: ["wis", "cha"],
+  druid: ["int", "wis"],
+  fighter: ["str", "con"],
+  monk: ["str", "dex"],
+  paladin: ["wis", "cha"],
+  ranger: ["str", "dex"],
+  rogue: ["dex", "int"],
+  sorcerer: ["con", "cha"],
+  warlock: ["wis", "cha"],
+  wizard: ["int", "wis"]
+};
+
 /** Caractéristique d'incantation par classe lanceuse de sorts, SRD 5e. Utilisée pour le DD
  *  de sauvegarde et le bonus d'attaque des sorts. */
 DND_CUSTOM.spellcastingAbility = {
