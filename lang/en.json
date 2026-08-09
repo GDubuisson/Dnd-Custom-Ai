@@ -121,7 +121,9 @@
       "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
       "NoCharacters": "No player character in this world.",
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
-      "LevelUp": "{name} reaches level {level}!"
+      "LevelUp": "{name} reaches level {level}!",
+      "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
+      "NoChargesLeft": "No uses left for {feature}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -291,6 +293,10 @@
         "light": "Light (lights up the token)",
         "heal": "Healing"
       },
+      "RechargeTypes": {
+        "shortRest": "Short rest",
+        "longRest": "Long rest"
+      },
       "SpellSchools": {
         "abjuration": "Abjuration",
         "conjuration": "Conjuration",
@@ -338,6 +344,11 @@
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",
         "Source": "Source",
+        "Uses": "Limited Uses",
+        "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
+        "UsesMax": "Maximum",
+        "UsesValue": "Remaining",
+        "UsesRecharge": "Recharges on",
         "UseEffect": "Effect when used",
         "UseType": "Effect type",
         "LightBright": "Bright light radius (m)",

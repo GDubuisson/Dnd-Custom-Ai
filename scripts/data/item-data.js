@@ -148,7 +148,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
-      source: new StringField({ required: false, blank: true, initial: "" })
+      source: new StringField({ required: false, blank: true, initial: "" }),
+      // Utilisations limitées (ex. Rage, Second souffle) : `max` à 0 = pas de suivi (capacité
+      // toujours disponible, comportement précédent). `value` restaure à `max` au repos
+      // court ou long selon `recharge` (cf. DndCustomActorSheet#onRestShort/#onRestLong).
+      uses: new SchemaField({
+        max: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        recharge: new StringField({
+          required: true,
+          initial: "longRest",
+          choices: ["shortRest", "longRest"]
+        })
+      })
     };
   }
 }

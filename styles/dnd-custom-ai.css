@@ -1163,6 +1163,16 @@
   color: var(--dca-muted-text);
 }
 
+.dnd-custom-ai .features-list .feature-uses {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.7rem;
+}
+
 .dnd-custom-ai .features-list li p {
   margin: 0.35rem 0 0;
   font-size: 0.8rem;

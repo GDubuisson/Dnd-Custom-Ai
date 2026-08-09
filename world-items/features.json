@@ -8,6 +8,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "longRest" },
       "description": "Action bonus pour entrer en rage (durée 1 minute, sans armure lourde) : avantage aux tests et jets de sauvegarde de Force, +2 dégâts aux attaques de corps à corps utilisant la Force (bonus qui augmente avec le niveau de Barbare), résistance aux dégâts contondants/perforants/tranchants. 2 utilisations par repos long au niveau 1. Prend fin si assommé ou si un tour se termine sans attaque ni dégâts subis depuis le tour précédent."
     }
   },
@@ -32,6 +33,7 @@
       "requiresRoll": true,
       "rollFormula": "1d6",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Action bonus : donnez à une créature autre que vous, dans un rayon de 18 m et qui vous entend, un dé d'Inspiration bardique (1d6 au niveau 1). Dans la minute qui suit, elle peut l'ajouter à un test de caractéristique, un jet d'attaque ou un jet de sauvegarde. Utilisations = modificateur de Charisme (minimum 1) par repos long."
     }
   },
@@ -68,6 +70,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
       "description": "1 utilisation par repos court ou long (davantage aux niveaux supérieurs) : déclenchez un effet magique déterminé par votre Domaine divin (ex. Repousser les morts-vivants)."
     }
   },
@@ -92,6 +95,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
       "description": "Action bonus : utilisez votre magie pour prendre la forme d'une bête déjà observée (FI maximale et restrictions selon votre niveau). 2 utilisations par repos court ou long au niveau 2."
     }
   },
@@ -104,6 +108,7 @@
       "requiresRoll": true,
       "rollFormula": "1d10 + @attributes.level",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
       "description": "Action bonus : récupérez 1d10 + votre niveau de Guerrier points de vie. 1 utilisation par repos court ou long."
     }
   },
@@ -116,6 +121,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
       "description": "Effectuez une action supplémentaire lors de votre tour, en plus de votre action normale et d'une éventuelle action bonus. 1 utilisation par repos court ou long."
     }
   },
@@ -140,6 +146,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
       "description": "Réserve de points de Ki (= niveau de Moine, soit 2 au niveau 2) utilisables pour Rafale de coups, Défense patiente, Pas du vent, entre autres options selon le niveau. Récupérés après un repos court ou long."
     }
   },
@@ -152,6 +159,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Action : détectez la présence, dans un rayon de 18 m, de toute créature Céleste, Fiélon ou Morte-vivante non dissimulée (traverse la plupart des obstacles). 1 + modificateur de Charisme utilisations (minimum 1) par repos long."
     }
   },
@@ -164,6 +172,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 5, "value": 5, "recharge": "longRest" },
       "description": "Réserve de points de guérison égale à 5 × votre niveau de Paladin. Action : touchez une créature pour lui rendre des points de vie puisés dans cette réserve, ou soigner une maladie/neutraliser un poison pour 5 points dépensés."
     }
   },
@@ -224,6 +233,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "longRest" },
       "description": "Réserve de points de sorcellerie (= niveau d'Ensorceleur) : convertissez des emplacements de sorts inutilisés en points, ou l'inverse, ou dépensez-les via la Métamagie."
     }
   },
@@ -284,6 +294,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Une fois par jour, lors d'un repos court, récupérez des emplacements de sorts déjà dépensés (niveau total récupéré = moitié de votre niveau de Magicien arrondi au supérieur, aucun emplacement de niveau 6 ou plus)."
     }
   }

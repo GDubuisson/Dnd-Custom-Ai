@@ -121,7 +121,9 @@
       "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
       "NoCharacters": "Aucun personnage joueur dans ce monde.",
       "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
-      "LevelUp": "{name} passe au niveau {level} !"
+      "LevelUp": "{name} passe au niveau {level} !",
+      "UseFeature": "{name} utilise {feature} ({remaining}/{max} restantes).",
+      "NoChargesLeft": "Plus aucune utilisation restante pour {feature}."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -291,6 +293,10 @@
         "light": "Lumière (allume le token)",
         "heal": "Soin"
       },
+      "RechargeTypes": {
+        "shortRest": "Repos court",
+        "longRest": "Repos long"
+      },
       "SpellSchools": {
         "abjuration": "Abjuration",
         "conjuration": "Invocation",
@@ -338,6 +344,11 @@
         "RequiresRoll": "Nécessite un jet",
         "RollFormula": "Formule de jet",
         "Source": "Source",
+        "Uses": "Utilisations limitées",
+        "UsesHelp": "Laisser Maximum à 0 pour une capacité toujours disponible (pas de suivi).",
+        "UsesMax": "Maximum",
+        "UsesValue": "Restantes",
+        "UsesRecharge": "Récupération",
         "UseEffect": "Effet à l'utilisation",
         "UseType": "Type d'effet",
         "LightBright": "Rayon de lumière vive (m)",

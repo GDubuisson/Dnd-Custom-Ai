@@ -44,6 +44,11 @@ const GEAR_USE_TYPE_OPTIONS = {
   heal: "DND_CUSTOM.Item.GearUseTypes.heal"
 };
 
+const FEATURE_RECHARGE_OPTIONS = {
+  shortRest: "DND_CUSTOM.Item.RechargeTypes.shortRest",
+  longRest: "DND_CUSTOM.Item.RechargeTypes.longRest"
+};
+
 export class WeaponItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/weapon-sheet.hbs` }
@@ -108,6 +113,7 @@ export class FeatureItemSheet extends DndCustomItemSheet {
       .filter((item) => item.type === "class")
       .map((item) => item.name)
       .sort((a, b) => a.localeCompare(b, game.i18n.lang));
+    context.rechargeOptions = FEATURE_RECHARGE_OPTIONS;
     return context;
   }
 }

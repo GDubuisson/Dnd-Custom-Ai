@@ -65,6 +65,14 @@ texte libre (ex. "Barbare"), pas une référence stricte à un Item Classe. Quan
 `requiresRoll` est actif (ex. Second souffle), un bouton "1d10 + niveau" apparaît sur la
 fiche du personnage et poste le jet dans le chat.
 
+11 des 24 capacités ont des utilisations limitées (`system.uses.max` > 0, ex. Rage 2/repos
+long, Second souffle 1/repos court) : un compteur "restantes/max" s'affiche sur la fiche,
+décrémenté à chaque utilisation (jet ou simple bouton "-" si pas de jet associé, ex.
+Imposition des mains) et restauré au maximum lors d'un repos court ou long selon
+`system.uses.recharge` (un repos long restaure aussi les capacités à récupération "repos
+court"). `system.uses.max` à 0 = pas de suivi, comportement précédent (capacité toujours
+disponible).
+
 ## Dépendance de l'assistant de création de personnage
 
 L'assistant de création (bouton "Créer un personnage" sur la fiche) donne un équipement de

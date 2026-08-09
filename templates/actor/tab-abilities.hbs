@@ -47,9 +47,16 @@
     <li data-item-id="{{this.id}}">
       <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
       {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
+      {{#if this.system.uses.max}}
+      <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
+      {{/if}}
       {{#if this.system.requiresRoll}}
       <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
         <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
+      </button>
+      {{else if this.system.uses.max}}
+      <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
+        <i class="fa-solid fa-minus"></i>
       </button>
       {{/if}}
     </li>

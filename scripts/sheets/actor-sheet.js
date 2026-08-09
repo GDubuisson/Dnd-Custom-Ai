@@ -104,7 +104,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
-      rollFeature: DndCustomActorSheet.#onRollFeature
+      rollFeature: DndCustomActorSheet.#onRollFeature,
+      useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge
     }
   };
 
@@ -380,6 +381,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
     if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
     await this.actor.update(updates);
+    await this.#resetFeatureUses(["shortRest"]);
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
@@ -391,6 +393,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const hp = this.actor.system.attributes.hp;
     const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
     await this.actor.update(updates);
+    // Un repos long inclut les bénéfices d'un repos court (SRD 5e) : les deux types de
+    // récupération de charges de Capacité sont donc restaurés ici.
+    await this.#resetFeatureUses(["shortRest", "longRest"]);
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestLong", { name: this.actor.name })
@@ -403,6 +408,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       updates[`system.spells.slots.${level}.value`] = this.actor.system.spells.slots[level].max;
     }
     return updates;
+  }
+
+  /** Restaure au maximum les charges des Capacités à utilisations limitées (system.uses.max
+   *  > 0) dont le type de récupération figure dans `rechargeTypes` (cf. #onRestShort/Long). */
+  async #resetFeatureUses(rechargeTypes) {
+    const updates = this.actor.items.contents
+      .filter(
+        (item) =>
+          item.type === "feature" && item.system.uses.max > 0 && rechargeTypes.includes(item.system.uses.recharge)
+      )
+      .map((item) => ({ _id: item.id, "system.uses.value": item.system.uses.max }));
+    if (updates.length) await this.actor.updateEmbeddedDocuments("Item", updates);
   }
 
   /** Boutons +/- des caractéristiques (réservés au MJ, cf. `isGM` dans le template) :
@@ -492,14 +509,56 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Jet libre d'une Capacité (`system.requiresRoll`/`rollFormula`, ex. Second souffle
    *  "1d10 + @attributes.level") : formule évaluée avec les données de l'Actor
-   *  (Actor#getRollData, natif Foundry) pour résoudre les références `@...`. */
+   *  (Actor#getRollData, natif Foundry) pour résoudre les références `@...`. Consomme une
+   *  charge si la capacité a des utilisations limitées (system.uses.max > 0), et annule le
+   *  jet si plus aucune charge n'est disponible. */
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
 
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
     const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
     await roll.evaluate();
-    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: item.name });
+    const flavor = remaining === undefined ? item.name : `${item.name} (${remaining}/${item.system.uses.max})`;
+    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor });
+  }
+
+  /** Utilisation d'une Capacité à charges limitées sans jet associé (ex. Imposition des
+   *  mains) : décrémente le compteur et l'annonce dans le chat (pas de jet à afficher, donc
+   *  pas de message automatique sinon comme pour #onRollFeature). */
+  static async #onUseFeatureCharge(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.uses.max) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseFeature", {
+        name: this.actor.name,
+        feature: item.name,
+        remaining,
+        max: item.system.uses.max
+      })
+    });
+  }
+
+  /** Décrémente system.uses.value d'une Capacité à charges limitées et renvoie le nombre de
+   *  charges restantes après l'opération. Renvoie `undefined` si la capacité n'a pas de suivi
+   *  de charges (uses.max === 0, action toujours permise), ou `null` si plus aucune charge
+   *  n'est disponible (l'appelant doit alors annuler l'action associée). */
+  async #consumeFeatureCharge(item) {
+    if (!item.system.uses.max) return undefined;
+    if (item.system.uses.value <= 0) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.NoChargesLeft", { feature: item.name }));
+      return null;
+    }
+    const remaining = item.system.uses.value - 1;
+    await item.update({ "system.uses.value": remaining });
+    return remaining;
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
