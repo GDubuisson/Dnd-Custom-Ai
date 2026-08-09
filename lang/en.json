@@ -73,18 +73,58 @@
       "OriginAdvantageTooltip": "Advantage on this check thanks to Origin",
       "ArmorDisadvantageShort": "Disadvantage",
       "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor",
-      "CarryCapacity": "Carry Capacity"
+      "CarryCapacity": "Carry Capacity",
+      "LevelUpAvailable": "Level up available",
+      "DeathSuccesses": "Successes",
+      "DeathFailures": "Failures",
+      "Stabilized": "Stabilized",
+      "Dead": "Dead"
     },
     "Actions": {
       "RestShort": "Short rest",
-      "RestLong": "Long rest"
+      "RestLong": "Long rest",
+      "RollInitiative": "Initiative",
+      "AwardXp": "Award XP",
+      "LevelUp": "Level up"
+    },
+    "Roll": {
+      "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
+      "DamageTooltip": "Damage roll. Shift-click: Versatile (two-handed) die if the weapon has one.",
+      "VersatileTooltip": "Two-handed (Versatile) damage roll.",
+      "AbilityCheck": "{ability} check",
+      "SavingThrow": "{ability} saving throw",
+      "SkillCheck": "{skill} check",
+      "ToolCheck": "{tool} — {skill} check",
+      "WeaponAttack": "Attack with {weapon}",
+      "WeaponDamage": "{weapon} damage",
+      "DeathSave": "Death saving throw",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage",
+      "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {
       "RestShort": "{name} takes a short rest.",
       "RestLong": "{name} takes a long rest and regains all hit points.",
       "UseLightOn": "{name} lights {item}.",
       "UseLightOff": "{name} extinguishes {item}.",
-      "UseHeal": "{name} uses {item} and regains {amount} HP."
+      "UseHeal": "{name} uses {item} and regains {amount} HP.",
+      "CastSpell": "{name} casts {spell}.",
+      "ConcentrationBroken": "{name} drops concentration on {spell}.",
+      "ConcentrationSuccess": "{name} maintains concentration on {spell} (DC {dc}).",
+      "ConcentrationFailed": "{name} fails their concentration save (DC {dc}) and loses {spell}!",
+      "FallsUnconscious": "{name} drops to 0 hit points and falls unconscious!",
+      "Death": "{name} has failed three death saving throws and succumbs...",
+      "ApplyDamage": "Apply {amount} damage to target",
+      "NoTarget": "No target selected (double right-click a token to target it).",
+      "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
+      "XpAmount": "XP amount",
+      "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
+      "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
+      "NoCharacters": "No player character in this world.",
+      "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
+      "LevelUp": "{name} reaches level {level}!",
+      "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
+      "NoChargesLeft": "No uses left for {feature}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -121,6 +161,8 @@
       "Currency": "Currency",
       "DeleteItem": "Remove",
       "ViewItem": "Open item sheet",
+      "NotProficient": "Not proficient",
+      "NotProficientTooltip": "Your class isn't proficient with this weapon category: the proficiency bonus doesn't apply.",
       "UseItem": "Use",
       "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
@@ -143,7 +185,14 @@
       "FeaturesTitle": "Features",
       "Empty": "No feature or spell recorded",
       "SpellSaveDC": "Spell save DC",
-      "SpellAttackBonus": "Spell attack bonus"
+      "SpellAttackBonus": "Spell attack bonus",
+      "Cantrips": "Cantrips",
+      "SpellLevelLabel": "Level {level} spells",
+      "SpellLevelShort": "Lvl.",
+      "Cast": "Cast",
+      "NoSpells": "No spell recorded",
+      "ConcentratingOn": "Concentrating on:",
+      "DropConcentration": "Drop concentration"
     },
     "Skills": {
       "acrobatics": "Acrobatics",
@@ -164,6 +213,50 @@
       "sleightOfHand": "Sleight of Hand",
       "stealth": "Stealth",
       "survival": "Survival"
+    },
+    "Spells": {
+      "NoSlotAvailable": "No spell slot available at this level."
+    },
+    "Wizard": {
+      "Title": "Character Creation Wizard",
+      "OpenButton": "Create a character",
+      "OpenTooltip": "Choose Origin, Class, abilities and skill proficiencies.",
+      "Intro": "Assign the standard array (15/14/13/12/10/8) to your 6 abilities and choose your skill proficiencies. Saving throw proficiencies are set automatically from the chosen class.",
+      "CharacterName": "Character name",
+      "AbilitiesTitle": "Abilities",
+      "AbilitiesHelp": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
+      "SkillsTitle": "Skill proficiencies",
+      "SkillsHelp": "The number of skills to choose depends on the selected class.",
+      "Submit": "Create character",
+      "InvalidAbilities": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
+      "InvalidSkillCount": "Choose exactly {count} skill(s) for this class.",
+      "Created": "{name} is ready for adventure!",
+      "StartingEquipmentMissing": "Starting equipment not found in the world Items — run the import macro from world-items/README.md first.",
+      "AsiTitle": "Ability Score Improvement",
+      "AsiHelp": "Choose either +2 to a single ability, or +1 to two different abilities (capped at 20).",
+      "AsiFirst": "First ability (+2 alone, or +1 if a second one is chosen)",
+      "AsiSecond": "Second ability (optional, +1 each)",
+      "AsiApply": "Apply",
+      "AsiInvalid": "Choose at least one ability; if you choose two, they must be different."
+    },
+    "Conditions": {
+      "Title": "Conditions",
+      "Exhaustion": "Exhaustion",
+      "blinded": "Blinded",
+      "charmed": "Charmed",
+      "deafened": "Deafened",
+      "frightened": "Frightened",
+      "grappled": "Grappled",
+      "incapacitated": "Incapacitated",
+      "invisible": "Invisible",
+      "paralyzed": "Paralyzed",
+      "petrified": "Petrified",
+      "poisoned": "Poisoned",
+      "prone": "Prone",
+      "restrained": "Restrained",
+      "stunned": "Stunned",
+      "unconscious": "Unconscious",
+      "dead": "Dead"
     },
     "Journal": {
       "Biography": "Biography",
@@ -200,6 +293,20 @@
         "none": "None",
         "light": "Light (lights up the token)",
         "heal": "Healing"
+      },
+      "RechargeTypes": {
+        "shortRest": "Short rest",
+        "longRest": "Long rest"
+      },
+      "SpellSchools": {
+        "abjuration": "Abjuration",
+        "conjuration": "Conjuration",
+        "divination": "Divination",
+        "enchantment": "Enchantment",
+        "evocation": "Evocation",
+        "illusion": "Illusion",
+        "necromancy": "Necromancy",
+        "transmutation": "Transmutation"
       },
       "Fields": {
         "Price": "Price",
@@ -238,6 +345,11 @@
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",
         "Source": "Source",
+        "Uses": "Limited Uses",
+        "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
+        "UsesMax": "Maximum",
+        "UsesValue": "Remaining",
+        "UsesRecharge": "Recharges on",
         "UseEffect": "Effect when used",
         "UseType": "Effect type",
         "LightBright": "Bright light radius (m)",
@@ -255,7 +367,20 @@
         "SkillAdvantages": "Skill Advantages",
         "SpecialTrait": "Special Trait",
         "SpecialTraitName": "Trait Name",
-        "SpecialTraitDescription": "Trait Description"
+        "SpecialTraitDescription": "Trait Description",
+        "SpellLevel": "Level (0 = cantrip)",
+        "SpellSchool": "School",
+        "CastingTime": "Casting Time",
+        "SpellRange": "Range",
+        "Components": "Components",
+        "ComponentVerbal": "Verbal (V)",
+        "ComponentSomatic": "Somatic (S)",
+        "ComponentMaterial": "Material (M)",
+        "MaterialDescription": "Material Component",
+        "Duration": "Duration",
+        "Concentration": "Concentration",
+        "Ritual": "Ritual",
+        "Prepared": "Prepared"
       }
     }
   },
@@ -271,7 +396,8 @@
       "feature": "Feature",
       "origin": "Origin",
       "class": "Class",
-      "tool": "Tool"
+      "tool": "Tool",
+      "spell": "Spell"
     }
   }
 }

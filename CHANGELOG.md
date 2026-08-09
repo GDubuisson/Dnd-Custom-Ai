@@ -7,6 +7,157 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.11.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 4 pistes d'amélioration
+proposées après la phase précédente (concentration, charges de capacités, XP automatique,
+maîtrise d'outils).
+
+### Ajouté
+- Suivi de la concentration sur les sorts (SRD 5e) : lancer un sort concentration rompt
+  automatiquement une concentration en cours ; subir des dégâts déclenche un jet de
+  sauvegarde de Constitution automatique (DD 10 ou moitié des dégâts) qui rompt la
+  concentration en cas d'échec. Bannière dédiée avec bouton pour l'interrompre volontairement.
+- Utilisations limitées pour les capacités de classe (`system.uses`, 11 des 24 capacités du
+  monde) : compteur affiché sur la fiche, décrémenté à l'usage, restauré au maximum lors d'un
+  repos court ou long selon le type de récupération de la capacité.
+- Distribution d'XP automatique à la mort d'un PNJ : la boîte de dialogue d'attribution d'XP
+  (montant pré-rempli) s'ouvre directement côté MJ quand un PNJ tombe à 0 PV.
+- Test de compétence automatique à l'utilisation d'un outil (`useEffect.skill`) : bouton
+  "Utiliser" sur l'inventaire, bonus de maîtrise toujours appliqué (l'outil confère sa propre
+  maîtrise, indépendante de celle de la compétence).
+
+## [0.10.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 5 pistes d'amélioration
+proposées après la phase précédente (mort/agonie, maîtrise d'armes, capacités de classe,
+choix de montée de niveau, équipement de départ).
+
+### Ajouté
+- Mort et agonie (SRD 5e) : tomber à 0 PV rend automatiquement Inconscient et déclenche le
+  suivi des jets de sauvegarde de la mort (3 réussites = stabilisé, 3 échecs = mort, statut
+  "Mort" sur le token). Bouton de jet dédié, panneau "Agonie" dans la zone commune.
+- Maîtrise d'armes par classe : le bonus de maîtrise ne s'applique plus au jet d'attaque que
+  si la classe du personnage couvre la catégorie de l'arme équipée (avant : toujours
+  appliqué). Étiquette "Non maîtrisé" sur les armes concernées.
+- Bibliothèque de 24 capacités de classe SRD 5e prêtes à importer
+  (`world-items/features.json`, 2 par classe) : rend l'onglet Capacités aussi peuplé que
+  l'onglet Sorts. Bouton de jet relié pour les capacités à formule (ex. Second souffle).
+- Amélioration de caractéristiques proposée automatiquement à la montée de niveau (niveaux
+  4/8/12/16/19, SRD 5e) : +2 sur une caractéristique ou +1 sur deux, au choix.
+- Équipement de départ (une arme + une armure typiques par classe) ajouté automatiquement à
+  la fin de l'assistant de création de personnage.
+
+## [0.9.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : compendium d'adversaires,
+progression des personnages (XP, montée de niveau) et assistant de création. Univers sans
+créature magique (cf. système d'Origines) : aucun monstre fantastique n'a été ajouté, que des
+adversaires humains et des bêtes réelles.
+
+### Ajouté
+- 16 adversaires réalistes prêts à importer (`world-actors/adversaries.json`, nouveau dossier
+  parallèle à `world-items/`) : 8 humains (Bandit, Garde, Vétéran, Noble, Malfrat, Éclaireur,
+  Chef de bandits, Acolyte) et 8 bêtes (Loup, Ours brun, Sanglier, Mâtin, Cheval de selle,
+  Grand serpent venimeux, Panthère, Chacal), FI 0 à 3, XP déjà rempli.
+- Distribution d'XP : bouton "Attribuer de l'XP" sur la fiche PNJ (répartit son XP rapporté
+  entre les personnages choisis) et macro monde auto-créée pour un montant libre. Confirmation
+  toujours en chuchotement MJ, jamais de chiffre d'XP visible au joueur.
+- Montée de niveau : table de seuils XP officielle SRD 5e (niveaux 1-20), badge "Niveau
+  supérieur disponible" sur la fiche (sans révéler le total d'XP), bouton MJ qui incrémente le
+  niveau d'un cran (PV max/emplacements de sorts/vitesse déjà recalculés automatiquement).
+- Assistant de création de personnage : nouvelle Application accessible à tout propriétaire de
+  la fiche (pas seulement au MJ) — Origine, Classe, répartition du tableau standard SRD 5e sur
+  les 6 caractéristiques, maîtrises de compétences (nombre selon la classe), sauvegardes
+  maîtrisées déduites automatiquement. Exception ciblée au verrouillage MJ des champs de
+  "build" (option `dndCustomWizard` sur l'update), le formulaire normal de la fiche reste
+  verrouillé pour un non-MJ.
+
+## [0.8.0] - 2026-08-09
+
+Première session en mode autonome (`ClaudeFiles/AUTONOMIE.md`) : le périmètre initial de
+`PROJECT.md` (combat automatisé, compendiums de sorts/monstres explicitement exclus "pour
+cette phase") n'est plus une limite — priorisé selon la valeur pour une table qui joue
+réellement en Foundry.
+
+### Ajouté
+- Jet d'Initiative, intégré au Combat Tracker natif de Foundry : `"initiative": "1d20 +
+  @attributes.initiativeMod"` dans `system.json`, bouton dans la zone commune (personnage)
+  et l'en-tête (PNJ/monture). Délègue entièrement à `Actor#rollInitiative` (natif), qui crée
+  le Combattant sur la scène active si besoin — aucune logique de combat maison.
+- Bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts : applique le total
+  aux tokens actuellement ciblés (PV temporaires absorbés en premier, SRD 5e). Première
+  brique d'automatisation de combat, sans ciblage/portée/grille tactique automatiques.
+- Bibliothèque de 15 sorts SRD 5e prêts à importer (`world-items/spells.json`, 5 tours de
+  magie + niveaux 1 à 3), même macro d'import que les autres `world-items/*.json` : rend le
+  système de sorts (ajouté en 0.7.0) utilisable sans que le MJ crée tout à la main. Sélection
+  non exhaustive, assumée comme telle.
+
+## [0.7.0] - 2026-08-09
+
+### Ajouté
+- Système de jets de dés : les caractéristiques, sauvegardes, compétences (fiche personnage
+  et PNJ/monture) et l'attaque/les dégâts d'arme sont désormais cliquables et postent un vrai
+  jet Foundry dans le chat, avec avantage/désavantage (Maj-clic/Ctrl-clic). Jusqu'ici aucun
+  jet n'existait dans le système — tous les bonus étaient du texte statique
+  (`scripts/helpers/rolls.js`).
+- États SRD 5e (14 conditions + Exhaustion à paliers 0-6) : affichés sur l'onglet
+  Statistiques (personnage et PNJ/monture), bascule via `Actor#toggleStatusEffect`.
+  Avantage/désavantage automatique aux jets concernés selon les états actifs (Empoisonné,
+  Effrayé, Entravé, À terre, Aveuglé, Invisible, Exhaustion). Exhaustion réduit aussi la
+  vitesse (niveau 2+) et les PV max (niveau 4+). Explicitement prévu dans `PROJECT.md`
+  ("États et conditions"), non implémenté jusqu'ici.
+- Système de sorts complet : nouveau type d'Item `spell` (niveau, école, composantes,
+  portée, durée, concentration, rituel, préparé), emplacements de sorts par niveau dérivés
+  automatiquement de la classe et du niveau (table complète SRD 5e — pleine pour les
+  lanceurs classiques, demi-lanceur pour le Paladin, Magie de Pacte pour l'Occultiste,
+  `scripts/data/spell-slots.json`), onglet Sorts avec jetons d'emplacements, liste par
+  niveau et bouton "Lancer". Explicitement prévu dans `PROJECT.md`, jusqu'ici 0% implémenté.
+- Table FI → XP officielle SRD 5e : pré-remplit le XP rapporté d'un PNJ quand son indice de
+  dangerosité change (`DND_CUSTOM.challengeRatingXp`). Explicitement noté "prévu plus tard"
+  dans `PROJECT.md`.
+- Bonus de vitesse de classe : Célérité du Barbare (niveau 5+, +10 sauf armure lourde),
+  Déplacement sans armure du Moine (niveau 2+, paliers progressifs, sans armure ni bouclier).
+
+## [0.6.1] - 2026-08-09
+
+### Ajouté
+- Emplacement d'une arme à deux mains (`equipmentSlots`, `scripts/helpers/rules.js`) :
+  occupe désormais automatiquement Main principale ET Main secondaire (champ Emplacement
+  masqué sur sa fiche, note explicative à la place).
+- Main secondaire réservée aux armes Légères (`isOffHandEligible`, SRD 5e règle du combat à
+  deux armes) : une arme à une main non-Légère (Rapière, Épée longue...) ne peut plus être
+  choisie ni équipée en Main secondaire.
+- Hook global `preUpdateItem` (`scripts/dnd-custom-ai.js`) : équiper une arme/armure dont
+  l'emplacement (main principale/secondaire/armure) est déjà occupé par un autre objet
+  équipé est désormais refusé (pas de déséquipement automatique, contrairement aux sacs),
+  avec un avertissement nommant l'objet en conflit.
+- Bonus d'attaque et dégâts de chaque arme possédée (Force/Dextérité selon Finesse/portée,
+  alternative Polyvalente à deux mains, `weaponAttackDamage`), et bonus de CA de chaque
+  armure/bouclier/accessoire possédé (`armorContribution`) : affichés dans le tableau Armes
+  et Armures de l'Inventaire et sous l'emplacement équipé correspondant sur l'onglet
+  Équipement. Suppose la maîtrise systématique de toute arme équipée (pas de liste de
+  maîtrises par classe dans ce système simplifié).
+
+## [0.6.0] - 2026-08-09
+
+### Corrigé
+- Vraie cause du doublonnage au glisser-déposer (cf. tentative incomplète en 0.5.0) :
+  `ActorSheetV2` (classe de base Foundry) lie déjà nativement son propre gestionnaire
+  `dragover`/`drop` sur l'élément racine de la fiche à chaque render, en plus des listeners
+  HTML5 maison ajoutés par `InventoryDragDropMixin` sur ce même élément — chaque drop créait
+  donc l'objet deux fois. Remplacé par une surcharge du point d'extension officiel
+  `_onDropItem(event, item)`, qui regroupe aussi en quantité si un objet de même nom/type
+  existe déjà sur l'Actor au lieu de dupliquer la ligne.
+
+### Ajouté
+- Inventaire (personnage, PNJ/monture, véhicule) : quantité éditable et case "Équipé"
+  directement dans le tableau (sans passer par la fiche de l'Item), nom cliquable pour
+  ouvrir la fiche. `ToolData` reçoit `quantity`/`equipped`, qui lui manquaient, nécessaires
+  à cette édition uniforme sur les 4 types d'Item transférables.
+- Onglet Inventaire du personnage scindé en deux tableaux : Armes et Armures, puis Objets
+  et Outils (`scripts/sheets/actor-sheet.js` > `weaponsAndArmor`/`gearAndTools`).
+
 ## [0.5.0] - 2026-08-09
 
 ### Corrigé

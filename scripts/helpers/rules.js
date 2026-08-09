@@ -10,6 +10,20 @@ export function proficiencyBonus(level) {
   return Math.ceil(level / 4) + 1;
 }
 
+/** Niveau correspondant à un total d'XP cumulé, SRD 5e (table "Character Advancement", cf.
+ *  DND_CUSTOM.xpThresholds) : le plus haut niveau dont le seuil est atteint, plafonné à 20. */
+export function levelForXp(xp) {
+  const thresholds = DND_CUSTOM.xpThresholds;
+  let level = 1;
+  for (let i = thresholds.length - 1; i >= 0; i--) {
+    if (xp >= thresholds[i]) {
+      level = i + 1;
+      break;
+    }
+  }
+  return level;
+}
+
 /** Capacité de charge, SRD 5e (règle "Détaillée") : Force x 15 lb (soit x 7,5 kg). */
 export function carryingCapacity(strengthScore, unit = "lb") {
   return strengthScore * DND_CUSTOM.carryCapacityPerStrength[unit];
@@ -43,6 +57,17 @@ export function skillModifier(system, skillKey, proficiencyBonusValue) {
   return mod + (skill.proficient ? proficiencyBonusValue : 0);
 }
 
+/** Bonus total d'un test effectué avec un outil (ToolData#useEffect, cf. ITEMS.md) : modificateur
+ *  de la caractéristique liée à la compétence visée + bonus de maîtrise TOUJOURS appliqué (un
+ *  outil confère sa propre maîtrise, indépendante de celle de la compétence elle-même, SRD 5e —
+ *  contrairement à skillModifier ci-dessus) + bonus fixe éventuel de l'objet. */
+export function toolCheckModifier(system, skillKey, proficiencyBonusValue, itemBonus = 0) {
+  const skill = system.skills[skillKey];
+  if (!skill) return 0;
+  const mod = abilityModifier(system.abilities[skill.ability].total);
+  return mod + proficiencyBonusValue + itemBonus;
+}
+
 /** Richesse totale exprimée en équivalent Pièces de Cuivre. */
 export function currencyTotalInCopper(currency) {
   return Object.entries(currency).reduce((total, [denomination, amount]) => {
@@ -67,6 +92,27 @@ export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
 /** Bonus d'attaque des sorts, SRD 5e : bonus de maîtrise + mod de la caractéristique d'incantation. */
 export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) {
   return proficiencyBonusValue + spellcastingAbilityMod;
+}
+
+/** Emplacements de sorts max par niveau (1 à 9) selon la classe et le niveau, SRD 5e (cf.
+ *  scripts/data/spell-slots.json, chargé une fois au démarrage dans
+ *  game.dndCustomAi.spellSlotTables). Toutes les classes lanceuses utilisent la table
+ *  "pleine" sauf le Paladin (demi-lanceur) et l'Occultiste (Magie de Pacte : emplacements
+ *  limités, un seul palier actif à la fois, quel que soit le niveau du sort lancé). */
+export function spellSlotsForClass(className, level, tables) {
+  const max = Object.fromEntries([1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => [n, 0]));
+  if (!tables) return max;
+
+  if (className === "warlock") {
+    const pact = tables.warlockPact[level];
+    if (pact) max[pact.level] = pact.slots;
+    return max;
+  }
+
+  const table = className === "paladin" ? tables.halfCaster : tables.fullCaster;
+  const row = table?.[level];
+  if (row) row.forEach((count, index) => (max[index + 1] = count));
+  return max;
 }
 
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
@@ -116,6 +162,36 @@ export function speedPenalty(strengthRequired, strengthTotal) {
   return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
 }
 
+/** Bonus de vitesse de classe, SRD 5e (même convention numérique que speedPenalty/baseSpeed
+ *  ci-dessus, cf. leurs commentaires). Barbare "Célérité" (niveau 5+) : +10, sauf armure
+ *  lourde. Moine "Déplacement sans armure" (niveau 2+, paliers 6/10/14/18) : +10 à +30,
+ *  seulement sans armure ni bouclier équipé. */
+export function classSpeedBonus(className, level, isHeavyArmor, hasArmorOrShield) {
+  if (className === "barbarian" && level >= 5 && !isHeavyArmor) return 10;
+  if (className === "monk" && level >= 2 && !hasArmorOrShield) {
+    if (level >= 18) return 30;
+    if (level >= 14) return 25;
+    if (level >= 10) return 20;
+    if (level >= 6) return 15;
+    return 10;
+  }
+  return 0;
+}
+
+/** Effet de l'Exhaustion sur la vitesse, SRD 5e (table complète, niveau 6 = mort géré
+ *  séparément) : vitesse divisée par deux dès le niveau 2, nulle dès le niveau 5. Appliqué
+ *  après les autres malus de vitesse (armure...). */
+export function exhaustionSpeed(speed, exhaustionLevel) {
+  if (exhaustionLevel >= 5) return 0;
+  if (exhaustionLevel >= 2) return Math.floor(speed / 2);
+  return speed;
+}
+
+/** Effet de l'Exhaustion sur les PV max, SRD 5e : PV max divisés par deux dès le niveau 4. */
+export function exhaustionMaxHp(maxHp, exhaustionLevel) {
+  return exhaustionLevel >= 4 ? Math.max(1, Math.floor(maxHp / 2)) : maxHp;
+}
+
 /** Emplacement(s) d'équipement occupé(s) par une arme/armure une fois équipée : une arme à
  *  deux mains occupe TOUJOURS Main principale + Main secondaire (SRD 5e, "nécessite les deux
  *  mains"), quel que soit son champ `slot` (ignoré dans ce cas) ; sinon un seul emplacement,
@@ -146,11 +222,19 @@ export function isOffHandEligible(weaponSystem) {
   return weaponSystem.properties?.handedness !== "twoHanded" && Boolean(weaponSystem.properties?.light);
 }
 
+/** Un personnage est-il maîtrisé de la catégorie d'arme (weaponType) équipée, selon sa
+ *  classe (cf. DND_CUSTOM.classWeaponProficiencies) ? Classe vide/inconnue (PNJ, personnage
+ *  pas encore configuré) : considéré maîtrisé par défaut, pour ne pas pénaliser avant qu'une
+ *  classe soit choisie. */
+export function isProficientWithWeapon(className, weaponType) {
+  const categories = DND_CUSTOM.classWeaponProficiencies[className];
+  return categories ? categories.includes(weaponType) : true;
+}
+
 /** Modificateur de caractéristique et bonus d'attaque d'une arme équipée, SRD 5e : Dextérité
  *  pour les armes à distance, meilleur de Force/Dextérité si Finesse, Force sinon. Bonus de
- *  maîtrise toujours appliqué : ce système simplifié ne suit pas de liste de maîtrises
- *  d'armes par classe, tout personnage est considéré maîtrisé de toute arme équipée. */
-export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue) {
+ *  maîtrise appliqué uniquement si `isProficient` (cf. isProficientWithWeapon ci-dessus). */
+export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue, isProficient = true) {
   const isRanged = weaponSystem.weaponType.startsWith("ranged");
   const strMod = abilityModifier(abilities.str.total);
   const dexMod = abilityModifier(abilities.dex.total);
@@ -159,5 +243,5 @@ export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValu
     : weaponSystem.properties.finesse
       ? Math.max(strMod, dexMod)
       : strMod;
-  return { abilityMod, attackBonus: abilityMod + proficiencyBonusValue };
+  return { abilityMod, attackBonus: abilityMod + (isProficient ? proficiencyBonusValue : 0) };
 }

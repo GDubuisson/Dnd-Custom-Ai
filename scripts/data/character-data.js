@@ -1,5 +1,14 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { abilityModifier, maxHitPoints, armorClass, speedPenalty } from "../helpers/rules.js";
+import {
+  abilityModifier,
+  maxHitPoints,
+  armorClass,
+  speedPenalty,
+  classSpeedBonus,
+  exhaustionSpeed,
+  exhaustionMaxHp,
+  spellSlotsForClass
+} from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
@@ -66,7 +75,18 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 }),
-        level: new NumberField({ required: true, integer: true, min: 1, initial: 1 })
+        level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+        // Niveaux d'Exhaustion SRD 5e (0-6) : effets appliqués dans prepareDerivedData
+        // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
+        // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
+        exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 }),
+        // Jets de sauvegarde de la mort, SRD 5e : 3 réussites = stabilisé, 3 échecs = mort.
+        // Remis à zéro automatiquement en tombant à 0 PV ou en repassant au-dessus (cf. hook
+        // updateActor dans dnd-custom-ai.js).
+        death: new SchemaField({
+          successes: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 }),
+          failures: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 })
+        })
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),
@@ -78,6 +98,23 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         )
       ),
       currency: currencySchema(),
+      // Emplacements de sorts par niveau (1-9) : `max` est entièrement dérivé (classe +
+      // niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value` (emplacements
+      // restants) est la seule valeur persistée, décrémentée en lançant un sort et
+      // restaurée à `max` au repos long (cf. actor-sheet.js).
+      spells: new SchemaField({
+        slots: new SchemaField(
+          schemaFromKeys(["1", "2", "3", "4", "5", "6", "7", "8", "9"], () => new SchemaField({
+            value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+          }))
+        ),
+        // Nom (texte libre, pas une référence d'Item) du sort actuellement concentré, SRD 5e
+        // "un seul sort à la fois" : lancer un nouveau sort à concentration remplace celui-ci
+        // (cf. DndCustomActorSheet#onCastSpell) ; un échec de jet de sauvegarde de
+        // Constitution après des dégâts subis le vide (cf. dnd-custom-ai.js).
+        concentratingOn: new StringField({ required: false, blank: true, initial: "" })
+      }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
     };
@@ -106,17 +143,37 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     const hitDie = DND_CUSTOM.classHitDice[this.class] ?? 8;
     const conMod = abilityModifier(this.abilities.con.total);
-    this.attributes.hp.max = maxHitPoints(hitDie, this.attributes.level, conMod);
+    this.attributes.hp.max = exhaustionMaxHp(
+      maxHitPoints(hitDie, this.attributes.level, conMod),
+      this.attributes.exhaustion
+    );
 
     const dexMod = abilityModifier(this.abilities.dex.total);
     this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
 
     const strengthRequired = equippedArmor?.system.strengthRequired ?? 0;
-    this.attributes.speed = DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total);
+    const isHeavyArmor = equippedArmor?.system.armorType === "heavy";
+    const hasArmorOrShield = Boolean(equippedArmor) || Boolean(equippedShield);
+    const classBonus = classSpeedBonus(this.class, this.attributes.level, isHeavyArmor, hasArmorOrShield);
+    const speedBeforeExhaustion =
+      DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total) + classBonus;
+    this.attributes.speed = exhaustionSpeed(speedBeforeExhaustion, this.attributes.exhaustion);
 
     // Désavantage aux tests de Discrétion imposé par l'armure équipée (SRD 5e) : donnée
     // dérivée non persistée, exposée pour l'affichage (cf. actor-sheet.js > context.skills).
     this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
+
+    // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
+    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
+    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json).
+    this.attributes.initiativeMod = dexMod;
+
+    // Emplacements de sorts max (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
+    // seul `max` est recalculé à chaque préparation.
+    const maxSlots = spellSlotsForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
+    for (const level of ["1", "2", "3", "4", "5", "6", "7", "8", "9"]) {
+      this.spells.slots[level].max = maxSlots[level];
+    }
   }
 }
 

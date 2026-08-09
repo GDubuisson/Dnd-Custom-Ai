@@ -9,6 +9,14 @@
       <label>{{localize "DND_CUSTOM.Actor.Level"}}
         <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
       </label>
+      {{#if levelUpAvailable}}
+      <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
+        <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
+        {{#if isGM}}
+        <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
+        {{/if}}
+      </span>
+      {{/if}}
       <label>{{localize "DND_CUSTOM.Actor.Class"}}
         <select name="system.class" {{#unless isGM}}disabled{{/unless}}>
           <option value="">—</option>
@@ -44,7 +52,33 @@
       </label>
     </div>
 
+    {{#if dying.active}}
+    <div class="death-panel">
+      <span class="death-pips">
+        {{localize "DND_CUSTOM.Actor.DeathSuccesses"}}
+        {{#each dying.successPips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+      </span>
+      <span class="death-pips failures">
+        {{localize "DND_CUSTOM.Actor.DeathFailures"}}
+        {{#each dying.failurePips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+      </span>
+      {{#if dying.resolved}}
+      <span class="death-status">
+        {{#if dying.stabilized}}{{localize "DND_CUSTOM.Actor.Stabilized"}}{{else}}{{localize "DND_CUSTOM.Actor.Dead"}}{{/if}}
+      </span>
+      {{else}}
+      <button type="button" data-action="rollDeathSave">{{localize "DND_CUSTOM.Roll.DeathSave"}}</button>
+      {{/if}}
+    </div>
+    {{/if}}
+
     <div class="header-actions">
+      <button type="button" data-action="openCreationWizard" title="{{localize 'DND_CUSTOM.Wizard.OpenTooltip'}}">
+        <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}
+      </button>
+      <button type="button" data-action="rollInitiative" title="{{localize 'DND_CUSTOM.Roll.InitiativeTooltip'}}">
+        <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actions.RollInitiative"}}
+      </button>
       <button type="button" data-action="restShort">
         <i class="fa-solid fa-mug-hot"></i> {{localize "DND_CUSTOM.Actions.RestShort"}}
       </button>

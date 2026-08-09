@@ -73,18 +73,58 @@
       "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine",
       "ArmorDisadvantageShort": "Désavantage",
       "ArmorDisadvantageTooltip": "Désavantage sur ce test à cause de l'armure équipée",
-      "CarryCapacity": "Capacité de charge"
+      "CarryCapacity": "Capacité de charge",
+      "LevelUpAvailable": "Niveau supérieur disponible",
+      "DeathSuccesses": "Réussites",
+      "DeathFailures": "Échecs",
+      "Stabilized": "Stabilisé",
+      "Dead": "Mort"
     },
     "Actions": {
       "RestShort": "Repos court",
-      "RestLong": "Repos long"
+      "RestLong": "Repos long",
+      "RollInitiative": "Initiative",
+      "AwardXp": "Attribuer de l'XP",
+      "LevelUp": "Monter de niveau"
+    },
+    "Roll": {
+      "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
+      "DamageTooltip": "Jet de dégâts. Maj-clic : dé Polyvalente (deux mains) si l'arme en a un.",
+      "VersatileTooltip": "Jet de dégâts à deux mains (Polyvalente).",
+      "AbilityCheck": "Test de {ability}",
+      "SavingThrow": "Jet de sauvegarde de {ability}",
+      "SkillCheck": "Test de {skill}",
+      "ToolCheck": "{tool} — Test de {skill}",
+      "WeaponAttack": "Attaque avec {weapon}",
+      "WeaponDamage": "Dégâts de {weapon}",
+      "DeathSave": "Jet de sauvegarde de la mort",
+      "Advantage": "Avantage",
+      "Disadvantage": "Désavantage",
+      "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
     },
     "Chat": {
       "RestShort": "{name} prend un repos court.",
       "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",
       "UseLightOn": "{name} allume {item}.",
       "UseLightOff": "{name} éteint {item}.",
-      "UseHeal": "{name} utilise {item} et récupère {amount} PV."
+      "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
+      "CastSpell": "{name} lance {spell}.",
+      "ConcentrationBroken": "{name} rompt sa concentration sur {spell}.",
+      "ConcentrationSuccess": "{name} maintient sa concentration sur {spell} (DD {dc}).",
+      "ConcentrationFailed": "{name} échoue son jet de concentration (DD {dc}) et perd {spell} !",
+      "FallsUnconscious": "{name} tombe à 0 point de vie et perd connaissance !",
+      "Death": "{name} a échoué trois jets de sauvegarde de la mort et succombe...",
+      "ApplyDamage": "Appliquer {amount} dégâts à la cible",
+      "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
+      "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
+      "XpAmount": "Montant d'XP",
+      "XpAwarded": "{amount} XP répartis ({share} chacun) entre : {names}.",
+      "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
+      "NoCharacters": "Aucun personnage joueur dans ce monde.",
+      "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
+      "LevelUp": "{name} passe au niveau {level} !",
+      "UseFeature": "{name} utilise {feature} ({remaining}/{max} restantes).",
+      "NoChargesLeft": "Plus aucune utilisation restante pour {feature}."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -121,6 +161,8 @@
       "Currency": "Monnaie",
       "DeleteItem": "Retirer",
       "ViewItem": "Ouvrir la fiche de l'objet",
+      "NotProficient": "Non maîtrisé",
+      "NotProficientTooltip": "Votre classe n'est pas maîtrisée avec cette catégorie d'arme : le bonus de maîtrise ne s'applique pas.",
       "UseItem": "Utiliser",
       "NoTokenOnScene": "Aucun token de ce personnage sur la scène active.",
       "DropHint": "Glissez un objet ici depuis une autre fiche ouverte (ou un compendium) pour l'ajouter à l'inventaire.",
@@ -143,7 +185,14 @@
       "FeaturesTitle": "Capacités",
       "Empty": "Aucune capacité ou sort enregistré",
       "SpellSaveDC": "DD de sauvegarde",
-      "SpellAttackBonus": "Bonus d'attaque"
+      "SpellAttackBonus": "Bonus d'attaque",
+      "Cantrips": "Tours de magie",
+      "SpellLevelLabel": "Sorts de niveau {level}",
+      "SpellLevelShort": "Niv.",
+      "Cast": "Lancer",
+      "NoSpells": "Aucun sort enregistré",
+      "ConcentratingOn": "Concentré sur :",
+      "DropConcentration": "Rompre la concentration"
     },
     "Skills": {
       "acrobatics": "Acrobaties",
@@ -164,6 +213,50 @@
       "sleightOfHand": "Escamotage",
       "stealth": "Discrétion",
       "survival": "Survie"
+    },
+    "Spells": {
+      "NoSlotAvailable": "Aucun emplacement de sort disponible à ce niveau."
+    },
+    "Wizard": {
+      "Title": "Assistant de création de personnage",
+      "OpenButton": "Créer un personnage",
+      "OpenTooltip": "Choisissez Origine, Classe, caractéristiques et maîtrises de compétences.",
+      "Intro": "Répartissez le tableau standard (15/14/13/12/10/8) sur vos 6 caractéristiques et choisissez vos maîtrises de compétences. Les jets de sauvegarde maîtrisés sont déterminés automatiquement par la classe choisie.",
+      "CharacterName": "Nom du personnage",
+      "AbilitiesTitle": "Caractéristiques",
+      "AbilitiesHelp": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
+      "SkillsTitle": "Maîtrises de compétences",
+      "SkillsHelp": "Le nombre de compétences à choisir dépend de la classe sélectionnée.",
+      "Submit": "Créer le personnage",
+      "InvalidAbilities": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
+      "InvalidSkillCount": "Choisissez exactement {count} compétence(s) pour cette classe.",
+      "Created": "{name} est prêt à l'aventure !",
+      "StartingEquipmentMissing": "Équipement de départ introuvable dans les Items du monde — exécutez d'abord la macro d'import de world-items/README.md.",
+      "AsiTitle": "Amélioration de caractéristiques",
+      "AsiHelp": "Choisissez soit +2 sur une seule caractéristique, soit +1 sur deux caractéristiques différentes (plafonné à 20).",
+      "AsiFirst": "Première caractéristique (+2 seule, ou +1 si une seconde est choisie)",
+      "AsiSecond": "Seconde caractéristique (facultatif, +1 chacune)",
+      "AsiApply": "Appliquer",
+      "AsiInvalid": "Choisissez au moins une caractéristique ; si vous en choisissez deux, elles doivent être différentes."
+    },
+    "Conditions": {
+      "Title": "États",
+      "Exhaustion": "Exhaustion",
+      "blinded": "Aveuglé",
+      "charmed": "Charmé",
+      "deafened": "Assourdi",
+      "frightened": "Effrayé",
+      "grappled": "Agrippé",
+      "incapacitated": "Neutralisé",
+      "invisible": "Invisible",
+      "paralyzed": "Paralysé",
+      "petrified": "Pétrifié",
+      "poisoned": "Empoisonné",
+      "prone": "À terre",
+      "restrained": "Entravé",
+      "stunned": "Étourdi",
+      "unconscious": "Inconscient",
+      "dead": "Mort"
     },
     "Journal": {
       "Biography": "Biographie",
@@ -200,6 +293,20 @@
         "none": "Aucun",
         "light": "Lumière (allume le token)",
         "heal": "Soin"
+      },
+      "RechargeTypes": {
+        "shortRest": "Repos court",
+        "longRest": "Repos long"
+      },
+      "SpellSchools": {
+        "abjuration": "Abjuration",
+        "conjuration": "Invocation",
+        "divination": "Divination",
+        "enchantment": "Enchantement",
+        "evocation": "Évocation",
+        "illusion": "Illusion",
+        "necromancy": "Nécromancie",
+        "transmutation": "Transmutation"
       },
       "Fields": {
         "Price": "Prix",
@@ -238,6 +345,11 @@
         "RequiresRoll": "Nécessite un jet",
         "RollFormula": "Formule de jet",
         "Source": "Source",
+        "Uses": "Utilisations limitées",
+        "UsesHelp": "Laisser Maximum à 0 pour une capacité toujours disponible (pas de suivi).",
+        "UsesMax": "Maximum",
+        "UsesValue": "Restantes",
+        "UsesRecharge": "Récupération",
         "UseEffect": "Effet à l'utilisation",
         "UseType": "Type d'effet",
         "LightBright": "Rayon de lumière vive (m)",
@@ -255,7 +367,20 @@
         "SkillAdvantages": "Compétences avantagées",
         "SpecialTrait": "Trait spécial",
         "SpecialTraitName": "Nom du trait",
-        "SpecialTraitDescription": "Description du trait"
+        "SpecialTraitDescription": "Description du trait",
+        "SpellLevel": "Niveau (0 = tour de magie)",
+        "SpellSchool": "École",
+        "CastingTime": "Temps d'incantation",
+        "SpellRange": "Portée",
+        "Components": "Composantes",
+        "ComponentVerbal": "Verbale (V)",
+        "ComponentSomatic": "Gestuelle (G)",
+        "ComponentMaterial": "Matérielle (M)",
+        "MaterialDescription": "Composante matérielle",
+        "Duration": "Durée",
+        "Concentration": "Concentration",
+        "Ritual": "Rituel",
+        "Prepared": "Préparé"
       }
     }
   },
@@ -271,7 +396,8 @@
       "feature": "Capacité",
       "origin": "Origine",
       "class": "Classe",
-      "tool": "Outil"
+      "tool": "Outil",
+      "spell": "Sort"
     }
   }
 }

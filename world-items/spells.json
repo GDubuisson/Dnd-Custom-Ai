@@ -1,0 +1,227 @@
+[
+  {
+    "name": "Trait de feu",
+    "type": "spell",
+    "system": {
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "36 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous lancez un éclat de feu sur une créature ou un objet à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, la cible subit 1d10 dégâts de feu. Un objet inflammable touché par ce sort s'enflamme s'il n'est ni porté ni transporté."
+    }
+  },
+  {
+    "name": "Flamme sacrée",
+    "type": "spell",
+    "system": {
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "18 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Une lumière ardente s'abat sur une créature que vous voyez à portée. La cible doit réussir un jet de sauvegarde de Dextérité sous peine de subir 1d8 dégâts radiants. Elle ne bénéficie d'aucun couvert pour ce jet de sauvegarde."
+    }
+  },
+  {
+    "name": "Décharge occulte",
+    "type": "spell",
+    "system": {
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "36 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Un rayon d'énergie crépitante fend l'air vers une créature à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, elle subit 1d10 dégâts de force. Le sort crée un rayon supplémentaire au niveau 5 (deux rayons), au niveau 11 (trois rayons) et au niveau 17 (quatre rayons) ; les rayons peuvent viser une même cible ou des cibles différentes, avec un jet d'attaque séparé pour chacun."
+    }
+  },
+  {
+    "name": "Main du mage",
+    "type": "spell",
+    "system": {
+      "level": 0,
+      "school": "conjuration",
+      "castingTime": "1 action",
+      "range": "9 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "1 minute",
+      "concentration": false,
+      "ritual": false,
+      "description": "Une main spectrale et flottante apparaît en un point de votre choix à portée. Elle dure le temps indiqué ou jusqu'à ce que vous la dissipiez (action). Elle disparaît si elle s'éloigne de plus de 9 m de vous ou si vous relancez ce sort. Vous pouvez utiliser votre action pour la faire manipuler un objet, ouvrir une porte ou un contenant non verrouillé, ranger ou sortir un objet d'un contenant ouvert, ou verser le contenu d'une fiole. Elle se déplace jusqu'à 9 m à chaque utilisation. Elle ne peut ni attaquer, ni activer d'objet magique, ni porter plus de 4,5 kg."
+    }
+  },
+  {
+    "name": "Lumière",
+    "type": "spell",
+    "system": {
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "Contact",
+      "components": { "verbal": true, "somatic": false, "material": true, "materialDescription": "Une luciole ou de la mousse phosphorescente." },
+      "duration": "1 heure",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous touchez un objet de 3 m maximum dans toutes ses dimensions. Jusqu'à la fin du sort, l'objet émet une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires ; vous pouvez en choisir la couleur. Le recouvrir entièrement d'un matériau opaque bloque la lumière. Le sort prend fin si vous le relancez ou le dissipez (action). Si la cible est un objet porté par une créature hostile, celle-ci doit réussir un jet de sauvegarde de Dextérité pour éviter le sort."
+    }
+  },
+  {
+    "name": "Projectile magique",
+    "type": "spell",
+    "system": {
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "36 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous créez trois fléchettes de force magique luisante. Chacune touche automatiquement une créature de votre choix que vous voyez à portée, infligeant 1d4+1 dégâts de force. Les fléchettes frappent simultanément et peuvent être dirigées vers une seule ou plusieurs cibles."
+    }
+  },
+  {
+    "name": "Bouclier",
+    "type": "spell",
+    "system": {
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "1 réaction (touché par une attaque ou ciblé par Projectile magique)",
+      "range": "Personnelle",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "1 round",
+      "concentration": false,
+      "ritual": false,
+      "description": "Une barrière invisible de force magique apparaît et vous protège. Jusqu'au début de votre prochain tour, vous gagnez un bonus de +5 à la CA, y compris contre l'attaque déclenchante, et vous ne subissez aucun dégât du sort Projectile magique."
+    }
+  },
+  {
+    "name": "Soin des blessures",
+    "type": "spell",
+    "system": {
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "Contact",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Une créature que vous touchez récupère 1d8 + votre modificateur de caractéristique d'incantation points de vie. Ce sort n'a aucun effet sur les morts-vivants ni les créatures artificielles. Lancé avec un emplacement de niveau supérieur, le soin augmente de 1d8 par niveau d'emplacement au-delà du premier."
+    }
+  },
+  {
+    "name": "Mot de guérison",
+    "type": "spell",
+    "system": {
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "1 action bonus",
+      "range": "18 m",
+      "components": { "verbal": true, "somatic": false, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Une créature de votre choix que vous voyez à portée récupère 1d4 + votre modificateur de caractéristique d'incantation points de vie. Ce sort n'a aucun effet sur les morts-vivants ni les créatures artificielles."
+    }
+  },
+  {
+    "name": "Bénédiction",
+    "type": "spell",
+    "system": {
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "1 action",
+      "range": "9 m",
+      "components": { "verbal": true, "somatic": true, "material": true, "materialDescription": "Une pincée d'eau bénite." },
+      "duration": "Concentration, jusqu'à 1 minute",
+      "concentration": true,
+      "ritual": false,
+      "description": "Vous bénissez jusqu'à trois créatures de votre choix à portée. Chaque fois qu'une cible effectue un jet d'attaque ou un jet de sauvegarde avant la fin du sort, elle peut ajouter 1d4 au résultat."
+    }
+  },
+  {
+    "name": "Invisibilité",
+    "type": "spell",
+    "system": {
+      "level": 2,
+      "school": "illusion",
+      "castingTime": "1 action",
+      "range": "Contact",
+      "components": { "verbal": true, "somatic": true, "material": true, "materialDescription": "Un cil enrobé de gomme arabique." },
+      "duration": "Concentration, jusqu'à 1 heure",
+      "concentration": true,
+      "ritual": false,
+      "description": "Une créature que vous touchez devient invisible jusqu'à la fin du sort. Tout ce qu'elle porte ou transporte est également invisible tant que cela reste sur elle. Le sort prend fin pour la cible si elle attaque ou lance un sort."
+    }
+  },
+  {
+    "name": "Rayon ardent",
+    "type": "spell",
+    "system": {
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "36 m",
+      "components": { "verbal": true, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous créez trois rayons de feu et les projetez vers des cibles à portée, une seule ou plusieurs. Effectuez un jet d'attaque à distance de sort séparé pour chaque rayon. En cas de réussite, la cible subit 2d6 dégâts de feu. Lancé avec un emplacement de niveau 3 ou plus, vous créez un rayon supplémentaire par niveau d'emplacement au-delà du deuxième."
+    }
+  },
+  {
+    "name": "Immobilisation de personne",
+    "type": "spell",
+    "system": {
+      "level": 2,
+      "school": "enchantment",
+      "castingTime": "1 action",
+      "range": "18 m",
+      "components": { "verbal": true, "somatic": true, "material": true, "materialDescription": "Un petit morceau de fer droit." },
+      "duration": "Concentration, jusqu'à 1 minute",
+      "concentration": true,
+      "ritual": false,
+      "description": "Choisissez un humanoïde que vous voyez à portée. Il doit réussir un jet de sauvegarde de Sagesse sous peine d'être paralysé pour la durée du sort. À la fin de chacun de ses tours, la cible peut retenter ce jet de sauvegarde ; en cas de réussite, le sort prend fin."
+    }
+  },
+  {
+    "name": "Boule de feu",
+    "type": "spell",
+    "system": {
+      "level": 3,
+      "school": "evocation",
+      "castingTime": "1 action",
+      "range": "45 m (rayon d'effet 6 m)",
+      "components": { "verbal": true, "somatic": true, "material": true, "materialDescription": "Une petite boule de guano de chauve-souris et de soufre." },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Un trait éclatant part de votre doigt tendu vers un point choisi à portée puis explose en une gerbe de flammes. Chaque créature dans un rayon de 6 m autour de ce point doit réussir un jet de sauvegarde de Dextérité sous peine de subir 8d6 dégâts de feu (moitié en cas de réussite). Le feu contourne les angles et enflamme les objets inflammables non portés ni transportés dans la zone."
+    }
+  },
+  {
+    "name": "Contresort",
+    "type": "spell",
+    "system": {
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "1 réaction (en voyant une créature à moins de 18 m lancer un sort)",
+      "range": "18 m",
+      "components": { "verbal": false, "somatic": true, "material": false, "materialDescription": "" },
+      "duration": "Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous tentez d'interrompre une créature en train de lancer un sort. Si elle lance un sort de niveau 3 ou moins, celui-ci échoue et n'a aucun effet. S'il est de niveau 4 ou plus, effectuez un test de caractéristique d'incantation (DD 10 + niveau du sort) : en cas de réussite, le sort de la cible échoue et n'a aucun effet."
+    }
+  }
+]

@@ -65,6 +65,61 @@ DND_CUSTOM.classHitDice = {
   wizard: 6
 };
 
+/** Nombre de compétences à choisir à la création, par classe, SRD 5e ("Skills" de chaque
+ *  classe). Utilisé par l'assistant de création de personnage. */
+DND_CUSTOM.classSkillChoices = {
+  barbarian: 2,
+  bard: 3,
+  cleric: 2,
+  druid: 2,
+  fighter: 2,
+  monk: 2,
+  paladin: 2,
+  ranger: 3,
+  rogue: 4,
+  sorcerer: 2,
+  warlock: 2,
+  wizard: 2
+};
+
+/** Caractéristiques de jets de sauvegarde maîtrisées par classe, SRD 5e ("Saving Throws" de
+ *  chaque classe) : fixe, pas un choix du joueur. Utilisé par l'assistant de création de
+ *  personnage. */
+DND_CUSTOM.classSavingThrows = {
+  barbarian: ["str", "con"],
+  bard: ["dex", "cha"],
+  cleric: ["wis", "cha"],
+  druid: ["int", "wis"],
+  fighter: ["str", "con"],
+  monk: ["str", "dex"],
+  paladin: ["wis", "cha"],
+  ranger: ["str", "dex"],
+  rogue: ["dex", "int"],
+  sorcerer: ["con", "cha"],
+  warlock: ["wis", "cha"],
+  wizard: ["int", "wis"]
+};
+
+/** Catégories d'armes maîtrisées par classe, SRD 5e ("Weapons" de chaque classe) —
+ *  simplifié au niveau des 4 catégories déjà utilisées par WeaponData.weaponType (courante/
+ *  de guerre, corps-à-corps/à distance), sans les quelques exceptions nommées du SRD (ex.
+ *  Rogue + rapière). Utilisé par weaponAttackDamage (rules.js) pour n'appliquer le bonus de
+ *  maîtrise que si la classe du personnage couvre le type de l'arme équipée. */
+DND_CUSTOM.classWeaponProficiencies = {
+  barbarian: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  bard: ["meleeSimple", "rangedSimple"],
+  cleric: ["meleeSimple", "rangedSimple"],
+  druid: ["meleeSimple", "rangedSimple"],
+  fighter: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  monk: ["meleeSimple", "rangedSimple"],
+  paladin: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  ranger: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  rogue: ["meleeSimple", "rangedSimple"],
+  sorcerer: ["meleeSimple", "rangedSimple"],
+  warlock: ["meleeSimple", "rangedSimple"],
+  wizard: ["meleeSimple", "rangedSimple"]
+};
+
 /** Caractéristique d'incantation par classe lanceuse de sorts, SRD 5e. Utilisée pour le DD
  *  de sauvegarde et le bonus d'attaque des sorts. */
 DND_CUSTOM.spellcastingAbility = {
@@ -102,6 +157,18 @@ DND_CUSTOM.damageTypes = {
   bludgeoning: "DND_CUSTOM.Item.DamageTypes.bludgeoning",
   piercing: "DND_CUSTOM.Item.DamageTypes.piercing",
   slashing: "DND_CUSTOM.Item.DamageTypes.slashing"
+};
+
+/** Écoles de magie SRD 5e (8 écoles officielles). */
+DND_CUSTOM.spellSchools = {
+  abjuration: "DND_CUSTOM.Item.SpellSchools.abjuration",
+  conjuration: "DND_CUSTOM.Item.SpellSchools.conjuration",
+  divination: "DND_CUSTOM.Item.SpellSchools.divination",
+  enchantment: "DND_CUSTOM.Item.SpellSchools.enchantment",
+  evocation: "DND_CUSTOM.Item.SpellSchools.evocation",
+  illusion: "DND_CUSTOM.Item.SpellSchools.illusion",
+  necromancy: "DND_CUSTOM.Item.SpellSchools.necromancy",
+  transmutation: "DND_CUSTOM.Item.SpellSchools.transmutation"
 };
 
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */
@@ -159,3 +226,50 @@ DND_CUSTOM.challengeRatings = [
   "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
   "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
 ];
+
+/** Points d'expérience rapportés par FI, SRD 5e (table officielle) : pré-remplit
+ *  `xpReward` quand le MJ change l'indice de dangerosité (cf. dnd-custom-ai.js > hook
+ *  preUpdateActor), la valeur reste ensuite modifiable à la main. */
+DND_CUSTOM.challengeRatingXp = {
+  "0": 10, "1/8": 25, "1/4": 50, "1/2": 100,
+  "1": 200, "2": 450, "3": 700, "4": 1100, "5": 1800,
+  "6": 2300, "7": 2900, "8": 3900, "9": 5000, "10": 5900,
+  "11": 7200, "12": 8400, "13": 10000, "14": 11500, "15": 13000,
+  "16": 15000, "17": 18000, "18": 20000, "19": 22000, "20": 25000,
+  "21": 33000, "22": 41000, "23": 50000, "24": 62000, "25": 75000,
+  "26": 90000, "27": 105000, "28": 120000, "29": 135000, "30": 155000
+};
+
+/** XP total cumulé requis pour atteindre chaque niveau, SRD 5e (table "Character
+ *  Advancement" officielle, niveaux 1 à 20 — index 0 = niveau 1). Utilisé pour détecter
+ *  qu'une montée de niveau est disponible (cf. rules.js > levelForXp). */
+DND_CUSTOM.xpThresholds = [
+  0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
+  85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
+];
+
+/** Niveaux où une Amélioration de caractéristiques est proposée, SRD 5e (générique, hors
+ *  variations mineures par classe comme le Guerrier/Roublard qui en ont davantage — non
+ *  modélisées ici). Utilisé au clic sur "Monter de niveau" pour proposer le choix. */
+DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
+
+/** Équipement de départ simplifié par classe (une arme + une armure typiques, SRD 5e sans
+ *  les choix multiples officiels) : noms exacts d'Items de `world-items/weapons.json` et
+ *  `world-items/armors.json`, recherchés dans les Items du monde par l'assistant de création
+ *  de personnage (character-creation-wizard.js). `armor: null` = classe sans armure de
+ *  départ typique (Barbare/Moine/Ensorceleur/Magicien, comptent sur leur Dextérité ou une
+ *  Défense sans armure). */
+DND_CUSTOM.classStartingEquipment = {
+  barbarian: { weapon: "Grande hache", armor: null },
+  bard: { weapon: "Rapière", armor: "Cuir" },
+  cleric: { weapon: "Masse d'armes", armor: "Écailles" },
+  druid: { weapon: "Cimeterre", armor: "Peau" },
+  fighter: { weapon: "Épée longue", armor: "Cotte de mailles" },
+  monk: { weapon: "Bâton", armor: null },
+  paladin: { weapon: "Épée longue", armor: "Cotte de mailles" },
+  ranger: { weapon: "Arc long", armor: "Cuir clouté" },
+  rogue: { weapon: "Rapière", armor: "Cuir" },
+  sorcerer: { weapon: "Dague", armor: null },
+  warlock: { weapon: "Dague", armor: "Cuir" },
+  wizard: { weapon: "Dague", armor: null }
+};

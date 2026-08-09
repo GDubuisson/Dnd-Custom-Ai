@@ -148,7 +148,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
-      source: new StringField({ required: false, blank: true, initial: "" })
+      source: new StringField({ required: false, blank: true, initial: "" }),
+      // Utilisations limitées (ex. Rage, Second souffle) : `max` à 0 = pas de suivi (capacité
+      // toujours disponible, comportement précédent). `value` restaure à `max` au repos
+      // court ou long selon `recharge` (cf. DndCustomActorSheet#onRestShort/#onRestLong).
+      uses: new SchemaField({
+        max: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        recharge: new StringField({
+          required: true,
+          initial: "longRest",
+          choices: ["shortRest", "longRest"]
+        })
+      })
     };
   }
 }
@@ -173,6 +185,47 @@ export class ToolData extends foundry.abstract.TypeDataModel {
         bonus: new NumberField({ required: true, integer: true, initial: 0 })
       }),
       descriptionRP: new HTMLField({ required: false, blank: true, initial: "" })
+    };
+  }
+}
+
+/** Sort (SRD 5e) : niveau 0 = tour de magie. Pas de formule de dégâts/DD dédiée — reste dans
+ *  la description comme pour les Capacités (cf. FeatureData) ; le bonus d'attaque/DD des
+ *  sorts déjà affiché sur la fiche (CharacterData/actor-sheet.js > context.spellcasting)
+ *  s'applique à tout sort lancé. */
+export class SpellData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
+      school: new StringField({
+        required: true,
+        initial: "evocation",
+        choices: [
+          "abjuration",
+          "conjuration",
+          "divination",
+          "enchantment",
+          "evocation",
+          "illusion",
+          "necromancy",
+          "transmutation"
+        ]
+      }),
+      castingTime: new StringField({ required: false, blank: true, initial: "1 action" }),
+      range: new StringField({ required: false, blank: true, initial: "" }),
+      components: new SchemaField({
+        verbal: new BooleanField({ required: true, initial: false }),
+        somatic: new BooleanField({ required: true, initial: false }),
+        material: new BooleanField({ required: true, initial: false }),
+        materialDescription: new StringField({ required: false, blank: true, initial: "" })
+      }),
+      duration: new StringField({ required: false, blank: true, initial: "" }),
+      concentration: new BooleanField({ required: true, initial: false }),
+      ritual: new BooleanField({ required: true, initial: false }),
+      // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
+      // sorts "connus" (Barde/Ensorceleur/Occultiste), où tout sort connu est disponible.
+      prepared: new BooleanField({ required: true, initial: false }),
+      description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }
 }

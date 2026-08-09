@@ -201,6 +201,38 @@
   width: 2.2rem;
 }
 
+.dnd-custom-ai .level-up-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: center;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--dca-tertiary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .level-up-badge button {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--dca-surface-lowest);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .level-up-badge button:hover {
+  background: var(--dca-surface-lowest);
+  color: var(--dca-tertiary);
+}
+
 .dnd-custom-ai .hp-bar-track {
   display: block;
   width: 100%;
@@ -249,6 +281,66 @@
 
 .dnd-custom-ai .header-actions button[data-action="restLong"]:hover {
   background: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.3rem;
+  background: rgba(186, 26, 26, 0.18);
+  border: 1px solid var(--dca-tertiary);
+}
+
+.dnd-custom-ai .death-pips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-pips i {
+  font-size: 0.55rem;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-pips.failures i.filled {
+  color: var(--dca-tertiary);
+  -webkit-text-stroke: 1px var(--dca-tertiary);
+}
+
+.dnd-custom-ai .death-pips:not(.failures) i.filled {
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-status {
+  font-family: var(--dca-font-headline);
+  font-weight: 600;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-panel button {
+  padding: 0.3rem 0.7rem;
+  border: 2px solid var(--dca-tertiary);
+  border-radius: 0.2rem;
+  background: transparent;
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .death-panel button:hover {
+  background: var(--dca-tertiary);
 }
 
 /* ---------- Navigation par onglets ---------- */
@@ -565,6 +657,30 @@
   color: var(--dca-on-surface-variant);
 }
 
+.dnd-custom-ai .ability-side .save-mod {
+  font-family: var(--dca-font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--dca-on-surface-variant);
+}
+
+/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : repris visuellement à
+   l'identique du texte statique qu'ils remplacent, seul le survol les distingue. */
+.dnd-custom-ai .roll-btn {
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .roll-btn:hover {
+  color: var(--dca-secondary);
+  text-decoration: underline;
+}
+
 .dnd-custom-ai .proficiency-bonus {
   display: inline-flex;
   align-items: center;
@@ -592,17 +708,98 @@
 }
 
 .dnd-custom-ai .derived-stats span,
+.dnd-custom-ai .derived-stats button,
 .dnd-custom-ai .spellcasting-stats span {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
+  border: none;
   background: var(--dca-secondary-container);
   color: var(--dca-on-secondary-container);
   font-family: var(--dca-font-label);
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+.dnd-custom-ai .derived-stats button {
+  cursor: pointer;
+}
+
+.dnd-custom-ai .derived-stats button:hover {
+  background: var(--dca-secondary);
+  color: var(--dca-surface-lowest);
+}
+
+.dnd-custom-ai .conditions-panel {
+  margin-top: 1rem;
+}
+
+.dnd-custom-ai .conditions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.dnd-custom-ai .condition-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  color: var(--dca-muted-text);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .condition-chip img {
+  width: 1rem;
+  height: 1rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.dnd-custom-ai .condition-chip:hover {
+  border-color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .condition-chip.active {
+  background: var(--dca-secondary-container);
+  border-color: var(--dca-secondary);
+  color: var(--dca-on-secondary-container);
+}
+
+.dnd-custom-ai .condition-chip.active img {
+  filter: none;
+  opacity: 1;
+}
+
+.dnd-custom-ai .exhaustion-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .exhaustion-chip .ability-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .dnd-custom-ai .skills-list {
@@ -966,6 +1163,16 @@
   color: var(--dca-muted-text);
 }
 
+.dnd-custom-ai .features-list .feature-uses {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.7rem;
+}
+
 .dnd-custom-ai .features-list li p {
   margin: 0.35rem 0 0;
   font-size: 0.8rem;
@@ -974,6 +1181,123 @@
 
 .dnd-custom-ai .features-list li.origin-trait-item {
   border-left: 3px solid var(--dca-secondary);
+}
+
+/* ---------- Sorts ---------- */
+
+.dnd-custom-ai .spell-slots-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.9rem;
+}
+
+.dnd-custom-ai .spell-slot-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .spell-slot-chip input[type="number"] {
+  width: 2.2rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  padding: 0.1rem 0.2rem;
+}
+
+.dnd-custom-ai .concentration-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.3rem;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-size: 0.8rem;
+}
+
+.dnd-custom-ai .concentration-banner button {
+  margin-left: auto;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--dca-on-secondary-container);
+  border-radius: 0.3rem;
+  background: transparent;
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .concentration-banner button:hover {
+  background: var(--dca-on-secondary-container);
+  color: var(--dca-secondary-container);
+}
+
+.dnd-custom-ai .spell-level-group {
+  margin-top: 0.9rem;
+}
+
+.dnd-custom-ai .spells-list {
+  list-style: none;
+  margin: 0.3rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.dnd-custom-ai .spells-list li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  background: var(--dca-surface-lowest);
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.dnd-custom-ai .spell-school {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .spell-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.dnd-custom-ai .spell-prepared {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-left: auto;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  color: var(--dca-muted-text);
 }
 
 /* ---------- Journal ---------- */
@@ -1290,4 +1614,87 @@
   font-size: 0.72rem;
   font-style: italic;
   color: var(--dca-muted-text);
+}
+
+/* ---------- Carte de chat (hors ".dnd-custom-ai", les messages de chat ne sont pas
+   imbriqués dans une fiche du système) ---------- */
+
+.dnd-apply-damage-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--dca-outline, #7a5a35);
+  border-radius: 0.3rem;
+  background: var(--dca-error, #ba1a1a);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dnd-apply-damage-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* ---------- Assistant de création de personnage ---------- */
+
+.dnd-custom-ai .wizard-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.dnd-custom-ai .wizard-intro {
+  margin-top: 0;
+}
+
+.dnd-custom-ai .wizard-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.2rem 0.8rem;
+}
+
+.dnd-custom-ai .wizard-body button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: var(--dca-secondary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .wizard-body button[type="submit"]:hover {
+  background: var(--dca-primary);
+}
+
+.dnd-custom-ai .feature-roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+}
+
+.dnd-custom-ai .feature-roll-btn:hover {
+  border-color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .not-proficient-tag {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }

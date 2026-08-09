@@ -1,5 +1,7 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
+import { rollCheck } from "../helpers/rolls.js";
+import { openAwardXpDialog } from "../helpers/xp.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -18,7 +20,13 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     tag: "form",
     position: { width: 640, height: 620 },
     window: { resizable: true },
-    form: { submitOnChange: true, closeOnSubmit: false }
+    form: { submitOnChange: true, closeOnSubmit: false },
+    actions: {
+      rollAbility: DndCustomNpcSheet.#onRollAbility,
+      toggleCondition: DndCustomNpcSheet.#onToggleCondition,
+      rollInitiative: DndCustomNpcSheet.#onRollInitiative,
+      awardXp: DndCustomNpcSheet.#onAwardXp
+    }
   };
 
   static PARTS = {
@@ -52,6 +60,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     context.actor = this.actor;
     context.system = system;
     context.config = DND_CUSTOM;
+    context.isGM = game.user.isGM;
 
     context.creatureTypeOptions = Object.entries(DND_CUSTOM.creatureTypes).map(([key, labelKey]) => ({
       key,
@@ -84,6 +93,15 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     const items = this.actor.items.contents;
     context.lootItems = items.filter((item) => ["weapon", "armor", "gear", "tool"].includes(item.type));
 
+    // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
+    // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
+    context.conditions = CONFIG.statusEffects.map((status) => ({
+      id: status.id,
+      label: game.i18n.localize(status.name),
+      img: status.img,
+      active: this.actor.statuses.has(status.id)
+    }));
+
     return context;
   }
 
@@ -92,5 +110,38 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     context = await super._preparePartContext(partId, context);
     if (context.tabs?.[partId]) context.tab = context.tabs[partId];
     return context;
+  }
+
+  /** Jet de caractéristique (1d20 + bonus) : sert aussi de jet de sauvegarde, identiques
+   *  pour un PNJ (pas de maîtrise séparée, cf. commentaire de classe). */
+  static async #onRollAbility(event, target) {
+    const key = target.dataset.key;
+    const mod = this.actor.system.abilities[key].mod;
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(mod),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
+        ability: game.i18n.localize(DND_CUSTOM.abilities[key])
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
+  }
+
+  /** Bascule un état (cf. CONFIG.statusEffects) : Actor#toggleStatusEffect crée/retire
+   *  l'ActiveEffect correspondante (méthode native Foundry). */
+  static async #onToggleCondition(event, target) {
+    await this.actor.toggleStatusEffect(target.dataset.key);
+  }
+
+  /** Jet d'Initiative : cf. DndCustomActorSheet#onRollInitiative (même mécanisme natif Foundry). */
+  static async #onRollInitiative() {
+    await this.actor.rollInitiative({ createCombatants: true });
+  }
+
+  /** Ouvre la boîte de dialogue de distribution d'XP, montant pré-rempli avec le XP rapporté
+   *  de ce PNJ (cf. scripts/helpers/xp.js). */
+  static async #onAwardXp() {
+    await openAwardXpDialog({ defaultAmount: this.actor.system.xpReward });
   }
 }
