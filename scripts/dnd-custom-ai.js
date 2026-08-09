@@ -19,6 +19,7 @@ import {
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
+import { declareDeath } from "./helpers/death.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
@@ -44,7 +45,11 @@ const DND_CUSTOM_CONDITIONS = [
   { id: "prone", name: "DND_CUSTOM.Conditions.prone", img: "icons/svg/falling.svg" },
   { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
   { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
-  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" }
+  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" },
+  // Pas un état SRD 5e classique (pas d'avantage/désavantage associé) mais nécessaire pour
+  // marquer visuellement un personnage mort sur son token (cf. hook updateActor > mort par
+  // échec de jets de sauvegarde, plus bas dans ce fichier).
+  { id: "dead", name: "DND_CUSTOM.Conditions.dead", img: "icons/svg/skull.svg" }
 ];
 
 Hooks.once("init", async () => {
@@ -236,6 +241,46 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   const xp = DND_CUSTOM.challengeRatingXp[newChallengeRating];
   if (xp !== undefined) changes.system.xpReward = xp;
 });
+
+// Mémorise les PV avant modification (cf. hook updateActor ci-dessous) : preUpdateActor est
+// le seul moment où `actor` reflète encore l'état AVANT l'update.
+Hooks.on("preUpdateActor", (actor, changes, options) => {
+  if (actor.type !== "character") return;
+  if (changes.system?.attributes?.hp?.value === undefined) return;
+  options.dndCustomOldHp = actor.system.attributes.hp.value;
+});
+
+// Mort et agonie, SRD 5e : tomber à 0 PV rend Inconscient et remet à zéro les jets de
+// sauvegarde de la mort ; subir des dégâts en étant déjà à 0 PV compte comme un échec
+// automatique (3 échecs = mort) ; repasser au-dessus de 0 PV retire Inconscient et
+// réinitialise les compteurs. Ne s'exécute que côté client à l'origine du changement.
+Hooks.on("updateActor", async (actor, changes, options, userId) => {
+  if (actor.type !== "character") return;
+  if (game.user.id !== userId) return;
+  const oldHp = options.dndCustomOldHp;
+  if (oldHp === undefined) return;
+  const newHp = actor.system.attributes.hp.value;
+
+  if (newHp === 0 && oldHp > 0) {
+    await actor.update({ "system.attributes.death.successes": 0, "system.attributes.death.failures": 0 });
+    if (!actor.statuses.has("unconscious")) await actor.toggleStatusEffect("unconscious", { active: true });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.FallsUnconscious", { name: actor.name })
+    });
+  } else if (newHp === 0 && oldHp === 0) {
+    const death = actor.system.attributes.death;
+    if (death.failures >= 3 || death.successes >= 3) return; // déjà stabilisé ou mort, rien à faire
+    const failures = Math.min(3, death.failures + 1);
+    await actor.update({ "system.attributes.death.failures": failures });
+    if (failures >= 3) await declareDeath(actor);
+  } else if (newHp > 0 && oldHp === 0) {
+    await actor.update({ "system.attributes.death.successes": 0, "system.attributes.death.failures": 0 });
+    if (actor.statuses.has("unconscious")) await actor.toggleStatusEffect("unconscious", { active: false });
+    if (actor.statuses.has("dead")) await actor.toggleStatusEffect("dead", { active: false });
+  }
+});
+
 
 // Ajoute un bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts (cf.
 // rollDamage dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le

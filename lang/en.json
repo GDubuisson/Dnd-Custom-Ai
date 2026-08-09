@@ -74,7 +74,11 @@
       "ArmorDisadvantageShort": "Disadvantage",
       "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor",
       "CarryCapacity": "Carry Capacity",
-      "LevelUpAvailable": "Level up available"
+      "LevelUpAvailable": "Level up available",
+      "DeathSuccesses": "Successes",
+      "DeathFailures": "Failures",
+      "Stabilized": "Stabilized",
+      "Dead": "Dead"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -92,6 +96,7 @@
       "SkillCheck": "{skill} check",
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
+      "DeathSave": "Death saving throw",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
       "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
@@ -103,6 +108,8 @@
       "UseLightOff": "{name} extinguishes {item}.",
       "UseHeal": "{name} uses {item} and regains {amount} HP.",
       "CastSpell": "{name} casts {spell}.",
+      "FallsUnconscious": "{name} drops to 0 hit points and falls unconscious!",
+      "Death": "{name} has failed three death saving throws and succumbs...",
       "ApplyDamage": "Apply {amount} damage to target",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
@@ -231,7 +238,8 @@
       "prone": "Prone",
       "restrained": "Restrained",
       "stunned": "Stunned",
-      "unconscious": "Unconscious"
+      "unconscious": "Unconscious",
+      "dead": "Dead"
     },
     "Journal": {
       "Biography": "Biography",

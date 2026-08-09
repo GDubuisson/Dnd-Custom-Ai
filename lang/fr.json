@@ -74,7 +74,11 @@
       "ArmorDisadvantageShort": "Désavantage",
       "ArmorDisadvantageTooltip": "Désavantage sur ce test à cause de l'armure équipée",
       "CarryCapacity": "Capacité de charge",
-      "LevelUpAvailable": "Niveau supérieur disponible"
+      "LevelUpAvailable": "Niveau supérieur disponible",
+      "DeathSuccesses": "Réussites",
+      "DeathFailures": "Échecs",
+      "Stabilized": "Stabilisé",
+      "Dead": "Mort"
     },
     "Actions": {
       "RestShort": "Repos court",
@@ -92,6 +96,7 @@
       "SkillCheck": "Test de {skill}",
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
+      "DeathSave": "Jet de sauvegarde de la mort",
       "Advantage": "Avantage",
       "Disadvantage": "Désavantage",
       "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
@@ -103,6 +108,8 @@
       "UseLightOff": "{name} éteint {item}.",
       "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
       "CastSpell": "{name} lance {spell}.",
+      "FallsUnconscious": "{name} tombe à 0 point de vie et perd connaissance !",
+      "Death": "{name} a échoué trois jets de sauvegarde de la mort et succombe...",
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
@@ -231,7 +238,8 @@
       "prone": "À terre",
       "restrained": "Entravé",
       "stunned": "Étourdi",
-      "unconscious": "Inconscient"
+      "unconscious": "Inconscient",
+      "dead": "Mort"
     },
     "Journal": {
       "Biography": "Biographie",

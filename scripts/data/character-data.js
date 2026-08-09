@@ -79,7 +79,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // Niveaux d'Exhaustion SRD 5e (0-6) : effets appliqués dans prepareDerivedData
         // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
         // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
-        exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 })
+        exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 }),
+        // Jets de sauvegarde de la mort, SRD 5e : 3 réussites = stabilisé, 3 échecs = mort.
+        // Remis à zéro automatiquement en tombant à 0 PV ou en repassant au-dessus (cf. hook
+        // updateActor dans dnd-custom-ai.js).
+        death: new SchemaField({
+          successes: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 }),
+          failures: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 })
+        })
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),

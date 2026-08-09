@@ -283,6 +283,66 @@
   background: var(--dca-secondary-fixed);
 }
 
+.dnd-custom-ai .death-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.3rem;
+  background: rgba(186, 26, 26, 0.18);
+  border: 1px solid var(--dca-tertiary);
+}
+
+.dnd-custom-ai .death-pips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-pips i {
+  font-size: 0.55rem;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-pips.failures i.filled {
+  color: var(--dca-tertiary);
+  -webkit-text-stroke: 1px var(--dca-tertiary);
+}
+
+.dnd-custom-ai .death-pips:not(.failures) i.filled {
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-status {
+  font-family: var(--dca-font-headline);
+  font-weight: 600;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .death-panel button {
+  padding: 0.3rem 0.7rem;
+  border: 2px solid var(--dca-tertiary);
+  border-radius: 0.2rem;
+  background: transparent;
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .death-panel button:hover {
+  background: var(--dca-tertiary);
+}
+
 /* ---------- Navigation par onglets ---------- */
 
 .dnd-custom-ai nav.tabs,

@@ -52,6 +52,26 @@
       </label>
     </div>
 
+    {{#if dying.active}}
+    <div class="death-panel">
+      <span class="death-pips">
+        {{localize "DND_CUSTOM.Actor.DeathSuccesses"}}
+        {{#each dying.successPips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+      </span>
+      <span class="death-pips failures">
+        {{localize "DND_CUSTOM.Actor.DeathFailures"}}
+        {{#each dying.failurePips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+      </span>
+      {{#if dying.resolved}}
+      <span class="death-status">
+        {{#if dying.stabilized}}{{localize "DND_CUSTOM.Actor.Stabilized"}}{{else}}{{localize "DND_CUSTOM.Actor.Dead"}}{{/if}}
+      </span>
+      {{else}}
+      <button type="button" data-action="rollDeathSave">{{localize "DND_CUSTOM.Roll.DeathSave"}}</button>
+      {{/if}}
+    </div>
+    {{/if}}
+
     <div class="header-actions">
       <button type="button" data-action="openCreationWizard" title="{{localize 'DND_CUSTOM.Wizard.OpenTooltip'}}">
         <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}

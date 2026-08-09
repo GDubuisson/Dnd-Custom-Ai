@@ -19,6 +19,7 @@ import {
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
+import { declareDeath } from "../helpers/death.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -98,7 +99,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       castSpell: DndCustomActorSheet.#onCastSpell,
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
-      openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard
+      openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
+      rollDeathSave: DndCustomActorSheet.#onRollDeathSave
     }
   };
 
@@ -170,6 +172,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Indicateur "niveau disponible" (bouton MJ) : ne révèle jamais le total d'XP lui-même
     // au joueur (cf. PROJECT.md > "Système de progression", XP toujours caché au joueur).
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
+
+    // Panneau Agonie (SRD 5e) : visible tant que le personnage est à 0 PV et n'a pas encore
+    // atteint 3 réussites (stabilisé) ou 3 échecs (mort) — cf. hook updateActor dans
+    // dnd-custom-ai.js qui gère la transition et le décompte automatique.
+    const death = system.attributes.death;
+    context.dying = {
+      active: hp.value === 0,
+      stabilized: death.successes >= 3,
+      dead: death.failures >= 3,
+      resolved: death.successes >= 3 || death.failures >= 3,
+      successPips: [1, 2, 3].map((n) => death.successes >= n),
+      failurePips: [1, 2, 3].map((n) => death.failures >= n)
+    };
 
     const dexMod = abilityModifier(system.abilities.dex.total);
     context.initiative = { mod: dexMod, modLabel: formatModifier(dexMod) };
@@ -422,6 +437,39 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  logique maison, on branche juste la formule système (cf. system.json > "initiative"). */
   static async #onRollInitiative() {
     await this.actor.rollInitiative({ createCombatants: true });
+  }
+
+  /** Jet de sauvegarde de la mort, SRD 5e : 1d20 sans modificateur. Naturel 20 = régénère
+   *  1 PV — le hook updateActor (dnd-custom-ai.js) détecte alors le retour au-dessus de 0 PV
+   *  et réinitialise l'état (retire Inconscient, remet les compteurs à zéro), pas besoin de
+   *  le refaire ici. Naturel 1 = deux échecs. 10+ = réussite, sinon échec. Troisième échec :
+   *  declareDeath (scripts/helpers/death.js), la même fonction que pour une mort par dégâts
+   *  subis à 0 PV, pour un comportement identique quelle que soit la cause. */
+  static async #onRollDeathSave() {
+    const actor = this.actor;
+    const roll = new Roll("1d20");
+    await roll.evaluate();
+    const total = roll.total;
+    const death = actor.system.attributes.death;
+
+    if (total === 20) {
+      await actor.update({ "system.attributes.hp.value": 1 });
+    } else if (total === 1) {
+      const failures = Math.min(3, death.failures + 2);
+      await actor.update({ "system.attributes.death.failures": failures });
+      if (failures >= 3) await declareDeath(actor);
+    } else if (total >= 10) {
+      await actor.update({ "system.attributes.death.successes": Math.min(3, death.successes + 1) });
+    } else {
+      const failures = Math.min(3, death.failures + 1);
+      await actor.update({ "system.attributes.death.failures": failures });
+      if (failures >= 3) await declareDeath(actor);
+    }
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor: game.i18n.localize("DND_CUSTOM.Roll.DeathSave")
+    });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
