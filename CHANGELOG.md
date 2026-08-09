@@ -7,11 +7,40 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-### Corrigé
-- `seedCompendiumFromJson` échouait (`You may not create documents in the locked compendium`)
-  : les compendiums de système sont verrouillés par défaut. La fonction déverrouille
-  désormais temporairement le compendium le temps de l'écriture, puis restaure son état de
-  verrouillage initial.
+### Modifié
+- Retiré les compendiums système "Objets", "Équipements" et "Outils" (`system.json`,
+  `packs/objets`, `packs/equipements`, `packs/outils`) : ce contenu est plus à sa place dans
+  l'onglet "Objets" du monde (partagé entre tables) que dans un compendium lié au système.
+  Retiré au passage `seedCompendiumFromJson` (`scripts/helpers/compendium-seed.js`), le
+  peuplement automatique testé la session précédente sur "Équipements", devenu inutile.
+  "Origines" et "Classes" restent des compendiums système (contenu propre au système, pas au
+  monde).
+
+### Ajouté
+- `world-items/` : données de référence SRD 5e à importer une fois dans les Items du monde
+  (`armors.json` : 13 armures, `weapons.json` : 37 armes, `gear.json` : 15 objets
+  d'aventurier, `tools.json` : 24 outils), avec une macro d'import fournie dans
+  `world-items/README.md`. Remplace l'ancien contenu des 3 compendiums retirés ci-dessus.
+- Nouveau type d'Actor `vehicle` (charrette, bateau...) : fiche minimale (nom, vitesse, PV,
+  capacité de charge) avec un inventaire qu'on peut peupler/vider par glisser-déposer entre
+  fiches ouvertes (`scripts/data/vehicle-actor-data.js`,
+  `scripts/sheets/vehicle-actor-sheet.js`, `templates/actor/vehicle-sheet.hbs`).
+- `InventoryDragDropMixin` (`scripts/sheets/inventory-drag-drop.js`), appliqué à la fiche de
+  personnage et à la nouvelle fiche de véhicule : glisser-déposer HTML5 natif (armes,
+  armures, objets, outils) entre deux fiches ouvertes — l'objet est déplacé (retiré de la
+  fiche source), pas dupliqué, pour simuler "prendre un objet du véhicule et le ranger dans
+  son sac". Bouton "Retirer" par ligne d'inventaire pour la suppression directe.
+- Nouveau type d'Actor `mount` (montures vivantes) : réutilise entièrement la fiche PNJ
+  (bloc de stats de créature, type/taille/FI, onglet "Butin") sous un type et un libellé
+  dédiés ("Fiche de monture"). L'onglet "Butin" (PNJ comme monture) bénéficie désormais lui
+  aussi du glisser-déposer et du bouton "Retirer", pour attacher/détacher de la sellerie ou
+  de l'équipement.
+
+### Retiré
+- Type d'Item `vehicle` et compendium "Transports" (`packs/transports`) : redondants avec
+  les nouveaux types d'Actor `mount` (montures vivantes) et `vehicle` (véhicules non-vivants,
+  ajouté à la session précédente) qui couvrent maintenant ces deux cas avec un vrai
+  inventaire manipulable, plutôt qu'un simple Item de référence.
 
 ## [0.3.0]
 

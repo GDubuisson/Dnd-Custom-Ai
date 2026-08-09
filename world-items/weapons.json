@@ -1,0 +1,742 @@
+[
+  {
+    "name": "Gourdin",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Dague",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Gourdin à deux mains",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 4.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Hachette",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Javeline",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 9, "long": 36 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Marteau léger",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Masse d'armes",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Bâton",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Faucille",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Lance simple",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Arbalète légère",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.3,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
+        "range": { "normal": 24, "long": 96 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Fléchette",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.11,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": false,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Arc court",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 24, "long": 96 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Fronde",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 9, "long": 36 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Hache de bataille",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Fléau",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Glaive",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": true, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Grande hache",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "damage": { "dice": "1d12", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 3.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Grande épée",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "damage": { "dice": "2d6", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Hallebarde",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": true, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Lance de cavalerie",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "1d12", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Désavantage à l'attaque contre une cible à moins de 1,50 m ; nécessite une monture pour être maniée à une main.",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": true, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": "Désavantage si la cible est à moins de 1,50 m ; nécessite une monture pour être maniée à une main."
+      }
+    }
+  },
+  {
+    "name": "Épée longue",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Maillet",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "2d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 4.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Morgenstern",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Pique",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 8.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": true, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Rapière",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Cimeterre",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Épée courte",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Trident",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Pic de guerre",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Marteau de guerre",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Fouet",
+    "type": "weapon",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": true, "light": false,
+        "thrown": false, "heavy": false, "reach": true, "reload": false, "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Sarbacane",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "damage": { "dice": "1", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
+        "range": { "normal": 7.5, "long": 30 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Arbalète de poing",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+        "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
+        "range": { "normal": 9, "long": 36 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Arbalète lourde",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 8.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1,
+        "range": { "normal": 30, "long": 120 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Arc long",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "",
+      "properties": {
+        "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 45, "long": 180 }, "special": ""
+      }
+    }
+  },
+  {
+    "name": "Filet",
+    "type": "weapon",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "damage": { "dice": "", "type": "" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "N'inflige aucun dégât. Une créature de taille G ou moins touchée est entravée jusqu'à ce qu'elle se libère (Action, DD 10 Athlétisme).",
+      "properties": {
+        "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
+        "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+        "range": { "normal": 1.5, "long": 4.5 }, "special": "Entrave la cible touchée (DD 10 Athlétisme pour se libérer) ; aucun dégât."
+      }
+    }
+  }
+]

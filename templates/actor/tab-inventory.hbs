@@ -8,6 +8,7 @@
         <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Equipped"}}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -17,9 +18,14 @@
         <td>{{this.system.quantity}}</td>
         <td>{{formatWeight this.system.weight}}</td>
         <td>{{#if this.system.equipped}}✓{{/if}}</td>
+        <td>
+          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
       </tr>
       {{else}}
-      <tr><td colspan="4" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
+      <tr><td colspan="5" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
       {{/each}}
     </tbody>
   </table>
@@ -33,6 +39,8 @@
       <span class="capacity-bar-fill {{#if overCapacity}}over-capacity{{/if}}" style="width: {{carryingCapacityPercent}}%"></span>
     </span>
   </div>
+
+  <p class="drop-hint">{{localize "DND_CUSTOM.Inventory.DropHint"}}</p>
 
   <div class="currency">
     <h3>{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
