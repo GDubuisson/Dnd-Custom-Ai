@@ -15,6 +15,7 @@ import {
   skillModifier,
   spellSaveDC,
   spellAttackBonus,
+  toolCheckModifier,
   weaponAttackDamage
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
@@ -713,17 +714,45 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ "system.spells.concentratingOn": "" });
   }
 
-  /** Bouton "Utiliser" de l'inventaire (objets `gear` avec `system.use.type` renseigné) :
-   *  "light" allume/éteint la source sur le(s) token(s) de l'Actor sur la scène active,
-   *  "heal" rend (healBase + bonus de compétence) PV. */
+  /** Bouton "Utiliser" de l'inventaire : objets `gear` avec `system.use.type` renseigné
+   *  ("light" allume/éteint la source sur le(s) token(s) de l'Actor sur la scène active,
+   *  "heal" rend (healBase + bonus de compétence) PV), ou objets `tool` avec
+   *  `system.useEffect.skill` renseigné (test de compétence, cf. #onUseTool). */
   static async #onUseItem(event, target) {
     const itemId = target.closest("[data-item-id]")?.dataset.itemId;
     const item = this.actor.items.get(itemId);
-    const use = item?.system.use;
+    if (!item) return;
+
+    if (item.type === "tool") return DndCustomActorSheet.#onUseTool(event, this.actor, item);
+
+    const use = item.system.use;
     if (!use || use.type === "none") return;
 
     if (use.type === "light") return DndCustomActorSheet.#toggleLight(this.actor, item);
     if (use.type === "heal") return DndCustomActorSheet.#applyHeal(this.actor, item);
+  }
+
+  /** Test de compétence avec un outil (`system.useEffect.skill`, cf. ToolData) : l'outil
+   *  confère sa propre maîtrise (bonus de maîtrise toujours appliqué, indépendamment de la
+   *  maîtrise de la compétence elle-même — cf. toolCheckModifier dans rules.js), plus
+   *  l'éventuel bonus fixe de l'objet (`system.useEffect.bonus`). Maj/Ctrl-clic = avantage/
+   *  désavantage, même convention que #onRollSkill. */
+  static async #onUseTool(event, actor, item) {
+    const skillKey = item.system.useEffect.skill;
+    if (!skillKey) return;
+
+    const profBonus = proficiencyBonus(actor.system.attributes.level);
+    const mod = toolCheckModifier(actor.system, skillKey, profBonus, item.system.useEffect.bonus);
+    await rollCheck({
+      actor,
+      formula: formatModifier(mod),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.ToolCheck", {
+        tool: item.name,
+        skill: game.i18n.localize(DND_CUSTOM.skills[skillKey])
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
   }
 
   static async #toggleLight(actor, item) {

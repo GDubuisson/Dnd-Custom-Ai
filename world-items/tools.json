@@ -410,7 +410,7 @@
         "skill": "sleightOfHand",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage à tout test de Dextérité (Escamotage) impliquant crochetage de serrure ou désamorçage de piège. Bouton \"Utiliser\" sur la fiche : jet automatique (bonus de maîtrise toujours appliqué, indépendamment de la maîtrise d'Escamotage elle-même)."
     }
   },
   {

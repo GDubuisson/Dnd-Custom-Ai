@@ -94,6 +94,7 @@
       "AbilityCheck": "{ability} check",
       "SavingThrow": "{ability} saving throw",
       "SkillCheck": "{skill} check",
+      "ToolCheck": "{tool} — {skill} check",
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
       "DeathSave": "Death saving throw",

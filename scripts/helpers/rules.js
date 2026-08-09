@@ -57,6 +57,17 @@ export function skillModifier(system, skillKey, proficiencyBonusValue) {
   return mod + (skill.proficient ? proficiencyBonusValue : 0);
 }
 
+/** Bonus total d'un test effectué avec un outil (ToolData#useEffect, cf. ITEMS.md) : modificateur
+ *  de la caractéristique liée à la compétence visée + bonus de maîtrise TOUJOURS appliqué (un
+ *  outil confère sa propre maîtrise, indépendante de celle de la compétence elle-même, SRD 5e —
+ *  contrairement à skillModifier ci-dessus) + bonus fixe éventuel de l'objet. */
+export function toolCheckModifier(system, skillKey, proficiencyBonusValue, itemBonus = 0) {
+  const skill = system.skills[skillKey];
+  if (!skill) return 0;
+  const mod = abilityModifier(system.abilities[skill.ability].total);
+  return mod + proficiencyBonusValue + itemBonus;
+}
+
 /** Richesse totale exprimée en équivalent Pièces de Cuivre. */
 export function currencyTotalInCopper(currency) {
   return Object.entries(currency).reduce((total, [denomination, amount]) => {

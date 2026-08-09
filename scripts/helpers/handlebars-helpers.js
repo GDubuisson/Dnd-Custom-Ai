@@ -9,10 +9,12 @@ export function registerHandlebarsHelpers() {
   });
 
   Handlebars.registerHelper("isUsableItem", (item) => {
+    if (item?.type === "tool") return Boolean(item.system.useEffect?.skill);
     return Boolean(item?.system?.use) && item.system.use.type !== "none";
   });
 
   Handlebars.registerHelper("useItemIcon", (item) => {
+    if (item?.type === "tool") return "fa-screwdriver-wrench";
     const use = item?.system?.use;
     if (use?.type === "light") return item.system.lit ? "fa-fire" : "fa-lightbulb";
     if (use?.type === "heal") return "fa-kit-medical";

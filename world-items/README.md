@@ -41,10 +41,13 @@ ui.notifications.info("Import terminé (voir la console pour le détail).");
 
 Les outils (`tools.json`) sont importés avec `useEffect.skill`/`useEffect.bonus` vides pour
 la plupart : en SRD 5e, un outil confère la **maîtrise** (le bonus de maîtrise du personnage
-s'applique aux tests concernés), pas un bonus fixe propre à l'objet — ce mécanisme n'est pas
-encore automatisé sur la fiche de personnage. Seuls les "Outils de voleur" ont une compétence
-pré-remplie (`sleightOfHand`) à titre d'exemple ; à vous d'ajuster `useEffect.bonus` si vous
-préférez un bonus fixe simplifié pour votre table.
+s'applique aux tests concernés), pas un bonus fixe propre à l'objet. Quand `useEffect.skill`
+est renseigné, un bouton "Utiliser" apparaît sur l'inventaire de la fiche de personnage et
+lance automatiquement 1d20 + modificateur de la caractéristique liée + bonus de maîtrise
+(toujours appliqué, indépendamment de la maîtrise de la compétence elle-même) +
+`useEffect.bonus` s'il est renseigné. Seuls les "Outils de voleur" ont une compétence
+pré-remplie (`sleightOfHand`) à titre d'exemple ; laissez `useEffect.skill` vide pour un outil
+sans automatisation (le bonus de maîtrise reste alors à appliquer manuellement en jeu).
 
 ## Note sur les sorts
 

@@ -94,6 +94,7 @@
       "AbilityCheck": "Test de {ability}",
       "SavingThrow": "Jet de sauvegarde de {ability}",
       "SkillCheck": "Test de {skill}",
+      "ToolCheck": "{tool} — Test de {skill}",
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
       "DeathSave": "Jet de sauvegarde de la mort",
