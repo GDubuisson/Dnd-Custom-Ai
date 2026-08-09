@@ -1632,6 +1632,20 @@
   background: var(--dca-primary);
 }
 
+.dnd-custom-ai .feature-roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+}
+
+.dnd-custom-ai .feature-roll-btn:hover {
+  border-color: var(--dca-secondary);
+}
+
 .dnd-custom-ai .not-proficient-tag {
   display: inline-block;
   margin-left: 0.3rem;

@@ -1,0 +1,290 @@
+[
+  {
+    "name": "Rage",
+    "type": "feature",
+    "system": {
+      "class": "Barbare",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Action bonus pour entrer en rage (durée 1 minute, sans armure lourde) : avantage aux tests et jets de sauvegarde de Force, +2 dégâts aux attaques de corps à corps utilisant la Force (bonus qui augmente avec le niveau de Barbare), résistance aux dégâts contondants/perforants/tranchants. 2 utilisations par repos long au niveau 1. Prend fin si assommé ou si un tour se termine sans attaque ni dégâts subis depuis le tour précédent."
+    }
+  },
+  {
+    "name": "Défense sans armure (Barbare)",
+    "type": "feature",
+    "system": {
+      "class": "Barbare",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Sans armure : Classe d'Armure = 10 + modificateur de Dextérité + modificateur de Constitution. Un bouclier reste utilisable sans perdre ce bénéfice."
+    }
+  },
+  {
+    "name": "Inspiration bardique",
+    "type": "feature",
+    "system": {
+      "class": "Barde",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "description": "Action bonus : donnez à une créature autre que vous, dans un rayon de 18 m et qui vous entend, un dé d'Inspiration bardique (1d6 au niveau 1). Dans la minute qui suit, elle peut l'ajouter à un test de caractéristique, un jet d'attaque ou un jet de sauvegarde. Utilisations = modificateur de Charisme (minimum 1) par repos long."
+    }
+  },
+  {
+    "name": "Aptitudes multiples",
+    "type": "feature",
+    "system": {
+      "class": "Barde",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Ajoutez la moitié de votre bonus de maîtrise (arrondi à l'inférieur) à tout test de caractéristique utilisant une compétence dans laquelle vous n'êtes pas déjà maîtrisé."
+    }
+  },
+  {
+    "name": "Incantation rituelle (Clerc)",
+    "type": "feature",
+    "system": {
+      "class": "Clerc",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez lancer un sort de Clerc en rituel s'il possède la mention Rituel, sans dépenser d'emplacement de sort, à condition que le sort figure dans vos sorts préparés."
+    }
+  },
+  {
+    "name": "Canalisation divine",
+    "type": "feature",
+    "system": {
+      "class": "Clerc",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "1 utilisation par repos court ou long (davantage aux niveaux supérieurs) : déclenchez un effet magique déterminé par votre Domaine divin (ex. Repousser les morts-vivants)."
+    }
+  },
+  {
+    "name": "Druidique",
+    "type": "feature",
+    "system": {
+      "class": "Druide",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous connaissez le Druidique, la langue secrète des druides. Vous pouvez y dissimuler des messages que seul un autre druide peut déchiffrer."
+    }
+  },
+  {
+    "name": "Forme sauvage",
+    "type": "feature",
+    "system": {
+      "class": "Druide",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Action bonus : utilisez votre magie pour prendre la forme d'une bête déjà observée (FI maximale et restrictions selon votre niveau). 2 utilisations par repos court ou long au niveau 2."
+    }
+  },
+  {
+    "name": "Second souffle",
+    "type": "feature",
+    "system": {
+      "class": "Guerrier",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d10 + @attributes.level",
+      "source": "",
+      "description": "Action bonus : récupérez 1d10 + votre niveau de Guerrier points de vie. 1 utilisation par repos court ou long."
+    }
+  },
+  {
+    "name": "Sursaut d'activité",
+    "type": "feature",
+    "system": {
+      "class": "Guerrier",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Effectuez une action supplémentaire lors de votre tour, en plus de votre action normale et d'une éventuelle action bonus. 1 utilisation par repos court ou long."
+    }
+  },
+  {
+    "name": "Arts martiaux",
+    "type": "feature",
+    "system": {
+      "class": "Moine",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d4",
+      "source": "",
+      "description": "Vos attaques à mains nues et avec les armes de moine (armes courantes non lourdes/à deux mains, et épée courte) peuvent utiliser la Dextérité au lieu de la Force pour l'attaque et les dégâts. Dé de dégâts 1d4 au niveau 1 (progresse avec le niveau). Une attaque à mains nues supplémentaire en action bonus après une action d'Attaque."
+    }
+  },
+  {
+    "name": "Ki",
+    "type": "feature",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Réserve de points de Ki (= niveau de Moine, soit 2 au niveau 2) utilisables pour Rafale de coups, Défense patiente, Pas du vent, entre autres options selon le niveau. Récupérés après un repos court ou long."
+    }
+  },
+  {
+    "name": "Sens divin",
+    "type": "feature",
+    "system": {
+      "class": "Paladin",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Action : détectez la présence, dans un rayon de 18 m, de toute créature Céleste, Fiélon ou Morte-vivante non dissimulée (traverse la plupart des obstacles). 1 + modificateur de Charisme utilisations (minimum 1) par repos long."
+    }
+  },
+  {
+    "name": "Imposition des mains",
+    "type": "feature",
+    "system": {
+      "class": "Paladin",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Réserve de points de guérison égale à 5 × votre niveau de Paladin. Action : touchez une créature pour lui rendre des points de vie puisés dans cette réserve, ou soigner une maladie/neutraliser un poison pour 5 points dépensés."
+    }
+  },
+  {
+    "name": "Ennemi juré",
+    "type": "feature",
+    "system": {
+      "class": "Rôdeur",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez un type d'ennemi favori : avantage aux tests de Sagesse (Survie) pour le pister et aux tests d'Intelligence pour vous souvenir d'informations à son sujet."
+    }
+  },
+  {
+    "name": "Explorateur-né",
+    "type": "feature",
+    "system": {
+      "class": "Rôdeur",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez un terrain de prédilection : divers avantages en terrain naturel (déplacement, discrétion, pistage, ressources, perception)."
+    }
+  },
+  {
+    "name": "Attaque sournoise",
+    "type": "feature",
+    "system": {
+      "class": "Roublard",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "description": "Une fois par tour, infligez 1d6 dégâts supplémentaires (progresse avec le niveau) à une cible touchée avec avantage — ou sans avantage si un allié se trouve à 1,50 m de la cible et que vous n'avez pas de désavantage. Nécessite une arme de Finesse ou à distance."
+    }
+  },
+  {
+    "name": "Action rusée",
+    "type": "feature",
+    "system": {
+      "class": "Roublard",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Action bonus à chacun de vos tours en combat pour Se précipiter, Se désengager ou Se cacher."
+    }
+  },
+  {
+    "name": "Sorcellerie innée",
+    "type": "feature",
+    "system": {
+      "class": "Ensorceleur",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Réserve de points de sorcellerie (= niveau d'Ensorceleur) : convertissez des emplacements de sorts inutilisés en points, ou l'inverse, ou dépensez-les via la Métamagie."
+    }
+  },
+  {
+    "name": "Métamagie",
+    "type": "feature",
+    "system": {
+      "class": "Ensorceleur",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez 2 options de Métamagie parmi une liste (ex. Sort Distancé, Sort Prudent) pour modifier vos sorts lancés, en dépensant des points de sorcellerie."
+    }
+  },
+  {
+    "name": "Magie de pacte",
+    "type": "feature",
+    "system": {
+      "class": "Occultiste",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vos emplacements de sorts sont peu nombreux mais toujours du niveau maximal disponible, et se rechargent après un repos court ou long plutôt qu'après un repos long uniquement (cf. onglet Sorts)."
+    }
+  },
+  {
+    "name": "Invocations occultes",
+    "type": "feature",
+    "system": {
+      "class": "Occultiste",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Apprenez des Invocations occultes parmi une liste, accordant des aptitudes magiques mineures permanentes ou activables."
+    }
+  },
+  {
+    "name": "Grimoire",
+    "type": "feature",
+    "system": {
+      "class": "Magicien",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vos sorts connus sont consignés dans un grimoire ; vous pouvez y copier de nouveaux sorts trouvés en jeu (temps et coût en composantes) et le remplacer s'il est perdu ou détruit."
+    }
+  },
+  {
+    "name": "Récupération arcanique",
+    "type": "feature",
+    "system": {
+      "class": "Magicien",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Une fois par jour, lors d'un repos court, récupérez des emplacements de sorts déjà dépensés (niveau total récupéré = moitié de votre niveau de Magicien arrondi au supérieur, aucun emplacement de niveau 6 ou plus)."
+    }
+  }
+]

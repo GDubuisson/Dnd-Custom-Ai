@@ -101,7 +101,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
-      rollDeathSave: DndCustomActorSheet.#onRollDeathSave
+      rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
+      rollFeature: DndCustomActorSheet.#onRollFeature
     }
   };
 
@@ -478,6 +479,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: game.i18n.localize("DND_CUSTOM.Roll.DeathSave")
     });
+  }
+
+  /** Jet libre d'une Capacité (`system.requiresRoll`/`rollFormula`, ex. Second souffle
+   *  "1d10 + @attributes.level") : formule évaluée avec les données de l'Actor
+   *  (Actor#getRollData, natif Foundry) pour résoudre les références `@...`. */
+  static async #onRollFeature(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
+
+    const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
+    await roll.evaluate();
+    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: item.name });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =

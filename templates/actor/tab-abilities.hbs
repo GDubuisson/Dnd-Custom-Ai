@@ -37,8 +37,13 @@
     {{/if}}
     {{#each features}}
     <li data-item-id="{{this.id}}">
-      <strong>{{this.name}}</strong>
+      <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
       {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
+      {{#if this.system.requiresRoll}}
+      <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+        <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
+      </button>
+      {{/if}}
     </li>
     {{else}}
     {{#unless originTrait}}
