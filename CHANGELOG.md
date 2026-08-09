@@ -7,6 +7,32 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.7.0] - 2026-08-09
+
+### Ajouté
+- Système de jets de dés : les caractéristiques, sauvegardes, compétences (fiche personnage
+  et PNJ/monture) et l'attaque/les dégâts d'arme sont désormais cliquables et postent un vrai
+  jet Foundry dans le chat, avec avantage/désavantage (Maj-clic/Ctrl-clic). Jusqu'ici aucun
+  jet n'existait dans le système — tous les bonus étaient du texte statique
+  (`scripts/helpers/rolls.js`).
+- États SRD 5e (14 conditions + Exhaustion à paliers 0-6) : affichés sur l'onglet
+  Statistiques (personnage et PNJ/monture), bascule via `Actor#toggleStatusEffect`.
+  Avantage/désavantage automatique aux jets concernés selon les états actifs (Empoisonné,
+  Effrayé, Entravé, À terre, Aveuglé, Invisible, Exhaustion). Exhaustion réduit aussi la
+  vitesse (niveau 2+) et les PV max (niveau 4+). Explicitement prévu dans `PROJECT.md`
+  ("États et conditions"), non implémenté jusqu'ici.
+- Système de sorts complet : nouveau type d'Item `spell` (niveau, école, composantes,
+  portée, durée, concentration, rituel, préparé), emplacements de sorts par niveau dérivés
+  automatiquement de la classe et du niveau (table complète SRD 5e — pleine pour les
+  lanceurs classiques, demi-lanceur pour le Paladin, Magie de Pacte pour l'Occultiste,
+  `scripts/data/spell-slots.json`), onglet Sorts avec jetons d'emplacements, liste par
+  niveau et bouton "Lancer". Explicitement prévu dans `PROJECT.md`, jusqu'ici 0% implémenté.
+- Table FI → XP officielle SRD 5e : pré-remplit le XP rapporté d'un PNJ quand son indice de
+  dangerosité change (`DND_CUSTOM.challengeRatingXp`). Explicitement noté "prévu plus tard"
+  dans `PROJECT.md`.
+- Bonus de vitesse de classe : Célérité du Barbare (niveau 5+, +10 sauf armure lourde),
+  Déplacement sans armure du Moine (niveau 2+, paliers progressifs, sans armure ni bouclier).
+
 ## [0.6.1] - 2026-08-09
 
 ### Ajouté
