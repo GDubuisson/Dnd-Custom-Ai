@@ -7,7 +7,7 @@
       {{#if equipment.mainHand}}
         <div class="item-line" data-item-id="{{equipment.mainHand.id}}">{{equipment.mainHand.name}}</div>
         {{#with (lookup ../weaponStats equipment.mainHand.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}</p>
+        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
         {{/with}}
       {{else}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
@@ -21,7 +21,7 @@
       {{else if equipment.offHand}}
         <div class="item-line" data-item-id="{{equipment.offHand.id}}">{{equipment.offHand.name}}</div>
         {{#with (lookup ../weaponStats equipment.offHand.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}</p>
+        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
         {{/with}}
         {{#with (lookup ../armorStats equipment.offHand.id)}}
         <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
