@@ -252,3 +252,24 @@ DND_CUSTOM.xpThresholds = [
  *  variations mineures par classe comme le Guerrier/Roublard qui en ont davantage — non
  *  modélisées ici). Utilisé au clic sur "Monter de niveau" pour proposer le choix. */
 DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
+
+/** Équipement de départ simplifié par classe (une arme + une armure typiques, SRD 5e sans
+ *  les choix multiples officiels) : noms exacts d'Items de `world-items/weapons.json` et
+ *  `world-items/armors.json`, recherchés dans les Items du monde par l'assistant de création
+ *  de personnage (character-creation-wizard.js). `armor: null` = classe sans armure de
+ *  départ typique (Barbare/Moine/Ensorceleur/Magicien, comptent sur leur Dextérité ou une
+ *  Défense sans armure). */
+DND_CUSTOM.classStartingEquipment = {
+  barbarian: { weapon: "Grande hache", armor: null },
+  bard: { weapon: "Rapière", armor: "Cuir" },
+  cleric: { weapon: "Masse d'armes", armor: "Écailles" },
+  druid: { weapon: "Cimeterre", armor: "Peau" },
+  fighter: { weapon: "Épée longue", armor: "Cotte de mailles" },
+  monk: { weapon: "Bâton", armor: null },
+  paladin: { weapon: "Épée longue", armor: "Cotte de mailles" },
+  ranger: { weapon: "Arc long", armor: "Cuir clouté" },
+  rogue: { weapon: "Rapière", armor: "Cuir" },
+  sorcerer: { weapon: "Dague", armor: null },
+  warlock: { weapon: "Dague", armor: "Cuir" },
+  wizard: { weapon: "Dague", armor: null }
+};

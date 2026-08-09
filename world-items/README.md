@@ -64,3 +64,12 @@ la progression complète des 12 classes. Le champ `class` contient le nom de la 
 texte libre (ex. "Barbare"), pas une référence stricte à un Item Classe. Quand
 `requiresRoll` est actif (ex. Second souffle), un bouton "1d10 + niveau" apparaît sur la
 fiche du personnage et poste le jet dans le chat.
+
+## Dépendance de l'assistant de création de personnage
+
+L'assistant de création (bouton "Créer un personnage" sur la fiche) donne un équipement de
+départ simplifié (une arme + une armure typiques par classe, cf.
+`DND_CUSTOM.classStartingEquipment` dans `scripts/helpers/config.js`) en cherchant les noms
+exacts dans les Items du monde — **la macro d'import ci-dessus doit avoir été exécutée au
+moins une fois** pour que `weapons.json`/`armors.json` y soient présents, sinon l'équipement
+de départ est silencieusement ignoré (le personnage reste créé, juste sans arme/armure).

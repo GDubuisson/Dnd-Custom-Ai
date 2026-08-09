@@ -223,6 +223,7 @@
       "InvalidAbilities": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
       "InvalidSkillCount": "Choose exactly {count} skill(s) for this class.",
       "Created": "{name} is ready for adventure!",
+      "StartingEquipmentMissing": "Starting equipment not found in the world Items — run the import macro from world-items/README.md first.",
       "AsiTitle": "Ability Score Improvement",
       "AsiHelp": "Choose either +2 to a single ability, or +1 to two different abilities (capped at 20).",
       "AsiFirst": "First ability (+2 alone, or +1 if a second one is chosen)",

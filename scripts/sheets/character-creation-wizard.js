@@ -101,7 +101,32 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       { dndCustomWizard: true }
     );
 
+    await CharacterCreationWizard.#grantStartingEquipment(this.actor, classKey);
+
     ui.notifications.info(game.i18n.format("DND_CUSTOM.Wizard.Created", { name: updates.name }));
     this.close();
+  }
+
+  /** Équipement de départ simplifié (une arme + une armure typiques, cf.
+   *  DND_CUSTOM.classStartingEquipment) : cherché par nom dans les Items du monde
+   *  (importés via world-items/README.md) et dupliqué, équipé, sur l'Actor. Silencieusement
+   *  ignoré si le nom n'est pas trouvé (macro d'import pas encore exécutée) plutôt que
+   *  bloquer la création du personnage pour ça. */
+  static async #grantStartingEquipment(actor, classKey) {
+    const kit = DND_CUSTOM.classStartingEquipment[classKey];
+    if (!kit) return;
+
+    const names = [kit.weapon, kit.armor].filter(Boolean);
+    const items = names.map((name) => game.items.getName(name)).filter(Boolean);
+
+    if (items.length) {
+      await actor.createEmbeddedDocuments(
+        "Item",
+        items.map((item) => foundry.utils.mergeObject(item.toObject(), { "system.equipped": true }))
+      );
+    }
+    if (items.length < names.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Wizard.StartingEquipmentMissing"));
+    }
   }
 }
