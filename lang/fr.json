@@ -108,6 +108,9 @@
       "UseLightOff": "{name} éteint {item}.",
       "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
       "CastSpell": "{name} lance {spell}.",
+      "ConcentrationBroken": "{name} rompt sa concentration sur {spell}.",
+      "ConcentrationSuccess": "{name} maintient sa concentration sur {spell} (DD {dc}).",
+      "ConcentrationFailed": "{name} échoue son jet de concentration (DD {dc}) et perd {spell} !",
       "FallsUnconscious": "{name} tombe à 0 point de vie et perd connaissance !",
       "Death": "{name} a échoué trois jets de sauvegarde de la mort et succombe...",
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
@@ -184,7 +187,9 @@
       "SpellLevelLabel": "Sorts de niveau {level}",
       "SpellLevelShort": "Niv.",
       "Cast": "Lancer",
-      "NoSpells": "Aucun sort enregistré"
+      "NoSpells": "Aucun sort enregistré",
+      "ConcentratingOn": "Concentré sur :",
+      "DropConcentration": "Rompre la concentration"
     },
     "Skills": {
       "acrobatics": "Acrobaties",

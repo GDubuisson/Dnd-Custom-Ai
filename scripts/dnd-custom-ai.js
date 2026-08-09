@@ -21,7 +21,13 @@ import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { declareDeath } from "./helpers/death.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
-import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
+import {
+  equipmentSlots,
+  isOffHandEligible,
+  abilityModifier,
+  proficiencyBonus,
+  formatModifier
+} from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -323,7 +329,36 @@ async function applyDamageToTargets(amount) {
     if (remaining > 0) updates["system.attributes.hp.value"] = Math.max(0, hp.value - remaining);
 
     if (Object.keys(updates).length) await actor.update(updates);
+    if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
+      await checkConcentration(actor, amount);
+    }
   }
+}
+
+/** Jet de sauvegarde de Constitution pour maintenir la concentration, SRD 5e : DD = 10 ou
+ *  la moitié des dégâts subis (arrondi à l'inférieur), le plus élevé des deux. Échec = perte
+ *  immédiate de la concentration en cours. Automatique (pas de bouton) : la DD ne dépend que
+ *  des dégâts déjà connus au moment de l'application, pas d'un choix du joueur. */
+async function checkConcentration(actor, damageAmount) {
+  const spellName = actor.system.spells.concentratingOn;
+  const dc = Math.max(10, Math.floor(damageAmount / 2));
+  const conMod = abilityModifier(actor.system.abilities.con.total);
+  const profBonus = actor.system.saves.con.proficient ? proficiencyBonus(actor.system.attributes.level) : 0;
+
+  const roll = new Roll(`1d20${formatModifier(conMod + profBonus)}`);
+  await roll.evaluate();
+  const success = roll.total >= dc;
+
+  if (!success) await actor.update({ "system.spells.concentratingOn": "" });
+
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: game.i18n.format(success ? "DND_CUSTOM.Chat.ConcentrationSuccess" : "DND_CUSTOM.Chat.ConcentrationFailed", {
+      name: actor.name,
+      spell: spellName,
+      dc
+    })
+  });
 }
 
 async function loadOrigins() {

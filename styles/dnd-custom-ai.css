@@ -1206,6 +1206,36 @@
   padding: 0.1rem 0.2rem;
 }
 
+.dnd-custom-ai .concentration-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.3rem;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-size: 0.8rem;
+}
+
+.dnd-custom-ai .concentration-banner button {
+  margin-left: auto;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--dca-on-secondary-container);
+  border-radius: 0.3rem;
+  background: transparent;
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .concentration-banner button:hover {
+  background: var(--dca-on-secondary-container);
+  color: var(--dca-secondary-container);
+}
+
 .dnd-custom-ai .spell-level-group {
   margin-top: 0.9rem;
 }

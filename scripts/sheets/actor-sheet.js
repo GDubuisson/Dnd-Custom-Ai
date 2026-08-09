@@ -99,6 +99,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
       castSpell: DndCustomActorSheet.#onCastSpell,
+      dropConcentration: DndCustomActorSheet.#onDropConcentration,
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
@@ -270,6 +271,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.spellSlots = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
       .map((level) => ({ level, ...system.spells.slots[level] }))
       .filter((slot) => slot.max > 0);
+    context.concentratingOn = system.spells.concentratingOn;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
     // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
     context.weaponsAndArmor = items.filter((item) => ["weapon", "armor"].includes(item.type));
@@ -628,10 +630,28 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       await this.actor.update({ [`system.spells.slots.${slotLevel}.value`]: slot.value - 1 });
     }
 
+    // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
+    // cours (pas de choix à faire, la règle est automatique).
+    if (item.system.concentration) {
+      const previous = this.actor.system.spells.concentratingOn;
+      await this.actor.update({ "system.spells.concentratingOn": item.name });
+      if (previous && previous !== item.name) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.ConcentrationBroken", { name: this.actor.name, spell: previous })
+        });
+      }
+    }
+
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.CastSpell", { name: this.actor.name, spell: item.name })
     });
+  }
+
+  /** Rompt volontairement la concentration en cours (SRD 5e : possible à tout moment). */
+  static async #onDropConcentration() {
+    await this.actor.update({ "system.spells.concentratingOn": "" });
   }
 
   /** Bouton "Utiliser" de l'inventaire (objets `gear` avec `system.use.type` renseigné) :

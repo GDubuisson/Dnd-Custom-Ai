@@ -108,7 +108,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
             value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
           }))
-        )
+        ),
+        // Nom (texte libre, pas une référence d'Item) du sort actuellement concentré, SRD 5e
+        // "un seul sort à la fois" : lancer un nouveau sort à concentration remplace celui-ci
+        // (cf. DndCustomActorSheet#onCastSpell) ; un échec de jet de sauvegarde de
+        // Constitution après des dégâts subis le vide (cf. dnd-custom-ai.js).
+        concentratingOn: new StringField({ required: false, blank: true, initial: "" })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })

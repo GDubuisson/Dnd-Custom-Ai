@@ -108,6 +108,9 @@
       "UseLightOff": "{name} extinguishes {item}.",
       "UseHeal": "{name} uses {item} and regains {amount} HP.",
       "CastSpell": "{name} casts {spell}.",
+      "ConcentrationBroken": "{name} drops concentration on {spell}.",
+      "ConcentrationSuccess": "{name} maintains concentration on {spell} (DC {dc}).",
+      "ConcentrationFailed": "{name} fails their concentration save (DC {dc}) and loses {spell}!",
       "FallsUnconscious": "{name} drops to 0 hit points and falls unconscious!",
       "Death": "{name} has failed three death saving throws and succumbs...",
       "ApplyDamage": "Apply {amount} damage to target",
@@ -184,7 +187,9 @@
       "SpellLevelLabel": "Level {level} spells",
       "SpellLevelShort": "Lvl.",
       "Cast": "Cast",
-      "NoSpells": "No spell recorded"
+      "NoSpells": "No spell recorded",
+      "ConcentratingOn": "Concentrating on:",
+      "DropConcentration": "Drop concentration"
     },
     "Skills": {
       "acrobatics": "Acrobatics",

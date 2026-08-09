@@ -25,6 +25,14 @@
     {{/each}}
   </div>
   {{/if}}
+
+  {{#if concentratingOn}}
+  <div class="concentration-banner">
+    <i class="fa-solid fa-brain"></i>
+    {{localize "DND_CUSTOM.Abilities.ConcentratingOn"}} <strong>{{concentratingOn}}</strong>
+    <button type="button" data-action="dropConcentration">{{localize "DND_CUSTOM.Abilities.DropConcentration"}}</button>
+  </div>
+  {{/if}}
   {{/if}}
 
   <ul class="features-list">
