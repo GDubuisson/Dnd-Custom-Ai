@@ -7,6 +7,27 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.10.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 5 pistes d'amélioration
+proposées après la phase précédente (mort/agonie, maîtrise d'armes, capacités de classe,
+choix de montée de niveau, équipement de départ).
+
+### Ajouté
+- Mort et agonie (SRD 5e) : tomber à 0 PV rend automatiquement Inconscient et déclenche le
+  suivi des jets de sauvegarde de la mort (3 réussites = stabilisé, 3 échecs = mort, statut
+  "Mort" sur le token). Bouton de jet dédié, panneau "Agonie" dans la zone commune.
+- Maîtrise d'armes par classe : le bonus de maîtrise ne s'applique plus au jet d'attaque que
+  si la classe du personnage couvre la catégorie de l'arme équipée (avant : toujours
+  appliqué). Étiquette "Non maîtrisé" sur les armes concernées.
+- Bibliothèque de 24 capacités de classe SRD 5e prêtes à importer
+  (`world-items/features.json`, 2 par classe) : rend l'onglet Capacités aussi peuplé que
+  l'onglet Sorts. Bouton de jet relié pour les capacités à formule (ex. Second souffle).
+- Amélioration de caractéristiques proposée automatiquement à la montée de niveau (niveaux
+  4/8/12/16/19, SRD 5e) : +2 sur une caractéristique ou +1 sur deux, au choix.
+- Équipement de départ (une arme + une armure typiques par classe) ajouté automatiquement à
+  la fin de l'assistant de création de personnage.
+
 ## [0.9.0] - 2026-08-09
 
 Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : compendium d'adversaires,
