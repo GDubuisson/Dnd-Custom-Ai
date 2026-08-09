@@ -565,6 +565,30 @@
   color: var(--dca-on-surface-variant);
 }
 
+.dnd-custom-ai .ability-side .save-mod {
+  font-family: var(--dca-font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--dca-on-surface-variant);
+}
+
+/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : repris visuellement à
+   l'identique du texte statique qu'ils remplacent, seul le survol les distingue. */
+.dnd-custom-ai .roll-btn {
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .roll-btn:hover {
+  color: var(--dca-secondary);
+  text-decoration: underline;
+}
+
 .dnd-custom-ai .proficiency-bonus {
   display: inline-flex;
   align-items: center;

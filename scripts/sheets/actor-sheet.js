@@ -16,6 +16,7 @@ import {
   weaponAttackDamage
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
+import { rollCheck, rollDamage } from "../helpers/rolls.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -37,7 +38,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       restLong: DndCustomActorSheet.#onRestLong,
       abilityIncrease: DndCustomActorSheet.#onAbilityIncrease,
       abilityDecrease: DndCustomActorSheet.#onAbilityDecrease,
-      useItem: DndCustomActorSheet.#onUseItem
+      useItem: DndCustomActorSheet.#onUseItem,
+      rollAbility: DndCustomActorSheet.#onRollAbility,
+      rollSave: DndCustomActorSheet.#onRollSave,
+      rollSkill: DndCustomActorSheet.#onRollSkill,
+      rollWeaponAttack: DndCustomActorSheet.#onRollWeaponAttack,
+      rollWeaponDamage: DndCustomActorSheet.#onRollWeaponDamage
     }
   };
 
@@ -292,6 +298,111 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const next = Math.max(1, current + delta);
     if (next === current) return;
     await this.actor.update({ [`system.abilities.${key}.value`]: next });
+  }
+
+  /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
+   *  désavantage (cf. tooltip des boutons de jet). */
+  static async #onRollAbility(event, target) {
+    const key = target.dataset.key;
+    const mod = abilityModifier(this.actor.system.abilities[key].total);
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(mod),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
+        ability: game.i18n.localize(DND_CUSTOM.abilities[key])
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
+  }
+
+  /** Jet de sauvegarde (1d20 + modificateur de caractéristique + bonus de maîtrise si
+   *  maîtrisée). */
+  static async #onRollSave(event, target) {
+    const key = target.dataset.key;
+    const system = this.actor.system;
+    const mod = abilityModifier(system.abilities[key].total);
+    const profBonus = system.saves[key].proficient ? proficiencyBonus(system.attributes.level) : 0;
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(mod + profBonus),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
+        ability: game.i18n.localize(DND_CUSTOM.abilities[key])
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
+  }
+
+  /** Jet de compétence (1d20 + modificateur). L'avantage d'Origine (cf.
+   *  CharacterData#prepareDerivedData) et le désavantage d'armure (Discrétion) sont appliqués
+   *  automatiquement en plus du Maj/Ctrl-clic manuel — plusieurs avantages ne cumulent jamais
+   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck). */
+  static async #onRollSkill(event, target) {
+    const key = target.dataset.key;
+    const system = this.actor.system;
+    const profBonus = proficiencyBonus(system.attributes.level);
+    const mod = skillModifier(system, key, profBonus);
+    const originAdvantage = Boolean(
+      game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
+    );
+    const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(mod),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.SkillCheck", {
+        skill: game.i18n.localize(DND_CUSTOM.skills[key])
+      }),
+      advantage: event.shiftKey || originAdvantage,
+      disadvantage: event.ctrlKey || armorDisadvantage
+    });
+  }
+
+  /** Jet d'attaque d'une arme de l'inventaire (1d20 + bonus d'attaque, cf. weaponAttackDamage
+   *  dans rules.js — suppose la maîtrise). */
+  static async #onRollWeaponAttack(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const atk = weaponAttackDamage(
+      item.system,
+      this.actor.system.abilities,
+      proficiencyBonus(this.actor.system.attributes.level)
+    );
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(atk.attackBonus),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
+  }
+
+  /** Jet de dégâts d'une arme de l'inventaire. Maj-clic : dé Polyvalente (deux mains) si
+   *  l'arme en a un. Pas d'avantage/désavantage (ne concerne que les jets de d20). */
+  static async #onRollWeaponDamage(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const useVersatile =
+      (event.shiftKey || target.dataset.versatile === "true") &&
+      item.system.properties.versatile &&
+      item.system.damageVersatile.dice;
+    const dice = useVersatile ? item.system.damageVersatile.dice : item.system.damage.dice;
+    if (!dice) return;
+
+    const atk = weaponAttackDamage(
+      item.system,
+      this.actor.system.abilities,
+      proficiencyBonus(this.actor.system.attributes.level)
+    );
+    const damageType = item.system.damage.type
+      ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
+      : "";
+    await rollDamage({
+      actor: this.actor,
+      dice,
+      formula: formatModifier(atk.abilityMod),
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`
+    });
   }
 
   /** Bouton "Utiliser" de l'inventaire (objets `gear` avec `system.use.type` renseigné) :

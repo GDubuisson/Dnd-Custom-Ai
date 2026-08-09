@@ -79,6 +79,18 @@
       "RestShort": "Short rest",
       "RestLong": "Long rest"
     },
+    "Roll": {
+      "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
+      "DamageTooltip": "Damage roll. Shift-click: Versatile (two-handed) die if the weapon has one.",
+      "VersatileTooltip": "Two-handed (Versatile) damage roll.",
+      "AbilityCheck": "{ability} check",
+      "SavingThrow": "{ability} saving throw",
+      "SkillCheck": "{skill} check",
+      "WeaponAttack": "Attack with {weapon}",
+      "WeaponDamage": "{weapon} damage",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage"
+    },
     "Chat": {
       "RestShort": "{name} takes a short rest.",
       "RestLong": "{name} takes a long rest and regains all hit points.",

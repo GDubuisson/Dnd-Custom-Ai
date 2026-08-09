@@ -79,6 +79,18 @@
       "RestShort": "Repos court",
       "RestLong": "Repos long"
     },
+    "Roll": {
+      "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
+      "DamageTooltip": "Jet de dégâts. Maj-clic : dé Polyvalente (deux mains) si l'arme en a un.",
+      "VersatileTooltip": "Jet de dégâts à deux mains (Polyvalente).",
+      "AbilityCheck": "Test de {ability}",
+      "SavingThrow": "Jet de sauvegarde de {ability}",
+      "SkillCheck": "Test de {skill}",
+      "WeaponAttack": "Attaque avec {weapon}",
+      "WeaponDamage": "Dégâts de {weapon}",
+      "Advantage": "Avantage",
+      "Disadvantage": "Désavantage"
+    },
     "Chat": {
       "RestShort": "{name} prend un repos court.",
       "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",

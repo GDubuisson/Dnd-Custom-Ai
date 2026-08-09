@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
+import { rollCheck } from "../helpers/rolls.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -18,7 +19,10 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     tag: "form",
     position: { width: 640, height: 620 },
     window: { resizable: true },
-    form: { submitOnChange: true, closeOnSubmit: false }
+    form: { submitOnChange: true, closeOnSubmit: false },
+    actions: {
+      rollAbility: DndCustomNpcSheet.#onRollAbility
+    }
   };
 
   static PARTS = {
@@ -92,5 +96,21 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     context = await super._preparePartContext(partId, context);
     if (context.tabs?.[partId]) context.tab = context.tabs[partId];
     return context;
+  }
+
+  /** Jet de caractéristique (1d20 + bonus) : sert aussi de jet de sauvegarde, identiques
+   *  pour un PNJ (pas de maîtrise séparée, cf. commentaire de classe). */
+  static async #onRollAbility(event, target) {
+    const key = target.dataset.key;
+    const mod = this.actor.system.abilities[key].mod;
+    await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(mod),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
+        ability: game.i18n.localize(DND_CUSTOM.abilities[key])
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey
+    });
   }
 }

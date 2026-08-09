@@ -21,8 +21,11 @@
         <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
         {{#with (lookup ../weaponStats this.id)}}
-        <td>{{this.attackLabel}}</td>
-        <td>{{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}</td>
+        <td><button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button></td>
+        <td>
+          <button type="button" class="roll-btn" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{this.damageLabel}}</button>
+          {{#if this.versatileLabel}} / <button type="button" class="roll-btn" data-action="rollWeaponDamage" data-versatile="true" title="{{localize 'DND_CUSTOM.Roll.VersatileTooltip'}}">{{this.versatileLabel}}</button>{{/if}}
+        </td>
         {{else}}
         <td></td>
         <td>{{#with (lookup ../armorStats this.id)}}{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}{{/with}}</td>

@@ -22,11 +22,11 @@
             {{/if}}
           </div>
           <div class="ability-side">
-            <span class="ability-mod">{{this.modLabel}}</span>
+            <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
             <label class="save-proficiency" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
               <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-              {{this.save.mod}}
             </label>
+            <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
           {{#if this.armorDisadvantage}}
           <span class="armor-disadvantage-tag" title="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
           {{/if}}
-          <span class="mod">{{this.modLabel}}</span>
+          <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
         </li>
         {{/each}}
       </ul>
