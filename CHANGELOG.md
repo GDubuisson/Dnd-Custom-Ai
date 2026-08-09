@@ -7,6 +7,45 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.6.1] - 2026-08-09
+
+### Ajouté
+- Emplacement d'une arme à deux mains (`equipmentSlots`, `scripts/helpers/rules.js`) :
+  occupe désormais automatiquement Main principale ET Main secondaire (champ Emplacement
+  masqué sur sa fiche, note explicative à la place).
+- Main secondaire réservée aux armes Légères (`isOffHandEligible`, SRD 5e règle du combat à
+  deux armes) : une arme à une main non-Légère (Rapière, Épée longue...) ne peut plus être
+  choisie ni équipée en Main secondaire.
+- Hook global `preUpdateItem` (`scripts/dnd-custom-ai.js`) : équiper une arme/armure dont
+  l'emplacement (main principale/secondaire/armure) est déjà occupé par un autre objet
+  équipé est désormais refusé (pas de déséquipement automatique, contrairement aux sacs),
+  avec un avertissement nommant l'objet en conflit.
+- Bonus d'attaque et dégâts de chaque arme possédée (Force/Dextérité selon Finesse/portée,
+  alternative Polyvalente à deux mains, `weaponAttackDamage`), et bonus de CA de chaque
+  armure/bouclier/accessoire possédé (`armorContribution`) : affichés dans le tableau Armes
+  et Armures de l'Inventaire et sous l'emplacement équipé correspondant sur l'onglet
+  Équipement. Suppose la maîtrise systématique de toute arme équipée (pas de liste de
+  maîtrises par classe dans ce système simplifié).
+
+## [0.6.0] - 2026-08-09
+
+### Corrigé
+- Vraie cause du doublonnage au glisser-déposer (cf. tentative incomplète en 0.5.0) :
+  `ActorSheetV2` (classe de base Foundry) lie déjà nativement son propre gestionnaire
+  `dragover`/`drop` sur l'élément racine de la fiche à chaque render, en plus des listeners
+  HTML5 maison ajoutés par `InventoryDragDropMixin` sur ce même élément — chaque drop créait
+  donc l'objet deux fois. Remplacé par une surcharge du point d'extension officiel
+  `_onDropItem(event, item)`, qui regroupe aussi en quantité si un objet de même nom/type
+  existe déjà sur l'Actor au lieu de dupliquer la ligne.
+
+### Ajouté
+- Inventaire (personnage, PNJ/monture, véhicule) : quantité éditable et case "Équipé"
+  directement dans le tableau (sans passer par la fiche de l'Item), nom cliquable pour
+  ouvrir la fiche. `ToolData` reçoit `quantity`/`equipped`, qui lui manquaient, nécessaires
+  à cette édition uniforme sur les 4 types d'Item transférables.
+- Onglet Inventaire du personnage scindé en deux tableaux : Armes et Armures, puis Objets
+  et Outils (`scripts/sheets/actor-sheet.js` > `weaponsAndArmor`/`gearAndTools`).
+
 ## [0.5.0] - 2026-08-09
 
 ### Corrigé
