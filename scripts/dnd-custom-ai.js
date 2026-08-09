@@ -248,10 +248,10 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   if (xp !== undefined) changes.system.xpReward = xp;
 });
 
-// Mémorise les PV avant modification (cf. hook updateActor ci-dessous) : preUpdateActor est
-// le seul moment où `actor` reflète encore l'état AVANT l'update.
+// Mémorise les PV avant modification (cf. hooks updateActor ci-dessous, mort/agonie pour un
+// personnage et distribution d'XP pour un PNJ) : preUpdateActor est le seul moment où `actor`
+// reflète encore l'état AVANT l'update.
 Hooks.on("preUpdateActor", (actor, changes, options) => {
-  if (actor.type !== "character") return;
   if (changes.system?.attributes?.hp?.value === undefined) return;
   options.dndCustomOldHp = actor.system.attributes.hp.value;
 });
@@ -285,6 +285,24 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
     if (actor.statuses.has("unconscious")) await actor.toggleStatusEffect("unconscious", { active: false });
     if (actor.statuses.has("dead")) await actor.toggleStatusEffect("dead", { active: false });
   }
+});
+
+// Distribution d'XP automatique à la mort d'un PNJ (0 PV) : ouvre directement la boîte de
+// dialogue d'attribution d'XP (cf. openAwardXpDialog, xp.js), montant pré-rempli avec
+// system.xpReward, plutôt que d'attendre que le MJ clique le bouton dédié de la fiche PNJ.
+// Se déclenche quel que soit le client à l'origine du changement (dégâts appliqués par un
+// joueur via le bouton du chat, ou modification directe des PV par le MJ) : seul le MJ actif
+// (game.users.activeGM, motif standard Foundry) réagit, pour n'ouvrir la boîte qu'une fois
+// même si plusieurs MJ sont connectés.
+Hooks.on("updateActor", (actor, changes, options) => {
+  if (actor.type !== "npc") return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  const oldHp = options.dndCustomOldHp;
+  if (oldHp === undefined || oldHp === 0) return;
+  if (actor.system.attributes.hp.value !== 0) return;
+  if (!actor.system.xpReward) return;
+
+  openAwardXpDialog({ defaultAmount: actor.system.xpReward });
 });
 
 

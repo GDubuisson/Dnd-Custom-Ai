@@ -38,6 +38,10 @@ ui.notifications.info("Import terminé (voir la console pour le détail).");
 
 - `xpReward` est déjà rempli selon la table FI → XP officielle (cf.
   `DND_CUSTOM.challengeRatingXp`), pas besoin de la retoucher après import.
+- Quand un PNJ tombe à 0 PV, la boîte de dialogue "Attribuer de l'XP" (montant pré-rempli
+  avec `xpReward`) s'ouvre automatiquement côté MJ (cf. hook `updateActor` dans
+  `scripts/dnd-custom-ai.js`) ; le bouton dédié de la fiche PNJ reste disponible pour la
+  rouvrir manuellement si besoin (ex. fermée par erreur, ou XP à distribuer après coup).
 - `specialAbilities` regroupe les traits et attaques (texte libre, pas de calcul automatisé
   de jets d'attaque pour les PNJ) ; `particularity` est une phrase d'ambiance courte.
 - Sélection non exhaustive (16 entrées) : dupliquez et ajustez FI/PV/CA pour varier les
