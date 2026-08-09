@@ -1483,3 +1483,23 @@
   font-style: italic;
   color: var(--dca-muted-text);
 }
+
+/* ---------- Carte de chat (hors ".dnd-custom-ai", les messages de chat ne sont pas
+   imbriqués dans une fiche du système) ---------- */
+
+.dnd-apply-damage-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--dca-outline, #7a5a35);
+  border-radius: 0.3rem;
+  background: var(--dca-error, #ba1a1a);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dnd-apply-damage-btn:hover {
+  filter: brightness(1.1);
+}

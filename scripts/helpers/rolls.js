@@ -19,10 +19,16 @@ export async function rollCheck({ actor, formula, flavor, advantage = false, dis
 }
 
 /** Jet de dégâts (arme, sort...) : pas d'avantage/désavantage (ne s'applique qu'aux jets de
- *  d20, SRD 5e), juste le(s) dé(s) de dégâts + modificateur signé. */
+ *  d20, SRD 5e), juste le(s) dé(s) de dégâts + modificateur signé. Marqué par un flag
+ *  (`flags["dnd-custom-ai"].damageRoll`) repéré par le hook `renderChatMessageHTML` (cf.
+ *  dnd-custom-ai.js) pour ajouter un bouton "Appliquer les dégâts" sur sa carte de chat. */
 export async function rollDamage({ actor, dice, formula, flavor }) {
   const roll = new Roll(`${dice}${formula}`);
   await roll.evaluate();
-  await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor,
+    flags: { "dnd-custom-ai": { damageRoll: true } }
+  });
   return roll;
 }

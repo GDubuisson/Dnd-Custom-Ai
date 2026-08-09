@@ -99,7 +99,9 @@
       "UseLightOn": "{name} lights {item}.",
       "UseLightOff": "{name} extinguishes {item}.",
       "UseHeal": "{name} uses {item} and regains {amount} HP.",
-      "CastSpell": "{name} casts {spell}."
+      "CastSpell": "{name} casts {spell}.",
+      "ApplyDamage": "Apply {amount} damage to target",
+      "NoTarget": "No target selected (double right-click a token to target it)."
     },
     "Tabs": {
       "stats": "Stats",

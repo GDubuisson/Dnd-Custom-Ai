@@ -99,7 +99,9 @@
       "UseLightOn": "{name} allume {item}.",
       "UseLightOff": "{name} éteint {item}.",
       "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
-      "CastSpell": "{name} lance {spell}."
+      "CastSpell": "{name} lance {spell}.",
+      "ApplyDamage": "Appliquer {amount} dégâts à la cible",
+      "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler)."
     },
     "Tabs": {
       "stats": "Statistiques",

@@ -229,6 +229,50 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   if (xp !== undefined) changes.system.xpReward = xp;
 });
 
+// Ajoute un bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts (cf.
+// rollDamage dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
+// client qui clique (game.user.targets), PV temporaires absorbés en premier (SRD 5e).
+// Aucune restriction MJ/joueur ici : Actor#update échoue silencieusement de lui-même pour
+// tout Actor sur lequel le client n'a pas la permission de modification.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "damageRoll")) return;
+  const amount = message.rolls?.[0]?.total;
+  if (!Number.isFinite(amount)) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-apply-damage-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyDamage", { amount });
+  button.addEventListener("click", () => applyDamageToTargets(amount));
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+async function applyDamageToTargets(amount) {
+  const targets = Array.from(game.user.targets);
+  if (!targets.length) {
+    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+    return;
+  }
+
+  for (const token of targets) {
+    const actor = token.actor;
+    const hp = actor?.system.attributes?.hp;
+    if (!hp) continue;
+
+    let remaining = amount;
+    const updates = {};
+    const temp = hp.temp ?? 0;
+    if (temp > 0) {
+      const absorbed = Math.min(temp, remaining);
+      updates["system.attributes.hp.temp"] = temp - absorbed;
+      remaining -= absorbed;
+    }
+    if (remaining > 0) updates["system.attributes.hp.value"] = Math.max(0, hp.value - remaining);
+
+    if (Object.keys(updates).length) await actor.update(updates);
+  }
+}
+
 async function loadOrigins() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/origins.json`);
   return response.json();
