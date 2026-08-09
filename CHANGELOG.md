@@ -7,6 +7,26 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.11.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 4 pistes d'amélioration
+proposées après la phase précédente (concentration, charges de capacités, XP automatique,
+maîtrise d'outils).
+
+### Ajouté
+- Suivi de la concentration sur les sorts (SRD 5e) : lancer un sort concentration rompt
+  automatiquement une concentration en cours ; subir des dégâts déclenche un jet de
+  sauvegarde de Constitution automatique (DD 10 ou moitié des dégâts) qui rompt la
+  concentration en cas d'échec. Bannière dédiée avec bouton pour l'interrompre volontairement.
+- Utilisations limitées pour les capacités de classe (`system.uses`, 11 des 24 capacités du
+  monde) : compteur affiché sur la fiche, décrémenté à l'usage, restauré au maximum lors d'un
+  repos court ou long selon le type de récupération de la capacité.
+- Distribution d'XP automatique à la mort d'un PNJ : la boîte de dialogue d'attribution d'XP
+  (montant pré-rempli) s'ouvre directement côté MJ quand un PNJ tombe à 0 PV.
+- Test de compétence automatique à l'utilisation d'un outil (`useEffect.skill`) : bouton
+  "Utiliser" sur l'inventaire, bonus de maîtrise toujours appliqué (l'outil confère sa propre
+  maîtrise, indépendante de celle de la compétence).
+
 ## [0.10.0] - 2026-08-09
 
 Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 5 pistes d'amélioration
