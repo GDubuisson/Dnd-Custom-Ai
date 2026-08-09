@@ -13,16 +13,17 @@ système) — copiez/dupliquez l'Item une fois importé si vous voulez le person
 | `weapons.json` | 37 armes SRD 5e (courantes et de guerre) | `weapon` |
 | `gear.json` | 15 objets d'aventurier courants | `gear` |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` |
+| `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` |
 
 ## Comment importer
 
 Foundry ne propose pas d'import JSON en masse depuis l'onglet "Objets". La méthode la plus
 simple est une macro (Script) : créez une macro dans le monde, collez ce code, et exécutez-la
-(en tant que MJ). Elle importe les 4 fichiers d'un coup, sans jamais dupliquer une entrée déjà
+(en tant que MJ). Elle importe les 5 fichiers d'un coup, sans jamais dupliquer une entrée déjà
 présente (comparaison par nom) :
 
 ```js
-const files = ["armors.json", "weapons.json", "gear.json", "tools.json"];
+const files = ["armors.json", "weapons.json", "gear.json", "tools.json", "spells.json"];
 
 for (const file of files) {
   const data = await fetch(`systems/dnd-custom-ai/world-items/${file}`).then((r) => r.json());
@@ -43,3 +44,13 @@ s'applique aux tests concernés), pas un bonus fixe propre à l'objet — ce mé
 encore automatisé sur la fiche de personnage. Seuls les "Outils de voleur" ont une compétence
 pré-remplie (`sleightOfHand`) à titre d'exemple ; à vous d'ajuster `useEffect.bonus` si vous
 préférez un bonus fixe simplifié pour votre table.
+
+## Note sur les sorts
+
+`spells.json` ne couvre que 15 sorts (5 tours de magie + niveaux 1 à 3) choisis pour être
+représentatifs, pas la liste complète du SRD 5e (~300 sorts) — complétez-la à la main depuis
+l'onglet "Objets" selon les besoins de votre table. Aucun sort n'est rattaché à une liste de
+classes précise (l'Item Sort est générique) : à vous de dupliquer/filtrer selon qui peut
+l'apprendre. Les dégâts, DD et effets détaillés restent dans la description ; il n'y a pas de
+champ dédié (comme pour les Capacités de classe), l'automatisation s'arrête au décompte de
+l'emplacement de sort au moment de lancer (cf. bouton "Lancer" de l'onglet Sorts).
