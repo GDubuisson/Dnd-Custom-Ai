@@ -1,6 +1,7 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
 import { rollCheck } from "../helpers/rolls.js";
+import { openAwardXpDialog } from "../helpers/xp.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -23,7 +24,8 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     actions: {
       rollAbility: DndCustomNpcSheet.#onRollAbility,
       toggleCondition: DndCustomNpcSheet.#onToggleCondition,
-      rollInitiative: DndCustomNpcSheet.#onRollInitiative
+      rollInitiative: DndCustomNpcSheet.#onRollInitiative,
+      awardXp: DndCustomNpcSheet.#onAwardXp
     }
   };
 
@@ -58,6 +60,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     context.actor = this.actor;
     context.system = system;
     context.config = DND_CUSTOM;
+    context.isGM = game.user.isGM;
 
     context.creatureTypeOptions = Object.entries(DND_CUSTOM.creatureTypes).map(([key, labelKey]) => ({
       key,
@@ -134,5 +137,11 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
   /** Jet d'Initiative : cf. DndCustomActorSheet#onRollInitiative (même mécanisme natif Foundry). */
   static async #onRollInitiative() {
     await this.actor.rollInitiative({ createCombatants: true });
+  }
+
+  /** Ouvre la boîte de dialogue de distribution d'XP, montant pré-rempli avec le XP rapporté
+   *  de ce PNJ (cf. scripts/helpers/xp.js). */
+  static async #onAwardXp() {
+    await openAwardXpDialog({ defaultAmount: this.actor.system.xpReward });
   }
 }

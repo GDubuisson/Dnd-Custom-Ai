@@ -78,7 +78,8 @@
     "Actions": {
       "RestShort": "Short rest",
       "RestLong": "Long rest",
-      "RollInitiative": "Initiative"
+      "RollInitiative": "Initiative",
+      "AwardXp": "Award XP"
     },
     "Roll": {
       "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
@@ -101,7 +102,12 @@
       "UseHeal": "{name} uses {item} and regains {amount} HP.",
       "CastSpell": "{name} casts {spell}.",
       "ApplyDamage": "Apply {amount} damage to target",
-      "NoTarget": "No target selected (double right-click a token to target it)."
+      "NoTarget": "No target selected (double right-click a token to target it).",
+      "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
+      "XpAmount": "XP amount",
+      "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
+      "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
+      "NoCharacters": "No player character in this world."
     },
     "Tabs": {
       "stats": "Stats",

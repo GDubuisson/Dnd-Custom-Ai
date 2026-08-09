@@ -18,6 +18,7 @@ import {
   SpellItemSheet
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
+import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
@@ -117,15 +118,17 @@ Hooks.once("init", async () => {
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").
   game.dndCustomAi = {
     origins: await loadOrigins(),
-    spellSlotTables: await loadSpellSlotTables()
+    spellSlotTables: await loadSpellSlotTables(),
+    openAwardXpDialog
   };
 });
 
-// Journal de référence (MJ) récapitulant les différences entre Origines : créé une seule
-// fois, au premier chargement du monde, à partir des mêmes données que le sélecteur
-// "Origine" de la fiche de personnage.
+// Journal de référence (MJ) récapitulant les différences entre Origines, et Macro monde
+// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) : créés une seule fois, au premier
+// chargement du monde.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
+  await ensureAwardXpMacro();
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :

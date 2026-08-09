@@ -50,6 +50,11 @@
       <button type="button" data-action="rollInitiative" title="{{localize 'DND_CUSTOM.Roll.InitiativeTooltip'}}">
         <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actions.RollInitiative"}}
       </button>
+      {{#if isGM}}
+      <button type="button" data-action="awardXp" title="{{localize 'DND_CUSTOM.Chat.AwardXpTooltip'}}">
+        <i class="fa-solid fa-star"></i> {{localize "DND_CUSTOM.Actions.AwardXp"}}
+      </button>
+      {{/if}}
     </div>
   </div>
 </header>

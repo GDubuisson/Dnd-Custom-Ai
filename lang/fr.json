@@ -78,7 +78,8 @@
     "Actions": {
       "RestShort": "Repos court",
       "RestLong": "Repos long",
-      "RollInitiative": "Initiative"
+      "RollInitiative": "Initiative",
+      "AwardXp": "Attribuer de l'XP"
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
@@ -101,7 +102,12 @@
       "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
       "CastSpell": "{name} lance {spell}.",
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
-      "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler)."
+      "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
+      "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
+      "XpAmount": "Montant d'XP",
+      "XpAwarded": "{amount} XP répartis ({share} chacun) entre : {names}.",
+      "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
+      "NoCharacters": "Aucun personnage joueur dans ce monde."
     },
     "Tabs": {
       "stats": "Statistiques",
