@@ -247,3 +247,8 @@ DND_CUSTOM.xpThresholds = [
   0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
   85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
 ];
+
+/** Niveaux où une Amélioration de caractéristiques est proposée, SRD 5e (générique, hors
+ *  variations mineures par classe comme le Guerrier/Roublard qui en ont davantage — non
+ *  modélisées ici). Utilisé au clic sur "Monter de niveau" pour proposer le choix. */
+DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
