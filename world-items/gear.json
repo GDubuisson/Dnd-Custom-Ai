@@ -6,7 +6,8 @@
       "quantity": 1,
       "weight": 2.3,
       "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
-      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel."
+      "capacityBonus": 13.6,
+      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel. Équipez-le pour augmenter votre capacité de charge de 13,6 kg (un seul sac équipable à la fois)."
     }
   },
   {
@@ -26,7 +27,8 @@
       "quantity": 1,
       "weight": 0.45,
       "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
-      "description": "Brûle pendant 1 heure, apportant une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires."
+      "use": { "type": "light", "light": { "bright": 6, "dim": 6 } },
+      "description": "Brûle pendant 1 heure, apportant une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
     }
   },
   {
@@ -76,7 +78,8 @@
       "quantity": 1,
       "weight": 0.9,
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
-      "description": "Lumière vive dans un rayon de 9 m et lumière faible sur 9 m supplémentaires. Un flacon d'huile permet 6 heures d'éclairage."
+      "use": { "type": "light", "light": { "bright": 9, "dim": 9 } },
+      "description": "Lumière vive dans un rayon de 9 m et lumière faible sur 9 m supplémentaires. Un flacon d'huile permet 6 heures d'éclairage. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
     }
   },
   {
@@ -96,7 +99,8 @@
       "quantity": 1,
       "weight": 1.4,
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
-      "description": "10 utilisations. Permet de stabiliser une créature à 0 point de vie sans jet de caractéristique."
+      "use": { "type": "heal", "healBase": 1, "healSkill": "medicine" },
+      "description": "10 utilisations. Permet de stabiliser une créature à 0 point de vie sans jet de caractéristique. Utilisez l'objet depuis l'inventaire pour soigner (1 + Bonus de Médecine) PV."
     }
   },
   {
@@ -106,7 +110,8 @@
       "quantity": 1,
       "weight": 0.23,
       "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
-      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel."
+      "capacityBonus": 13.6,
+      "description": "Peut contenir jusqu'à 30 litres ou 13,6 kg de matériel. Équipez-le pour augmenter votre capacité de charge de 13,6 kg (un seul sac équipable à la fois)."
     }
   },
   {
@@ -146,7 +151,8 @@
       "quantity": 1,
       "weight": 0,
       "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
-      "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m."
+      "use": { "type": "light", "light": { "bright": 0, "dim": 1.5 } },
+      "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
     }
   }
 ]

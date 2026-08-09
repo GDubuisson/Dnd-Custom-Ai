@@ -18,7 +18,12 @@
         <td>{{this.system.quantity}}</td>
         <td>{{formatWeight this.system.weight}}</td>
         <td>{{#if this.system.equipped}}✓{{/if}}</td>
-        <td>
+        <td class="inventory-actions">
+          {{#if (isUsableItem this)}}
+          <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
+            <i class="fa-solid {{useItemIcon this}}"></i>
+          </button>
+          {{/if}}
           <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
             <i class="fa-solid fa-trash"></i>
           </button>

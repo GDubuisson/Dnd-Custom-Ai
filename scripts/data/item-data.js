@@ -98,14 +98,42 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
   }
 }
 
-/** Objet générique (composant, objet de quête, etc.) : pas d'emplacement d'équipement,
- *  juste une quantité et un poids/prix unitaires (cf. ITEMS.md > Item Objet). */
+/** Objet générique (composant, objet de quête, contenant, consommable...) : pas
+ *  d'emplacement d'équipement dédié (cf. weapon/armor), mais peut tout de même être
+ *  "équipé" (ex. un sac porté) et/ou "utilisé" (ex. allumer une torche, utiliser une
+ *  trousse de soins) — cf. ITEMS.md > Item Objet. */
 export class GearData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       weight: new NumberField({ required: true, min: 0, initial: 0 }),
       quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
       price: currencySchema(),
+      equipped: new BooleanField({ required: true, initial: false }),
+      // Bonus de capacité de charge (kg) apporté à l'Actor lorsque cet objet est équipé
+      // (ex. un sac à dos) — cf. rules.js > carryingCapacityBonus.
+      capacityBonus: new NumberField({ required: true, min: 0, initial: 0 }),
+      use: new SchemaField({
+        type: new StringField({ required: true, initial: "none", choices: ["none", "light", "heal"] }),
+        // "light" : rayon de lumière vive, + rayon de lumière faible SUPPLÉMENTAIRE au-delà
+        // (formulation SRD, ex. "vive 6 m + faible 6 m suppl.") ; converti en rayon total
+        // pour le token au moment de l'utilisation (cf. actor-sheet.js > #onUseItem).
+        light: new SchemaField({
+          bright: new NumberField({ required: true, min: 0, initial: 0 }),
+          dim: new NumberField({ required: true, min: 0, initial: 0 })
+        }),
+        // "heal" : PV rendus = healBase + bonus du test de compétence healSkill (cf. rules.js
+        // > skillModifier), ex. Trousse de soins = 1 + Bonus de Médecine.
+        healBase: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+        healSkill: new StringField({
+          required: false,
+          blank: true,
+          initial: "medicine",
+          choices: Object.keys(SKILL_ABILITIES)
+        })
+      }),
+      // État courant (objet allumé ou non) pour use.type === "light" ; pure donnée d'état
+      // d'instance, pas de configuration (cf. #onUseItem).
+      lit: new BooleanField({ required: true, initial: false }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }

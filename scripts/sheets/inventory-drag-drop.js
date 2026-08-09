@@ -33,6 +33,13 @@ export function InventoryDragDropMixin(Base) {
         });
       });
 
+      // `root` (this.element) reste le même nœud d'un render à l'autre : ne brancher
+      // dragover/drop qu'une seule fois, sinon chaque re-render (déclenché entre autres par
+      // la création d'Item du drop lui-même) empile un nouveau listener et multiplie les
+      // objets créés au drop suivant.
+      if (root.dataset.dndDragDropBound) return;
+      root.dataset.dndDragDropBound = "true";
+
       root.addEventListener("dragover", (event) => event.preventDefault());
       root.addEventListener("drop", (event) => this.#onDropItem(event));
     }

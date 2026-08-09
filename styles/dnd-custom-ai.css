@@ -1197,7 +1197,14 @@
   padding: 0.25rem 0.5rem;
 }
 
-.dnd-custom-ai .delete-item-btn {
+.dnd-custom-ai .inventory-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dnd-custom-ai .delete-item-btn,
+.dnd-custom-ai .use-item-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1207,12 +1214,24 @@
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.3rem;
   background: var(--dca-surface-lowest);
-  color: var(--dca-error);
   cursor: pointer;
+}
+
+.dnd-custom-ai .delete-item-btn {
+  color: var(--dca-error);
 }
 
 .dnd-custom-ai .delete-item-btn:hover {
   background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+}
+
+.dnd-custom-ai .use-item-btn {
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .use-item-btn:hover {
+  background: var(--dca-secondary);
   color: var(--dca-surface-lowest);
 }
 
