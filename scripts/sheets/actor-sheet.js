@@ -9,6 +9,7 @@ import {
   currencyTotalInCopper,
   equipmentSlots,
   formatModifier,
+  isProficientWithWeapon,
   levelForXp,
   passivePerception,
   skillModifier,
@@ -298,11 +299,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     };
 
     // Bonus d'attaque et dégâts (avec alternative Polyvalente à deux mains) de chaque arme
-    // possédée, affichés dans le tableau Armes/Armures de l'onglet Inventaire — suppose la
-    // maîtrise de l'arme (cf. weaponAttackDamage dans rules.js).
+    // possédée, affichés dans le tableau Armes/Armures de l'onglet Inventaire — bonus de
+    // maîtrise appliqué seulement si la classe couvre cette catégorie d'arme (cf.
+    // isProficientWithWeapon/weaponAttackDamage dans rules.js).
     context.weaponStats = {};
     for (const weapon of context.weapons) {
-      const atk = weaponAttackDamage(weapon.system, system.abilities, context.proficiencyBonus);
+      const proficient = isProficientWithWeapon(system.class, weapon.system.weaponType);
+      const atk = weaponAttackDamage(weapon.system, system.abilities, context.proficiencyBonus, proficient);
       const damageType = weapon.system.damage.type
         ? game.i18n.localize(DND_CUSTOM.damageTypes[weapon.system.damage.type])
         : "";
@@ -313,7 +316,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       if (weapon.system.properties.versatile && weapon.system.damageVersatile.dice) {
         versatileLabel = `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
       }
-      context.weaponStats[weapon.id] = { attackLabel: formatModifier(atk.attackBonus), damageLabel, versatileLabel };
+      context.weaponStats[weapon.id] = {
+        attackLabel: formatModifier(atk.attackBonus),
+        damageLabel,
+        versatileLabel,
+        proficient
+      };
     }
 
     // Bonus de CA apporté par chaque armure/bouclier/accessoire possédé pris isolément (même
@@ -534,14 +542,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Jet d'attaque d'une arme de l'inventaire (1d20 + bonus d'attaque, cf. weaponAttackDamage
-   *  dans rules.js — suppose la maîtrise). */
+   *  dans rules.js — bonus de maîtrise seulement si la classe couvre la catégorie de l'arme). */
   static async #onRollWeaponAttack(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "weapon") return;
+    const proficient = isProficientWithWeapon(this.actor.system.class, item.system.weaponType);
     const atk = weaponAttackDamage(
       item.system,
       this.actor.system.abilities,
-      proficiencyBonus(this.actor.system.attributes.level)
+      proficiencyBonus(this.actor.system.attributes.level),
+      proficient
     );
     const cond = conditionRollEffects(this.actor, "attack");
     await rollCheck({

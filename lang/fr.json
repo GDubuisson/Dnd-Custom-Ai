@@ -155,6 +155,8 @@
       "Currency": "Monnaie",
       "DeleteItem": "Retirer",
       "ViewItem": "Ouvrir la fiche de l'objet",
+      "NotProficient": "Non maîtrisé",
+      "NotProficientTooltip": "Votre classe n'est pas maîtrisée avec cette catégorie d'arme : le bonus de maîtrise ne s'applique pas.",
       "UseItem": "Utiliser",
       "NoTokenOnScene": "Aucun token de ce personnage sur la scène active.",
       "DropHint": "Glissez un objet ici depuis une autre fiche ouverte (ou un compendium) pour l'ajouter à l'inventaire.",

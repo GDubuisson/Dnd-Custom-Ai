@@ -211,11 +211,19 @@ export function isOffHandEligible(weaponSystem) {
   return weaponSystem.properties?.handedness !== "twoHanded" && Boolean(weaponSystem.properties?.light);
 }
 
+/** Un personnage est-il maîtrisé de la catégorie d'arme (weaponType) équipée, selon sa
+ *  classe (cf. DND_CUSTOM.classWeaponProficiencies) ? Classe vide/inconnue (PNJ, personnage
+ *  pas encore configuré) : considéré maîtrisé par défaut, pour ne pas pénaliser avant qu'une
+ *  classe soit choisie. */
+export function isProficientWithWeapon(className, weaponType) {
+  const categories = DND_CUSTOM.classWeaponProficiencies[className];
+  return categories ? categories.includes(weaponType) : true;
+}
+
 /** Modificateur de caractéristique et bonus d'attaque d'une arme équipée, SRD 5e : Dextérité
  *  pour les armes à distance, meilleur de Force/Dextérité si Finesse, Force sinon. Bonus de
- *  maîtrise toujours appliqué : ce système simplifié ne suit pas de liste de maîtrises
- *  d'armes par classe, tout personnage est considéré maîtrisé de toute arme équipée. */
-export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue) {
+ *  maîtrise appliqué uniquement si `isProficient` (cf. isProficientWithWeapon ci-dessus). */
+export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue, isProficient = true) {
   const isRanged = weaponSystem.weaponType.startsWith("ranged");
   const strMod = abilityModifier(abilities.str.total);
   const dexMod = abilityModifier(abilities.dex.total);
@@ -224,5 +232,5 @@ export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValu
     : weaponSystem.properties.finesse
       ? Math.max(strMod, dexMod)
       : strMod;
-  return { abilityMod, attackBonus: abilityMod + proficiencyBonusValue };
+  return { abilityMod, attackBonus: abilityMod + (isProficient ? proficiencyBonusValue : 0) };
 }

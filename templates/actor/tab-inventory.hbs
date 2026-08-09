@@ -21,7 +21,10 @@
         <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
         {{#with (lookup ../weaponStats this.id)}}
-        <td><button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button></td>
+        <td>
+          <button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button>
+          {{#unless this.proficient}}<span class="not-proficient-tag" title="{{localize 'DND_CUSTOM.Inventory.NotProficientTooltip'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+        </td>
         <td>
           <button type="button" class="roll-btn" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{this.damageLabel}}</button>
           {{#if this.versatileLabel}} / <button type="button" class="roll-btn" data-action="rollWeaponDamage" data-versatile="true" title="{{localize 'DND_CUSTOM.Roll.VersatileTooltip'}}">{{this.versatileLabel}}</button>{{/if}}

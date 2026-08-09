@@ -1631,3 +1631,16 @@
 .dnd-custom-ai .wizard-body button[type="submit"]:hover {
   background: var(--dca-primary);
 }
+
+.dnd-custom-ai .not-proficient-tag {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}

@@ -155,6 +155,8 @@
       "Currency": "Currency",
       "DeleteItem": "Remove",
       "ViewItem": "Open item sheet",
+      "NotProficient": "Not proficient",
+      "NotProficientTooltip": "Your class isn't proficient with this weapon category: the proficiency bonus doesn't apply.",
       "UseItem": "Use",
       "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",

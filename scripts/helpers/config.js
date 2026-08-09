@@ -100,6 +100,26 @@ DND_CUSTOM.classSavingThrows = {
   wizard: ["int", "wis"]
 };
 
+/** Catégories d'armes maîtrisées par classe, SRD 5e ("Weapons" de chaque classe) —
+ *  simplifié au niveau des 4 catégories déjà utilisées par WeaponData.weaponType (courante/
+ *  de guerre, corps-à-corps/à distance), sans les quelques exceptions nommées du SRD (ex.
+ *  Rogue + rapière). Utilisé par weaponAttackDamage (rules.js) pour n'appliquer le bonus de
+ *  maîtrise que si la classe du personnage couvre le type de l'arme équipée. */
+DND_CUSTOM.classWeaponProficiencies = {
+  barbarian: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  bard: ["meleeSimple", "rangedSimple"],
+  cleric: ["meleeSimple", "rangedSimple"],
+  druid: ["meleeSimple", "rangedSimple"],
+  fighter: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  monk: ["meleeSimple", "rangedSimple"],
+  paladin: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  ranger: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
+  rogue: ["meleeSimple", "rangedSimple"],
+  sorcerer: ["meleeSimple", "rangedSimple"],
+  warlock: ["meleeSimple", "rangedSimple"],
+  wizard: ["meleeSimple", "rangedSimple"]
+};
+
 /** Caractéristique d'incantation par classe lanceuse de sorts, SRD 5e. Utilisée pour le DD
  *  de sauvegarde et le bonus d'attaque des sorts. */
 DND_CUSTOM.spellcastingAbility = {
