@@ -57,6 +57,18 @@ function conditionRollEffects(actor, kind, abilityKey) {
   return { advantage, disadvantage };
 }
 
+/** Emplacement à décompter pour lancer un sort de niveau `spellLevel` : correspond
+ *  normalement à ce même niveau (pas de surclassement/upcasting dans ce système), sauf pour
+ *  l'Occultiste (Magie de Pacte, SRD 5e) dont tous les sorts consomment l'unique palier de
+ *  sorts actif, quel que soit leur propre niveau. */
+function resolveSpellSlotLevel(actor, spellLevel) {
+  if (actor.system.class === "warlock") {
+    const pactLevel = Object.entries(actor.system.spells.slots).find(([, slot]) => slot.max > 0)?.[0];
+    if (pactLevel) return pactLevel;
+  }
+  return String(spellLevel);
+}
+
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
  *  Le glisser-déposer d'objets (InventoryDragDropMixin) permet de transférer un objet vers/
  *  depuis un autre Actor ouvert (ex. la fiche d'un véhicule). */
@@ -80,7 +92,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollWeaponDamage: DndCustomActorSheet.#onRollWeaponDamage,
       toggleCondition: DndCustomActorSheet.#onToggleCondition,
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
-      exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease
+      exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
+      castSpell: DndCustomActorSheet.#onCastSpell
     }
   };
 
@@ -214,6 +227,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; emplacements
+    // restants/max par niveau (max entièrement dérivé, cf. CharacterData#prepareDerivedData).
+    const spells = items.filter((item) => item.type === "spell");
+    context.spellsByLevel = Array.from({ length: 10 }, (_, level) => ({
+      level,
+      label:
+        level === 0
+          ? game.i18n.localize("DND_CUSTOM.Abilities.Cantrips")
+          : game.i18n.format("DND_CUSTOM.Abilities.SpellLevelLabel", { level }),
+      spells: spells
+        .filter((spell) => spell.system.level === level)
+        .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
+        .map((spell) => ({ item: spell, schoolLabel: game.i18n.localize(DND_CUSTOM.spellSchools[spell.system.school]) }))
+    })).filter((group) => group.spells.length);
+    context.spellSlots = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+      .map((level) => ({ level, ...system.spells.slots[level] }))
+      .filter((slot) => slot.max > 0);
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
     // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
     context.weaponsAndArmor = items.filter((item) => ["weapon", "armor"].includes(item.type));
@@ -307,25 +337,37 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     return context;
   }
 
-  /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans dépasser le max. */
+  /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
+   *  dépasser le max. Restaure aussi les emplacements de sorts de l'Occultiste (Magie de
+   *  Pacte, SRD 5e : seule classe qui récupère ses emplacements au repos court). */
   static async #onRestShort() {
     const hp = this.actor.system.attributes.hp;
-    const newValue = Math.min(hp.value + Math.floor(hp.max / 2), hp.max);
-    await this.actor.update({ "system.attributes.hp.value": newValue });
+    const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
+    if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
+    await this.actor.update(updates);
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
     });
   }
 
-  /** Repos long : soigne intégralement (SRD 5e, "Resting" - a long rest restores all hit points). */
+  /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */
   static async #onRestLong() {
     const hp = this.actor.system.attributes.hp;
-    await this.actor.update({ "system.attributes.hp.value": hp.max });
+    const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
+    await this.actor.update(updates);
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestLong", { name: this.actor.name })
     });
+  }
+
+  #spellSlotResetUpdates() {
+    const updates = {};
+    for (const level of ["1", "2", "3", "4", "5", "6", "7", "8", "9"]) {
+      updates[`system.spells.slots.${level}.value`] = this.actor.system.spells.slots[level].max;
+    }
+    return updates;
   }
 
   /** Boutons +/- des caractéristiques (réservés au MJ, cf. `isGM` dans le template) :
@@ -452,6 +494,29 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       dice,
       formula: formatModifier(atk.abilityMod),
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`
+    });
+  }
+
+  /** Lance un sort de l'onglet Sorts : décompte un emplacement de son niveau (aucun
+   *  surclassement dans ce système, sauf Occultiste, cf. resolveSpellSlotLevel), sans effet
+   *  pour un tour de magie (niveau 0), et poste la description dans le chat. */
+  static async #onCastSpell(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "spell") return;
+
+    if (item.system.level > 0) {
+      const slotLevel = resolveSpellSlotLevel(this.actor, item.system.level);
+      const slot = this.actor.system.spells.slots[slotLevel];
+      if (!slot || slot.value <= 0) {
+        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
+        return;
+      }
+      await this.actor.update({ [`system.spells.slots.${slotLevel}.value`]: slot.value - 1 });
+    }
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.CastSpell", { name: this.actor.name, spell: item.name })
     });
   }
 

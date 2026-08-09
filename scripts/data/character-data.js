@@ -6,7 +6,8 @@ import {
   speedPenalty,
   classSpeedBonus,
   exhaustionSpeed,
-  exhaustionMaxHp
+  exhaustionMaxHp,
+  spellSlotsForClass
 } from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
 
@@ -90,6 +91,18 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         )
       ),
       currency: currencySchema(),
+      // Emplacements de sorts par niveau (1-9) : `max` est entièrement dérivé (classe +
+      // niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value` (emplacements
+      // restants) est la seule valeur persistée, décrémentée en lançant un sort et
+      // restaurée à `max` au repos long (cf. actor-sheet.js).
+      spells: new SchemaField({
+        slots: new SchemaField(
+          schemaFromKeys(["1", "2", "3", "4", "5", "6", "7", "8", "9"], () => new SchemaField({
+            value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+          }))
+        )
+      }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
     };
@@ -137,6 +150,13 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // Désavantage aux tests de Discrétion imposé par l'armure équipée (SRD 5e) : donnée
     // dérivée non persistée, exposée pour l'affichage (cf. actor-sheet.js > context.skills).
     this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
+
+    // Emplacements de sorts max (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
+    // seul `max` est recalculé à chaque préparation.
+    const maxSlots = spellSlotsForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
+    for (const level of ["1", "2", "3", "4", "5", "6", "7", "8", "9"]) {
+      this.spells.slots[level].max = maxSlots[level];
+    }
   }
 }
 

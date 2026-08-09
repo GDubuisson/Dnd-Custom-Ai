@@ -58,6 +58,8 @@ export function InventoryDragDropMixin(Base) {
         await item.update({ "system.quantity": Math.max(0, Math.trunc(Number(target.value) || 0)) });
       } else if (target.matches("[data-item-equipped]")) {
         await item.update({ "system.equipped": target.checked });
+      } else if (target.matches("[data-item-prepared]")) {
+        await item.update({ "system.prepared": target.checked });
       }
     }
 

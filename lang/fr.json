@@ -96,7 +96,8 @@
       "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",
       "UseLightOn": "{name} allume {item}.",
       "UseLightOff": "{name} éteint {item}.",
-      "UseHeal": "{name} utilise {item} et récupère {amount} PV."
+      "UseHeal": "{name} utilise {item} et récupère {amount} PV.",
+      "CastSpell": "{name} lance {spell}."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -155,7 +156,12 @@
       "FeaturesTitle": "Capacités",
       "Empty": "Aucune capacité ou sort enregistré",
       "SpellSaveDC": "DD de sauvegarde",
-      "SpellAttackBonus": "Bonus d'attaque"
+      "SpellAttackBonus": "Bonus d'attaque",
+      "Cantrips": "Tours de magie",
+      "SpellLevelLabel": "Sorts de niveau {level}",
+      "SpellLevelShort": "Niv.",
+      "Cast": "Lancer",
+      "NoSpells": "Aucun sort enregistré"
     },
     "Skills": {
       "acrobatics": "Acrobaties",
@@ -176,6 +182,9 @@
       "sleightOfHand": "Escamotage",
       "stealth": "Discrétion",
       "survival": "Survie"
+    },
+    "Spells": {
+      "NoSlotAvailable": "Aucun emplacement de sort disponible à ce niveau."
     },
     "Conditions": {
       "Title": "États",
@@ -231,6 +240,16 @@
         "light": "Lumière (allume le token)",
         "heal": "Soin"
       },
+      "SpellSchools": {
+        "abjuration": "Abjuration",
+        "conjuration": "Invocation",
+        "divination": "Divination",
+        "enchantment": "Enchantement",
+        "evocation": "Évocation",
+        "illusion": "Illusion",
+        "necromancy": "Nécromancie",
+        "transmutation": "Transmutation"
+      },
       "Fields": {
         "Price": "Prix",
         "Weight": "Poids",
@@ -285,7 +304,20 @@
         "SkillAdvantages": "Compétences avantagées",
         "SpecialTrait": "Trait spécial",
         "SpecialTraitName": "Nom du trait",
-        "SpecialTraitDescription": "Description du trait"
+        "SpecialTraitDescription": "Description du trait",
+        "SpellLevel": "Niveau (0 = tour de magie)",
+        "SpellSchool": "École",
+        "CastingTime": "Temps d'incantation",
+        "SpellRange": "Portée",
+        "Components": "Composantes",
+        "ComponentVerbal": "Verbale (V)",
+        "ComponentSomatic": "Gestuelle (G)",
+        "ComponentMaterial": "Matérielle (M)",
+        "MaterialDescription": "Composante matérielle",
+        "Duration": "Durée",
+        "Concentration": "Concentration",
+        "Ritual": "Rituel",
+        "Prepared": "Préparé"
       }
     }
   },
@@ -301,7 +333,8 @@
       "feature": "Capacité",
       "origin": "Origine",
       "class": "Classe",
-      "tool": "Outil"
+      "tool": "Outil",
+      "spell": "Sort"
     }
   }
 }

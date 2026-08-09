@@ -176,3 +176,44 @@ export class ToolData extends foundry.abstract.TypeDataModel {
     };
   }
 }
+
+/** Sort (SRD 5e) : niveau 0 = tour de magie. Pas de formule de dégâts/DD dédiée — reste dans
+ *  la description comme pour les Capacités (cf. FeatureData) ; le bonus d'attaque/DD des
+ *  sorts déjà affiché sur la fiche (CharacterData/actor-sheet.js > context.spellcasting)
+ *  s'applique à tout sort lancé. */
+export class SpellData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
+      school: new StringField({
+        required: true,
+        initial: "evocation",
+        choices: [
+          "abjuration",
+          "conjuration",
+          "divination",
+          "enchantment",
+          "evocation",
+          "illusion",
+          "necromancy",
+          "transmutation"
+        ]
+      }),
+      castingTime: new StringField({ required: false, blank: true, initial: "1 action" }),
+      range: new StringField({ required: false, blank: true, initial: "" }),
+      components: new SchemaField({
+        verbal: new BooleanField({ required: true, initial: false }),
+        somatic: new BooleanField({ required: true, initial: false }),
+        material: new BooleanField({ required: true, initial: false }),
+        materialDescription: new StringField({ required: false, blank: true, initial: "" })
+      }),
+      duration: new StringField({ required: false, blank: true, initial: "" }),
+      concentration: new BooleanField({ required: true, initial: false }),
+      ritual: new BooleanField({ required: true, initial: false }),
+      // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
+      // sorts "connus" (Barde/Ensorceleur/Occultiste), où tout sort connu est disponible.
+      prepared: new BooleanField({ required: true, initial: false }),
+      description: new HTMLField({ required: false, blank: true, initial: "" })
+    };
+  }
+}

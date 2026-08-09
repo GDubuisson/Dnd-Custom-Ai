@@ -96,7 +96,8 @@
       "RestLong": "{name} takes a long rest and regains all hit points.",
       "UseLightOn": "{name} lights {item}.",
       "UseLightOff": "{name} extinguishes {item}.",
-      "UseHeal": "{name} uses {item} and regains {amount} HP."
+      "UseHeal": "{name} uses {item} and regains {amount} HP.",
+      "CastSpell": "{name} casts {spell}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -155,7 +156,12 @@
       "FeaturesTitle": "Features",
       "Empty": "No feature or spell recorded",
       "SpellSaveDC": "Spell save DC",
-      "SpellAttackBonus": "Spell attack bonus"
+      "SpellAttackBonus": "Spell attack bonus",
+      "Cantrips": "Cantrips",
+      "SpellLevelLabel": "Level {level} spells",
+      "SpellLevelShort": "Lvl.",
+      "Cast": "Cast",
+      "NoSpells": "No spell recorded"
     },
     "Skills": {
       "acrobatics": "Acrobatics",
@@ -176,6 +182,9 @@
       "sleightOfHand": "Sleight of Hand",
       "stealth": "Stealth",
       "survival": "Survival"
+    },
+    "Spells": {
+      "NoSlotAvailable": "No spell slot available at this level."
     },
     "Conditions": {
       "Title": "Conditions",
@@ -231,6 +240,16 @@
         "light": "Light (lights up the token)",
         "heal": "Healing"
       },
+      "SpellSchools": {
+        "abjuration": "Abjuration",
+        "conjuration": "Conjuration",
+        "divination": "Divination",
+        "enchantment": "Enchantment",
+        "evocation": "Evocation",
+        "illusion": "Illusion",
+        "necromancy": "Necromancy",
+        "transmutation": "Transmutation"
+      },
       "Fields": {
         "Price": "Price",
         "Weight": "Weight",
@@ -285,7 +304,20 @@
         "SkillAdvantages": "Skill Advantages",
         "SpecialTrait": "Special Trait",
         "SpecialTraitName": "Trait Name",
-        "SpecialTraitDescription": "Trait Description"
+        "SpecialTraitDescription": "Trait Description",
+        "SpellLevel": "Level (0 = cantrip)",
+        "SpellSchool": "School",
+        "CastingTime": "Casting Time",
+        "SpellRange": "Range",
+        "Components": "Components",
+        "ComponentVerbal": "Verbal (V)",
+        "ComponentSomatic": "Somatic (S)",
+        "ComponentMaterial": "Material (M)",
+        "MaterialDescription": "Material Component",
+        "Duration": "Duration",
+        "Concentration": "Concentration",
+        "Ritual": "Ritual",
+        "Prepared": "Prepared"
       }
     }
   },
@@ -301,7 +333,8 @@
       "feature": "Feature",
       "origin": "Origin",
       "class": "Class",
-      "tool": "Tool"
+      "tool": "Tool",
+      "spell": "Spell"
     }
   }
 }

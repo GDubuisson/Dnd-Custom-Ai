@@ -69,6 +69,27 @@ export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) 
   return proficiencyBonusValue + spellcastingAbilityMod;
 }
 
+/** Emplacements de sorts max par niveau (1 à 9) selon la classe et le niveau, SRD 5e (cf.
+ *  scripts/data/spell-slots.json, chargé une fois au démarrage dans
+ *  game.dndCustomAi.spellSlotTables). Toutes les classes lanceuses utilisent la table
+ *  "pleine" sauf le Paladin (demi-lanceur) et l'Occultiste (Magie de Pacte : emplacements
+ *  limités, un seul palier actif à la fois, quel que soit le niveau du sort lancé). */
+export function spellSlotsForClass(className, level, tables) {
+  const max = Object.fromEntries([1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => [n, 0]));
+  if (!tables) return max;
+
+  if (className === "warlock") {
+    const pact = tables.warlockPact[level];
+    if (pact) max[pact.level] = pact.slots;
+    return max;
+  }
+
+  const table = className === "paladin" ? tables.halfCaster : tables.fullCaster;
+  const row = table?.[level];
+  if (row) row.forEach((count, index) => (max[index + 1] = count));
+  return max;
+}
+
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
  *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
 export function maxHitPoints(hitDie, level, conMod) {

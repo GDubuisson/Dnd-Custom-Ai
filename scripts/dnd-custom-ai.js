@@ -1,7 +1,7 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
 import { VehicleActorData } from "./data/vehicle-actor-data.js";
-import { WeaponData, ArmorData, GearData, FeatureData, ToolData } from "./data/item-data.js";
+import { WeaponData, ArmorData, GearData, FeatureData, ToolData, SpellData } from "./data/item-data.js";
 import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
@@ -14,7 +14,8 @@ import {
   FeatureItemSheet,
   OriginItemSheet,
   ClassItemSheet,
-  ToolItemSheet
+  ToolItemSheet,
+  SpellItemSheet
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
@@ -61,6 +62,7 @@ Hooks.once("init", async () => {
   CONFIG.Item.dataModels.gear = GearData;
   CONFIG.Item.dataModels.feature = FeatureData;
   CONFIG.Item.dataModels.tool = ToolData;
+  CONFIG.Item.dataModels.spell = SpellData;
   // Destinés aux compendiums (system.json > packs), remplis à la main par le MJ depuis
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
@@ -108,12 +110,14 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, OriginItemSheet, { types: ["origin"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, SpellItemSheet, { types: ["spell"], makeDefault: true });
 
   registerHandlebarsHelpers();
 
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").
   game.dndCustomAi = {
-    origins: await loadOrigins()
+    origins: await loadOrigins(),
+    spellSlotTables: await loadSpellSlotTables()
   };
 });
 
@@ -227,5 +231,10 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
 
 async function loadOrigins() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/origins.json`);
+  return response.json();
+}
+
+async function loadSpellSlotTables() {
+  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/spell-slots.json`);
   return response.json();
 }

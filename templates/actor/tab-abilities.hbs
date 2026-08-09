@@ -13,6 +13,18 @@
     <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
     <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
   </div>
+
+  {{#if spellSlots.length}}
+  <div class="spell-slots-row">
+    {{#each spellSlots}}
+    <label class="spell-slot-chip">
+      {{localize "DND_CUSTOM.Abilities.SpellLevelShort"}} {{this.level}}
+      <input type="number" name="system.spells.slots.{{this.level}}.value" value="{{this.value}}" min="0" max="{{this.max}}">
+      <span>/ {{this.max}}</span>
+    </label>
+    {{/each}}
+  </div>
+  {{/if}}
   {{/if}}
 
   <ul class="features-list">
@@ -30,8 +42,41 @@
     </li>
     {{else}}
     {{#unless originTrait}}
+    {{#unless isSpellcaster}}
     <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.Empty"}}</li>
+    {{/unless}}
     {{/unless}}
     {{/each}}
   </ul>
+
+  {{#if isSpellcaster}}
+  {{#each spellsByLevel}}
+  <div class="spell-level-group">
+    <h3 class="section-subtitle">{{this.label}}</h3>
+    <ul class="spells-list">
+      {{#each this.spells}}
+      <li data-item-id="{{this.item.id}}">
+        <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.item.name}}</a>
+        <span class="spell-school">({{this.schoolLabel}})</span>
+        {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
+        {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
+        {{#if this.item.system.level}}
+        <label class="spell-prepared">
+          <input type="checkbox" data-item-prepared {{#if this.item.system.prepared}}checked{{/if}}>
+          {{localize "DND_CUSTOM.Item.Fields.Prepared"}}
+        </label>
+        {{/if}}
+        <button type="button" class="roll-btn" data-action="castSpell">{{localize "DND_CUSTOM.Abilities.Cast"}}</button>
+        <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+  {{#unless spellsByLevel.length}}
+  <p class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoSpells"}}</p>
+  {{/unless}}
+  {{/if}}
 </section>

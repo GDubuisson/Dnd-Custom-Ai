@@ -104,6 +104,18 @@ DND_CUSTOM.damageTypes = {
   slashing: "DND_CUSTOM.Item.DamageTypes.slashing"
 };
 
+/** Écoles de magie SRD 5e (8 écoles officielles). */
+DND_CUSTOM.spellSchools = {
+  abjuration: "DND_CUSTOM.Item.SpellSchools.abjuration",
+  conjuration: "DND_CUSTOM.Item.SpellSchools.conjuration",
+  divination: "DND_CUSTOM.Item.SpellSchools.divination",
+  enchantment: "DND_CUSTOM.Item.SpellSchools.enchantment",
+  evocation: "DND_CUSTOM.Item.SpellSchools.evocation",
+  illusion: "DND_CUSTOM.Item.SpellSchools.illusion",
+  necromancy: "DND_CUSTOM.Item.SpellSchools.necromancy",
+  transmutation: "DND_CUSTOM.Item.SpellSchools.transmutation"
+};
+
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */
 DND_CUSTOM.weaponHandedness = {
   oneHanded: "DND_CUSTOM.Item.WeaponHandedness.oneHanded",

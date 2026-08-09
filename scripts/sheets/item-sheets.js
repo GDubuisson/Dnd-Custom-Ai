@@ -144,3 +144,9 @@ export class ToolItemSheet extends DndCustomItemSheet {
     form: { template: `systems/${SYSTEM_ID}/templates/item/tool-sheet.hbs` }
   };
 }
+
+export class SpellItemSheet extends DndCustomItemSheet {
+  static PARTS = {
+    form: { template: `systems/${SYSTEM_ID}/templates/item/spell-sheet.hbs` }
+  };
+}
