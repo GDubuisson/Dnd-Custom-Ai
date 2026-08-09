@@ -201,6 +201,38 @@
   width: 2.2rem;
 }
 
+.dnd-custom-ai .level-up-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: center;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--dca-tertiary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .level-up-badge button {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--dca-surface-lowest);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .level-up-badge button:hover {
+  background: var(--dca-surface-lowest);
+  color: var(--dca-tertiary);
+}
+
 .dnd-custom-ai .hp-bar-track {
   display: block;
   width: 100%;

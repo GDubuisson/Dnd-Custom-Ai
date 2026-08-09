@@ -9,6 +9,7 @@ import {
   currencyTotalInCopper,
   equipmentSlots,
   formatModifier,
+  levelForXp,
   passivePerception,
   skillModifier,
   spellSaveDC,
@@ -94,7 +95,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
       castSpell: DndCustomActorSheet.#onCastSpell,
-      rollInitiative: DndCustomActorSheet.#onRollInitiative
+      rollInitiative: DndCustomActorSheet.#onRollInitiative,
+      levelUp: DndCustomActorSheet.#onLevelUp
     }
   };
 
@@ -163,6 +165,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
+    // Indicateur "niveau disponible" (bouton MJ) : ne révèle jamais le total d'XP lui-même
+    // au joueur (cf. PROJECT.md > "Système de progression", XP toujours caché au joueur).
+    context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
 
     const dexMod = abilityModifier(system.abilities.dex.total);
     context.initiative = { mod: dexMod, modLabel: formatModifier(dexMod) };
@@ -387,6 +392,21 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const next = Math.max(1, current + delta);
     if (next === current) return;
     await this.actor.update({ [`system.abilities.${key}.value`]: next });
+  }
+
+  /** Monte le personnage d'UN niveau (jamais directement au niveau maximal éligible, cf.
+   *  levelForXp) : PV max/emplacements de sorts/vitesse se recalculent automatiquement
+   *  (CharacterData#prepareDerivedData). Champ verrouillé MJ (cf. hook preUpdateActor,
+   *  dnd-custom-ai.js) : la mise à jour est silencieusement ignorée si un joueur clique
+   *  malgré le bouton masqué côté template. */
+  static async #onLevelUp() {
+    const system = this.actor.system;
+    const next = system.attributes.level + 1;
+    await this.actor.update({ "system.attributes.level": next });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
+    });
   }
 
   /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée

@@ -10,6 +10,20 @@ export function proficiencyBonus(level) {
   return Math.ceil(level / 4) + 1;
 }
 
+/** Niveau correspondant à un total d'XP cumulé, SRD 5e (table "Character Advancement", cf.
+ *  DND_CUSTOM.xpThresholds) : le plus haut niveau dont le seuil est atteint, plafonné à 20. */
+export function levelForXp(xp) {
+  const thresholds = DND_CUSTOM.xpThresholds;
+  let level = 1;
+  for (let i = thresholds.length - 1; i >= 0; i--) {
+    if (xp >= thresholds[i]) {
+      level = i + 1;
+      break;
+    }
+  }
+  return level;
+}
+
 /** Capacité de charge, SRD 5e (règle "Détaillée") : Force x 15 lb (soit x 7,5 kg). */
 export function carryingCapacity(strengthScore, unit = "lb") {
   return strengthScore * DND_CUSTOM.carryCapacityPerStrength[unit];

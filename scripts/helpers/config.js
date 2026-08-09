@@ -184,3 +184,11 @@ DND_CUSTOM.challengeRatingXp = {
   "21": 33000, "22": 41000, "23": 50000, "24": 62000, "25": 75000,
   "26": 90000, "27": 105000, "28": 120000, "29": 135000, "30": 155000
 };
+
+/** XP total cumulé requis pour atteindre chaque niveau, SRD 5e (table "Character
+ *  Advancement" officielle, niveaux 1 à 20 — index 0 = niveau 1). Utilisé pour détecter
+ *  qu'une montée de niveau est disponible (cf. rules.js > levelForXp). */
+DND_CUSTOM.xpThresholds = [
+  0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
+  85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
+];

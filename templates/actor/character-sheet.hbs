@@ -9,6 +9,14 @@
       <label>{{localize "DND_CUSTOM.Actor.Level"}}
         <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
       </label>
+      {{#if levelUpAvailable}}
+      <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
+        <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
+        {{#if isGM}}
+        <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
+        {{/if}}
+      </span>
+      {{/if}}
       <label>{{localize "DND_CUSTOM.Actor.Class"}}
         <select name="system.class" {{#unless isGM}}disabled{{/unless}}>
           <option value="">—</option>

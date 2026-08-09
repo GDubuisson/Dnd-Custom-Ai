@@ -73,13 +73,15 @@
       "OriginAdvantageTooltip": "Advantage on this check thanks to Origin",
       "ArmorDisadvantageShort": "Disadvantage",
       "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor",
-      "CarryCapacity": "Carry Capacity"
+      "CarryCapacity": "Carry Capacity",
+      "LevelUpAvailable": "Level up available"
     },
     "Actions": {
       "RestShort": "Short rest",
       "RestLong": "Long rest",
       "RollInitiative": "Initiative",
-      "AwardXp": "Award XP"
+      "AwardXp": "Award XP",
+      "LevelUp": "Level up"
     },
     "Roll": {
       "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
@@ -107,7 +109,9 @@
       "XpAmount": "XP amount",
       "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
       "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
-      "NoCharacters": "No player character in this world."
+      "NoCharacters": "No player character in this world.",
+      "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
+      "LevelUp": "{name} reaches level {level}!"
     },
     "Tabs": {
       "stats": "Stats",

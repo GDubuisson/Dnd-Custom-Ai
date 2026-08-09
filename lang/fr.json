@@ -73,13 +73,15 @@
       "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine",
       "ArmorDisadvantageShort": "Désavantage",
       "ArmorDisadvantageTooltip": "Désavantage sur ce test à cause de l'armure équipée",
-      "CarryCapacity": "Capacité de charge"
+      "CarryCapacity": "Capacité de charge",
+      "LevelUpAvailable": "Niveau supérieur disponible"
     },
     "Actions": {
       "RestShort": "Repos court",
       "RestLong": "Repos long",
       "RollInitiative": "Initiative",
-      "AwardXp": "Attribuer de l'XP"
+      "AwardXp": "Attribuer de l'XP",
+      "LevelUp": "Monter de niveau"
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
@@ -107,7 +109,9 @@
       "XpAmount": "Montant d'XP",
       "XpAwarded": "{amount} XP répartis ({share} chacun) entre : {names}.",
       "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
-      "NoCharacters": "Aucun personnage joueur dans ce monde."
+      "NoCharacters": "Aucun personnage joueur dans ce monde.",
+      "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
+      "LevelUp": "{name} passe au niveau {level} !"
     },
     "Tabs": {
       "stats": "Statistiques",
