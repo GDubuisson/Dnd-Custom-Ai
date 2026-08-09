@@ -19,6 +19,7 @@ import {
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
+import { DND_CUSTOM } from "./helpers/config.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -209,6 +210,19 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
     ui.notifications.warn(game.i18n.format("DND_CUSTOM.Equipment.SlotOccupied", { item: conflict.name }));
     return false;
   }
+});
+
+// Pré-remplit le XP rapporté (system.xpReward) selon l'indice de dangerosité, table SRD 5e
+// officielle (cf. DND_CUSTOM.challengeRatingXp) : ne s'applique que si l'indice change SANS
+// que le champ XP lui-même soit modifié dans le même envoi de formulaire, pour laisser le MJ
+// libre de le personnaliser ensuite sans qu'un futur changement de FI ne l'écrase.
+Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
+  if (!["npc", "mount"].includes(actor.type)) return;
+  const newChallengeRating = changes.system?.challengeRating;
+  if (newChallengeRating === undefined || changes.system?.xpReward !== undefined) return;
+
+  const xp = DND_CUSTOM.challengeRatingXp[newChallengeRating];
+  if (xp !== undefined) changes.system.xpReward = xp;
 });
 
 async function loadOrigins() {

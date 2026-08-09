@@ -44,7 +44,9 @@ export class NpcData extends foundry.abstract.TypeDataModel {
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 })
       }),
-      // XP fixe saisi par le MJ ; table de correspondance FI -> XP prévue plus tard (cf. PROJECT.md).
+      // XP rapporté : pré-rempli depuis la table FI -> XP (cf. DND_CUSTOM.challengeRatingXp,
+      // hook preUpdateActor dans dnd-custom-ai.js) quand le MJ change l'indice de dangerosité,
+      // reste ensuite librement modifiable à la main.
       xpReward: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
       specialAbilities: new HTMLField({ required: false, blank: true, initial: "" }),
       particularity: new HTMLField({ required: false, blank: true, initial: "" })
