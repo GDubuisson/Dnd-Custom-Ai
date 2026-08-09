@@ -116,6 +116,22 @@ export function speedPenalty(strengthRequired, strengthTotal) {
   return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
 }
 
+/** Bonus de vitesse de classe, SRD 5e (même convention numérique que speedPenalty/baseSpeed
+ *  ci-dessus, cf. leurs commentaires). Barbare "Célérité" (niveau 5+) : +10, sauf armure
+ *  lourde. Moine "Déplacement sans armure" (niveau 2+, paliers 6/10/14/18) : +10 à +30,
+ *  seulement sans armure ni bouclier équipé. */
+export function classSpeedBonus(className, level, isHeavyArmor, hasArmorOrShield) {
+  if (className === "barbarian" && level >= 5 && !isHeavyArmor) return 10;
+  if (className === "monk" && level >= 2 && !hasArmorOrShield) {
+    if (level >= 18) return 30;
+    if (level >= 14) return 25;
+    if (level >= 10) return 20;
+    if (level >= 6) return 15;
+    return 10;
+  }
+  return 0;
+}
+
 /** Effet de l'Exhaustion sur la vitesse, SRD 5e (table complète, niveau 6 = mort géré
  *  séparément) : vitesse divisée par deux dès le niveau 2, nulle dès le niveau 5. Appliqué
  *  après les autres malus de vitesse (armure...). */

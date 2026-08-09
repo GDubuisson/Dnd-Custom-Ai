@@ -4,6 +4,7 @@ import {
   maxHitPoints,
   armorClass,
   speedPenalty,
+  classSpeedBonus,
   exhaustionSpeed,
   exhaustionMaxHp
 } from "../helpers/rules.js";
@@ -126,7 +127,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
 
     const strengthRequired = equippedArmor?.system.strengthRequired ?? 0;
-    const speedBeforeExhaustion = DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total);
+    const isHeavyArmor = equippedArmor?.system.armorType === "heavy";
+    const hasArmorOrShield = Boolean(equippedArmor) || Boolean(equippedShield);
+    const classBonus = classSpeedBonus(this.class, this.attributes.level, isHeavyArmor, hasArmorOrShield);
+    const speedBeforeExhaustion =
+      DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total) + classBonus;
     this.attributes.speed = exhaustionSpeed(speedBeforeExhaustion, this.attributes.exhaustion);
 
     // Désavantage aux tests de Discrétion imposé par l'armure équipée (SRD 5e) : donnée
