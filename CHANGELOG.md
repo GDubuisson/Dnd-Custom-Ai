@@ -7,6 +7,26 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.8.0] - 2026-08-09
+
+Première session en mode autonome (`ClaudeFiles/AUTONOMIE.md`) : le périmètre initial de
+`PROJECT.md` (combat automatisé, compendiums de sorts/monstres explicitement exclus "pour
+cette phase") n'est plus une limite — priorisé selon la valeur pour une table qui joue
+réellement en Foundry.
+
+### Ajouté
+- Jet d'Initiative, intégré au Combat Tracker natif de Foundry : `"initiative": "1d20 +
+  @attributes.initiativeMod"` dans `system.json`, bouton dans la zone commune (personnage)
+  et l'en-tête (PNJ/monture). Délègue entièrement à `Actor#rollInitiative` (natif), qui crée
+  le Combattant sur la scène active si besoin — aucune logique de combat maison.
+- Bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts : applique le total
+  aux tokens actuellement ciblés (PV temporaires absorbés en premier, SRD 5e). Première
+  brique d'automatisation de combat, sans ciblage/portée/grille tactique automatiques.
+- Bibliothèque de 15 sorts SRD 5e prêts à importer (`world-items/spells.json`, 5 tours de
+  magie + niveaux 1 à 3), même macro d'import que les autres `world-items/*.json` : rend le
+  système de sorts (ajouté en 0.7.0) utilisable sans que le MJ crée tout à la main. Sélection
+  non exhaustive, assumée comme telle.
+
 ## [0.7.0] - 2026-08-09
 
 ### Ajouté
