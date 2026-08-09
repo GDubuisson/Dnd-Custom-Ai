@@ -1,5 +1,12 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { abilityModifier, maxHitPoints, armorClass, speedPenalty } from "../helpers/rules.js";
+import {
+  abilityModifier,
+  maxHitPoints,
+  armorClass,
+  speedPenalty,
+  exhaustionSpeed,
+  exhaustionMaxHp
+} from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
@@ -66,7 +73,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 }),
-        level: new NumberField({ required: true, integer: true, min: 1, initial: 1 })
+        level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+        // Niveaux d'Exhaustion SRD 5e (0-6) : effets appliqués dans prepareDerivedData
+        // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
+        // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
+        exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 })
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),
@@ -106,13 +117,17 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     const hitDie = DND_CUSTOM.classHitDice[this.class] ?? 8;
     const conMod = abilityModifier(this.abilities.con.total);
-    this.attributes.hp.max = maxHitPoints(hitDie, this.attributes.level, conMod);
+    this.attributes.hp.max = exhaustionMaxHp(
+      maxHitPoints(hitDie, this.attributes.level, conMod),
+      this.attributes.exhaustion
+    );
 
     const dexMod = abilityModifier(this.abilities.dex.total);
     this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
 
     const strengthRequired = equippedArmor?.system.strengthRequired ?? 0;
-    this.attributes.speed = DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total);
+    const speedBeforeExhaustion = DND_CUSTOM.baseSpeed - speedPenalty(strengthRequired, this.abilities.str.total);
+    this.attributes.speed = exhaustionSpeed(speedBeforeExhaustion, this.attributes.exhaustion);
 
     // Désavantage aux tests de Discrétion imposé par l'armure équipée (SRD 5e) : donnée
     // dérivée non persistée, exposée pour l'affichage (cf. actor-sheet.js > context.skills).

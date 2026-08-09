@@ -23,6 +23,40 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
+// Niveau d'Exhaustion à partir duquel chaque catégorie de jet est désavantagée, SRD 5e.
+const EXHAUSTION_CHECK_DISADVANTAGE_LEVEL = 1;
+const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
+
+/** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
+ *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
+ *  automatisées (pas d'effets dépendant d'une cible/de la position, hors du scope "combat
+ *  automatisé avancé" explicitement exclu de ce système, cf. PROJECT.md). `kind` : "check"
+ *  (test de caractéristique/compétence), "save" (sauvegarde), "attack" (jet d'attaque). */
+function conditionRollEffects(actor, kind, abilityKey) {
+  const statuses = actor.statuses;
+  const exhaustion = actor.system.attributes?.exhaustion ?? 0;
+  let advantage = false;
+  let disadvantage = false;
+
+  if (kind === "check") {
+    disadvantage =
+      statuses.has("poisoned") || statuses.has("frightened") || exhaustion >= EXHAUSTION_CHECK_DISADVANTAGE_LEVEL;
+  } else if (kind === "attack") {
+    disadvantage =
+      statuses.has("poisoned") ||
+      statuses.has("frightened") ||
+      statuses.has("restrained") ||
+      statuses.has("prone") ||
+      statuses.has("blinded") ||
+      exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL;
+    advantage = statuses.has("invisible");
+  } else if (kind === "save") {
+    disadvantage =
+      exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL || (abilityKey === "dex" && statuses.has("restrained"));
+  }
+  return { advantage, disadvantage };
+}
+
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
  *  Le glisser-déposer d'objets (InventoryDragDropMixin) permet de transférer un objet vers/
  *  depuis un autre Actor ouvert (ex. la fiche d'un véhicule). */
@@ -43,7 +77,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollSave: DndCustomActorSheet.#onRollSave,
       rollSkill: DndCustomActorSheet.#onRollSkill,
       rollWeaponAttack: DndCustomActorSheet.#onRollWeaponAttack,
-      rollWeaponDamage: DndCustomActorSheet.#onRollWeaponDamage
+      rollWeaponDamage: DndCustomActorSheet.#onRollWeaponDamage,
+      toggleCondition: DndCustomActorSheet.#onToggleCondition,
+      exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
+      exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease
     }
   };
 
@@ -238,6 +275,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       };
     }
 
+    // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : actifs via
+    // ActiveEffect (this.actor.statuses), Exhaustion à part (niveau 0-6, cf. character-data.js).
+    context.conditions = CONFIG.statusEffects.map((status) => ({
+      id: status.id,
+      label: game.i18n.localize(status.name),
+      img: status.img,
+      active: this.actor.statuses.has(status.id)
+    }));
+
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
       carryingCapacity(system.abilities.str.total, "kg") + carryingCapacityBonus(context.inventoryItems);
@@ -305,14 +351,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollAbility(event, target) {
     const key = target.dataset.key;
     const mod = abilityModifier(this.actor.system.abilities[key].total);
+    const cond = conditionRollEffects(this.actor, "check");
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod),
       flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
-      advantage: event.shiftKey,
-      disadvantage: event.ctrlKey
+      advantage: event.shiftKey || cond.advantage,
+      disadvantage: event.ctrlKey || cond.disadvantage
     });
   }
 
@@ -323,14 +370,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const system = this.actor.system;
     const mod = abilityModifier(system.abilities[key].total);
     const profBonus = system.saves[key].proficient ? proficiencyBonus(system.attributes.level) : 0;
+    const cond = conditionRollEffects(this.actor, "save", key);
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod + profBonus),
       flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
-      advantage: event.shiftKey,
-      disadvantage: event.ctrlKey
+      advantage: event.shiftKey || cond.advantage,
+      disadvantage: event.ctrlKey || cond.disadvantage
     });
   }
 
@@ -347,14 +395,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
+    const cond = conditionRollEffects(this.actor, "check");
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod),
       flavor: game.i18n.format("DND_CUSTOM.Roll.SkillCheck", {
         skill: game.i18n.localize(DND_CUSTOM.skills[key])
       }),
-      advantage: event.shiftKey || originAdvantage,
-      disadvantage: event.ctrlKey || armorDisadvantage
+      advantage: event.shiftKey || originAdvantage || cond.advantage,
+      disadvantage: event.ctrlKey || armorDisadvantage || cond.disadvantage
     });
   }
 
@@ -368,12 +417,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       this.actor.system.abilities,
       proficiencyBonus(this.actor.system.attributes.level)
     );
+    const cond = conditionRollEffects(this.actor, "attack");
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(atk.attackBonus),
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
-      advantage: event.shiftKey,
-      disadvantage: event.ctrlKey
+      advantage: event.shiftKey || cond.advantage,
+      disadvantage: event.ctrlKey || cond.disadvantage
     });
   }
 
@@ -470,5 +520,26 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.UseHeal", { name: actor.name, item: item.name, amount })
     });
+  }
+
+  /** Bascule un état (cf. CONFIG.statusEffects) : Actor#toggleStatusEffect crée/retire
+   *  l'ActiveEffect correspondante (méthode native Foundry). */
+  static async #onToggleCondition(event, target) {
+    await this.actor.toggleStatusEffect(target.dataset.key);
+  }
+
+  static async #onExhaustionIncrease() {
+    await this.#adjustExhaustion(1);
+  }
+
+  static async #onExhaustionDecrease() {
+    await this.#adjustExhaustion(-1);
+  }
+
+  async #adjustExhaustion(delta) {
+    const current = this.actor.system.attributes.exhaustion;
+    const next = Math.max(0, Math.min(6, current + delta));
+    if (next === current) return;
+    await this.actor.update({ "system.attributes.exhaustion": next });
   }
 }

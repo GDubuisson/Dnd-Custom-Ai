@@ -629,6 +629,76 @@
   letter-spacing: 0.04em;
 }
 
+.dnd-custom-ai .conditions-panel {
+  margin-top: 1rem;
+}
+
+.dnd-custom-ai .conditions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.dnd-custom-ai .condition-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  color: var(--dca-muted-text);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .condition-chip img {
+  width: 1rem;
+  height: 1rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.dnd-custom-ai .condition-chip:hover {
+  border-color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .condition-chip.active {
+  background: var(--dca-secondary-container);
+  border-color: var(--dca-secondary);
+  color: var(--dca-on-secondary-container);
+}
+
+.dnd-custom-ai .condition-chip.active img {
+  filter: none;
+  opacity: 1;
+}
+
+.dnd-custom-ai .exhaustion-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .exhaustion-chip .ability-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 .dnd-custom-ai .skills-list {
   list-style: none;
   margin: 0;

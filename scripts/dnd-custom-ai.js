@@ -22,6 +22,28 @@ import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
+// Les 14 états SRD 5e (hors Exhaustion, qui a des niveaux 0-6 et vit sur
+// system.attributes.exhaustion plutôt qu'en ActiveEffect on/off, cf. character-data.js).
+// Remplace la liste générique de Foundry (CONFIG.statusEffects) : icônes réutilisées du
+// cœur Foundry quand elles correspondent, libellés propres au système pour coller au
+// vocabulaire SRD 5e exact plutôt qu'aux libellés génériques de Foundry.
+const DND_CUSTOM_CONDITIONS = [
+  { id: "blinded", name: "DND_CUSTOM.Conditions.blinded", img: "icons/svg/blind.svg" },
+  { id: "charmed", name: "DND_CUSTOM.Conditions.charmed", img: "icons/svg/aura.svg" },
+  { id: "deafened", name: "DND_CUSTOM.Conditions.deafened", img: "icons/svg/deaf.svg" },
+  { id: "frightened", name: "DND_CUSTOM.Conditions.frightened", img: "icons/svg/terror.svg" },
+  { id: "grappled", name: "DND_CUSTOM.Conditions.grappled", img: "icons/svg/net.svg" },
+  { id: "incapacitated", name: "DND_CUSTOM.Conditions.incapacitated", img: "icons/svg/daze.svg" },
+  { id: "invisible", name: "DND_CUSTOM.Conditions.invisible", img: "icons/svg/invisible.svg" },
+  { id: "paralyzed", name: "DND_CUSTOM.Conditions.paralyzed", img: "icons/svg/paralysis.svg" },
+  { id: "petrified", name: "DND_CUSTOM.Conditions.petrified", img: "icons/svg/statue.svg" },
+  { id: "poisoned", name: "DND_CUSTOM.Conditions.poisoned", img: "icons/svg/poison.svg" },
+  { id: "prone", name: "DND_CUSTOM.Conditions.prone", img: "icons/svg/falling.svg" },
+  { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
+  { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
+  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" }
+];
+
 Hooks.once("init", async () => {
   console.log(`${SYSTEM_ID} | Initialisation du système`);
 
@@ -42,6 +64,13 @@ Hooks.once("init", async () => {
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
   CONFIG.Item.dataModels.class = ClassData;
+
+  // CONFIG.statusEffects est un Proxy (cf. foundry/client/config.mjs) qui maintient aussi un
+  // accès par id (`CONFIG.statusEffects["prone"]`, utilisé en interne par
+  // Actor#toggleStatusEffect) : le vider puis le repeupler par push() plutôt que de
+  // l'écraser par une simple affectation, sous peine de perdre cet accès par id.
+  CONFIG.statusEffects.length = 0;
+  for (const condition of DND_CUSTOM_CONDITIONS) CONFIG.statusEffects.push(condition);
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],

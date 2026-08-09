@@ -116,6 +116,20 @@ export function speedPenalty(strengthRequired, strengthTotal) {
   return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
 }
 
+/** Effet de l'Exhaustion sur la vitesse, SRD 5e (table complète, niveau 6 = mort géré
+ *  séparément) : vitesse divisée par deux dès le niveau 2, nulle dès le niveau 5. Appliqué
+ *  après les autres malus de vitesse (armure...). */
+export function exhaustionSpeed(speed, exhaustionLevel) {
+  if (exhaustionLevel >= 5) return 0;
+  if (exhaustionLevel >= 2) return Math.floor(speed / 2);
+  return speed;
+}
+
+/** Effet de l'Exhaustion sur les PV max, SRD 5e : PV max divisés par deux dès le niveau 4. */
+export function exhaustionMaxHp(maxHp, exhaustionLevel) {
+  return exhaustionLevel >= 4 ? Math.max(1, Math.floor(maxHp / 2)) : maxHp;
+}
+
 /** Emplacement(s) d'équipement occupé(s) par une arme/armure une fois équipée : une arme à
  *  deux mains occupe TOUJOURS Main principale + Main secondaire (SRD 5e, "nécessite les deux
  *  mains"), quel que soit son champ `slot` (ignoré dans ce cas) ; sinon un seul emplacement,

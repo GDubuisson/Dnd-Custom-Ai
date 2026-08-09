@@ -64,4 +64,25 @@
       </div>
     </div>
   </div>
+
+  <div class="conditions-panel">
+    <h3 class="section-subtitle">{{localize "DND_CUSTOM.Conditions.Title"}}</h3>
+    <div class="conditions-grid">
+      {{#each conditions}}
+      <button type="button" class="condition-chip {{#if this.active}}active{{/if}}" data-action="toggleCondition" data-key="{{this.id}}" title="{{this.label}}">
+        <img src="{{this.img}}" alt="">
+        <span>{{this.label}}</span>
+      </button>
+      {{/each}}
+
+      <div class="exhaustion-chip">
+        <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
+        <div class="ability-stepper">
+          <button type="button" class="ability-btn" data-action="exhaustionDecrease" aria-label="-">−</button>
+          <span class="ability-value">{{system.attributes.exhaustion}}</span>
+          <button type="button" class="ability-btn" data-action="exhaustionIncrease" aria-label="+">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

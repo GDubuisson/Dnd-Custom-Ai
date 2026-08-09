@@ -177,6 +177,24 @@
       "stealth": "Stealth",
       "survival": "Survival"
     },
+    "Conditions": {
+      "Title": "Conditions",
+      "Exhaustion": "Exhaustion",
+      "blinded": "Blinded",
+      "charmed": "Charmed",
+      "deafened": "Deafened",
+      "frightened": "Frightened",
+      "grappled": "Grappled",
+      "incapacitated": "Incapacitated",
+      "invisible": "Invisible",
+      "paralyzed": "Paralyzed",
+      "petrified": "Petrified",
+      "poisoned": "Poisoned",
+      "prone": "Prone",
+      "restrained": "Restrained",
+      "stunned": "Stunned",
+      "unconscious": "Unconscious"
+    },
     "Journal": {
       "Biography": "Biography",
       "Notes": "Notes",
