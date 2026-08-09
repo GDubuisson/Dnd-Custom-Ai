@@ -168,6 +168,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
+    // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
+    context.weaponsAndArmor = items.filter((item) => ["weapon", "armor"].includes(item.type));
+    context.gearAndTools = items.filter((item) => ["gear", "tool"].includes(item.type));
     context.inventoryItems = items.filter((item) =>
       ["weapon", "armor", "gear", "tool"].includes(item.type)
     );

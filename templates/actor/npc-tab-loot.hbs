@@ -13,8 +13,8 @@
     <tbody>
       {{#each lootItems}}
       <tr data-item-id="{{this.id}}">
-        <td>{{this.name}}</td>
-        <td>{{this.system.quantity}}</td>
+        <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
+        <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
         <td>
           <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">

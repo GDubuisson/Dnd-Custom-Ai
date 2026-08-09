@@ -7,6 +7,33 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.5.0] - 2026-08-09
+
+### Corrigé
+- Glisser-déposer d'objet dans l'inventaire (`InventoryDragDropMixin`,
+  `scripts/sheets/inventory-drag-drop.js`) créait plusieurs exemplaires du même objet (2, puis
+  6, puis 18...) : les listeners `dragover`/`drop` étaient re-liés sur l'élément racine à
+  chaque re-render de la fiche (`_onRender`), sans jamais retirer les précédents — et créer un
+  Item déclenche lui-même un re-render, donc les listeners s'accumulaient. Un flag posé sur
+  l'élément racine limite désormais ce branchement à une seule fois.
+
+### Ajouté
+- Objets (`gear`) équipables avec bonus de capacité de charge (`system.equipped`,
+  `system.capacityBonus`, `scripts/data/item-data.js`) : un sac équipé (Sac à dos, Grand sac,
+  `world-items/gear.json`) augmente la capacité de charge de l'Actor
+  (`carryingCapacityBonus`, `scripts/helpers/rules.js`) ; un seul contenant équipable à la
+  fois (hook global `updateItem`, `scripts/dnd-custom-ai.js`).
+- Objets "utilisables" génériques (`system.use.type`, `light`/`heal`, pilotés par les données
+  de l'Item plutôt que par son nom) : bouton "Utiliser" dans l'onglet Inventaire
+  (`templates/actor/tab-inventory.hbs`, action `useItem`, `scripts/sheets/actor-sheet.js`).
+  - `light` : allume/éteint la lumière du/des token(s) de l'Actor sur la scène active, rayon
+    selon l'objet (Bougie, Torche, Lanterne à capuchon, `world-items/gear.json`) ; une seule
+    source active à la fois par Actor.
+  - `heal` : rend `healBase + bonus de compétence` PV (ex. Trousse de soins = 1 + Bonus de
+    Médecine, helper `skillModifier` dans `scripts/helpers/rules.js`).
+
+## [0.4.0] - 2026-08-09
+
 ### Modifié
 - Retiré les compendiums système "Objets", "Équipements" et "Outils" (`system.json`,
   `packs/objets`, `packs/equipements`, `packs/outils`) : ce contenu est plus à sa place dans
@@ -41,6 +68,15 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   les nouveaux types d'Actor `mount` (montures vivantes) et `vehicle` (véhicules non-vivants,
   ajouté à la session précédente) qui couvrent maintenant ces deux cas avec un vrai
   inventaire manipulable, plutôt qu'un simple Item de référence.
+
+## [0.3.1] - 2026-08-08
+
+### Corrigé
+- Peuplement de compendium (`seedCompendiumFromJson`, `scripts/helpers/compendium-seed.js`)
+  bloqué par le verrouillage par défaut des compendiums système (erreur "You may not create
+  documents in the locked compendium") : la fonction déverrouille désormais temporairement le
+  compendium le temps de l'écriture, puis restaure son état de verrouillage initial.
+  (Mécanisme retiré au profit de `world-items/` en 0.4.0, cf. plus haut.)
 
 ## [0.3.0]
 
