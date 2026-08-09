@@ -2,15 +2,18 @@ import { DND_CUSTOM } from "../helpers/config.js";
 import {
   abilityModifier,
   proficiencyBonus,
+  armorContribution,
   carryingCapacity,
   carryingCapacityBonus,
   carriedWeight,
   currencyTotalInCopper,
+  equipmentSlots,
   formatModifier,
   passivePerception,
   skillModifier,
   spellSaveDC,
-  spellAttackBonus
+  spellAttackBonus,
+  weaponAttackDamage
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
@@ -177,16 +180,57 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     );
 
     // Répartit les armes/armures équipées dans leurs emplacements (main principale/secondaire,
-    // armure, accessoires) pour l'onglet "Équipement".
+    // armure, accessoires) pour l'onglet "Équipement" — une arme à deux mains occupe les deux
+    // mains à la fois (cf. equipmentSlots dans rules.js).
     const equippedWeaponsAndArmor = [...context.weapons, ...context.armors].filter(
       (item) => item.system.equipped
     );
+    const findBySlot = (slot) =>
+      equippedWeaponsAndArmor.find((item) => equipmentSlots(item.type, item.system).includes(slot)) ?? null;
+    const mainHand = findBySlot("mainHand");
+    const offHand = findBySlot("offHand");
     context.equipment = {
-      mainHand: equippedWeaponsAndArmor.find((item) => item.system.slot === "mainHand") ?? null,
-      offHand: equippedWeaponsAndArmor.find((item) => item.system.slot === "offHand") ?? null,
-      armor: equippedWeaponsAndArmor.find((item) => item.system.slot === "armor") ?? null,
-      accessories: equippedWeaponsAndArmor.filter((item) => item.system.slot === "accessory")
+      mainHand,
+      offHand,
+      // Une arme à deux mains occupe aussi la main secondaire : évite d'afficher deux fois le
+      // même objet, affiche plutôt une mention dédiée (cf. tab-equipment.hbs).
+      offHandOccupiedByMainHand: Boolean(mainHand && offHand && mainHand.id === offHand.id),
+      armor: findBySlot("armor"),
+      accessories: equippedWeaponsAndArmor.filter((item) =>
+        equipmentSlots(item.type, item.system).includes("accessory")
+      )
     };
+
+    // Bonus d'attaque et dégâts (avec alternative Polyvalente à deux mains) de chaque arme
+    // possédée, affichés dans le tableau Armes/Armures de l'onglet Inventaire — suppose la
+    // maîtrise de l'arme (cf. weaponAttackDamage dans rules.js).
+    context.weaponStats = {};
+    for (const weapon of context.weapons) {
+      const atk = weaponAttackDamage(weapon.system, system.abilities, context.proficiencyBonus);
+      const damageType = weapon.system.damage.type
+        ? game.i18n.localize(DND_CUSTOM.damageTypes[weapon.system.damage.type])
+        : "";
+      const damageLabel = weapon.system.damage.dice
+        ? `${weapon.system.damage.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim()
+        : "";
+      let versatileLabel = "";
+      if (weapon.system.properties.versatile && weapon.system.damageVersatile.dice) {
+        versatileLabel = `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
+      }
+      context.weaponStats[weapon.id] = { attackLabel: formatModifier(atk.attackBonus), damageLabel, versatileLabel };
+    }
+
+    // Bonus de CA apporté par chaque armure/bouclier/accessoire possédé pris isolément (même
+    // affichage que les dégâts d'arme ci-dessus, cf. armorContribution dans rules.js).
+    context.armorStats = {};
+    for (const armor of context.armors) {
+      const contribution = armorContribution(armor.system, dexMod);
+      // Armure du corps : CA totale affichée telle quelle (ex. "15") ; bouclier/accessoire :
+      // bonus additionnel affiché avec son signe (ex. "+2"), pas une CA absolue.
+      context.armorStats[armor.id] = {
+        acLabel: armor.system.slot === "armor" ? `${contribution}` : formatModifier(contribution)
+      };
+    }
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =

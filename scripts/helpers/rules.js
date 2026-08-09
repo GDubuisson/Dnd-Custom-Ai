@@ -99,8 +99,65 @@ export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccess
   return base + shieldBonus + accessoriesBonus;
 }
 
+/** Bonus de CA apporté par UNE pièce d'armure/bouclier/accessoire prise isolément (à afficher
+ *  sur sa ligne d'inventaire ou son emplacement d'équipement) : armure du corps → CA de base +
+ *  bonus de Dex plafonné selon son type (même règle que armorClass) ; bouclier/accessoire →
+ *  bonus plat (leur `baseAC` s'additionne tel quel, pas de composante Dex). */
+export function armorContribution(armorSystem, dexMod) {
+  if (armorSystem.slot === "armor") {
+    return armorSystem.baseAC + dexBonusForArmorType(armorSystem.armorType, dexMod);
+  }
+  return armorSystem.baseAC;
+}
+
 /** Malus de vitesse SRD 5e si la Force du personnage est inférieure à la Force minimale
  *  requise par l'armure équipée : -10 pieds (-3 m), sinon aucun malus. */
 export function speedPenalty(strengthRequired, strengthTotal) {
   return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
+}
+
+/** Emplacement(s) d'équipement occupé(s) par une arme/armure une fois équipée : une arme à
+ *  deux mains occupe TOUJOURS Main principale + Main secondaire (SRD 5e, "nécessite les deux
+ *  mains"), quel que soit son champ `slot` (ignoré dans ce cas) ; sinon un seul emplacement,
+ *  celui choisi (`slot`). Utilisé à la fois pour répartir l'équipement sur l'onglet
+ *  "Équipement" et pour empêcher d'équiper deux objets sur le même emplacement (cf.
+ *  dnd-custom-ai.js > hook `preUpdateItem`). `system` accepte un DataModel réel ou un objet
+ *  partiel `{ slot, properties: { handedness } }` (état "après changement" pas encore
+ *  persisté).
+ * @param {"weapon"|"armor"} type
+ * @param {object} system
+ * @returns {string[]}
+ */
+export function equipmentSlots(type, system) {
+  if (type === "weapon") {
+    if (system.properties?.handedness === "twoHanded") return ["mainHand", "offHand"];
+    return [system.slot];
+  }
+  if (type === "armor") return [system.slot];
+  return [];
+}
+
+/** Une arme ne peut être équipée en Main secondaire que si elle est Légère (SRD 5e, combat à
+ *  deux armes : l'attaque de bonus avec l'arme de la main secondaire exige une arme Légère).
+ *  Une arme à deux mains n'est de toute façon jamais éligible (elle occupe les deux mains,
+ *  cf. equipmentSlots) ; ce garde-fou concerne les armes à une main non-Légères (ex. Rapière,
+ *  Épée longue) qui ne doivent pas pouvoir être choisies comme arme de main secondaire. */
+export function isOffHandEligible(weaponSystem) {
+  return weaponSystem.properties?.handedness !== "twoHanded" && Boolean(weaponSystem.properties?.light);
+}
+
+/** Modificateur de caractéristique et bonus d'attaque d'une arme équipée, SRD 5e : Dextérité
+ *  pour les armes à distance, meilleur de Force/Dextérité si Finesse, Force sinon. Bonus de
+ *  maîtrise toujours appliqué : ce système simplifié ne suit pas de liste de maîtrises
+ *  d'armes par classe, tout personnage est considéré maîtrisé de toute arme équipée. */
+export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue) {
+  const isRanged = weaponSystem.weaponType.startsWith("ranged");
+  const strMod = abilityModifier(abilities.str.total);
+  const dexMod = abilityModifier(abilities.dex.total);
+  const abilityMod = isRanged
+    ? dexMod
+    : weaponSystem.properties.finesse
+      ? Math.max(strMod, dexMod)
+      : strMod;
+  return { abilityMod, attackBonus: abilityMod + proficiencyBonusValue };
 }
