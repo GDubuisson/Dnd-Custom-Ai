@@ -81,7 +81,10 @@
     },
     "Chat": {
       "RestShort": "{name} prend un repos court.",
-      "RestLong": "{name} prend un repos long et récupère tous ses points de vie."
+      "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",
+      "UseLightOn": "{name} allume {item}.",
+      "UseLightOff": "{name} éteint {item}.",
+      "UseHeal": "{name} utilise {item} et récupère {amount} PV."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -108,6 +111,8 @@
       "CarriedWeight": "Poids transporté",
       "Currency": "Monnaie",
       "DeleteItem": "Retirer",
+      "UseItem": "Utiliser",
+      "NoTokenOnScene": "Aucun token de ce personnage sur la scène active.",
       "DropHint": "Glissez un objet ici depuis une autre fiche ouverte (ou un compendium) pour l'ajouter à l'inventaire.",
       "DropError": "Impossible de déplacer cet objet (droits insuffisants)."
     },
@@ -181,6 +186,11 @@
         "oneHanded": "Une main",
         "twoHanded": "Deux mains"
       },
+      "GearUseTypes": {
+        "none": "Aucun",
+        "light": "Lumière (allume le token)",
+        "heal": "Soin"
+      },
       "Fields": {
         "Price": "Prix",
         "Weight": "Poids",
@@ -217,6 +227,11 @@
         "RollFormula": "Formule de jet",
         "Source": "Source",
         "UseEffect": "Effet à l'utilisation",
+        "UseType": "Type d'effet",
+        "LightBright": "Rayon de lumière vive (m)",
+        "LightDim": "Rayon de lumière faible supplémentaire (m)",
+        "HealBase": "Soin de base (PV)",
+        "CapacityBonus": "Bonus de charge si équipé (kg)",
         "Skill": "Compétence",
         "Bonus": "Bonus",
         "DescriptionRP": "Description (roleplay)",

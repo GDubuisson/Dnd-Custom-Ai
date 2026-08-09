@@ -118,6 +118,28 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   }
 });
 
+// Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus
+// de charge déséquipe automatiquement tout autre contenant déjà équipé sur le même Actor.
+// Ne s'exécute que côté client à l'origine du changement (garde sur userId), pour éviter
+// que chaque client connecté ne relance le même correctif en double.
+Hooks.on("updateItem", async (item, changes, options, userId) => {
+  if (game.user.id !== userId) return;
+  if (item.type !== "gear") return;
+  if (changes.system?.equipped !== true) return;
+  if (!(item.system.capacityBonus > 0)) return;
+  if (!(item.parent instanceof Actor)) return;
+
+  const others = item.parent.items.contents.filter(
+    (other) => other.id !== item.id && other.type === "gear" && other.system.equipped && other.system.capacityBonus > 0
+  );
+  if (others.length) {
+    await item.parent.updateEmbeddedDocuments(
+      "Item",
+      others.map((other) => ({ _id: other.id, "system.equipped": false }))
+    );
+  }
+});
+
 async function loadOrigins() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/origins.json`);
   return response.json();

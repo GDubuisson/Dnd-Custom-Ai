@@ -24,6 +24,25 @@ export function carriedWeight(items) {
   }, 0);
 }
 
+/** Bonus de capacité de charge (kg) apporté par les contenants (sacs...) équipés,
+ *  s'ajoutant à la capacité de base (cf. carryingCapacity). */
+export function carryingCapacityBonus(items) {
+  return items.reduce((total, item) => {
+    if (item.type !== "gear" || !item.system.equipped) return total;
+    return total + (item.system.capacityBonus ?? 0);
+  }, 0);
+}
+
+/** Bonus total d'un test de compétence : modificateur de la caractéristique liée + bonus
+ *  de maîtrise si la compétence est maîtrisée (même formule que l'onglet Statistiques,
+ *  cf. actor-sheet.js > context.skills). */
+export function skillModifier(system, skillKey, proficiencyBonusValue) {
+  const skill = system.skills[skillKey];
+  if (!skill) return 0;
+  const mod = abilityModifier(system.abilities[skill.ability].total);
+  return mod + (skill.proficient ? proficiencyBonusValue : 0);
+}
+
 /** Richesse totale exprimée en équivalent Pièces de Cuivre. */
 export function currencyTotalInCopper(currency) {
   return Object.entries(currency).reduce((total, [denomination, amount]) => {

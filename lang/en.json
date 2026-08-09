@@ -81,7 +81,10 @@
     },
     "Chat": {
       "RestShort": "{name} takes a short rest.",
-      "RestLong": "{name} takes a long rest and regains all hit points."
+      "RestLong": "{name} takes a long rest and regains all hit points.",
+      "UseLightOn": "{name} lights {item}.",
+      "UseLightOff": "{name} extinguishes {item}.",
+      "UseHeal": "{name} uses {item} and regains {amount} HP."
     },
     "Tabs": {
       "stats": "Stats",
@@ -108,6 +111,8 @@
       "CarriedWeight": "Carried weight",
       "Currency": "Currency",
       "DeleteItem": "Remove",
+      "UseItem": "Use",
+      "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
       "DropError": "Could not move this item (insufficient permissions)."
     },
@@ -181,6 +186,11 @@
         "oneHanded": "One-Handed",
         "twoHanded": "Two-Handed"
       },
+      "GearUseTypes": {
+        "none": "None",
+        "light": "Light (lights up the token)",
+        "heal": "Healing"
+      },
       "Fields": {
         "Price": "Price",
         "Weight": "Weight",
@@ -217,6 +227,11 @@
         "RollFormula": "Roll Formula",
         "Source": "Source",
         "UseEffect": "Effect when used",
+        "UseType": "Effect type",
+        "LightBright": "Bright light radius (m)",
+        "LightDim": "Additional dim light radius (m)",
+        "HealBase": "Base healing (HP)",
+        "CapacityBonus": "Carry capacity bonus if equipped (kg)",
         "Skill": "Skill",
         "Bonus": "Bonus",
         "DescriptionRP": "Description (roleplay)",

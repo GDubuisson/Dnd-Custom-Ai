@@ -37,6 +37,12 @@ const ARMOR_SLOT_OPTIONS = {
   accessory: "DND_CUSTOM.Equipment.Accessories"
 };
 
+const GEAR_USE_TYPE_OPTIONS = {
+  none: "DND_CUSTOM.Item.GearUseTypes.none",
+  light: "DND_CUSTOM.Item.GearUseTypes.light",
+  heal: "DND_CUSTOM.Item.GearUseTypes.heal"
+};
+
 export class WeaponItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/weapon-sheet.hbs` }
@@ -69,6 +75,14 @@ export class GearItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/gear-sheet.hbs` }
   };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.useTypeOptions = GEAR_USE_TYPE_OPTIONS;
+    context.showLightFields = context.system.use.type === "light";
+    context.showHealFields = context.system.use.type === "heal";
+    return context;
+  }
 }
 
 export class FeatureItemSheet extends DndCustomItemSheet {

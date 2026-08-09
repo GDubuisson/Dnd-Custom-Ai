@@ -3,10 +3,12 @@ import {
   abilityModifier,
   proficiencyBonus,
   carryingCapacity,
+  carryingCapacityBonus,
   carriedWeight,
   currencyTotalInCopper,
   formatModifier,
   passivePerception,
+  skillModifier,
   spellSaveDC,
   spellAttackBonus
 } from "../helpers/rules.js";
@@ -31,7 +33,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       restShort: DndCustomActorSheet.#onRestShort,
       restLong: DndCustomActorSheet.#onRestLong,
       abilityIncrease: DndCustomActorSheet.#onAbilityIncrease,
-      abilityDecrease: DndCustomActorSheet.#onAbilityDecrease
+      abilityDecrease: DndCustomActorSheet.#onAbilityDecrease,
+      useItem: DndCustomActorSheet.#onUseItem
     }
   };
 
@@ -182,7 +185,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     };
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
-    context.carryingCapacity = carryingCapacity(system.abilities.str.total, "kg");
+    context.carryingCapacity =
+      carryingCapacity(system.abilities.str.total, "kg") + carryingCapacityBonus(context.inventoryItems);
     context.carryingCapacityPercent = Math.min(
       100,
       Math.round((context.carriedWeight / (context.carryingCapacity || 1)) * 100)
@@ -240,5 +244,72 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const next = Math.max(1, current + delta);
     if (next === current) return;
     await this.actor.update({ [`system.abilities.${key}.value`]: next });
+  }
+
+  /** Bouton "Utiliser" de l'inventaire (objets `gear` avec `system.use.type` renseigné) :
+   *  "light" allume/éteint la source sur le(s) token(s) de l'Actor sur la scène active,
+   *  "heal" rend (healBase + bonus de compétence) PV. */
+  static async #onUseItem(event, target) {
+    const itemId = target.closest("[data-item-id]")?.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    const use = item?.system.use;
+    if (!use || use.type === "none") return;
+
+    if (use.type === "light") return DndCustomActorSheet.#toggleLight(this.actor, item);
+    if (use.type === "heal") return DndCustomActorSheet.#applyHeal(this.actor, item);
+  }
+
+  static async #toggleLight(actor, item) {
+    const tokens = actor.getActiveTokens();
+    if (!tokens.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
+      return;
+    }
+
+    const turningOn = !item.system.lit;
+    if (turningOn) {
+      // Un token n'a qu'une seule configuration de lumière active : éteindre toute autre
+      // source déjà allumée sur cet Actor avant d'allumer celle-ci.
+      const others = actor.items.contents.filter(
+        (other) => other.id !== item.id && other.type === "gear" && other.system.use.type === "light" && other.system.lit
+      );
+      if (others.length) {
+        await actor.updateEmbeddedDocuments(
+          "Item",
+          others.map((other) => ({ _id: other.id, "system.lit": false }))
+        );
+      }
+    }
+
+    await item.update({ "system.lit": turningOn });
+
+    // `dim` est stocké comme rayon SUPPLÉMENTAIRE au-delà de `bright` (formulation SRD) ;
+    // le champ `light.dim` du token attend lui un rayon total depuis le token.
+    const light = turningOn
+      ? { bright: item.system.use.light.bright, dim: item.system.use.light.bright + item.system.use.light.dim }
+      : { bright: 0, dim: 0 };
+    for (const token of tokens) await token.document.update({ light });
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: game.i18n.format(turningOn ? "DND_CUSTOM.Chat.UseLightOn" : "DND_CUSTOM.Chat.UseLightOff", {
+        name: actor.name,
+        item: item.name
+      })
+    });
+  }
+
+  static async #applyHeal(actor, item) {
+    const use = item.system.use;
+    const bonus = skillModifier(actor.system, use.healSkill || "medicine", proficiencyBonus(actor.system.attributes.level));
+    const amount = Math.max(0, use.healBase + bonus);
+
+    const hp = actor.system.attributes.hp;
+    await actor.update({ "system.attributes.hp.value": Math.min(hp.value + amount, hp.max) });
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseHeal", { name: actor.name, item: item.name, amount })
+    });
   }
 }
