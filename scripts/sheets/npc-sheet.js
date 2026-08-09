@@ -21,7 +21,8 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {
-      rollAbility: DndCustomNpcSheet.#onRollAbility
+      rollAbility: DndCustomNpcSheet.#onRollAbility,
+      toggleCondition: DndCustomNpcSheet.#onToggleCondition
     }
   };
 
@@ -88,6 +89,15 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     const items = this.actor.items.contents;
     context.lootItems = items.filter((item) => ["weapon", "armor", "gear", "tool"].includes(item.type));
 
+    // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
+    // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
+    context.conditions = CONFIG.statusEffects.map((status) => ({
+      id: status.id,
+      label: game.i18n.localize(status.name),
+      img: status.img,
+      active: this.actor.statuses.has(status.id)
+    }));
+
     return context;
   }
 
@@ -112,5 +122,11 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       advantage: event.shiftKey,
       disadvantage: event.ctrlKey
     });
+  }
+
+  /** Bascule un état (cf. CONFIG.statusEffects) : Actor#toggleStatusEffect crée/retire
+   *  l'ActiveEffect correspondante (méthode native Foundry). */
+  static async #onToggleCondition(event, target) {
+    await this.actor.toggleStatusEffect(target.dataset.key);
   }
 }
