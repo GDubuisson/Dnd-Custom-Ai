@@ -7,6 +7,31 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.9.0] - 2026-08-09
+
+Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : compendium d'adversaires,
+progression des personnages (XP, montée de niveau) et assistant de création. Univers sans
+créature magique (cf. système d'Origines) : aucun monstre fantastique n'a été ajouté, que des
+adversaires humains et des bêtes réelles.
+
+### Ajouté
+- 16 adversaires réalistes prêts à importer (`world-actors/adversaries.json`, nouveau dossier
+  parallèle à `world-items/`) : 8 humains (Bandit, Garde, Vétéran, Noble, Malfrat, Éclaireur,
+  Chef de bandits, Acolyte) et 8 bêtes (Loup, Ours brun, Sanglier, Mâtin, Cheval de selle,
+  Grand serpent venimeux, Panthère, Chacal), FI 0 à 3, XP déjà rempli.
+- Distribution d'XP : bouton "Attribuer de l'XP" sur la fiche PNJ (répartit son XP rapporté
+  entre les personnages choisis) et macro monde auto-créée pour un montant libre. Confirmation
+  toujours en chuchotement MJ, jamais de chiffre d'XP visible au joueur.
+- Montée de niveau : table de seuils XP officielle SRD 5e (niveaux 1-20), badge "Niveau
+  supérieur disponible" sur la fiche (sans révéler le total d'XP), bouton MJ qui incrémente le
+  niveau d'un cran (PV max/emplacements de sorts/vitesse déjà recalculés automatiquement).
+- Assistant de création de personnage : nouvelle Application accessible à tout propriétaire de
+  la fiche (pas seulement au MJ) — Origine, Classe, répartition du tableau standard SRD 5e sur
+  les 6 caractéristiques, maîtrises de compétences (nombre selon la classe), sauvegardes
+  maîtrisées déduites automatiquement. Exception ciblée au verrouillage MJ des champs de
+  "build" (option `dndCustomWizard` sur l'update), le formulaire normal de la fiche reste
+  verrouillé pour un non-MJ.
+
 ## [0.8.0] - 2026-08-09
 
 Première session en mode autonome (`ClaudeFiles/AUTONOMIE.md`) : le périmètre initial de
