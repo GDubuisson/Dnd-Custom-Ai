@@ -1,6 +1,7 @@
 <section class="tab inventory {{tab.cssClass}}" data-group="primary" data-tab="inventory">
   <h2 class="tab-title"><i class="fa-solid fa-sack"></i> {{localize "DND_CUSTOM.Tabs.inventory"}}</h2>
 
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Inventory.WeaponsArmorTitle"}}</h3>
   <table class="inventory-table">
     <thead>
       <tr>
@@ -12,12 +13,47 @@
       </tr>
     </thead>
     <tbody>
-      {{#each inventoryItems}}
+      {{#each weaponsAndArmor}}
       <tr data-item-id="{{this.id}}">
-        <td>{{this.name}}</td>
-        <td>{{this.system.quantity}}</td>
+        <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
+        <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
-        <td>{{#if this.system.equipped}}✓{{/if}}</td>
+        <td><input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}}></td>
+        <td class="inventory-actions">
+          {{#if (isUsableItem this)}}
+          <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
+            <i class="fa-solid {{useItemIcon this}}"></i>
+          </button>
+          {{/if}}
+          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="5" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Inventory.GearToolsTitle"}}</h3>
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>{{localize "DND_CUSTOM.Inventory.Name"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
+        <th>{{localize "DND_CUSTOM.Inventory.Equipped"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each gearAndTools}}
+      <tr data-item-id="{{this.id}}">
+        <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
+        <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
+        <td>{{formatWeight this.system.weight}}</td>
+        <td><input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}}></td>
         <td class="inventory-actions">
           {{#if (isUsableItem this)}}
           <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">

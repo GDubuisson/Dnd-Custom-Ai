@@ -161,6 +161,8 @@ export class ToolData extends foundry.abstract.TypeDataModel {
     return {
       price: currencySchema(),
       weight: new NumberField({ required: true, min: 0, initial: 0 }),
+      quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+      equipped: new BooleanField({ required: true, initial: false }),
       useEffect: new SchemaField({
         skill: new StringField({
           required: false,

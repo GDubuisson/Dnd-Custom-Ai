@@ -793,6 +793,33 @@
   background: var(--dca-surface-high);
 }
 
+.dnd-custom-ai .item-name-link {
+  color: var(--dca-on-surface);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .item-name-link:hover {
+  color: var(--dca-secondary);
+  text-decoration: underline;
+}
+
+.dnd-custom-ai .item-quantity-input {
+  width: 3.2rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.85rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.dnd-custom-ai .item-equipped-checkbox {
+  accent-color: var(--dca-secondary);
+  cursor: pointer;
+}
+
 .dnd-custom-ai .carrying-capacity {
   display: flex;
   flex-direction: column;
