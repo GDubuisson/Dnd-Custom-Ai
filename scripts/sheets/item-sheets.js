@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS, SKILL_ABILITIES } from "../data/character-data.js";
+import { isOffHandEligible } from "../helpers/rules.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -51,7 +52,16 @@ export class WeaponItemSheet extends DndCustomItemSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const properties = context.system.properties;
-    context.slotOptions = WEAPON_SLOT_OPTIONS;
+    // Main secondaire retirée du choix pour une arme non-Légère (cf. isOffHandEligible dans
+    // rules.js, SRD 5e combat à deux armes) : évite de configurer un emplacement que le hook
+    // d'équipement (dnd-custom-ai.js) refuserait de toute façon au moment d'équiper.
+    context.slotOptions = isOffHandEligible(context.system)
+      ? WEAPON_SLOT_OPTIONS
+      : { mainHand: WEAPON_SLOT_OPTIONS.mainHand };
+    // Une arme à deux mains occupe toujours Main principale + Main secondaire (cf.
+    // equipmentSlots dans rules.js) : le champ Emplacement n'a alors pas de sens.
+    context.showSlotSelect = properties.handedness !== "twoHanded";
+    context.offHandRequiresLightNote = context.showSlotSelect && !isOffHandEligible(context.system);
     context.isRanged = ["rangedSimple", "rangedMartial"].includes(context.system.weaponType);
     context.showRange = context.isRanged || properties.thrown;
     context.showReloadValue = properties.reload;

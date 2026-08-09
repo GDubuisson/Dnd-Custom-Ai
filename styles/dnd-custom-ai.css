@@ -756,6 +756,22 @@
   font-style: italic;
 }
 
+.dnd-custom-ai .item-stats-line {
+  margin: 0;
+  padding: 0 0 0.2rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  font-style: normal;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .item-stats-inline {
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  font-style: normal;
+  color: var(--dca-muted-text);
+}
+
 /* ---------- Inventaire ---------- */
 
 .dnd-custom-ai .inventory-table {
@@ -998,6 +1014,13 @@
   color: var(--dca-muted-text);
   font-style: italic;
   font-size: 0.85rem;
+}
+
+.dnd-custom-ai .field-note {
+  color: var(--dca-muted-text);
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0.2rem 0 0.6rem;
 }
 
 /* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,

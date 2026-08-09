@@ -18,6 +18,7 @@ import {
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
+import { equipmentSlots, isOffHandEligible } from "./helpers/rules.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -137,6 +138,47 @@ Hooks.on("updateItem", async (item, changes, options, userId) => {
       "Item",
       others.map((other) => ({ _id: other.id, "system.equipped": false }))
     );
+  }
+});
+
+// Un emplacement d'équipement (main principale, main secondaire, armure) ne peut être occupé
+// que par un seul objet à la fois : contrairement aux sacs (déséquipement automatique de
+// l'ancien), équiper une arme/armure dont l'emplacement est déjà pris est ici bloqué — il
+// faut déséquiper l'objet en place avant, comme demandé. Une arme à deux mains occupe les
+// deux mains (cf. equipmentSlots) : impossible de l'équiper si l'une des deux est prise, et
+// impossible d'équiper autre chose dans l'autre main tant qu'elle est équipée.
+Hooks.on("preUpdateItem", (item, changes, options, userId) => {
+  if (game.user.id !== userId) return;
+  if (!["weapon", "armor"].includes(item.type)) return;
+  if (changes.system?.equipped !== true) return;
+  if (!(item.parent instanceof Actor)) return;
+
+  const incomingSystem = {
+    slot: changes.system?.slot ?? item.system.slot,
+    properties: {
+      handedness: changes.system?.properties?.handedness ?? item.system.properties?.handedness,
+      light: changes.system?.properties?.light ?? item.system.properties?.light
+    }
+  };
+
+  // Main secondaire réservée aux armes Légères (SRD 5e, combat à deux armes) : bloque avant
+  // même de vérifier une éventuelle collision d'emplacement.
+  if (item.type === "weapon" && incomingSystem.slot === "offHand" && !isOffHandEligible(incomingSystem)) {
+    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Equipment.OffHandRequiresLight"));
+    return false;
+  }
+
+  const incomingSlots = equipmentSlots(item.type, incomingSystem).filter((slot) => slot !== "accessory");
+  if (!incomingSlots.length) return;
+
+  const conflict = item.parent.items.contents.find((other) => {
+    if (other.id === item.id || !["weapon", "armor"].includes(other.type) || !other.system.equipped) return false;
+    return equipmentSlots(other.type, other.system).some((slot) => incomingSlots.includes(slot));
+  });
+
+  if (conflict) {
+    ui.notifications.warn(game.i18n.format("DND_CUSTOM.Equipment.SlotOccupied", { item: conflict.name }));
+    return false;
   }
 });
 

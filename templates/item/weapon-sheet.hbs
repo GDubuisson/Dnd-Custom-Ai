@@ -10,10 +10,17 @@
     <select name="system.weaponType">{{selectOptions config.weaponTypes selected=system.weaponType localize=true}}</select>
   </div>
 
+  {{#if showSlotSelect}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Slot"}}</label>
     <select name="system.slot">{{selectOptions slotOptions selected=system.slot localize=true}}</select>
   </div>
+  {{#if offHandRequiresLightNote}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.OffHandRequiresLightNote"}}</p>
+  {{/if}}
+  {{else}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.SlotTwoHandedNote"}}</p>
+  {{/if}}
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Price"}}</legend>
