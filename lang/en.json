@@ -78,7 +78,12 @@
       "DeathSuccesses": "Successes",
       "DeathFailures": "Failures",
       "Stabilized": "Stabilized",
-      "Dead": "Dead"
+      "Dead": "Dead",
+      "OpenDescriptionTooltip": "Click to open the description sheet",
+      "ClassSheetMissing": "No description sheet found for class \"{name}\" (import/populate the Classes compendium, see world-items/README.md).",
+      "OriginSheetMissing": "No description sheet found for Origin \"{name}\" (import/populate the Origins compendium, see world-items/README.md).",
+      "NoClass": "No class chosen",
+      "NoOrigin": "No Origin chosen"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -144,7 +149,8 @@
       "SlotOccupied": "Slot already occupied by {item}. Unequip it first.",
       "OffHandRequiresLight": "Only a Light weapon can be equipped in the Off hand.",
       "ACBonus": "AC Bonus",
-      "TwoHandedShort": "two-handed"
+      "TwoHandedShort": "two-handed",
+      "OneHandedShort": "one-handed"
     },
     "Inventory": {
       "Title": "Inventory",
@@ -169,10 +175,10 @@
       "DropError": "Could not move this item (insufficient permissions)."
     },
     "Currency": {
-      "pc": "CP",
-      "pa": "SP",
-      "po": "GP",
-      "pp": "PP"
+      "pc": "Copper pieces",
+      "pa": "Silver pieces",
+      "po": "Gold pieces",
+      "pp": "Platinum pieces"
     },
     "Abilities": {
       "str": "Strength",
@@ -227,6 +233,8 @@
       "AbilitiesHelp": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
       "SkillsTitle": "Skill proficiencies",
       "SkillsHelp": "The number of skills to choose depends on the selected class.",
+      "SkillCountHint": "Choose {count} skill(s) for this class.",
+      "SkillCountHintNoClass": "Select a class first to see how many skills you can choose.",
       "Submit": "Create character",
       "InvalidAbilities": "Each standard array value (15, 14, 13, 12, 10, 8) must be used exactly once.",
       "InvalidSkillCount": "Choose exactly {count} skill(s) for this class.",

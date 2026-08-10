@@ -178,6 +178,40 @@
   width: 3.5rem;
 }
 
+/* Classe/Origine : champs fixes (non éditables sur la fiche, cf. assistant de création),
+   cliquables pour ouvrir leur fiche de description quand elle existe. */
+.dnd-custom-ai .fixed-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.dnd-custom-ai .fixed-field-label {
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .fixed-field-value {
+  align-self: flex-start;
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.05rem 0.1rem;
+}
+
+.dnd-custom-ai .fixed-field-value.empty {
+  color: var(--dca-secondary-fixed-dim);
+  font-style: italic;
+  font-weight: 400;
+  text-decoration: none;
+}
+
 .dnd-custom-ai .hp-field {
   min-width: 8rem;
 }
@@ -665,8 +699,9 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : repris visuellement à
-   l'identique du texte statique qu'ils remplacent, seul le survol les distingue. */
+/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : soulignement pointillé au
+   repos pour signaler que c'est cliquable (retour de test — sans indice visuel avant le
+   survol, ça se confondait avec du texte statique), trait plein + couleur au survol. */
 .dnd-custom-ai .roll-btn {
   background: transparent;
   border: none;
@@ -674,11 +709,13 @@
   color: inherit;
   padding: 0;
   cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.15em;
 }
 
 .dnd-custom-ai .roll-btn:hover {
   color: var(--dca-secondary);
-  text-decoration: underline;
+  text-decoration: underline solid;
 }
 
 .dnd-custom-ai .proficiency-bonus {
@@ -733,7 +770,7 @@
 }
 
 .dnd-custom-ai .conditions-panel {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .dnd-custom-ai .conditions-grid {
@@ -936,21 +973,53 @@
   color: var(--dca-primary);
 }
 
-.dnd-custom-ai .equipment-slot .item-line {
-  padding: 0.2rem 0;
-  font-style: italic;
-  font-weight: 600;
-}
-
 .dnd-custom-ai .equipment-slot ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.dnd-custom-ai .equipment-slot ul li {
-  padding: 0.2rem 0;
-  font-style: italic;
+/* Ligne d'objet équipé (main principale/secondaire, armure, accessoire) : image + nom/stats/
+   description, cf. retour de test — rien de tout ça n'était visible auparavant. */
+.dnd-custom-ai .equipped-item-line {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.dnd-custom-ai .equipped-item-img {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  object-fit: cover;
+}
+
+.dnd-custom-ai .equipped-item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.dnd-custom-ai .item-name-static {
+  display: block;
+  font-weight: 600;
+}
+
+.dnd-custom-ai .equipped-item-body .item-name-link {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
 }
 
 .dnd-custom-ai .item-stats-line {
@@ -959,6 +1028,13 @@
   font-family: var(--dca-font-label);
   font-size: 0.72rem;
   font-style: normal;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .equipped-item-description {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  font-style: italic;
   color: var(--dca-muted-text);
 }
 
@@ -1585,9 +1661,9 @@
   width: 1.6rem;
   height: 1.6rem;
   padding: 0;
-  border: 1px solid var(--dca-outline-variant);
+  border: 1px solid transparent;
   border-radius: 0.3rem;
-  background: var(--dca-surface-lowest);
+  background: transparent;
   cursor: pointer;
 }
 

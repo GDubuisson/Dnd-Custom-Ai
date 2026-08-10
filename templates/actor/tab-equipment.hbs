@@ -5,10 +5,18 @@
     <div class="equipment-slot">
       <h3>{{localize "DND_CUSTOM.Equipment.MainHand"}}</h3>
       {{#if equipment.mainHand}}
-        <div class="item-line" data-item-id="{{equipment.mainHand.id}}">{{equipment.mainHand.name}}</div>
-        {{#with (lookup ../weaponStats equipment.mainHand.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
-        {{/with}}
+        <div class="equipped-item-line" data-item-id="{{equipment.mainHand.id}}">
+          <img class="equipped-item-img" src="{{equipment.mainHand.img}}" alt="">
+          <div class="equipped-item-body">
+            {{#with (lookup ../weaponStats equipment.mainHand.id)}}
+            <button type="button" class="item-name-link" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{../equipment.mainHand.name}}</button>
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
+            {{/with}}
+            {{#if equipment.mainHand.system.description}}
+            <p class="equipped-item-description">{{htmlSnippet equipment.mainHand.system.description}}</p>
+            {{/if}}
+          </div>
+        </div>
       {{else}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
       {{/if}}
@@ -19,13 +27,22 @@
       {{#if equipment.offHandOccupiedByMainHand}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.OccupiedTwoHanded"}}</p>
       {{else if equipment.offHand}}
-        <div class="item-line" data-item-id="{{equipment.offHand.id}}">{{equipment.offHand.name}}</div>
-        {{#with (lookup ../weaponStats equipment.offHand.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
-        {{/with}}
-        {{#with (lookup ../armorStats equipment.offHand.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
-        {{/with}}
+        <div class="equipped-item-line" data-item-id="{{equipment.offHand.id}}">
+          <img class="equipped-item-img" src="{{equipment.offHand.img}}" alt="">
+          <div class="equipped-item-body">
+            {{#with (lookup ../weaponStats equipment.offHand.id)}}
+            <button type="button" class="item-name-link" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{../equipment.offHand.name}}</button>
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
+            {{/with}}
+            {{#with (lookup ../armorStats equipment.offHand.id)}}
+            <span class="item-name-static">{{../equipment.offHand.name}}</span>
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
+            {{/with}}
+            {{#if equipment.offHand.system.description}}
+            <p class="equipped-item-description">{{htmlSnippet equipment.offHand.system.description}}</p>
+            {{/if}}
+          </div>
+        </div>
       {{else}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
       {{/if}}
@@ -34,10 +51,18 @@
     <div class="equipment-slot">
       <h3>{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
       {{#if equipment.armor}}
-        <div class="item-line" data-item-id="{{equipment.armor.id}}">{{equipment.armor.name}}</div>
-        {{#with (lookup ../armorStats equipment.armor.id)}}
-        <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
-        {{/with}}
+        <div class="equipped-item-line" data-item-id="{{equipment.armor.id}}">
+          <img class="equipped-item-img" src="{{equipment.armor.img}}" alt="">
+          <div class="equipped-item-body">
+            <span class="item-name-static">{{equipment.armor.name}}</span>
+            {{#with (lookup ../armorStats equipment.armor.id)}}
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
+            {{/with}}
+            {{#if equipment.armor.system.description}}
+            <p class="equipped-item-description">{{htmlSnippet equipment.armor.system.description}}</p>
+            {{/if}}
+          </div>
+        </div>
       {{else}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.Empty"}}</p>
       {{/if}}
@@ -48,11 +73,17 @@
       {{#if equipment.accessories.length}}
         <ul>
           {{#each equipment.accessories}}
-          <li data-item-id="{{this.id}}">
-            {{this.name}}
-            {{#with (lookup ../armorStats this.id)}}
-            <span class="item-stats-inline">({{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}})</span>
-            {{/with}}
+          <li class="equipped-item-line" data-item-id="{{this.id}}">
+            <img class="equipped-item-img" src="{{this.img}}" alt="">
+            <div class="equipped-item-body">
+              <span class="item-name-static">{{this.name}}</span>
+              {{#with (lookup ../armorStats this.id)}}
+              <span class="item-stats-inline">({{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}})</span>
+              {{/with}}
+              {{#if this.system.description}}
+              <p class="equipped-item-description">{{htmlSnippet this.system.description}}</p>
+              {{/if}}
+            </div>
           </li>
           {{/each}}
         </ul>

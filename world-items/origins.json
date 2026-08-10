@@ -1,0 +1,104 @@
+[
+  {
+    "name": "Fleuraine",
+    "type": "origin",
+    "system": {
+      "inspiration": "France",
+      "demonym": "Fleurainois",
+      "language": "Fleurain",
+      "traits": "Noblesse, chevalerie, droiture, honneur",
+      "description": "<p>Terre de cours royales, de chevalerie et de codes d'honneur stricts. Les Fleurainois grandissent bercés par les récits de valeureux chevaliers et cultivent un sens aigu de la parole donnée.</p>",
+      "abilityBonuses": { "cha": 2, "str": 1 },
+      "skillAdvantages": ["persuasion", "intimidation"],
+      "specialTrait": {
+        "name": "Honneur Inébranlable",
+        "description": "Une fois par combat, si un jet de sauvegarde contre un effet de peur ou de charme échoue, le personnage peut relancer le dé et doit utiliser le nouveau résultat."
+      }
+    }
+  },
+  {
+    "name": "Altenmark",
+    "type": "origin",
+    "system": {
+      "inspiration": "Germanie",
+      "demonym": "Altenmarkois",
+      "language": "Altenmarkois",
+      "traits": "Force, courage, détermination, discipline",
+      "description": "<p>Région de forêts denses et d'hivers rudes, où seuls la discipline et l'entraînement permettent de survivre. Les Altenmarkois sont réputés pour leur endurance et leur loyauté sans faille.</p>",
+      "abilityBonuses": { "str": 2, "con": 1 },
+      "skillAdvantages": ["athletics", "survival"],
+      "specialTrait": {
+        "name": "Discipline de Fer",
+        "description": "Le personnage ne peut jamais être surpris par une embuscade lorsqu'il est en alerte (veille)."
+      }
+    }
+  },
+  {
+    "name": "Lucentia",
+    "type": "origin",
+    "system": {
+      "inspiration": "Italie",
+      "demonym": "Lucentien",
+      "language": "Lucentien",
+      "traits": "Charme, éloquence, persuasion, commerce",
+      "description": "<p>Cité-états prospères bâties sur le commerce et les arts. Les Lucentiens excellent dans la négociation et savent tirer parti de leur charisme naturel en toute situation.</p>",
+      "abilityBonuses": { "cha": 2, "dex": 1 },
+      "skillAdvantages": ["deception", "performance"],
+      "specialTrait": {
+        "name": "Art de la Parole",
+        "description": "Le personnage peut ajouter son modificateur de Charisme aux tests d'Intimidation ou de Tromperie."
+      }
+    }
+  },
+  {
+    "name": "Ravenmoor",
+    "type": "origin",
+    "system": {
+      "inspiration": "Angleterre",
+      "demonym": "Ravenmoorien",
+      "language": "Ravenmoorien",
+      "traits": "Loyauté, pragmatisme, stoïcisme, sens du devoir",
+      "description": "<p>Landes brumeuses et côtes battues par les vents, où le devoir prime sur les sentiments. Les Ravenmooriens sont pragmatiques, patients et rarement pris de court.</p>",
+      "abilityBonuses": { "wis": 2, "con": 1 },
+      "skillAdvantages": ["investigation", "perception"],
+      "specialTrait": {
+        "name": "Stoïcisme",
+        "description": "Le personnage peut ignorer les effets de peur, d'effroi ou d'illusions mineures."
+      }
+    }
+  },
+  {
+    "name": "Valdera",
+    "type": "origin",
+    "system": {
+      "inspiration": "Espagne",
+      "demonym": "Valderan",
+      "language": "Valderan",
+      "traits": "Piété, ferveur, passion, ardeur",
+      "description": "<p>Terre baignée de soleil où la foi et la passion animent chaque geste du quotidien. Les Valderans vivent avec ferveur, que ce soit au combat, en amour ou en prière.</p>",
+      "abilityBonuses": { "wis": 2, "cha": 1 },
+      "skillAdvantages": ["religion", "athletics"],
+      "specialTrait": {
+        "name": "Ferveur Incarnée",
+        "description": "Une fois par jour, le personnage peut créer une petite flamme (équivalente à une bougie ou une torche) sans matériel."
+      }
+    }
+  },
+  {
+    "name": "Ashar",
+    "type": "origin",
+    "system": {
+      "inspiration": "Arabie",
+      "demonym": "Asharite",
+      "language": "Asharite",
+      "traits": "Sagesse, connaissance, réflexion, patience",
+      "description": "<p>Vastes étendues désertiques parcourues de routes caravanières et parsemées de bibliothèques savantes. Les Asharites valorisent la connaissance ancienne et la réflexion patiente avant l'action.</p>",
+      "abilityBonuses": { "int": 2, "wis": 1 },
+      "skillAdvantages": ["history", "arcana"],
+      "specialTrait": {
+        "name": "Sagesse Ancienne",
+        "description": "Ajoute son bonus d'intelligence à un jet d'investigation sur quelque chose de magique."
+      }
+    }
+  }
+]

@@ -7,6 +7,43 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.12.0] - 2026-08-10
+
+Traitement du retour de test en jeu (2026-08-09/10) sur la fiche personnage et l'assistant de
+création : 1 bug bloquant corrigé + 15 points UX/features répartis sur les onglets
+Statistiques/Équipements/Inventaire et les compendiums Classes/Origines.
+
+### Corrigé
+- Assistant de création : les 6 select de caractéristiques pouvaient afficher la même valeur
+  du tableau standard sans qu'aucun indice ne le signale, déclenchant systématiquement
+  l'erreur de validation même quand la répartition semblait correcte. Sélectionner une valeur
+  déjà utilisée ailleurs échange désormais automatiquement les deux valeurs.
+- Liseré gris disgracieux sous les icônes "Utiliser"/"Supprimer" de l'inventaire (bordure
+  visible au repos, retirée sauf au survol).
+- "Exhaustion" traduit en "Épuisement" (les autres états étaient déjà en français).
+
+### Ajouté
+- Ouverture automatique de l'assistant de création à la création d'un nouvel Actor
+  "Personnage" vierge (ex. dialogue natif "Créer un acteur"), en plus du bouton existant sur
+  la fiche.
+- Nombre de compétences à choisir affiché dans l'assistant, mis à jour dès le choix de la classe.
+- Boutons de jet (caractéristiques, compétences, sauvegardes, attaque/dégâts) désormais
+  visuellement identifiables comme cliquables au repos (soulignement pointillé), pas
+  seulement au survol.
+- Classe et Origine sur la fiche personnage : champs fixes cliquables (au lieu de listes
+  déroulantes) qui ouvrent la fiche de description correspondante (Item du monde ou des
+  compendiums Classes/Origines) quand elle existe.
+- Panneau des états déplacé en haut de l'onglet Statistiques (n'est plus tout en bas).
+- Onglet Équipement : image, description courte et bouton de test d'attaque pour chaque objet
+  équipé (main principale/secondaire, armure, accessoires).
+- Armes Polyvalentes : les dégâts affichés/lancés par défaut suivent désormais l'équipement
+  réel (deux mains si la main secondaire est libre, une main sinon) au lieu de toujours
+  afficher les deux valeurs sans distinction.
+- Monnaie remontée en haut de l'onglet Inventaire, avec les noms complets (Pièces de
+  cuivre/argent/or/platine) au lieu des abréviations PC/PA/PO/PP.
+- `world-items/classes.json` et `world-items/origins.json` : les 12 classes et 6 Origines
+  prêtes à importer puis glisser dans les compendiums Classes/Origines (cf. leurs README).
+
 ## [0.11.0] - 2026-08-09
 
 Suite de la session autonome (`ClaudeFiles/AUTONOMIE.md`) : les 4 pistes d'amélioration
