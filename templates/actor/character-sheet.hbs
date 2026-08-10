@@ -17,22 +17,22 @@
         {{/if}}
       </span>
       {{/if}}
-      <label>{{localize "DND_CUSTOM.Actor.Class"}}
-        <select name="system.class" {{#unless isGM}}disabled{{/unless}}>
-          <option value="">—</option>
-          {{#each classOptions}}
-          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
-          {{/each}}
-        </select>
-      </label>
-      <label>{{localize "DND_CUSTOM.Actor.Origin"}}
-        <select name="system.origin" {{#unless isGM}}disabled{{/unless}}>
-          <option value="">—</option>
-          {{#each originOptions}}
-          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
-          {{/each}}
-        </select>
-      </label>
+      <div class="fixed-field">
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
+        {{#if classLabel}}
+        <button type="button" class="fixed-field-value roll-btn" data-action="openClassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{classLabel}}</button>
+        {{else}}
+        <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
+        {{/if}}
+      </div>
+      <div class="fixed-field">
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
+        {{#if originLabel}}
+        <button type="button" class="fixed-field-value roll-btn" data-action="openOriginSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{originLabel}}</button>
+        {{else}}
+        <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoOrigin"}}</span>
+        {{/if}}
+      </div>
     </div>
 
     <div class="header-row">

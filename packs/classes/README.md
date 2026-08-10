@@ -14,3 +14,9 @@ classes n'est pas encore finalisé (dé de vie, lanceur de sorts ou non, progres
 du Barbare/Moine notamment). Ce compendium n'est pas encore relié à la fiche de personnage,
 qui continue de lire `CONFIG.DND_CUSTOM.classHitDice` / `.spellcastingClasses`
 (`scripts/helpers/config.js`).
+
+Les 12 classes SRD 5e sont pré-écrites dans `world-items/classes.json` (nom + description
+incluant dé de vie, sauvegardes maîtrisées, compétences et lanceur de sorts) : exécutez la
+macro d'import de `world-items/README.md`, puis glissez chaque Item obtenu dans l'onglet
+"Objets" du monde vers ce compendium. C'est ce que la fiche de personnage utilise pour ouvrir
+la description d'une classe au clic (recherche par nom exact).

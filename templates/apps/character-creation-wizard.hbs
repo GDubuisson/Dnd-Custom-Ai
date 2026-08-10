@@ -43,7 +43,7 @@
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Wizard.SkillsTitle"}}</legend>
-    <p class="field-note">{{localize "DND_CUSTOM.Wizard.SkillsHelp"}}</p>
+    <p class="field-note wizard-skill-count" data-skill-count-hint>{{localize "DND_CUSTOM.Wizard.SkillsHelp"}}</p>
     <div class="wizard-skills-grid">
       {{#each skills}}
       <label class="checkbox-row"><input type="checkbox" name="skills.{{this.key}}"> {{localize this.label}}</label>

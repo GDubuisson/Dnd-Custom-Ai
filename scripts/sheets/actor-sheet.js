@@ -104,6 +104,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
+      openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
+      openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge
@@ -149,17 +151,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.isGM = game.user.isGM;
     // Chargées une fois au démarrage par le hook "init" (voir dnd-custom-ai.js).
     context.origins = game.dndCustomAi?.origins ?? {};
-    context.originOptions = Object.entries(context.origins).map(([key, origin]) => ({
-      key,
-      label: origin.label,
-      selected: system.origin === key
-    }));
-
-    context.classOptions = Object.entries(DND_CUSTOM.classes).map(([key, labelKey]) => ({
-      key,
-      label: labelKey,
-      selected: system.class === key
-    }));
+    // Classe/Origine : champs fixes sur la fiche (retour de test — ne sont plus des listes
+    // déroulantes, la seule façon de les définir/changer est l'assistant de création, cf.
+    // #onOpenClassSheet/#onOpenOriginSheet ci-dessous pour l'ouverture de leur description).
+    context.classLabel = system.class ? game.i18n.localize(DND_CUSTOM.classes[system.class]) : "";
+    context.originLabel = context.origins[system.origin]?.label ?? "";
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
 
@@ -315,17 +311,33 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const damageType = weapon.system.damage.type
         ? game.i18n.localize(DND_CUSTOM.damageTypes[weapon.system.damage.type])
         : "";
-      const damageLabel = weapon.system.damage.dice
+      const oneHandedLabel = weapon.system.damage.dice
         ? `${weapon.system.damage.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim()
         : "";
+      // Polyvalente : la main secondaire libre est considérée occupée par l'arme elle-même
+      // (empoignée à deux mains), sinon elle reste tenue à une main (cf. retour de test —
+      // l'affichage montrait toujours les deux valeurs sans jamais refléter l'équipement réel).
+      const isTwoHandedActive =
+        weapon.system.properties.versatile &&
+        Boolean(weapon.system.damageVersatile.dice) &&
+        mainHand?.id === weapon.id &&
+        (!offHand || offHand.id === weapon.id);
       let versatileLabel = "";
       if (weapon.system.properties.versatile && weapon.system.damageVersatile.dice) {
-        versatileLabel = `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
+        const twoHandedLabel = `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim();
+        if (isTwoHandedActive) {
+          versatileLabel = `${oneHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.OneHandedShort")})`;
+        } else {
+          versatileLabel = `${twoHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
+        }
       }
       context.weaponStats[weapon.id] = {
         attackLabel: formatModifier(atk.attackBonus),
-        damageLabel,
+        damageLabel: isTwoHandedActive
+          ? `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim()
+          : oneHandedLabel,
         versatileLabel,
+        isTwoHandedActive,
         proficient
       };
     }
@@ -466,6 +478,41 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  character-creation-wizard.js) : accessible à tout propriétaire, pas seulement au MJ. */
   static async #onOpenCreationWizard() {
     new CharacterCreationWizard(this.actor).render(true);
+  }
+
+  static async #onOpenClassSheet() {
+    const classKey = this.actor.system.class;
+    const name = classKey ? game.i18n.localize(DND_CUSTOM.classes[classKey]) : "";
+    await DndCustomActorSheet.#openReferenceItem(name, "classes", "DND_CUSTOM.Actor.ClassSheetMissing");
+  }
+
+  static async #onOpenOriginSheet() {
+    const origin = game.dndCustomAi?.origins?.[this.actor.system.origin];
+    await DndCustomActorSheet.#openReferenceItem(origin?.label, "origines", "DND_CUSTOM.Actor.OriginSheetMissing");
+  }
+
+  /** Ouvre la fiche de description d'une Classe/Origine par son nom exact : cherchée d'abord
+   *  dans les Items du monde (import world-items/classes.json ou origins.json), puis dans le
+   *  compendium `packName` une fois peuplé par le MJ (cf. packs/classes ou packs/origines,
+   *  README de chacun) — avertit sans bloquer si introuvable, ces fiches restent optionnelles. */
+  static async #openReferenceItem(name, packName, missingKey) {
+    if (!name) return;
+
+    const worldItem = game.items.getName(name);
+    if (worldItem) {
+      worldItem.sheet.render(true);
+      return;
+    }
+
+    const pack = game.packs.get(`${SYSTEM_ID}.${packName}`);
+    const indexEntry = pack ? [...pack.index].find((entry) => entry.name === name) : null;
+    if (indexEntry) {
+      const document = await pack.getDocument(indexEntry._id);
+      document.sheet.render(true);
+      return;
+    }
+
+    ui.notifications.warn(game.i18n.format(missingKey, { name }));
   }
 
   /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée
@@ -645,16 +692,32 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Jet de dégâts d'une arme de l'inventaire. Maj-clic : dé Polyvalente (deux mains) si
-   *  l'arme en a un. Pas d'avantage/désavantage (ne concerne que les jets de d20). */
+  /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
+   *  suit l'équipement réel (deux mains si la main secondaire est libre, une main sinon, cf.
+   *  tab-equipment.hbs/tab-inventory.hbs) ; le bouton alternative (ou Maj-clic) force l'autre
+   *  dé. Pas d'avantage/désavantage (ne concerne que les jets de d20). */
   static async #onRollWeaponDamage(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "weapon") return;
-    const useVersatile =
-      (event.shiftKey || target.dataset.versatile === "true") &&
-      item.system.properties.versatile &&
-      item.system.damageVersatile.dice;
-    const dice = useVersatile ? item.system.damageVersatile.dice : item.system.damage.dice;
+
+    const isVersatile = item.system.properties.versatile && Boolean(item.system.damageVersatile.dice);
+    let isTwoHandedActive = false;
+    if (isVersatile) {
+      const otherOffHand = this.actor.items.contents.find(
+        (other) =>
+          other.id !== item.id &&
+          ["weapon", "armor"].includes(other.type) &&
+          other.system.equipped &&
+          equipmentSlots(other.type, other.system).includes("offHand")
+      );
+      isTwoHandedActive =
+        item.system.equipped &&
+        equipmentSlots(item.type, item.system).includes("mainHand") &&
+        !otherOffHand;
+    }
+    const forceAlternate = event.shiftKey || target.dataset.versatile === "true";
+    const useVersatileDice = isVersatile && (forceAlternate ? !isTwoHandedActive : isTwoHandedActive);
+    const dice = useVersatileDice ? item.system.damageVersatile.dice : item.system.damage.dice;
     if (!dice) return;
 
     const atk = weaponAttackDamage(

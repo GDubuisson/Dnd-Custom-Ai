@@ -15,6 +15,8 @@ système) — copiez/dupliquez l'Item une fois importé si vous voulez le person
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` |
 | `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` |
 | `features.json` | 24 capacités de classe SRD 5e (2 par classe, niveaux 1 à 3) — sélection non exhaustive | `feature` |
+| `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) — à glisser ensuite dans le compendium "Classes" (`packs/classes`) | `class` |
+| `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) — à glisser ensuite dans le compendium "Origines" (`packs/origines`) | `origin` |
 
 ## Comment importer
 
@@ -24,7 +26,7 @@ simple est une macro (Script) : créez une macro dans le monde, collez ce code, 
 présente (comparaison par nom) :
 
 ```js
-const files = ["armors.json", "weapons.json", "gear.json", "tools.json", "spells.json", "features.json"];
+const files = ["armors.json", "weapons.json", "gear.json", "tools.json", "spells.json", "features.json", "classes.json", "origins.json"];
 
 for (const file of files) {
   const data = await fetch(`systems/dnd-custom-ai/world-items/${file}`).then((r) => r.json());
@@ -75,6 +77,16 @@ Imposition des mains) et restauré au maximum lors d'un repos court ou long selo
 `system.uses.recharge` (un repos long restaure aussi les capacités à récupération "repos
 court"). `system.uses.max` à 0 = pas de suivi, comportement précédent (capacité toujours
 disponible).
+
+## Note sur les classes et les origines
+
+Contrairement aux autres fichiers, `classes.json` et `origins.json` ne sont qu'une étape
+intermédiaire : leur destination finale est un compendium système (`packs/classes` /
+`packs/origines`, cf. `system.json` > `packs`), pas les Items du monde. Après avoir exécuté la
+macro d'import ci-dessus, glissez chaque Item `class`/`origin` obtenu depuis l'onglet "Objets"
+vers le compendium correspondant (ou dupliquez-le directement dedans). Une fois dans le
+compendium, cliquer sur "Classe"/"Origine" depuis la fiche de personnage ouvre cet Item par son
+nom (recherche dans le monde puis dans ces deux compendiums).
 
 ## Dépendance de l'assistant de création de personnage
 

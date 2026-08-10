@@ -5,6 +5,7 @@ import { WeaponData, ArmorData, GearData, FeatureData, ToolData, SpellData } fro
 import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
+import { CharacterCreationWizard } from "./sheets/character-creation-wizard.js";
 import { DndCustomNpcSheet } from "./sheets/npc-sheet.js";
 import { VehicleActorSheet } from "./sheets/vehicle-actor-sheet.js";
 import {
@@ -170,6 +171,20 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   if (sys.skills) {
     for (const key of Object.keys(sys.skills)) delete sys.skills[key].proficient;
   }
+});
+
+// Point d'entrée découvrable de l'assistant de création (retour de test — le bouton "Créer un
+// personnage" n'existait que sur une fiche Actor déjà créée, sans lien depuis le dialogue
+// natif "Créer un acteur") : à la création d'un nouvel Actor "character" encore vierge
+// (Origine et Classe non définies — un import/duplicata d'un personnage déjà construit ne
+// déclenche donc rien), on ouvre directement l'assistant pour guider le choix Origine/Classe/
+// caractéristiques. Ne s'ouvre que pour le client à l'origine de la création (garde userId),
+// pas pour tous les clients connectés.
+Hooks.on("createActor", (actor, options, userId) => {
+  if (actor.type !== "character") return;
+  if (game.user.id !== userId) return;
+  if (actor.system.class || actor.system.origin) return;
+  new CharacterCreationWizard(actor).render(true);
 });
 
 // Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus

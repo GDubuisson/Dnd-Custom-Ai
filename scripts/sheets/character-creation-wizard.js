@@ -32,6 +32,67 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     this.actor = actor;
   }
 
+  /** @override */
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this.#syncAbilitySelects();
+    this.#syncSkillCountHint();
+  }
+
+  /** Affiche le nombre de compétences à choisir pour la classe actuellement sélectionnée
+   *  (retour de test — rien n'indiquait ce nombre dans le formulaire), mis à jour dès que le
+   *  joueur change de classe, avant même de soumettre. */
+  #syncSkillCountHint() {
+    const root = this.element;
+    const classSelect = root.querySelector('select[name="classKey"]');
+    const hint = root.querySelector("[data-skill-count-hint]");
+    if (!classSelect || !hint) return;
+
+    const updateHint = () => {
+      const count = DND_CUSTOM.classSkillChoices[classSelect.value];
+      hint.textContent = count
+        ? game.i18n.format("DND_CUSTOM.Wizard.SkillCountHint", { count })
+        : game.i18n.localize("DND_CUSTOM.Wizard.SkillCountHintNoClass");
+    };
+    updateHint();
+
+    if (root.dataset.dndWizardSkillHintBound) return;
+    root.dataset.dndWizardSkillHintBound = "true";
+    classSelect.addEventListener("change", updateHint);
+  }
+
+  /** Empêche deux select de caractéristique d'afficher la même valeur du tableau standard :
+   *  c'est la cause du bug remonté en test ("Chaque valeur... doit être utilisée exactement
+   *  une fois" apparaissait systématiquement) — rien n'empêchait par ex. de mettre 15 en
+   *  Intelligence sans remarquer que Force affichait encore 15 par défaut. Au lieu de se
+   *  reposer uniquement sur la validation finale, on échange automatiquement l'ancienne
+   *  valeur du champ modifié vers le select qui détenait la nouvelle valeur : l'ensemble
+   *  reste toujours une permutation valide du tableau standard pendant la saisie. */
+  #syncAbilitySelects() {
+    const root = this.element;
+    const abilitySelects = () => root.querySelectorAll('select[name^="abilities."]');
+
+    abilitySelects().forEach((select) => (select.dataset.prevValue = select.value));
+
+    if (root.dataset.dndWizardAbilitiesBound) return;
+    root.dataset.dndWizardAbilitiesBound = "true";
+    root.addEventListener("change", (event) => {
+      const select = event.target;
+      if (!select.matches('select[name^="abilities."]')) return;
+
+      const newValue = select.value;
+      const oldValue = select.dataset.prevValue;
+      const other = [...abilitySelects()].find(
+        (candidate) => candidate !== select && candidate.value === newValue
+      );
+      if (other) {
+        other.value = oldValue;
+        other.dataset.prevValue = oldValue;
+      }
+      select.dataset.prevValue = newValue;
+    });
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     return {

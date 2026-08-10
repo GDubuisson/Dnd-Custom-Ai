@@ -1,6 +1,15 @@
 <section class="tab inventory {{tab.cssClass}}" data-group="primary" data-tab="inventory">
   <h2 class="tab-title"><i class="fa-solid fa-sack"></i> {{localize "DND_CUSTOM.Tabs.inventory"}}</h2>
 
+  <div class="currency">
+    <h3>{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
+    <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.currency.pc" value="{{system.currency.pc}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.currency.pa" value="{{system.currency.pa}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.currency.po" value="{{system.currency.po}}" min="0"></label>
+    <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.currency.pp" value="{{system.currency.pp}}" min="0"></label>
+    <span class="currency-total">({{currencyTotalCopper}} {{localize "DND_CUSTOM.Currency.pc"}})</span>
+  </div>
+
   <h3 class="section-subtitle">{{localize "DND_CUSTOM.Inventory.WeaponsArmorTitle"}}</h3>
   <table class="inventory-table">
     <thead>
@@ -97,13 +106,4 @@
   </div>
 
   <p class="drop-hint">{{localize "DND_CUSTOM.Inventory.DropHint"}}</p>
-
-  <div class="currency">
-    <h3>{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
-    <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.currency.pc" value="{{system.currency.pc}}" min="0"></label>
-    <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.currency.pa" value="{{system.currency.pa}}" min="0"></label>
-    <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.currency.po" value="{{system.currency.po}}" min="0"></label>
-    <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.currency.pp" value="{{system.currency.pp}}" min="0"></label>
-    <span class="currency-total">({{currencyTotalCopper}} {{localize "DND_CUSTOM.Currency.pc"}})</span>
-  </div>
 </section>

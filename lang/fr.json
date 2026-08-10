@@ -78,7 +78,12 @@
       "DeathSuccesses": "Réussites",
       "DeathFailures": "Échecs",
       "Stabilized": "Stabilisé",
-      "Dead": "Mort"
+      "Dead": "Mort",
+      "OpenDescriptionTooltip": "Cliquer pour ouvrir la fiche de description",
+      "ClassSheetMissing": "Aucune fiche de description trouvée pour la classe \"{name}\" (importez/peuplez le compendium Classes, cf. world-items/README.md).",
+      "OriginSheetMissing": "Aucune fiche de description trouvée pour l'Origine \"{name}\" (importez/peuplez le compendium Origines, cf. world-items/README.md).",
+      "NoClass": "Aucune classe choisie",
+      "NoOrigin": "Aucune Origine choisie"
     },
     "Actions": {
       "RestShort": "Repos court",
@@ -144,7 +149,8 @@
       "SlotOccupied": "Emplacement déjà occupé par {item}. Déséquipez-le d'abord.",
       "OffHandRequiresLight": "Seule une arme Légère peut être équipée en Main secondaire.",
       "ACBonus": "Bonus CA",
-      "TwoHandedShort": "deux mains"
+      "TwoHandedShort": "deux mains",
+      "OneHandedShort": "une main"
     },
     "Inventory": {
       "Title": "Inventaire",
@@ -169,10 +175,10 @@
       "DropError": "Impossible de déplacer cet objet (droits insuffisants)."
     },
     "Currency": {
-      "pc": "PC",
-      "pa": "PA",
-      "po": "PO",
-      "pp": "PP"
+      "pc": "Pièces de cuivre",
+      "pa": "Pièces d'argent",
+      "po": "Pièces d'or",
+      "pp": "Pièces de platine"
     },
     "Abilities": {
       "str": "Force",
@@ -227,6 +233,8 @@
       "AbilitiesHelp": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
       "SkillsTitle": "Maîtrises de compétences",
       "SkillsHelp": "Le nombre de compétences à choisir dépend de la classe sélectionnée.",
+      "SkillCountHint": "Choisissez {count} compétence(s) pour cette classe.",
+      "SkillCountHintNoClass": "Sélectionnez d'abord une classe pour connaître le nombre de compétences à choisir.",
       "Submit": "Créer le personnage",
       "InvalidAbilities": "Chaque valeur du tableau standard (15, 14, 13, 12, 10, 8) doit être utilisée exactement une fois.",
       "InvalidSkillCount": "Choisissez exactement {count} compétence(s) pour cette classe.",
@@ -241,7 +249,7 @@
     },
     "Conditions": {
       "Title": "États",
-      "Exhaustion": "Exhaustion",
+      "Exhaustion": "Épuisement",
       "blinded": "Aveuglé",
       "charmed": "Charmé",
       "deafened": "Assourdi",
