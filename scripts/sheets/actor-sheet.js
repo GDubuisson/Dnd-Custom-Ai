@@ -350,7 +350,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // Armure du corps : CA totale affichée telle quelle (ex. "15") ; bouclier/accessoire :
       // bonus additionnel affiché avec son signe (ex. "+2"), pas une CA absolue.
       context.armorStats[armor.id] = {
-        acLabel: armor.system.slot === "armor" ? `${contribution}` : formatModifier(contribution)
+        acLabel: armor.system.slot === "armor" ? `${contribution}` : formatModifier(contribution),
+        typeLabel: DND_CUSTOM.armorTypes[armor.system.armorType]
       };
     }
 

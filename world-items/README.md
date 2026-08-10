@@ -1,42 +1,48 @@
-# Objets à importer dans l'onglet "Objets" du monde
+# Contenu de référence à importer
 
-Ces fichiers ne sont **pas** des compendiums système : ce sont des données à importer une
-fois dans les Items du monde (onglet "Objets" de Foundry, entre "Acteurs" et "Journaux"),
-pour que chaque table puisse ensuite les dupliquer/adapter librement à son monde.
+## Comment importer (méthode recommandée)
 
-Ils ne sont pas censés être modifiés directement (données de référence versionnées avec le
-système) — copiez/dupliquez l'Item une fois importé si vous voulez le personnaliser.
+Une Macro monde **"Importer le contenu du système"** est créée automatiquement au premier
+chargement du monde (visible dans l'onglet "Macros", MJ uniquement — cf.
+`scripts/helpers/content-import.js`). Double-cliquez dessus pour tout importer d'un coup, sans
+jamais dupliquer une entrée déjà présente (comparaison par nom) : rejouable sans risque à
+chaque mise à jour du système.
 
-| Fichier | Contenu | Type d'Item |
-|---|---|---|
-| `armors.json` | 13 armures SRD 5e (dont le bouclier) | `armor` |
-| `weapons.json` | 37 armes SRD 5e (courantes et de guerre) | `weapon` |
-| `gear.json` | 15 objets d'aventurier courants | `gear` |
-| `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` |
-| `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` |
-| `features.json` | 24 capacités de classe SRD 5e (2 par classe, niveaux 1 à 3) — sélection non exhaustive | `feature` |
-| `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) — à glisser ensuite dans le compendium "Classes" (`packs/classes`) | `class` |
-| `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) — à glisser ensuite dans le compendium "Origines" (`packs/origines`) | `origin` |
+- `armors.json`, `weapons.json`, `gear.json`, `tools.json`, `spells.json`, `features.json` →
+  importés dans les Items du monde (onglet "Objets" de Foundry, entre "Acteurs" et "Journaux").
+- `classes.json`, `origins.json` → importés **directement dans leurs compendiums** (`packs/classes`,
+  `packs/origines`), pas dans les Items du monde (cf. "Note sur les classes et les origines"
+  plus bas).
 
-## Comment importer
+| Fichier | Contenu | Type d'Item | Destination |
+|---|---|---|---|
+| `armors.json` | 13 armures SRD 5e (dont le bouclier) | `armor` | Items du monde |
+| `weapons.json` | 37 armes SRD 5e (courantes et de guerre) | `weapon` | Items du monde |
+| `gear.json` | 15 objets d'aventurier courants | `gear` | Items du monde |
+| `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
+| `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Items du monde |
+| `features.json` | 24 capacités de classe SRD 5e (2 par classe, niveaux 1 à 3) — sélection non exhaustive | `feature` | Items du monde |
+| `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
+| `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 
-Foundry ne propose pas d'import JSON en masse depuis l'onglet "Objets". La méthode la plus
-simple est une macro (Script) : créez une macro dans le monde, collez ce code, et exécutez-la
-(en tant que MJ). Elle importe les 6 fichiers d'un coup, sans jamais dupliquer une entrée déjà
-présente (comparaison par nom) :
+Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
+avec le système) — dupliquez l'Item une fois importé si vous voulez le personnaliser.
+
+## Insérer un sort ou une capacité de classe sur une fiche personnage
+
+Une fois importés (macro ci-dessus), glissez-déposez l'Item `spell`/`feature` depuis l'onglet
+"Objets" du monde vers la fiche du personnage (onglet "Capacités"/"Sorts") : c'est le
+glisser-déposer standard de Foundry, déjà géré par la fiche (cf.
+`scripts/sheets/inventory-drag-drop.js`). Aucune étape supplémentaire n'est nécessaire.
+
+## Si la Macro n'apparaît pas
+
+Elle n'est (re)créée qu'une fois par monde et seulement pour un compte MJ (jamais écrasée si
+vous l'avez renommée/supprimée volontairement). Si elle manque malgré tout, exécutez ce script
+depuis une macro créée à la main :
 
 ```js
-const files = ["armors.json", "weapons.json", "gear.json", "tools.json", "spells.json", "features.json", "classes.json", "origins.json"];
-
-for (const file of files) {
-  const data = await fetch(`systems/dnd-custom-ai/world-items/${file}`).then((r) => r.json());
-  const existingNames = new Set(game.items.map((item) => item.name));
-  const missing = data.filter((entry) => !existingNames.has(entry.name));
-  if (missing.length) await Item.createDocuments(missing);
-  console.log(`${file} : ${missing.length} objet(s) importé(s)`);
-}
-
-ui.notifications.info("Import terminé (voir la console pour le détail).");
+await game.dndCustomAi.importSystemContent();
 ```
 
 ## Note sur les outils
@@ -80,19 +86,19 @@ disponible).
 
 ## Note sur les classes et les origines
 
-Contrairement aux autres fichiers, `classes.json` et `origins.json` ne sont qu'une étape
-intermédiaire : leur destination finale est un compendium système (`packs/classes` /
-`packs/origines`, cf. `system.json` > `packs`), pas les Items du monde. Après avoir exécuté la
-macro d'import ci-dessus, glissez chaque Item `class`/`origin` obtenu depuis l'onglet "Objets"
-vers le compendium correspondant (ou dupliquez-le directement dedans). Une fois dans le
-compendium, cliquer sur "Classe"/"Origine" depuis la fiche de personnage ouvre cet Item par son
-nom (recherche dans le monde puis dans ces deux compendiums).
+Contrairement aux autres fichiers, `classes.json` et `origins.json` sont importés directement
+dans leur compendium système (`packs/classes` / `packs/origines`, cf. `system.json` > `packs`),
+pas dans les Items du monde : ces compendiums restent vides tant que la Macro d'import n'a pas
+été exécutée une première fois (Foundry ne les compile qu'à partir de documents ajoutés depuis
+l'interface — ce système n'a pas d'étape de build pour les préremplir autrement). Une fois
+importées, cliquer sur "Classe"/"Origine" depuis la fiche de personnage ouvre l'Item
+correspondant par son nom (recherche dans les Items du monde puis dans ces deux compendiums).
 
 ## Dépendance de l'assistant de création de personnage
 
 L'assistant de création (bouton "Créer un personnage" sur la fiche) donne un équipement de
 départ simplifié (une arme + une armure typiques par classe, cf.
 `DND_CUSTOM.classStartingEquipment` dans `scripts/helpers/config.js`) en cherchant les noms
-exacts dans les Items du monde — **la macro d'import ci-dessus doit avoir été exécutée au
+exacts dans les Items du monde — **la Macro d'import ci-dessus doit avoir été exécutée au
 moins une fois** pour que `weapons.json`/`armors.json` y soient présents, sinon l'équipement
 de départ est silencieusement ignoré (le personnage reste créé, juste sans arme/armure).

@@ -8,9 +8,16 @@
         <div class="equipped-item-line" data-item-id="{{equipment.mainHand.id}}">
           <img class="equipped-item-img" src="{{equipment.mainHand.img}}" alt="">
           <div class="equipped-item-body">
+            <span class="item-name-static">{{equipment.mainHand.name}}</span>
             {{#with (lookup ../weaponStats equipment.mainHand.id)}}
-            <button type="button" class="item-name-link" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{../equipment.mainHand.name}}</button>
-            <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
+            <p class="item-stats-line">
+              {{localize "DND_CUSTOM.Inventory.Attack"}}
+              <button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button>
+              ·
+              {{localize "DND_CUSTOM.Inventory.Damage"}}
+              <button type="button" class="roll-btn" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{this.damageLabel}}</button>
+              {{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+            </p>
             {{/with}}
             {{#if equipment.mainHand.system.description}}
             <p class="equipped-item-description">{{htmlSnippet equipment.mainHand.system.description}}</p>
@@ -30,13 +37,19 @@
         <div class="equipped-item-line" data-item-id="{{equipment.offHand.id}}">
           <img class="equipped-item-img" src="{{equipment.offHand.img}}" alt="">
           <div class="equipped-item-body">
+            <span class="item-name-static">{{equipment.offHand.name}}</span>
             {{#with (lookup ../weaponStats equipment.offHand.id)}}
-            <button type="button" class="item-name-link" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{../equipment.offHand.name}}</button>
-            <p class="item-stats-line">{{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}} · {{this.damageLabel}}{{#if this.versatileLabel}} / {{this.versatileLabel}}{{/if}}{{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}</p>
+            <p class="item-stats-line">
+              {{localize "DND_CUSTOM.Inventory.Attack"}}
+              <button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button>
+              ·
+              {{localize "DND_CUSTOM.Inventory.Damage"}}
+              <button type="button" class="roll-btn" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{this.damageLabel}}</button>
+              {{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+            </p>
             {{/with}}
             {{#with (lookup ../armorStats equipment.offHand.id)}}
-            <span class="item-name-static">{{../equipment.offHand.name}}</span>
-            <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Item.Fields.ArmorType"}} {{localize this.typeLabel}} · {{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
             {{/with}}
             {{#if equipment.offHand.system.description}}
             <p class="equipped-item-description">{{htmlSnippet equipment.offHand.system.description}}</p>
@@ -56,7 +69,7 @@
           <div class="equipped-item-body">
             <span class="item-name-static">{{equipment.armor.name}}</span>
             {{#with (lookup ../armorStats equipment.armor.id)}}
-            <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
+            <p class="item-stats-line">{{localize "DND_CUSTOM.Item.Fields.ArmorType"}} {{localize this.typeLabel}} · {{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
             {{/with}}
             {{#if equipment.armor.system.description}}
             <p class="equipped-item-description">{{htmlSnippet equipment.armor.system.description}}</p>
@@ -78,7 +91,7 @@
             <div class="equipped-item-body">
               <span class="item-name-static">{{this.name}}</span>
               {{#with (lookup ../armorStats this.id)}}
-              <span class="item-stats-inline">({{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}})</span>
+              <p class="item-stats-line">{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}</p>
               {{/with}}
               {{#if this.system.description}}
               <p class="equipped-item-description">{{htmlSnippet this.system.description}}</p>

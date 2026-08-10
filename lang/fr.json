@@ -92,6 +92,10 @@
       "AwardXp": "Attribuer de l'XP",
       "LevelUp": "Monter de niveau"
     },
+    "Macros": {
+      "ImportContent": "Importer le contenu du système",
+      "ImportContentDone": "Import terminé : armes/armures/objets/outils/sorts/capacités dans les Items du monde, Classes/Origines dans leurs compendiums (voir la console pour le détail)."
+    },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
       "DamageTooltip": "Jet de dégâts. Maj-clic : dé Polyvalente (deux mains) si l'arme en a un.",

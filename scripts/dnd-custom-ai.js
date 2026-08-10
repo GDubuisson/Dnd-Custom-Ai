@@ -20,6 +20,7 @@ import {
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
+import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { declareDeath } from "./helpers/death.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import {
@@ -131,16 +132,19 @@ Hooks.once("init", async () => {
   game.dndCustomAi = {
     origins: await loadOrigins(),
     spellSlotTables: await loadSpellSlotTables(),
-    openAwardXpDialog
+    openAwardXpDialog,
+    importSystemContent
   };
 });
 
-// Journal de référence (MJ) récapitulant les différences entre Origines, et Macro monde
-// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) : créés une seule fois, au premier
+// Journal de référence (MJ) récapitulant les différences entre Origines, Macro monde
+// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) et Macro monde "Importer le contenu du
+// système" (cf. scripts/helpers/content-import.js) : créés une seule fois, au premier
 // chargement du monde.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
   await ensureAwardXpMacro();
+  await ensureContentImportMacro();
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
@@ -184,7 +188,18 @@ Hooks.on("createActor", (actor, options, userId) => {
   if (actor.type !== "character") return;
   if (game.user.id !== userId) return;
   if (actor.system.class || actor.system.origin) return;
-  new CharacterCreationWizard(actor).render(true);
+
+  const openWizard = () => new CharacterCreationWizard(actor).render(true);
+  // Le dialogue natif "Créer un acteur" ouvre aussi la fiche de personnage juste après
+  // (`options.renderSheet`, posé par Document#createDialog) : sans délai, l'assistant
+  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous, donnant
+  // l'impression qu'il ne s'était rien passé. Le délai garantit qu'il s'affiche après, donc
+  // au premier plan.
+  if (options.renderSheet) {
+    setTimeout(openWizard, 200);
+  } else {
+    openWizard();
+  }
 });
 
 // Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus

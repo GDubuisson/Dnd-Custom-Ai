@@ -120,11 +120,20 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
   /** Valide (tableau standard respecté, bon nombre de compétences pour la classe choisie)
    *  puis applique les choix à l'Actor. Sauvegardes déduites de la classe (SRD 5e). PV
    *  initialisés au maximum une fois les caractéristiques/la classe/l'Origine posées (leur
-   *  effet sur PV max n'est connu qu'après ce premier update, cf. CharacterData#prepareDerivedData). */
-  static async #onSubmit(event, form, formData) {
-    const data = formData.object;
-
-    const abilityValues = ABILITY_KEYS.map((key) => Number(data.abilities?.[key]));
+   *  effet sur PV max n'est connu qu'après ce premier update, cf. CharacterData#prepareDerivedData).
+   *
+   *  Lit directement les éléments du DOM (`form`) plutôt que `formData.object` : retour de
+   *  test répété — l'erreur de validation du tableau standard apparaissait systématiquement,
+   *  y compris après correction de l'échange automatique de valeurs (cf. #syncAbilitySelects),
+   *  ce qui pointait vers l'extraction des données elle-même plutôt que vers leur contenu.
+   *  `formData.object`/FormDataExtended expanse les noms à points ("abilities.str") en objet
+   *  imbriqué en théorie, mais ce formulaire n'est pas lié à un Document (pas de préfixe
+   *  "system.") ; lire `form.elements` directement supprime toute incertitude sur ce mécanisme
+   *  intermédiaire — c'est déjà l'approche utilisée par ability-score-improvement.js. */
+  static async #onSubmit(event, form) {
+    const abilityValues = ABILITY_KEYS.map(
+      (key) => Number(form.elements[`abilities.${key}`]?.value)
+    );
     const sortedChosen = [...abilityValues].sort((a, b) => b - a);
     const sortedStandard = [...STANDARD_ARRAY].sort((a, b) => b - a);
     if (JSON.stringify(sortedChosen) !== JSON.stringify(sortedStandard)) {
@@ -132,11 +141,11 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       return;
     }
 
-    const classKey = data.classKey;
+    const classKey = form.elements.classKey?.value ?? "";
     const allowedSkillCount = DND_CUSTOM.classSkillChoices[classKey] ?? 2;
-    const selectedSkills = Object.entries(data.skills ?? {})
-      .filter(([, checked]) => checked)
-      .map(([key]) => key);
+    const selectedSkills = [...form.querySelectorAll('input[type="checkbox"][name^="skills."]')]
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.name.slice("skills.".length));
     if (selectedSkills.length !== allowedSkillCount) {
       ui.notifications.error(
         game.i18n.format("DND_CUSTOM.Wizard.InvalidSkillCount", { count: allowedSkillCount })
@@ -144,8 +153,12 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       return;
     }
 
-    const updates = { name: data.name || this.actor.name, "system.origin": data.origin, "system.class": classKey };
-    for (const key of ABILITY_KEYS) updates[`system.abilities.${key}.value`] = Number(data.abilities[key]);
+    const name = form.elements.name?.value;
+    const origin = form.elements.origin?.value ?? "";
+    const updates = { name: name || this.actor.name, "system.origin": origin, "system.class": classKey };
+    ABILITY_KEYS.forEach((key, index) => {
+      updates[`system.abilities.${key}.value`] = abilityValues[index];
+    });
 
     const savingThrows = new Set(DND_CUSTOM.classSavingThrows[classKey] ?? []);
     for (const key of ABILITY_KEYS) updates[`system.saves.${key}.proficient`] = savingThrows.has(key);

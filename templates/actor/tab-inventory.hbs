@@ -17,7 +17,6 @@
         <th>{{localize "DND_CUSTOM.Inventory.Name"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Quantity"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Weight"}}</th>
-        <th>{{localize "DND_CUSTOM.Inventory.Attack"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Damage"}}</th>
         <th>{{localize "DND_CUSTOM.Inventory.Equipped"}}</th>
         <th></th>
@@ -31,15 +30,10 @@
         <td>{{formatWeight this.system.weight}}</td>
         {{#with (lookup ../weaponStats this.id)}}
         <td>
-          <button type="button" class="roll-btn" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.attackLabel}}</button>
+          <span>{{this.damageLabel}}</span>
           {{#unless this.proficient}}<span class="not-proficient-tag" title="{{localize 'DND_CUSTOM.Inventory.NotProficientTooltip'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
         </td>
-        <td>
-          <button type="button" class="roll-btn" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{this.damageLabel}}</button>
-          {{#if this.versatileLabel}} / <button type="button" class="roll-btn" data-action="rollWeaponDamage" data-versatile="true" title="{{localize 'DND_CUSTOM.Roll.VersatileTooltip'}}">{{this.versatileLabel}}</button>{{/if}}
-        </td>
         {{else}}
-        <td></td>
         <td>{{#with (lookup ../armorStats this.id)}}{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}{{/with}}</td>
         {{/with}}
         <td><input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}}></td>
@@ -55,7 +49,7 @@
         </td>
       </tr>
       {{else}}
-      <tr><td colspan="7" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
+      <tr><td colspan="6" class="empty-slot">{{localize "DND_CUSTOM.Inventory.Empty"}}</td></tr>
       {{/each}}
     </tbody>
   </table>
