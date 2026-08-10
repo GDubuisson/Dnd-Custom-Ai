@@ -7,6 +7,43 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.13.0] - 2026-08-10
+
+Deuxième passe de retour de test sur la même session : le bug bloquant du wizard persistait
+malgré la première correction, et plusieurs points de la passe précédente (compendiums
+toujours vides, entrée "Créer un acteur") n'étaient pas encore pleinement fonctionnels.
+
+### Corrigé
+- Assistant de création : le bug "Chaque valeur du tableau standard... doit être utilisée
+  exactement une fois" persistait malgré l'échange automatique de valeurs (correction
+  précédente). Cause réelle : la lecture des données du formulaire via `formData.object`
+  (FormDataExtended) pour des champs à points ("abilities.str") non liés à un Document. Lit
+  maintenant directement les éléments du DOM (`form.elements`), comme le fait déjà
+  `ability-score-improvement.js` dans ce même projet.
+- Ouverture automatique de l'assistant à la création d'un Actor "Personnage" : le dialogue
+  natif "Créer un acteur" ouvre aussi la fiche de personnage juste après la création, ce qui
+  masquait immédiatement l'assistant en dessous. Un court délai garantit maintenant qu'il
+  s'affiche après, donc au premier plan.
+- Liseré gris persistant sous les icônes d'action de l'inventaire : la bordure statique avait
+  été retirée à la passe précédente, mais le contour de focus par défaut du navigateur
+  restait visible après un clic. Remplacé par un anneau de focus discret, clavier uniquement.
+
+### Ajouté
+- Macro monde "Importer le contenu du système" créée automatiquement (visible dans l'onglet
+  Macros, MJ) : importe en un clic armes/armures/objets/outils/sorts/capacités dans les Items
+  du monde, et Classes/Origines directement dans leurs compendiums (qui restaient vides faute
+  d'avoir exécuté l'ancienne macro à copier-coller manuellement).
+- Onglet Équipement : attaque et dégâts de l'arme équipée affichés comme deux boutons de jet
+  distincts et cliquables (au lieu d'une seule ligne de texte) ; type d'armure affiché en plus
+  de la CA pour l'armure du corps et le bouclier en main secondaire.
+- Onglet Inventaire : colonne "Attaque" retirée (le jet d'attaque reste sur l'onglet
+  Équipement) ; la colonne "Dégâts" affiche la valeur dynamique (une/deux mains selon
+  l'équipement réel) en texte simple, non cliquable.
+- Monnaie (onglet Inventaire) : chaque pièce est maintenant une colonne libellé-au-dessus-de-
+  la-valeur centrée, sur une seule ligne, au lieu de champs bout à bout qui finissaient par
+  stacker à gauche avec les noms complets.
+- Lignes de l'inventaire forcées sur une seule ligne (`white-space: nowrap`).
+
 ## [0.12.0] - 2026-08-10
 
 Traitement du retour de test en jeu (2026-08-09/10) sur la fiche personnage et l'assistant de
