@@ -2,7 +2,7 @@
   <h2 class="tab-title">
     <i class="fa-solid fa-book-sparkles"></i>
     {{#if isSpellcaster}}
-      {{localize "DND_CUSTOM.Abilities.SpellsTitle"}}
+      {{localize "DND_CUSTOM.Abilities.SpellsAndFeaturesTitle"}}
     {{else}}
       {{localize "DND_CUSTOM.Abilities.FeaturesTitle"}}
     {{/if}}
@@ -35,68 +35,73 @@
   {{/if}}
   {{/if}}
 
-  <ul class="features-list">
-    {{#if originTrait}}
-    <li class="origin-trait-item">
-      <strong>{{originTrait.name}}</strong>
-      <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
-      <p>{{originTrait.description}}</p>
-    </li>
-    {{/if}}
-    {{#each features}}
-    <li data-item-id="{{this.id}}">
-      <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
-      {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
-      {{#if this.system.uses.max}}
-      <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
-      {{/if}}
-      {{#if this.system.requiresRoll}}
-      <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
-        <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
-      </button>
-      {{else if this.system.uses.max}}
-      <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
-        <i class="fa-solid fa-minus"></i>
-      </button>
-      {{/if}}
-    </li>
-    {{else}}
-    {{#unless originTrait}}
-    {{#unless isSpellcaster}}
-    <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.Empty"}}</li>
-    {{/unless}}
-    {{/unless}}
-    {{/each}}
-  </ul>
-
-  {{#if isSpellcaster}}
-  {{#each spellsByLevel}}
-  <div class="spell-level-group">
-    <h3 class="section-subtitle">{{this.label}}</h3>
-    <ul class="spells-list">
-      {{#each this.spells}}
-      <li data-item-id="{{this.item.id}}">
-        <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.item.name}}</a>
-        <span class="spell-school">({{this.schoolLabel}})</span>
-        {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
-        {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
-        {{#if this.item.system.level}}
-        <label class="spell-prepared">
-          <input type="checkbox" data-item-prepared {{#if this.item.system.prepared}}checked{{/if}}>
-          {{localize "DND_CUSTOM.Item.Fields.Prepared"}}
-        </label>
-        {{/if}}
-        <button type="button" class="roll-btn" data-action="castSpell">{{localize "DND_CUSTOM.Abilities.Cast"}}</button>
-        <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </li>
-      {{/each}}
-    </ul>
+  {{#if originTrait}}
+  <div class="origin-trait-panel">
+    <strong>{{originTrait.name}}</strong>
+    <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
+    <p>{{originTrait.description}}</p>
   </div>
-  {{/each}}
-  {{#unless spellsByLevel.length}}
-  <p class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoSpells"}}</p>
-  {{/unless}}
   {{/if}}
+
+  <div class="abilities-tab-columns">
+    <div class="features-column">
+      {{#if isSpellcaster}}<h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.FeaturesTitle"}}</h3>{{/if}}
+      <ul class="features-list">
+        {{#each features}}
+        <li data-item-id="{{this.id}}">
+          <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
+          {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
+          {{#if this.system.uses.max}}
+          <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
+          {{/if}}
+          {{#if this.system.requiresRoll}}
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+            <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
+          </button>
+          {{else if this.system.uses.max}}
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          {{/if}}
+        </li>
+        {{else}}
+        <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoFeatures"}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+    {{#if isSpellcaster}}
+    <div class="spells-column">
+      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
+      {{#each spellsByLevel}}
+      <div class="spell-level-group">
+        <h4 class="spell-level-subtitle">{{this.label}}</h4>
+        <ul class="spells-list">
+          {{#each this.spells}}
+          <li data-item-id="{{this.item.id}}">
+            <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.item.name}}</a>
+            <span class="spell-school">({{this.schoolLabel}})</span>
+            {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
+            {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
+            {{#if this.item.system.level}}
+            <label class="spell-prepared">
+              <input type="checkbox" data-item-prepared {{#if this.item.system.prepared}}checked{{/if}}>
+              {{localize "DND_CUSTOM.Item.Fields.Prepared"}}
+            </label>
+            {{/if}}
+            <button type="button" class="roll-btn" data-action="castSpell">{{localize "DND_CUSTOM.Abilities.Cast"}}</button>
+            <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/each}}
+      {{#unless spellsByLevel.length}}
+      <p class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoSpells"}}</p>
+      {{/unless}}
+    </div>
+    {{/if}}
+  </div>
 </section>

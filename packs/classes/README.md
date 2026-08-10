@@ -16,7 +16,10 @@ qui continue de lire `CONFIG.DND_CUSTOM.classHitDice` / `.spellcastingClasses`
 (`scripts/helpers/config.js`).
 
 Les 12 classes SRD 5e sont pré-écrites dans `world-items/classes.json` (nom + description
-incluant dé de vie, sauvegardes maîtrisées, compétences et lanceur de sorts) : la Macro monde
-"Importer le contenu du système" (créée automatiquement, cf. `world-items/README.md`) les
-importe directement ici, pas d'étape manuelle de glisser-déposer. C'est ce que la fiche de
-personnage utilise pour ouvrir la description d'une classe au clic (recherche par nom exact).
+incluant dé de vie, sauvegardes maîtrisées, compétences et lanceur de sorts) : importées
+**automatiquement ici au chargement du monde** (hook `ready`, cf. `scripts/dnd-custom-ai.js`
+et `scripts/helpers/content-import.js`), sans doublon et sans action du MJ — pas d'étape
+manuelle de glisser-déposer ni de macro à lancer. La Macro monde "Importer le contenu du
+système" reste disponible en secours pour rejouer l'import à la demande. C'est ce que la fiche
+de personnage utilise pour ouvrir la description d'une classe au clic (recherche par nom
+exact).

@@ -156,6 +156,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // #onOpenClassSheet/#onOpenOriginSheet ci-dessous pour l'ouverture de leur description).
     context.classLabel = system.class ? game.i18n.localize(DND_CUSTOM.classes[system.class]) : "";
     context.originLabel = context.origins[system.origin]?.label ?? "";
+    // Bouton "Créer un personnage" masqué une fois Classe ET Origine renseignées (même
+    // condition que l'ouverture automatique de l'assistant sur un Actor vierge, cf.
+    // Hooks.on("createActor"), dnd-custom-ai.js) : retour de test — il n'y avait plus lieu de
+    // le proposer une fois le personnage construit, et le relancer par erreur écraserait ses
+    // choix (SRD 5e, points de vie, équipement de départ) sans confirmation.
+    context.showCreationWizardButton = !(system.class && system.origin);
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
 
@@ -476,9 +482,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Ouvre l'assistant de création de personnage pour cet Actor (cf.
-   *  character-creation-wizard.js) : accessible à tout propriétaire, pas seulement au MJ. */
+   *  character-creation-wizard.js) : accessible à tout propriétaire, pas seulement au MJ.
+   *  Referme la fiche du même mouvement (retour de test — les deux restaient affichées en
+   *  même temps) ; elle se rouvrira d'elle-même à la fin de l'assistant si besoin. */
   static async #onOpenCreationWizard() {
-    new CharacterCreationWizard(this.actor).render(true);
+    const actor = this.actor;
+    await this.close();
+    new CharacterCreationWizard(actor).render(true);
   }
 
   static async #onOpenClassSheet() {

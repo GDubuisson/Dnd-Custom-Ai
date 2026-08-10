@@ -138,13 +138,17 @@ Hooks.once("init", async () => {
 });
 
 // Journal de référence (MJ) récapitulant les différences entre Origines, Macro monde
-// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) et Macro monde "Importer le contenu du
-// système" (cf. scripts/helpers/content-import.js) : créés une seule fois, au premier
-// chargement du monde.
+// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) : créés une seule fois, au premier
+// chargement du monde. Le contenu de référence (classes, origines, sorts, capacités de
+// classe, armes/armures/objets/outils, cf. content-import.js) est importé automatiquement à
+// chaque chargement du monde ci-dessous — dédoublonné par nom, donc sans risque même si déjà
+// importé. ensureContentImportMacro reste créée en secours (re-déclenchement manuel possible),
+// mais n'est plus l'unique moyen de peupler les compendiums Classes/Origines/Sorts/Capacités.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
+  await importSystemContent({ notifyIfEmpty: false });
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
@@ -192,11 +196,15 @@ Hooks.on("createActor", (actor, options, userId) => {
   const openWizard = () => new CharacterCreationWizard(actor).render(true);
   // Le dialogue natif "Créer un acteur" ouvre aussi la fiche de personnage juste après
   // (`options.renderSheet`, posé par Document#createDialog) : sans délai, l'assistant
-  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous, donnant
-  // l'impression qu'il ne s'était rien passé. Le délai garantit qu'il s'affiche après, donc
-  // au premier plan.
+  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous. Le délai garantit
+  // qu'il se rend après (donc au premier plan), et on referme la fiche du même mouvement
+  // (retour de test — la fiche restait visible en dessous, affichée en même temps que
+  // l'assistant) : elle se rouvrira d'elle-même une fois la création terminée si besoin.
   if (options.renderSheet) {
-    setTimeout(openWizard, 200);
+    setTimeout(() => {
+      actor.sheet?.close();
+      openWizard();
+    }, 200);
   } else {
     openWizard();
   }

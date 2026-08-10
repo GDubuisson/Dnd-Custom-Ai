@@ -23,8 +23,10 @@ valeurs sont pour l'instant définies dans `scripts/data/origins.json`, utilisé
 personnage pour les calculs (bonus de caractéristiques, avantages de compétences).
 
 Les mêmes 6 Origines, avec description longue, sont pré-écrites dans `world-items/origins.json` :
-la Macro monde "Importer le contenu du système" (créée automatiquement, cf.
-`world-items/README.md`) les importe directement ici, pas d'étape manuelle de glisser-déposer.
-La fiche de personnage utilise ce compendium pour ouvrir la description d'une Origine au clic
-sur le champ "Origine" (recherche par nom exact) ; les calculs eux continuent de lire
+importées **automatiquement ici au chargement du monde** (hook `ready`, cf.
+`scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans doublon et sans
+action du MJ — pas d'étape manuelle de glisser-déposer ni de macro à lancer. La Macro monde
+"Importer le contenu du système" reste disponible en secours pour rejouer l'import à la
+demande. La fiche de personnage utilise ce compendium pour ouvrir la description d'une Origine
+au clic sur le champ "Origine" (recherche par nom exact) ; les calculs eux continuent de lire
 `scripts/data/origins.json`.

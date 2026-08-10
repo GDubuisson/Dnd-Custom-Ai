@@ -212,6 +212,21 @@
   text-decoration: none;
 }
 
+/* Deux classes CSS ici (vs une seule pour .roll-btn) : gagne sur `color: inherit` (roll-btn,
+   ligne ~705) quel que soit l'ordre dans la feuille. Sans ça, Classe/Origine héritaient de la
+   couleur sombre du corps de fiche (--dca-on-surface) au lieu du clair prévu pour l'en-tête
+   bois foncé : illisible, quasi invisible sur ce fond (retour de test). */
+.dnd-custom-ai .fixed-field-value.roll-btn {
+  color: var(--dca-secondary-fixed);
+}
+
+/* .roll-btn:hover (ligne ~716) fonce la couleur (--dca-secondary) : pensé pour un survol sur
+   fond clair (parchemin), illisible sur ce même fond bois sombre. Réutilise la teinte dorée
+   atténuée déjà éprouvée ici pour --dca-secondary-fixed-dim (cf. .fixed-field-label). */
+.dnd-custom-ai .fixed-field-value.roll-btn:hover {
+  color: var(--dca-secondary-fixed-dim);
+}
+
 .dnd-custom-ai .hp-field {
   min-width: 8rem;
 }
@@ -1190,6 +1205,10 @@
 
 .dnd-custom-ai .currency input {
   width: 100%;
+  /* Sans ceci, un <input> garde sa largeur minimale intrinsèque (contrairement à un <div>) et
+     ignore le rétrécissement du label parent (déjà en min-width: 0 ci-dessus) : sur une fiche
+     étroite, les 4 champs se chevauchaient au lieu de se comprimer (retour de test). */
+  min-width: 0;
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -1266,8 +1285,72 @@
   color: var(--dca-on-surface-variant);
 }
 
-.dnd-custom-ai .features-list li.origin-trait-item {
+/* Trait/sort d'Origine : mis en avant au-dessus des deux colonnes Capacités/Sorts (retour de
+   test — auparavant premier élément de .features-list, il se retrouvait noyé au milieu des
+   capacités de classe au lieu de ressortir comme un avantage à part). Même carte que
+   .features-list li, avec un liseré de couleur pour le distinguer. */
+.dnd-custom-ai .origin-trait-panel {
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.1) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.78), rgba(221, 201, 148, 0.78)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 180px 180px;
+  border: 1px solid var(--dca-outline-variant);
   border-left: 3px solid var(--dca-secondary);
+  border-radius: 0.3rem;
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 2px rgba(43, 32, 17, 0.18);
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.9rem;
+}
+
+.dnd-custom-ai .origin-trait-panel strong {
+  font-family: var(--dca-font-headline);
+  font-size: 1rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .origin-trait-panel .source {
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .origin-trait-panel p {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--dca-on-surface-variant);
+}
+
+/* Capacités (gauche) / Sorts (droite) côte à côte pour les classes lanceuses de sorts ; une
+   seule colonne (Capacités) sinon — .features-column s'étire naturellement sur toute la
+   largeur quand .spells-column est absent du DOM (retour de test — demande explicite de
+   séparer les deux au lieu de tout empiler dans une même liste). */
+.dnd-custom-ai .abilities-tab-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.dnd-custom-ai .features-column,
+.dnd-custom-ai .spells-column {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.dnd-custom-ai .spell-level-subtitle {
+  margin: 0.7rem 0 0.3rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .spell-level-group:first-child .spell-level-subtitle {
+  margin-top: 0;
 }
 
 /* ---------- Sorts ---------- */
