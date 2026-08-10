@@ -7,6 +7,39 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.15.0] - 2026-08-10
+
+Troisième passe de retour de test : assistant de création, fiche de personnage, équipement et
+onglet Sorts/Capacités.
+
+### Corrigé
+- Onglet Équipement : les dégâts et les boutons de jet d'attaque/dégâts d'une arme équipée ne
+  s'affichaient jamais (`{{#with (lookup ../weaponStats ...)}}` référençait un contexte
+  Handlebars inexistant hors d'un `#each`/`#with` englobant — corrigé pour Main
+  principale/secondaire et Armure portée).
+- Inventaire : les 4 champs de monnaie (pc/pa/po/pp) se chevauchaient sur une fiche étroite,
+  faute de `min-width: 0` sur les `<input>` (largeur minimale intrinsèque non neutralisée,
+  contrairement au `<label>` parent).
+- Fiche de personnage : Classe et Origine illisibles dans l'en-tête (couleur héritée du corps
+  de fiche via `.roll-btn { color: inherit }`, au lieu de la couleur claire prévue pour le fond
+  bois sombre de l'en-tête) — au repos et au survol.
+- L'assistant de création de personnage s'affichait en même temps que la fiche en dessous
+  (ouverture automatique à la création d'un Actor, et bouton "Créer un personnage") : la fiche
+  se ferme désormais à l'ouverture de l'assistant, et se rouvre à la fin.
+
+### Ajouté
+- Assistant de création : listes Origines/Classes triées par ordre alphabétique ; les cases de
+  compétences se désactivent automatiquement une fois le quota de la classe atteint (au lieu
+  d'un simple refus à la soumission) ; les titres "Caractéristiques"/"Maîtrises de
+  compétences" sont sortis du cadre du formulaire.
+- Fin de l'assistant : le joueur (hors MJ) devient propriétaire de la fiche créée et son
+  personnage assigné (`User#character`).
+- Le bouton "Créer un personnage" disparaît définitivement une fois Classe et Origine
+  renseignées (fiche déjà construite).
+- Onglet Sorts/Capacités : le trait/sort d'Origine ressort maintenant au-dessus, dans son
+  propre encadré ; Capacités et Sorts s'affichent dans deux colonnes côte à côte pour les
+  classes lanceuses de sorts (une seule colonne Capacités sinon).
+
 ## [0.14.0] - 2026-08-10
 
 ### Ajouté

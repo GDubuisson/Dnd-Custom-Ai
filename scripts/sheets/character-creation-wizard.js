@@ -37,6 +37,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     super._onRender(context, options);
     this.#syncAbilitySelects();
     this.#syncSkillCountHint();
+    this.#syncSkillLimit();
   }
 
   /** Affiche le nombre de compétences à choisir pour la classe actuellement sélectionnée
@@ -59,6 +60,33 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     if (root.dataset.dndWizardSkillHintBound) return;
     root.dataset.dndWizardSkillHintBound = "true";
     classSelect.addEventListener("change", updateHint);
+  }
+
+  /** Désactive les cases de compétence non cochées dès que le quota de la classe (cf.
+   *  #syncSkillCountHint) est atteint : sans ça, rien n'empêchait de cocher plus de
+   *  compétences que permis avant de se le faire refuser à la soumission (#onSubmit) — retour
+   *  de test. Recalculé à chaque case cochée/décochée et à chaque changement de classe. */
+  #syncSkillLimit() {
+    const root = this.element;
+    const classSelect = root.querySelector('select[name="classKey"]');
+    const skillCheckboxes = () => [...root.querySelectorAll('input[type="checkbox"][name^="skills."]')];
+    if (!classSelect) return;
+
+    const updateLimit = () => {
+      const max = DND_CUSTOM.classSkillChoices[classSelect.value] ?? Infinity;
+      const checkedCount = skillCheckboxes().filter((checkbox) => checkbox.checked).length;
+      skillCheckboxes().forEach((checkbox) => {
+        checkbox.disabled = !checkbox.checked && checkedCount >= max;
+      });
+    };
+    updateLimit();
+
+    if (root.dataset.dndWizardSkillLimitBound) return;
+    root.dataset.dndWizardSkillLimitBound = "true";
+    classSelect.addEventListener("change", updateLimit);
+    root.addEventListener("change", (event) => {
+      if (event.target.matches('input[type="checkbox"][name^="skills."]')) updateLimit();
+    });
   }
 
   /** Empêche deux select de caractéristique d'afficher la même valeur du tableau standard :
@@ -99,11 +127,12 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       ...context,
       actor: this.actor,
       name: this.actor.name,
-      originOptions: Object.entries(game.dndCustomAi?.origins ?? {}).map(([key, origin]) => ({
-        key,
-        label: origin.label
-      })),
-      classOptions: Object.entries(DND_CUSTOM.classes).map(([key, label]) => ({ key, label })),
+      originOptions: Object.entries(game.dndCustomAi?.origins ?? {})
+        .map(([key, origin]) => ({ key, label: origin.label }))
+        .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang)),
+      classOptions: Object.entries(DND_CUSTOM.classes)
+        .map(([key, label]) => ({ key, label }))
+        .sort((a, b) => game.i18n.localize(a.label).localeCompare(game.i18n.localize(b.label), game.i18n.lang)),
       abilities: ABILITY_KEYS.map((key, index) => ({
         key,
         label: DND_CUSTOM.abilities[key],
@@ -160,6 +189,14 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       updates[`system.abilities.${key}.value`] = abilityValues[index];
     });
 
+    // Lie la fiche au joueur qui vient de la créer pour lui-même (retour de test) : le MJ
+    // reste exclu de cette liaison automatique, l'assistant pouvant aussi servir à préparer
+    // un personnage pour quelqu'un d'autre (assignation manuelle alors laissée au MJ, comme
+    // avant, via la fenêtre "Configurer les joueurs").
+    if (!game.user.isGM) {
+      updates[`ownership.${game.user.id}`] = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+    }
+
     const savingThrows = new Set(DND_CUSTOM.classSavingThrows[classKey] ?? []);
     for (const key of ABILITY_KEYS) updates[`system.saves.${key}.proficient`] = savingThrows.has(key);
 
@@ -177,8 +214,18 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
 
     await CharacterCreationWizard.#grantStartingEquipment(this.actor, classKey);
 
+    // Devient le "personnage joueur" assigné à cet utilisateur (cf. ownership ci-dessus, même
+    // exclusion du MJ). Un utilisateur ne peut mettre à jour que son propre User (droit natif
+    // Foundry), donc pas besoin d'être GM pour ceci.
+    if (!game.user.isGM) await game.user.update({ character: this.actor.id });
+
     ui.notifications.info(game.i18n.format("DND_CUSTOM.Wizard.Created", { name: updates.name }));
-    this.close();
+    await this.close();
+    // La fiche avait été fermée à l'ouverture de l'assistant (cf. dnd-custom-ai.js et
+    // actor-sheet.js > #onOpenCreationWizard, retour de test — affichées en même temps) :
+    // la rouvrir maintenant que le personnage est prêt, plutôt que de laisser le joueur sans
+    // rien à l'écran.
+    this.actor.sheet.render(true);
   }
 
   /** Équipement de départ simplifié (une arme + une armure typiques, cf.

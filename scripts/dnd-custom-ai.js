@@ -196,11 +196,15 @@ Hooks.on("createActor", (actor, options, userId) => {
   const openWizard = () => new CharacterCreationWizard(actor).render(true);
   // Le dialogue natif "Créer un acteur" ouvre aussi la fiche de personnage juste après
   // (`options.renderSheet`, posé par Document#createDialog) : sans délai, l'assistant
-  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous, donnant
-  // l'impression qu'il ne s'était rien passé. Le délai garantit qu'il s'affiche après, donc
-  // au premier plan.
+  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous. Le délai garantit
+  // qu'il se rend après (donc au premier plan), et on referme la fiche du même mouvement
+  // (retour de test — la fiche restait visible en dessous, affichée en même temps que
+  // l'assistant) : elle se rouvrira d'elle-même une fois la création terminée si besoin.
   if (options.renderSheet) {
-    setTimeout(openWizard, 200);
+    setTimeout(() => {
+      actor.sheet?.close();
+      openWizard();
+    }, 200);
   } else {
     openWizard();
   }

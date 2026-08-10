@@ -26,8 +26,8 @@
     </select>
   </div>
 
-  <fieldset class="form-group">
-    <legend>{{localize "DND_CUSTOM.Wizard.AbilitiesTitle"}}</legend>
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Wizard.AbilitiesTitle"}}</h3>
+  <div class="form-group">
     <p class="field-note">{{localize "DND_CUSTOM.Wizard.AbilitiesHelp"}}</p>
     {{#each abilities}}
     <div class="form-row">
@@ -39,17 +39,17 @@
       </select>
     </div>
     {{/each}}
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
-    <legend>{{localize "DND_CUSTOM.Wizard.SkillsTitle"}}</legend>
+  <h3 class="section-subtitle">{{localize "DND_CUSTOM.Wizard.SkillsTitle"}}</h3>
+  <div class="form-group">
     <p class="field-note wizard-skill-count" data-skill-count-hint>{{localize "DND_CUSTOM.Wizard.SkillsHelp"}}</p>
     <div class="wizard-skills-grid">
       {{#each skills}}
       <label class="checkbox-row"><input type="checkbox" name="skills.{{this.key}}"> {{localize this.label}}</label>
       {{/each}}
     </div>
-  </fieldset>
+  </div>
 
   <button type="submit">{{localize "DND_CUSTOM.Wizard.Submit"}}</button>
 </div>
