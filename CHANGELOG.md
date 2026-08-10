@@ -7,6 +7,21 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [0.14.0] - 2026-08-10
+
+### Ajouté
+- Compendiums "Sorts" (`packs/sorts`) et "Capacités de classe" (`packs/capacites`), déclarés
+  dans `system.json` au même titre que "Classes"/"Origines".
+
+### Modifié
+- Classes, Origines, Sorts et Capacités de classe sont désormais importés **automatiquement
+  au chargement du monde** (hook `ready`) plutôt que par déclenchement manuel d'une Macro :
+  le MJ n'a plus besoin de penser à lancer "Importer le contenu du système" pour peupler ces
+  compendiums. La Macro reste créée en secours pour rejouer l'import à la demande.
+- `spells.json`/`features.json` vont désormais dans leur propre compendium au lieu des Items
+  du monde — glisser-déposer depuis le compendium vers la fiche de personnage, comme pour les
+  autres objets de référence.
+
 ## [0.13.0] - 2026-08-10
 
 Deuxième passe de retour de test sur la même session : le bug bloquant du wizard persistait

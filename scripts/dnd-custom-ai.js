@@ -138,13 +138,17 @@ Hooks.once("init", async () => {
 });
 
 // Journal de référence (MJ) récapitulant les différences entre Origines, Macro monde
-// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) et Macro monde "Importer le contenu du
-// système" (cf. scripts/helpers/content-import.js) : créés une seule fois, au premier
-// chargement du monde.
+// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) : créés une seule fois, au premier
+// chargement du monde. Le contenu de référence (classes, origines, sorts, capacités de
+// classe, armes/armures/objets/outils, cf. content-import.js) est importé automatiquement à
+// chaque chargement du monde ci-dessous — dédoublonné par nom, donc sans risque même si déjà
+// importé. ensureContentImportMacro reste créée en secours (re-déclenchement manuel possible),
+// mais n'est plus l'unique moyen de peupler les compendiums Classes/Origines/Sorts/Capacités.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
+  await importSystemContent({ notifyIfEmpty: false });
 });
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
