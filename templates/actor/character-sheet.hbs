@@ -48,7 +48,7 @@
         <span class="computed-value">{{system.attributes.ac.value}}</span>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.Speed"}}
-        <span class="computed-value">{{system.attributes.speed}}</span>
+        <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
       </label>
     </div>
 
@@ -78,9 +78,6 @@
         <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}
       </button>
       {{/if}}
-      <button type="button" data-action="rollInitiative" title="{{localize 'DND_CUSTOM.Roll.InitiativeTooltip'}}">
-        <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actions.RollInitiative"}}
-      </button>
       <button type="button" data-action="restShort">
         <i class="fa-solid fa-mug-hot"></i> {{localize "DND_CUSTOM.Actions.RestShort"}}
       </button>

@@ -3,6 +3,7 @@
     "name": "Trait de feu",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Magicien",
       "level": 0,
       "school": "evocation",
       "castingTime": "1 action",
@@ -18,6 +19,7 @@
     "name": "Flamme sacrée",
     "type": "spell",
     "system": {
+      "classes": "Clerc",
       "level": 0,
       "school": "evocation",
       "castingTime": "1 action",
@@ -33,6 +35,7 @@
     "name": "Décharge occulte",
     "type": "spell",
     "system": {
+      "classes": "Occultiste",
       "level": 0,
       "school": "evocation",
       "castingTime": "1 action",
@@ -48,6 +51,7 @@
     "name": "Main du mage",
     "type": "spell",
     "system": {
+      "classes": "Barde, Ensorceleur, Occultiste, Magicien",
       "level": 0,
       "school": "conjuration",
       "castingTime": "1 action",
@@ -63,6 +67,7 @@
     "name": "Lumière",
     "type": "spell",
     "system": {
+      "classes": "Barde, Clerc, Ensorceleur, Magicien",
       "level": 0,
       "school": "evocation",
       "castingTime": "1 action",
@@ -78,6 +83,7 @@
     "name": "Projectile magique",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Magicien",
       "level": 1,
       "school": "evocation",
       "castingTime": "1 action",
@@ -93,6 +99,7 @@
     "name": "Bouclier",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Magicien",
       "level": 1,
       "school": "abjuration",
       "castingTime": "1 réaction (touché par une attaque ou ciblé par Projectile magique)",
@@ -108,6 +115,7 @@
     "name": "Soin des blessures",
     "type": "spell",
     "system": {
+      "classes": "Barde, Clerc, Druide, Paladin, Rôdeur",
       "level": 1,
       "school": "evocation",
       "castingTime": "1 action",
@@ -123,6 +131,7 @@
     "name": "Mot de guérison",
     "type": "spell",
     "system": {
+      "classes": "Barde, Clerc, Druide",
       "level": 1,
       "school": "evocation",
       "castingTime": "1 action bonus",
@@ -138,6 +147,7 @@
     "name": "Bénédiction",
     "type": "spell",
     "system": {
+      "classes": "Clerc, Paladin",
       "level": 1,
       "school": "enchantment",
       "castingTime": "1 action",
@@ -153,6 +163,7 @@
     "name": "Invisibilité",
     "type": "spell",
     "system": {
+      "classes": "Barde, Ensorceleur, Occultiste, Magicien",
       "level": 2,
       "school": "illusion",
       "castingTime": "1 action",
@@ -168,6 +179,7 @@
     "name": "Rayon ardent",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Magicien",
       "level": 2,
       "school": "evocation",
       "castingTime": "1 action",
@@ -183,6 +195,7 @@
     "name": "Immobilisation de personne",
     "type": "spell",
     "system": {
+      "classes": "Barde, Clerc, Ensorceleur, Occultiste, Magicien",
       "level": 2,
       "school": "enchantment",
       "castingTime": "1 action",
@@ -198,6 +211,7 @@
     "name": "Boule de feu",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Magicien",
       "level": 3,
       "school": "evocation",
       "castingTime": "1 action",
@@ -213,6 +227,7 @@
     "name": "Contresort",
     "type": "spell",
     "system": {
+      "classes": "Ensorceleur, Occultiste, Magicien",
       "level": 3,
       "school": "abjuration",
       "castingTime": "1 réaction (en voyant une créature à moins de 18 m lancer un sort)",

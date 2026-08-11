@@ -196,6 +196,13 @@ export class ToolData extends foundry.abstract.TypeDataModel {
 export class SpellData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
+      // Classes pouvant apprendre ce sort (SRD 5e, liste de sorts par classe) : texte libre à
+      // séparer par virgule, plusieurs classes possibles par sort (ex. "Ensorceleur, Magicien")
+      // — même convention que FeatureData.class (libellé localisé, ex. "Magicien"), mais au
+      // pluriel puisqu'un sort n'est pas exclusif à une classe contrairement à une Capacité.
+      // Utilisé par grantClassContent (helpers/class-content.js) pour l'attribution automatique
+      // à la création du personnage et à la montée de niveau.
+      classes: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
       school: new StringField({
         required: true,

@@ -176,6 +176,7 @@
 
 .dnd-custom-ai .header-row input[type="number"] {
   width: 3.5rem;
+  text-align: center;
 }
 
 /* Classe/Origine : champs fixes (non éditables sur la fiche, cf. assistant de création),
@@ -573,8 +574,8 @@
 .dnd-custom-ai .abilities-column {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  flex: 0 0 220px;
+  gap: 0.4rem;
+  flex: 0 0 180px;
 }
 
 .dnd-custom-ai .skills-column {
@@ -596,7 +597,7 @@
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.3rem;
   box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 2px rgba(43, 32, 17, 0.18);
-  padding: 0.5rem 0.6rem;
+  padding: 0.35rem 0.45rem;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
@@ -607,18 +608,18 @@
 
 .dnd-custom-ai .ability-card-name {
   font-family: var(--dca-font-label);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--dca-secondary);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem;
 }
 
 .dnd-custom-ai .ability-card-row {
   display: flex;
   align-items: stretch;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .dnd-custom-ai .ability-main {
@@ -627,21 +628,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
 .dnd-custom-ai .ability-stepper {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .dnd-custom-ai .ability-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1.1rem;
+  height: 1.1rem;
   padding: 0;
   border: 1px solid var(--dca-outline-variant);
   border-radius: 999px;
@@ -649,7 +650,7 @@
   color: var(--dca-secondary);
   font-family: var(--dca-font-label);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   line-height: 1;
   cursor: pointer;
 }
@@ -662,16 +663,16 @@
 .dnd-custom-ai .ability-value {
   font-family: var(--dca-font-headline);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   line-height: 1.1;
   color: var(--dca-primary);
-  min-width: 1.8rem;
+  min-width: 1.4rem;
   text-align: center;
 }
 
 .dnd-custom-ai .ability-main .origin-bonus {
   font-family: var(--dca-font-label);
-  font-size: 0.6rem;
+  font-size: 0.56rem;
   color: var(--dca-secondary);
   white-space: nowrap;
 }
@@ -682,33 +683,46 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 0.3rem;
-  padding-left: 0.5rem;
+  gap: 0.2rem;
+  padding-left: 0.4rem;
   border-left: 1px solid var(--dca-outline-variant);
-  min-width: 2.6rem;
+  min-width: 2.9rem;
+}
+
+.dnd-custom-ai .ability-side-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+}
+
+.dnd-custom-ai .ability-side-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .ability-side-label input[type="checkbox"] {
+  width: 0.7rem;
+  height: 0.7rem;
 }
 
 .dnd-custom-ai .ability-side .ability-mod {
   font-family: var(--dca-font-headline);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   text-align: center;
   color: var(--dca-primary);
 }
 
-.dnd-custom-ai .ability-side .save-proficiency {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  font-family: var(--dca-font-label);
-  font-size: 0.68rem;
-  color: var(--dca-on-surface-variant);
-}
-
 .dnd-custom-ai .ability-side .save-mod {
   font-family: var(--dca-font-label);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-align: center;
   color: var(--dca-on-surface-variant);
@@ -718,6 +732,12 @@
    repos pour signaler que c'est cliquable (retour de test — sans indice visuel avant le
    survol, ça se confondait avec du texte statique), trait plein + couleur au survol. */
 .dnd-custom-ai .roll-btn {
+  /* Sans display/width explicites, un <button> reste ici plein-largeur/block (styles de base
+     de Foundry) et retombe seul sur sa propre ligne au lieu de suivre le texte qui le précède
+     (retour de test — "Attaque"/"Dégâts" affichés au-dessus de leur valeur au lieu d'à côté). */
+  display: inline-flex;
+  align-items: baseline;
+  width: auto;
   background: transparent;
   border: none;
   font: inherit;
@@ -791,44 +811,54 @@
 .dnd-custom-ai .conditions-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .dnd-custom-ai .condition-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.3rem;
   border-radius: 999px;
   border: 1px solid var(--dca-outline-variant);
   background: var(--dca-surface-lowest);
   color: var(--dca-muted-text);
   font-family: var(--dca-font-label);
   font-size: 0.68rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(43, 32, 17, 0.12);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
 
 .dnd-custom-ai .condition-chip img {
-  width: 1rem;
-  height: 1rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: var(--dca-surface-container);
   filter: grayscale(1);
-  opacity: 0.7;
+  opacity: 0.65;
+  transition: background 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
 }
 
 .dnd-custom-ai .condition-chip:hover {
   border-color: var(--dca-secondary);
+  box-shadow: 0 2px 4px rgba(43, 32, 17, 0.18);
 }
 
 .dnd-custom-ai .condition-chip.active {
   background: var(--dca-secondary-container);
   border-color: var(--dca-secondary);
   color: var(--dca-on-secondary-container);
+  box-shadow: inset 0 0 0 1px var(--dca-secondary);
 }
 
 .dnd-custom-ai .condition-chip.active img {
+  background: var(--dca-surface-lowest);
   filter: none;
   opacity: 1;
 }
@@ -836,16 +866,18 @@
 .dnd-custom-ai .exhaustion-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.2rem 0.6rem;
+  gap: 0.5rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
   border: 1px solid var(--dca-outline-variant);
   background: var(--dca-surface-lowest);
   font-family: var(--dca-font-label);
   font-size: 0.68rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--dca-muted-text);
+  box-shadow: 0 1px 2px rgba(43, 32, 17, 0.12);
 }
 
 .dnd-custom-ai .exhaustion-chip .ability-stepper {
@@ -1164,7 +1196,11 @@
 
 .dnd-custom-ai .currency {
   display: flex;
-  flex-wrap: nowrap;
+  /* Le titre (h3, ci-dessous) est en width:100% : avec nowrap, il occupait toute la largeur
+     de la ligne et ne laissait plus de place aux 4 champs de monnaie, qui se retrouvaient
+     écrasés les uns sur les autres (retour de test). En wrap, le titre passe seul sur sa
+     propre ligne et les champs se répartissent normalement sur la suivante. */
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.6rem;
@@ -1526,6 +1562,13 @@
   flex-direction: column;
   gap: 0;
   height: 100%;
+  /* position.height "auto" (item-sheets.js) laisse Foundry mesurer la hauteur du contenu pour
+     dimensionner la fenêtre : sans plafond, une fiche avec beaucoup de champs (ex. Arme :
+     prix, dégâts, 7 propriétés, portée...) pouvait dépasser la hauteur de l'écran sans qu'il
+     n'y ait jamais de barre de défilement à l'intérieur (retour de test — plus moyen de
+     scroller/atteindre les derniers champs). max-height plafonne la mesure ET active le
+     défilement interne (overflow-y) dans le même mouvement. */
+  max-height: 85vh;
   overflow-y: auto;
   font-family: var(--dca-font-body);
   color: var(--dca-on-surface);
@@ -1826,6 +1869,18 @@
 
 .dnd-custom-ai .wizard-intro {
   margin-top: 0;
+}
+
+/* Résumé des bonus/particularités de l'Origine ou de la Classe sélectionnée (cf.
+   character-creation-wizard.js > #syncSelectionInfo) : mis en avant plutôt qu'une simple note
+   discrète, pour rester visible pendant que le joueur compare ses choix. */
+.dnd-custom-ai .wizard-info-panel {
+  margin: -0.2rem 0 0.6rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-container);
+  font-style: normal;
 }
 
 .dnd-custom-ai .wizard-skills-grid {

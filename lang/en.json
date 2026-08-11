@@ -64,6 +64,7 @@
       "AC": "Armor Class",
       "Speed": "Speed",
       "SaveShort": "Save",
+      "ModShort": "Mod.",
       "ProficiencyBonus": "Proficiency bonus",
       "SkillsTitle": "Skills",
       "Initiative": "Initiative",
@@ -250,7 +251,17 @@
       "AsiFirst": "First ability (+2 alone, or +1 if a second one is chosen)",
       "AsiSecond": "Second ability (optional, +1 each)",
       "AsiApply": "Apply",
-      "AsiInvalid": "Choose at least one ability; if you choose two, they must be different."
+      "AsiInvalid": "Choose at least one ability; if you choose two, they must be different.",
+      "SelectOriginHint": "Select an Origin to see its ability bonuses.",
+      "SelectClassHint": "Select a class to see its features.",
+      "OriginInfoBonuses": "Ability bonuses: {bonuses}",
+      "OriginInfoSkills": "Skill advantages: {skills}",
+      "OriginInfoTrait": "Special trait: {trait}",
+      "ClassInfoHitDie": "Hit die: d{hitDie}",
+      "ClassInfoSaves": "Saving throw proficiencies: {saves}",
+      "ClassInfoSkills": "{count} skill(s) to choose",
+      "ClassInfoSpellcasting": "Spellcaster ({ability})",
+      "ClassContentGranted": "{name} gains: {names}."
     },
     "Conditions": {
       "Title": "Conditions",
@@ -393,7 +404,8 @@
         "Duration": "Duration",
         "Concentration": "Concentration",
         "Ritual": "Ritual",
-        "Prepared": "Prepared"
+        "Prepared": "Prepared",
+        "SpellClasses": "Classes"
       }
     }
   },

@@ -1,4 +1,9 @@
-const TRANSFERABLE_TYPES = ["weapon", "armor", "gear", "tool"];
+// Objets physiques (quantité empilable) + Capacités/Sorts (ni quantité ni doublon voulu, cf.
+// _onDropItem ci-dessous) : ces deux derniers étaient absents de cette liste jusqu'ici, ce qui
+// bloquait silencieusement tout glisser-déposer d'une Capacité/d'un Sort depuis un compendium
+// ou une autre fiche vers l'onglet "Capacités" (retour de test).
+const PHYSICAL_TYPES = ["weapon", "armor", "gear", "tool"];
+const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell"];
 
 /** Mixin ApplicationV2 : glisser-déposer d'objet entre deux fiches ouvertes (personnage ↔
  *  véhicule, ou depuis un compendium/le monde), édition directe des lignes d'inventaire
@@ -80,9 +85,14 @@ export function InventoryDragDropMixin(Base) {
         );
 
         let result;
-        if (existing) {
+        if (existing && PHYSICAL_TYPES.includes(item.type)) {
           const addedQuantity = item.system.quantity ?? 1;
           await existing.update({ "system.quantity": (existing.system.quantity ?? 0) + addedQuantity });
+          result = existing;
+        } else if (existing) {
+          // Capacité/Sort : pas de champ quantité (FeatureData/SpellData), un exemplaire de
+          // plus n'a pas de sens (ex. Rage ou Boule de feu en double) — on garde l'existant
+          // tel quel plutôt que de tenter d'écrire system.quantity dessus.
           result = existing;
         } else {
           const [created] = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);

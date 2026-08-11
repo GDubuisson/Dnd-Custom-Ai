@@ -64,6 +64,7 @@
       "AC": "Classe d'Armure",
       "Speed": "Vitesse",
       "SaveShort": "Sauv.",
+      "ModShort": "Mod.",
       "ProficiencyBonus": "Bonus de maîtrise",
       "SkillsTitle": "Compétences",
       "Initiative": "Initiative",
@@ -250,7 +251,17 @@
       "AsiFirst": "Première caractéristique (+2 seule, ou +1 si une seconde est choisie)",
       "AsiSecond": "Seconde caractéristique (facultatif, +1 chacune)",
       "AsiApply": "Appliquer",
-      "AsiInvalid": "Choisissez au moins une caractéristique ; si vous en choisissez deux, elles doivent être différentes."
+      "AsiInvalid": "Choisissez au moins une caractéristique ; si vous en choisissez deux, elles doivent être différentes.",
+      "SelectOriginHint": "Sélectionnez une Origine pour voir ses bonus de caractéristiques.",
+      "SelectClassHint": "Sélectionnez une classe pour voir ses particularités.",
+      "OriginInfoBonuses": "Bonus de caractéristiques : {bonuses}",
+      "OriginInfoSkills": "Compétences avantagées : {skills}",
+      "OriginInfoTrait": "Trait spécial : {trait}",
+      "ClassInfoHitDie": "Dé de vie : d{hitDie}",
+      "ClassInfoSaves": "Sauvegardes maîtrisées : {saves}",
+      "ClassInfoSkills": "{count} compétence(s) au choix",
+      "ClassInfoSpellcasting": "Lanceur de sorts ({ability})",
+      "ClassContentGranted": "{name} reçoit : {names}."
     },
     "Conditions": {
       "Title": "États",
@@ -393,7 +404,8 @@
         "Duration": "Durée",
         "Concentration": "Concentration",
         "Ritual": "Rituel",
-        "Prepared": "Préparé"
+        "Prepared": "Préparé",
+        "SpellClasses": "Classes"
       }
     }
   },

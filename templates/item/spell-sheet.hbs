@@ -6,6 +6,11 @@
 
 <div class="item-sheet-body">
   <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.SpellClasses"}}</label>
+    <input type="text" name="system.classes" value="{{system.classes}}" placeholder="Ensorceleur, Magicien">
+  </div>
+
+  <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.SpellLevel"}}</label>
     <input type="number" name="system.level" value="{{system.level}}" min="0" max="9">
   </div>

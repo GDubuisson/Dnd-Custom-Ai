@@ -43,11 +43,17 @@
             {{/if}}
           </div>
           <div class="ability-side">
-            <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
-            <label class="save-proficiency" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
-              <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-            </label>
-            <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
+            <div class="ability-side-item">
+              <span class="ability-side-label">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
+              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
+            </div>
+            <div class="ability-side-item">
+              <label class="ability-side-label" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+                {{localize "DND_CUSTOM.Actor.SaveShort"}}
+                <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+              </label>
+              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
+            </div>
           </div>
         </div>
       </div>

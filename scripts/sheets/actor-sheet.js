@@ -23,6 +23,7 @@ import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { openAbilityScoreImprovementDialog } from "../helpers/ability-score-improvement.js";
+import { grantClassContent } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -473,6 +474,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
     });
+
+    // Nouvelles Capacités de classe/nouveaux Sorts disponibles à ce niveau (cf.
+    // helpers/class-content.js) : octroyés automatiquement, annoncés dans le chat s'il y en a.
+    const grantedNames = await grantClassContent(this.actor, this.actor.system.class, next);
+    if (grantedNames.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.ClassContentGranted", {
+          name: this.actor.name,
+          names: grantedNames.join(", ")
+        })
+      });
+    }
 
     // Amélioration de caractéristiques, SRD 5e (générique, cf. commentaire de
     // DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après l'incrément de niveau.

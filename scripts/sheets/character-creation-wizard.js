@@ -1,11 +1,55 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS, SKILL_ABILITIES } from "../data/character-data.js";
+import { grantClassContent } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ApplicationV2 } = foundry.applications.api;
 
 const SYSTEM_ID = "dnd-custom-ai";
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
+
+/** Résumé texte (une ligne, affiché sous le select Origine) des bonus de caractéristiques/
+ *  compétences avantagées/trait spécial de `origin` (cf. origins.json) — retour de test : rien
+ *  n'indiquait ces effets avant de valider le personnage, obligeant à ouvrir le Journal des
+ *  Origines à côté pour comparer. */
+function buildOriginInfoText(origin) {
+  const bonuses = ABILITY_KEYS.filter((key) => origin.abilityBonuses?.[key])
+    .map((key) => `${game.i18n.localize(DND_CUSTOM.abilities[key])} +${origin.abilityBonuses[key]}`)
+    .join(", ");
+  const skills = (origin.skillAdvantages ?? [])
+    .map((key) => game.i18n.localize(DND_CUSTOM.skills[key]))
+    .join(", ");
+
+  const parts = [];
+  if (bonuses) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoBonuses", { bonuses }));
+  if (skills) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoSkills", { skills }));
+  if (origin.specialTrait?.name) {
+    parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoTrait", { trait: origin.specialTrait.name }));
+  }
+  return parts.join(" · ");
+}
+
+/** Même principe que buildOriginInfoText, pour le select Classe : dé de vie, sauvegardes
+ *  maîtrisées (fixées par la classe, pas un choix, cf. #onSubmit), nombre de compétences au
+ *  choix (déjà indiqué séparément par #syncSkillCountHint, répété ici pour tout avoir au même
+ *  endroit) et caractéristique d'incantation si classe lanceuse. */
+function buildClassInfoText(classKey) {
+  const hitDie = DND_CUSTOM.classHitDice[classKey];
+  const saves = (DND_CUSTOM.classSavingThrows[classKey] ?? [])
+    .map((key) => game.i18n.localize(DND_CUSTOM.abilities[key]))
+    .join(", ");
+  const skillCount = DND_CUSTOM.classSkillChoices[classKey];
+
+  const parts = [];
+  if (hitDie) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoHitDie", { hitDie }));
+  if (saves) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoSaves", { saves }));
+  if (skillCount) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoSkills", { count: skillCount }));
+  if (DND_CUSTOM.spellcastingClasses.includes(classKey)) {
+    const ability = game.i18n.localize(DND_CUSTOM.abilities[DND_CUSTOM.spellcastingAbility[classKey]]);
+    parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoSpellcasting", { ability }));
+  }
+  return parts.join(" · ");
+}
 
 /** Assistant de création de personnage : Origine, Classe, répartition du tableau standard
  *  (15/14/13/12/10/8, SRD 5e) sur les 6 caractéristiques, maîtrises de compétences (nombre
@@ -38,6 +82,35 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     this.#syncAbilitySelects();
     this.#syncSkillCountHint();
     this.#syncSkillLimit();
+    this.#syncSelectionInfo();
+  }
+
+  /** Affiche sous chaque select (Origine/Classe) un résumé de ses bonus de caractéristiques/
+   *  compétences/dé de vie (cf. buildOriginInfoText/buildClassInfoText ci-dessus), mis à jour
+   *  dès le changement de sélection — retour de test, cf. commentaire de buildOriginInfoText. */
+  #syncSelectionInfo() {
+    const root = this.element;
+    const originSelect = root.querySelector('select[name="origin"]');
+    const classSelect = root.querySelector('select[name="classKey"]');
+    const originPanel = root.querySelector("[data-origin-info]");
+    const classPanel = root.querySelector("[data-class-info]");
+    if (!originSelect || !classSelect || !originPanel || !classPanel) return;
+
+    const updateOrigin = () => {
+      const info = originSelect.selectedOptions[0]?.dataset.info;
+      originPanel.textContent = info || game.i18n.localize("DND_CUSTOM.Wizard.SelectOriginHint");
+    };
+    const updateClass = () => {
+      const info = classSelect.selectedOptions[0]?.dataset.info;
+      classPanel.textContent = info || game.i18n.localize("DND_CUSTOM.Wizard.SelectClassHint");
+    };
+    updateOrigin();
+    updateClass();
+
+    if (root.dataset.dndWizardInfoBound) return;
+    root.dataset.dndWizardInfoBound = "true";
+    originSelect.addEventListener("change", updateOrigin);
+    classSelect.addEventListener("change", updateClass);
   }
 
   /** Affiche le nombre de compétences à choisir pour la classe actuellement sélectionnée
@@ -128,10 +201,10 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       actor: this.actor,
       name: this.actor.name,
       originOptions: Object.entries(game.dndCustomAi?.origins ?? {})
-        .map(([key, origin]) => ({ key, label: origin.label }))
+        .map(([key, origin]) => ({ key, label: origin.label, infoText: buildOriginInfoText(origin) }))
         .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang)),
       classOptions: Object.entries(DND_CUSTOM.classes)
-        .map(([key, label]) => ({ key, label }))
+        .map(([key, label]) => ({ key, label, infoText: buildClassInfoText(key) }))
         .sort((a, b) => game.i18n.localize(a.label).localeCompare(game.i18n.localize(b.label), game.i18n.lang)),
       abilities: ABILITY_KEYS.map((key, index) => ({
         key,
@@ -213,6 +286,9 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     );
 
     await CharacterCreationWizard.#grantStartingEquipment(this.actor, classKey);
+    // Capacités de classe (niveau 1) + tours de magie/sorts de niveau 1 pour une classe
+    // lanceuse, cf. helpers/class-content.js.
+    await grantClassContent(this.actor, classKey, this.actor.system.attributes.level);
 
     // Devient le "personnage joueur" assigné à cet utilisateur (cf. ownership ci-dessus, même
     // exclusion du MJ). Un utilisateur ne peut mettre à jour que son propre User (droit natif
