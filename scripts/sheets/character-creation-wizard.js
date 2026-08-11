@@ -8,10 +8,24 @@ const { ApplicationV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
-/** Résumé texte (une ligne, affiché sous le select Origine) des bonus de caractéristiques/
+/** Échappement minimal pour insérer `text` sans risque dans un attribut HTML entre guillemets
+ *  doubles (cf. même convention que glossaryAbbr, player-guide-journal.js) : ce résumé est
+ *  injecté via `.innerHTML` (cf. #syncSelectionInfo) pour porter le nom du trait spécial en
+ *  infobulle, donc `text` doit être sûr aussi bien en position de texte qu'en attribut. */
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Résumé HTML (une ligne, affiché sous le select Origine) des bonus de caractéristiques/
  *  compétences avantagées/trait spécial de `origin` (cf. origins.json) — retour de test : rien
  *  n'indiquait ces effets avant de valider le personnage, obligeant à ouvrir le Journal des
- *  Origines à côté pour comparer. */
+ *  Origines à côté pour comparer. Le nom du trait spécial porte sa description complète en
+ *  infobulle (`title`, cf. #syncSelectionInfo qui l'injecte via innerHTML) plutôt que de
+ *  l'afficher en clair et alourdir la ligne — retour de test. */
 function buildOriginInfoText(origin) {
   const bonuses = ABILITY_KEYS.filter((key) => origin.abilityBonuses?.[key])
     .map((key) => `${game.i18n.localize(DND_CUSTOM.abilities[key])} +${origin.abilityBonuses[key]}`)
@@ -21,10 +35,11 @@ function buildOriginInfoText(origin) {
     .join(", ");
 
   const parts = [];
-  if (bonuses) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoBonuses", { bonuses }));
-  if (skills) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoSkills", { skills }));
+  if (bonuses) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoBonuses", { bonuses: escapeHtml(bonuses) }));
+  if (skills) parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoSkills", { skills: escapeHtml(skills) }));
   if (origin.specialTrait?.name) {
-    parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoTrait", { trait: origin.specialTrait.name }));
+    const trait = `<abbr title="${escapeHtml(origin.specialTrait.description ?? "")}">${escapeHtml(origin.specialTrait.name)}</abbr>`;
+    parts.push(game.i18n.format("DND_CUSTOM.Wizard.OriginInfoTrait", { trait }));
   }
   return parts.join(" · ");
 }
@@ -96,9 +111,13 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     const classPanel = root.querySelector("[data-class-info]");
     if (!originSelect || !classSelect || !originPanel || !classPanel) return;
 
+    // .innerHTML (pas .textContent) côté Origine : buildOriginInfoText y injecte le nom du
+    // trait spécial dans un <abbr title="..."> portant sa description en infobulle (retour de
+    // test), échappé en amont (cf. escapeHtml) donc sûr à insérer tel quel.
     const updateOrigin = () => {
       const info = originSelect.selectedOptions[0]?.dataset.info;
-      originPanel.textContent = info || game.i18n.localize("DND_CUSTOM.Wizard.SelectOriginHint");
+      if (info) originPanel.innerHTML = info;
+      else originPanel.textContent = game.i18n.localize("DND_CUSTOM.Wizard.SelectOriginHint");
     };
     const updateClass = () => {
       const info = classSelect.selectedOptions[0]?.dataset.info;

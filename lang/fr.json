@@ -89,6 +89,7 @@
       "DeathFailures": "Échecs",
       "Stabilized": "Stabilisé",
       "Dead": "Mort",
+      "RestBlockedDeadTooltip": "Impossible de se reposer : le personnage est mort",
       "OpenDescriptionTooltip": "Cliquer pour ouvrir la fiche de description",
       "ClassSheetMissing": "Aucune fiche de description trouvée pour la classe \"{name}\" (importez/peuplez le compendium Classes, cf. world-items/README.md).",
       "OriginSheetMissing": "Aucune fiche de description trouvée pour l'Origine \"{name}\" (importez/peuplez le compendium Origines, cf. world-items/README.md).",
@@ -105,6 +106,12 @@
     "Macros": {
       "ImportContent": "Importer le contenu du système",
       "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail)."
+    },
+    "Folders": {
+      "Weapons": "Armes",
+      "Armors": "Armures",
+      "Gear": "Objets",
+      "Tools": "Outils"
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
@@ -352,10 +359,11 @@
       },
       "LanguageCategories": {
         "common": "Commune",
-        "origin": "D'Origine",
+        "origin": "Origine",
         "special": "Spéciale"
       },
       "Fields": {
+        "GmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier cette Capacité. Utilisez le bouton dédié de l'onglet Capacités pour dépenser une charge.",
         "Price": "Prix",
         "Weight": "Poids",
         "Quantity": "Quantité",

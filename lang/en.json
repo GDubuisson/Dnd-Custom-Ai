@@ -89,6 +89,7 @@
       "DeathFailures": "Failures",
       "Stabilized": "Stabilized",
       "Dead": "Dead",
+      "RestBlockedDeadTooltip": "Cannot rest: the character is dead",
       "OpenDescriptionTooltip": "Click to open the description sheet",
       "ClassSheetMissing": "No description sheet found for class \"{name}\" (import/populate the Classes compendium, see world-items/README.md).",
       "OriginSheetMissing": "No description sheet found for Origin \"{name}\" (import/populate the Origins compendium, see world-items/README.md).",
@@ -105,6 +106,12 @@
     "Macros": {
       "ImportContent": "Import system content",
       "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details)."
+    },
+    "Folders": {
+      "Weapons": "Weapons",
+      "Armors": "Armor",
+      "Gear": "Gear",
+      "Tools": "Tools"
     },
     "Roll": {
       "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
@@ -356,6 +363,7 @@
         "special": "Special"
       },
       "Fields": {
+        "GmOnlyNotice": "Locked sheet: only the GM can edit this Feature. Use the dedicated button on the Features tab to spend a charge.",
         "Price": "Price",
         "Weight": "Weight",
         "Quantity": "Quantity",

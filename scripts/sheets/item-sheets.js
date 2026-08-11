@@ -23,7 +23,25 @@ class DndCustomItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.item = this.item;
     context.system = this.item.system;
     context.config = DND_CUSTOM;
+    context.isGM = game.user.isGM;
     return context;
+  }
+
+  /** @override
+   *  position.height "auto" (cf. DEFAULT_OPTIONS) laisse Foundry mesurer la hauteur au contenu
+   *  réellement affiché, SANS jamais la plafonner à la fenêtre du navigateur : une fiche avec
+   *  beaucoup de champs visibles à la fois (ex. Arme à distance rechargeable : prix, dégâts, 7
+   *  propriétés, portée, rechargement...) pouvait ainsi dépasser la hauteur de l'écran — la
+   *  fenêtre débordait simplement du viewport, sans aucune barre de défilement pour atteindre
+   *  les champs du bas (retour de test, y compris depuis l'onglet natif "Objets" de Foundry).
+   *  Plafonnée ici après coup, une fois la hauteur "auto" réellement mesurée par Foundry (donc
+   *  aussi revérifiée à chaque re-rendu : certains champs optionnels n'apparaissent que
+   *  conditionnellement, ex. rechargement d'une arme à distance) : au-delà, le défilement
+   *  interne natif de Foundry (.window-content) prend le relais. */
+  _onRender(context, options) {
+    super._onRender(context, options);
+    const maxHeight = Math.round(window.innerHeight * 0.85);
+    if (this.position.height > maxHeight) this.setPosition({ height: maxHeight });
   }
 }
 

@@ -401,10 +401,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     return context;
   }
 
+  /** Un personnage Mort (3 échecs de jet de sauvegarde contre la mort, cf. context.dying.dead)
+   *  ne peut plus se reposer — filet de sécurité côté données, en complément du bouton masqué/
+   *  désactivé côté template (character-sheet.hbs), même principe que les champs verrouillés
+   *  MJ (cf. hook preUpdateActor, dnd-custom-ai.js). */
+  #isDead() {
+    return this.actor.system.attributes.death.failures >= 3;
+  }
+
   /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
    *  dépasser le max. Restaure aussi le pool de sorts de l'Occultiste (Magie de Pacte, SRD 5e :
    *  seule classe qui récupère ses emplacements au repos court). */
   static async #onRestShort() {
+    if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
     const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
     if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
@@ -418,6 +427,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Repos long : soigne intégralement et restaure tout le pool de sorts (SRD 5e). */
   static async #onRestLong() {
+    if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
     const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
     await this.actor.update(updates);
@@ -505,7 +515,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onOpenCreationWizard() {
     const actor = this.actor;
     await this.close();
-    new CharacterCreationWizard(actor).render(true);
+    const wizard = await new CharacterCreationWizard(actor).render(true);
+    wizard.bringToFront();
   }
 
   static async #onOpenClassSheet() {

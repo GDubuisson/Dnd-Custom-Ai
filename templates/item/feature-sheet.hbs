@@ -1,13 +1,17 @@
 <div class="item-sheet-root">
 <header class="item-sheet-header">
   <img src="{{item.img}}" alt="{{item.name}}">
-  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.feature'}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.feature'}}" {{#unless isGM}}disabled{{/unless}}>
 </header>
 
 <div class="item-sheet-body">
+  {{#unless isGM}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.GmOnlyNotice"}}</p>
+  {{/unless}}
+
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Class"}}</label>
-    <input type="text" name="system.class" value="{{system.class}}" list="feature-class-options">
+    <input type="text" name="system.class" value="{{system.class}}" list="feature-class-options" {{#unless isGM}}disabled{{/unless}}>
     <datalist id="feature-class-options">
       {{#each classOptions}}
       <option value="{{this}}">
@@ -17,23 +21,23 @@
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Level"}}</label>
-    <input type="number" name="system.level" value="{{system.level}}" min="1">
+    <input type="number" name="system.level" value="{{system.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Source"}}</label>
-    <input type="text" name="system.source" value="{{system.source}}">
+    <input type="text" name="system.source" value="{{system.source}}" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <label class="checkbox-row">
-    <input type="checkbox" name="system.requiresRoll" {{#if system.requiresRoll}}checked{{/if}}>
+    <input type="checkbox" name="system.requiresRoll" {{#if system.requiresRoll}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
     {{localize "DND_CUSTOM.Item.Fields.RequiresRoll"}}
   </label>
 
   {{#if system.requiresRoll}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.RollFormula"}}</label>
-    <input type="text" name="system.rollFormula" value="{{system.rollFormula}}" placeholder="2d6 + @str">
+    <input type="text" name="system.rollFormula" value="{{system.rollFormula}}" placeholder="2d6 + @str" {{#unless isGM}}disabled{{/unless}}>
   </div>
   {{/if}}
 
@@ -42,23 +46,23 @@
     <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UsesHelp"}}</p>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.UsesMax"}}</label>
-      <input type="number" name="system.uses.max" value="{{system.uses.max}}" min="0">
+      <input type="number" name="system.uses.max" value="{{system.uses.max}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
     {{#if system.uses.max}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.UsesValue"}}</label>
-      <input type="number" name="system.uses.value" value="{{system.uses.value}}" min="0" max="{{system.uses.max}}">
+      <input type="number" name="system.uses.value" value="{{system.uses.value}}" min="0" max="{{system.uses.max}}" {{#unless isGM}}disabled{{/unless}}>
     </div>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.UsesRecharge"}}</label>
-      <select name="system.uses.recharge">{{selectOptions rechargeOptions selected=system.uses.recharge localize=true}}</select>
+      <select name="system.uses.recharge" {{#unless isGM}}disabled{{/unless}}>{{selectOptions rechargeOptions selected=system.uses.recharge localize=true}}</select>
     </div>
     {{/if}}
   </fieldset>
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <textarea name="system.description">{{system.description}}</textarea>
+    <textarea name="system.description" {{#unless isGM}}disabled{{/unless}}>{{system.description}}</textarea>
   </div>
 </div>
 </div>
