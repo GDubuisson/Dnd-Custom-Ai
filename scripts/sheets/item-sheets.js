@@ -31,17 +31,25 @@ class DndCustomItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
    *  position.height "auto" (cf. DEFAULT_OPTIONS) laisse Foundry mesurer la hauteur au contenu
    *  réellement affiché, SANS jamais la plafonner à la fenêtre du navigateur : une fiche avec
    *  beaucoup de champs visibles à la fois (ex. Arme à distance rechargeable : prix, dégâts, 7
-   *  propriétés, portée, rechargement...) pouvait ainsi dépasser la hauteur de l'écran — la
-   *  fenêtre débordait simplement du viewport, sans aucune barre de défilement pour atteindre
-   *  les champs du bas (retour de test, y compris depuis l'onglet natif "Objets" de Foundry).
-   *  Plafonnée ici après coup, une fois la hauteur "auto" réellement mesurée par Foundry (donc
-   *  aussi revérifiée à chaque re-rendu : certains champs optionnels n'apparaissent que
-   *  conditionnellement, ex. rechargement d'une arme à distance) : au-delà, le défilement
-   *  interne natif de Foundry (.window-content) prend le relais. */
+   *  propriétés, portée, rechargement...) débordait donc simplement du viewport (retour de test
+   *  avec capture d'écran, y compris depuis l'onglet natif "Objets" et un compendium de
+   *  Foundry), sans AUCUNE barre de défilement pour atteindre les champs du bas — une première
+   *  tentative de correctif (plafonner position.height via setPosition ici même) s'est avérée
+   *  sans effet en pratique : Foundry mesure/applique sa propre hauteur "auto" à un moment du
+   *  cycle de rendu qu'on ne maîtrise pas assez finement pour être certain de s'exécuter après.
+   *  Plutôt que de deviner ce timing, on force directement le style inline (priorité maximale,
+   *  gagne face à n'importe quelle CSS externe) sur .window-content, le VRAI conteneur de
+   *  défilement de Foundry pour une ApplicationV2 (cf. doc Foundry v11+) — indépendant de la
+   *  classe CSS `.dnd-custom-ai.sheet.item` qui, elle, cible le cadre englobant (`.application`,
+   *  en-tête de fenêtre compris) et n'a donc jamais pu être le bon endroit pour ce correctif. */
   _onRender(context, options) {
     super._onRender(context, options);
-    const maxHeight = Math.round(window.innerHeight * 0.85);
-    if (this.position.height > maxHeight) this.setPosition({ height: maxHeight });
+    // Repli sur this.element lui-même si .window-content venait à ne pas exister (nom de
+    // classe interne Foundry non garanti à vie) : dégrade proprement plutôt que de ne rien
+    // faire silencieusement.
+    const content = this.element.querySelector(".window-content") ?? this.element;
+    content.style.maxHeight = "85vh";
+    content.style.overflowY = "auto";
   }
 }
 
