@@ -1,7 +1,7 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
 import { VehicleActorData } from "./data/vehicle-actor-data.js";
-import { WeaponData, ArmorData, GearData, FeatureData, ToolData, SpellData } from "./data/item-data.js";
+import { WeaponData, ArmorData, GearData, FeatureData, ToolData, SpellData, LanguageData } from "./data/item-data.js";
 import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
 import { DndCustomActorSheet } from "./sheets/actor-sheet.js";
@@ -16,9 +16,12 @@ import {
   OriginItemSheet,
   ClassItemSheet,
   ToolItemSheet,
-  SpellItemSheet
+  SpellItemSheet,
+  LanguageItemSheet
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
+import { ensurePlayerGuideJournal } from "./helpers/player-guide-journal.js";
+import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { declareDeath } from "./helpers/death.js";
@@ -77,6 +80,7 @@ Hooks.once("init", async () => {
   CONFIG.Item.dataModels.feature = FeatureData;
   CONFIG.Item.dataModels.tool = ToolData;
   CONFIG.Item.dataModels.spell = SpellData;
+  CONFIG.Item.dataModels.language = LanguageData;
   // Destinés aux compendiums (system.json > packs), remplis à la main par le MJ depuis
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
@@ -125,6 +129,7 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, SpellItemSheet, { types: ["spell"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, LanguageItemSheet, { types: ["language"], makeDefault: true });
 
   registerHandlebarsHelpers();
 
@@ -137,15 +142,18 @@ Hooks.once("init", async () => {
   };
 });
 
-// Journal de référence (MJ) récapitulant les différences entre Origines, Macro monde
-// "Attribuer de l'XP" (cf. scripts/helpers/xp.js) : créés une seule fois, au premier
-// chargement du monde. Le contenu de référence (classes, origines, sorts, capacités de
+// Journal de référence (MJ) récapitulant les différences entre Origines, Guide du Joueur, Guide
+// du MJ (visible du MJ uniquement, cf. gm-guide-journal.js), Macro monde "Attribuer de l'XP"
+// (cf. scripts/helpers/xp.js) : créés une seule fois, au premier chargement du monde. Le
+// contenu de référence (classes, origines, sorts, capacités de
 // classe, armes/armures/objets/outils, cf. content-import.js) est importé automatiquement à
 // chaque chargement du monde ci-dessous — dédoublonné par nom, donc sans risque même si déjà
 // importé. ensureContentImportMacro reste créée en secours (re-déclenchement manuel possible),
 // mais n'est plus l'unique moyen de peupler les compendiums Classes/Origines/Sorts/Capacités.
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
+  await ensurePlayerGuideJournal();
+  await ensureGmGuideJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
   await importSystemContent({ notifyIfEmpty: false });

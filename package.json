@@ -1,0 +1,17 @@
+{
+  "name": "dnd-custom-ai-tests",
+  "private": true,
+  "type": "module",
+  "description": "Suite de tests pour le système Foundry VTT dnd-custom-ai. N'affecte jamais le système livré (system.json ne référence ni package.json ni node_modules/, cf. .github/workflows/release.yml) : usage développement uniquement.",
+  "scripts": {
+    "test": "node tests/run.js tests/unit tests/data tests/dom",
+    "test:visual": "node tests/run.js tests/visual",
+    "test:all": "npm test && npm run test:visual",
+    "test:visual:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.8",
+    "jsdom": "^25.0.1",
+    "playwright": "^1.48.2"
+  }
+}

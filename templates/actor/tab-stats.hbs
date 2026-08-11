@@ -11,7 +11,7 @@
       </button>
       {{/each}}
 
-      <div class="exhaustion-chip">
+      <div class="exhaustion-chip" title="{{localize 'DND_CUSTOM.Conditions.ExhaustionTooltip'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
         <div class="ability-stepper">
           <button type="button" class="ability-btn" data-action="exhaustionDecrease" aria-label="-">−</button>
@@ -43,11 +43,17 @@
             {{/if}}
           </div>
           <div class="ability-side">
-            <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
-            <label class="save-proficiency" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
-              <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-            </label>
-            <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
+            <div class="ability-side-item">
+              <span class="ability-side-label">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
+              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
+            </div>
+            <div class="ability-side-item">
+              <label class="ability-side-label" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+                {{localize "DND_CUSTOM.Actor.SaveShort"}}
+                <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+              </label>
+              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -70,12 +76,15 @@
           {{#if this.armorDisadvantage}}
           <span class="armor-disadvantage-tag" title="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
           {{/if}}
+          {{#if this.jackOfAllTrades}}
+          <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
+          {{/if}}
           <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
         </li>
         {{/each}}
       </ul>
 
-      <div class="proficiency-bonus">
+      <div class="proficiency-bonus" title="{{localize 'DND_CUSTOM.Actor.ProficiencyBonusTooltip'}}">
         {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
       </div>
 

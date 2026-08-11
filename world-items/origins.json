@@ -2,6 +2,7 @@
   {
     "name": "Fleuraine",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Fleuraine.webp",
     "system": {
       "inspiration": "France",
       "demonym": "Fleurainois",
@@ -19,6 +20,7 @@
   {
     "name": "Altenmark",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Altenmark.webp",
     "system": {
       "inspiration": "Germanie",
       "demonym": "Altenmarkois",
@@ -36,6 +38,7 @@
   {
     "name": "Lucentia",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Lucentia.webp",
     "system": {
       "inspiration": "Italie",
       "demonym": "Lucentien",
@@ -53,6 +56,7 @@
   {
     "name": "Ravenmoor",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Ravenmoor.webp",
     "system": {
       "inspiration": "Angleterre",
       "demonym": "Ravenmoorien",
@@ -70,6 +74,7 @@
   {
     "name": "Valdera",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Valdera.webp",
     "system": {
       "inspiration": "Espagne",
       "demonym": "Valderan",
@@ -87,6 +92,7 @@
   {
     "name": "Ashar",
     "type": "origin",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Ashar.webp",
     "system": {
       "inspiration": "Arabie",
       "demonym": "Asharite",

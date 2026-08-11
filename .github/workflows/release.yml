@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -p dist
           FILES="system.json"
-          for path in template.json scripts styles templates lang assets packs; do
+          for path in template.json scripts styles templates lang assets packs world-items; do
             if [ -e "$path" ]; then FILES="$FILES $path"; fi
           done
           zip -r dist/system.zip $FILES

@@ -7,7 +7,8 @@ import {
   classSpeedBonus,
   exhaustionSpeed,
   exhaustionMaxHp,
-  spellSlotsForClass
+  spellUsesForClass,
+  hasFeature
 } from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
 
@@ -98,17 +99,16 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         )
       ),
       currency: currencySchema(),
-      // Emplacements de sorts par niveau (1-9) : `max` est entièrement dérivé (classe +
-      // niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value` (emplacements
-      // restants) est la seule valeur persistée, décrémentée en lançant un sort et
-      // restaurée à `max` au repos long (cf. actor-sheet.js).
+      // Sorts par repos, système simplifié (cf. spellUsesForClass, rules.js) : un seul pool
+      // `uses` plutôt qu'un emplacement par niveau de sort (1-9) — `max` est entièrement dérivé
+      // (classe + niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value` (charges
+      // restantes) est la seule valeur persistée, décrémentée en lançant un sort (hors tour de
+      // magie) et restaurée à `max` au repos long (cf. actor-sheet.js).
       spells: new SchemaField({
-        slots: new SchemaField(
-          schemaFromKeys(["1", "2", "3", "4", "5", "6", "7", "8", "9"], () => new SchemaField({
-            value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-            max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
-          }))
-        ),
+        uses: new SchemaField({
+          value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+          max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+        }),
         // Nom (texte libre, pas une référence d'Item) du sort actuellement concentré, SRD 5e
         // "un seul sort à la fois" : lancer un nouveau sort à concentration remplace celui-ci
         // (cf. DndCustomActorSheet#onCastSpell) ; un échec de jet de sauvegarde de
@@ -149,7 +149,19 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     );
 
     const dexMod = abilityModifier(this.abilities.dex.total);
-    this.attributes.ac.value = armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories);
+    // Défense sans armure du Barbare (Capacité, SRD 5e) : 10 + Dex + Con au lieu de 10 + Dex,
+    // uniquement sans armure portée (un bouclier reste utilisable sans perdre le bénéfice, cf.
+    // armorClass qui ajoute son bonus séparément) — appliqué automatiquement dès que le
+    // personnage possède la Capacité, sans que le joueur ait à y penser à chaque calcul de CA.
+    const unarmoredDefenseBonus =
+      !equippedArmor && hasFeature(items, "Défense sans armure (Barbare)") ? conMod : 0;
+    this.attributes.ac.value = armorClass(
+      dexMod,
+      equippedArmor,
+      equippedShield,
+      equippedAccessories,
+      unarmoredDefenseBonus
+    );
 
     const strengthRequired = equippedArmor?.system.strengthRequired ?? 0;
     const isHeavyArmor = equippedArmor?.system.armorType === "heavy";
@@ -168,12 +180,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json).
     this.attributes.initiativeMod = dexMod;
 
-    // Emplacements de sorts max (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
-    // seul `max` est recalculé à chaque préparation.
-    const maxSlots = spellSlotsForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
-    for (const level of ["1", "2", "3", "4", "5", "6", "7", "8", "9"]) {
-      this.spells.slots[level].max = maxSlots[level];
-    }
+    // Pool de sorts par repos (cf. schéma ci-dessus) : `value` n'est jamais touché ici, seul
+    // `max` est recalculé à chaque préparation. `maxLevel` (plus haut niveau de sort
+    // accessible) n'est pas persisté (même convention que stealthDisadvantage/initiativeMod
+    // ci-dessus) : exposé uniquement pour limiter les Sorts octroyés automatiquement à la
+    // classe/au niveau (cf. helpers/class-content.js).
+    const spellUses = spellUsesForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
+    this.spells.uses.max = spellUses.max;
+    this.spells.maxLevel = spellUses.maxSpellLevel;
   }
 }
 

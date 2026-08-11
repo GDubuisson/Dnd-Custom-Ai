@@ -11,20 +11,22 @@
     <select name="origin">
       <option value="">—</option>
       {{#each originOptions}}
-      <option value="{{this.key}}">{{this.label}}</option>
+      <option value="{{this.key}}" data-info="{{this.infoText}}">{{this.label}}</option>
       {{/each}}
     </select>
   </div>
+  <p class="field-note wizard-info-panel" data-origin-info>{{localize "DND_CUSTOM.Wizard.SelectOriginHint"}}</p>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Actor.Class"}}</label>
     <select name="classKey">
       <option value="">—</option>
       {{#each classOptions}}
-      <option value="{{this.key}}">{{localize this.label}}</option>
+      <option value="{{this.key}}" data-info="{{this.infoText}}">{{localize this.label}}</option>
       {{/each}}
     </select>
   </div>
+  <p class="field-note wizard-info-panel" data-class-info>{{localize "DND_CUSTOM.Wizard.SelectClassHint"}}</p>
 
   <h3 class="section-subtitle">{{localize "DND_CUSTOM.Wizard.AbilitiesTitle"}}</h3>
   <div class="form-group">

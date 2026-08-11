@@ -159,22 +159,21 @@ DND_CUSTOM.damageTypes = {
   slashing: "DND_CUSTOM.Item.DamageTypes.slashing"
 };
 
-/** Écoles de magie SRD 5e (8 écoles officielles). */
-DND_CUSTOM.spellSchools = {
-  abjuration: "DND_CUSTOM.Item.SpellSchools.abjuration",
-  conjuration: "DND_CUSTOM.Item.SpellSchools.conjuration",
-  divination: "DND_CUSTOM.Item.SpellSchools.divination",
-  enchantment: "DND_CUSTOM.Item.SpellSchools.enchantment",
-  evocation: "DND_CUSTOM.Item.SpellSchools.evocation",
-  illusion: "DND_CUSTOM.Item.SpellSchools.illusion",
-  necromancy: "DND_CUSTOM.Item.SpellSchools.necromancy",
-  transmutation: "DND_CUSTOM.Item.SpellSchools.transmutation"
-};
-
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */
 DND_CUSTOM.weaponHandedness = {
   oneHanded: "DND_CUSTOM.Item.WeaponHandedness.oneHanded",
   twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
+};
+
+/** Catégories de Langue (cf. scripts/data/item-data.js > LanguageData) : "common" (la Commune,
+ *  connue de tous), "origin" (langue propre à une des 6 Origines), "special" (langue secrète/
+ *  de métier). Commune et langue d'Origine octroyées automatiquement à la création du
+ *  personnage (cf. helpers/class-content.js > grantLanguages) ; les langues spéciales restent
+ *  toujours un ajout manuel (glisser depuis le compendium Langues). */
+DND_CUSTOM.languageCategories = {
+  common: "DND_CUSTOM.Item.LanguageCategories.common",
+  origin: "DND_CUSTOM.Item.LanguageCategories.origin",
+  special: "DND_CUSTOM.Item.LanguageCategories.special"
 };
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */

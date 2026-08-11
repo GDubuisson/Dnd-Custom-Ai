@@ -3,10 +3,21 @@
  *  purement cosmétique côté template. */
 export function registerHandlebarsHelpers() {
   Handlebars.registerHelper("formatWeight", (kg) => {
-    const value = Number(kg) || 0;
+    // Arrondi à 2 décimales avant affichage : la somme flottante (quantité x poids sur
+    // plusieurs objets, cf. rules.js > carriedWeight) produit sinon des valeurs du type
+    // 1.7000000000000002 (imprécision binaire standard de l'arithmétique flottante JS),
+    // affichées telles quelles sans cet arrondi (retour de test).
+    const value = Math.round((Number(kg) || 0) * 100) / 100;
     if (value > 0 && value < 0.1) return `${Math.round(value * 1000)} g`;
     return `${value} kg`;
   });
+
+  // Vitesse stockée en "pieds" SRD 5e (cf. DND_CUSTOM.baseSpeed et rules.js > classSpeedBonus/
+  // speedPenalty, valeurs 10/15/20/25/30 identiques au SRD) : convertie ici en mètres pour
+  // l'affichage seulement (facteur 0,3, même convention déjà utilisée pour les portées d'armes/
+  // sorts de ce système, ex. 30 m au lieu de 100 pieds) — le calcul lui-même reste en pieds,
+  // inchangé, pour rester vérifiable contre le SRD.
+  Handlebars.registerHelper("formatSpeed", (feet) => `${Math.round((Number(feet) || 0) * 0.3)} m`);
 
   Handlebars.registerHelper("isUsableItem", (item) => {
     if (item?.type === "tool") return Boolean(item.system.useEffect?.skill);
