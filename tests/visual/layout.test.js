@@ -107,8 +107,17 @@ describe("Onglet Inventaire — les 4 cases de monnaie ne se chevauchent pas", (
   });
 });
 
+// ATTENTION — ce test ne couvre que le filet CSS (.dnd-custom-ai.sheet.item { max-height;
+// overflow-y }), pas le VRAI correctif : celui-ci vit désormais dans item-sheets.js
+// (DndCustomItemSheet#_onRender), qui force le style inline sur le vrai conteneur de
+// défilement de Foundry (.window-content) une fois la fiche rendue par une ApplicationV2 réelle
+// — un test jsdom/Playwright autonome (sans .window-header/.window-content, sans this.element/
+// setPosition d'une vraie ApplicationV2) ne peut pas l'exercer. Une première version du
+// correctif (position.height plafonnée via setPosition) s'est révélée sans effet en conditions
+// réelles malgré ce test qui passait déjà à l'époque : retour de test avec capture d'écran,
+// donc à revérifier manuellement en jeu après tout changement ici.
 describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse", () => {
-  test("le contenu déborde et devient scrollable plutôt que coupé sans accès (bug historique)", async () => {
+  test("le contenu déborde et devient scrollable plutôt que coupé sans accès (bug historique, filet CSS uniquement)", async () => {
     // Contexte "maximal" : active tous les champs optionnels (portée, rechargement...) pour
     // forcer le débordement, comme une vraie arme à distance rechargeable complètement remplie.
     const html = renderTemplate("item/weapon-sheet.hbs", {
