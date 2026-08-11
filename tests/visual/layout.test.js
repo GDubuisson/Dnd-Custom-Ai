@@ -174,3 +174,30 @@ describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse",
     assert.ok(scrollTop > 0, "le panneau ne défile pas (scrollTop reste à 0 après tentative)");
   });
 });
+
+describe("En-tête de fiche personnage — unité de Vitesse", () => {
+  test("le 'm' de formatSpeed ne s'affiche pas en majuscule (bug historique : uppercase hérité du label parent)", async () => {
+    // .dnd-custom-ai .header-row label est en text-transform: uppercase (libellés type
+    // "VITESSE") : propriété héritée par défaut, donc un test jsdom sur le textContent (cf.
+    // tests/dom/templates.test.js) ne peut pas l'attraper — seul un vrai moteur de rendu calcule
+    // .innerText en respectant les transformations CSS visuelles.
+    const html = renderTemplate("actor/character-sheet.hbs", {
+      actor: { img: "img.webp", name: "Aldric" },
+      system: { xp: 0, attributes: { level: 1, hp: { value: 10, max: 10, temp: 0 }, ac: { value: 10 }, speed: 30 } },
+      isGM: true,
+      levelUpAvailable: false,
+      classLabel: "Guerrier",
+      originLabel: "Altenmark",
+      hpPercent: 100,
+      dying: { active: false },
+      showCreationWizardButton: false
+    });
+    await page.setContent(buildPage(html));
+
+    // CA et Vitesse partagent tous deux .computed-value (cf. character-sheet.hbs) : Vitesse est
+    // le second des deux dans le DOM.
+    const speedValue = page.locator(".header-row .computed-value").last();
+    const text = await speedValue.innerText();
+    assert.equal(text, "9 m", `unité affichée en majuscule ou valeur inattendue : "${text}"`);
+  });
+});

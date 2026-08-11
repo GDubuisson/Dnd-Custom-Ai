@@ -249,6 +249,25 @@ describe("world-items/languages.json — cohérence avec scripts/data/origins.js
     assert.equal(commune.system.category, "common");
   });
 
+  test("chaque langue de catégorie 'origin' porte le blason de l'Origine correspondante (assets/icons/origins/)", () => {
+    for (const entry of WORLD_LANGUAGES.filter((lang) => lang.system.category === "origin")) {
+      assert.ok(entry.img?.length > 0, `"${entry.name}" (langue d'Origine) n'a pas d'icône`);
+      assert.match(entry.img, /^systems\/dnd-custom-ai\/assets\/icons\/origins\/.+\.webp$/, `"${entry.name}" : icône hors du dossier assets/icons/origins/`);
+    }
+  });
+
+  test("chaque langue non liée à une Origine (common/special) porte l'icône partagée assets/icons/languages/others.webp", () => {
+    for (const entry of WORLD_LANGUAGES.filter((lang) => lang.system.category !== "origin")) {
+      assert.equal(entry.img, "systems/dnd-custom-ai/assets/icons/languages/others.webp", `"${entry.name}" n'a pas l'icône partagée attendue`);
+    }
+  });
+
+  test("les descriptions de langues sont en texte brut (pas de balises HTML), comme les autres world-items", () => {
+    for (const entry of WORLD_LANGUAGES) {
+      assert.doesNotMatch(entry.system.description, /<[a-z][^>]*>/i, `"${entry.name}" : balise HTML détectée dans la description`);
+    }
+  });
+
   test("aucun nom de langue en double", () => {
     const names = WORLD_LANGUAGES.map((entry) => entry.name);
     assert.equal(new Set(names).size, names.length);

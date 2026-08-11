@@ -86,10 +86,10 @@
         <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}
       </button>
       {{/if}}
-      <button type="button" data-action="restShort">
+      <button type="button" data-action="restShort" {{#if dying.dead}}disabled title="{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}"{{/if}}>
         <i class="fa-solid fa-mug-hot"></i> {{localize "DND_CUSTOM.Actions.RestShort"}}
       </button>
-      <button type="button" data-action="restLong">
+      <button type="button" data-action="restLong" {{#if dying.dead}}disabled title="{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}"{{/if}}>
         <i class="fa-solid fa-bed"></i> {{localize "DND_CUSTOM.Actions.RestLong"}}
       </button>
     </div>

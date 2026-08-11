@@ -189,6 +189,24 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   }
 });
 
+// Une Capacité de classe (feature) n'est modifiable que par le MJ (définition figée par la
+// classe, cf. world-items/features.json) — un joueur ne peut agir dessus qu'en dépensant une
+// charge via le bouton dédié de l'onglet Capacités (cf. #onUseFeatureCharge, actor-sheet.js),
+// jamais en éditant le formulaire de sa fiche Item (verrouillée/`disabled` côté template pour
+// un non-MJ, cf. feature-sheet.hbs). Filet de sécurité côté données en complément, même
+// principe que le verrou preUpdateActor ci-dessus : ne laisse passer que system.uses.value.
+Hooks.on("preUpdateItem", (item, changes, options, userId) => {
+  if (item.type !== "feature") return;
+  if (game.users.get(userId)?.isGM) return;
+
+  const sys = changes.system;
+  if (!sys) return;
+
+  const usesValue = sys.uses?.value;
+  for (const key of Object.keys(sys)) delete sys[key];
+  if (usesValue !== undefined) sys.uses = { value: usesValue };
+});
+
 // Point d'entrée découvrable de l'assistant de création (retour de test — le bouton "Créer un
 // personnage" n'existait que sur une fiche Actor déjà créée, sans lien depuis le dialogue
 // natif "Créer un acteur") : à la création d'un nouvel Actor "character" encore vierge
@@ -201,7 +219,15 @@ Hooks.on("createActor", (actor, options, userId) => {
   if (game.user.id !== userId) return;
   if (actor.system.class || actor.system.origin) return;
 
-  const openWizard = () => new CharacterCreationWizard(actor).render(true);
+  // bringToFront() en plus de render(true) : le délai/fermeture ci-dessous visent à faire
+  // gagner l'assistant la course contre le rendu natif de la fiche (`options.renderSheet`),
+  // mais restent une histoire de timing (setTimeout, close() non attendu) — bringToFront()
+  // réaffirme l'ordre d'affichage après coup, sans dépendre de qui a fini de se rendre en
+  // premier (retour de test : l'assistant apparaissait parfois sous la fiche malgré le délai).
+  const openWizard = async () => {
+    const wizard = await new CharacterCreationWizard(actor).render(true);
+    wizard.bringToFront();
+  };
   // Le dialogue natif "Créer un acteur" ouvre aussi la fiche de personnage juste après
   // (`options.renderSheet`, posé par Document#createDialog) : sans délai, l'assistant
   // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous. Le délai garantit

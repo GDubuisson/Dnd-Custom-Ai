@@ -40,10 +40,12 @@ juré, Explorateur-né, Attaque sournoise, Métamagie, Invocations occultes, et 
 ("Druidique" a été retirée de cette liste : ce n'est pas une capacité mais une Langue,
 déplacée vers `world-items/languages.json` — cf. section Langues ci-dessous.)
 
-## Langues (`world-items/languages.json`) — décision : pas d'icône dédiée
+## Langues (`world-items/languages.json`) — fait ✅ (11 / 11)
 
-Icône par défaut de Foundry conservée pour les 12 Langues (choix assumé, pas une tâche en
-attente).
+Les 6 langues d'Origine reprennent le blason de leur Origine (`assets/icons/origins/`, ex.
+Fleurain → `Fleuraine.webp`). Commune et les 4 langues spéciales (Argot des rues, Jargon
+militaire, Langue sacrée, Druidique) partagent une icône générique
+`assets/icons/languages/others.webp`.
 
 ## Classes (`world-items/classes.json`) — fait ✅
 
@@ -67,6 +69,6 @@ Origines, ex. `Azhar.webp` → `Ashar.webp`) et câblés depuis `assets/icons/or
 - **Origines** : 6 / 6
 - **Sorts** : 16 / 16
 - **Capacités** : 24 / 24
-- **Langues** : icône par défaut assumée (pas de tâche en attente)
+- **Langues** : 11 / 11
 
-Plus aucune icône en attente dans le système (hormis le choix assumé pour les Langues).
+Plus aucune icône en attente dans le système.

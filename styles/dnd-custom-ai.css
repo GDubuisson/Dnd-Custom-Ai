@@ -501,6 +501,11 @@
   font-weight: 600;
   color: var(--dca-secondary-fixed);
   padding: 0.05rem 0.1rem;
+  /* Le label parent (ex. "VITESSE") est en text-transform: uppercase (cf. .header-row label
+     ci-dessus), hérité par défaut : sans cette réinitialisation, l'unité "m" de formatSpeed
+     (handlebars-helpers.js) s'affichait "M" à l'écran malgré un textContent correct — bug
+     remonté par test. */
+  text-transform: none;
 }
 
 /* ---------- Caractéristiques (fiche PNJ, cf. npc-tab-stats.hbs) ---------- */

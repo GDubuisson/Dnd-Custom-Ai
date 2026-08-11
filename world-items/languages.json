@@ -2,89 +2,100 @@
   {
     "name": "Commune",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "common",
-      "description": "<p>La langue universelle, comprise et parlée par la quasi-totalité des habitants du monde connu, quelle que soit leur Origine. Octroyée automatiquement à la création du personnage.</p>"
+      "description": "La langue universelle, comprise et parlée par la quasi-totalité des habitants du monde connu, quelle que soit leur Origine. Octroyée automatiquement à la création du personnage."
     }
   },
   {
     "name": "Fleurain",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Fleuraine.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Fleuraine. Octroyée automatiquement à la création si le personnage est originaire de Fleuraine.</p>"
+      "description": "Langue parlée en Fleuraine. Octroyée automatiquement à la création si le personnage est originaire de Fleuraine."
     }
   },
   {
     "name": "Altenmarkois",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Altenmark.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Altenmark. Octroyée automatiquement à la création si le personnage est originaire d'Altenmark.</p>"
+      "description": "Langue parlée en Altenmark. Octroyée automatiquement à la création si le personnage est originaire d'Altenmark."
     }
   },
   {
     "name": "Lucentien",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Lucentia.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Lucentia. Octroyée automatiquement à la création si le personnage est originaire de Lucentia.</p>"
+      "description": "Langue parlée en Lucentia. Octroyée automatiquement à la création si le personnage est originaire de Lucentia."
     }
   },
   {
     "name": "Ravenmoorien",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Ravenmoor.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Ravenmoor. Octroyée automatiquement à la création si le personnage est originaire de Ravenmoor.</p>"
+      "description": "Langue parlée en Ravenmoor. Octroyée automatiquement à la création si le personnage est originaire de Ravenmoor."
     }
   },
   {
     "name": "Valderan",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Valdera.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Valdera. Octroyée automatiquement à la création si le personnage est originaire de Valdera.</p>"
+      "description": "Langue parlée en Valdera. Octroyée automatiquement à la création si le personnage est originaire de Valdera."
     }
   },
   {
     "name": "Asharite",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Ashar.webp",
     "system": {
       "category": "origin",
-      "description": "<p>Langue parlée en Ashar. Octroyée automatiquement à la création si le personnage est originaire d'Ashar.</p>"
+      "description": "Langue parlée en Ashar. Octroyée automatiquement à la création si le personnage est originaire d'Ashar."
     }
   },
   {
     "name": "Argot des rues",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "<p>Langage codé utilisé dans les milieux interlopes (voleurs, contrebandiers, mendiants) pour communiquer discrètement en public, même en présence de non-initiés. Ajout manuel : à glisser sur la fiche si le passé du personnage le justifie.</p>"
+      "description": "Langage codé utilisé dans les milieux interlopes (voleurs, contrebandiers, mendiants) pour communiquer discrètement en public, même en présence de non-initiés. Ajout manuel : à glisser sur la fiche si le passé du personnage le justifie."
     }
   },
   {
     "name": "Jargon militaire",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "<p>Signaux, abréviations et code de communication utilisés par les soldats sur le champ de bataille et dans les casernes. Ajout manuel : à glisser sur la fiche si le personnage a servi dans une armée.</p>"
+      "description": "Signaux, abréviations et code de communication utilisés par les soldats sur le champ de bataille et dans les casernes. Ajout manuel : à glisser sur la fiche si le personnage a servi dans une armée."
     }
   },
   {
     "name": "Langue sacrée",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "<p>Langue liturgique réservée aux textes et cérémonies religieuses, enseignée dans les temples et monastères. Ajout manuel : à glisser sur la fiche si le personnage a reçu une éducation religieuse.</p>"
+      "description": "Langue liturgique réservée aux textes et cérémonies religieuses, enseignée dans les temples et monastères. Ajout manuel : à glisser sur la fiche si le personnage a reçu une éducation religieuse."
     }
   },
   {
     "name": "Druidique",
     "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "<p>Langue secrète des druides, transmise oralement de génération en génération : permet d'y dissimuler des messages que seul un autre druide peut déchiffrer. Généralement connue de tout Druide dès sa formation — ajout manuel : à glisser sur la fiche à la création d'un personnage Druide.</p>"
+      "description": "Langue secrète des druides, transmise oralement de génération en génération : permet d'y dissimuler des messages que seul un autre druide peut déchiffrer. Généralement connue de tout Druide dès sa formation — ajout manuel : à glisser sur la fiche à la création d'un personnage Druide."
     }
   }
 ]
