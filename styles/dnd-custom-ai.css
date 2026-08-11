@@ -139,6 +139,7 @@
 
 .dnd-custom-ai .header-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   width: 100%;
 }
@@ -1477,7 +1478,7 @@
   font-size: 0.82rem;
 }
 
-.dnd-custom-ai .spell-school {
+.dnd-custom-ai .spell-details {
   font-size: 0.75rem;
   font-style: italic;
   color: var(--dca-muted-text);
@@ -1536,6 +1537,65 @@
   outline: none;
   border-color: var(--dca-secondary);
   box-shadow: 0 0 0 1px var(--dca-secondary);
+}
+
+/* ---------- Langues (onglet Journal) ---------- */
+
+.dnd-custom-ai .languages-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.dnd-custom-ai .language-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+}
+
+.dnd-custom-ai .language-chip .item-name-link {
+  color: var(--dca-on-surface);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .language-chip .item-name-link:hover {
+  color: var(--dca-secondary);
+  text-decoration: underline;
+}
+
+/* Catégorie "common" (la Commune) : mise en avant, connue par défaut de tous. */
+.dnd-custom-ai .language-chip-common {
+  background: var(--dca-secondary-container);
+  border-color: var(--dca-secondary);
+}
+
+/* Catégorie "origin" : même teinte dorée que les autres bonus liés à l'Origine sur la fiche
+   (cf. .origin-bonus, .origin-advantage-tag). */
+.dnd-custom-ai .language-chip-origin {
+  border-color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .language-chip .delete-item-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--dca-muted-text);
+  cursor: pointer;
+  font-size: 0.68rem;
+}
+
+.dnd-custom-ai .language-chip .delete-item-btn:hover {
+  color: var(--dca-error);
 }
 
 /* ---------- Divers ---------- */

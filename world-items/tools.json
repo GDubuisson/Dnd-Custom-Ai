@@ -2,6 +2,7 @@
   {
     "name": "Outils d'alchimiste",
     "type": "tool",
+    "img": "icons/tools/laboratory/vials-blue-pink.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -20,6 +21,7 @@
   {
     "name": "Outils de brasseur",
     "type": "tool",
+    "img": "icons/consumables/drinks/wine-amphora-clay-blue.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -38,6 +40,7 @@
   {
     "name": "Matériel de calligraphe",
     "type": "tool",
+    "img": "icons/tools/scribal/pen-steel-grey-brown.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -56,6 +59,7 @@
   {
     "name": "Outils de charpentier",
     "type": "tool",
+    "img": "icons/tools/hand/saw-steel.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -74,6 +78,7 @@
   {
     "name": "Outils de cartographe",
     "type": "tool",
+    "img": "icons/tools/navigation/map-chart-tan.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -92,6 +97,7 @@
   {
     "name": "Outils de cordonnier",
     "type": "tool",
+    "img": "icons/tools/hand/awl-steel-tan.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -110,6 +116,7 @@
   {
     "name": "Ustensiles de cuisinier",
     "type": "tool",
+    "img": "icons/tools/laboratory/cauldron-empty-black.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -128,6 +135,7 @@
   {
     "name": "Outils de souffleur de verre",
     "type": "tool",
+    "img": "icons/commodities/tech/metal-insert.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -146,6 +154,7 @@
   {
     "name": "Outils de joaillier",
     "type": "tool",
+    "img": "icons/commodities/gems/gem-fragments-teal.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -164,6 +173,7 @@
   {
     "name": "Outils de tanneur",
     "type": "tool",
+    "img": "icons/weapons/daggers/dagger-black.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -182,6 +192,7 @@
   {
     "name": "Outils de maçon",
     "type": "tool",
+    "img": "icons/tools/hand/hammer-and-nail.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -200,6 +211,7 @@
   {
     "name": "Matériel de peintre",
     "type": "tool",
+    "img": "icons/tools/hand/brush-paint-brown-tan.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -218,6 +230,7 @@
   {
     "name": "Outils de potier",
     "type": "tool",
+    "img": "icons/containers/kitchenware/vase-clay-brown-large.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -236,6 +249,7 @@
   {
     "name": "Outils de forgeron",
     "type": "tool",
+    "img": "icons/skills/trades/smithing-tongs-metal-red.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -254,6 +268,7 @@
   {
     "name": "Outils de bricoleur",
     "type": "tool",
+    "img": "icons/tools/hand/wrench-steel.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -272,6 +287,7 @@
   {
     "name": "Métier à tisser",
     "type": "tool",
+    "img": "icons/commodities/cloth/cloth-bolt-light-green.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -290,6 +306,7 @@
   {
     "name": "Outils de sculpteur sur bois",
     "type": "tool",
+    "img": "icons/tools/hand/chisel-steel-brown.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -308,6 +325,7 @@
   {
     "name": "Kit de déguisement",
     "type": "tool",
+    "img": "icons/equipment/back/cloak-hooded-blue.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -326,6 +344,7 @@
   {
     "name": "Kit de faussaire",
     "type": "tool",
+    "img": "icons/sundries/documents/document-sealed-brown-red.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -344,6 +363,7 @@
   {
     "name": "Kit d'herboristerie",
     "type": "tool",
+    "img": "icons/containers/bags/pouch-leather-green.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -362,6 +382,7 @@
   {
     "name": "Outils de navigateur",
     "type": "tool",
+    "img": "icons/tools/navigation/sextant-brass-brown.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -380,6 +401,7 @@
   {
     "name": "Kit d'empoisonneur",
     "type": "tool",
+    "img": "icons/containers/bags/sack-cloth-green-blue.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -398,6 +420,7 @@
   {
     "name": "Outils de voleur",
     "type": "tool",
+    "img": "icons/tools/hand/lockpicks-steel-grey.webp",
     "system": {
       "price": {
         "pc": 0,
@@ -416,6 +439,7 @@
   {
     "name": "Jeu de dés",
     "type": "tool",
+    "img": "icons/sundries/gaming/dice-runed-brown.webp",
     "system": {
       "price": {
         "pc": 0,

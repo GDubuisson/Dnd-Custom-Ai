@@ -49,12 +49,26 @@ export function carryingCapacityBonus(items) {
 
 /** Bonus total d'un test de compétence : modificateur de la caractéristique liée + bonus
  *  de maîtrise si la compétence est maîtrisée (même formule que l'onglet Statistiques,
- *  cf. actor-sheet.js > context.skills). */
-export function skillModifier(system, skillKey, proficiencyBonusValue) {
+ *  cf. actor-sheet.js > context.skills). `jackOfAllTrades` (Capacité "Aptitudes multiples" du
+ *  Barde, SRD 5e) ajoute la moitié du bonus de maîtrise (arrondi à l'inférieur) aux
+ *  compétences NON maîtrisées, jamais cumulé avec la maîtrise elle-même. */
+export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAllTrades = false) {
   const skill = system.skills[skillKey];
   if (!skill) return 0;
   const mod = abilityModifier(system.abilities[skill.ability].total);
-  return mod + (skill.proficient ? proficiencyBonusValue : 0);
+  if (skill.proficient) return mod + proficiencyBonusValue;
+  return mod + (jackOfAllTrades ? Math.floor(proficiencyBonusValue / 2) : 0);
+}
+
+/** Le personnage possède-t-il une Capacité (Item type "feature") d'un nom exact donné ? Sert à
+ *  déclencher automatiquement les quelques Capacités passives dont l'effet est mécanique et
+ *  sans ambiguïté (cf. character-data.js > Défense sans armure du Barbare, actor-sheet.js >
+ *  Aptitudes multiples du Barde, Incantation rituelle du Clerc) — pour que le joueur/MJ n'ait
+ *  pas à s'en souvenir/l'appliquer à la main. Les Capacités dont l'effet dépend d'un choix du
+ *  joueur (Domaine divin, Métamagie, Invocations occultes...) restent volontairement du texte
+ *  descriptif, non automatisées. */
+export function hasFeature(items, name) {
+  return items.some((item) => item.type === "feature" && item.name === name);
 }
 
 /** Bonus total d'un test effectué avec un outil (ToolData#useEffect, cf. ITEMS.md) : modificateur
@@ -94,25 +108,42 @@ export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) 
   return proficiencyBonusValue + spellcastingAbilityMod;
 }
 
-/** Emplacements de sorts max par niveau (1 à 9) selon la classe et le niveau, SRD 5e (cf.
- *  scripts/data/spell-slots.json, chargé une fois au démarrage dans
- *  game.dndCustomAi.spellSlotTables). Toutes les classes lanceuses utilisent la table
- *  "pleine" sauf le Paladin (demi-lanceur) et l'Occultiste (Magie de Pacte : emplacements
- *  limités, un seul palier actif à la fois, quel que soit le niveau du sort lancé). */
-export function spellSlotsForClass(className, level, tables) {
-  const max = Object.fromEntries([1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => [n, 0]));
-  if (!tables) return max;
+/** Sorts par repos (système simplifié) selon la classe et le niveau, dérivé de la table SRD 5e
+ *  complète (cf. scripts/data/spell-slots.json, chargée une fois au démarrage dans
+ *  game.dndCustomAi.spellSlotTables) : plutôt que de suivre un emplacement par niveau de sort
+ *  (1 à 9, avec surclassement possible), ce système utilise un pool unique — `max` = nombre
+ *  total d'emplacements toutes catégories confondues à ce niveau (somme de la ligne SRD
+ *  correspondante, donc toujours vérifiable contre la table officielle), `maxSpellLevel` = plus
+ *  haut niveau de sort accessible (dernier palier non nul de cette même ligne), utilisé pour
+ *  limiter les Sorts octroyés automatiquement à la classe/au niveau (cf.
+ *  helpers/class-content.js). Un sort lancé (quel que soit son propre niveau, hors tours de
+ *  magie) consomme 1 charge de ce pool (cf. DndCustomActorSheet#onCastSpell) : perd la nuance
+ *  du surclassement et le choix "quel palier dépenser" du SRD strict, gagné en simplicité de
+ *  suivi à table — simplification assumée, comme DND_CUSTOM.classStartingEquipment. Toutes les
+ *  classes lanceuses utilisent la table "pleine" sauf le Paladin (demi-lanceur) et l'Occultiste
+ *  (Magie de Pacte : emplacements limités, un seul palier actif à la fois, quel que soit le
+ *  niveau du sort lancé). Renvoie `{ max: 0, maxSpellLevel: 0 }` pour une classe non lanceuse. */
+export function spellUsesForClass(className, level, tables) {
+  if (!tables || !DND_CUSTOM.spellcastingClasses.includes(className)) {
+    return { max: 0, maxSpellLevel: 0 };
+  }
 
   if (className === "warlock") {
     const pact = tables.warlockPact[level];
-    if (pact) max[pact.level] = pact.slots;
-    return max;
+    return pact ? { max: pact.slots, maxSpellLevel: pact.level } : { max: 0, maxSpellLevel: 0 };
   }
 
   const table = className === "paladin" ? tables.halfCaster : tables.fullCaster;
   const row = table?.[level];
-  if (row) row.forEach((count, index) => (max[index + 1] = count));
-  return max;
+  if (!row) return { max: 0, maxSpellLevel: 0 };
+
+  let max = 0;
+  let maxSpellLevel = 0;
+  row.forEach((count, index) => {
+    max += count;
+    if (count > 0) maxSpellLevel = index + 1;
+  });
+  return { max, maxSpellLevel };
 }
 
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
@@ -135,11 +166,14 @@ function dexBonusForArmorType(armorType, dexMod) {
 
 /** Classe d'Armure, SRD 5e : 10 + Dex sans armure ; sinon CA de base de l'armure +
  *  bonus de Dex plafonné selon son type, + bonus plat du bouclier équipé le cas échéant,
- *  + bonus plat des accessoires équipés (anneau/amulette de protection, etc.), le cas échéant. */
-export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories = []) {
+ *  + bonus plat des accessoires équipés (anneau/amulette de protection, etc.), le cas échéant.
+ *  `unarmoredBonus` (0 par défaut) : bonus supplémentaire à la formule "sans armure" uniquement
+ *  (ex. modificateur de Constitution pour la Défense sans armure du Barbare, cf.
+ *  character-data.js) — sans effet si une armure est équipée, comme le veut cette Capacité. */
+export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories = [], unarmoredBonus = 0) {
   const base = equippedArmor
     ? equippedArmor.system.baseAC + dexBonusForArmorType(equippedArmor.system.armorType, dexMod)
-    : 10 + dexMod;
+    : 10 + dexMod + unarmoredBonus;
   const shieldBonus = equippedShield ? equippedShield.system.baseAC : 0;
   const accessoriesBonus = equippedAccessories.reduce((total, item) => total + item.system.baseAC, 0);
   return base + shieldBonus + accessoriesBonus;

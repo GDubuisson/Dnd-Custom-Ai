@@ -2,6 +2,7 @@
   {
     "name": "Gambison",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
     "system": {
       "armorType": "light",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -18,6 +19,7 @@
   {
     "name": "Cuir",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-scale-leather.webp",
     "system": {
       "armorType": "light",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -34,6 +36,7 @@
   {
     "name": "Cuir clouté",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
     "system": {
       "armorType": "light",
       "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
@@ -50,6 +53,7 @@
   {
     "name": "Peau",
     "type": "armor",
+    "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
     "system": {
       "armorType": "medium",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -66,6 +70,7 @@
   {
     "name": "Chemise de mailles",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-scale-grey.webp",
     "system": {
       "armorType": "medium",
       "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
@@ -82,6 +87,7 @@
   {
     "name": "Écailles",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-banded-steel.webp",
     "system": {
       "armorType": "medium",
       "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
@@ -98,6 +104,7 @@
   {
     "name": "Cuirasse",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
     "system": {
       "armorType": "medium",
       "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 },
@@ -114,6 +121,7 @@
   {
     "name": "Demi-plate",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
     "system": {
       "armorType": "medium",
       "price": { "pc": 0, "pa": 0, "po": 750, "pp": 0 },
@@ -130,6 +138,7 @@
   {
     "name": "Cotte de mailles",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
     "system": {
       "armorType": "heavy",
       "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
@@ -146,6 +155,7 @@
   {
     "name": "Broigne",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
     "system": {
       "armorType": "heavy",
       "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
@@ -162,6 +172,7 @@
   {
     "name": "Plates",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-collared-steel.webp",
     "system": {
       "armorType": "heavy",
       "price": { "pc": 0, "pa": 0, "po": 200, "pp": 0 },
@@ -178,6 +189,7 @@
   {
     "name": "Harnois",
     "type": "armor",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
     "system": {
       "armorType": "heavy",
       "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
@@ -194,6 +206,7 @@
   {
     "name": "Bouclier",
     "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
     "system": {
       "armorType": "light",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },

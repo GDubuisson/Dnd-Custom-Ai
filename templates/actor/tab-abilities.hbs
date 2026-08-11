@@ -14,15 +14,13 @@
     <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
   </div>
 
-  {{#if spellSlots.length}}
+  {{#if spellUses.max}}
   <div class="spell-slots-row">
-    {{#each spellSlots}}
-    <label class="spell-slot-chip">
-      {{localize "DND_CUSTOM.Abilities.SpellLevelShort"}} {{this.level}}
-      <input type="number" name="system.spells.slots.{{this.level}}.value" value="{{this.value}}" min="0" max="{{this.max}}">
-      <span>/ {{this.max}}</span>
+    <label class="spell-slot-chip" title="{{localize 'DND_CUSTOM.Abilities.SpellUsesTooltip'}}">
+      {{localize "DND_CUSTOM.Abilities.SpellUsesLabel"}}
+      <input type="number" name="system.spells.uses.value" value="{{spellUses.value}}" min="0" max="{{spellUses.max}}">
+      <span>/ {{spellUses.max}}</span>
     </label>
-    {{/each}}
   </div>
   {{/if}}
 
@@ -80,7 +78,7 @@
           {{#each this.spells}}
           <li data-item-id="{{this.item.id}}">
             <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.item.name}}</a>
-            <span class="spell-school">({{this.schoolLabel}})</span>
+            {{#if this.item.system.details}}<span class="spell-details">({{this.item.system.details}})</span>{{/if}}
             {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
             {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
             {{#if this.item.system.level}}

@@ -2,6 +2,7 @@
   {
     "name": "Gourdin",
     "type": "weapon",
+    "img": "icons/weapons/clubs/club-banded-brown.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
@@ -22,6 +23,7 @@
   {
     "name": "Dague",
     "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
@@ -42,6 +44,7 @@
   {
     "name": "Gourdin à deux mains",
     "type": "weapon",
+    "img": "icons/weapons/clubs/club-heavy-barbed-grey.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
@@ -62,6 +65,7 @@
   {
     "name": "Hachette",
     "type": "weapon",
+    "img": "icons/weapons/axes/axe-broad-black.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -82,6 +86,7 @@
   {
     "name": "Javeline",
     "type": "weapon",
+    "img": "icons/weapons/polearms/javelin-flared.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
@@ -102,6 +107,7 @@
   {
     "name": "Marteau léger",
     "type": "weapon",
+    "img": "icons/weapons/hammers/shorthammer-double-stone-engraved.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
@@ -122,6 +128,7 @@
   {
     "name": "Masse d'armes",
     "type": "weapon",
+    "img": "icons/weapons/maces/mace-flanged-steel.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -142,6 +149,7 @@
   {
     "name": "Bâton",
     "type": "weapon",
+    "img": "icons/weapons/staves/staff-simple.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
@@ -162,6 +170,7 @@
   {
     "name": "Faucille",
     "type": "weapon",
+    "img": "icons/weapons/sickles/sickle-curved.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
@@ -182,6 +191,7 @@
   {
     "name": "Lance simple",
     "type": "weapon",
+    "img": "icons/weapons/polearms/spear-flared-green.webp",
     "system": {
       "weaponType": "meleeSimple",
       "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
@@ -202,6 +212,7 @@
   {
     "name": "Arbalète légère",
     "type": "weapon",
+    "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
     "system": {
       "weaponType": "rangedSimple",
       "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
@@ -222,6 +233,7 @@
   {
     "name": "Fléchette",
     "type": "weapon",
+    "img": "icons/weapons/thrown/dart-feathered.webp",
     "system": {
       "weaponType": "rangedSimple",
       "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
@@ -242,6 +254,7 @@
   {
     "name": "Arc court",
     "type": "weapon",
+    "img": "icons/weapons/bows/shortbow-leather.webp",
     "system": {
       "weaponType": "rangedSimple",
       "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
@@ -262,6 +275,7 @@
   {
     "name": "Fronde",
     "type": "weapon",
+    "img": "icons/weapons/slings/slingshot-wood.webp",
     "system": {
       "weaponType": "rangedSimple",
       "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
@@ -282,6 +296,7 @@
   {
     "name": "Hache de bataille",
     "type": "weapon",
+    "img": "icons/weapons/axes/axe-battle-black.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -302,6 +317,7 @@
   {
     "name": "Fléau",
     "type": "weapon",
+    "img": "icons/weapons/maces/flail-ball-grey.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -322,6 +338,7 @@
   {
     "name": "Glaive",
     "type": "weapon",
+    "img": "icons/weapons/polearms/glaive-simple.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
@@ -342,6 +359,7 @@
   {
     "name": "Grande hache",
     "type": "weapon",
+    "img": "icons/weapons/axes/axe-double-black.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
@@ -362,6 +380,7 @@
   {
     "name": "Grande épée",
     "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-crossguard-steel.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
@@ -382,6 +401,7 @@
   {
     "name": "Hallebarde",
     "type": "weapon",
+    "img": "icons/weapons/polearms/halberd-engraved-black.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
@@ -402,6 +422,7 @@
   {
     "name": "Lance de cavalerie",
     "type": "weapon",
+    "img": "icons/weapons/polearms/spear-simple-engraved.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -422,6 +443,7 @@
   {
     "name": "Épée longue",
     "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
@@ -442,6 +464,7 @@
   {
     "name": "Maillet",
     "type": "weapon",
+    "img": "icons/weapons/hammers/hammer-double-stone-worn.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -462,6 +485,7 @@
   {
     "name": "Morgenstern",
     "type": "weapon",
+    "img": "icons/weapons/maces/mace-cube-spiked-steel.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
@@ -482,6 +506,7 @@
   {
     "name": "Pique",
     "type": "weapon",
+    "img": "icons/weapons/polearms/spear-hooked-spike.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -502,6 +527,7 @@
   {
     "name": "Rapière",
     "type": "weapon",
+    "img": "icons/weapons/swords/sword-guard-bronze.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
@@ -522,6 +548,7 @@
   {
     "name": "Cimeterre",
     "type": "weapon",
+    "img": "icons/weapons/swords/scimitar-worn-blue.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
@@ -542,6 +569,7 @@
   {
     "name": "Épée courte",
     "type": "weapon",
+    "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -562,6 +590,7 @@
   {
     "name": "Trident",
     "type": "weapon",
+    "img": "icons/weapons/polearms/trident-silver-blue.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -582,6 +611,7 @@
   {
     "name": "Pic de guerre",
     "type": "weapon",
+    "img": "icons/weapons/axes/pickaxe-iron-green.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
@@ -602,6 +632,7 @@
   {
     "name": "Marteau de guerre",
     "type": "weapon",
+    "img": "icons/weapons/hammers/hammer-drilling-spiked.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
@@ -622,6 +653,7 @@
   {
     "name": "Fouet",
     "type": "weapon",
+    "img": "icons/sundries/survival/leather-strap-brown.webp",
     "system": {
       "weaponType": "meleeMartial",
       "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
@@ -642,6 +674,7 @@
   {
     "name": "Sarbacane",
     "type": "weapon",
+    "img": "systems/dnd-custom-ai/assets/icons/weapons/sarbacane.webp",
     "system": {
       "weaponType": "rangedMartial",
       "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
@@ -662,6 +695,7 @@
   {
     "name": "Arbalète de poing",
     "type": "weapon",
+    "img": "icons/weapons/crossbows/crossbow-slotted.webp",
     "system": {
       "weaponType": "rangedMartial",
       "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
@@ -682,6 +716,7 @@
   {
     "name": "Arbalète lourde",
     "type": "weapon",
+    "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
     "system": {
       "weaponType": "rangedMartial",
       "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
@@ -702,6 +737,7 @@
   {
     "name": "Arc long",
     "type": "weapon",
+    "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
     "system": {
       "weaponType": "rangedMartial",
       "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
@@ -722,6 +758,7 @@
   {
     "name": "Filet",
     "type": "weapon",
+    "img": "icons/tools/fishing/net-simple-brown.webp",
     "system": {
       "weaponType": "rangedMartial",
       "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },

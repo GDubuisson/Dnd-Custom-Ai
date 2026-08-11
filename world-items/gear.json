@@ -2,6 +2,7 @@
   {
     "name": "Sac à dos",
     "type": "gear",
+    "img": "icons/containers/bags/pack-leather-white-tan.webp",
     "system": {
       "quantity": 1,
       "weight": 2.3,
@@ -13,6 +14,7 @@
   {
     "name": "Corde en chanvre (15 m)",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/rope-wrapped-brown.webp",
     "system": {
       "quantity": 1,
       "weight": 4.5,
@@ -23,6 +25,7 @@
   {
     "name": "Torche",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/torch.jpg",
     "system": {
       "quantity": 1,
       "weight": 0.45,
@@ -34,6 +37,7 @@
   {
     "name": "Rations (1 jour)",
     "type": "gear",
+    "img": "icons/consumables/grains/bread-loaf-boule-rustic-brown.webp",
     "system": {
       "quantity": 1,
       "weight": 0.9,
@@ -44,6 +48,7 @@
   {
     "name": "Gourde",
     "type": "gear",
+    "img": "icons/sundries/survival/wetskin-leather-red.webp",
     "system": {
       "quantity": 1,
       "weight": 2.3,
@@ -54,6 +59,7 @@
   {
     "name": "Sac de couchage",
     "type": "gear",
+    "img": "icons/sundries/survival/bedroll-grey.webp",
     "system": {
       "quantity": 1,
       "weight": 3.4,
@@ -64,6 +70,7 @@
   {
     "name": "Silex et pierre",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/flint-and-steel.jpg",
     "system": {
       "quantity": 1,
       "weight": 0.45,
@@ -74,6 +81,7 @@
   {
     "name": "Lanterne à capuchon",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/lantern-iron-yellow.webp",
     "system": {
       "quantity": 1,
       "weight": 0.9,
@@ -85,6 +93,7 @@
   {
     "name": "Huile (flacon)",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/hunger-oil.jpg",
     "system": {
       "quantity": 1,
       "weight": 0.45,
@@ -95,6 +104,7 @@
   {
     "name": "Trousse de soins",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/trousse-de-soin.webp",
     "system": {
       "quantity": 1,
       "weight": 1.4,
@@ -106,6 +116,7 @@
   {
     "name": "Grand sac",
     "type": "gear",
+    "img": "icons/containers/bags/sack-cloth-orange.webp",
     "system": {
       "quantity": 1,
       "weight": 0.23,
@@ -117,6 +128,7 @@
   {
     "name": "Tente à deux places",
     "type": "gear",
+    "img": "icons/environment/wilderness/camp-improvised.webp",
     "system": {
       "quantity": 1,
       "weight": 9,
@@ -127,6 +139,7 @@
   {
     "name": "Marteau",
     "type": "gear",
+    "img": "icons/tools/hand/hammer-cobbler-steel.webp",
     "system": {
       "quantity": 1,
       "weight": 1.4,
@@ -137,6 +150,7 @@
   {
     "name": "Grappin",
     "type": "gear",
+    "img": "icons/tools/fishing/hook-multi-steel-brown.webp",
     "system": {
       "quantity": 1,
       "weight": 1.8,
@@ -147,6 +161,7 @@
   {
     "name": "Bougie",
     "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/candle-unlit-white.webp",
     "system": {
       "quantity": 1,
       "weight": 0,

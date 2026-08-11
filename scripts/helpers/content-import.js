@@ -1,17 +1,18 @@
 const SYSTEM_ID = "dnd-custom-ai";
 
 // Armes/armures/objets/outils : importés dans les Items du monde (comme avant, cf.
-// world-items/README.md). Classes/Origines/Sorts/Capacités de classe : importés DIRECTEMENT
-// dans leur compendium (packs/classes, packs/origines, packs/sorts, packs/capacites, cf.
-// system.json > packs), qui reste vide sinon — Foundry ne compile ces packs qu'à partir de
-// documents ajoutés depuis l'interface, et ce système n'a pas d'étape de build pour les
-// préremplir autrement (cf. PROJECT.md > pas de build).
+// world-items/README.md). Classes/Origines/Sorts/Capacités de classe/Langues : importés
+// DIRECTEMENT dans leur compendium (packs/classes, packs/origines, packs/sorts, packs/capacites,
+// packs/langues, cf. system.json > packs), qui reste vide sinon — Foundry ne compile ces packs
+// qu'à partir de documents ajoutés depuis l'interface, et ce système n'a pas d'étape de build
+// pour les préremplir autrement (cf. PROJECT.md > pas de build).
 const WORLD_ITEM_FILES = ["armors.json", "weapons.json", "gear.json", "tools.json"];
 const COMPENDIUM_FILES = [
   { file: "classes.json", pack: `${SYSTEM_ID}.classes` },
   { file: "origins.json", pack: `${SYSTEM_ID}.origines` },
   { file: "spells.json", pack: `${SYSTEM_ID}.sorts` },
-  { file: "features.json", pack: `${SYSTEM_ID}.capacites` }
+  { file: "features.json", pack: `${SYSTEM_ID}.capacites` },
+  { file: "languages.json", pack: `${SYSTEM_ID}.langues` }
 ];
 
 /** Importe tout le contenu de référence du système (classes, origines, sorts, capacités de

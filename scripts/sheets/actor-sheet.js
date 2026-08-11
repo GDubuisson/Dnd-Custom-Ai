@@ -16,7 +16,8 @@ import {
   spellSaveDC,
   spellAttackBonus,
   toolCheckModifier,
-  weaponAttackDamage
+  weaponAttackDamage,
+  hasFeature
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
@@ -33,6 +34,10 @@ const SYSTEM_ID = "dnd-custom-ai";
 // Niveau d'Exhaustion à partir duquel chaque catégorie de jet est désavantagée, SRD 5e.
 const EXHAUSTION_CHECK_DISADVANTAGE_LEVEL = 1;
 const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
+
+// Capacités (world-items/features.json) conférant l'incantation rituelle gratuite (cf.
+// #onCastSpell) : une par classe qui l'a en SRD 5e et pour laquelle elle est modélisée ici.
+const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
 
 /** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
  *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
@@ -62,18 +67,6 @@ function conditionRollEffects(actor, kind, abilityKey) {
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL || (abilityKey === "dex" && statuses.has("restrained"));
   }
   return { advantage, disadvantage };
-}
-
-/** Emplacement à décompter pour lancer un sort de niveau `spellLevel` : correspond
- *  normalement à ce même niveau (pas de surclassement/upcasting dans ce système), sauf pour
- *  l'Occultiste (Magie de Pacte, SRD 5e) dont tous les sorts consomment l'unique palier de
- *  sorts actif, quel que soit leur propre niveau. */
-function resolveSpellSlotLevel(actor, spellLevel) {
-  if (actor.system.class === "warlock") {
-    const pactLevel = Object.entries(actor.system.spells.slots).find(([, slot]) => slot.max > 0)?.[0];
-    if (pactLevel) return pactLevel;
-  }
-  return String(spellLevel);
 }
 
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
@@ -181,6 +174,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Indicateur "niveau disponible" (bouton MJ) : ne révèle jamais le total d'XP lui-même
     // au joueur (cf. PROJECT.md > "Système de progression", XP toujours caché au joueur).
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
+    // Affichage XP réservé au MJ (cf. template : bloc entier sous {{#if isGM}}) : seuil du
+    // prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel], la table étant indexée niveau-1),
+    // absent au niveau 20 (déjà au maximum, aucun seuil suivant à afficher).
+    context.xpNextThreshold = system.attributes.level < 20 ? DND_CUSTOM.xpThresholds[system.attributes.level] : null;
 
     // Panneau Agonie (SRD 5e) : visible tant que le personnage est à 0 PV et n'a pas encore
     // atteint 3 réussites (stabilisé) ou 3 échecs (mort) — cf. hook updateActor dans
@@ -217,6 +214,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       };
     }
 
+    const items = this.actor.items.contents;
+    // Aptitudes multiples (Barde, SRD 5e) : moitié du bonus de maîtrise (arrondi à
+    // l'inférieur) sur les compétences non maîtrisées, appliqué automatiquement ci-dessous
+    // (affichage) et dans #onRollSkill (jet réel) dès que le personnage possède la Capacité.
+    const jackOfAllTrades = hasFeature(items, "Aptitudes multiples");
+
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => {
       const mod = abilityModifier(ability.total);
       const originBonus = originAbilityBonuses[key] ?? 0;
@@ -237,8 +240,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     context.skills = Object.entries(system.skills)
       .map(([key, skill]) => {
-        const abilityMod = abilityModifier(system.abilities[skill.ability].total);
-        const mod = abilityMod + (skill.proficient ? context.proficiencyBonus : 0);
+        const mod = skillModifier(system, key, context.proficiencyBonus, jackOfAllTrades);
         return {
           key,
           label: game.i18n.localize(DND_CUSTOM.skills[key]),
@@ -248,19 +250,26 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
           ability: skill.ability,
           proficient: skill.proficient,
+          jackOfAllTrades: jackOfAllTrades && !skill.proficient,
           mod,
           modLabel: formatModifier(mod)
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
 
-    const items = this.actor.items.contents;
     context.weapons = items.filter((item) => item.type === "weapon");
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
-    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; emplacements
-    // restants/max par niveau (max entièrement dérivé, cf. CharacterData#prepareDerivedData).
+    // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
+    // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
+    // ajoutées à la main (glisser depuis le compendium Langues).
+    context.languages = items
+      .filter((item) => item.type === "language")
+      .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
+    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; pool unique de
+    // charges (système simplifié, cf. CharacterData#prepareDerivedData et rules.js >
+    // spellUsesForClass) plutôt qu'un emplacement par niveau.
     const spells = items.filter((item) => item.type === "spell");
     context.spellsByLevel = Array.from({ length: 10 }, (_, level) => ({
       level,
@@ -271,11 +280,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       spells: spells
         .filter((spell) => spell.system.level === level)
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
-        .map((spell) => ({ item: spell, schoolLabel: game.i18n.localize(DND_CUSTOM.spellSchools[spell.system.school]) }))
+        .map((spell) => ({ item: spell }))
     })).filter((group) => group.spells.length);
-    context.spellSlots = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-      .map((level) => ({ level, ...system.spells.slots[level] }))
-      .filter((slot) => slot.max > 0);
+    context.spellUses = system.spells.uses;
     context.concentratingOn = system.spells.concentratingOn;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
     // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
@@ -395,8 +402,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
-   *  dépasser le max. Restaure aussi les emplacements de sorts de l'Occultiste (Magie de
-   *  Pacte, SRD 5e : seule classe qui récupère ses emplacements au repos court). */
+   *  dépasser le max. Restaure aussi le pool de sorts de l'Occultiste (Magie de Pacte, SRD 5e :
+   *  seule classe qui récupère ses emplacements au repos court). */
   static async #onRestShort() {
     const hp = this.actor.system.attributes.hp;
     const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
@@ -409,7 +416,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */
+  /** Repos long : soigne intégralement et restaure tout le pool de sorts (SRD 5e). */
   static async #onRestLong() {
     const hp = this.actor.system.attributes.hp;
     const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
@@ -424,11 +431,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   #spellSlotResetUpdates() {
-    const updates = {};
-    for (const level of ["1", "2", "3", "4", "5", "6", "7", "8", "9"]) {
-      updates[`system.spells.slots.${level}.value`] = this.actor.system.spells.slots[level].max;
-    }
-    return updates;
+    return { "system.spells.uses.value": this.actor.system.spells.uses.max };
   }
 
   /** Restaure au maximum les charges des Capacités à utilisations limitées (system.uses.max
@@ -678,7 +681,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const key = target.dataset.key;
     const system = this.actor.system;
     const profBonus = proficiencyBonus(system.attributes.level);
-    const mod = skillModifier(system, key, profBonus);
+    const jackOfAllTrades = hasFeature(this.actor.items.contents, "Aptitudes multiples");
+    const mod = skillModifier(system, key, profBonus, jackOfAllTrades);
     const originAdvantage = Boolean(
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
@@ -761,21 +765,28 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Lance un sort de l'onglet Sorts : décompte un emplacement de son niveau (aucun
-   *  surclassement dans ce système, sauf Occultiste, cf. resolveSpellSlotLevel), sans effet
-   *  pour un tour de magie (niveau 0), et poste la description dans le chat. */
+  /** Lance un sort de l'onglet Sorts : décompte 1 charge du pool de sorts (système simplifié,
+   *  cf. rules.js > spellUsesForClass — plus d'emplacement par niveau ni de surclassement),
+   *  sans effet pour un tour de magie (niveau 0), et poste la description dans le chat. */
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
 
-    if (item.system.level > 0) {
-      const slotLevel = resolveSpellSlotLevel(this.actor, item.system.level);
-      const slot = this.actor.system.spells.slots[slotLevel];
-      if (!slot || slot.value <= 0) {
+    // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
+    // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —
+    // appliqué automatiquement, sans case à cocher ni choix à faire pour le joueur. Seuls le
+    // Clerc et le Druide ont cette Capacité dans world-items/features.json (SRD 5e : Magicien
+    // aussi, mais uniquement pour les sorts déjà inscrits dans son grimoire — non modélisé ici,
+    // cf. simplification des Capacités de classe).
+    const castsAsFreeRitual =
+      item.system.ritual && RITUAL_CASTING_FEATURES.some((name) => hasFeature(this.actor.items.contents, name));
+    if (item.system.level > 0 && !castsAsFreeRitual) {
+      const uses = this.actor.system.spells.uses;
+      if (uses.value <= 0) {
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
         return;
       }
-      await this.actor.update({ [`system.spells.slots.${slotLevel}.value`]: slot.value - 1 });
+      await this.actor.update({ "system.spells.uses.value": uses.value - 1 });
     }
 
     // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en

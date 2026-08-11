@@ -60,12 +60,16 @@
       "Class": "Classe",
       "Origin": "Origine",
       "HP": "Points de Vie",
+      "HPTooltip": "Réserve de vie du personnage. À 0 PV, il tombe inconscient et doit réussir des jets de sauvegarde de la mort pour survivre.",
       "HPTemp": "Points de vie temporaires",
       "AC": "Classe d'Armure",
+      "ACTooltip": "Détermine la difficulté à toucher le personnage. Un jet d'attaque doit égaler ou dépasser cette valeur pour toucher.",
       "Speed": "Vitesse",
+      "SpeedTooltip": "Distance que le personnage peut parcourir en un tour (affichée en mètres).",
       "SaveShort": "Sauv.",
       "ModShort": "Mod.",
       "ProficiencyBonus": "Bonus de maîtrise",
+      "ProficiencyBonusTooltip": "Ajouté aux tests, sauvegardes et jets d'attaque pour lesquels le personnage est maîtrisé. Augmente avec le niveau.",
       "SkillsTitle": "Compétences",
       "Initiative": "Initiative",
       "PassivePerception": "Perception passive",
@@ -74,8 +78,13 @@
       "OriginAdvantageTooltip": "Avantage sur ce test grâce à l'Origine",
       "ArmorDisadvantageShort": "Désavantage",
       "ArmorDisadvantageTooltip": "Désavantage sur ce test à cause de l'armure équipée",
+      "JackOfAllTradesShort": "Aptitudes multiples",
+      "JackOfAllTradesTooltip": "Moitié du bonus de maîtrise ajoutée grâce à la Capacité Aptitudes multiples",
       "CarryCapacity": "Capacité de charge",
       "LevelUpAvailable": "Niveau supérieur disponible",
+      "XpGmLabel": "XP (MJ)",
+      "XpGmTooltip": "Total d'expérience du personnage, visible du MJ uniquement — jamais affiché aux joueurs",
+      "XpMaxLevel": "niveau maximum",
       "DeathSuccesses": "Réussites",
       "DeathFailures": "Échecs",
       "Stabilized": "Stabilisé",
@@ -95,7 +104,7 @@
     },
     "Macros": {
       "ImportContent": "Importer le contenu du système",
-      "ImportContentDone": "Import terminé : armes/armures/objets/outils/sorts/capacités dans les Items du monde, Classes/Origines dans leurs compendiums (voir la console pour le détail)."
+      "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail)."
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
@@ -134,7 +143,8 @@
       "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
       "LevelUp": "{name} passe au niveau {level} !",
       "UseFeature": "{name} utilise {feature} ({remaining}/{max} restantes).",
-      "NoChargesLeft": "Plus aucune utilisation restante pour {feature}."
+      "NoChargesLeft": "Plus aucune utilisation restante pour {feature}.",
+      "ClassContentGranted": "{name} reçoit : {names}."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -200,7 +210,8 @@
       "SpellAttackBonus": "Bonus d'attaque",
       "Cantrips": "Tours de magie",
       "SpellLevelLabel": "Sorts de niveau {level}",
-      "SpellLevelShort": "Niv.",
+      "SpellUsesLabel": "Sorts par repos",
+      "SpellUsesTooltip": "Système simplifié : 1 charge par sort lancé (hors tours de magie, gratuits), quel que soit le niveau du sort. Se recharge intégralement au repos long.",
       "Cast": "Lancer",
       "NoSpells": "Aucun sort enregistré",
       "ConcentratingOn": "Concentré sur :",
@@ -261,11 +272,12 @@
       "ClassInfoSaves": "Sauvegardes maîtrisées : {saves}",
       "ClassInfoSkills": "{count} compétence(s) au choix",
       "ClassInfoSpellcasting": "Lanceur de sorts ({ability})",
-      "ClassContentGranted": "{name} reçoit : {names}."
+      "ClassContentMissing": "Aucune Capacité/Sort de classe trouvé dans les compendiums (import du contenu système peut-être pas encore terminé)."
     },
     "Conditions": {
       "Title": "États",
       "Exhaustion": "Épuisement",
+      "ExhaustionTooltip": "Niveau d'épuisement cumulatif (0-6). Chaque palier ajoute son propre malus : désavantage aux tests (1), vitesse divisée par deux (2), désavantage aux attaques/sauvegardes (3), PV max divisés par deux (4), vitesse nulle (5), mort (6).",
       "blinded": "Aveuglé",
       "charmed": "Charmé",
       "deafened": "Assourdi",
@@ -285,12 +297,28 @@
     "Journal": {
       "Biography": "Biographie",
       "Notes": "Notes",
+      "LanguagesTitle": "Langues connues",
+      "NoLanguages": "Aucune langue connue",
+      "LanguagesDropHint": "Glissez une langue ici depuis le compendium Langues (ou une autre fiche ouverte) pour l'ajouter.",
       "OriginsComparisonTitle": "Comparatif des Origines",
       "OriginColumn": "Origine",
       "TraitsColumn": "Traits culturels",
       "AbilityBonusesColumn": "Bonus de caractéristiques",
       "SkillAdvantagesColumn": "Compétences avantagées",
-      "SpecialTraitColumn": "Trait spécial"
+      "SpecialTraitColumn": "Trait spécial",
+      "PlayerGuideTitle": "Guide du Joueur",
+      "PlayerGuidePageGlossary": "Glossaire",
+      "PlayerGuidePageRules": "Règles de base",
+      "PlayerGuidePageSpells": "Sorts (système simplifié)",
+      "PlayerGuidePageClasses": "Classes",
+      "PlayerGuidePageOrigins": "Origines",
+      "PlayerGuidePageLanguages": "Langues",
+      "PlayerGuidePageEquipment": "Équipement et Inventaire",
+      "GmGuideTitle": "Guide du MJ",
+      "GmGuidePageOverview": "Vue d'ensemble",
+      "GmGuidePageAdjudication": "Capacités à arbitrer",
+      "GmGuidePageSimplifications": "Simplifications assumées",
+      "GmGuidePageProgression": "Expérience et montée de niveau"
     },
     "Item": {
       "ArmorTypes": {
@@ -322,15 +350,10 @@
         "shortRest": "Repos court",
         "longRest": "Repos long"
       },
-      "SpellSchools": {
-        "abjuration": "Abjuration",
-        "conjuration": "Invocation",
-        "divination": "Divination",
-        "enchantment": "Enchantement",
-        "evocation": "Évocation",
-        "illusion": "Illusion",
-        "necromancy": "Nécromancie",
-        "transmutation": "Transmutation"
+      "LanguageCategories": {
+        "common": "Commune",
+        "origin": "D'Origine",
+        "special": "Spéciale"
       },
       "Fields": {
         "Price": "Prix",
@@ -393,19 +416,12 @@
         "SpecialTraitName": "Nom du trait",
         "SpecialTraitDescription": "Description du trait",
         "SpellLevel": "Niveau (0 = tour de magie)",
-        "SpellSchool": "École",
-        "CastingTime": "Temps d'incantation",
-        "SpellRange": "Portée",
-        "Components": "Composantes",
-        "ComponentVerbal": "Verbale (V)",
-        "ComponentSomatic": "Gestuelle (G)",
-        "ComponentMaterial": "Matérielle (M)",
-        "MaterialDescription": "Composante matérielle",
-        "Duration": "Durée",
+        "SpellDetails": "Détails (temps d'incantation, portée, durée)",
         "Concentration": "Concentration",
         "Ritual": "Rituel",
         "Prepared": "Préparé",
-        "SpellClasses": "Classes"
+        "SpellClasses": "Classes",
+        "LanguageCategory": "Catégorie"
       }
     }
   },
@@ -422,7 +438,8 @@
       "origin": "Origine",
       "class": "Classe",
       "tool": "Outil",
-      "spell": "Sort"
+      "spell": "Sort",
+      "language": "Langue"
     }
   }
 }

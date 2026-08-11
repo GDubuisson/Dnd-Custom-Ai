@@ -11,7 +11,7 @@
       </button>
       {{/each}}
 
-      <div class="exhaustion-chip">
+      <div class="exhaustion-chip" title="{{localize 'DND_CUSTOM.Conditions.ExhaustionTooltip'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
         <div class="ability-stepper">
           <button type="button" class="ability-btn" data-action="exhaustionDecrease" aria-label="-">−</button>
@@ -76,12 +76,15 @@
           {{#if this.armorDisadvantage}}
           <span class="armor-disadvantage-tag" title="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
           {{/if}}
+          {{#if this.jackOfAllTrades}}
+          <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
+          {{/if}}
           <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
         </li>
         {{/each}}
       </ul>
 
-      <div class="proficiency-bonus">
+      <div class="proficiency-bonus" title="{{localize 'DND_CUSTOM.Actor.ProficiencyBonusTooltip'}}">
         {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
       </div>
 

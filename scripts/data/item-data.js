@@ -189,10 +189,13 @@ export class ToolData extends foundry.abstract.TypeDataModel {
   }
 }
 
-/** Sort (SRD 5e) : niveau 0 = tour de magie. Pas de formule de dégâts/DD dédiée — reste dans
- *  la description comme pour les Capacités (cf. FeatureData) ; le bonus d'attaque/DD des
- *  sorts déjà affiché sur la fiche (CharacterData/actor-sheet.js > context.spellcasting)
- *  s'applique à tout sort lancé. */
+/** Sort (SRD 5e, système de sorts simplifié) : niveau 0 = tour de magie. Pas de formule de
+ *  dégâts/DD dédiée — reste dans la description comme pour les Capacités (cf. FeatureData) ;
+ *  le bonus d'attaque/DD des sorts déjà affiché sur la fiche (CharacterData/actor-sheet.js >
+ *  context.spellcasting) s'applique à tout sort lancé. École de magie et composantes (V/S/M)
+ *  retirées du schéma (retour de test — champs purement décoratifs, aucune règle ne s'appuyait
+ *  dessus) ; temps d'incantation/portée/durée fusionnés en un seul champ `details` texte libre
+ *  (ex. "1 action, 18 m, Instantanée") plutôt que trois champs séparés. */
 export class SpellData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -204,34 +207,33 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       // à la création du personnage et à la montée de niveau.
       classes: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
-      school: new StringField({
-        required: true,
-        initial: "evocation",
-        choices: [
-          "abjuration",
-          "conjuration",
-          "divination",
-          "enchantment",
-          "evocation",
-          "illusion",
-          "necromancy",
-          "transmutation"
-        ]
-      }),
-      castingTime: new StringField({ required: false, blank: true, initial: "1 action" }),
-      range: new StringField({ required: false, blank: true, initial: "" }),
-      components: new SchemaField({
-        verbal: new BooleanField({ required: true, initial: false }),
-        somatic: new BooleanField({ required: true, initial: false }),
-        material: new BooleanField({ required: true, initial: false }),
-        materialDescription: new StringField({ required: false, blank: true, initial: "" })
-      }),
-      duration: new StringField({ required: false, blank: true, initial: "" }),
+      details: new StringField({ required: false, blank: true, initial: "" }),
       concentration: new BooleanField({ required: true, initial: false }),
       ritual: new BooleanField({ required: true, initial: false }),
       // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
       // sorts "connus" (Barde/Ensorceleur/Occultiste), où tout sort connu est disponible.
       prepared: new BooleanField({ required: true, initial: false }),
+      description: new HTMLField({ required: false, blank: true, initial: "" })
+    };
+  }
+}
+
+/** Langue connue par un personnage : simple étiquette + catégorie, sans aucune mécanique de
+ *  jet (contrairement aux Capacités, dont "Druidique" faisait auparavant partie à tort — une
+ *  langue n'a pas de classe/niveau/charges). Trois catégories : "common" (la langue commune,
+ *  connue par tous), "origin" (langue propre à l'une des 6 Origines, cf. la clé `language` de
+ *  scripts/data/origins.json — la Commune et la langue d'Origine sont octroyées automatiquement
+ *  à la création du personnage, cf. helpers/class-content.js > grantLanguages), "special"
+ *  (langue secrète/de métier, ex. Argot des rues, Druidique — jamais octroyée automatiquement,
+ *  à glisser sur la fiche depuis le compendium Langues au cas par cas). */
+export class LanguageData extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      category: new StringField({
+        required: true,
+        initial: "special",
+        choices: ["common", "origin", "special"]
+      }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }

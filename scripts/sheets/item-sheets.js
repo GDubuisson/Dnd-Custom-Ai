@@ -156,3 +156,9 @@ export class SpellItemSheet extends DndCustomItemSheet {
     form: { template: `systems/${SYSTEM_ID}/templates/item/spell-sheet.hbs` }
   };
 }
+
+export class LanguageItemSheet extends DndCustomItemSheet {
+  static PARTS = {
+    form: { template: `systems/${SYSTEM_ID}/templates/item/language-sheet.hbs` }
+  };
+}

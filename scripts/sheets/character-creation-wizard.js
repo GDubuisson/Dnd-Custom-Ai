@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS, SKILL_ABILITIES } from "../data/character-data.js";
-import { grantClassContent } from "../helpers/class-content.js";
+import { grantClassContent, grantLanguages } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ApplicationV2 } = foundry.applications.api;
@@ -289,6 +289,9 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     // Capacités de classe (niveau 1) + tours de magie/sorts de niveau 1 pour une classe
     // lanceuse, cf. helpers/class-content.js.
     await grantClassContent(this.actor, classKey, this.actor.system.attributes.level);
+    // Commune + langue d'Origine (cf. helpers/class-content.js) : les langues spéciales restent
+    // un ajout manuel, jamais octroyées automatiquement.
+    await grantLanguages(this.actor, origin);
 
     // Devient le "personnage joueur" assigné à cet utilisateur (cf. ownership ci-dessus, même
     // exclusion du MJ). Un utilisateur ne peut mettre à jour que son propre User (droit natif

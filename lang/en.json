@@ -60,12 +60,16 @@
       "Class": "Class",
       "Origin": "Origin",
       "HP": "Hit Points",
+      "HPTooltip": "The character's life pool. At 0 HP, they fall unconscious and must succeed death saving throws to survive.",
       "HPTemp": "Temporary hit points",
       "AC": "Armor Class",
+      "ACTooltip": "How hard the character is to hit. An attack roll must equal or exceed this value to hit.",
       "Speed": "Speed",
+      "SpeedTooltip": "Distance the character can move in one turn (shown in meters).",
       "SaveShort": "Save",
       "ModShort": "Mod.",
       "ProficiencyBonus": "Proficiency bonus",
+      "ProficiencyBonusTooltip": "Added to checks, saves and attack rolls the character is proficient with. Increases with level.",
       "SkillsTitle": "Skills",
       "Initiative": "Initiative",
       "PassivePerception": "Passive Perception",
@@ -74,8 +78,13 @@
       "OriginAdvantageTooltip": "Advantage on this check thanks to Origin",
       "ArmorDisadvantageShort": "Disadvantage",
       "ArmorDisadvantageTooltip": "Disadvantage on this check due to worn armor",
+      "JackOfAllTradesShort": "Jack of All Trades",
+      "JackOfAllTradesTooltip": "Half proficiency bonus added thanks to the Jack of All Trades feature",
       "CarryCapacity": "Carry Capacity",
       "LevelUpAvailable": "Level up available",
+      "XpGmLabel": "XP (GM)",
+      "XpGmTooltip": "Character's total experience, visible to the GM only — never shown to players",
+      "XpMaxLevel": "max level",
       "DeathSuccesses": "Successes",
       "DeathFailures": "Failures",
       "Stabilized": "Stabilized",
@@ -95,7 +104,7 @@
     },
     "Macros": {
       "ImportContent": "Import system content",
-      "ImportContentDone": "Import complete: weapons/armor/gear/tools/spells/features into world Items, Classes/Origins into their compendiums (see console for details)."
+      "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details)."
     },
     "Roll": {
       "Tooltip": "Click: normal roll. Shift-click: advantage. Ctrl-click: disadvantage.",
@@ -134,7 +143,8 @@
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
       "LevelUp": "{name} reaches level {level}!",
       "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
-      "NoChargesLeft": "No uses left for {feature}."
+      "NoChargesLeft": "No uses left for {feature}.",
+      "ClassContentGranted": "{name} gains: {names}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -200,7 +210,8 @@
       "SpellAttackBonus": "Spell attack bonus",
       "Cantrips": "Cantrips",
       "SpellLevelLabel": "Level {level} spells",
-      "SpellLevelShort": "Lvl.",
+      "SpellUsesLabel": "Spells per rest",
+      "SpellUsesTooltip": "Simplified system: 1 charge per spell cast (cantrips are free), regardless of the spell's level. Fully restored on a long rest.",
       "Cast": "Cast",
       "NoSpells": "No spell recorded",
       "ConcentratingOn": "Concentrating on:",
@@ -261,11 +272,12 @@
       "ClassInfoSaves": "Saving throw proficiencies: {saves}",
       "ClassInfoSkills": "{count} skill(s) to choose",
       "ClassInfoSpellcasting": "Spellcaster ({ability})",
-      "ClassContentGranted": "{name} gains: {names}."
+      "ClassContentMissing": "No class Features/Spells found in the compendiums (system content import may not be finished yet)."
     },
     "Conditions": {
       "Title": "Conditions",
       "Exhaustion": "Exhaustion",
+      "ExhaustionTooltip": "Cumulative exhaustion level (0-6). Each level adds its own penalty: disadvantage on checks (1), speed halved (2), disadvantage on attacks/saves (3), max HP halved (4), speed reduced to 0 (5), death (6).",
       "blinded": "Blinded",
       "charmed": "Charmed",
       "deafened": "Deafened",
@@ -285,12 +297,28 @@
     "Journal": {
       "Biography": "Biography",
       "Notes": "Notes",
+      "LanguagesTitle": "Known Languages",
+      "NoLanguages": "No known languages",
+      "LanguagesDropHint": "Drag a language here from the Languages compendium (or another open sheet) to add it.",
       "OriginsComparisonTitle": "Origins Comparison",
       "OriginColumn": "Origin",
       "TraitsColumn": "Cultural Traits",
       "AbilityBonusesColumn": "Ability Bonuses",
       "SkillAdvantagesColumn": "Skill Advantages",
-      "SpecialTraitColumn": "Special Trait"
+      "SpecialTraitColumn": "Special Trait",
+      "PlayerGuideTitle": "Player Guide",
+      "PlayerGuidePageGlossary": "Glossary",
+      "PlayerGuidePageRules": "Basic Rules",
+      "PlayerGuidePageSpells": "Spells (simplified system)",
+      "PlayerGuidePageClasses": "Classes",
+      "PlayerGuidePageOrigins": "Origins",
+      "PlayerGuidePageLanguages": "Languages",
+      "PlayerGuidePageEquipment": "Equipment and Inventory",
+      "GmGuideTitle": "GM Guide",
+      "GmGuidePageOverview": "Overview",
+      "GmGuidePageAdjudication": "Features to Adjudicate",
+      "GmGuidePageSimplifications": "Assumed Simplifications",
+      "GmGuidePageProgression": "Experience and Leveling Up"
     },
     "Item": {
       "ArmorTypes": {
@@ -322,15 +350,10 @@
         "shortRest": "Short rest",
         "longRest": "Long rest"
       },
-      "SpellSchools": {
-        "abjuration": "Abjuration",
-        "conjuration": "Conjuration",
-        "divination": "Divination",
-        "enchantment": "Enchantment",
-        "evocation": "Evocation",
-        "illusion": "Illusion",
-        "necromancy": "Necromancy",
-        "transmutation": "Transmutation"
+      "LanguageCategories": {
+        "common": "Common",
+        "origin": "Origin",
+        "special": "Special"
       },
       "Fields": {
         "Price": "Price",
@@ -393,19 +416,12 @@
         "SpecialTraitName": "Trait Name",
         "SpecialTraitDescription": "Trait Description",
         "SpellLevel": "Level (0 = cantrip)",
-        "SpellSchool": "School",
-        "CastingTime": "Casting Time",
-        "SpellRange": "Range",
-        "Components": "Components",
-        "ComponentVerbal": "Verbal (V)",
-        "ComponentSomatic": "Somatic (S)",
-        "ComponentMaterial": "Material (M)",
-        "MaterialDescription": "Material Component",
-        "Duration": "Duration",
+        "SpellDetails": "Details (casting time, range, duration)",
         "Concentration": "Concentration",
         "Ritual": "Ritual",
         "Prepared": "Prepared",
-        "SpellClasses": "Classes"
+        "SpellClasses": "Classes",
+        "LanguageCategory": "Category"
       }
     }
   },
@@ -422,7 +438,8 @@
       "origin": "Origin",
       "class": "Class",
       "tool": "Tool",
-      "spell": "Spell"
+      "spell": "Spell",
+      "language": "Language"
     }
   }
 }

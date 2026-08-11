@@ -17,6 +17,14 @@
         {{/if}}
       </span>
       {{/if}}
+      {{#if isGM}}
+      <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
+        <span class="fixed-field-value">
+          {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
+        </span>
+      </div>
+      {{/if}}
       <div class="fixed-field">
         <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
         {{#if classLabel}}
@@ -36,7 +44,7 @@
     </div>
 
     <div class="header-row">
-      <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
+      <label class="hp-field" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">{{localize "DND_CUSTOM.Actor.HP"}}
         <span class="hp-values">
           <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
           / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
@@ -44,10 +52,10 @@
         </span>
         <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
       </label>
-      <label>{{localize "DND_CUSTOM.Actor.AC"}}
+      <label title="{{localize 'DND_CUSTOM.Actor.ACTooltip'}}">{{localize "DND_CUSTOM.Actor.AC"}}
         <span class="computed-value">{{system.attributes.ac.value}}</span>
       </label>
-      <label>{{localize "DND_CUSTOM.Actor.Speed"}}
+      <label title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">{{localize "DND_CUSTOM.Actor.Speed"}}
         <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
       </label>
     </div>

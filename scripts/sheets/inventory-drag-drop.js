@@ -1,9 +1,9 @@
-// Objets physiques (quantité empilable) + Capacités/Sorts (ni quantité ni doublon voulu, cf.
-// _onDropItem ci-dessous) : ces deux derniers étaient absents de cette liste jusqu'ici, ce qui
-// bloquait silencieusement tout glisser-déposer d'une Capacité/d'un Sort depuis un compendium
-// ou une autre fiche vers l'onglet "Capacités" (retour de test).
+// Objets physiques (quantité empilable) + Capacités/Sorts/Langues (ni quantité ni doublon
+// voulu, cf. _onDropItem ci-dessous) : ces derniers étaient absents de cette liste jusqu'ici,
+// ce qui bloquait silencieusement tout glisser-déposer d'une Capacité/d'un Sort/d'une Langue
+// depuis un compendium ou une autre fiche vers la fiche de personnage (retour de test).
 const PHYSICAL_TYPES = ["weapon", "armor", "gear", "tool"];
-const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell"];
+const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell", "language"];
 
 /** Mixin ApplicationV2 : glisser-déposer d'objet entre deux fiches ouvertes (personnage ↔
  *  véhicule, ou depuis un compendium/le monde), édition directe des lignes d'inventaire
