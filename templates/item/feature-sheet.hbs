@@ -20,6 +20,16 @@
   </div>
 
   <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Subclass"}}</label>
+    <input type="text" name="system.subclass" value="{{system.subclass}}" list="feature-subclass-options" {{#unless isGM}}disabled{{/unless}}>
+    <datalist id="feature-subclass-options">
+      {{#each subclassOptions}}
+      <option value="{{this}}">
+      {{/each}}
+    </datalist>
+  </div>
+
+  <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Level"}}</label>
     <input type="number" name="system.level" value="{{system.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
   </div>

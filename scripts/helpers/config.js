@@ -49,6 +49,46 @@ DND_CUSTOM.classes = {
 /** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
 DND_CUSTOM.spellcastingClasses = ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"];
 
+/** Sous-classes SRD 5e disponibles par classe (clé classe -> clé sous-classe -> clé de
+ *  localisation), une par classe pour l'instant (première option SRD listée pour chacune) —
+ *  d'autres pourront s'ajouter au même niveau d'imbrication sans changement de structure.
+ *  Utilisé par la fiche de personnage (sélecteur) et grantClassContent (helpers/class-content.js)
+ *  pour l'octroi automatique des Capacités liées (system.subclass sur FeatureData, libellé
+ *  localisé exact, même convention que system.class). */
+DND_CUSTOM.subclasses = {
+  barbarian: { berserker: "DND_CUSTOM.Subclasses.barbarian.berserker" },
+  bard: { lore: "DND_CUSTOM.Subclasses.bard.lore" },
+  cleric: { life: "DND_CUSTOM.Subclasses.cleric.life" },
+  druid: { land: "DND_CUSTOM.Subclasses.druid.land" },
+  fighter: { champion: "DND_CUSTOM.Subclasses.fighter.champion" },
+  monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
+  paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
+  ranger: { hunter: "DND_CUSTOM.Subclasses.ranger.hunter" },
+  rogue: { thief: "DND_CUSTOM.Subclasses.rogue.thief" },
+  sorcerer: { draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic" },
+  warlock: { fiend: "DND_CUSTOM.Subclasses.warlock.fiend" },
+  wizard: { evocation: "DND_CUSTOM.Subclasses.wizard.evocation" }
+};
+
+/** Niveau SRD 5e auquel chaque classe choisit sa sous-classe (Domaine divin/Origine
+ *  ensorcelée/Patron surnaturel dès le niveau 1 ; Tradition arcanique/Cercle druidique au
+ *  niveau 2 ; toutes les autres au niveau 3). Utilisé pour n'afficher le sélecteur de
+ *  sous-classe qu'une fois ce seuil atteint. */
+DND_CUSTOM.subclassLevel = {
+  barbarian: 3,
+  bard: 3,
+  cleric: 1,
+  druid: 2,
+  fighter: 3,
+  monk: 3,
+  paladin: 3,
+  ranger: 3,
+  rogue: 3,
+  sorcerer: 1,
+  warlock: 1,
+  wizard: 2
+};
+
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
 DND_CUSTOM.classHitDice = {
   barbarian: 12,

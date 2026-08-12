@@ -139,6 +139,12 @@ export class FeatureItemSheet extends DndCustomItemSheet {
       .filter((item) => item.type === "class")
       .map((item) => item.name)
       .sort((a, b) => a.localeCompare(b, game.i18n.lang));
+    // Même principe pour la sous-classe : référence texte libre vers un Item "subclass" du
+    // monde (system.subclass), pas une "choices" figée du DataModel.
+    context.subclassOptions = game.items
+      .filter((item) => item.type === "subclass")
+      .map((item) => item.name)
+      .sort((a, b) => a.localeCompare(b, game.i18n.lang));
     context.rechargeOptions = FEATURE_RECHARGE_OPTIONS;
     return context;
   }

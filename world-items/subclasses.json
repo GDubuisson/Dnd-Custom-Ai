@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Voie du Berserker",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-du-Berserker.webp",
+    "system": {
+      "description": "<p>Sous-classe de Barbare (niveau 3, SRD 5e). Voie de la rage la plus brutale et la plus directe : le Berserker se laisse submerger par une frénésie dévastatrice, au prix de son épuisement une fois la rage retombée.</p><ul><li>Niveau 3 : Frénésie</li><li>Niveau 6 : Rage sans esprit</li></ul>"
+    }
+  },
+  {
+    "name": "Collège du Savoir",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-du-Savoir.webp",
+    "system": {
+      "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Le Barde du Savoir collectionne les connaissances et les talents glanés partout, aussi à l'aise pour déstabiliser un adversaire en plein combat que pour briller dans n'importe quel domaine d'expertise.</p><ul><li>Niveau 3 : Compétences supplémentaires, Mots cinglants</li><li>Niveau 6 : Sorts supplémentaires</li></ul>"
+    }
+  },
+  {
+    "name": "Domaine de la Vie",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Vie.webp",
+    "system": {
+      "description": "<p>Sous-classe de Clerc (niveau 1, SRD 5e). Le Domaine de la Vie est le plus directement dédié à la guérison : ses sorts de soin sont plus efficaces, et son Clerc porte l'armure lourde sans entraînement préalable.</p><ul><li>Niveau 1 : Compétence de domaine, Disciple de la vie</li><li>Niveau 2 : Canalisation divine — Préserver la vie</li></ul>"
+    }
+  },
+  {
+    "name": "Cercle de la Terre",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Terre.webp",
+    "system": {
+      "description": "<p>Sous-classe de Druide (niveau 2, SRD 5e). Le Cercle de la Terre relie ses membres à la magie ancienne des lieux sauvages, leur ouvrant des sorts supplémentaires liés au terrain choisi (à convenir avec le MJ) et une récupération magique accrue.</p><ul><li>Niveau 2 : Sorts de cercle, Récupération naturelle</li></ul>"
+    }
+  },
+  {
+    "name": "Champion",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Champion.webp",
+    "system": {
+      "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Archétype le plus simple et le plus direct : une prouesse martiale brute, portée par une capacité accrue à porter des coups critiques.</p><ul><li>Niveau 3 : Critique amélioré</li><li>Niveau 7 : Athlète accompli</li></ul>"
+    }
+  },
+  {
+    "name": "Voie de la Main Ouverte",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Main-Ouverte.webp",
+    "system": {
+      "description": "<p>Sous-classe de Moine (niveau 3, SRD 5e). Tradition monastique la plus orientée combat à mains nues : ses adeptes exploitent chaque coup porté en Rafale de coups pour déséquilibrer, repousser ou étourdir leur adversaire.</p><ul><li>Niveau 3 : Technique de la Main Ouverte</li><li>Niveau 6 : Corps parfait (guérison par le Ki)</li></ul>"
+    }
+  },
+  {
+    "name": "Serment de Dévotion",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-de-Devotion.webp",
+    "system": {
+      "description": "<p>Sous-classe de Paladin (niveau 3, SRD 5e). Le Serment de Dévotion incarne les plus hauts idéaux chevaleresques : honnêteté, honneur, protection des innocents.</p><ul><li>Niveau 3 : Canalisation divine — Arme sacrée / Tourment des injustes</li><li>Niveau 7 : Aura de dévotion</li></ul>"
+    }
+  },
+  {
+    "name": "Chasseur",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chasseur.webp",
+    "system": {
+      "description": "<p>Sous-classe de Rôdeur (niveau 3, SRD 5e). Le Chasseur perfectionne des techniques de combat spécialisées contre les menaces qu'il traque, des adversaires isolés les plus puissants aux hordes les plus nombreuses.</p><ul><li>Niveau 3 : Proie du chasseur</li><li>Niveau 7 : Tactiques défensives</li></ul>"
+    }
+  },
+  {
+    "name": "Voleur",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voleur.webp",
+    "system": {
+      "description": "<p>Sous-classe de Roublard (niveau 3, SRD 5e). L'archétype le plus emblématique : un expert du vol, de l'escalade et de l'usage rapide et discret de ses mains.</p><ul><li>Niveau 3 : Doigts agiles, Escalade experte</li></ul>"
+    }
+  },
+  {
+    "name": "Lignage draconique",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Lignage-draconique.webp",
+    "system": {
+      "description": "<p>Sous-classe d'Ensorceleur (niveau 1, SRD 5e). La magie de cet Ensorceleur trouve sa source dans le sang d'un dragon ancestral, dont il tire une résistance à un type de dégâts et une vigueur accrue.</p><ul><li>Niveau 1 : Ascendant draconique, Résilience draconique</li><li>Niveau 6 : Affinité élémentaire</li></ul>"
+    }
+  },
+  {
+    "name": "Le Fiélon",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Fielon.webp",
+    "system": {
+      "description": "<p>Sous-classe d'Occultiste (niveau 1, SRD 5e). Ce patron, entité maléfique venue des plans inférieurs, offre à son pacte une résilience née du danger et un soupçon de chance surnaturelle.</p><ul><li>Niveau 1 : Bienfait du Fiélon</li><li>Niveau 6 : Chance propre au Fiélon</li></ul>"
+    }
+  },
+  {
+    "name": "École d'évocation",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-devocation.webp",
+    "system": {
+      "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École d'évocation forme des lanceurs de sorts destructeurs, capables d'épargner leurs alliés au cœur même de leurs explosions magiques.</p><ul><li>Niveau 2 : Sculpteur de sorts</li><li>Niveau 6 : Tour de magie renforcé</li></ul>"
+    }
+  }
+]

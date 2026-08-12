@@ -54,6 +54,20 @@
       "warlock": "Warlock",
       "wizard": "Wizard"
     },
+    "Subclasses": {
+      "barbarian": { "berserker": "Path of the Berserker" },
+      "bard": { "lore": "College of Lore" },
+      "cleric": { "life": "Life Domain" },
+      "druid": { "land": "Circle of the Land" },
+      "fighter": { "champion": "Champion" },
+      "monk": { "openHand": "Way of the Open Hand" },
+      "paladin": { "devotion": "Oath of Devotion" },
+      "ranger": { "hunter": "Hunter" },
+      "rogue": { "thief": "Thief" },
+      "sorcerer": { "draconic": "Draconic Bloodline" },
+      "warlock": { "fiend": "The Fiend" },
+      "wizard": { "evocation": "School of Evocation" }
+    },
     "Actor": {
       "Name": "Character name",
       "Level": "Level",
@@ -93,8 +107,12 @@
       "OpenDescriptionTooltip": "Click to open the description sheet",
       "ClassSheetMissing": "No description sheet found for class \"{name}\" (import/populate the Classes compendium, see world-items/README.md).",
       "OriginSheetMissing": "No description sheet found for Origin \"{name}\" (import/populate the Origins compendium, see world-items/README.md).",
+      "SubclassSheetMissing": "No description sheet found for subclass \"{name}\" (import/populate the Subclasses compendium, see world-items/README.md).",
       "NoClass": "No class chosen",
-      "NoOrigin": "No Origin chosen"
+      "NoOrigin": "No Origin chosen",
+      "Subclass": "Subclass",
+      "NoSubclass": "No subclass chosen",
+      "SubclassLevelHint": "Available at level {level}"
     },
     "Actions": {
       "RestShort": "Short rest",
@@ -409,6 +427,7 @@
         "StrengthRequired": "Strength Required",
         "StealthDisadvantage": "Stealth Disadvantage",
         "Class": "Class",
+        "Subclass": "Subclass (if specific)",
         "Level": "Level",
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",

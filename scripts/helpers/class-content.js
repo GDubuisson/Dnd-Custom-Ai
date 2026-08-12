@@ -35,7 +35,10 @@ function countAvailableContent(type, packName) {
 /** Octroie à `actor` les Capacités de classe et, s'il s'agit d'une classe lanceuse, les Sorts
  *  correspondant à sa classe/son niveau actuel, s'il ne les possède pas déjà (par nom) :
  *  - Capacités (FeatureData.class/level, libellé de classe localisé exact, ex. "Barbare") :
- *    toute Capacité dont le niveau requis est atteint (`level` <= niveau du personnage).
+ *    toute Capacité dont le niveau requis est atteint (`level` <= niveau du personnage). Une
+ *    Capacité de sous-classe (FeatureData.subclass renseigné) n'est incluse que si elle
+ *    correspond à la sous-classe choisie par le personnage (actor.system.subclass, cf.
+ *    DND_CUSTOM.subclasses, config.js) — vide, elle reste une Capacité de classe de base.
  *  - Sorts (SpellData.classes/level, liste de libellés séparés par virgule) : tours de magie
  *    (niveau 0, toujours connus) + sorts dont le niveau est couvert par le plus haut niveau de
  *    sort accessible au personnage (system.spells.maxLevel, déjà recalculé pour le niveau
@@ -54,6 +57,13 @@ export async function grantClassContent(actor, classKey, level) {
   const ownedNames = new Set(actor.items.contents.map((item) => item.name));
   const isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(classKey);
 
+  // Sous-classe (facultative) : lue directement sur l'Actor plutôt que passée en paramètre —
+  // grantClassContent est déjà rappelée telle quelle à la montée de niveau (actor-sheet.js >
+  // #onLevelUp) et au changement de sous-classe (hook updateActor, dnd-custom-ai.js), les deux
+  // fois avec actor.system.subclass à jour. Vide tant qu'aucune sous-classe n'est choisie.
+  const subclassKey = actor.system.subclass;
+  const subclassLabel = subclassKey ? game.i18n.localize(DND_CUSTOM.subclasses[classKey]?.[subclassKey]) : "";
+
   // Plus haut niveau de sort accessible à la classe/au niveau du personnage : donnée dérivée
   // exposée par CharacterData#prepareDerivedData (cf. rules.js > spellUsesForClass), pas
   // recalculée ici pour éviter de dupliquer la logique de la table SRD.
@@ -66,7 +76,13 @@ export async function grantClassContent(actor, classKey, level) {
     findClassContentCandidates(
       "feature",
       "capacites",
-      (system) => system.class === classLabel && (system.level ?? 1) <= level
+      (system) =>
+        system.class === classLabel &&
+        (system.level ?? 1) <= level &&
+        // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
+        // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
+        // choisie par le personnage (cf. subclassLabel ci-dessus).
+        (!system.subclass || system.subclass === subclassLabel)
     ),
     isSpellcaster
       ? findClassContentCandidates("spell", "sorts", (system) => {

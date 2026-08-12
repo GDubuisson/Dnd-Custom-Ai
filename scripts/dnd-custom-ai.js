@@ -25,6 +25,7 @@ import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { declareDeath } from "./helpers/death.js";
+import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import {
   equipmentSlots,
@@ -89,6 +90,10 @@ Hooks.once("init", async () => {
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
   CONFIG.Item.dataModels.class = ClassData;
+  // Sous-classe : même schéma que "class" (nom + description libre), même statut "flavor
+  // seulement" — cf. commentaire de ClassData (class-data.js) et DND_CUSTOM.subclasses
+  // (config.js) pour la donnée mécanique réelle (niveau d'obtention, Capacités liées).
+  CONFIG.Item.dataModels.subclass = ClassData;
 
   // CONFIG.statusEffects est un Proxy (cf. foundry/client/config.mjs) qui maintient aussi un
   // accès par id (`CONFIG.statusEffects["prone"]`, utilisé en interne par
@@ -130,7 +135,7 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, GearItemSheet, { types: ["gear"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, FeatureItemSheet, { types: ["feature"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, OriginItemSheet, { types: ["origin"], makeDefault: true });
-  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class", "subclass"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, SpellItemSheet, { types: ["spell"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, LanguageItemSheet, { types: ["language"], makeDefault: true });
@@ -210,6 +215,7 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
 
   delete sys.class;
   delete sys.origin;
+  delete sys.subclass;
   if (sys.attributes) delete sys.attributes.level;
   if (sys.abilities) {
     for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
@@ -265,6 +271,20 @@ Hooks.on("createActor", (actor, options, userId) => {
   if (actor.system.class || actor.system.origin) return;
 
   new CharacterCreationWizard(actor).render(true);
+});
+
+// Octroie les Capacités de sous-classe dès que le joueur/MJ choisit une sous-classe sur la
+// fiche (select "system.subclass", cf. character-sheet.hbs) : même mécanique que la montée de
+// niveau (#onLevelUp, actor-sheet.js), rejouée ici pour ne pas attendre le prochain niveau.
+// grantClassContent lit actor.system.subclass directement (pas de paramètre dédié, cf.
+// helpers/class-content.js) donc ce simple ré-appel suffit à octroyer ce qui devient
+// disponible. Ne s'exécute que côté client à l'origine du changement (garde sur userId).
+Hooks.on("updateActor", async (actor, changes, options, userId) => {
+  if (game.user.id !== userId) return;
+  if (actor.type !== "character") return;
+  if (changes.system?.subclass === undefined) return;
+
+  await grantClassContent(actor, actor.system.class, actor.system.attributes.level);
 });
 
 // Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus

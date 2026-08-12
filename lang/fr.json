@@ -54,6 +54,20 @@
       "warlock": "Occultiste",
       "wizard": "Magicien"
     },
+    "Subclasses": {
+      "barbarian": { "berserker": "Voie du Berserker" },
+      "bard": { "lore": "Collège du Savoir" },
+      "cleric": { "life": "Domaine de la Vie" },
+      "druid": { "land": "Cercle de la Terre" },
+      "fighter": { "champion": "Champion" },
+      "monk": { "openHand": "Voie de la Main Ouverte" },
+      "paladin": { "devotion": "Serment de Dévotion" },
+      "ranger": { "hunter": "Chasseur" },
+      "rogue": { "thief": "Voleur" },
+      "sorcerer": { "draconic": "Lignage draconique" },
+      "warlock": { "fiend": "Le Fiélon" },
+      "wizard": { "evocation": "École d'évocation" }
+    },
     "Actor": {
       "Name": "Nom du personnage",
       "Level": "Niveau",
@@ -93,8 +107,12 @@
       "OpenDescriptionTooltip": "Cliquer pour ouvrir la fiche de description",
       "ClassSheetMissing": "Aucune fiche de description trouvée pour la classe \"{name}\" (importez/peuplez le compendium Classes, cf. world-items/README.md).",
       "OriginSheetMissing": "Aucune fiche de description trouvée pour l'Origine \"{name}\" (importez/peuplez le compendium Origines, cf. world-items/README.md).",
+      "SubclassSheetMissing": "Aucune fiche de description trouvée pour la sous-classe \"{name}\" (importez/peuplez le compendium Sous-classes, cf. world-items/README.md).",
       "NoClass": "Aucune classe choisie",
-      "NoOrigin": "Aucune Origine choisie"
+      "NoOrigin": "Aucune Origine choisie",
+      "Subclass": "Sous-classe",
+      "NoSubclass": "Aucune sous-classe choisie",
+      "SubclassLevelHint": "Disponible au niveau {level}"
     },
     "Actions": {
       "RestShort": "Repos court",
@@ -409,6 +427,7 @@
         "StrengthRequired": "Force requise",
         "StealthDisadvantage": "Désavantage aux tests de Discrétion",
         "Class": "Classe",
+        "Subclass": "Sous-classe (si spécifique)",
         "Level": "Niveau",
         "RequiresRoll": "Nécessite un jet",
         "RollFormula": "Formule de jet",
