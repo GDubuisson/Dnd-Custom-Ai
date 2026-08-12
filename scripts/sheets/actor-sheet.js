@@ -94,6 +94,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
       castSpell: DndCustomActorSheet.#onCastSpell,
+      rollSpellDamage: DndCustomActorSheet.#onRollSpellDamage,
       dropConcentration: DndCustomActorSheet.#onDropConcentration,
       rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
@@ -778,7 +779,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Lance un sort de l'onglet Sorts : décompte 1 charge du pool de sorts (système simplifié,
    *  cf. rules.js > spellUsesForClass — plus d'emplacement par niveau ni de surclassement),
-   *  sans effet pour un tour de magie (niveau 0), et poste la description dans le chat. */
+   *  sans effet pour un tour de magie (niveau 0). Un sort marqué "jet d'attaque"
+   *  (`system.attack`, cf. SpellData dans item-data.js) fait un jet d'attaque de sort (1d20 +
+   *  spellAttackBonus, comme #onRollWeaponAttack pour une arme) au lieu de simplement poster la
+   *  description ; le jet de dégâts associé reste un bouton séparé (#onRollSpellDamage,
+   *  affiché seulement si un hit est confirmé), sur le même principe que les armes — dégâts non
+   *  automatiques tant que le MJ n'a pas confirmé le jet d'attaque contre la CA de la cible. */
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
@@ -813,9 +819,44 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       }
     }
 
+    if (item.system.attack) {
+      const system = this.actor.system;
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      const attackBonus = spellAttackBonus(proficiencyBonus(system.attributes.level), spellAbilityMod);
+      const cond = conditionRollEffects(this.actor, "attack");
+      await rollCheck({
+        actor: this.actor,
+        formula: formatModifier(attackBonus),
+        flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
+        advantage: event.shiftKey || cond.advantage,
+        disadvantage: event.ctrlKey || cond.disadvantage
+      });
+      return;
+    }
+
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.CastSpell", { name: this.actor.name, spell: item.name })
+    });
+  }
+
+  /** Jet de dégâts d'un sort d'attaque (cf. #onCastSpell) : juste le(s) dé(s) de dégâts
+   *  configurés sur le sort, sans modificateur — contrairement à une arme, les dégâts d'un
+   *  sort SRD 5e n'ajoutent pas le modificateur de caractéristique d'incantation (sauf mention
+   *  explicite du sort, non modélisée ici). */
+  static async #onRollSpellDamage(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "spell" || !item.system.damage.dice) return;
+
+    const damageType = item.system.damage.type
+      ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
+      : "";
+    await rollDamage({
+      actor: this.actor,
+      dice: item.system.damage.dice,
+      formula: "",
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageType ? ` (${damageType})` : ""}`
     });
   }
 

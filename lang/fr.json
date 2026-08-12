@@ -123,6 +123,8 @@
       "ToolCheck": "{tool} — Test de {skill}",
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
+      "SpellAttack": "Attaque avec {spell}",
+      "SpellDamage": "Dégâts de {spell}",
       "DeathSave": "Jet de sauvegarde de la mort",
       "Advantage": "Avantage",
       "Disadvantage": "Désavantage",
@@ -142,6 +144,7 @@
       "Death": "{name} a échoué trois jets de sauvegarde de la mort et succombe...",
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
+      "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
       "XpAmount": "Montant d'XP",
       "XpAwarded": "{amount} XP répartis ({share} chacun) entre : {names}.",
@@ -342,7 +345,17 @@
       "DamageTypes": {
         "bludgeoning": "Contondant",
         "piercing": "Perforant",
-        "slashing": "Tranchant"
+        "slashing": "Tranchant",
+        "acid": "Acide",
+        "cold": "Froid",
+        "fire": "Feu",
+        "force": "Force",
+        "lightning": "Foudre",
+        "necrotic": "Nécrotique",
+        "poison": "Poison",
+        "psychic": "Psychique",
+        "radiant": "Radiant",
+        "thunder": "Tonnerre"
       },
       "WeaponHandedness": {
         "oneHanded": "Une main",
@@ -429,6 +442,7 @@
         "Ritual": "Rituel",
         "Prepared": "Préparé",
         "SpellClasses": "Classes",
+        "SpellAttack": "Jet d'attaque",
         "LanguageCategory": "Catégorie"
       }
     }

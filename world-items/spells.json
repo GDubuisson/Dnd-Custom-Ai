@@ -9,6 +9,8 @@
       "details": "1 action, 36 m, Instantanée",
       "concentration": false,
       "ritual": false,
+      "attack": true,
+      "damage": { "dice": "1d10", "type": "fire" },
       "description": "Vous lancez un éclat de feu sur une créature ou un objet à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, la cible subit 1d10 dégâts de feu. Un objet inflammable touché par ce sort s'enflamme s'il n'est ni porté ni transporté."
     }
   },
@@ -35,7 +37,9 @@
       "details": "1 action, 36 m, Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Un rayon d'énergie crépitante fend l'air vers une créature à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, elle subit 1d10 dégâts de force. Le sort crée un rayon supplémentaire au niveau 5 (deux rayons), au niveau 11 (trois rayons) et au niveau 17 (quatre rayons) ; les rayons peuvent viser une même cible ou des cibles différentes, avec un jet d'attaque séparé pour chacun."
+      "attack": true,
+      "damage": { "dice": "1d10", "type": "force" },
+      "description": "Un rayon d'énergie crépitante fend l'air vers une créature à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, elle subit 1d10 dégâts de force. Le sort crée un rayon supplémentaire au niveau 5 (deux rayons), au niveau 11 (trois rayons) et au niveau 17 (quatre rayons) ; les rayons peuvent viser une même cible ou des cibles différentes, avec un jet d'attaque séparé pour chacun (bouton \"Lancer\" à recliquer pour chaque rayon supplémentaire)."
     }
   },
   {
