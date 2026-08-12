@@ -5,9 +5,9 @@ const SYSTEM_ID = "dnd-custom-ai";
 // Armes/armures/objets/outils : importés dans les Items du monde (comme avant, cf.
 // world-items/README.md), rangés dans un dossier par catégorie (cf. ensureFolder ci-dessous —
 // retour de test, tout arrivait en vrac dans l'onglet "Objets"). Classes/Sous-classes/Origines/
-// Sorts/Capacités de classe/Langues : importés DIRECTEMENT dans leur compendium (packs/classes,
-// packs/sous-classes, packs/origines, packs/sorts, packs/capacites, packs/langues, cf.
-// system.json > packs), qui
+// Sorts/Capacités de classe/Dons/Langues : importés DIRECTEMENT dans leur compendium
+// (packs/classes, packs/sous-classes, packs/origines, packs/sorts, packs/capacites,
+// packs/dons, packs/langues, cf. system.json > packs), qui
 // reste vide sinon — Foundry ne compile ces packs qu'à partir de documents ajoutés depuis
 // l'interface, et ce système n'a pas d'étape de build pour les préremplir autrement (cf.
 // PROJECT.md > pas de build). Les compendiums n'ont pas cette notion de dossier ici (pas
@@ -34,6 +34,7 @@ const COMPENDIUM_FILES = [
   { file: "origins.json", pack: `${SYSTEM_ID}.origines` },
   { file: "spells.json", pack: `${SYSTEM_ID}.sorts` },
   { file: "features.json", pack: `${SYSTEM_ID}.capacites` },
+  { file: "feats.json", pack: `${SYSTEM_ID}.dons` },
   { file: "languages.json", pack: `${SYSTEM_ID}.langues` }
 ];
 

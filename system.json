@@ -96,6 +96,17 @@
       }
     },
     {
+      "name": "dons",
+      "label": "Dons",
+      "system": "dnd-custom-ai",
+      "path": "packs/dons",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "capacites",
       "label": "Capacités de classe",
       "system": "dnd-custom-ai",

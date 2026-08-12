@@ -14,10 +14,10 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 
 - `armors.json`, `weapons.json`, `gear.json`, `tools.json` → importés dans les Items du monde
   (onglet "Objets" de Foundry, entre "Acteurs" et "Journaux").
-- `classes.json`, `subclasses.json`, `origins.json`, `spells.json`, `features.json` → importés
-  **directement dans leurs compendiums** (`packs/classes`, `packs/sous-classes`,
-  `packs/origines`, `packs/sorts`, `packs/capacites`), pas dans les Items du monde (cf. "Note
-  sur les classes et les origines" plus bas).
+- `classes.json`, `subclasses.json`, `origins.json`, `spells.json`, `features.json`,
+  `feats.json` → importés **directement dans leurs compendiums** (`packs/classes`,
+  `packs/sous-classes`, `packs/origines`, `packs/sorts`, `packs/capacites`, `packs/dons`), pas
+  dans les Items du monde (cf. "Note sur les classes et les origines" plus bas).
 
 | Fichier | Contenu | Type d'Item | Destination |
 |---|---|---|---|
@@ -27,6 +27,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 69 capacités de classe SRD 5e (classe de base niveaux 1 à 9, + 24 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
+| `feats.json` | 10 dons PHB (règle optionnelle, `class`/`subclass` vides — jamais auto-octroyés) | `feature` | Compendium "Dons" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | Une sous-classe SRD 5e par classe (12), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
@@ -104,6 +105,16 @@ d'évocation (Magicien). Sélectionnable sur la fiche de personnage une fois le 
 d'obtention SRD atteint (`DND_CUSTOM.subclassLevel`, `scripts/helpers/config.js`) ; les
 Capacités liées sont octroyées automatiquement dès la sélection, comme les Capacités de
 classe (cf. `helpers/class-content.js`).
+
+## Note sur les dons
+
+`feats.json` (compendium "Dons", cf. `packs/dons/README.md`) contient 10 dons du manuel
+officiel — une règle optionnelle qu'un joueur peut choisir à la place d'une Amélioration de
+caractéristiques (`DND_CUSTOM.abilityScoreImprovementLevels`). Ce sont des Items `feature`
+comme les Capacités de classe, mais avec `class`/`subclass` vides : `grantClassContent` ne les
+octroie donc jamais automatiquement, ils se glissent toujours à la main depuis ce compendium
+vers l'onglet "Capacités" de la fiche — le MJ et le joueur décident ensemble s'il remplace une
+Amélioration de caractéristiques ou s'ajoute en plus, ce système ne l'impose pas.
 
 ## Note sur les classes, sous-classes, origines, sorts et capacités de classe
 

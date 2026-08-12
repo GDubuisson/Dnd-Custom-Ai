@@ -1,0 +1,143 @@
+[
+  {
+    "name": "Athlète",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Athlete.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : +1 en Force ou en Dextérité (maximum 20). Se relever ne vous coûte plus que 1,50 m de mouvement. Grimper ne vous coûte pas de mouvement supplémentaire. Vous pouvez effectuer un saut en longueur ou en hauteur après ne vous être déplacé que de 1,50 m au lieu des 3 m habituels."
+    }
+  },
+  {
+    "name": "Doué",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Doue.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : +1 en Charisme (maximum 20). Avantage aux tests de Tromperie ou de Représentation pour vous faire passer pour quelqu'un d'autre. Vous pouvez imiter la façon de parler d'une personne que vous avez entendue pendant au moins 1 minute, ou reproduire des sons familiers (test de Tromperie contre la Perspicacité de l'auditeur pour tromper qui connaît bien l'original)."
+    }
+  },
+  {
+    "name": "Sentinelle",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Sentinelle.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : quand vous touchez une créature avec une attaque d'opportunité, sa vitesse tombe à 0 pour le reste du tour. Les créatures provoquent une attaque d'opportunité de votre part même si elles ont utilisé Se désengager. Quand une créature à 1,50 m de vous attaque une cible autre que vous (et ne vous inclut pas comme cible), vous pouvez utiliser votre réaction pour l'attaquer."
+    }
+  },
+  {
+    "name": "Alerte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Alerte.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : +5 aux jets d'Initiative. Vous ne pouvez pas être surpris tant que vous n'êtes pas incapable d'agir. Les autres créatures ne bénéficient pas d'avantage à leurs jets d'attaque contre vous du seul fait qu'elles sont inaperçues de vous."
+    }
+  },
+  {
+    "name": "Tenace",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Tenace.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : vos points de vie maximum augmentent de 2 points par niveau que vous possédez au moment de l'acquisition, puis de 2 points supplémentaires à chaque niveau gagné par la suite (à ajouter manuellement, ce système ne recalcule pas les PV max en fonction des Capacités possédées)."
+    }
+  },
+  {
+    "name": "Chanceux",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Chanceux.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "uses": { "max": 3, "value": 3, "recharge": "longRest" },
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : vous disposez de 3 points de chance. Dépensez-en un pour lancer un d20 supplémentaire lors d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde que vous effectuez (ou juste avant de savoir si l'attaque d'une créature vous touche) et choisissez le résultat à utiliser parmi les deux d20. Un seul point de chance peut être dépensé par jet. Récupérés à l'issue d'un repos long."
+    }
+  },
+  {
+    "name": "Magie d'initié",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Magie-dinitie.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : choisissez une classe lanceuse de sorts (Barde, Clerc, Druide, Ensorceleur, Occultiste ou Magicien). Vous apprenez deux tours de magie de votre choix dans la liste de cette classe, plus un sort de niveau 1 de cette même liste (lançable une fois sans dépenser de charge, récupérée après un repos long ; au-delà, seulement si vous disposez d'un emplacement de sort de cette classe). À ajouter manuellement à votre pool de Sorts avec le MJ."
+    }
+  },
+  {
+    "name": "Résilient",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Resilient.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : choisissez une caractéristique. +1 dans cette caractéristique (maximum 20), et vous devenez maîtrisé du jet de sauvegarde correspondant (à cocher manuellement sur l'onglet Statistiques)."
+    }
+  },
+  {
+    "name": "Guérisseur",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Guerisseur.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d6 + 4",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : avec une Trousse de soins en main, action pour stabiliser une créature à 0 point de vie (qui regagne aussi 1 point de vie), ou pour soigner une créature blessée qui regagne 1d6 + 4 points de vie plus un dé supplémentaire par Dé de vie déjà dépensé par la cible (une fois par créature et par repos court ou long)."
+    }
+  },
+  {
+    "name": "Combat monté",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/feats/Combat-monte.png",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "PHB",
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : avantage aux jets d'attaque contre une créature à pied plus petite que votre monture. Vous pouvez rediriger vers vous une attaque visant votre monture, si elle vous a pour seule cible possible. Votre monture réussit automatiquement tout jet de sauvegarde de Dextérité que vous réussissez vous-même (au lieu d'être affectée séparément)."
+    }
+  }
+]
