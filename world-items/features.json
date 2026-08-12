@@ -452,5 +452,148 @@
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système)."
     }
+  },
+  {
+    "name": "Déviation de projectiles",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Deviation-de-projectiles.png",
+    "system": {
+      "class": "Moine",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez utiliser votre réaction pour dévier ou attraper un projectile qui vous touche avec une attaque à distance d'arme : les dégâts subis sont réduits de 1d10 + votre modificateur de Dextérité + votre niveau de Moine (calcul manuel). S'ils tombent à 0, vous attrapez le projectile si vous avez une main de libre."
+    }
+  },
+  {
+    "name": "Chute amortie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Chute-amortie.png",
+    "system": {
+      "class": "Moine",
+      "level": 4,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez utiliser votre réaction lorsque vous tombez pour réduire les dégâts de chute subis d'un montant égal à cinq fois votre niveau de Moine."
+    }
+  },
+  {
+    "name": "Attaque supplémentaire (Moine)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-supplementaire-Moine.png",
+    "system": {
+      "class": "Moine",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez attaquer deux fois, au lieu d'une, chaque fois que vous effectuez l'action Attaque à votre tour."
+    }
+  },
+  {
+    "name": "Frappe étourdissante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Frappe-etourdissante.png",
+    "system": {
+      "class": "Moine",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour."
+    }
+  },
+  {
+    "name": "Coups empreints de Ki",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Coups-empreints-de-ki.png",
+    "system": {
+      "class": "Moine",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vos attaques à mains nues sont considérées comme magiques pour surmonter la résistance et l'immunité aux dégâts non magiques."
+    }
+  },
+  {
+    "name": "Attaque supplémentaire (Paladin)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-supplementaire-Paladin.png",
+    "system": {
+      "class": "Paladin",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez attaquer deux fois, au lieu d'une, chaque fois que vous effectuez l'action Attaque à votre tour."
+    }
+  },
+  {
+    "name": "Aura de protection",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Aura-de-protection.png",
+    "system": {
+      "class": "Paladin",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous et toute créature amicale à 3 m de vous ajoutez votre modificateur de Charisme (minimum +1) à tous vos jets de sauvegarde. Vous devez être conscient pour que cette aura fonctionne."
+    }
+  },
+  {
+    "name": "Attaque supplémentaire (Rôdeur)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-supplementaire-Rodeur.png",
+    "system": {
+      "class": "Rôdeur",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez attaquer deux fois, au lieu d'une, chaque fois que vous effectuez l'action Attaque à votre tour."
+    }
+  },
+  {
+    "name": "Déplacement facilité",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Deplacement-facilite.png",
+    "system": {
+      "class": "Rôdeur",
+      "level": 8,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Traverser un terrain difficile non magique ne vous coûte plus de mouvement supplémentaire. Vous pouvez aussi traverser des plantes épineuses, denses ou similaires non magiques sans en subir de dégâts ni d'entrave, sauf si vous le souhaitez."
+    }
+  },
+  {
+    "name": "Esquive totale",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-totale.png",
+    "system": {
+      "class": "Roublard",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand une créature que vous voyez vous attaque, vous pouvez utiliser votre réaction pour diviser par deux les dégâts subis, arrondis à l'inférieur (calcul manuel)."
+    }
+  },
+  {
+    "name": "Évasion",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Evasion.png",
+    "system": {
+      "class": "Roublard",
+      "level": 7,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec."
+    }
   }
 ]
