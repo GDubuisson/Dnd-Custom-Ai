@@ -7,18 +7,8 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-### Ajouté (suite)
-- Système de sous-classes : sélecteur sur la fiche de personnage (une fois le niveau
-  d'obtention SRD atteint — 1 pour Clerc/Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3
-  pour les 8 autres classes), octroi automatique des Capacités liées, nouveau type d'Item
-  `subclass` et son compendium. Une sous-classe SRD par classe (12 au total, 24 Capacités) :
-  Voie du Berserker, Collège du Savoir, Domaine de la Vie, Cercle de la Terre, Champion, Voie
-  de la Main Ouverte, Serment de Dévotion, Chasseur, Voleur, Lignage draconique, Le Fiélon,
-  École d'évocation.
-- 10 sorts SRD 5e supplémentaires niveau 4-5 (`world-items/spells.json`) : Tempête de grêle,
-  Mur de feu, Liberté de mouvement, Invisibilité suprême, Bannissement, Divination, Porte
-  dimensionnelle, Soins de groupe, Immobilisation de monstre, Domination de personne — le
-  contenu s'arrêtait jusqu'ici au niveau 3.
+Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
+modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 
 ### Corrigé
 - `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
@@ -26,21 +16,34 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   (`config.js`) et ne les recevait donc jamais malgré sa présence dans `system.classes`.
 
 ### Ajouté
-- 16 sorts SRD 5e supplémentaires (`world-items/spells.json`), niveaux 0-2, pour rééquilibrer
-  la variété entre classes (Paladin/Druide/Clerc/Barde/Occultiste étaient nettement moins
-  dotés que Magicien/Ensorceleur) et apporter du contrôle/utilitaire jusque-là quasi absent :
-  Moqueries cruelles, Avis divin, Thaumaturgie, Druidisme, Prestidigitation, Illusion mineure,
-  Ordre, Sanctuaire, Protection contre le mal et le bien, Enchevêtrement, Malédiction du
-  sorcier, Charme-personne, Restauration inférieure, Peau d'écorce, Arme spirituelle,
-  Suggestion.
-- 21 capacités de classe SRD 5e supplémentaires (`world-items/features.json`), niveaux 3 à 9,
-  pour prolonger la progression au-delà du niveau 3 (plafond précédent du contenu) sur 8 des
-  12 classes : Attaque supplémentaire, Vitesse accrue, Instinct sauvage, Critique brutal
-  (Barbare) ; Chant de repos, Source d'inspiration, Contre-chant (Barde) ; Destruction des
-  morts-vivants (Clerc) ; Attaque supplémentaire, Indomptable (Guerrier) ; Déviation de
-  projectiles, Chute amortie, Attaque supplémentaire, Frappe étourdissante, Coups empreints
-  de Ki (Moine) ; Attaque supplémentaire, Aura de protection (Paladin) ; Attaque
-  supplémentaire, Déplacement facilité (Rôdeur) ; Esquive totale, Évasion (Roublard).
+- 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
+  rééquilibrant la variété entre classes (Paladin/Druide/Clerc/Barde/Occultiste étaient
+  nettement moins dotés que Magicien/Ensorceleur) et prolongeant la progression au-delà du
+  niveau 3 pour les 7 classes lanceuses : Moqueries cruelles, Avis divin, Thaumaturgie,
+  Druidisme, Prestidigitation, Illusion mineure, Ordre, Sanctuaire, Protection contre le mal
+  et le bien, Enchevêtrement, Malédiction du sorcier, Charme-personne, Restauration
+  inférieure, Peau d'écorce, Arme spirituelle, Suggestion, Tempête de grêle, Mur de feu,
+  Liberté de mouvement, Invisibilité suprême, Bannissement, Divination, Porte dimensionnelle,
+  Soins de groupe, Immobilisation de monstre, Domination de personne.
+- 21 capacités de classe de base SRD 5e supplémentaires (`world-items/features.json`),
+  niveaux 3 à 9, sur 8 des 12 classes : Attaque supplémentaire, Vitesse accrue, Instinct
+  sauvage, Critique brutal (Barbare) ; Chant de repos, Source d'inspiration, Contre-chant
+  (Barde) ; Destruction des morts-vivants (Clerc) ; Attaque supplémentaire, Indomptable
+  (Guerrier) ; Déviation de projectiles, Chute amortie, Attaque supplémentaire, Frappe
+  étourdissante, Coups empreints de Ki (Moine) ; Attaque supplémentaire, Aura de protection
+  (Paladin) ; Attaque supplémentaire, Déplacement facilité (Rôdeur) ; Esquive totale, Évasion
+  (Roublard).
+- Système de sous-classes : sélecteur sur la fiche de personnage (une fois le niveau
+  d'obtention SRD atteint — 1 pour Clerc/Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3
+  pour les 8 autres classes), octroi automatique des Capacités liées (nouveau champ
+  `system.subclass`), nouveau type d'Item `subclass` et son compendium. Une sous-classe SRD
+  par classe (12 au total, 24 Capacités) : Voie du Berserker, Collège du Savoir, Domaine de
+  la Vie, Cercle de la Terre, Champion, Voie de la Main Ouverte, Serment de Dévotion,
+  Chasseur, Voleur, Lignage draconique, Le Fiélon, École d'évocation.
+- Système de dons (10 dons du manuel officiel, règle optionnelle en alternative à une
+  Amélioration de caractéristiques) : nouveau compendium "Dons", réutilisant le type d'Item
+  `feature` existant (jamais auto-octroyé, `class`/`subclass` vides) — Athlète, Doué,
+  Sentinelle, Alerte, Tenace, Chanceux, Magie d'initié, Résilient, Guérisseur, Combat monté.
 
 ## [0.15.0] - 2026-08-10
 
