@@ -36,6 +36,10 @@ import {
 import { DND_CUSTOM } from "./helpers/config.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
+// Canal socket (system.json > "socket": true) utilisé pour relayer au MJ actif une mise à jour
+// qu'un joueur n'a pas la permission d'effectuer lui-même (cf. requestActorUpdate plus bas —
+// PNJ ciblé pour l'application de dégâts, notamment).
+const SOCKET_EVENT = `system.${SYSTEM_ID}`;
 
 // Les 14 états SRD 5e (hors Exhaustion, qui a des niveaux 0-6 et vit sur
 // system.attributes.exhaustion plutôt qu'en ActiveEffect on/off, cf. character-data.js).
@@ -159,6 +163,35 @@ Hooks.once("ready", async () => {
   await importSystemContent({ notifyIfEmpty: false });
 });
 
+// Écoute du canal socket (cf. requestActorUpdate) : un joueur sans permission de modification
+// sur l'Actor ciblé (PNJ non possédé, le cas courant) délègue sa mise à jour au MJ actif, seul
+// habilité à l'appliquer — même motif game.users.activeGM que les hooks updateActor plus bas,
+// pour qu'un seul des MJ éventuellement connectés traite chaque requête.
+Hooks.once("ready", () => {
+  game.socket.on(SOCKET_EVENT, async ({ uuid, updates } = {}) => {
+    if (game.users.activeGM?.id !== game.user.id) return;
+    const doc = await fromUuid(uuid);
+    if (doc) await doc.update(updates);
+  });
+});
+
+/** Applique `updates` à `actor` : directement si le client a la permission, sinon relayée au MJ
+ *  actif via socket (cf. écoute ci-dessus) — nécessaire pour un PNJ dont un joueur n'est pas
+ *  propriétaire (cas courant : dégâts appliqués à un monstre ciblé, cf.
+ *  applyDamageToTargets plus bas), sans quoi Actor#update lève une erreur de permission
+ *  ("User lacks permission...") côté joueur au lieu d'échouer silencieusement comme espéré. */
+async function requestActorUpdate(actor, updates) {
+  if (actor.isOwner) {
+    await actor.update(updates);
+    return;
+  }
+  if (!game.users.activeGM) {
+    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
+    return;
+  }
+  game.socket.emit(SOCKET_EVENT, { uuid: actor.uuid, updates });
+}
+
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
 // réservés au MJ. Filet de sécurité côté données, en complément du "disabled" côté UI
 // (cf. templates/actor/character-sheet.hbs et tab-stats.hbs) — empêche toute modification
@@ -207,6 +240,18 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
   if (usesValue !== undefined) sys.uses = { value: usesValue };
 });
 
+// Empêche le dialogue natif "Créer un acteur" d'ouvrir la fiche de personnage juste après
+// la création (`options.renderSheet`, posé par Document#createDialog) quand l'assistant va de
+// toute façon prendre le relais ci-dessous : preCreateActor s'exécute avant que Foundry ne
+// décide d'ouvrir cette fiche, donc désactiver le flag ici l'empêche réellement de s'afficher
+// (contrairement à une fermeture après coup dans createActor, qui laissait un flash visible).
+Hooks.on("preCreateActor", (actor, data, options, userId) => {
+  if (actor.type !== "character") return;
+  if (game.user.id !== userId) return;
+  if (actor.system.class || actor.system.origin) return;
+  options.renderSheet = false;
+});
+
 // Point d'entrée découvrable de l'assistant de création (retour de test — le bouton "Créer un
 // personnage" n'existait que sur une fiche Actor déjà créée, sans lien depuis le dialogue
 // natif "Créer un acteur") : à la création d'un nouvel Actor "character" encore vierge
@@ -219,29 +264,7 @@ Hooks.on("createActor", (actor, options, userId) => {
   if (game.user.id !== userId) return;
   if (actor.system.class || actor.system.origin) return;
 
-  // bringToFront() en plus de render(true) : le délai/fermeture ci-dessous visent à faire
-  // gagner l'assistant la course contre le rendu natif de la fiche (`options.renderSheet`),
-  // mais restent une histoire de timing (setTimeout, close() non attendu) — bringToFront()
-  // réaffirme l'ordre d'affichage après coup, sans dépendre de qui a fini de se rendre en
-  // premier (retour de test : l'assistant apparaissait parfois sous la fiche malgré le délai).
-  const openWizard = async () => {
-    const wizard = await new CharacterCreationWizard(actor).render(true);
-    wizard.bringToFront();
-  };
-  // Le dialogue natif "Créer un acteur" ouvre aussi la fiche de personnage juste après
-  // (`options.renderSheet`, posé par Document#createDialog) : sans délai, l'assistant
-  // s'ouvrait AVANT elle et se retrouvait immédiatement masqué en dessous. Le délai garantit
-  // qu'il se rend après (donc au premier plan), et on referme la fiche du même mouvement
-  // (retour de test — la fiche restait visible en dessous, affichée en même temps que
-  // l'assistant) : elle se rouvrira d'elle-même une fois la création terminée si besoin.
-  if (options.renderSheet) {
-    setTimeout(() => {
-      actor.sheet?.close();
-      openWizard();
-    }, 200);
-  } else {
-    openWizard();
-  }
+  new CharacterCreationWizard(actor).render(true);
 });
 
 // Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus
@@ -359,30 +382,45 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
   }
 });
 
-// Distribution d'XP automatique à la mort d'un PNJ (0 PV) : ouvre directement la boîte de
-// dialogue d'attribution d'XP (cf. openAwardXpDialog, xp.js), montant pré-rempli avec
-// system.xpReward, plutôt que d'attendre que le MJ clique le bouton dédié de la fiche PNJ.
+// Mort d'un PNJ, SRD 5e simplifié (contrairement à un personnage : pas d'agonie ni de jet de
+// sauvegarde de la mort pour un PNJ — 0 PV = mort directe) : statut "Mort" (cf. declareDeath,
+// death.js), Combattant marqué "vaincu" dans le Combat Tracker s'il participe au combat en
+// cours, puis distribution d'XP automatique (cf. openAwardXpDialog, xp.js), montant pré-rempli
+// avec system.xpReward, plutôt que d'attendre que le MJ clique le bouton dédié de la fiche PNJ.
 // Se déclenche quel que soit le client à l'origine du changement (dégâts appliqués par un
 // joueur via le bouton du chat, ou modification directe des PV par le MJ) : seul le MJ actif
-// (game.users.activeGM, motif standard Foundry) réagit, pour n'ouvrir la boîte qu'une fois
-// même si plusieurs MJ sont connectés.
-Hooks.on("updateActor", (actor, changes, options) => {
+// (game.users.activeGM, motif standard Foundry) réagit, pour n'agir qu'une fois même si
+// plusieurs MJ sont connectés.
+Hooks.on("updateActor", async (actor, changes, options) => {
   if (actor.type !== "npc") return;
   if (game.users.activeGM?.id !== game.user.id) return;
   const oldHp = options.dndCustomOldHp;
   if (oldHp === undefined || oldHp === 0) return;
   if (actor.system.attributes.hp.value !== 0) return;
-  if (!actor.system.xpReward) return;
 
-  openAwardXpDialog({ defaultAmount: actor.system.xpReward });
+  await declareDeath(actor);
+
+  const combatant = game.combat?.combatants.find((c) => c.actor?.uuid === actor.uuid);
+  if (combatant && !combatant.defeated) await combatant.update({ defeated: true });
+
+  if (actor.system.xpReward) openAwardXpDialog({ defaultAmount: actor.system.xpReward });
 });
+
+// Pas de symétrique automatique ici (contrairement au personnage ci-dessus) : un PNJ à 0 PV
+// est mort définitivement par défaut, même si un sort ou un objet de soin le ramène ensuite
+// au-dessus de 0 PV — un soin qui s'applique à un PNJ n'est de toute façon pas garanti de le
+// ramener à la vie (retour de test/décision assumée). Le MJ reste seul juge : pour annuler la
+// mort d'un PNJ, il retire manuellement le statut "Mort" (menu des états du token) et le
+// marqueur "vaincu" (clic droit sur le Combattant dans le Combat Tracker).
 
 
 // Ajoute un bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts (cf.
 // rollDamage dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
 // client qui clique (game.user.targets), PV temporaires absorbés en premier (SRD 5e).
-// Aucune restriction MJ/joueur ici : Actor#update échoue silencieusement de lui-même pour
-// tout Actor sur lequel le client n'a pas la permission de modification.
+// Aucune restriction MJ/joueur ici : un joueur ciblant un PNJ qu'il ne possède pas (cas
+// courant) n'a pas la permission de le modifier lui-même — requestActorUpdate relaie alors la
+// mise à jour au MJ actif via socket plutôt que de laisser Actor#update lever une erreur de
+// permission.
 Hooks.on("renderChatMessageHTML", (message, html) => {
   if (!message.getFlag(SYSTEM_ID, "damageRoll")) return;
   const amount = message.rolls?.[0]?.total;
@@ -418,7 +456,7 @@ async function applyDamageToTargets(amount) {
     }
     if (remaining > 0) updates["system.attributes.hp.value"] = Math.max(0, hp.value - remaining);
 
-    if (Object.keys(updates).length) await actor.update(updates);
+    if (Object.keys(updates).length) await requestActorUpdate(actor, updates);
     if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
       await checkConcentration(actor, amount);
     }
@@ -439,7 +477,7 @@ async function checkConcentration(actor, damageAmount) {
   await roll.evaluate();
   const success = roll.total >= dc;
 
-  if (!success) await actor.update({ "system.spells.concentratingOn": "" });
+  if (!success) await requestActorUpdate(actor, { "system.spells.concentratingOn": "" });
 
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),

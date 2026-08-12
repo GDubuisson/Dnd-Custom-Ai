@@ -25,6 +25,24 @@
   {{#if system.level}}
   <label class="checkbox-row"><input type="checkbox" name="system.prepared" {{#if system.prepared}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Prepared"}}</label>
   {{/if}}
+  <label class="checkbox-row"><input type="checkbox" name="system.attack" {{#if system.attack}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.SpellAttack"}}</label>
+
+  {{#if system.attack}}
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.Damage"}}</legend>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.DamageDice"}}</label>
+      <input type="text" name="system.damage.dice" value="{{system.damage.dice}}" placeholder="1d10">
+    </div>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.DamageType"}}</label>
+      <select name="system.damage.type">
+        <option value=""></option>
+        {{selectOptions config.damageTypes selected=system.damage.type localize=true}}
+      </select>
+    </div>
+  </fieldset>
+  {{/if}}
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>

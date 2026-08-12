@@ -213,6 +213,18 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
       // sorts "connus" (Barde/Ensorceleur/Occultiste), où tout sort connu est disponible.
       prepared: new BooleanField({ required: true, initial: false }),
+      // Sort nécessitant un jet d'attaque (ex. Trait de feu), sur le même principe que les
+      // armes (cf. WeaponData ci-dessus) : le bouton "Lancer" propose alors un jet d'attaque
+      // (1d20 + spellAttackBonus, rules.js) puis un jet de dégâts, au lieu de se contenter de
+      // décompter une charge et poster la description (cf. #onCastSpell, actor-sheet.js). Un
+      // sort à sauvegarde (jet de la cible, pas du lanceur) reste volontairement non modélisé
+      // ici — hors du scope "combat automatisé" assumé par ce système (cf. le commentaire sur
+      // originTrait dans actor-sheet.js).
+      attack: new BooleanField({ required: true, initial: false }),
+      damage: new SchemaField({
+        dice: new StringField({ required: false, blank: true, initial: "" }),
+        type: new StringField({ required: false, blank: true, initial: "" })
+      }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }

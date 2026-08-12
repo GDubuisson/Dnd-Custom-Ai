@@ -153,10 +153,23 @@ DND_CUSTOM.weaponTypes = {
 };
 
 /** Types de dégâts physiques SRD 5e. */
+// Types physiques (armes) + types élémentaires/énergétiques SRD 5e (sorts, cf. SpellData >
+// system.damage.type dans item-data.js) réunis dans une seule liste partagée : une arme ne
+// propose en pratique que les 3 premiers dans son select (weapon-sheet.hbs), un sort les 13.
 DND_CUSTOM.damageTypes = {
   bludgeoning: "DND_CUSTOM.Item.DamageTypes.bludgeoning",
   piercing: "DND_CUSTOM.Item.DamageTypes.piercing",
-  slashing: "DND_CUSTOM.Item.DamageTypes.slashing"
+  slashing: "DND_CUSTOM.Item.DamageTypes.slashing",
+  acid: "DND_CUSTOM.Item.DamageTypes.acid",
+  cold: "DND_CUSTOM.Item.DamageTypes.cold",
+  fire: "DND_CUSTOM.Item.DamageTypes.fire",
+  force: "DND_CUSTOM.Item.DamageTypes.force",
+  lightning: "DND_CUSTOM.Item.DamageTypes.lightning",
+  necrotic: "DND_CUSTOM.Item.DamageTypes.necrotic",
+  poison: "DND_CUSTOM.Item.DamageTypes.poison",
+  psychic: "DND_CUSTOM.Item.DamageTypes.psychic",
+  radiant: "DND_CUSTOM.Item.DamageTypes.radiant",
+  thunder: "DND_CUSTOM.Item.DamageTypes.thunder"
 };
 
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */

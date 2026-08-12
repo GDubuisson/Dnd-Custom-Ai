@@ -123,6 +123,8 @@
       "ToolCheck": "{tool} — {skill} check",
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
+      "SpellAttack": "Attack with {spell}",
+      "SpellDamage": "{spell} damage",
       "DeathSave": "Death saving throw",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
@@ -142,6 +144,7 @@
       "Death": "{name} has failed three death saving throws and succumbs...",
       "ApplyDamage": "Apply {amount} damage to target",
       "NoTarget": "No target selected (double right-click a token to target it).",
+      "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
       "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
@@ -342,7 +345,17 @@
       "DamageTypes": {
         "bludgeoning": "Bludgeoning",
         "piercing": "Piercing",
-        "slashing": "Slashing"
+        "slashing": "Slashing",
+        "acid": "Acid",
+        "cold": "Cold",
+        "fire": "Fire",
+        "force": "Force",
+        "lightning": "Lightning",
+        "necrotic": "Necrotic",
+        "poison": "Poison",
+        "psychic": "Psychic",
+        "radiant": "Radiant",
+        "thunder": "Thunder"
       },
       "WeaponHandedness": {
         "oneHanded": "One-Handed",
@@ -429,6 +442,7 @@
         "Ritual": "Ritual",
         "Prepared": "Prepared",
         "SpellClasses": "Classes",
+        "SpellAttack": "Attack Roll",
         "LanguageCategory": "Category"
       }
     }
