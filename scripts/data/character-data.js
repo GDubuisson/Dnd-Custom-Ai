@@ -91,6 +91,10 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),
+      // Clé de sous-classe (ex. "berserker"), cf. DND_CUSTOM.subclasses[class] (config.js) —
+      // même convention que `class` : stocke la clé, pas le libellé localisé. Vide tant que le
+      // personnage n'a pas atteint le niveau de sous-classe de sa classe (DND_CUSTOM.subclassLevel).
+      subclass: new StringField({ required: true, blank: true, initial: "" }),
       xp: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
       saves: new SchemaField(schemaFromKeys(ABILITY_KEYS, () => saveField())),
       skills: new SchemaField(

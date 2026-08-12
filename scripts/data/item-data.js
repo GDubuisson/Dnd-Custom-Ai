@@ -144,6 +144,11 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       class: new StringField({ required: false, blank: true, initial: "" }),
+      // Sous-classe (libellé localisé exact, ex. "Voie du Berserker") : vide pour une Capacité
+      // de classe de base, renseigné pour une Capacité propre à une sous-classe précise. Même
+      // convention que `class` (cf. DND_CUSTOM.subclasses, config.js) — grantClassContent ne
+      // l'octroie qu'une fois actor.system.subclass résolu vers ce libellé.
+      subclass: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
