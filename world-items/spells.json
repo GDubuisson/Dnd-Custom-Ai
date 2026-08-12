@@ -99,7 +99,7 @@
     "type": "spell",
     "img": "systems/dnd-custom-ai/assets/icons/spells/Soin-des-blessures.png",
     "system": {
-      "classes": "Barde, Clerc, Druide, Paladin, Rôdeur",
+      "classes": "Barde, Clerc, Druide, Paladin",
       "level": 1,
       "details": "1 action, Contact, Instantanée",
       "concentration": false,
@@ -190,7 +190,7 @@
     "type": "spell",
     "img": "systems/dnd-custom-ai/assets/icons/spells/Parler-aux-animaux.webp",
     "system": {
-      "classes": "Druide, Rôdeur",
+      "classes": "Druide",
       "level": 1,
       "details": "1 action (ou rituel), Personnelle, 10 minutes",
       "concentration": false,
