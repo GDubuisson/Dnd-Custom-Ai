@@ -14,10 +14,10 @@ function asItem(raw) {
 /** Fausse Actor : seuls `items.contents` et `createEmbeddedDocuments` sont lus/appelés par
  *  grantClassContent. `createEmbeddedDocuments` pousse réellement dans `items.contents` pour
  *  pouvoir tester l'idempotence (un deuxième appel ne doit rien ré-octroyer). */
-function makeActor({ level = 1, class: classKey = "wizard", maxLevel = 0, owned = [] } = {}) {
+function makeActor({ level = 1, class: classKey = "wizard", subclass = "", maxLevel = 0, owned = [] } = {}) {
   const items = owned.map(asItem);
   return {
-    system: { class: classKey, attributes: { level }, spells: { maxLevel } },
+    system: { class: classKey, subclass, attributes: { level }, spells: { maxLevel } },
     items: {
       contents: items,
       get: (name) => items.find((item) => item.name === name)
@@ -109,6 +109,62 @@ describe("grantClassContent — Capacités", () => {
     await grantClassContent(actor, "barbarian", 1);
     const second = await grantClassContent(actor, "barbarian", 1);
     assert.deepEqual(second, []);
+  });
+});
+
+describe("grantClassContent — Capacités de sous-classe", () => {
+  // Jeu de données synthétique (pas WORLD_FEATURES) : une Capacité de classe de base et deux
+  // Capacités de sous-classe (Voie du Berserker, niveaux 3 et 6) pour le Barbare, plus une
+  // Capacité d'une autre sous-classe (Collège du Savoir, Barde) — teste le mécanisme
+  // indépendamment du contenu réel écrit dans world-items/features.json.
+  const SUBCLASS_FEATURES = [
+    { name: "Rage", type: "feature", system: { class: "Barbare", subclass: "", level: 1 } },
+    { name: "Frénésie", type: "feature", system: { class: "Barbare", subclass: "Voie du Berserker", level: 3 } },
+    { name: "Rage sans esprit", type: "feature", system: { class: "Barbare", subclass: "Voie du Berserker", level: 6 } },
+    { name: "Mots cinglants", type: "feature", system: { class: "Barde", subclass: "Collège du Savoir", level: 3 } }
+  ];
+
+  beforeEach(() => {
+    setGameStub({
+      items: { filter: () => [] },
+      packs: makePacks({ "dnd-custom-ai.capacites": SUBCLASS_FEATURES, "dnd-custom-ai.sorts": [] })
+    });
+    globalThis.ui = { notifications: { warn: () => {} } };
+  });
+
+  test("aucune sous-classe choisie -> seule la Capacité de classe de base est octroyée", async () => {
+    const actor = makeActor({ class: "barbarian", level: 6, subclass: "" });
+    const granted = await grantClassContent(actor, "barbarian", 6);
+    assert.ok(granted.includes("Rage"));
+    assert.ok(!granted.includes("Frénésie"));
+    assert.ok(!granted.includes("Rage sans esprit"));
+  });
+
+  test("sous-classe choisie mais niveau pas atteint -> Capacité de sous-classe pas encore octroyée", async () => {
+    const actor = makeActor({ class: "barbarian", level: 2, subclass: "berserker" });
+    const granted = await grantClassContent(actor, "barbarian", 2);
+    assert.ok(!granted.includes("Frénésie"));
+  });
+
+  test("sous-classe choisie et niveau atteint -> Capacité de sous-classe octroyée", async () => {
+    const actor = makeActor({ class: "barbarian", level: 3, subclass: "berserker" });
+    const granted = await grantClassContent(actor, "barbarian", 3);
+    assert.ok(granted.includes("Frénésie"));
+    assert.ok(!granted.includes("Rage sans esprit")); // niveau 6, hors de portée
+  });
+
+  test("montée de niveau ultérieure -> octroie la Capacité de sous-classe de palier supérieur", async () => {
+    const actor = makeActor({ class: "barbarian", level: 3, subclass: "berserker" });
+    await grantClassContent(actor, "barbarian", 3);
+    actor.system.attributes.level = 6;
+    const granted = await grantClassContent(actor, "barbarian", 6);
+    assert.ok(granted.includes("Rage sans esprit"));
+  });
+
+  test("une Capacité d'une autre sous-classe n'est jamais octroyée", async () => {
+    const actor = makeActor({ class: "barbarian", level: 6, subclass: "berserker" });
+    const granted = await grantClassContent(actor, "barbarian", 6);
+    assert.ok(!granted.includes("Mots cinglants"));
   });
 });
 

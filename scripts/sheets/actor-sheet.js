@@ -100,6 +100,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
+      openSubclassSheet: DndCustomActorSheet.#onOpenSubclassSheet,
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
@@ -151,6 +152,26 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // #onOpenClassSheet/#onOpenOriginSheet ci-dessous pour l'ouverture de leur description).
     context.classLabel = system.class ? game.i18n.localize(DND_CUSTOM.classes[system.class]) : "";
     context.originLabel = context.origins[system.origin]?.label ?? "";
+
+    // Sous-classe : sélecteur direct sur la fiche (verrouillé MJ, cf. hook preUpdateActor,
+    // dnd-custom-ai.js), pas un flux dédié comme l'assistant de création — elle se choisit en
+    // cours de partie, à un niveau propre à chaque classe (DND_CUSTOM.subclassLevel), pas à la
+    // création du personnage (sauf Clerc/Ensorceleur/Occultiste, obtenue dès le niveau 1).
+    const subclassChoices = DND_CUSTOM.subclasses[system.class] ?? {};
+    context.subclassLevel = DND_CUSTOM.subclassLevel[system.class] ?? null;
+    context.subclassAvailable = context.subclassLevel !== null && system.attributes.level >= context.subclassLevel;
+    context.subclassOptions = Object.entries(subclassChoices).map(([key, labelKey]) => ({
+      key,
+      label: game.i18n.localize(labelKey),
+      selected: key === system.subclass
+    }));
+    context.subclassLabel = system.subclass ? game.i18n.localize(subclassChoices[system.subclass]) : "";
+    // Indice affiché tant que le niveau requis n'est pas atteint (ex. "Disponible au niveau 3"),
+    // uniquement si la classe a une sous-classe modélisée du tout.
+    context.subclassLevelHint =
+      context.subclassLevel && !context.subclassAvailable
+        ? game.i18n.format("DND_CUSTOM.Actor.SubclassLevelHint", { level: context.subclassLevel })
+        : "";
     // Bouton "Créer un personnage" masqué une fois Classe ET Origine renseignées (même
     // condition que l'ouverture automatique de l'assistant sur un Actor vierge, cf.
     // Hooks.on("createActor"), dnd-custom-ai.js) : retour de test — il n'y avait plus lieu de
@@ -524,6 +545,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const classKey = this.actor.system.class;
     const name = classKey ? game.i18n.localize(DND_CUSTOM.classes[classKey]) : "";
     await DndCustomActorSheet.#openReferenceItem(name, "classes", "DND_CUSTOM.Actor.ClassSheetMissing");
+  }
+
+  static async #onOpenSubclassSheet() {
+    const classKey = this.actor.system.class;
+    const subclassKey = this.actor.system.subclass;
+    const name = subclassKey ? game.i18n.localize(DND_CUSTOM.subclasses[classKey]?.[subclassKey]) : "";
+    await DndCustomActorSheet.#openReferenceItem(name, "sous-classes", "DND_CUSTOM.Actor.SubclassSheetMissing");
   }
 
   static async #onOpenOriginSheet() {

@@ -33,6 +33,27 @@
         <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
         {{/if}}
       </div>
+      {{#if subclassAvailable}}
+      <div class="fixed-field">
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+        <select name="system.subclass" {{#unless isGM}}disabled{{/unless}}>
+          <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
+          {{#each subclassOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+        {{#if subclassLabel}}
+        <button type="button" class="roll-btn" data-action="openSubclassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
+          <i class="fa-solid fa-book"></i>
+        </button>
+        {{/if}}
+      </div>
+      {{else if subclassLevelHint}}
+      <div class="fixed-field">
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+        <span class="fixed-field-value empty">{{subclassLevelHint}}</span>
+      </div>
+      {{/if}}
       <div class="fixed-field">
         <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
         {{#if originLabel}}
