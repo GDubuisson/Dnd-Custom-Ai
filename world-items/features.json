@@ -708,5 +708,118 @@
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Une fois par jour, lors d'un repos court : récupérez des charges de votre pool de Sorts par repos (cf. onglet Capacités), jusqu'à un total équivalent à la moitié de votre niveau de Druide (arrondi à l'inférieur) — ajoutez-les manuellement à votre pool de sorts."
     }
+  },
+  {
+    "name": "Critique amélioré",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Critique-ameliore.png",
+    "system": {
+      "class": "Guerrier",
+      "subclass": "Champion",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vos attaques d'arme obtiennent un coup critique sur un résultat de 19 ou 20 au jet d'attaque, au lieu de seulement 20."
+    }
+  },
+  {
+    "name": "Athlète accompli",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Athlete-accompli.png",
+    "system": {
+      "class": "Guerrier",
+      "subclass": "Champion",
+      "level": 7,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous ajoutez la moitié de votre bonus de maîtrise (arrondi à l'inférieur) à tout test de Force, Dextérité ou Constitution pour lequel vous n'êtes pas déjà maîtrisé. De plus, se relever ne vous coûte qu'1,50 m de mouvement, grimper ne vous coûte pas de mouvement supplémentaire, et vos distances de saut en longueur/en hauteur augmentent d'1,50 m (course d'élan non requise pour en bénéficier)."
+    }
+  },
+  {
+    "name": "Technique de la Main Ouverte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Technique-de-la-Main-Ouverte.png",
+    "system": {
+      "class": "Moine",
+      "subclass": "Voie de la Main Ouverte",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous touchez une créature avec une attaque de Rafale de coups, vous pouvez imposer l'un des effets suivants (la cible doit réussir un jet de sauvegarde de Dextérité ou Force, DD 8 + bonus de maîtrise + modificateur de Sagesse, sous peine de le subir) : à terre ; repoussée de 4,50 m ; incapable d'effectuer de réaction jusqu'à la fin de votre prochain tour."
+    }
+  },
+  {
+    "name": "Corps parfait",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Corps-parfait.png",
+    "system": {
+      "class": "Moine",
+      "subclass": "Voie de la Main Ouverte",
+      "level": 6,
+      "requiresRoll": true,
+      "rollFormula": "3 * @attributes.level",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Action : rendez-vous des points de vie égaux à trois fois votre niveau de Moine (bouton \"Corps parfait\" calculant automatiquement le total). 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des points de Ki)."
+    }
+  },
+  {
+    "name": "Canalisation divine : Arme sacrée",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Arme-sacree.png",
+    "system": {
+      "class": "Paladin",
+      "subclass": "Serment de Dévotion",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine) : action bonus, imprégnez une arme que vous tenez d'énergie divine pendant 1 minute. Vous ajoutez votre modificateur de Charisme (minimum +1) aux jets d'attaque effectués avec elle, et elle émet une lumière vive dans un rayon de 9 m (faible sur 9 m supplémentaires)."
+    }
+  },
+  {
+    "name": "Aura de dévotion",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Aura-de-devotion.png",
+    "system": {
+      "class": "Paladin",
+      "subclass": "Serment de Dévotion",
+      "level": 7,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient."
+    }
+  },
+  {
+    "name": "Proie du chasseur",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "Rôdeur",
+      "subclass": "Chasseur",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez une option avec le MJ : Pourfendeur de colosses (une fois par tour, +1d8 dégâts supplémentaires à une créature déjà blessée) ; Tueur de géants (réaction, attaque contre une créature de taille Grande ou plus qui vous touche ou vous manque à 1,50 m) ; Briseur de horde (une fois par tour, attaquez une seconde créature à 1,50 m de votre cible d'origine)."
+    }
+  },
+  {
+    "name": "Tactiques défensives",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Tactiques-defensives.png",
+    "system": {
+      "class": "Rôdeur",
+      "subclass": "Chasseur",
+      "level": 7,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez une option avec le MJ : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé)."
+    }
   }
 ]
