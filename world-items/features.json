@@ -595,5 +595,118 @@
       "source": "",
       "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec."
     }
+  },
+  {
+    "name": "Frénésie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Frenesie.png",
+    "system": {
+      "class": "Barbare",
+      "subclass": "Voie du Berserker",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "En Rage, vous pouvez entrer en Frénésie : en plus de votre action Attaque normale, effectuez une attaque de corps à corps supplémentaire en action bonus à chacun de vos tours tant que la Rage dure. Une fois la Rage terminée, vous subissez un niveau d'Épuisement si vous avez frénétiquement attaqué."
+    }
+  },
+  {
+    "name": "Rage sans esprit",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Rage-sans-esprit.png",
+    "system": {
+      "class": "Barbare",
+      "subclass": "Voie du Berserker",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Tant que vous êtes en Rage, vous ne pouvez être ni charmé ni effrayé. Si vous êtes déjà charmé ou effrayé quand vous entrez en Rage, l'effet est suspendu pour la durée de la Rage."
+    }
+  },
+  {
+    "name": "Mots cinglants",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Mots-cinglants.png",
+    "system": {
+      "class": "Barde",
+      "subclass": "Collège du Savoir",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Réaction, quand une créature à 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts : dépensez un dé d'Inspiration bardique et retranchez-le du résultat (après le jet, avant de savoir s'il réussit)."
+    }
+  },
+  {
+    "name": "Sorts supplémentaires",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Sorts-supplementaires.png",
+    "system": {
+      "class": "Barde",
+      "subclass": "Collège du Savoir",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous apprenez deux sorts au choix dans la liste de n'importe quelle classe (avec l'accord du MJ pour les ajouter à votre pool de Sorts) : ils comptent comme des sorts de Barde pour vous, mais ne comptent pas dans le nombre de sorts de Barde que vous connaissez."
+    }
+  },
+  {
+    "name": "Disciple de la vie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Disciple-de-la-vie.png",
+    "system": {
+      "class": "Clerc",
+      "subclass": "Domaine de la Vie",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vos sorts de soin sont plus efficaces : chaque fois que vous utilisez un sort de niveau 1 ou plus pour rendre des points de vie à une créature, elle en récupère 2 de plus, +1 supplémentaire par niveau d'emplacement au-delà du premier."
+    }
+  },
+  {
+    "name": "Canalisation divine : Préserver la vie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Preserver-la-vie.png",
+    "system": {
+      "class": "Clerc",
+      "subclass": "Domaine de la Vie",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine) : action, répartissez un total de points de vie égal à 5 fois votre niveau de Clerc entre les créatures de votre choix à 9 m, sans dépasser la moitié des points de vie maximum de chacune. Inefficace sur les morts-vivants et les créatures artificielles."
+    }
+  },
+  {
+    "name": "Sorts de cercle",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Sorts-de-cercle.png",
+    "system": {
+      "class": "Druide",
+      "subclass": "Cercle de la Terre",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Selon le terrain associé à votre Cercle (à choisir avec le MJ, ex. forêt, marais, montagne), vous connaissez en permanence des sorts supplémentaires propres à ce terrain, qui ne comptent pas dans le nombre de sorts que vous pouvez préparer (à ajouter manuellement à votre pool de Sorts avec le MJ)."
+    }
+  },
+  {
+    "name": "Récupération naturelle",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Recuperation-naturelle.png",
+    "system": {
+      "class": "Druide",
+      "subclass": "Cercle de la Terre",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par jour, lors d'un repos court : récupérez des charges de votre pool de Sorts par repos (cf. onglet Capacités), jusqu'à un total équivalent à la moitié de votre niveau de Druide (arrondi à l'inférieur) — ajoutez-les manuellement à votre pool de sorts."
+    }
   }
 ]
