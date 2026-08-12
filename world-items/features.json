@@ -321,5 +321,136 @@
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
       "description": "Une fois par jour, lors d'un repos court : récupérez des charges de votre pool de Sorts par repos (cf. onglet Capacités). Le bouton calcule le nombre de charges récupérées selon votre niveau — ajoutez-les manuellement à votre pool de sorts."
     }
+  },
+  {
+    "name": "Attaque supplémentaire (Barbare)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-supplementaire-Barbare.png",
+    "system": {
+      "class": "Barbare",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez attaquer deux fois, au lieu d'une, chaque fois que vous effectuez l'action Attaque à votre tour."
+    }
+  },
+  {
+    "name": "Vitesse accrue",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Vitesse-accrue.png",
+    "system": {
+      "class": "Barbare",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Votre vitesse augmente de 3 m tant que vous ne portez pas d'armure lourde."
+    }
+  },
+  {
+    "name": "Instinct sauvage",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Instinct-sauvage.png",
+    "system": {
+      "class": "Barbare",
+      "level": 7,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Votre instinct s'aiguise : vous avez un avantage aux jets d'Initiative. De plus, si vous êtes surpris au début d'un combat et n'êtes pas incapable d'agir, vous pouvez agir normalement à votre premier tour à condition d'entrer en Rage avant d'y faire quoi que ce soit d'autre."
+    }
+  },
+  {
+    "name": "Critique brutal",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Critique-brutal.png",
+    "system": {
+      "class": "Barbare",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez lancer un dé de dégâts supplémentaire lorsque vous déterminez les dégâts additionnels d'un coup critique porté avec une arme de corps à corps."
+    }
+  },
+  {
+    "name": "Chant de repos",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Chant-de-repos.png",
+    "system": {
+      "class": "Barde",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Pendant un repos court, si vous ou des alliés à portée de voix vous reposez, chaque participant qui dépense au moins un Dé de vie pour récupérer des points de vie en récupère 1d6 supplémentaires (progression simplifiée : ne monte pas avec le niveau dans ce système)."
+    }
+  },
+  {
+    "name": "Source d'inspiration",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Source-dinspiration.png",
+    "system": {
+      "class": "Barde",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous récupérez toutes vos charges dépensées d'Inspiration bardique à l'issue d'un repos court ou long, et plus seulement d'un repos long — pensez à corriger manuellement le champ Récupération de votre Capacité Inspiration bardique."
+    }
+  },
+  {
+    "name": "Contre-chant",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Contre-chant.png",
+    "system": {
+      "class": "Barde",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Action : jusqu'au début de votre prochain tour, vous et toute créature amicale à 9 m de vous qui vous entend avez un avantage aux jets de sauvegarde contre les effets d'Effroi et de Charme."
+    }
+  },
+  {
+    "name": "Destruction des morts-vivants",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Destruction-des-morts-vivants.png",
+    "system": {
+      "class": "Clerc",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (option Repousser les morts-vivants) et que son indice de dangerosité est inférieur ou égal à 1/2, il est détruit au lieu d'être seulement repoussé (seuil à confirmer avec le MJ selon votre niveau)."
+    }
+  },
+  {
+    "name": "Attaque supplémentaire (Guerrier)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-supplementaire-Guerrier.png",
+    "system": {
+      "class": "Guerrier",
+      "level": 5,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Vous pouvez attaquer deux fois, au lieu d'une, chaque fois que vous effectuez l'action Attaque à votre tour."
+    }
+  },
+  {
+    "name": "Indomptable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Indomptable.png",
+    "system": {
+      "class": "Guerrier",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système)."
+    }
   }
 ]
