@@ -25,8 +25,8 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `weapons.json` | 37 armes SRD 5e (courantes et de guerre) | `weapon` | Items du monde |
 | `gear.json` | 15 objets d'aventurier courants | `gear` | Items du monde |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
-| `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
-| `features.json` | 24 capacités de classe SRD 5e (2 par classe, niveaux 1 à 3) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
+| `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
+| `features.json` | 69 capacités de classe SRD 5e (classe de base niveaux 1 à 9, + 24 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | Une sous-classe SRD 5e par classe (12), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
@@ -66,7 +66,7 @@ sans automatisation (le bonus de maîtrise reste alors à appliquer manuellement
 
 ## Note sur les sorts
 
-`spells.json` ne couvre que 15 sorts (5 tours de magie + niveaux 1 à 3) choisis pour être
+`spells.json` ne couvre que 42 sorts (9 tours de magie + niveaux 1 à 5) choisis pour être
 représentatifs, pas la liste complète du SRD 5e (~300 sorts) — complétez-la à la main depuis
 le compendium "Sorts" selon les besoins de votre table. Aucun sort n'est rattaché à une liste
 de classes précise (l'Item Sort est générique) : à vous de dupliquer/filtrer selon qui peut
@@ -85,7 +85,7 @@ une capacité de classe de base. Quand
 `requiresRoll` est actif (ex. Second souffle), un bouton "1d10 + niveau" apparaît sur la
 fiche du personnage et poste le jet dans le chat.
 
-11 des 24 capacités ont des utilisations limitées (`system.uses.max` > 0, ex. Rage 2/repos
+Plusieurs capacités ont des utilisations limitées (`system.uses.max` > 0, ex. Rage 2/repos
 long, Second souffle 1/repos court) : un compteur "restantes/max" s'affiche sur la fiche,
 décrémenté à chaque utilisation (jet ou simple bouton "-" si pas de jet associé, ex.
 Imposition des mains) et restauré au maximum lors d'un repos court ou long selon
