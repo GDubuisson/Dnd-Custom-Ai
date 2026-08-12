@@ -7,6 +7,19 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Ajouté (suite)
+- Système de sous-classes : sélecteur sur la fiche de personnage (une fois le niveau
+  d'obtention SRD atteint — 1 pour Clerc/Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3
+  pour les 8 autres classes), octroi automatique des Capacités liées, nouveau type d'Item
+  `subclass` et son compendium. Une sous-classe SRD par classe (12 au total, 24 Capacités) :
+  Voie du Berserker, Collège du Savoir, Domaine de la Vie, Cercle de la Terre, Champion, Voie
+  de la Main Ouverte, Serment de Dévotion, Chasseur, Voleur, Lignage draconique, Le Fiélon,
+  École d'évocation.
+- 10 sorts SRD 5e supplémentaires niveau 4-5 (`world-items/spells.json`) : Tempête de grêle,
+  Mur de feu, Liberté de mouvement, Invisibilité suprême, Bannissement, Divination, Porte
+  dimensionnelle, Soins de groupe, Immobilisation de monstre, Domination de personne — le
+  contenu s'arrêtait jusqu'ici au niveau 3.
+
 ### Corrigé
 - `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
   blessures"/"Parler aux animaux" — il n'est pas dans `DND_CUSTOM.spellcastingClasses`
