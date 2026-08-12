@@ -14,9 +14,10 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 
 - `armors.json`, `weapons.json`, `gear.json`, `tools.json` → importés dans les Items du monde
   (onglet "Objets" de Foundry, entre "Acteurs" et "Journaux").
-- `classes.json`, `origins.json`, `spells.json`, `features.json` → importés **directement dans
-  leurs compendiums** (`packs/classes`, `packs/origines`, `packs/sorts`, `packs/capacites`),
-  pas dans les Items du monde (cf. "Note sur les classes et les origines" plus bas).
+- `classes.json`, `subclasses.json`, `origins.json`, `spells.json`, `features.json` → importés
+  **directement dans leurs compendiums** (`packs/classes`, `packs/sous-classes`,
+  `packs/origines`, `packs/sorts`, `packs/capacites`), pas dans les Items du monde (cf. "Note
+  sur les classes et les origines" plus bas).
 
 | Fichier | Contenu | Type d'Item | Destination |
 |---|---|---|---|
@@ -27,6 +28,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `spells.json` | 15 sorts SRD 5e (5 tours de magie, niveaux 1 à 3) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 24 capacités de classe SRD 5e (2 par classe, niveaux 1 à 3) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
+| `subclasses.json` | Une sous-classe SRD 5e par classe (12), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -74,10 +76,12 @@ l'emplacement de sort au moment de lancer (cf. bouton "Lancer" de l'onglet Sorts
 
 ## Note sur les capacités de classe
 
-`features.json` couvre 2 capacités par classe (niveau 1 et niveau 2/3, hors capacités liées
-à un choix de sous-classe — non modélisées dans ce système, cf. `ClaudeFiles/ITEMS.md`), pas
-la progression complète des 12 classes. Le champ `class` contient le nom de la classe en
-texte libre (ex. "Barbare"), pas une référence stricte à un Item Classe. Quand
+`features.json` couvre les capacités de classe de base (hors sous-classe) des niveaux 1 à 9
+selon les classes, plus deux capacités par sous-classe SRD modélisée (cf. "Note sur les
+sous-classes" plus bas) — pas la progression complète des 12 classes jusqu'au niveau 20. Le
+champ `class` contient le nom de la classe en texte libre (ex. "Barbare"), pas une référence
+stricte à un Item Classe ; `subclass` fonctionne pareil (ex. "Voie du Berserker"), vide pour
+une capacité de classe de base. Quand
 `requiresRoll` est actif (ex. Second souffle), un bouton "1d10 + niveau" apparaît sur la
 fiche du personnage et poste le jet dans le chat.
 
@@ -89,12 +93,25 @@ Imposition des mains) et restauré au maximum lors d'un repos court ou long selo
 court"). `system.uses.max` à 0 = pas de suivi, comportement précédent (capacité toujours
 disponible).
 
-## Note sur les classes, origines, sorts et capacités de classe
+## Note sur les sous-classes
 
-Contrairement à `armors.json`/`weapons.json`/`gear.json`/`tools.json`, ces quatre fichiers
-(`classes.json`, `origins.json`, `spells.json`, `features.json`) sont importés directement
-dans leur compendium système (`packs/classes`, `packs/origines`, `packs/sorts`,
-`packs/capacites`, cf. `system.json` > `packs`), pas dans les Items du monde. Ces compendiums
+Une sous-classe SRD 5e par classe (`subclasses.json`, 12 entrées), avec ses 2 premières
+Capacités liées (`features.json`, `system.subclass` renseigné) : Voie du Berserker (Barbare),
+Collège du Savoir (Barde), Domaine de la Vie (Clerc), Cercle de la Terre (Druide), Champion
+(Guerrier), Voie de la Main Ouverte (Moine), Serment de Dévotion (Paladin), Chasseur (Rôdeur),
+Voleur (Roublard), Lignage draconique (Ensorceleur), Le Fiélon (Occultiste), École
+d'évocation (Magicien). Sélectionnable sur la fiche de personnage une fois le niveau
+d'obtention SRD atteint (`DND_CUSTOM.subclassLevel`, `scripts/helpers/config.js`) ; les
+Capacités liées sont octroyées automatiquement dès la sélection, comme les Capacités de
+classe (cf. `helpers/class-content.js`).
+
+## Note sur les classes, sous-classes, origines, sorts et capacités de classe
+
+Contrairement à `armors.json`/`weapons.json`/`gear.json`/`tools.json`, ces fichiers
+(`classes.json`, `subclasses.json`, `origins.json`, `spells.json`, `features.json`) sont
+importés directement dans leur compendium système (`packs/classes`, `packs/sous-classes`,
+`packs/origines`, `packs/sorts`, `packs/capacites`, cf. `system.json` > `packs`), pas dans
+les Items du monde. Ces compendiums
 sont peuplés **automatiquement** au premier chargement du monde (hook `ready`) : Foundry ne
 compile chaque pack en LevelDB qu'à partir du moment où un document y est ajouté — ce système
 n'a pas d'étape de build pour les préremplir autrement, l'auto-import au démarrage joue ce

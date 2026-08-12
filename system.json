@@ -44,6 +44,7 @@
       "feature": {},
       "origin": {},
       "class": {},
+      "subclass": {},
       "tool": {},
       "spell": {},
       "language": {}
@@ -66,6 +67,17 @@
       "label": "Classes",
       "system": "dnd-custom-ai",
       "path": "packs/classes",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "sous-classes",
+      "label": "Sous-classes",
+      "system": "dnd-custom-ai",
+      "path": "packs/sous-classes",
       "type": "Item",
       "ownership": {
         "PLAYER": "OBSERVER",

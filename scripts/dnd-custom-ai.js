@@ -89,6 +89,10 @@ Hooks.once("init", async () => {
   // l'interface Foundry (cf. données actuelles dans scripts/data/origins.json pour "origin").
   CONFIG.Item.dataModels.origin = OriginData;
   CONFIG.Item.dataModels.class = ClassData;
+  // Sous-classe : même schéma que "class" (nom + description libre), même statut "flavor
+  // seulement" — cf. commentaire de ClassData (class-data.js) et DND_CUSTOM.subclasses
+  // (config.js) pour la donnée mécanique réelle (niveau d'obtention, Capacités liées).
+  CONFIG.Item.dataModels.subclass = ClassData;
 
   // CONFIG.statusEffects est un Proxy (cf. foundry/client/config.mjs) qui maintient aussi un
   // accès par id (`CONFIG.statusEffects["prone"]`, utilisé en interne par
@@ -130,7 +134,7 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, GearItemSheet, { types: ["gear"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, FeatureItemSheet, { types: ["feature"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, OriginItemSheet, { types: ["origin"], makeDefault: true });
-  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ClassItemSheet, { types: ["class", "subclass"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ToolItemSheet, { types: ["tool"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, SpellItemSheet, { types: ["spell"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, LanguageItemSheet, { types: ["language"], makeDefault: true });
