@@ -7,6 +7,28 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
+  blessures"/"Parler aux animaux" — il n'est pas dans `DND_CUSTOM.spellcastingClasses`
+  (`config.js`) et ne les recevait donc jamais malgré sa présence dans `system.classes`.
+
+### Ajouté
+- 16 sorts SRD 5e supplémentaires (`world-items/spells.json`), niveaux 0-2, pour rééquilibrer
+  la variété entre classes (Paladin/Druide/Clerc/Barde/Occultiste étaient nettement moins
+  dotés que Magicien/Ensorceleur) et apporter du contrôle/utilitaire jusque-là quasi absent :
+  Moqueries cruelles, Avis divin, Thaumaturgie, Druidisme, Prestidigitation, Illusion mineure,
+  Ordre, Sanctuaire, Protection contre le mal et le bien, Enchevêtrement, Malédiction du
+  sorcier, Charme-personne, Restauration inférieure, Peau d'écorce, Arme spirituelle,
+  Suggestion.
+- 21 capacités de classe SRD 5e supplémentaires (`world-items/features.json`), niveaux 3 à 9,
+  pour prolonger la progression au-delà du niveau 3 (plafond précédent du contenu) sur 8 des
+  12 classes : Attaque supplémentaire, Vitesse accrue, Instinct sauvage, Critique brutal
+  (Barbare) ; Chant de repos, Source d'inspiration, Contre-chant (Barde) ; Destruction des
+  morts-vivants (Clerc) ; Attaque supplémentaire, Indomptable (Guerrier) ; Déviation de
+  projectiles, Chute amortie, Attaque supplémentaire, Frappe étourdissante, Coups empreints
+  de Ki (Moine) ; Attaque supplémentaire, Aura de protection (Paladin) ; Attaque
+  supplémentaire, Déplacement facilité (Rôdeur) ; Esquive totale, Évasion (Roublard).
+
 ## [0.15.0] - 2026-08-10
 
 Troisième passe de retour de test : assistant de création, fiche de personnage, équipement et
