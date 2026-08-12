@@ -210,5 +210,109 @@
       "ritual": false,
       "description": "Vous tentez d'interrompre une créature en train de lancer un sort. Si elle lance un sort de niveau 3 ou moins, celui-ci échoue et n'a aucun effet. S'il est de niveau 4 ou plus, effectuez un test de caractéristique d'incantation (DD 10 + niveau du sort) : en cas de réussite, le sort de la cible échoue et n'a aucun effet."
     }
+  },
+  {
+    "name": "Moqueries cruelles",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Moqueries-cruelles.png",
+    "system": {
+      "classes": "Barde",
+      "level": 0,
+      "details": "1 action, 18 m, Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous lancez une insulte magiquement infusée à une créature que vous voyez à portée. Elle doit réussir un jet de sauvegarde de Sagesse sous peine de subir 1d4 dégâts psychiques et d'avoir un désavantage à la prochaine attaque qu'elle effectue avant votre prochain tour, distraite par vos moqueries."
+    }
+  },
+  {
+    "name": "Avis divin",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Avis-divin.png",
+    "system": {
+      "classes": "Clerc, Druide",
+      "level": 0,
+      "details": "1 action, Contact, Concentration, 1 minute",
+      "concentration": true,
+      "ritual": false,
+      "description": "Vous touchez une créature consentante. Une fois avant la fin du sort, elle peut lancer 1d4 et l'ajouter à un test de caractéristique de son choix."
+    }
+  },
+  {
+    "name": "Thaumaturgie",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Thaumaturgie.png",
+    "system": {
+      "classes": "Clerc",
+      "level": 0,
+      "details": "1 action, 9 m, 1 minute",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous manifestez un petit prodige, signe d'un pouvoir surnaturel, au choix parmi : voix amplifiée pendant 1 minute, flammes proches vacillant en couleur et intensité, tremblement de sol inoffensif, bruit sourd audible à 90 m, porte/fenêtre proche qui s'ouvre ou se ferme brutalement, vos yeux qui prennent une couleur différente pendant 1 minute. Si vous répétez l'effet, il peut durer jusqu'à la fin du sort au lieu d'être instantané."
+    }
+  },
+  {
+    "name": "Druidisme",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Druidisme.png",
+    "system": {
+      "classes": "Druide",
+      "level": 0,
+      "details": "1 action, 9 m, Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous créez l'un des effets suivants dans la zone d'effet : prédire le temps qu'il fera dans les 24 prochaines heures ; faire éclore instantanément un bourgeon, feuille se déployer ou fleur s'ouvrir ; créer un effet sensoriel inoffensif et immédiat (étincelles, vent léger, bruit d'eau, odeur douce) ; allumer ou éteindre instantanément une petite flamme."
+    }
+  },
+  {
+    "name": "Prestidigitation",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Prestidigitation.png",
+    "system": {
+      "classes": "Barde, Ensorceleur, Occultiste, Magicien",
+      "level": 0,
+      "details": "1 action, 3 m, jusqu'à 1 heure",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous créez l'un des effets magiques mineurs suivants à portée : un effet sensoriel instantané inoffensif ; allumer ou éteindre une bougie/torche/petit feu ; nettoyer ou salir un objet de moins de 1 pied cube ; parfumer, refroidir ou réchauffer légèrement 1 pied cube de matière pendant 1 heure ; faire apparaître une marque ou un symbole inoffensif sur une surface pendant 1 heure ; créer une babiole ou image illusoire tenant dans la main pendant 1 tour."
+    }
+  },
+  {
+    "name": "Illusion mineure",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Illusion-mineure.png",
+    "system": {
+      "classes": "Barde, Ensorceleur, Occultiste, Magicien",
+      "level": 0,
+      "details": "1 action, 9 m, 1 minute",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous créez un son ou une image illusoire d'un objet tenant dans un cube de 1,50 m, visible/audible pendant la durée du sort. L'illusion cesse si vous la dissipez (action) ou si vous relancez ce sort. Un personnage peut utiliser son action pour l'examiner et, en cas de réussite d'un test d'Intelligence (Investigation) contre votre DD de sort, en découvrir la nature illusoire."
+    }
+  },
+  {
+    "name": "Ordre",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Ordre.png",
+    "system": {
+      "classes": "Clerc, Paladin",
+      "level": 1,
+      "details": "1 action, 18 m, Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous prononcez un mot de commandement à une créature que vous voyez à portée et qui vous entend/comprend. Elle doit réussir un jet de sauvegarde de Sagesse sous peine de suivre l'ordre à son prochain tour (ex. Approche, Éloigne-toi, Tombe, Fuis, Rends-toi), tant qu'il ne la met pas directement en danger."
+    }
+  },
+  {
+    "name": "Sanctuaire",
+    "type": "spell",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Sanctuaire.png",
+    "system": {
+      "classes": "Clerc",
+      "level": 1,
+      "details": "1 action bonus, 9 m, 1 minute",
+      "concentration": false,
+      "ritual": false,
+      "description": "Vous protégez une créature consentante à portée. Jusqu'à la fin du sort, toute créature qui cible la protégée d'une attaque ou d'un sort malfaisant doit d'abord réussir un jet de sauvegarde de Sagesse, sous peine de devoir choisir une nouvelle cible ou perdre l'attaque/le sort. Le sort prend fin si la protégée attaque ou lance un sort ciblant une créature."
+    }
   }
 ]
