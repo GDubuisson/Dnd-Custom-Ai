@@ -821,5 +821,118 @@
       "source": "",
       "description": "Choisissez une option avec le MJ : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé)."
     }
+  },
+  {
+    "name": "Doigts agiles",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Doigts-agiles.png",
+    "system": {
+      "class": "Roublard",
+      "subclass": "Voleur",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand vous utilisez l'action bonus d'Action rusée, vous pouvez aussi effectuer un test d'Escamotage, utiliser des Outils de voleur pour désamorcer un piège ou crocheter une serrure, ou utiliser un objet grâce à cette action bonus."
+    }
+  },
+  {
+    "name": "Escalade experte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Escalade-experte.png",
+    "system": {
+      "class": "Roublard",
+      "subclass": "Voleur",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale."
+    }
+  },
+  {
+    "name": "Résilience draconique",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Resilience-draconique.png",
+    "system": {
+      "class": "Ensorceleur",
+      "subclass": "Lignage draconique",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Choisissez un type de dragon avec le MJ : vous gagnez une résistance au type de dégâts associé (ex. feu pour un dragon rouge). Vos points de vie maximum augmentent de 1 par niveau d'Ensorceleur, et votre CA sans armure est égale à 13 + votre modificateur de Dextérité (un bouclier reste utilisable)."
+    }
+  },
+  {
+    "name": "Affinité élémentaire",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Affinite-elementaire.png",
+    "system": {
+      "class": "Ensorceleur",
+      "subclass": "Lignage draconique",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort. Vous pouvez aussi dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
+    }
+  },
+  {
+    "name": "Bienfait du Fiélon",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Bienfait-du-Fielon.png",
+    "system": {
+      "class": "Occultiste",
+      "subclass": "Le Fiélon",
+      "level": 1,
+      "requiresRoll": true,
+      "rollFormula": "1d10 + @attributes.level",
+      "source": "",
+      "description": "Quand vous réduisez une créature hostile à 0 point de vie, vous gagnez des points de vie temporaires égaux à 1d10 + votre niveau d'Occultiste (bouton calculant automatiquement le total)."
+    }
+  },
+  {
+    "name": "Chance du Fiélon",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Chance-du-Fielon.png",
+    "system": {
+      "class": "Occultiste",
+      "subclass": "Le Fiélon",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Si le résultat d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde ne vous convient pas, vous pouvez ajouter 1d10 au résultat. 1 utilisation par repos long (simplifié : normalement par repos court ou long)."
+    }
+  },
+  {
+    "name": "Sculpteur de sorts",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Sculpteur-de-sorts.png",
+    "system": {
+      "class": "Magicien",
+      "subclass": "École d'évocation",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand vous lancez un sort d'évocation qui affecte d'autres créatures que vous voyez, vous pouvez en protéger un nombre égal à 1 + le niveau du sort : elles réussissent automatiquement leur jet de sauvegarde contre le sort et ne subissent aucun dégât si elles n'en auraient normalement subi que la moitié en cas de réussite."
+    }
+  },
+  {
+    "name": "Tour de magie renforcé",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Tour-de-magie-renforce.png",
+    "system": {
+      "class": "Magicien",
+      "subclass": "École d'évocation",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
+    }
   }
 ]
