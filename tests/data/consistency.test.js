@@ -142,8 +142,14 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
 
 describe("world-items/features.json — cohérence (FeatureData)", () => {
   for (const feature of WORLD_FEATURES) {
-    test(`${feature.name} : classe réelle, niveau >= 1`, () => {
-      assert.ok(CLASS_LABELS_FR.has(feature.system.class), `"${feature.name}" référence une classe inconnue : "${feature.system.class}"`);
+    test(`${feature.name} : classe réelle (ou universelle), niveau >= 1`, () => {
+      // Une Capacité universelle (system.universal, ex. Attaque d'opportunité) n'a
+      // volontairement pas de classe propre — octroyée à toutes (cf. grantClassContent).
+      if (feature.system.universal) {
+        assert.equal(feature.system.class, "", `"${feature.name}" est universelle : le champ classe devrait rester vide`);
+      } else {
+        assert.ok(CLASS_LABELS_FR.has(feature.system.class), `"${feature.name}" référence une classe inconnue : "${feature.system.class}"`);
+      }
       assert.ok((feature.system.level ?? 1) >= 1);
     });
   }

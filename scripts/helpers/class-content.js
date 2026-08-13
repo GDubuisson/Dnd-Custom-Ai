@@ -38,7 +38,9 @@ function countAvailableContent(type, packName) {
  *    toute Capacité dont le niveau requis est atteint (`level` <= niveau du personnage). Une
  *    Capacité de sous-classe (FeatureData.subclass renseigné) n'est incluse que si elle
  *    correspond à la sous-classe choisie par le personnage (actor.system.subclass, cf.
- *    DND_CUSTOM.subclasses, config.js) — vide, elle reste une Capacité de classe de base.
+ *    DND_CUSTOM.subclasses, config.js) — vide, elle reste une Capacité de classe de base. Une
+ *    Capacité universelle (FeatureData.universal, ex. Attaque d'opportunité) est octroyée à
+ *    toute classe au niveau requis, indépendamment de FeatureData.class (laissé vide).
  *  - Sorts (SpellData.classes/level, liste de libellés séparés par virgule) : tours de magie
  *    (niveau 0, toujours connus) + sorts dont le niveau est couvert par le plus haut niveau de
  *    sort accessible au personnage (system.spells.maxLevel, déjà recalculé pour le niveau
@@ -77,7 +79,10 @@ export async function grantClassContent(actor, classKey, level) {
       "feature",
       "capacites",
       (system) =>
-        system.class === classLabel &&
+        // Une Capacité universelle (ex. Attaque d'opportunité, system.universal) est éligible
+        // pour toute classe, `system.class` restant vide dans ce cas — sinon, elle doit
+        // correspondre exactement à la classe du personnage.
+        (system.universal || system.class === classLabel) &&
         (system.level ?? 1) <= level &&
         // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
         // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe

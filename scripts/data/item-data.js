@@ -149,6 +149,10 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // convention que `class` (cf. DND_CUSTOM.subclasses, config.js) — grantClassContent ne
       // l'octroie qu'une fois actor.system.subclass résolu vers ce libellé.
       subclass: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité universelle (ex. Attaque d'opportunité) : octroyée à TOUTE classe au niveau
+      // requis, `class` restant vide (pas propre à une classe précise) — cf. grantClassContent,
+      // helpers/class-content.js, qui l'inclut en plus du filtrage habituel par classe.
+      universal: new BooleanField({ required: true, initial: false }),
       level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       // Type d'action SRD 5e nécessaire pour utiliser cette Capacité (cf. DND_CUSTOM.activationTypes,

@@ -461,6 +461,8 @@
         "BaseAC": "Base AC",
         "StrengthRequired": "Strength Required",
         "StealthDisadvantage": "Stealth Disadvantage",
+        "Universal": "Universal (all classes)",
+        "UniversalHelp": "Automatically granted to any character at the required level, regardless of class (e.g. Opportunity Attack) — the Class field is then ignored.",
         "Class": "Class",
         "ClassSavingThrows": "Saving throw proficiencies",
         "ClassSkillChoiceCount": "Skills to choose at creation",

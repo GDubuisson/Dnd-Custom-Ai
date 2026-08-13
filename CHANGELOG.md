@@ -104,6 +104,12 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   réaction utilisable par round, régénérée automatiquement au début de son propre tour (hooks
   `updateCombat`/`deleteCombat`, Combat Tracker natif) ; badge "Réaction" et bouton grisé sur
   l'onglet Capacités/Sorts, indicateur cliquable (rattrapage manuel) dans l'en-tête commune.
+  Retagués en conséquence : Bouclier, Contresort, Déviation de projectiles, Mots cinglants,
+  déjà écrits comme des réactions en description mais restés `activation="action"` par défaut.
+- Capacités universelles (nouveau champ `FeatureData#universal`, octroyées à toute classe
+  indépendamment de `system.class`) : Attaque d'opportunité (règle SRD commune à tous, niveau 1)
+  et Esquive instinctive (Roublard, niveau 5) — première réaction ajoutée au contenu qui ne
+  soit pas propre à une seule classe.
 - Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
   la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
   informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.

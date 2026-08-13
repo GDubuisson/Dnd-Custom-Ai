@@ -998,5 +998,36 @@
       "source": "",
       "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
     }
+  },
+  {
+    "name": "Esquive instinctive",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-instinctive.png",
+    "system": {
+      "class": "Roublard",
+      "level": 5,
+      "activation": "reaction",
+      "reactionTrigger": "Un adversaire que vous voyez vous touche par une attaque",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Quand un adversaire que vous voyez vous touche par une attaque, vous pouvez utiliser votre réaction pour réduire de moitié les dégâts subis (arrondi à l'inférieur)."
+    }
+  },
+  {
+    "name": "Attaque d'opportunité",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-dopportunite.png",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature que vous voyez quitte votre portée d'attaque au corps à corps sans utiliser le désengagement ni être téléportée",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : vous pouvez utiliser votre réaction pour effectuer une attaque au corps à corps contre une créature qui quitte la portée que vous menacez. L'attaque se résout normalement (bouton Attaque de l'onglet Équipement)."
+    }
   }
 ]

@@ -518,6 +518,39 @@ describe("item/feature-sheet.hbs — champ Activation / Déclencheur", () => {
   });
 });
 
+describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", () => {
+  function render(universal) {
+    return parse(
+      renderTemplate("item/feature-sheet.hbs", {
+        item: { img: "f.webp", name: "Attaque d'opportunité" },
+        isGM: true,
+        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action" } },
+        classOptions: [],
+        subclassOptions: [],
+        rechargeOptions: {},
+        system: {
+          class: "", subclass: "", level: 1, source: "", requiresRoll: false, costsResource: "",
+          uses: { max: 0, value: 0, recharge: "longRest" }, description: "",
+          activation: "reaction", reactionTrigger: "", universal
+        },
+        isReaction: true
+      })
+    );
+  }
+
+  test("champ Classe masqué quand la Capacité est universelle", () => {
+    assert.equal(render(true).querySelector('input[name="system.class"]'), null);
+    assert.ok(render(false).querySelector('input[name="system.class"]'), "champ Classe devrait être visible sinon");
+  });
+
+  test("case à cocher Universelle reflète system.universal", () => {
+    const checkbox = render(true).querySelector('input[name="system.universal"]');
+    assert.ok(checkbox, "case Universelle introuvable");
+    assert.ok(checkbox.hasAttribute("checked"));
+    assert.equal(render(false).querySelector('input[name="system.universal"]').hasAttribute("checked"), false);
+  });
+});
+
 describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences, maîtrises)", () => {
   const doc = parse(
     renderTemplate("item/class-sheet.hbs", {

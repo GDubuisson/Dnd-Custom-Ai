@@ -9,6 +9,13 @@
   <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.GmOnlyNotice"}}</p>
   {{/unless}}
 
+  <label class="checkbox-row">
+    <input type="checkbox" name="system.universal" {{#if system.universal}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
+    {{localize "DND_CUSTOM.Item.Fields.Universal"}}
+  </label>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UniversalHelp"}}</p>
+
+  {{#unless system.universal}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Class"}}</label>
     <input type="text" name="system.class" value="{{system.class}}" list="feature-class-options" {{#unless isGM}}disabled{{/unless}}>
@@ -18,6 +25,7 @@
       {{/each}}
     </datalist>
   </div>
+  {{/unless}}
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Subclass"}}</label>
