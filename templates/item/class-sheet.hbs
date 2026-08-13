@@ -5,6 +5,31 @@
 </header>
 
 <div class="item-sheet-body">
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.ClassSavingThrows"}}</legend>
+    {{#each savingThrowOptions}}
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.savingThrows" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      {{localize this.label}}
+    </label>
+    {{/each}}
+  </fieldset>
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ClassSkillChoiceCount"}}</label>
+    <input type="number" name="system.skillChoiceCount" value="{{system.skillChoiceCount}}" min="0">
+  </div>
+
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.ClassWeaponProficiencies"}}</legend>
+    {{#each weaponProficiencyOptions}}
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.weaponProficiencies" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      {{localize this.label}}
+    </label>
+    {{/each}}
+  </fieldset>
+
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
     <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>

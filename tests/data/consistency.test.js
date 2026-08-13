@@ -224,6 +224,22 @@ describe("world-items/classes.json — une entrée par classe de config.js, cont
   }
 });
 
+describe("world-items/classes.json — champs structurés cohérents avec config.js (duplication assumée, cf. ClassData)", () => {
+  const classKeyByLabel = new Map(CLASS_KEYS.map((key) => [LOCALES.fr[DND_CUSTOM.classes[key]], key]));
+  for (const entry of WORLD_CLASSES) {
+    const classKey = classKeyByLabel.get(entry.name);
+    test(`${entry.name} : savingThrows identiques à DND_CUSTOM.classSavingThrows`, () => {
+      assert.deepEqual(new Set(entry.system.savingThrows), new Set(DND_CUSTOM.classSavingThrows[classKey]));
+    });
+    test(`${entry.name} : skillChoiceCount identique à DND_CUSTOM.classSkillChoices`, () => {
+      assert.equal(entry.system.skillChoiceCount, DND_CUSTOM.classSkillChoices[classKey]);
+    });
+    test(`${entry.name} : weaponProficiencies identiques à DND_CUSTOM.classWeaponProficiencies`, () => {
+      assert.deepEqual(new Set(entry.system.weaponProficiencies), new Set(DND_CUSTOM.classWeaponProficiencies[classKey]));
+    });
+  }
+});
+
 describe("world-items/origins.json — une entrée par Origine de scripts/data/origins.json", () => {
   test("mêmes noms des deux côtés", () => {
     const itemNames = new Set(WORLD_ORIGIN_ITEMS.map((entry) => entry.name));

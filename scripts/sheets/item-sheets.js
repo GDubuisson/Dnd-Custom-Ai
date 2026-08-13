@@ -176,6 +176,21 @@ export class ClassItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/class-sheet.hbs` }
   };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.savingThrowOptions = ABILITY_KEYS.map((key) => ({
+      key,
+      label: DND_CUSTOM.abilities[key],
+      checked: context.system.savingThrows.has(key)
+    }));
+    context.weaponProficiencyOptions = Object.keys(DND_CUSTOM.weaponTypes).map((key) => ({
+      key,
+      label: DND_CUSTOM.weaponTypes[key],
+      checked: context.system.weaponProficiencies.has(key)
+    }));
+    return context;
+  }
 }
 
 export class ToolItemSheet extends DndCustomItemSheet {

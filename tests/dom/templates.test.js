@@ -517,3 +517,42 @@ describe("item/feature-sheet.hbs — champ Activation / Déclencheur", () => {
     assert.equal(input.getAttribute("value"), "Une créature quitte votre portée");
   });
 });
+
+describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences, maîtrises)", () => {
+  const doc = parse(
+    renderTemplate("item/class-sheet.hbs", {
+      item: { img: "c.webp", name: "Guerrier" },
+      system: { description: "<p>Maître d'armes.</p>", savingThrows: new Set(["str", "con"]), skillChoiceCount: 2, weaponProficiencies: new Set(["meleeSimple", "meleeMartial"]) },
+      savingThrowOptions: [
+        { key: "str", label: "DND_CUSTOM.Abilities.str", checked: true },
+        { key: "dex", label: "DND_CUSTOM.Abilities.dex", checked: false },
+        { key: "con", label: "DND_CUSTOM.Abilities.con", checked: true }
+      ],
+      weaponProficiencyOptions: [
+        { key: "meleeSimple", label: "DND_CUSTOM.Item.WeaponTypes.meleeSimple", checked: true },
+        { key: "meleeMartial", label: "DND_CUSTOM.Item.WeaponTypes.meleeMartial", checked: true },
+        { key: "rangedSimple", label: "DND_CUSTOM.Item.WeaponTypes.rangedSimple", checked: false }
+      ]
+    })
+  );
+
+  test("seules les 2 sauvegardes maîtrisées sont cochées", () => {
+    const checked = [...doc.querySelectorAll('input[name="system.savingThrows"]:checked')].map((el) => el.value);
+    assert.deepEqual(new Set(checked), new Set(["str", "con"]));
+  });
+
+  test("champ nombre de compétences à choisir présent avec la bonne valeur", () => {
+    const input = doc.querySelector('input[name="system.skillChoiceCount"]');
+    assert.ok(input, "champ skillChoiceCount introuvable");
+    assert.equal(input.getAttribute("value"), "2");
+  });
+
+  test("maîtrises d'armes cochées correspondent à weaponProficiencyOptions", () => {
+    const checked = [...doc.querySelectorAll('input[name="system.weaponProficiencies"]:checked')].map((el) => el.value);
+    assert.deepEqual(new Set(checked), new Set(["meleeSimple", "meleeMartial"]));
+  });
+
+  test("la description reste un champ narratif distinct", () => {
+    assert.ok(doc.querySelector('prose-mirror[name="system.description"]'));
+  });
+});
