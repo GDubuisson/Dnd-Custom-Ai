@@ -39,6 +39,19 @@
     <input type="text" name="system.source" value="{{system.source}}" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Activation"}}</label>
+    <select name="system.activation" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
+  </div>
+
+  {{#if isReaction}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
+    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}" {{#unless isGM}}disabled{{/unless}}>
+  </div>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
+  {{/if}}
+
   <label class="checkbox-row">
     <input type="checkbox" name="system.requiresRoll" {{#if system.requiresRoll}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
     {{localize "DND_CUSTOM.Item.Fields.RequiresRoll"}}

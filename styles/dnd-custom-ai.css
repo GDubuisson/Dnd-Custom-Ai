@@ -284,6 +284,31 @@
   color: var(--dca-tertiary);
 }
 
+/* Indicateur de réaction (économie d'action de combat, SRD 5e) dans la zone commune de la
+   fiche : cliquable pour un rattrapage manuel (cf. #onToggleReaction, actor-sheet.js). Doré
+   (comme .level-up-badge) tant que la réaction est disponible, grisé une fois consommée. */
+.dnd-custom-ai .reaction-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  align-self: center;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--dca-tertiary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .reaction-indicator.used {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--dca-secondary-fixed-dim);
+}
+
 .dnd-custom-ai .hp-bar-track {
   display: block;
   width: 100%;
@@ -1653,6 +1678,21 @@
   color: var(--dca-on-secondary-container);
   font-size: 0.65rem;
   font-weight: 600;
+}
+
+/* Badge "Réaction" (cf. FeatureData/SpellData#activation) sur une entrée de l'onglet
+   Capacités/Sorts — le déclencheur (system.reactionTrigger) est affiché en tooltip. */
+.dnd-custom-ai .reaction-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .dnd-custom-ai .spell-prepared {

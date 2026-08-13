@@ -19,6 +19,26 @@ export function registerHandlebarsHelpers() {
   // inchangé, pour rester vérifiable contre le SRD.
   Handlebars.registerHelper("formatSpeed", (feet) => `${Math.round((Number(feet) || 0) * 0.3)} m`);
 
+  // Économie d'action de combat (cf. FeatureData/SpellData#activation, item-data.js) : une
+  // Capacité/un Sort "Réaction" affiche un badge dédié sur l'onglet Capacités/Sorts et voit son
+  // bouton d'utilisation grisé une fois la réaction consommée ce round-ci (cf. context.reactionAvailable).
+  Handlebars.registerHelper("isReactionItem", (item) => item?.system?.activation === "reaction");
+
+  // Vrai seulement pour une Capacité/un Sort "Réaction" dont la réaction est déjà consommée ce
+  // round-ci (cf. context.reactionAvailable) : grise le bouton d'utilisation correspondant.
+  Handlebars.registerHelper(
+    "reactionBlocked",
+    (item, reactionAvailable) => item?.system?.activation === "reaction" && !reactionAvailable
+  );
+
+  // Même logique que reactionBlocked ci-dessus, pour le bouton de technique à réserve partagée
+  // (cf. featureResourceState, actor-sheet.js) : grisé aussi bien à réserve épuisée qu'à
+  // réaction déjà consommée (la technique, pas la réserve elle-même, porte l'activation).
+  Handlebars.registerHelper("resourceTechniqueDisabled", (resourceState, item, reactionAvailable) => {
+    if (!resourceState?.remaining) return true;
+    return item?.system?.activation === "reaction" && !reactionAvailable;
+  });
+
   Handlebars.registerHelper("isUsableItem", (item) => {
     if (item?.type === "tool") return Boolean(item.system.useEffect?.skill);
     return Boolean(item?.system?.use) && item.system.use.type !== "none";

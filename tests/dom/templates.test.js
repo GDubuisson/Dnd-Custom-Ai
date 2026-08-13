@@ -104,6 +104,38 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
   });
 });
 
+describe("character-sheet.hbs (en-tête) — indicateur de réaction", () => {
+  function render(reactionAvailable) {
+    return parse(
+      renderTemplate("actor/character-sheet.hbs", {
+        actor: { img: "img.webp", name: "Aldric" },
+        system: { xp: 0, attributes: { level: 3, hp: { value: 18, max: 24, temp: 0 }, ac: { value: 15 }, speed: 30 } },
+        isGM: true,
+        levelUpAvailable: false,
+        classLabel: "Guerrier",
+        originLabel: "Altenmark",
+        hpPercent: 75,
+        dying: { active: false },
+        showCreationWizardButton: false,
+        reactionAvailable
+      })
+    );
+  }
+
+  test("réaction disponible : indicateur cliquable, sans la classe 'used'", () => {
+    const doc = render(true);
+    const indicator = doc.querySelector('[data-action="toggleReaction"]');
+    assert.ok(indicator, "indicateur de réaction introuvable");
+    assert.equal(indicator.classList.contains("used"), false);
+  });
+
+  test("réaction consommée : indicateur marqué 'used'", () => {
+    const doc = render(false);
+    const indicator = doc.querySelector('[data-action="toggleReaction"]');
+    assert.ok(indicator.classList.contains("used"));
+  });
+});
+
 describe("tab-stats.hbs", () => {
   const context = {
     tab: {},
@@ -288,6 +320,76 @@ describe("tab-abilities.hbs — technique consommant la réserve d'une autre Cap
   });
 });
 
+describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#activation)", () => {
+  function render(reactionAvailable) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: true,
+        spellcasting: { dc: 14, attackBonusLabel: "+6" },
+        spellUses: { value: 0, max: 0 },
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable,
+        features: [
+          { id: "f1", name: "Attaque d'opportunité", system: { source: "", uses: { max: 0 }, requiresRoll: true, rollFormula: "1d8+3", costsResource: "", activation: "reaction", reactionTrigger: "Une créature quitte votre portée" } },
+          { id: "f2", name: "Second souffle", system: { source: "", uses: { max: 1, value: 1 }, requiresRoll: false, costsResource: "", activation: "bonusAction" } }
+        ],
+        spellsByLevel: [
+          {
+            level: 1,
+            label: "Sorts de niveau 1",
+            spells: [
+              { item: { id: "s1", name: "Bouclier", system: { details: "1 réaction", concentration: false, ritual: false, level: 1, prepared: false, activation: "reaction" } } }
+            ]
+          }
+        ]
+      })
+    );
+  }
+
+  test("badge Réaction affiché uniquement sur les entrées 'reaction', avec le déclencheur en tooltip", () => {
+    const doc = render(true);
+    const f1 = doc.querySelector('[data-item-id="f1"]');
+    const f2 = doc.querySelector('[data-item-id="f2"]');
+    assert.ok(f1.querySelector(".reaction-badge"), "badge Réaction manquant sur une Capacité réaction");
+    assert.equal(f1.querySelector(".reaction-badge").getAttribute("title"), "Une créature quitte votre portée");
+    assert.equal(f2.querySelector(".reaction-badge"), null, "badge Réaction ne devrait pas apparaître sur une Capacité non-réaction");
+  });
+
+  test("réaction disponible : le bouton d'utilisation d'une Capacité réaction reste cliquable", () => {
+    const doc = render(true);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.ok(button, "bouton rollFeature introuvable");
+    assert.equal(button.hasAttribute("disabled"), false);
+  });
+
+  test("réaction déjà consommée : le bouton d'utilisation d'une Capacité réaction est grisé", () => {
+    const doc = render(false);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.ok(button.hasAttribute("disabled"), "le bouton devrait être désactivé, réaction indisponible");
+  });
+
+  test("réaction déjà consommée : le bouton 'Lancer' d'un sort réaction est grisé", () => {
+    const doc = render(false);
+    const button = doc.querySelector('[data-item-id="s1"] [data-action="castSpell"]');
+    assert.ok(button.hasAttribute("disabled"), "le bouton Lancer devrait être désactivé, réaction indisponible");
+  });
+
+  test("réaction disponible : le bouton 'Lancer' d'un sort réaction reste cliquable", () => {
+    const doc = render(true);
+    const button = doc.querySelector('[data-item-id="s1"] [data-action="castSpell"]');
+    assert.equal(button.hasAttribute("disabled"), false);
+  });
+
+  test("une Capacité non-réaction (Second souffle, action bonus) n'est jamais grisée par l'indisponibilité de la réaction", () => {
+    const doc = render(false);
+    const button = doc.querySelector('[data-item-id="f2"] [data-action="useFeatureCharge"]');
+    assert.ok(button, "bouton useFeatureCharge introuvable");
+    assert.equal(button.hasAttribute("disabled"), false);
+  });
+});
+
 describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/*.hbs)", () => {
   function render(classTabPartial) {
     return parse(
@@ -351,5 +453,67 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
     for (const removed of ["system.school", "system.castingTime", "system.range", "system.components", "system.duration"]) {
       assert.equal(html.includes(`name="${removed}`), false, `champ obsolète encore présent : ${removed}`);
     }
+  });
+
+  test("champ Activation présent, avec les 4 choix (config.activationTypes)", () => {
+    const select = doc.querySelector('select[name="system.activation"]');
+    assert.ok(select, "select Activation introuvable");
+  });
+
+  test("champ Déclencheur absent quand le sort n'est pas une réaction", () => {
+    assert.equal(doc.querySelector('input[name="system.reactionTrigger"]'), null);
+  });
+});
+
+describe("item/spell-sheet.hbs — sort de type Réaction", () => {
+  const doc = parse(
+    renderTemplate("item/spell-sheet.hbs", {
+      item: { img: "spell.webp", name: "Bouclier" },
+      config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
+      system: {
+        classes: "Magicien", level: 1, details: "1 réaction", concentration: false, ritual: false, prepared: false,
+        activation: "reaction", reactionTrigger: "Vous êtes touché par une attaque", description: ""
+      },
+      isReaction: true
+    })
+  );
+
+  test("le select Activation propose 'Réaction' localisé", () => {
+    const select = doc.querySelector('select[name="system.activation"]');
+    assert.match(select.innerHTML, /Réaction/);
+  });
+
+  test("le champ Déclencheur apparaît, pré-rempli", () => {
+    const input = doc.querySelector('input[name="system.reactionTrigger"]');
+    assert.ok(input, "champ Déclencheur introuvable");
+    assert.equal(input.getAttribute("value"), "Vous êtes touché par une attaque");
+  });
+});
+
+describe("item/feature-sheet.hbs — champ Activation / Déclencheur", () => {
+  function render(isReaction) {
+    return parse(
+      renderTemplate("item/feature-sheet.hbs", {
+        item: { img: "f.webp", name: "Attaque d'opportunité" },
+        isGM: true,
+        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
+        classOptions: [],
+        subclassOptions: [],
+        rechargeOptions: { shortRest: "DND_CUSTOM.Item.RechargeTypes.shortRest", longRest: "DND_CUSTOM.Item.RechargeTypes.longRest" },
+        system: {
+          class: "", subclass: "", level: 1, source: "", requiresRoll: false, costsResource: "",
+          uses: { max: 0, value: 0, recharge: "longRest" }, description: "",
+          activation: isReaction ? "reaction" : "action", reactionTrigger: isReaction ? "Une créature quitte votre portée" : ""
+        },
+        isReaction
+      })
+    );
+  }
+
+  test("champ Déclencheur affiché seulement quand Activation = Réaction", () => {
+    assert.equal(render(false).querySelector('input[name="system.reactionTrigger"]'), null);
+    const input = render(true).querySelector('input[name="system.reactionTrigger"]');
+    assert.ok(input, "champ Déclencheur introuvable");
+    assert.equal(input.getAttribute("value"), "Une créature quitte votre portée");
   });
 });

@@ -146,6 +146,7 @@ export class FeatureItemSheet extends DndCustomItemSheet {
       .map((item) => item.name)
       .sort((a, b) => a.localeCompare(b, game.i18n.lang));
     context.rechargeOptions = FEATURE_RECHARGE_OPTIONS;
+    context.isReaction = context.system.activation === "reaction";
     return context;
   }
 }
@@ -187,6 +188,12 @@ export class SpellItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/spell-sheet.hbs` }
   };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.isReaction = context.system.activation === "reaction";
+    return context;
+  }
 }
 
 export class LanguageItemSheet extends DndCustomItemSheet {

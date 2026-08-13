@@ -80,6 +80,10 @@
       <label title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">{{localize "DND_CUSTOM.Actor.Speed"}}
         <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
       </label>
+      <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
+              title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
+        <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}
+      </button>
     </div>
 
     {{#if activeConditions.length}}

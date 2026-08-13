@@ -20,6 +20,19 @@
     <input type="text" name="system.details" value="{{system.details}}" placeholder="1 action, 18 m, Instantanée">
   </div>
 
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Activation"}}</label>
+    <select name="system.activation">{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
+  </div>
+
+  {{#if isReaction}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
+    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}">
+  </div>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
+  {{/if}}
+
   <label class="checkbox-row"><input type="checkbox" name="system.concentration" {{#if system.concentration}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Concentration"}}</label>
   <label class="checkbox-row"><input type="checkbox" name="system.ritual" {{#if system.ritual}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Ritual"}}</label>
   {{#if system.level}}
