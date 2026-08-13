@@ -183,7 +183,8 @@
       "UseResourceTechnique": "{name} utilise {resource} : {technique} ({remaining}/{max} restants).",
       "NoChargesLeft": "Plus aucune utilisation restante pour {feature}.",
       "ReactionUnavailable": "Réaction déjà utilisée ce round-ci ({name}).",
-      "ClassContentGranted": "{name} reçoit : {names}."
+      "ClassContentGranted": "{name} reçoit : {names}.",
+      "FeatGranted": "{name} choisit le Don : {feat}."
     },
     "Tabs": {
       "stats": "Statistiques",
@@ -329,6 +330,15 @@
       "ClassInfoSkills": "{count} compétence(s) au choix",
       "ClassInfoSpellcasting": "Lanceur de sorts ({ability})",
       "ClassContentMissing": "Aucune Capacité/Sort de classe trouvé dans les compendiums (import du contenu système peut-être pas encore terminé)."
+    },
+    "LevelUp": {
+      "ChoiceTitle": "Amélioration de caractéristiques ou Don ?",
+      "ChoiceHelp": "Règle optionnelle SRD 5e : à ce niveau, choisissez soit une Amélioration de caractéristiques, soit un Don.",
+      "AbilityScoreOption": "Amélioration de caractéristiques",
+      "FeatOption": "Don",
+      "FeatDialogTitle": "Choisir un Don",
+      "FeatConfirm": "Choisir",
+      "AllFeatsOwned": "Ce personnage possède déjà tous les Dons du compendium."
     },
     "Conditions": {
       "Title": "États",

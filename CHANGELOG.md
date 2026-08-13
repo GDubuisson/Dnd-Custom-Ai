@@ -115,6 +115,12 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   dès qu'un personnage possède les deux Capacités (`opportunityAttackTrigger`, rules.js) —
   recalculé à l'affichage, jamais persisté sur l'Item, reste à jour si Sentinelle est
   ajoutée/retirée.
+- Montée de niveau, aux niveaux 4/8/12/16/19 (SRD 5e) : petite fenêtre de choix Amélioration de
+  caractéristiques / Don (`offerAbilityScoreOrFeatDialog`, `scripts/helpers/level-up-choice.js`)
+  avant l'ouverture du dialogue correspondant — jusqu'ici le Don n'était accessible qu'en le
+  glissant manuellement depuis le compendium "Dons", jamais proposé au moment de la montée de
+  niveau. Le choix "Don" liste ceux du compendium non déjà possédés, description complète
+  affichée pour décider.
 - Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
   la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
   informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.

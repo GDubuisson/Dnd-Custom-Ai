@@ -117,9 +117,12 @@ async function buildProgressionPage() {
     <h2>Montée de niveau</h2>
     <p>Le bouton "Monter de niveau" n'apparaît sur la fiche que si l'XP accumulé atteint le seuil
     du niveau suivant. À l'usage, il octroie automatiquement les nouvelles Capacités/nouveaux
-    Sorts de la classe et propose une Amélioration de caractéristiques aux niveaux 4, 8, 12, 16 et
-    19 (SRD 5e). Le champ Niveau reste aussi éditable directement par toi (override manuel, ex.
-    pour corriger une erreur) — dans ce cas, l'octroi automatique de contenu n'est pas déclenché.</p>
+    Sorts de la classe, et aux niveaux 4, 8, 12, 16 et 19 (SRD 5e) propose une petite fenêtre de
+    choix : Amélioration de caractéristiques (+2 sur une caractéristique, ou +1 sur deux), ou Don
+    (règle optionnelle) — le joueur choisit alors un Don parmi ceux du compendium "Dons" qu'il ne
+    possède pas déjà, description complète affichée pour décider. Le champ Niveau reste aussi
+    éditable directement par toi (override manuel, ex. pour corriger une erreur) — dans ce cas,
+    ni l'octroi automatique de contenu ni cette fenêtre de choix ne se déclenchent.</p>
   `;
 }
 

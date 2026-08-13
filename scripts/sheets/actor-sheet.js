@@ -25,7 +25,7 @@ import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
-import { openAbilityScoreImprovementDialog } from "../helpers/ability-score-improvement.js";
+import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -598,10 +598,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       });
     }
 
-    // Amélioration de caractéristiques, SRD 5e (générique, cf. commentaire de
-    // DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après l'incrément de niveau.
+    // Amélioration de caractéristiques OU Don au choix, SRD 5e (règle optionnelle, cf.
+    // commentaire de DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après
+    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js).
     if (DND_CUSTOM.abilityScoreImprovementLevels.includes(next)) {
-      await openAbilityScoreImprovementDialog(this.actor);
+      await offerAbilityScoreOrFeatDialog(this.actor);
     }
   }
 

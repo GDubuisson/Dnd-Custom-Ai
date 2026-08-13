@@ -183,7 +183,8 @@
       "UseResourceTechnique": "{name} uses {resource}: {technique} ({remaining}/{max} left).",
       "NoChargesLeft": "No uses left for {feature}.",
       "ReactionUnavailable": "Reaction already used this round ({name}).",
-      "ClassContentGranted": "{name} gains: {names}."
+      "ClassContentGranted": "{name} gains: {names}.",
+      "FeatGranted": "{name} chooses the Feat: {feat}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -329,6 +330,15 @@
       "ClassInfoSkills": "{count} skill(s) to choose",
       "ClassInfoSpellcasting": "Spellcaster ({ability})",
       "ClassContentMissing": "No class Features/Spells found in the compendiums (system content import may not be finished yet)."
+    },
+    "LevelUp": {
+      "ChoiceTitle": "Ability Score Improvement or Feat?",
+      "ChoiceHelp": "Optional SRD 5e rule: at this level, choose either an Ability Score Improvement or a Feat.",
+      "AbilityScoreOption": "Ability Score Improvement",
+      "FeatOption": "Feat",
+      "FeatDialogTitle": "Choose a Feat",
+      "FeatConfirm": "Choose",
+      "AllFeatsOwned": "This character already has every Feat from the compendium."
     },
     "Conditions": {
       "Title": "Conditions",
