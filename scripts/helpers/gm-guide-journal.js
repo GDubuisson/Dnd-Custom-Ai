@@ -24,6 +24,12 @@ function buildOverviewPage() {
       <li>Langues : Commune et langue d'Origine octroyées automatiquement à la création.</li>
       <li>Sorts/Capacités de classe : octroyés automatiquement à la création et à chaque montée
       de niveau (cf. page "Expérience et montée de niveau" ci-dessous).</li>
+      <li>Réaction : une seule utilisable par round, régénérée automatiquement au début du tour
+      du personnage tant qu'un combat est suivi (Suivi de combat de Foundry) — indicateur
+      cliquable en en-tête de la fiche pour un rattrapage manuel si besoin (capacité qui rend une
+      réaction bonus, correction d'un clic).</li>
+      <li>Onglet Capacités/Sorts : en-tête visuel adapté à la classe du personnage (titre
+      thématique, icône) — purement cosmétique, aucun effet sur les calculs.</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle
@@ -71,6 +77,16 @@ function buildSimplificationsPage() {
       deuxième réserve de PV suivie automatiquement — à adjuger ensemble à la table.</li>
       <li><strong>Domaines divins / Sous-classes / Voies / Cercles</strong> : pas de choix de
       sous-classe modélisé (Canalisation divine, Forme sauvage etc. restent génériques).</li>
+      <li><strong>Réaction</strong> : le système suit uniquement l'économie d'action (1 par
+      round, régénérée au bon moment) — il ne détecte jamais automatiquement le déclencheur d'une
+      Capacité/d'un Sort "Réaction" (ex. "une créature quitte votre portée") : à toi de valider
+      que la situation s'est bien produite avant que le joueur clique. Hors combat suivi par le
+      Suivi de combat, rien ne régénère automatiquement une réaction consommée — seul un clic
+      manuel sur l'indicateur de l'en-tête la rétablit.</li>
+      <li><strong>Compendium Classes</strong> : les champs sauvegardes/compétences/maîtrises
+      visibles sur chaque Item Classe sont informatifs — les modifier n'a aucun effet sur les
+      calculs de la fiche de personnage (dé de vie, sauvegardes appliquées...), qui restent
+      pilotés par <code>scripts/helpers/config.js</code>.</li>
     </ul>
   `;
 }

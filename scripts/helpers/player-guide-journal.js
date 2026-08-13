@@ -58,6 +58,15 @@ function buildRulesPage(glossary) {
     ${abbr("Points de vie temporaires", "PV temporaires")} sont toujours absorbés en premier
     lors de dégâts subis.</p>
 
+    <h2>Réaction</h2>
+    <p>Une Capacité ou un Sort marqué "Réaction" affiche un badge dédié sur l'onglet
+    Capacités/Sorts (le déclencheur, ex. "Quand une créature quitte votre portée", apparaît en
+    infobulle au survol du badge). Une seule réaction est utilisable par round — à vous de juger
+    quand la situation décrite se produit, le système ne la détecte jamais automatiquement.
+    L'indicateur "⚡ Réaction" de l'en-tête de la fiche montre en permanence si elle est
+    disponible (doré) ou déjà utilisée (grisé) ; elle se régénère automatiquement au début de
+    votre tour tant qu'un combat est suivi par le Maître du Jeu (Suivi de combat de Foundry).</p>
+
     <h2>Repos</h2>
     <p>${abbr("Repos court")} et ${abbr("Repos long")} sont accessibles par les boutons dédiés de
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>
@@ -103,13 +112,26 @@ function buildSpellsPage(glossary) {
 async function buildClassesPage() {
   const classes = await loadJson("world-items/classes.json");
   const sections = classes
-    .map((entry) => `<h3>${entry.name}</h3>${entry.system.description}`)
+    .map((entry) => {
+      const system = entry.system;
+      const saves = (system.savingThrows ?? [])
+        .map((key) => game.i18n.localize(DND_CUSTOM.abilities[key]))
+        .join(", ");
+      const weapons = (system.weaponProficiencies ?? [])
+        .map((key) => game.i18n.localize(DND_CUSTOM.weaponTypes[key]))
+        .join(", ");
+      return `<h3>${entry.name}</h3>
+        ${system.description}
+        <p><strong>Jets de sauvegarde maîtrisés :</strong> ${saves} · <strong>Compétences à
+        choisir à la création :</strong> ${system.skillChoiceCount} · <strong>Armes
+        maîtrisées :</strong> ${weapons}</p>`;
+    })
     .join("");
   return `<p>Les 12 classes suivantes sont disponibles dans ce système. Les points de vie
-    maximum, les sauvegardes maîtrisées et le nombre de compétences au choix sont fixés par la
-    classe et appliqués automatiquement par l'assistant de création de personnage (pas de jet de
-    Dé de vie dans ce système : les points de vie maximum sont calculés automatiquement à
-    chaque niveau).</p>${sections}`;
+    maximum sont calculés automatiquement à chaque niveau (pas de jet de Dé de vie dans ce
+    système) ; sauvegardes maîtrisées, compétences au choix et maîtrises d'armes ci-dessous sont
+    appliquées automatiquement par l'assistant de création de personnage. Le même détail est
+    aussi consultable classe par classe dans le compendium "Classes".</p>${sections}`;
 }
 
 async function buildOriginsPage(glossary) {
