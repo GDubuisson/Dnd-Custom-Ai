@@ -1525,7 +1525,9 @@
   color: var(--dca-primary);
 }
 
-.dnd-custom-ai .journal-block textarea {
+.dnd-custom-ai .journal-block textarea,
+.dnd-custom-ai .journal-block prose-mirror {
+  display: block;
   width: 100%;
   min-height: 8rem;
   padding: 0.6rem 0.75rem;
@@ -1538,7 +1540,8 @@
   resize: vertical;
 }
 
-.dnd-custom-ai .journal-block textarea:focus {
+.dnd-custom-ai .journal-block textarea:focus,
+.dnd-custom-ai .journal-block prose-mirror:focus-within {
   outline: none;
   border-color: var(--dca-secondary);
   box-shadow: 0 0 0 1px var(--dca-secondary);
@@ -1567,8 +1570,14 @@
   font-size: 0.72rem;
 }
 
+/* Retour de test : la dernière pastille de langue (la plus à droite) s'affichait avec une
+   police plus grosse que les autres. `font-size` n'était fixé nulle part sur `.item-name-link`
+   lui-même (hérité de `.language-chip` ci-dessus) : `!important` neutralise toute règle plus
+   spécifique qui viendrait le réaffecter pour cet élément précis, même principe que
+   `nav.tabs .item` plus haut dans ce fichier (conflit avec le CSS par défaut de Foundry). */
 .dnd-custom-ai .language-chip .item-name-link {
   color: var(--dca-on-surface);
+  font-size: inherit !important;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1707,7 +1716,8 @@
 .dnd-custom-ai .item-sheet-body .form-row input[type="text"],
 .dnd-custom-ai .item-sheet-body .form-row input[type="number"],
 .dnd-custom-ai .item-sheet-body .form-row select,
-.dnd-custom-ai .item-sheet-body .form-row textarea {
+.dnd-custom-ai .item-sheet-body .form-row textarea,
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
   flex: 1;
   min-width: 0;
   border: 1px solid var(--dca-outline-variant);
@@ -1719,7 +1729,9 @@
   padding: 0.25rem 0.5rem;
 }
 
-.dnd-custom-ai .item-sheet-body .form-row textarea {
+.dnd-custom-ai .item-sheet-body .form-row textarea,
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
+  display: block;
   min-height: 6rem;
   resize: vertical;
 }
@@ -1998,4 +2010,15 @@
   font-size: 0.56rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+/* ---------- Journal "Comparatif des Origines" ---------- */
+/* Pas scopé .dnd-custom-ai : cette page de Journal Foundry (origins-journal.js) n'est pas
+   rendue à l'intérieur d'une fiche du système, mais dans la fenêtre de Journal native. */
+
+.dnd-origins-traits-cell {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
