@@ -53,13 +53,13 @@
     </div>
     <div class="form-row description-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.SpecialTraitDescription"}}</label>
-      <textarea name="system.specialTrait.description">{{system.specialTrait.description}}</textarea>
+      <prose-mirror name="system.specialTrait.description" value="{{system.specialTrait.description}}"></prose-mirror>
     </div>
   </fieldset>
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <textarea name="system.description">{{system.description}}</textarea>
+    <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
   </div>
 </div>
 </div>

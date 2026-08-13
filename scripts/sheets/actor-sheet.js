@@ -17,13 +17,16 @@ import {
   spellAttackBonus,
   toolCheckModifier,
   weaponAttackDamage,
-  hasFeature
+  hasFeature,
+  canUseReaction,
+  opportunityAttackTrigger
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
-import { openAbilityScoreImprovementDialog } from "../helpers/ability-score-improvement.js";
+import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
+import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -104,7 +107,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
-      useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge
+      useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
+      useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
+      toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
 
@@ -180,6 +185,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.showCreationWizardButton = !(system.class && system.origin);
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
+    // En-tête spécialisé de l'onglet Capacités/Sorts (habillage seulement — titre/icône/
+    // accroche propres à la classe, cf. templates/actor/abilities/*.hbs) : partial Handlebars
+    // résolue dynamiquement via {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs.
+    // Préchargée/enregistrée au hook "init" (cf. dnd-custom-ai.js > loadTemplates). Repli sur
+    // "default" tant qu'aucune classe valide n'est choisie (ex. assistant de création en cours).
+    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/${
+      DND_CUSTOM.classes[system.class] ? system.class : "default"
+    }.hbs`;
+
+    // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
+    // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
+    // Capacités/Sorts (cf. #consumeReaction ci-dessous, hooks updateCombat/deleteCombat).
+    context.reactionAvailable = canUseReaction(system);
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -193,13 +211,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
-    // Indicateur "niveau disponible" (bouton MJ) : ne révèle jamais le total d'XP lui-même
-    // au joueur (cf. PROJECT.md > "Système de progression", XP toujours caché au joueur).
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
-    // Affichage XP réservé au MJ (cf. template : bloc entier sous {{#if isGM}}) : seuil du
-    // prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel], la table étant indexée niveau-1),
-    // absent au niveau 20 (déjà au maximum, aucun seuil suivant à afficher).
+    // Affichage XP détaillé (total + seuil exact) réservé au MJ (cf. template : bloc entier
+    // sous {{#if isGM}}) : seuil du prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel],
+    // la table étant indexée niveau-1), absent au niveau 20 (déjà au maximum).
     context.xpNextThreshold = system.attributes.level < 20 ? DND_CUSTOM.xpThresholds[system.attributes.level] : null;
+    // Barre de progression XP visible au joueur (retour de test — PROJECT.md excluait
+    // jusqu'ici tout affichage d'XP au joueur ; décision revue pour n'exposer que la
+    // progression relative vers le niveau suivant, jamais le total ni les seuils chiffrés,
+    // qui restent réservés au bloc MJ ci-dessus). 100% au niveau 20 (rien au-delà à afficher).
+    const currentThreshold = DND_CUSTOM.xpThresholds[system.attributes.level - 1] ?? 0;
+    context.xpPercent = context.xpNextThreshold
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            Math.round(
+              ((system.xp - currentThreshold) / (context.xpNextThreshold - currentThreshold)) * 100
+            )
+          )
+        )
+      : 100;
 
     // Panneau Agonie (SRD 5e) : visible tant que le personnage est à 0 PV et n'a pas encore
     // atteint 3 réussites (stabilisé) ou 3 échecs (mort) — cf. hook updateActor dans
@@ -283,6 +315,42 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Le don Sentinelle modifie le déclencheur affiché d'Attaque d'opportunité si le personnage
+    // possède les deux (cf. opportunityAttackTrigger, rules.js) — dérivé ici, jamais écrit sur
+    // l'Item lui-même : reste juste automatiquement si Sentinelle est ajoutée/retirée.
+    const hasSentinel = context.features.some((feature) => feature.name === "Sentinelle");
+    context.features = context.features.map((feature) => {
+      if (feature.name !== "Attaque d'opportunité" || !hasSentinel) return feature;
+      return {
+        id: feature.id,
+        name: feature.name,
+        system: {
+          ...feature.system,
+          reactionTrigger: opportunityAttackTrigger(feature.system.reactionTrigger, hasSentinel)
+        }
+      };
+    });
+    // Techniques consommant la réserve d'une autre Capacité (`system.costsResource`, ex. les
+    // techniques de Moine consommant du Ki) : état de la réserve au moment du render, par id
+    // de la technique (même convention lookup-par-id que weaponStats/armorStats) — grisé/
+    // non cliquable dès que la réserve est vide (retour de test).
+    context.featureResourceState = {};
+    for (const feature of context.features) {
+      const resourceName = feature.system.costsResource;
+      if (!resourceName) continue;
+      const resource = context.features.find((candidate) => candidate.name === resourceName);
+      if (!resource) continue;
+      context.featureResourceState[feature.id] = {
+        resourceName,
+        // Nom de la technique dupliqué ici (déjà accessible via `this.name` dans la boucle
+        // `{{#each features}}` du template) pour rester entièrement autonome une fois entré
+        // dans le `{{#with (lookup ...)}}` qui suit — évite toute dépendance à la résolution
+        // Handlebars `../` d'un contexte `#with` imbriqué dans un `#each`.
+        techniqueName: feature.name,
+        remaining: resource.system.uses.value,
+        max: resource.system.uses.max
+      };
+    }
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
     // ajoutées à la main (glisser depuis le compendium Langues).
@@ -399,6 +467,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       img: status.img,
       active: this.actor.statuses.has(status.id)
     }));
+    // Retour de test : les états actifs n'étaient visibles que sur l'onglet Statistiques —
+    // ce résumé compact dans l'en-tête (partagé par tous les onglets, cf. character-sheet.hbs)
+    // les garde visibles "quelque part sur la fiche générale" quel que soit l'onglet ouvert.
+    context.activeConditions = context.conditions.filter((condition) => condition.active);
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
@@ -498,13 +570,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Monte le personnage d'UN niveau (jamais directement au niveau maximal éligible, cf.
    *  levelForXp) : PV max/emplacements de sorts/vitesse se recalculent automatiquement
-   *  (CharacterData#prepareDerivedData). Champ verrouillé MJ (cf. hook preUpdateActor,
-   *  dnd-custom-ai.js) : la mise à jour est silencieusement ignorée si un joueur clique
-   *  malgré le bouton masqué côté template. */
+   *  (CharacterData#prepareDerivedData). Accessible à tout propriétaire de la fiche, pas
+   *  seulement au MJ (retour de test) : l'option `dndCustomLevelUp` est l'exception ciblée
+   *  reconnue par le hook preUpdateActor (dnd-custom-ai.js) pour laisser passer `level` sans
+   *  ouvrir les autres champs verrouillés MJ (classe/origine/caractéristiques...). Rend aussi
+   *  tous les PV au joueur (retour de test — jusqu'ici seul le max se recalculait, les PV
+   *  actuels restaient inchangés). */
   static async #onLevelUp() {
     const system = this.actor.system;
     const next = system.attributes.level + 1;
-    await this.actor.update({ "system.attributes.level": next });
+    await this.actor.update({ "system.attributes.level": next }, { dndCustomLevelUp: true });
+    await this.actor.update({ "system.attributes.hp.value": this.actor.system.attributes.hp.max });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
@@ -523,10 +599,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       });
     }
 
-    // Amélioration de caractéristiques, SRD 5e (générique, cf. commentaire de
-    // DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après l'incrément de niveau.
+    // Choix de sous-classe, SRD 5e (cf. DND_CUSTOM.subclassLevel, config.js) : proposé dès que
+    // le niveau requis est atteint et tant qu'aucune sous-classe n'est encore choisie (cf.
+    // offerSubclassChoiceDialog, subclass-choice.js) — le sélecteur de l'en-tête reste
+    // disponible en secours si cette fenêtre est fermée sans choisir.
+    await offerSubclassChoiceDialog(this.actor, this.actor.system.class, next);
+
+    // Amélioration de caractéristiques OU Don au choix, SRD 5e (règle optionnelle, cf.
+    // commentaire de DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après
+    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js).
     if (DND_CUSTOM.abilityScoreImprovementLevels.includes(next)) {
-      await openAbilityScoreImprovementDialog(this.actor);
+      await offerAbilityScoreOrFeatDialog(this.actor);
     }
   }
 
@@ -631,6 +714,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
+    if (!(await this.#consumeReaction(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -647,6 +731,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseFeatureCharge(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
+    if (!(await this.#consumeReaction(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -675,6 +760,62 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const remaining = item.system.uses.value - 1;
     await item.update({ "system.uses.value": remaining });
     return remaining;
+  }
+
+  /** Économie d'action de combat (SRD 5e) : si `item` (Capacité ou Sort) est de type
+   *  "reaction", vérifie que la réaction n'est pas déjà consommée ce round-ci
+   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée.
+   *  Renvoie `true` si l'action associée peut se poursuivre (item non-réaction, ou réaction
+   *  disponible et désormais consommée), `false` sinon (avec avertissement) — l'appelant doit
+   *  alors annuler l'action, sans avoir encore décompté de charge. */
+  async #consumeReaction(item) {
+    if (item.system.activation !== "reaction") return true;
+    if (!canUseReaction(this.actor.system)) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
+      return false;
+    }
+    await this.actor.update({ "system.combat.reactionAvailable": false });
+    return true;
+  }
+
+  /** Rattrapage manuel de la réaction (MJ ou joueur) : capacité qui rend une réaction
+   *  supplémentaire, correction d'un clic malencontreux... Bascule simplement l'état, sans
+   *  attendre un changement de tour (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js,
+   *  pour la régénération automatique au début de son propre tour). */
+  static async #onToggleReaction() {
+    const available = this.actor.system.combat.reactionAvailable;
+    await this.actor.update({ "system.combat.reactionAvailable": !available });
+  }
+
+  /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
+   *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
+   *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
+   *  de la Capacité réservoir (trouvée par nom exact sur l'Actor) et l'annonce dans le chat.
+   *  Bouton grisé côté template (tab-abilities.hbs > featureResourceState) dès que la réserve
+   *  est vide, mais revérifié ici au cas où plusieurs clients cliqueraient en même temps. */
+  static async #onUseResourceTechnique(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.costsResource) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    const resource = this.actor.items.contents.find(
+      (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+    );
+    if (!resource) return;
+
+    const remaining = await this.#consumeFeatureCharge(resource);
+    if (remaining === null) return;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseResourceTechnique", {
+        name: this.actor.name,
+        technique: item.name,
+        resource: resource.name,
+        remaining,
+        max: resource.system.uses.max
+      })
+    });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
@@ -757,7 +898,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       formula: formatModifier(atk.attackBonus),
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
       advantage: event.shiftKey || cond.advantage,
-      disadvantage: event.ctrlKey || cond.disadvantage
+      disadvantage: event.ctrlKey || cond.disadvantage,
+      compareToTargetAc: true
     });
   }
 
@@ -816,6 +958,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
+    if (!(await this.#consumeReaction(item))) return;
 
     // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
     // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —
@@ -847,6 +990,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       }
     }
 
+    // Sort émettant de la lumière (ex. Lumière, cf. SpellData#light dans item-data.js) : allume
+    // le(s) token(s) du lanceur, même principe qu'un objet `gear` "light" (#toggleLight) —
+    // retour de test, rien ne liait jusqu'ici les sorts de lumière au système de lumière des
+    // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
+    // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
+    // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
+    if (item.system.light?.bright || item.system.light?.dim) {
+      await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
+    }
+
     if (item.system.attack) {
       const system = this.actor.system;
       const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
@@ -858,7 +1011,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         formula: formatModifier(attackBonus),
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
         advantage: event.shiftKey || cond.advantage,
-        disadvantage: event.ctrlKey || cond.disadvantage
+        disadvantage: event.ctrlKey || cond.disadvantage,
+        compareToTargetAc: true
       });
       return;
     }
@@ -915,10 +1069,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  confère sa propre maîtrise (bonus de maîtrise toujours appliqué, indépendamment de la
    *  maîtrise de la compétence elle-même — cf. toolCheckModifier dans rules.js), plus
    *  l'éventuel bonus fixe de l'objet (`system.useEffect.bonus`). Maj/Ctrl-clic = avantage/
-   *  désavantage, même convention que #onRollSkill. */
+   *  désavantage, même convention que #onRollSkill. Décrémente `system.quantity` à chaque
+   *  utilisation (retour de test — s'écarte du SRD 5e, où un kit d'outils est réutilisable à
+   *  l'infini, mais explicitement demandé) ; bloqué avec un avertissement une fois épuisé. */
   static async #onUseTool(event, actor, item) {
     const skillKey = item.system.useEffect.skill;
     if (!skillKey) return;
+
+    if (item.system.quantity <= 0) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.NoChargesLeft", { feature: item.name }));
+      return;
+    }
 
     const profBonus = proficiencyBonus(actor.system.attributes.level);
     const mod = toolCheckModifier(actor.system, skillKey, profBonus, item.system.useEffect.bonus);
@@ -932,15 +1093,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       advantage: event.shiftKey,
       disadvantage: event.ctrlKey
     });
+    await item.update({ "system.quantity": item.system.quantity - 1 });
   }
 
   static async #toggleLight(actor, item) {
-    const tokens = actor.getActiveTokens();
-    if (!tokens.length) {
-      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
-      return;
-    }
-
     const turningOn = !item.system.lit;
     if (turningOn) {
       // Un token n'a qu'une seule configuration de lumière active : éteindre toute autre
@@ -958,20 +1114,48 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     await item.update({ "system.lit": turningOn });
 
-    // `dim` est stocké comme rayon SUPPLÉMENTAIRE au-delà de `bright` (formulation SRD) ;
-    // le champ `light.dim` du token attend lui un rayon total depuis le token.
-    const light = turningOn
-      ? { bright: item.system.use.light.bright, dim: item.system.use.light.bright + item.system.use.light.dim }
-      : { bright: 0, dim: 0 };
-    for (const token of tokens) await token.document.update({ light });
+    if (turningOn) {
+      await DndCustomActorSheet.#setTokensLight(actor, item.name, item.system.use.light);
+    } else {
+      const applied = await DndCustomActorSheet.#applyTokensLight(actor, { bright: 0, dim: 0 });
+      if (applied) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.UseLightOff", { name: actor.name, item: item.name })
+        });
+      }
+    }
+  }
+
+  /** Allume la source de lumière du/des token(s) de `actor` sur la scène active (objet `gear`
+   *  "light" allumé, cf. #toggleLight, ou sort émettant de la lumière, cf. #onCastSpell) et
+   *  l'annonce dans le chat. `light` : `{ bright, dim }`, `dim` stocké comme rayon
+   *  SUPPLÉMENTAIRE au-delà de `bright` (formulation SRD) — converti ci-dessous en rayon total
+   *  depuis le token, attendu par `TokenDocument#light.dim`. */
+  static async #setTokensLight(actor, itemName, light) {
+    const applied = await DndCustomActorSheet.#applyTokensLight(actor, {
+      bright: light.bright,
+      dim: light.bright + light.dim
+    });
+    if (!applied) return;
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
-      content: game.i18n.format(turningOn ? "DND_CUSTOM.Chat.UseLightOn" : "DND_CUSTOM.Chat.UseLightOff", {
-        name: actor.name,
-        item: item.name
-      })
+      content: game.i18n.format("DND_CUSTOM.Chat.UseLightOn", { name: actor.name, item: itemName })
     });
+  }
+
+  /** Applique `light` (déjà au format `TokenDocument#light`, rayons totaux) à tous les tokens
+   *  actifs de `actor` sur la scène courante. Renvoie `false` (et prévient) sans rien modifier
+   *  si l'Actor n'a aucun token sur la scène active. */
+  static async #applyTokensLight(actor, light) {
+    const tokens = actor.getActiveTokens();
+    if (!tokens.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
+      return false;
+    }
+    for (const token of tokens) await token.document.update({ light });
+    return true;
   }
 
   static async #applyHeal(actor, item) {

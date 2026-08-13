@@ -10,10 +10,54 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
 modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 
+Traitement complet de `ClaudeFiles/FIRST_FEEDBACK.md` (première vague de retours testeurs,
+~28 points) : PV/pool de sorts plafonnés au max, montée de niveau et choix de sous-classe
+accessibles aux joueurs (pas seulement au MJ), token toujours lié au personnage joueur,
+inventaire (surcharge bloquée, armes/armures non empilables, équipement restreint aux sacs,
+outils consommés à l'usage), sorts filtrés par classe et connectés au système de lumière des
+tokens, combat (dégâts à usage unique et réservés à l'auteur du jet, PvP bloqué, comparaison
+auto à la CA de la cible, XP plein pour chaque participant), barre d'XP et états actifs
+visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mirror>` à la
+place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
+
 ### Corrigé
+- Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de
+  Classe — ce système n'expose jamais ce concept au joueur (PV max calculés automatiquement,
+  repos/soins fixes ou via dés génériques).
+- `world-items/features.json` : "Esquive totale" (Roublard, niveau 5) portait déjà exactement
+  l'effet de l'Esquive instinctive SRD (réaction, réduit de moitié les dégâts d'une attaque
+  touchée), sous le mauvais nom et jamais taguée `activation: "reaction"` — renommée et
+  retaguée plutôt que dupliquée (une fausse "Esquive instinctive" ajoutée par erreur entre-temps
+  a été supprimée : les deux auraient été octroyées simultanément à tout Roublard niveau 5).
 - `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
   blessures"/"Parler aux animaux" — il n'est pas dans `DND_CUSTOM.spellcastingClasses`
   (`config.js`) et ne les recevait donc jamais malgré sa présence dans `system.classes`.
+- PV/pool de sorts par repos : ne peuvent plus dépasser leur max (création, saisie manuelle,
+  variation du max lui-même).
+- Montée de niveau et choix de sous-classe : accessibles à tout propriétaire de la fiche, pas
+  réservés au MJ ; la montée de niveau rend aussi tous les PV.
+- PNJ/monture : vitesse par défaut et données pré-remplies converties en mètres (affichait 30,
+  valeur en pieds, au lieu de 9).
+- Token lié à l'Actor par défaut pour un personnage joueur (`actorLink`) : désynchronisation
+  PV token/fiche corrigée pour les nouveaux personnages, migration ponctuelle pour les
+  existants.
+- Chat "Appliquer les dégâts" : restreint à l'auteur du jet (ou au MJ), application unique.
+- PvP bloqué entre personnages joueurs ; XP de combat attribué en entier à chaque participant
+  (plus divisé).
+- Inventaire : ajout/augmentation de quantité bloqués en cas de surcharge ; armes/armures ne
+  se stackent plus (une ligne par objet) ; seuls les sacs restent équipables ; outils
+  décrémentés à l'utilisation ; sorts filtrés par classe au glisser-déposer.
+- Toutes les fiches d'Item + Journal/Capacités spéciales (PNJ) : descriptions HTML affichées
+  en texte brut, balises comprises, remplacées par l'éditeur riche `<prose-mirror>`.
+- Retire les mentions de dés de vie (système à PV calculés automatiquement) et les références
+  explicites à D&D/SRD 5e du contenu visible des joueurs (Guide du Joueur, capacités de
+  classe concernées).
+- Deux bugs CSS : ellipsis manquant sur la colonne "Traits culturels" du Journal "Comparatif
+  des Origines", police forcée sur la dernière pastille de langue de l'onglet Journal.
+- Paladin : n'avait jamais sa propre Capacité "Canalisation divine" (réservée au Clerc dans
+  les données), rendant "Arme sacrée" (Serment de Dévotion) inutilisable faute de réserve à
+  consommer — Clerc/Paladin ont maintenant chacun la leur ("Canalisation divine (Clerc)"/
+  "(Paladin)", même principe déjà en place pour "Incantation rituelle").
 
 ### Ajouté
 - 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
@@ -44,6 +88,56 @@ modélisés, système de sous-classes (une par classe, SRD) et système de dons 
   Amélioration de caractéristiques) : nouveau compendium "Dons", réutilisant le type d'Item
   `feature` existant (jamais auto-octroyé, `class`/`subclass` vides) — Athlète, Doué,
   Sentinelle, Alerte, Tenace, Chanceux, Magie d'initié, Résilient, Guérisseur, Combat monté.
+- Barre de progression XP visible au joueur (pourcentage relatif au niveau suivant
+  uniquement, jamais de chiffre — le total et les seuils exacts restent réservés au MJ) ;
+  résumé des états actifs visible dans l'en-tête, partagé par tous les onglets.
+- Boutons Attaque/Dégâts de l'onglet Équipement mis en évidence (vrais boutons avec icônes) ;
+  icône de dé sur les autres boutons de jet de la fiche, à la place du seul soulignement en
+  pointillés.
+- Sorts émettant de la lumière (nouveau champ `SpellData#light`, ex. le sort Lumière) :
+  allument désormais le(s) token(s) du lanceur, comme un objet `gear` "light" équivalent.
+- Techniques consommant la réserve d'une autre Capacité (nouveau champ générique
+  `FeatureData#costsResource`, ex. les techniques de Moine consommant du Ki) : bouton dédié
+  "Réserve : Technique" sur la fiche, grisé/non cliquable dès la réserve épuisée, décompte au
+  clic. Trois nouvelles Capacités de Moine niveau 2 (Rafale de coups, Défense patiente, Pas du
+  vent, jusqu'ici seulement citées en texte dans la description de "Ki") plus reliage de
+  Frappe étourdissante (Moine), Canalisation divine : Préserver la vie (Clerc) et Arme sacrée
+  (Paladin), Affinité élémentaire (Ensorceleur, option active seulement — le bonus passif de
+  dégâts reste automatique et gratuit) sur leurs réserves respectives.
+- Onglet Capacités/Sorts : en-tête spécialisé par classe (titre thématique, icône, accroche —
+  ex. "Rage" pour le Barbare, "Voie du Ki" pour le Moine), une partial Handlebars dédiée par
+  classe (`templates/actor/abilities/*.hbs`).
+- Système de réaction en combat (économie d'action SRD 5e) : nouveau champ `activation`
+  (Action/Action bonus/Réaction/Libre) et `reactionTrigger` sur les Capacités/Sorts ; une seule
+  réaction utilisable par round, régénérée automatiquement au début de son propre tour (hooks
+  `updateCombat`/`deleteCombat`, Combat Tracker natif) ; badge "Réaction" et bouton grisé sur
+  l'onglet Capacités/Sorts, indicateur cliquable (rattrapage manuel) dans l'en-tête commune.
+  Retagués en conséquence : Bouclier, Contresort, Déviation de projectiles, Mots cinglants,
+  déjà écrits comme des réactions en description mais restés `activation="action"` par défaut.
+- Capacités universelles (nouveau champ `FeatureData#universal`, octroyées à toute classe
+  indépendamment de `system.class`) : Attaque d'opportunité (règle SRD commune à tous, niveau 1)
+  et Esquive instinctive (Roublard, niveau 5) — première réaction ajoutée au contenu qui ne
+  soit pas propre à une seule classe.
+- Le don Sentinelle modifie automatiquement le déclencheur affiché d'Attaque d'opportunité
+  (fonctionne même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m)
+  dès qu'un personnage possède les deux Capacités (`opportunityAttackTrigger`, rules.js) —
+  recalculé à l'affichage, jamais persisté sur l'Item, reste à jour si Sentinelle est
+  ajoutée/retirée.
+- Montée de niveau, aux niveaux 4/8/12/16/19 (SRD 5e) : petite fenêtre de choix Amélioration de
+  caractéristiques / Don (`offerAbilityScoreOrFeatDialog`, `scripts/helpers/level-up-choice.js`)
+  avant l'ouverture du dialogue correspondant — jusqu'ici le Don n'était accessible qu'en le
+  glissant manuellement depuis le compendium "Dons", jamais proposé au moment de la montée de
+  niveau. Le choix "Don" liste ceux du compendium non déjà possédés, description complète
+  affichée pour décider.
+- Montée de niveau, au niveau propre à chaque classe (SRD 5e) : petite fenêtre de choix de
+  sous-classe (`offerSubclassChoiceDialog`, `scripts/helpers/subclass-choice.js`), description
+  complète de chaque sous-classe affichée — jusqu'ici seul le sélecteur permanent de l'en-tête de
+  la fiche permettait ce choix, jamais proposé au moment précis de la montée de niveau (même
+  lacune que pour le Don). Le sélecteur d'en-tête reste disponible en secours si la fenêtre est
+  fermée sans choisir.
+- Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
+  la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
+  informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.
 
 ## [0.15.0] - 2026-08-10
 

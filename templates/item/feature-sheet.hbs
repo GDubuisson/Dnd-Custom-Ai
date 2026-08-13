@@ -9,6 +9,13 @@
   <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.GmOnlyNotice"}}</p>
   {{/unless}}
 
+  <label class="checkbox-row">
+    <input type="checkbox" name="system.universal" {{#if system.universal}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
+    {{localize "DND_CUSTOM.Item.Fields.Universal"}}
+  </label>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UniversalHelp"}}</p>
+
+  {{#unless system.universal}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Class"}}</label>
     <input type="text" name="system.class" value="{{system.class}}" list="feature-class-options" {{#unless isGM}}disabled{{/unless}}>
@@ -18,6 +25,7 @@
       {{/each}}
     </datalist>
   </div>
+  {{/unless}}
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Subclass"}}</label>
@@ -39,6 +47,19 @@
     <input type="text" name="system.source" value="{{system.source}}" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.Activation"}}</label>
+    <select name="system.activation" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
+  </div>
+
+  {{#if isReaction}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
+    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}" {{#unless isGM}}disabled{{/unless}}>
+  </div>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
+  {{/if}}
+
   <label class="checkbox-row">
     <input type="checkbox" name="system.requiresRoll" {{#if system.requiresRoll}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
     {{localize "DND_CUSTOM.Item.Fields.RequiresRoll"}}
@@ -50,6 +71,11 @@
     <input type="text" name="system.rollFormula" value="{{system.rollFormula}}" placeholder="2d6 + @str" {{#unless isGM}}disabled{{/unless}}>
   </div>
   {{/if}}
+
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.CostsResource"}}</label>
+    <input type="text" name="system.costsResource" value="{{system.costsResource}}" placeholder="Ki" {{#unless isGM}}disabled{{/unless}}>
+  </div>
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Uses"}}</legend>
@@ -72,7 +98,7 @@
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <textarea name="system.description" {{#unless isGM}}disabled{{/unless}}>{{system.description}}</textarea>
+    <prose-mirror name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
   </div>
 </div>
 </div>

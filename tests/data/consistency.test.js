@@ -142,9 +142,25 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
 
 describe("world-items/features.json — cohérence (FeatureData)", () => {
   for (const feature of WORLD_FEATURES) {
-    test(`${feature.name} : classe réelle, niveau >= 1`, () => {
-      assert.ok(CLASS_LABELS_FR.has(feature.system.class), `"${feature.name}" référence une classe inconnue : "${feature.system.class}"`);
+    test(`${feature.name} : classe réelle (ou universelle), niveau >= 1`, () => {
+      // Une Capacité universelle (system.universal, ex. Attaque d'opportunité) n'a
+      // volontairement pas de classe propre — octroyée à toutes (cf. grantClassContent).
+      if (feature.system.universal) {
+        assert.equal(feature.system.class, "", `"${feature.name}" est universelle : le champ classe devrait rester vide`);
+      } else {
+        assert.ok(CLASS_LABELS_FR.has(feature.system.class), `"${feature.name}" référence une classe inconnue : "${feature.system.class}"`);
+      }
       assert.ok((feature.system.level ?? 1) >= 1);
+    });
+  }
+});
+
+describe("world-items/features.json et spells.json — activation valide si renseignée (FeatureData/SpellData#activation)", () => {
+  const ACTIVATION_KEYS = new Set(Object.keys(DND_CUSTOM.activationTypes));
+  for (const item of [...WORLD_FEATURES, ...WORLD_SPELLS]) {
+    if (!("activation" in item.system)) continue;
+    test(`${item.name} : activation "${item.system.activation}" valide`, () => {
+      assert.ok(ACTIVATION_KEYS.has(item.system.activation), `activation invalide sur "${item.name}"`);
     });
   }
 });
@@ -210,6 +226,22 @@ describe("world-items/classes.json — une entrée par classe de config.js, cont
       const closing = (entry.system.description.match(/<\/[a-z][^>]*>/gi) ?? []).length;
       const selfClosing = (entry.system.description.match(/<[a-z][^>]*\/>/gi) ?? []).length;
       assert.equal(opening - selfClosing, closing, `balises HTML déséquilibrées pour "${entry.name}"`);
+    });
+  }
+});
+
+describe("world-items/classes.json — champs structurés cohérents avec config.js (duplication assumée, cf. ClassData)", () => {
+  const classKeyByLabel = new Map(CLASS_KEYS.map((key) => [LOCALES.fr[DND_CUSTOM.classes[key]], key]));
+  for (const entry of WORLD_CLASSES) {
+    const classKey = classKeyByLabel.get(entry.name);
+    test(`${entry.name} : savingThrows identiques à DND_CUSTOM.classSavingThrows`, () => {
+      assert.deepEqual(new Set(entry.system.savingThrows), new Set(DND_CUSTOM.classSavingThrows[classKey]));
+    });
+    test(`${entry.name} : skillChoiceCount identique à DND_CUSTOM.classSkillChoices`, () => {
+      assert.equal(entry.system.skillChoiceCount, DND_CUSTOM.classSkillChoices[classKey]);
+    });
+    test(`${entry.name} : weaponProficiencies identiques à DND_CUSTOM.classWeaponProficiencies`, () => {
+      assert.deepEqual(new Set(entry.system.weaponProficiencies), new Set(DND_CUSTOM.classWeaponProficiencies[classKey]));
     });
   }
 });

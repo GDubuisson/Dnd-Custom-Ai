@@ -26,9 +26,41 @@ import {
   isOffHandEligible,
   isProficientWithWeapon,
   weaponAttackDamage,
-  hasFeature
+  hasFeature,
+  canUseReaction,
+  opportunityAttackTrigger
 } from "../../scripts/helpers/rules.js";
 import { SPELL_SLOT_TABLES } from "../support/fixtures.js";
+
+describe("canUseReaction (économie d'action, SRD 5e : 1 réaction/round)", () => {
+  test("réaction disponible : true", () => {
+    assert.equal(canUseReaction({ combat: { reactionAvailable: true } }), true);
+  });
+
+  test("réaction déjà consommée ce round-ci : false", () => {
+    assert.equal(canUseReaction({ combat: { reactionAvailable: false } }), false);
+  });
+
+  test("system.combat absent (donnée pas encore migrée) : disponible par défaut", () => {
+    assert.equal(canUseReaction({}), true);
+  });
+});
+
+describe("opportunityAttackTrigger (le don Sentinelle modifie le déclencheur affiché)", () => {
+  const base = "Une créature que vous voyez quitte votre portée d'attaque au corps à corps.";
+
+  test("sans Sentinelle : déclencheur inchangé", () => {
+    assert.equal(opportunityAttackTrigger(base, false), base);
+  });
+
+  test("avec Sentinelle : déclencheur étendu, mentionne le désengagement et la cible tierce", () => {
+    const merged = opportunityAttackTrigger(base, true);
+    assert.notEqual(merged, base);
+    assert.match(merged, /désengage/);
+    assert.match(merged, /cible autre que vous/);
+    assert.match(merged, /Sentinelle/);
+  });
+});
 
 describe("abilityModifier (SRD 5e: floor((score - 10) / 2))", () => {
   const cases = [

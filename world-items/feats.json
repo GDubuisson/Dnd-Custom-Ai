@@ -123,7 +123,7 @@
       "requiresRoll": true,
       "rollFormula": "1d6 + 4",
       "source": "PHB",
-      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : avec une Trousse de soins en main, action pour stabiliser une créature à 0 point de vie (qui regagne aussi 1 point de vie), ou pour soigner une créature blessée qui regagne 1d6 + 4 points de vie plus un dé supplémentaire par Dé de vie déjà dépensé par la cible (une fois par créature et par repos court ou long)."
+      "description": "Don (règle optionnelle, remplace une Amélioration de caractéristiques) : avec une Trousse de soins en main, action pour stabiliser une créature à 0 point de vie (qui regagne aussi 1 point de vie), ou pour soigner une créature blessée qui regagne 1d6 + 4 points de vie (une fois par créature et par repos court ou long ; pas de Dé de vie à dépenser, ce système n'en utilise pas)."
     }
   },
   {

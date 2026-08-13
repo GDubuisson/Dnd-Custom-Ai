@@ -80,7 +80,7 @@
     }
   },
   {
-    "name": "Canalisation divine",
+    "name": "Canalisation divine (Clerc)",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
     "system": {
@@ -91,6 +91,20 @@
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
       "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Domaine divin (ex. Repousser les morts-vivants) — à définir avec le MJ selon le Domaine choisi (non modélisé automatiquement dans ce système)."
+    }
+  },
+  {
+    "name": "Canalisation divine (Paladin)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "Paladin",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Serment sacré — à définir avec le MJ selon le Serment choisi (non modélisé automatiquement dans ce système)."
     }
   },
   {
@@ -159,7 +173,49 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour des techniques comme Rafale de coups, Défense patiente ou Pas du vent — effet exact à narrer avec le MJ selon la technique utilisée. Récupérée après un repos court ou long."
+      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
+    }
+  },
+  {
+    "name": "Rafale de coups",
+    "type": "feature",
+    "img": "icons/svg/sword.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Immédiatement après avoir effectué l'action Attaque à votre tour, vous pouvez dépenser 1 point de Ki pour effectuer deux attaques à mains nues en action bonus."
+    }
+  },
+  {
+    "name": "Défense patiente",
+    "type": "feature",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Vous pouvez dépenser 1 point de Ki pour effectuer l'action Esquive en action bonus à votre tour."
+    }
+  },
+  {
+    "name": "Pas du vent",
+    "type": "feature",
+    "img": "icons/svg/wind.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Vous pouvez dépenser 1 point de Ki pour effectuer l'action Course ou Bond en action bonus à votre tour ; votre distance de bond est aussi doublée ce tour-ci."
     }
   },
   {
@@ -384,7 +440,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Pendant un repos court, si vous ou des alliés à portée de voix vous reposez, chaque participant qui dépense au moins un Dé de vie pour récupérer des points de vie en récupère 1d6 supplémentaires (progression simplifiée : ne monte pas avec le niveau dans ce système)."
+      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas)."
     }
   },
   {
@@ -423,7 +479,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (option Repousser les morts-vivants) et que son indice de dangerosité est inférieur ou égal à 1/2, il est détruit au lieu d'être seulement repoussé (seuil à confirmer avec le MJ selon votre niveau)."
+      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (Clerc) (option Repousser les morts-vivants) et que son indice de dangerosité est inférieur ou égal à 1/2, il est détruit au lieu d'être seulement repoussé (seuil à confirmer avec le MJ selon votre niveau)."
     }
   },
   {
@@ -460,6 +516,8 @@
     "system": {
       "class": "Moine",
       "level": 3,
+      "activation": "reaction",
+      "reactionTrigger": "Touché par une attaque à distance d'arme",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -502,6 +560,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "costsResource": "Ki",
       "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour."
     }
   },
@@ -571,12 +630,14 @@
     }
   },
   {
-    "name": "Esquive totale",
+    "name": "Esquive instinctive",
     "type": "feature",
-    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-totale.png",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-instinctive.png",
     "system": {
       "class": "Roublard",
       "level": 5,
+      "activation": "reaction",
+      "reactionTrigger": "Un adversaire que vous voyez vous touche par une attaque",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -632,6 +693,8 @@
       "class": "Barde",
       "subclass": "Collège du Savoir",
       "level": 3,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature à moins de 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -677,7 +740,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine) : action, répartissez un total de points de vie égal à 5 fois votre niveau de Clerc entre les créatures de votre choix à 9 m, sans dépasser la moitié des points de vie maximum de chacune. Inefficace sur les morts-vivants et les créatures artificielles."
+      "costsResource": "Canalisation divine (Clerc)",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Clerc)) : action, répartissez un total de points de vie égal à 5 fois votre niveau de Clerc entre les créatures de votre choix à 9 m, sans dépasser la moitié des points de vie maximum de chacune. Inefficace sur les morts-vivants et les créatures artificielles."
     }
   },
   {
@@ -777,7 +841,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine) : action bonus, imprégnez une arme que vous tenez d'énergie divine pendant 1 minute. Vous ajoutez votre modificateur de Charisme (minimum +1) aux jets d'attaque effectués avec elle, et elle émet une lumière vive dans un rayon de 9 m (faible sur 9 m supplémentaires)."
+      "costsResource": "Canalisation divine (Paladin)",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, imprégnez une arme que vous tenez d'énergie divine pendant 1 minute. Vous ajoutez votre modificateur de Charisme (minimum +1) aux jets d'attaque effectués avec elle, et elle émet une lumière vive dans un rayon de 9 m (faible sur 9 m supplémentaires)."
     }
   },
   {
@@ -875,7 +940,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort. Vous pouvez aussi dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
+      "costsResource": "Sorcellerie innée",
+      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort (passif, sans coût). Le bouton \"Sorcellerie innée\" ci-dessous ne concerne que l'option active : dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
     }
   },
   {
@@ -933,6 +999,22 @@
       "rollFormula": "",
       "source": "",
       "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
+    }
+  },
+  {
+    "name": "Attaque d'opportunité",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-dopportunite.png",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature que vous voyez quitte votre portée d'attaque au corps à corps sans utiliser le désengagement ni être téléportée",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : vous pouvez utiliser votre réaction pour effectuer une attaque au corps à corps contre une créature qui quitte la portée que vous menacez. L'attaque se résout normalement (bouton Attaque de l'onglet Équipement)."
     }
   }
 ]

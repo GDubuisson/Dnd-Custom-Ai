@@ -80,6 +80,9 @@
       "ACTooltip": "How hard the character is to hit. An attack roll must equal or exceed this value to hit.",
       "Speed": "Speed",
       "SpeedTooltip": "Distance the character can move in one turn (shown in meters).",
+      "Reaction": "Reaction",
+      "ReactionAvailableTooltip": "Reaction available this round. Click to mark as used (manual override).",
+      "ReactionUsedTooltip": "Reaction already used this round. Regenerates at the start of your turn. Click to manually restore it.",
       "SaveShort": "Save",
       "ModShort": "Mod.",
       "ProficiencyBonus": "Proficiency bonus",
@@ -99,6 +102,7 @@
       "XpGmLabel": "XP (GM)",
       "XpGmTooltip": "Character's total experience, visible to the GM only — never shown to players",
       "XpMaxLevel": "max level",
+      "XpBarTooltip": "Progress toward next level",
       "DeathSuccesses": "Successes",
       "DeathFailures": "Failures",
       "Stabilized": "Stabilized",
@@ -146,6 +150,8 @@
       "DeathSave": "Death saving throw",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
+      "AttackHit": "Hits {target} (AC {ac})",
+      "AttackMiss": "Misses {target} (AC {ac})",
       "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {
@@ -161,18 +167,24 @@
       "FallsUnconscious": "{name} drops to 0 hit points and falls unconscious!",
       "Death": "{name} has failed three death saving throws and succumbs...",
       "ApplyDamage": "Apply {amount} damage to target",
+      "DamageAlreadyApplied": "Damage already applied",
+      "ApplyDamageNotAuthor": "Only the roll's author (or the GM) can apply this damage",
+      "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
-      "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
+      "XpAwarded": "{amount} XP awarded to each: {names}.",
       "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
       "NoCharacters": "No player character in this world.",
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
       "LevelUp": "{name} reaches level {level}!",
       "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
+      "UseResourceTechnique": "{name} uses {resource}: {technique} ({remaining}/{max} left).",
       "NoChargesLeft": "No uses left for {feature}.",
-      "ClassContentGranted": "{name} gains: {names}."
+      "ReactionUnavailable": "Reaction already used this round ({name}).",
+      "ClassContentGranted": "{name} gains: {names}.",
+      "FeatGranted": "{name} chooses the Feat: {feat}."
     },
     "Tabs": {
       "stats": "Stats",
@@ -203,10 +215,12 @@
       "Attack": "Attack",
       "Damage": "Damage",
       "Equipped": "Equipped",
+      "EquippedBagTooltip": "Only bags/containers (carrying capacity bonus) can be equipped.",
       "WeaponsArmorTitle": "Weapons and Armor",
       "GearToolsTitle": "Gear and Tools",
       "Empty": "No items in inventory",
       "CarriedWeight": "Carried weight",
+      "OverCapacityBlocked": "Can't add this item: it would exceed the maximum carrying capacity.",
       "Currency": "Currency",
       "DeleteItem": "Remove",
       "ViewItem": "Open item sheet",
@@ -215,7 +229,8 @@
       "UseItem": "Use",
       "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
-      "DropError": "Could not move this item (insufficient permissions)."
+      "DropError": "Could not move this item (insufficient permissions).",
+      "SpellWrongClass": "{spell} isn't on this class's spell list."
     },
     "Currency": {
       "pc": "Copper pieces",
@@ -243,7 +258,21 @@
       "Cast": "Cast",
       "NoSpells": "No spell recorded",
       "ConcentratingOn": "Concentrating on:",
-      "DropConcentration": "Drop concentration"
+      "DropConcentration": "Drop concentration",
+      "ClassFlavor": {
+        "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
+        "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },
+        "cleric": { "Title": "Divine Favor", "Tagline": "An intermediary between the mortal world and divine powers, healing and fighting in the name of their deity." },
+        "druid": { "Title": "Call of the Wild", "Tagline": "A guardian of nature who draws magic from the elements and wildlife, able to shapeshift into a wild creature." },
+        "fighter": { "Title": "Martial Mastery", "Tagline": "A master of weapons and armor, trained in every form of martial combat." },
+        "monk": { "Title": "Way of Ki", "Tagline": "An unarmed combatant who channels an inner energy (Ki) to strike fast and hard without armor or heavy weapons." },
+        "paladin": { "Title": "Sacred Oath", "Tagline": "A holy warrior bound by an oath, blending martial prowess with divine magic in service of a cause." },
+        "ranger": { "Title": "Hunter's Instinct", "Tagline": "A hunter and scout at ease in the wilds, combining combat skill with subtle nature magic." },
+        "rogue": { "Title": "Art of Cunning", "Tagline": "An expert in stealth and cunning, deadly with sneak attacks and skilled at bypassing traps and locks." },
+        "sorcerer": { "Title": "Innate Magic", "Tagline": "A spellcaster whose magic springs from an innate gift rather than study, often tied to a bloodline or a supernatural event." },
+        "warlock": { "Title": "Otherworldly Pact", "Tagline": "A spellcaster bound by a pact to a powerful entity, drawing power from it in exchange for service or loyalty." },
+        "wizard": { "Title": "Arcane Lore", "Tagline": "A scholar of arcane magic, whose meticulous learning shapes reality through spells." }
+      }
     },
     "Skills": {
       "acrobatics": "Acrobatics",
@@ -296,14 +325,25 @@
       "OriginInfoBonuses": "Ability bonuses: {bonuses}",
       "OriginInfoSkills": "Skill advantages: {skills}",
       "OriginInfoTrait": "Special trait: {trait}",
-      "ClassInfoHitDie": "Hit die: d{hitDie}",
       "ClassInfoSaves": "Saving throw proficiencies: {saves}",
       "ClassInfoSkills": "{count} skill(s) to choose",
       "ClassInfoSpellcasting": "Spellcaster ({ability})",
       "ClassContentMissing": "No class Features/Spells found in the compendiums (system content import may not be finished yet)."
     },
+    "LevelUp": {
+      "ChoiceTitle": "Ability Score Improvement or Feat?",
+      "ChoiceHelp": "Optional SRD 5e rule: at this level, choose either an Ability Score Improvement or a Feat.",
+      "AbilityScoreOption": "Ability Score Improvement",
+      "FeatOption": "Feat",
+      "FeatDialogTitle": "Choose a Feat",
+      "FeatConfirm": "Choose",
+      "AllFeatsOwned": "This character already has every Feat from the compendium.",
+      "SubclassDialogTitle": "Choose a Subclass",
+      "SubclassConfirm": "Choose"
+    },
     "Conditions": {
       "Title": "Conditions",
+      "ActiveTooltip": "Active conditions on this character",
       "Exhaustion": "Exhaustion",
       "ExhaustionTooltip": "Cumulative exhaustion level (0-6). Each level adds its own penalty: disadvantage on checks (1), speed halved (2), disadvantage on attacks/saves (3), max HP halved (4), speed reduced to 0 (5), death (6).",
       "blinded": "Blinded",
@@ -388,6 +428,12 @@
         "shortRest": "Short rest",
         "longRest": "Long rest"
       },
+      "ActivationTypes": {
+        "action": "Action",
+        "bonusAction": "Bonus action",
+        "reaction": "Reaction",
+        "free": "Free"
+      },
       "LanguageCategories": {
         "common": "Common",
         "origin": "Origin",
@@ -426,12 +472,21 @@
         "BaseAC": "Base AC",
         "StrengthRequired": "Strength Required",
         "StealthDisadvantage": "Stealth Disadvantage",
+        "Universal": "Universal (all classes)",
+        "UniversalHelp": "Automatically granted to any character at the required level, regardless of class (e.g. Opportunity Attack) — the Class field is then ignored.",
         "Class": "Class",
+        "ClassSavingThrows": "Saving throw proficiencies",
+        "ClassSkillChoiceCount": "Skills to choose at creation",
+        "ClassWeaponProficiencies": "Weapon proficiencies",
         "Subclass": "Subclass (if specific)",
         "Level": "Level",
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",
+        "Activation": "Activation",
+        "ReactionTrigger": "Trigger (if Reaction)",
+        "ReactionTriggerHelp": "Describes when to use this Reaction (e.g. \"When a creature you can see within 60 ft. is hit by an attack\").",
         "Source": "Source",
+        "CostsResource": "Draws from pool (exact name of another Feature, e.g. Ki)",
         "Uses": "Limited Uses",
         "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
         "UsesMax": "Maximum",
@@ -462,6 +517,7 @@
         "Prepared": "Prepared",
         "SpellClasses": "Classes",
         "SpellAttack": "Attack Roll",
+        "SpellLight": "Light emitted (optional, e.g. the Light cantrip)",
         "LanguageCategory": "Category"
       }
     }

@@ -112,6 +112,23 @@ describe("grantClassContent — Capacités", () => {
   });
 });
 
+describe("grantClassContent — Capacités universelles (FeatureData#universal)", () => {
+  test("Attaque d'opportunité (universelle, niveau 1) est octroyée quelle que soit la classe", async () => {
+    const wizard = await grantClassContent(makeActor({ class: "wizard", level: 1 }), "wizard", 1);
+    assert.ok(wizard.includes("Attaque d'opportunité"), `attendu dans ${JSON.stringify(wizard)}`);
+
+    const barbarian = await grantClassContent(makeActor({ class: "barbarian", level: 1 }), "barbarian", 1);
+    assert.ok(barbarian.includes("Attaque d'opportunité"), `attendu dans ${JSON.stringify(barbarian)}`);
+  });
+
+  test("déjà possédée par nom -> pas re-octroyée (idempotence, comme les autres Capacités)", async () => {
+    const oa = WORLD_FEATURES.find((feature) => feature.name === "Attaque d'opportunité");
+    const actor = makeActor({ class: "wizard", level: 1, owned: [oa] });
+    const granted = await grantClassContent(actor, "wizard", 1);
+    assert.ok(!granted.includes("Attaque d'opportunité"));
+  });
+});
+
 describe("grantClassContent — Capacités de sous-classe", () => {
   // Jeu de données synthétique (pas WORLD_FEATURES) : une Capacité de classe de base et deux
   // Capacités de sous-classe (Voie du Berserker, niveaux 3 et 6) pour le Barbare, plus une

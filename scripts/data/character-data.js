@@ -119,6 +119,13 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // Constitution après des dégâts subis le vide (cf. dnd-custom-ai.js).
         concentratingOn: new StringField({ required: false, blank: true, initial: "" })
       }),
+      // Économie d'action de combat, SRD 5e (cf. FeatureData/SpellData#activation) : une seule
+      // réaction utilisable par round, régénérée au début de son propre tour tant qu'un combat
+      // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js). Pas de suivi
+      // pour l'action/l'action bonus — hors scope, le système ne verrouille pas le tour lui-même.
+      combat: new SchemaField({
+        reactionAvailable: new BooleanField({ required: true, initial: true })
+      }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
     };

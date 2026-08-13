@@ -284,6 +284,31 @@
   color: var(--dca-tertiary);
 }
 
+/* Indicateur de réaction (économie d'action de combat, SRD 5e) dans la zone commune de la
+   fiche : cliquable pour un rattrapage manuel (cf. #onToggleReaction, actor-sheet.js). Doré
+   (comme .level-up-badge) tant que la réaction est disponible, grisé une fois consommée. */
+.dnd-custom-ai .reaction-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  align-self: center;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--dca-tertiary);
+  color: var(--dca-surface-lowest);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .reaction-indicator.used {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--dca-secondary-fixed-dim);
+}
+
 .dnd-custom-ai .hp-bar-track {
   display: block;
   width: 100%;
@@ -298,6 +323,30 @@
   display: block;
   height: 100%;
   background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
+}
+
+/* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
+   révèle que la progression relative vers le niveau suivant, jamais un chiffre — le total et
+   les seuils exacts restent réservés au bloc MJ (.xp-gm-field). */
+.dnd-custom-ai .xp-bar {
+  display: inline-flex;
+  align-items: center;
+  width: 6rem;
+}
+
+.dnd-custom-ai .xp-bar-track {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dnd-custom-ai .xp-bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--dca-secondary-fixed-dim), var(--dca-secondary));
 }
 
 .dnd-custom-ai .header-actions {
@@ -734,15 +783,19 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : soulignement pointillé au
-   repos pour signaler que c'est cliquable (retour de test — sans indice visuel avant le
-   survol, ça se confondait avec du texte statique), trait plein + couleur au survol. */
+/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : indice visuel de clic au repos
+   (retour de test — sans indice avant le survol, ça se confondait avec du texte statique).
+   Une icône de dé (cf. gabarit `<i class="fa-solid fa-dice-d20">` dans les templates) sert
+   cet indice quand elle est présente ; les rares boutons sans icône gardent le soulignement
+   pointillé en repli (retour de test suivant — remplacer les pointillés par des icônes de dé,
+   plus lisible qu'un simple soulignement). */
 .dnd-custom-ai .roll-btn {
   /* Sans display/width explicites, un <button> reste ici plein-largeur/block (styles de base
      de Foundry) et retombe seul sur sa propre ligne au lieu de suivre le texte qui le précède
      (retour de test — "Attaque"/"Dégâts" affichés au-dessus de leur valeur au lieu d'à côté). */
   display: inline-flex;
   align-items: baseline;
+  gap: 0.25rem;
   width: auto;
   background: transparent;
   border: none;
@@ -754,9 +807,23 @@
   text-underline-offset: 0.15em;
 }
 
+.dnd-custom-ai .roll-btn:has(i) {
+  text-decoration: none;
+}
+
+.dnd-custom-ai .roll-btn i {
+  align-self: center;
+  color: var(--dca-secondary);
+  font-size: 0.85em;
+}
+
 .dnd-custom-ai .roll-btn:hover {
   color: var(--dca-secondary);
   text-decoration: underline solid;
+}
+
+.dnd-custom-ai .roll-btn:has(i):hover {
+  text-decoration: none;
 }
 
 .dnd-custom-ai .proficiency-bonus {
@@ -867,6 +934,40 @@
   background: var(--dca-surface-lowest);
   filter: none;
   opacity: 1;
+}
+
+/* Résumé compact des états actifs dans l'en-tête (retour de test — invisible sauf sur
+   l'onglet Statistiques jusqu'ici) : mêmes pastilles que .condition-chip, en lecture seule
+   (pas de data-action, juste l'image + le nom), visibles quel que soit l'onglet ouvert. */
+.dnd-custom-ai .active-conditions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.dnd-custom-ai .active-condition-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.15rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  border: 1px solid var(--dca-secondary);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .active-condition-chip img {
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0.15rem;
+  border-radius: 999px;
+  background: var(--dca-surface-lowest);
 }
 
 .dnd-custom-ai .exhaustion-chip {
@@ -1082,6 +1183,47 @@
   font-size: 0.72rem;
   font-style: normal;
   color: var(--dca-muted-text);
+}
+
+/* Boutons Attaque/Dégâts de l'onglet Équipement (retour de test — mis plus en évidence que
+   les autres jets de la fiche : vrais boutons avec fond/bordure/icône, plutôt que du texte
+   souligné en pointillés comme .roll-btn) : sword/blood-drop, code couleur distinct par
+   action pour les repérer d'un coup d'œil. */
+.dnd-custom-ai .equipment-roll-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.dnd-custom-ai .equipment-roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .equipment-roll-btn:hover {
+  background: var(--dca-secondary-fixed);
+  border-color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .equipment-roll-btn-attack i {
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .equipment-roll-btn-damage i {
+  color: var(--dca-error);
 }
 
 .dnd-custom-ai .equipped-item-description {
@@ -1365,6 +1507,42 @@
   color: var(--dca-on-surface-variant);
 }
 
+/* En-tête d'identité de classe, en haut de l'onglet Capacités/Sorts (cf.
+   templates/actor/abilities/<classe>.hbs) : icône + titre thématique + phrase d'ambiance. */
+.dnd-custom-ai .class-flavor-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.3rem;
+  background: var(--dca-surface-container);
+  border-left: 3px solid var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-header i {
+  font-size: 1.3rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.dnd-custom-ai .class-flavor-title {
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-tagline {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-on-surface-variant);
+}
+
 /* Capacités (gauche) / Sorts (droite) côte à côte pour les classes lanceuses de sorts ; une
    seule colonne (Capacités) sinon — .features-column s'étire naturellement sur toute la
    largeur quand .spells-column est absent du DOM (retour de test — demande explicite de
@@ -1502,6 +1680,21 @@
   font-weight: 600;
 }
 
+/* Badge "Réaction" (cf. FeatureData/SpellData#activation) sur une entrée de l'onglet
+   Capacités/Sorts — le déclencheur (system.reactionTrigger) est affiché en tooltip. */
+.dnd-custom-ai .reaction-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .dnd-custom-ai .spell-prepared {
   display: inline-flex;
   align-items: center;
@@ -1525,7 +1718,9 @@
   color: var(--dca-primary);
 }
 
-.dnd-custom-ai .journal-block textarea {
+.dnd-custom-ai .journal-block textarea,
+.dnd-custom-ai .journal-block prose-mirror {
+  display: block;
   width: 100%;
   min-height: 8rem;
   padding: 0.6rem 0.75rem;
@@ -1538,7 +1733,8 @@
   resize: vertical;
 }
 
-.dnd-custom-ai .journal-block textarea:focus {
+.dnd-custom-ai .journal-block textarea:focus,
+.dnd-custom-ai .journal-block prose-mirror:focus-within {
   outline: none;
   border-color: var(--dca-secondary);
   box-shadow: 0 0 0 1px var(--dca-secondary);
@@ -1567,8 +1763,14 @@
   font-size: 0.72rem;
 }
 
+/* Retour de test : la dernière pastille de langue (la plus à droite) s'affichait avec une
+   police plus grosse que les autres. `font-size` n'était fixé nulle part sur `.item-name-link`
+   lui-même (hérité de `.language-chip` ci-dessus) : `!important` neutralise toute règle plus
+   spécifique qui viendrait le réaffecter pour cet élément précis, même principe que
+   `nav.tabs .item` plus haut dans ce fichier (conflit avec le CSS par défaut de Foundry). */
 .dnd-custom-ai .language-chip .item-name-link {
   color: var(--dca-on-surface);
+  font-size: inherit !important;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1707,7 +1909,8 @@
 .dnd-custom-ai .item-sheet-body .form-row input[type="text"],
 .dnd-custom-ai .item-sheet-body .form-row input[type="number"],
 .dnd-custom-ai .item-sheet-body .form-row select,
-.dnd-custom-ai .item-sheet-body .form-row textarea {
+.dnd-custom-ai .item-sheet-body .form-row textarea,
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
   flex: 1;
   min-width: 0;
   border: 1px solid var(--dca-outline-variant);
@@ -1719,7 +1922,9 @@
   padding: 0.25rem 0.5rem;
 }
 
-.dnd-custom-ai .item-sheet-body .form-row textarea {
+.dnd-custom-ai .item-sheet-body .form-row textarea,
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
+  display: block;
   min-height: 6rem;
   resize: vertical;
 }
@@ -1987,6 +2192,20 @@
   border-color: var(--dca-secondary);
 }
 
+/* Technique consommant la réserve d'une autre Capacité (ex. techniques de Moine consommant
+   du Ki, cf. featureResourceState dans actor-sheet.js) : grisée et non cliquable dès que la
+   réserve est vide (retour de test), redevient cliquable dès qu'une charge est de nouveau
+   disponible (repos, ou charge restaurée manuellement par le MJ). */
+.dnd-custom-ai .resource-technique-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .resource-technique-btn:disabled:hover {
+  border-color: var(--dca-outline-variant);
+}
+
 .dnd-custom-ai .not-proficient-tag {
   display: inline-block;
   margin-left: 0.3rem;
@@ -1998,4 +2217,15 @@
   font-size: 0.56rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+/* ---------- Journal "Comparatif des Origines" ---------- */
+/* Pas scopé .dnd-custom-ai : cette page de Journal Foundry (origins-journal.js) n'est pas
+   rendue à l'intérieur d'une fiche du système, mais dans la fenêtre de Journal native. */
+
+.dnd-origins-traits-cell {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

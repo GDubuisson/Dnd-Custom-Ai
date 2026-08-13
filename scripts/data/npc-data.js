@@ -42,7 +42,12 @@ export class NpcData extends foundry.abstract.TypeDataModel {
         ac: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
         }),
-        speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 })
+        // Contrairement à CharacterData (vitesse dérivée d'une formule interne en pieds SRD,
+        // convertie en mètres seulement à l'affichage via le helper formatSpeed), la vitesse
+        // d'un PNJ est un champ saisi directement par le MJ sans formule : stockée et affichée
+        // en mètres pour rester cohérente avec le reste de la fiche (retour de test — un PNJ
+        // affichait "30", valeur en pieds SRD, au lieu de l'équivalent 9 m attendu ici).
+        speed: new NumberField({ required: true, integer: true, min: 0, initial: 9 })
       }),
       // XP rapporté : pré-rempli depuis la table FI -> XP (cf. DND_CUSTOM.challengeRatingXp,
       // hook preUpdateActor dans dnd-custom-ai.js) quand le MJ change l'indice de dangerosité,

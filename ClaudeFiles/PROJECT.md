@@ -23,7 +23,6 @@ Créer un système de jeu de rôle personnalisé pour Foundry Virtual TableTop (
 - Marketplace / publication officielle sur Foundry (phase ultérieure)
 - Historique des jets de dés dans la fiche
 - Icônes ou tokens personnalisés liés aux origines
-- Affichage de la progression d'XP au joueur (l'XP existe en interne mais reste masqué)
 
 ## Contexte du jeu
 
@@ -110,7 +109,7 @@ Tous les personnages sont des **Humains**. Leurs traits culturels et bonus méca
 
 ### Système de progression
 - Progression basée sur des **points d'expérience (XP)**, gérés en interne (stockés dans les données de l'Actor)
-- **Non affiché au joueur** : pas de barre de progression ni de compteur d'XP visible sur la fiche — seul le Maître du Jeu (ou un outil GM dédié) doit pouvoir consulter/modifier cette valeur
+- **Barre de progression visible au joueur** (retour de test, revu depuis la version initiale de ce document) : affiche uniquement la progression relative vers le niveau suivant (%), jamais le total ni les seuils chiffrés — ces valeurs exactes restent réservées au Maître du Jeu (bloc dédié sur la fiche, seul habilité à consulter/modifier `system.xp`)
 
 ### Onglet "Journal"
 - Bloc de texte "Biographie"

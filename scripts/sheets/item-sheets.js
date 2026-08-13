@@ -146,6 +146,7 @@ export class FeatureItemSheet extends DndCustomItemSheet {
       .map((item) => item.name)
       .sort((a, b) => a.localeCompare(b, game.i18n.lang));
     context.rechargeOptions = FEATURE_RECHARGE_OPTIONS;
+    context.isReaction = context.system.activation === "reaction";
     return context;
   }
 }
@@ -175,6 +176,21 @@ export class ClassItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/class-sheet.hbs` }
   };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.savingThrowOptions = ABILITY_KEYS.map((key) => ({
+      key,
+      label: DND_CUSTOM.abilities[key],
+      checked: context.system.savingThrows.has(key)
+    }));
+    context.weaponProficiencyOptions = Object.keys(DND_CUSTOM.weaponTypes).map((key) => ({
+      key,
+      label: DND_CUSTOM.weaponTypes[key],
+      checked: context.system.weaponProficiencies.has(key)
+    }));
+    return context;
+  }
 }
 
 export class ToolItemSheet extends DndCustomItemSheet {
@@ -187,6 +203,12 @@ export class SpellItemSheet extends DndCustomItemSheet {
   static PARTS = {
     form: { template: `systems/${SYSTEM_ID}/templates/item/spell-sheet.hbs` }
   };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.isReaction = context.system.activation === "reaction";
+    return context;
+  }
 }
 
 export class LanguageItemSheet extends DndCustomItemSheet {

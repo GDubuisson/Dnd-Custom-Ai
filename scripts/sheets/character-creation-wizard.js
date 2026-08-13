@@ -44,19 +44,19 @@ function buildOriginInfoText(origin) {
   return parts.join(" · ");
 }
 
-/** Même principe que buildOriginInfoText, pour le select Classe : dé de vie, sauvegardes
- *  maîtrisées (fixées par la classe, pas un choix, cf. #onSubmit), nombre de compétences au
- *  choix (déjà indiqué séparément par #syncSkillCountHint, répété ici pour tout avoir au même
- *  endroit) et caractéristique d'incantation si classe lanceuse. */
+/** Même principe que buildOriginInfoText, pour le select Classe : sauvegardes maîtrisées
+ *  (fixées par la classe, pas un choix, cf. #onSubmit), nombre de compétences au choix (déjà
+ *  indiqué séparément par #syncSkillCountHint, répété ici pour tout avoir au même endroit) et
+ *  caractéristique d'incantation si classe lanceuse. Pas de dé de vie affiché : ce système n'en
+ *  utilise pas côté joueur (PV max calculés automatiquement, jamais de dé à lancer/dépenser —
+ *  cf. DND_CUSTOM.classHitDice, un détail de calcul interne uniquement, jamais affiché). */
 function buildClassInfoText(classKey) {
-  const hitDie = DND_CUSTOM.classHitDice[classKey];
   const saves = (DND_CUSTOM.classSavingThrows[classKey] ?? [])
     .map((key) => game.i18n.localize(DND_CUSTOM.abilities[key]))
     .join(", ");
   const skillCount = DND_CUSTOM.classSkillChoices[classKey];
 
   const parts = [];
-  if (hitDie) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoHitDie", { hitDie }));
   if (saves) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoSaves", { saves }));
   if (skillCount) parts.push(game.i18n.format("DND_CUSTOM.Wizard.ClassInfoSkills", { count: skillCount }));
   if (DND_CUSTOM.spellcastingClasses.includes(classKey)) {

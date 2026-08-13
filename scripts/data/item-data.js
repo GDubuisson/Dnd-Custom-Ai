@@ -149,8 +149,26 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // convention que `class` (cf. DND_CUSTOM.subclasses, config.js) — grantClassContent ne
       // l'octroie qu'une fois actor.system.subclass résolu vers ce libellé.
       subclass: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité universelle (ex. Attaque d'opportunité) : octroyée à TOUTE classe au niveau
+      // requis, `class` restant vide (pas propre à une classe précise) — cf. grantClassContent,
+      // helpers/class-content.js, qui l'inclut en plus du filtrage habituel par classe.
+      universal: new BooleanField({ required: true, initial: false }),
       level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
+      // Type d'action SRD 5e nécessaire pour utiliser cette Capacité (cf. DND_CUSTOM.activationTypes,
+      // config.js). "reaction" active le suivi d'économie d'action (cf. system.combat.reactionAvailable,
+      // CharacterData ; #consumeReaction, actor-sheet.js) : une seule réaction utilisable par round,
+      // régénérée au début de son propre tour (hook updateCombat, dnd-custom-ai.js).
+      activation: new StringField({
+        required: true,
+        initial: "action",
+        choices: ["action", "bonusAction", "reaction", "free"]
+      }),
+      // Texte libre décrivant quand déclencher une Capacité "Réaction" (ex. "Quand une créature
+      // que vous voyez à moins de 18 m est touchée par une attaque") — ce système ne détecte/
+      // déclenche jamais automatiquement un trigger (hors scope "combat automatisé", cf.
+      // SpellData#attack ci-dessous), affiché en aide au joueur sur l'onglet Capacités/Sorts.
+      reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
       source: new StringField({ required: false, blank: true, initial: "" }),
@@ -165,7 +183,13 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
           initial: "longRest",
           choices: ["shortRest", "longRest"]
         })
-      })
+      }),
+      // Technique consommant 1 charge d'une AUTRE Capacité "réservoir" à charges partagées
+      // (ex. les techniques de Moine — Rafale de coups, Défense patiente... — consomment
+      // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
+      // exact de cette Capacité réservoir sur l'Actor (même convention texte libre que
+      // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
+      costsResource: new StringField({ required: false, blank: true, initial: "" })
     };
   }
 }
@@ -213,6 +237,14 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       classes: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
       details: new StringField({ required: false, blank: true, initial: "" }),
+      // Type d'action SRD 5e nécessaire pour lancer ce sort (cf. FeatureData#activation
+      // ci-dessus, même choix/même mécanique de suivi de réaction).
+      activation: new StringField({
+        required: true,
+        initial: "action",
+        choices: ["action", "bonusAction", "reaction", "free"]
+      }),
+      reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       concentration: new BooleanField({ required: true, initial: false }),
       ritual: new BooleanField({ required: true, initial: false }),
       // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
@@ -229,6 +261,16 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       damage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({ required: false, blank: true, initial: "" })
+      }),
+      // Sort émettant de la lumière (ex. Lumière) : mêmes unités que GearData#use.light
+      // (`dim` = rayon SUPPLÉMENTAIRE au-delà de `bright`, formulation SRD) — allume le(s)
+      // token(s) du lanceur au moment du lancer (cf. #onCastSpell, actor-sheet.js). Vide
+      // (0/0) pour l'immense majorité des sorts, qui n'ont aucun effet sur la lumière du
+      // token. Retour de test : rien ne liait les sorts de lumière (Lumière...) au système de
+      // lumière des tokens, contrairement aux objets `gear` équivalents (Torche...).
+      light: new SchemaField({
+        bright: new NumberField({ required: true, min: 0, initial: 0 }),
+        dim: new NumberField({ required: true, min: 0, initial: 0 })
       }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };

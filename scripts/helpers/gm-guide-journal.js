@@ -24,6 +24,16 @@ function buildOverviewPage() {
       <li>Langues : Commune et langue d'Origine octroyées automatiquement à la création.</li>
       <li>Sorts/Capacités de classe : octroyés automatiquement à la création et à chaque montée
       de niveau (cf. page "Expérience et montée de niveau" ci-dessous).</li>
+      <li>Réaction : une seule utilisable par round, régénérée automatiquement au début du tour
+      du personnage tant qu'un combat est suivi (Suivi de combat de Foundry) — indicateur
+      cliquable en en-tête de la fiche pour un rattrapage manuel si besoin (capacité qui rend une
+      réaction bonus, correction d'un clic).</li>
+      <li>Onglet Capacités/Sorts : en-tête visuel adapté à la classe du personnage (titre
+      thématique, icône) — purement cosmétique, aucun effet sur les calculs.</li>
+      <li>Attaque d'opportunité (règle universelle, octroyée à toute classe) : le don Sentinelle,
+      s'il est glissé sur la fiche, en modifie automatiquement le déclencheur affiché (fonctionne
+      même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m) — recalculé
+      à chaque affichage, rien à retoucher si tu ajoutes/retires le don.</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle
@@ -71,6 +81,16 @@ function buildSimplificationsPage() {
       deuxième réserve de PV suivie automatiquement — à adjuger ensemble à la table.</li>
       <li><strong>Domaines divins / Sous-classes / Voies / Cercles</strong> : pas de choix de
       sous-classe modélisé (Canalisation divine, Forme sauvage etc. restent génériques).</li>
+      <li><strong>Réaction</strong> : le système suit uniquement l'économie d'action (1 par
+      round, régénérée au bon moment) — il ne détecte jamais automatiquement le déclencheur d'une
+      Capacité/d'un Sort "Réaction" (ex. "une créature quitte votre portée") : à toi de valider
+      que la situation s'est bien produite avant que le joueur clique. Hors combat suivi par le
+      Suivi de combat, rien ne régénère automatiquement une réaction consommée — seul un clic
+      manuel sur l'indicateur de l'en-tête la rétablit.</li>
+      <li><strong>Compendium Classes</strong> : les champs sauvegardes/compétences/maîtrises
+      visibles sur chaque Item Classe sont informatifs — les modifier n'a aucun effet sur les
+      calculs de la fiche de personnage (dé de vie, sauvegardes appliquées...), qui restent
+      pilotés par <code>scripts/helpers/config.js</code>.</li>
     </ul>
   `;
 }
@@ -97,9 +117,23 @@ async function buildProgressionPage() {
     <h2>Montée de niveau</h2>
     <p>Le bouton "Monter de niveau" n'apparaît sur la fiche que si l'XP accumulé atteint le seuil
     du niveau suivant. À l'usage, il octroie automatiquement les nouvelles Capacités/nouveaux
-    Sorts de la classe et propose une Amélioration de caractéristiques aux niveaux 4, 8, 12, 16 et
-    19 (SRD 5e). Le champ Niveau reste aussi éditable directement par toi (override manuel, ex.
-    pour corriger une erreur) — dans ce cas, l'octroi automatique de contenu n'est pas déclenché.</p>
+    Sorts de la classe, puis propose deux petites fenêtres de choix, l'une après l'autre selon le
+    niveau atteint :</p>
+    <ul>
+      <li><strong>Sous-classe</strong> (niveau propre à chaque classe, SRD 5e — 1 pour Clerc/
+      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 8 autres) : liste les sous-classes
+      de la classe du personnage, description complète affichée. Ne se propose plus une fois le
+      choix fait (verrouillé) ; tant qu'il n'a pas encore été fait, la fenêtre revient à chaque
+      montée de niveau suivante, et le sélecteur permanent de l'en-tête reste aussi disponible en
+      secours si elle est fermée sans choisir.</li>
+      <li><strong>Amélioration de caractéristiques ou Don</strong> (niveaux 4, 8, 12, 16 et 19,
+      SRD 5e) : +2 sur une caractéristique/+1 sur deux, ou un Don (règle optionnelle) parmi ceux
+      du compendium "Dons" que le personnage ne possède pas déjà, description complète affichée
+      pour décider.</li>
+    </ul>
+    <p>Le champ Niveau reste aussi éditable directement par toi (override manuel, ex. pour
+    corriger une erreur) — dans ce cas, ni l'octroi automatique de contenu ni ces fenêtres de
+    choix ne se déclenchent.</p>
   `;
 }
 

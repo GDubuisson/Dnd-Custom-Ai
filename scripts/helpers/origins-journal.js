@@ -45,7 +45,7 @@ function buildOriginsTable(origins) {
         .join(", ");
       return `<tr>
         <td>${origin.label}</td>
-        <td>${origin.traits}</td>
+        <td class="dnd-origins-traits-cell" title="${origin.traits}">${origin.traits}</td>
         <td>${bonuses}</td>
         <td>${skills}</td>
         <td><strong>${origin.specialTrait.name}</strong><br>${origin.specialTrait.description}</td>
@@ -53,5 +53,10 @@ function buildOriginsTable(origins) {
     })
     .join("");
 
-  return `<table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+  // Retour de test : la colonne "Traits culturels" (texte le plus long, ex. "Noblesse,
+  // chevalerie, droiture, honneur") débordait sans troncature propre faute de propriété CSS
+  // dédiée — cf. règle `.dnd-origins-traits-cell` (styles/dnd-custom-ai.css), globale (pas
+  // scopée `.dnd-custom-ai`) car cette page de Journal Foundry n'est pas rendue à l'intérieur
+  // de ce conteneur. Le texte complet reste consultable via l'infobulle `title` ci-dessus.
+  return `<table class="dnd-origins-table"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
 }

@@ -8,6 +8,8 @@
     {{/if}}
   </h2>
 
+  {{#if classTabPartial}}{{> (lookup this "classTabPartial") }}{{/if}}
+
   {{#if isSpellcaster}}
   <div class="spellcasting-stats">
     <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
@@ -49,18 +51,26 @@
         <li data-item-id="{{this.id}}">
           <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
           {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
+          {{#if (isReactionItem this)}}
+          <span class="reaction-badge" title="{{this.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
+          {{/if}}
           {{#if this.system.uses.max}}
           <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
           {{/if}}
           {{#if this.system.requiresRoll}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (reactionBlocked this ../reactionAvailable)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
           </button>
           {{else if this.system.uses.max}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (reactionBlocked this ../reactionAvailable)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
             <i class="fa-solid fa-minus"></i>
           </button>
           {{/if}}
+          {{#with (lookup ../featureResourceState this.id)}}
+          <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
+            <i class="fa-solid fa-minus"></i> {{this.resourceName}} : {{this.techniqueName}}
+          </button>
+          {{/with}}
         </li>
         {{else}}
         <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoFeatures"}}</li>
@@ -81,15 +91,18 @@
             {{#if this.item.system.details}}<span class="spell-details">({{this.item.system.details}})</span>{{/if}}
             {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
             {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
+            {{#if (isReactionItem this.item)}}
+            <span class="reaction-badge" title="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
+            {{/if}}
             {{#if this.item.system.level}}
             <label class="spell-prepared">
               <input type="checkbox" data-item-prepared {{#if this.item.system.prepared}}checked{{/if}}>
               {{localize "DND_CUSTOM.Item.Fields.Prepared"}}
             </label>
             {{/if}}
-            <button type="button" class="roll-btn" data-action="castSpell" {{#if this.item.system.attack}}title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}>{{localize "DND_CUSTOM.Abilities.Cast"}}</button>
+            <button type="button" class="roll-btn" data-action="castSpell" {{#if (reactionBlocked this.item ../../reactionAvailable)}}disabled{{/if}} {{#if this.item.system.attack}}title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Abilities.Cast"}}</button>
             {{#if this.item.system.attack}}
-            <button type="button" class="roll-btn" data-action="rollSpellDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">{{localize "DND_CUSTOM.Inventory.Damage"}}</button>
+            <button type="button" class="roll-btn" data-action="rollSpellDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}"><i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}}</button>
             {{/if}}
             <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
               <i class="fa-solid fa-trash"></i>
