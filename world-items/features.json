@@ -516,6 +516,8 @@
     "system": {
       "class": "Moine",
       "level": 3,
+      "activation": "reaction",
+      "reactionTrigger": "Touché par une attaque à distance d'arme",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -689,6 +691,8 @@
       "class": "Barde",
       "subclass": "Collège du Savoir",
       "level": 3,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature à moins de 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",

@@ -90,6 +90,8 @@
       "classes": "Ensorceleur, Magicien",
       "level": 1,
       "details": "1 réaction (touché par une attaque ou ciblé par Projectile magique), Personnelle, 1 round",
+      "activation": "reaction",
+      "reactionTrigger": "Touché par une attaque, ou ciblé par le sort Projectile magique",
       "concentration": false,
       "ritual": false,
       "description": "Une barrière invisible de force magique apparaît et vous protège. Jusqu'au début de votre prochain tour, vous gagnez un bonus de +5 à la CA, y compris contre l'attaque déclenchante, et vous ne subissez aucun dégât du sort Projectile magique."
@@ -207,6 +209,8 @@
       "classes": "Ensorceleur, Occultiste, Magicien",
       "level": 3,
       "details": "1 réaction (en voyant une créature à moins de 18 m lancer un sort), 18 m, Instantanée",
+      "activation": "reaction",
+      "reactionTrigger": "Une créature à moins de 18 m que vous voyez lance un sort",
       "concentration": false,
       "ritual": false,
       "description": "Vous tentez d'interrompre une créature en train de lancer un sort. Si elle lance un sort de niveau 3 ou moins, celui-ci échoue et n'a aucun effet. S'il est de niveau 4 ou plus, effectuez un test de caractéristique d'incantation (DD 10 + niveau du sort) : en cas de réussite, le sort de la cible échoue et n'a aucun effet."
