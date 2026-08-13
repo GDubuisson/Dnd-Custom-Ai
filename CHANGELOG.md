@@ -21,6 +21,11 @@ visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mi
 place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
 
 ### Corrigé
+- `world-items/features.json` : "Esquive totale" (Roublard, niveau 5) portait déjà exactement
+  l'effet de l'Esquive instinctive SRD (réaction, réduit de moitié les dégâts d'une attaque
+  touchée), sous le mauvais nom et jamais taguée `activation: "reaction"` — renommée et
+  retaguée plutôt que dupliquée (une fausse "Esquive instinctive" ajoutée par erreur entre-temps
+  a été supprimée : les deux auraient été octroyées simultanément à tout Roublard niveau 5).
 - `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
   blessures"/"Parler aux animaux" — il n'est pas dans `DND_CUSTOM.spellcastingClasses`
   (`config.js`) et ne les recevait donc jamais malgré sa présence dans `system.classes`.
