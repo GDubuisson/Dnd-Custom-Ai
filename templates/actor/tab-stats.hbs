@@ -45,14 +45,14 @@
           <div class="ability-side">
             <div class="ability-side-item">
               <span class="ability-side-label">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
-              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
+              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
             </div>
             <div class="ability-side-item">
               <label class="ability-side-label" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
                 <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
               </label>
-              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.save.mod}}</button>
+              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.save.mod}}</button>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
           {{#if this.jackOfAllTrades}}
           <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
           {{/if}}
-          <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{this.modLabel}}</button>
+          <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
         </li>
         {{/each}}
       </ul>

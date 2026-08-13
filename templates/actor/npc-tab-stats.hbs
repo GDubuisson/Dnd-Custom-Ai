@@ -6,7 +6,7 @@
     <div class="ability-block">
       <label>{{localize this.label}}</label>
       <input type="number" name="system.abilities.{{this.key}}.mod" value="{{this.mod}}">
-      <button type="button" class="mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">{{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.modLabel}}</button>
+      <button type="button" class="mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Actor.SaveShort"}} {{this.modLabel}}</button>
     </div>
     {{/each}}
   </div>

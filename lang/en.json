@@ -99,6 +99,7 @@
       "XpGmLabel": "XP (GM)",
       "XpGmTooltip": "Character's total experience, visible to the GM only — never shown to players",
       "XpMaxLevel": "max level",
+      "XpBarTooltip": "Progress toward next level",
       "DeathSuccesses": "Successes",
       "DeathFailures": "Failures",
       "Stabilized": "Stabilized",
@@ -312,6 +313,7 @@
     },
     "Conditions": {
       "Title": "Conditions",
+      "ActiveTooltip": "Active conditions on this character",
       "Exhaustion": "Exhaustion",
       "ExhaustionTooltip": "Cumulative exhaustion level (0-6). Each level adds its own penalty: disadvantage on checks (1), speed halved (2), disadvantage on attacks/saves (3), max HP halved (4), speed reduced to 0 (5), death (6).",
       "blinded": "Blinded",
@@ -470,6 +472,7 @@
         "Prepared": "Prepared",
         "SpellClasses": "Classes",
         "SpellAttack": "Attack Roll",
+        "SpellLight": "Light emitted (optional, e.g. the Light cantrip)",
         "LanguageCategory": "Category"
       }
     }

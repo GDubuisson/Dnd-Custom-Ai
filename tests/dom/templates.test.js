@@ -80,14 +80,22 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
     classLabel: "Guerrier",
     originLabel: "Altenmark",
     hpPercent: 75,
+    xpPercent: 60,
     dying: { active: false },
     showCreationWizardButton: false
   };
   const doc = parse(renderTemplate("actor/character-sheet.hbs", context));
 
-  test("XP jamais affiché côté joueur, même si un niveau est disponible", () => {
+  test("XP jamais affiché côté joueur (total/seuil), même si un niveau est disponible", () => {
     assert.equal(doc.querySelector(".xp-gm-field"), null);
     assert.doesNotMatch(doc.body.textContent, /1200/);
+    assert.doesNotMatch(doc.body.textContent, /2700/);
+  });
+
+  test("la barre de progression XP (visuelle, sans chiffre) reste visible côté joueur", () => {
+    const fill = doc.querySelector(".xp-bar-fill");
+    assert.ok(fill, "barre XP introuvable");
+    assert.match(fill.getAttribute("style"), /width: 60%/);
   });
 
   test("le badge 'niveau disponible' et son bouton sont accessibles au joueur, pas seulement au MJ", () => {
@@ -155,13 +163,15 @@ describe("tab-equipment.hbs", () => {
   };
   const doc = parse(renderTemplate("actor/tab-equipment.hbs", context));
 
-  test("la ligne d'arme principale contient le bouton Attaque ET le bouton Dégâts", () => {
+  test("la ligne d'arme principale contient le bouton Attaque ET le bouton Dégâts, avec icônes", () => {
     const line = doc.querySelector('[data-item-id="w1"] .item-stats-line');
     assert.ok(line, "ligne de stats d'arme introuvable");
     const attack = line.querySelector('[data-action="rollWeaponAttack"]');
     const damage = line.querySelector('[data-action="rollWeaponDamage"]');
-    assert.equal(attack?.textContent.trim(), "+5");
-    assert.equal(damage?.textContent.trim(), "1d8+3");
+    assert.match(attack?.textContent.trim() ?? "", /\+5/);
+    assert.match(damage?.textContent.trim() ?? "", /1d8\+3/);
+    assert.ok(attack?.querySelector("i.fa-dice-d20"), "icône du bouton Attaque introuvable");
+    assert.ok(damage?.querySelector("i.fa-droplet"), "icône du bouton Dégâts introuvable");
   });
 });
 

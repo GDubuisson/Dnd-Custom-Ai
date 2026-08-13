@@ -300,6 +300,30 @@
   background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
 }
 
+/* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
+   révèle que la progression relative vers le niveau suivant, jamais un chiffre — le total et
+   les seuils exacts restent réservés au bloc MJ (.xp-gm-field). */
+.dnd-custom-ai .xp-bar {
+  display: inline-flex;
+  align-items: center;
+  width: 6rem;
+}
+
+.dnd-custom-ai .xp-bar-track {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dnd-custom-ai .xp-bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--dca-secondary-fixed-dim), var(--dca-secondary));
+}
+
 .dnd-custom-ai .header-actions {
   display: flex;
   gap: 0.5rem;
@@ -734,15 +758,19 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : soulignement pointillé au
-   repos pour signaler que c'est cliquable (retour de test — sans indice visuel avant le
-   survol, ça se confondait avec du texte statique), trait plein + couleur au survol. */
+/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : indice visuel de clic au repos
+   (retour de test — sans indice avant le survol, ça se confondait avec du texte statique).
+   Une icône de dé (cf. gabarit `<i class="fa-solid fa-dice-d20">` dans les templates) sert
+   cet indice quand elle est présente ; les rares boutons sans icône gardent le soulignement
+   pointillé en repli (retour de test suivant — remplacer les pointillés par des icônes de dé,
+   plus lisible qu'un simple soulignement). */
 .dnd-custom-ai .roll-btn {
   /* Sans display/width explicites, un <button> reste ici plein-largeur/block (styles de base
      de Foundry) et retombe seul sur sa propre ligne au lieu de suivre le texte qui le précède
      (retour de test — "Attaque"/"Dégâts" affichés au-dessus de leur valeur au lieu d'à côté). */
   display: inline-flex;
   align-items: baseline;
+  gap: 0.25rem;
   width: auto;
   background: transparent;
   border: none;
@@ -754,9 +782,23 @@
   text-underline-offset: 0.15em;
 }
 
+.dnd-custom-ai .roll-btn:has(i) {
+  text-decoration: none;
+}
+
+.dnd-custom-ai .roll-btn i {
+  align-self: center;
+  color: var(--dca-secondary);
+  font-size: 0.85em;
+}
+
 .dnd-custom-ai .roll-btn:hover {
   color: var(--dca-secondary);
   text-decoration: underline solid;
+}
+
+.dnd-custom-ai .roll-btn:has(i):hover {
+  text-decoration: none;
 }
 
 .dnd-custom-ai .proficiency-bonus {
@@ -867,6 +909,40 @@
   background: var(--dca-surface-lowest);
   filter: none;
   opacity: 1;
+}
+
+/* Résumé compact des états actifs dans l'en-tête (retour de test — invisible sauf sur
+   l'onglet Statistiques jusqu'ici) : mêmes pastilles que .condition-chip, en lecture seule
+   (pas de data-action, juste l'image + le nom), visibles quel que soit l'onglet ouvert. */
+.dnd-custom-ai .active-conditions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.dnd-custom-ai .active-condition-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.15rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  border: 1px solid var(--dca-secondary);
+  color: var(--dca-on-secondary-container);
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .active-condition-chip img {
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0.15rem;
+  border-radius: 999px;
+  background: var(--dca-surface-lowest);
 }
 
 .dnd-custom-ai .exhaustion-chip {
@@ -1082,6 +1158,47 @@
   font-size: 0.72rem;
   font-style: normal;
   color: var(--dca-muted-text);
+}
+
+/* Boutons Attaque/Dégâts de l'onglet Équipement (retour de test — mis plus en évidence que
+   les autres jets de la fiche : vrais boutons avec fond/bordure/icône, plutôt que du texte
+   souligné en pointillés comme .roll-btn) : sword/blood-drop, code couleur distinct par
+   action pour les repérer d'un coup d'œil. */
+.dnd-custom-ai .equipment-roll-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.dnd-custom-ai .equipment-roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--dca-outline-variant);
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .equipment-roll-btn:hover {
+  background: var(--dca-secondary-fixed);
+  border-color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .equipment-roll-btn-attack i {
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .equipment-roll-btn-damage i {
+  color: var(--dca-error);
 }
 
 .dnd-custom-ai .equipped-item-description {

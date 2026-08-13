@@ -99,6 +99,7 @@
       "XpGmLabel": "XP (MJ)",
       "XpGmTooltip": "Total d'expérience du personnage, visible du MJ uniquement — jamais affiché aux joueurs",
       "XpMaxLevel": "niveau maximum",
+      "XpBarTooltip": "Progression vers le niveau suivant",
       "DeathSuccesses": "Réussites",
       "DeathFailures": "Échecs",
       "Stabilized": "Stabilisé",
@@ -312,6 +313,7 @@
     },
     "Conditions": {
       "Title": "États",
+      "ActiveTooltip": "États actifs sur ce personnage",
       "Exhaustion": "Épuisement",
       "ExhaustionTooltip": "Niveau d'épuisement cumulatif (0-6). Chaque palier ajoute son propre malus : désavantage aux tests (1), vitesse divisée par deux (2), désavantage aux attaques/sauvegardes (3), PV max divisés par deux (4), vitesse nulle (5), mort (6).",
       "blinded": "Aveuglé",
@@ -470,6 +472,7 @@
         "Prepared": "Préparé",
         "SpellClasses": "Classes",
         "SpellAttack": "Jet d'attaque",
+        "SpellLight": "Lumière émise (facultatif, ex. sort Lumière)",
         "LanguageCategory": "Catégorie"
       }
     }

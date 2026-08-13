@@ -9,6 +9,9 @@
       <label>{{localize "DND_CUSTOM.Actor.Level"}}
         <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
       </label>
+      <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
+        <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>
+      </span>
       {{#if levelUpAvailable}}
       <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
         <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
@@ -78,6 +81,17 @@
         <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
       </label>
     </div>
+
+    {{#if activeConditions.length}}
+    <div class="active-conditions-row" title="{{localize 'DND_CUSTOM.Conditions.ActiveTooltip'}}">
+      {{#each activeConditions}}
+      <span class="active-condition-chip" title="{{this.label}}">
+        <img src="{{this.img}}" alt="">
+        <span>{{this.label}}</span>
+      </span>
+      {{/each}}
+    </div>
+    {{/if}}
 
     {{#if dying.active}}
     <div class="death-panel">

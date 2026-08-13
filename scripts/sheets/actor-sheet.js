@@ -193,13 +193,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
-    // Indicateur "niveau disponible" (bouton MJ) : ne révèle jamais le total d'XP lui-même
-    // au joueur (cf. PROJECT.md > "Système de progression", XP toujours caché au joueur).
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
-    // Affichage XP réservé au MJ (cf. template : bloc entier sous {{#if isGM}}) : seuil du
-    // prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel], la table étant indexée niveau-1),
-    // absent au niveau 20 (déjà au maximum, aucun seuil suivant à afficher).
+    // Affichage XP détaillé (total + seuil exact) réservé au MJ (cf. template : bloc entier
+    // sous {{#if isGM}}) : seuil du prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel],
+    // la table étant indexée niveau-1), absent au niveau 20 (déjà au maximum).
     context.xpNextThreshold = system.attributes.level < 20 ? DND_CUSTOM.xpThresholds[system.attributes.level] : null;
+    // Barre de progression XP visible au joueur (retour de test — PROJECT.md excluait
+    // jusqu'ici tout affichage d'XP au joueur ; décision revue pour n'exposer que la
+    // progression relative vers le niveau suivant, jamais le total ni les seuils chiffrés,
+    // qui restent réservés au bloc MJ ci-dessus). 100% au niveau 20 (rien au-delà à afficher).
+    const currentThreshold = DND_CUSTOM.xpThresholds[system.attributes.level - 1] ?? 0;
+    context.xpPercent = context.xpNextThreshold
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            Math.round(
+              ((system.xp - currentThreshold) / (context.xpNextThreshold - currentThreshold)) * 100
+            )
+          )
+        )
+      : 100;
 
     // Panneau Agonie (SRD 5e) : visible tant que le personnage est à 0 PV et n'a pas encore
     // atteint 3 réussites (stabilisé) ou 3 échecs (mort) — cf. hook updateActor dans
@@ -399,6 +413,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       img: status.img,
       active: this.actor.statuses.has(status.id)
     }));
+    // Retour de test : les états actifs n'étaient visibles que sur l'onglet Statistiques —
+    // ce résumé compact dans l'en-tête (partagé par tous les onglets, cf. character-sheet.hbs)
+    // les garde visibles "quelque part sur la fiche générale" quel que soit l'onglet ouvert.
+    context.activeConditions = context.conditions.filter((condition) => condition.active);
 
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
@@ -852,6 +870,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       }
     }
 
+    // Sort émettant de la lumière (ex. Lumière, cf. SpellData#light dans item-data.js) : allume
+    // le(s) token(s) du lanceur, même principe qu'un objet `gear` "light" (#toggleLight) —
+    // retour de test, rien ne liait jusqu'ici les sorts de lumière au système de lumière des
+    // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
+    // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
+    // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
+    if (item.system.light?.bright || item.system.light?.dim) {
+      await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
+    }
+
     if (item.system.attack) {
       const system = this.actor.system;
       const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
@@ -949,12 +977,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   static async #toggleLight(actor, item) {
-    const tokens = actor.getActiveTokens();
-    if (!tokens.length) {
-      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
-      return;
-    }
-
     const turningOn = !item.system.lit;
     if (turningOn) {
       // Un token n'a qu'une seule configuration de lumière active : éteindre toute autre
@@ -972,20 +994,48 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     await item.update({ "system.lit": turningOn });
 
-    // `dim` est stocké comme rayon SUPPLÉMENTAIRE au-delà de `bright` (formulation SRD) ;
-    // le champ `light.dim` du token attend lui un rayon total depuis le token.
-    const light = turningOn
-      ? { bright: item.system.use.light.bright, dim: item.system.use.light.bright + item.system.use.light.dim }
-      : { bright: 0, dim: 0 };
-    for (const token of tokens) await token.document.update({ light });
+    if (turningOn) {
+      await DndCustomActorSheet.#setTokensLight(actor, item.name, item.system.use.light);
+    } else {
+      const applied = await DndCustomActorSheet.#applyTokensLight(actor, { bright: 0, dim: 0 });
+      if (applied) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.UseLightOff", { name: actor.name, item: item.name })
+        });
+      }
+    }
+  }
+
+  /** Allume la source de lumière du/des token(s) de `actor` sur la scène active (objet `gear`
+   *  "light" allumé, cf. #toggleLight, ou sort émettant de la lumière, cf. #onCastSpell) et
+   *  l'annonce dans le chat. `light` : `{ bright, dim }`, `dim` stocké comme rayon
+   *  SUPPLÉMENTAIRE au-delà de `bright` (formulation SRD) — converti ci-dessous en rayon total
+   *  depuis le token, attendu par `TokenDocument#light.dim`. */
+  static async #setTokensLight(actor, itemName, light) {
+    const applied = await DndCustomActorSheet.#applyTokensLight(actor, {
+      bright: light.bright,
+      dim: light.bright + light.dim
+    });
+    if (!applied) return;
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
-      content: game.i18n.format(turningOn ? "DND_CUSTOM.Chat.UseLightOn" : "DND_CUSTOM.Chat.UseLightOff", {
-        name: actor.name,
-        item: item.name
-      })
+      content: game.i18n.format("DND_CUSTOM.Chat.UseLightOn", { name: actor.name, item: itemName })
     });
+  }
+
+  /** Applique `light` (déjà au format `TokenDocument#light`, rayons totaux) à tous les tokens
+   *  actifs de `actor` sur la scène courante. Renvoie `false` (et prévient) sans rien modifier
+   *  si l'Actor n'a aucun token sur la scène active. */
+  static async #applyTokensLight(actor, light) {
+    const tokens = actor.getActiveTokens();
+    if (!tokens.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
+      return false;
+    }
+    for (const token of tokens) await token.document.update({ light });
+    return true;
   }
 
   static async #applyHeal(actor, item) {
