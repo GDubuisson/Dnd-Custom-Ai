@@ -110,6 +110,11 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   indépendamment de `system.class`) : Attaque d'opportunité (règle SRD commune à tous, niveau 1)
   et Esquive instinctive (Roublard, niveau 5) — première réaction ajoutée au contenu qui ne
   soit pas propre à une seule classe.
+- Le don Sentinelle modifie automatiquement le déclencheur affiché d'Attaque d'opportunité
+  (fonctionne même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m)
+  dès qu'un personnage possède les deux Capacités (`opportunityAttackTrigger`, rules.js) —
+  recalculé à l'affichage, jamais persisté sur l'Item, reste à jour si Sentinelle est
+  ajoutée/retirée.
 - Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
   la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
   informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.

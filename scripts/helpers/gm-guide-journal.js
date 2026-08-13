@@ -30,6 +30,10 @@ function buildOverviewPage() {
       réaction bonus, correction d'un clic).</li>
       <li>Onglet Capacités/Sorts : en-tête visuel adapté à la classe du personnage (titre
       thématique, icône) — purement cosmétique, aucun effet sur les calculs.</li>
+      <li>Attaque d'opportunité (règle universelle, octroyée à toute classe) : le don Sentinelle,
+      s'il est glissé sur la fiche, en modifie automatiquement le déclencheur affiché (fonctionne
+      même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m) — recalculé
+      à chaque affichage, rien à retoucher si tu ajoutes/retires le don.</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle

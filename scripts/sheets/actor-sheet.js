@@ -18,7 +18,8 @@ import {
   toolCheckModifier,
   weaponAttackDamage,
   hasFeature,
-  canUseReaction
+  canUseReaction,
+  opportunityAttackTrigger
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
@@ -313,6 +314,21 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Le don Sentinelle modifie le déclencheur affiché d'Attaque d'opportunité si le personnage
+    // possède les deux (cf. opportunityAttackTrigger, rules.js) — dérivé ici, jamais écrit sur
+    // l'Item lui-même : reste juste automatiquement si Sentinelle est ajoutée/retirée.
+    const hasSentinel = context.features.some((feature) => feature.name === "Sentinelle");
+    context.features = context.features.map((feature) => {
+      if (feature.name !== "Attaque d'opportunité" || !hasSentinel) return feature;
+      return {
+        id: feature.id,
+        name: feature.name,
+        system: {
+          ...feature.system,
+          reactionTrigger: opportunityAttackTrigger(feature.system.reactionTrigger, hasSentinel)
+        }
+      };
+    });
     // Techniques consommant la réserve d'une autre Capacité (`system.costsResource`, ex. les
     // techniques de Moine consommant du Ki) : état de la réserve au moment du render, par id
     // de la technique (même convention lookup-par-id que weaponStats/armorStats) — grisé/

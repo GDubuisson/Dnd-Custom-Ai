@@ -47,6 +47,20 @@ export function carryingCapacityBonus(items) {
   }, 0);
 }
 
+/** Le don Sentinelle (SRD 5e, world-items/feats.json) modifie le déclencheur de la Capacité
+ *  universelle "Attaque d'opportunité" (fonctionne même contre le désengagement, se déclenche
+ *  aussi quand une créature proche attaque quelqu'un d'autre que vous) : recalculé ici à
+ *  l'affichage si le personnage possède les deux Capacités, jamais persisté sur l'Item
+ *  "Attaque d'opportunité" lui-même (cf. actor-sheet.js > context.features) — reste à jour
+ *  automatiquement si Sentinelle est ajoutée/retirée, sans logique de "annulation" à maintenir. */
+export function opportunityAttackTrigger(baseTrigger, hasSentinel) {
+  if (!hasSentinel) return baseTrigger;
+  return "Une créature que vous voyez quitte votre portée d'attaque au corps à corps — "
+    + "désormais valable même si elle se désengage, et vous pouvez aussi réagir quand une "
+    + "créature à 1,50 m de vous attaque une cible autre que vous (Sentinelle : la cible "
+    + "touchée voit sa vitesse tomber à 0 jusqu'à la fin du tour).";
+}
+
 /** Économie d'action de combat, SRD 5e : une réaction n'est utilisable que si elle n'a pas déjà
  *  été consommée ce round-ci (cf. system.combat.reactionAvailable, CharacterData ; régénérée au
  *  début de son propre tour par le hook updateCombat, dnd-custom-ai.js). */
