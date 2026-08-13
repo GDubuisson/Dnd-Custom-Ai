@@ -21,6 +21,9 @@ visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mi
 place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
 
 ### Corrigé
+- Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de
+  Classe — ce système n'expose jamais ce concept au joueur (PV max calculés automatiquement,
+  repos/soins fixes ou via dés génériques).
 - `world-items/features.json` : "Esquive totale" (Roublard, niveau 5) portait déjà exactement
   l'effet de l'Esquive instinctive SRD (réaction, réduit de moitié les dégâts d'une attaque
   touchée), sous le mauvais nom et jamais taguée `activation: "reaction"` — renommée et
