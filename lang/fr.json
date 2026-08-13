@@ -325,7 +325,6 @@
       "OriginInfoBonuses": "Bonus de caractéristiques : {bonuses}",
       "OriginInfoSkills": "Compétences avantagées : {skills}",
       "OriginInfoTrait": "Trait spécial : {trait}",
-      "ClassInfoHitDie": "Dé de vie : d{hitDie}",
       "ClassInfoSaves": "Sauvegardes maîtrisées : {saves}",
       "ClassInfoSkills": "{count} compétence(s) au choix",
       "ClassInfoSpellcasting": "Lanceur de sorts ({ability})",

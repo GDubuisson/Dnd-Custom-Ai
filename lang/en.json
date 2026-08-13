@@ -325,7 +325,6 @@
       "OriginInfoBonuses": "Ability bonuses: {bonuses}",
       "OriginInfoSkills": "Skill advantages: {skills}",
       "OriginInfoTrait": "Special trait: {trait}",
-      "ClassInfoHitDie": "Hit die: d{hitDie}",
       "ClassInfoSaves": "Saving throw proficiencies: {saves}",
       "ClassInfoSkills": "{count} skill(s) to choose",
       "ClassInfoSpellcasting": "Spellcaster ({ability})",
