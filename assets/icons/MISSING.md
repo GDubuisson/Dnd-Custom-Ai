@@ -27,7 +27,7 @@ de `assets/icons/` car non utilisé par aucune entrée de `world-items/*.json` (
 Gate 3, plus "Parler aux animaux" via wiki D&D — assets sous droit d'auteur Larian/WotC, **pas**
 libres de droit, cf. avertissement donné à l'utilisateur lors du câblage).
 
-## Capacités (`world-items/features.json`) — fait ✅ (24 / 24)
+## Capacités (`world-items/features.json`) — fait ✅ (24 / 24), 3 en attente
 
 Toutes câblées dans `assets/icons/features/` : Rage, Inspiration bardique, Défense sans armure
 (Barbare), Sens divin, Imposition des mains, Second souffle, Forme sauvage, Aptitudes multiples,
@@ -36,6 +36,12 @@ Sursaut d'activité, Sorcellerie innée, Magie de pacte, Grimoire, Récupératio
 juré, Explorateur-né, Attaque sournoise, Métamagie, Invocations occultes, et Action rusée
 (`Action-rusee.png`, source : wiki Baldur's Gate 3 — asset sous droit d'auteur Larian/WotC,
 **pas** libre de droit, même avertissement que pour les icônes de Sorts).
+
+**En attente** : 3 nouvelles techniques de Moine consommant du Ki (`costsResource: "Ki"`),
+ajoutées avec une icône générique du cœur Foundry en attendant un asset dédié — Rafale de
+coups (`Rafale-de-coups.png`, actuellement `icons/svg/sword.svg`), Défense patiente
+(`Defense-patiente.png`, actuellement `icons/svg/shield.svg`), Pas du vent
+(`Pas-du-vent.png`, actuellement `icons/svg/wind.svg`).
 
 ("Druidique" a été retirée de cette liste : ce n'est pas une capacité mais une Langue,
 déplacée vers `world-items/languages.json` — cf. section Langues ci-dessous.)
@@ -68,7 +74,5 @@ Origines, ex. `Azhar.webp` → `Ashar.webp`) et câblés depuis `assets/icons/or
 - **Classes** : 12 / 12
 - **Origines** : 6 / 6
 - **Sorts** : 16 / 16
-- **Capacités** : 24 / 24
+- **Capacités** : 24 / 27 (3 nouvelles techniques de Moine en attente, cf. ci-dessus)
 - **Langues** : 11 / 11
-
-Plus aucune icône en attente dans le système.

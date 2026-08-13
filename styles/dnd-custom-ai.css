@@ -2116,6 +2116,20 @@
   border-color: var(--dca-secondary);
 }
 
+/* Technique consommant la réserve d'une autre Capacité (ex. techniques de Moine consommant
+   du Ki, cf. featureResourceState dans actor-sheet.js) : grisée et non cliquable dès que la
+   réserve est vide (retour de test), redevient cliquable dès qu'une charge est de nouveau
+   disponible (repos, ou charge restaurée manuellement par le MJ). */
+.dnd-custom-ai .resource-technique-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .resource-technique-btn:disabled:hover {
+  border-color: var(--dca-outline-variant);
+}
+
 .dnd-custom-ai .not-proficient-tag {
   display: inline-block;
   margin-left: 0.3rem;

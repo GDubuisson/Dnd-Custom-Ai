@@ -254,6 +254,40 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
   });
 });
 
+describe("tab-abilities.hbs — technique consommant la réserve d'une autre Capacité (ex. Ki)", () => {
+  function render(remaining) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        features: [
+          { id: "ki", name: "Ki", system: { source: "", uses: { max: 2, value: remaining }, requiresRoll: false, costsResource: "" } },
+          { id: "flurry", name: "Rafale de coups", system: { source: "", uses: { max: 0, value: 0 }, requiresRoll: false, costsResource: "Ki" } }
+        ],
+        featureResourceState: {
+          flurry: { resourceName: "Ki", techniqueName: "Rafale de coups", remaining, max: 2 }
+        }
+      })
+    );
+  }
+
+  test("bouton cliquable ('Ki : Rafale de coups') tant qu'il reste des charges", () => {
+    const doc = render(1);
+    const button = doc.querySelector('[data-action="useResourceTechnique"]');
+    assert.ok(button, "bouton de technique introuvable");
+    assert.equal(button.hasAttribute("disabled"), false);
+    assert.match(button.textContent.trim(), /Ki\s*:\s*Rafale de coups/);
+  });
+
+  test("bouton grisé/non cliquable une fois la réserve épuisée", () => {
+    const doc = render(0);
+    const button = doc.querySelector('[data-action="useResourceTechnique"]');
+    assert.ok(button.hasAttribute("disabled"), "le bouton devrait être désactivé à 0 charge");
+  });
+});
+
 describe("item/spell-sheet.hbs — schéma simplifié", () => {
   const context = {
     item: { img: "spell.webp", name: "Boule de feu" },

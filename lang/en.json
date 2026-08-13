@@ -177,6 +177,7 @@
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
       "LevelUp": "{name} reaches level {level}!",
       "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
+      "UseResourceTechnique": "{name} uses {resource}: {technique} ({remaining}/{max} left).",
       "NoChargesLeft": "No uses left for {feature}.",
       "ClassContentGranted": "{name} gains: {names}."
     },
@@ -442,6 +443,7 @@
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",
         "Source": "Source",
+        "CostsResource": "Draws from pool (exact name of another Feature, e.g. Ki)",
         "Uses": "Limited Uses",
         "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
         "UsesMax": "Maximum",

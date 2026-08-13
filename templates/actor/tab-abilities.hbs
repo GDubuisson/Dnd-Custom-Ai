@@ -61,6 +61,11 @@
             <i class="fa-solid fa-minus"></i>
           </button>
           {{/if}}
+          {{#with (lookup ../featureResourceState this.id)}}
+          <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#unless this.remaining}}disabled{{/unless}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
+            <i class="fa-solid fa-minus"></i> {{this.resourceName}} : {{this.techniqueName}}
+          </button>
+          {{/with}}
         </li>
         {{else}}
         <li class="empty-slot">{{localize "DND_CUSTOM.Abilities.NoFeatures"}}</li>

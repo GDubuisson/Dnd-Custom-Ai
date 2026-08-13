@@ -159,7 +159,49 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour des techniques comme Rafale de coups, Défense patiente ou Pas du vent — effet exact à narrer avec le MJ selon la technique utilisée. Récupérée après un repos court ou long."
+      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
+    }
+  },
+  {
+    "name": "Rafale de coups",
+    "type": "feature",
+    "img": "icons/svg/sword.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Immédiatement après avoir effectué l'action Attaque à votre tour, vous pouvez dépenser 1 point de Ki pour effectuer deux attaques à mains nues en action bonus."
+    }
+  },
+  {
+    "name": "Défense patiente",
+    "type": "feature",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Vous pouvez dépenser 1 point de Ki pour effectuer l'action Esquive en action bonus à votre tour."
+    }
+  },
+  {
+    "name": "Pas du vent",
+    "type": "feature",
+    "img": "icons/svg/wind.svg",
+    "system": {
+      "class": "Moine",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Vous pouvez dépenser 1 point de Ki pour effectuer l'action Course ou Bond en action bonus à votre tour ; votre distance de bond est aussi doublée ce tour-ci."
     }
   },
   {
@@ -502,6 +544,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
+      "costsResource": "Ki",
       "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour."
     }
   },

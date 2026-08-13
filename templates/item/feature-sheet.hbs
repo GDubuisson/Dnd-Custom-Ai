@@ -51,6 +51,11 @@
   </div>
   {{/if}}
 
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.CostsResource"}}</label>
+    <input type="text" name="system.costsResource" value="{{system.costsResource}}" placeholder="Ki" {{#unless isGM}}disabled{{/unless}}>
+  </div>
+
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Uses"}}</legend>
     <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UsesHelp"}}</p>

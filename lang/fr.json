@@ -177,6 +177,7 @@
       "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
       "LevelUp": "{name} passe au niveau {level} !",
       "UseFeature": "{name} utilise {feature} ({remaining}/{max} restantes).",
+      "UseResourceTechnique": "{name} utilise {resource} : {technique} ({remaining}/{max} restants).",
       "NoChargesLeft": "Plus aucune utilisation restante pour {feature}.",
       "ClassContentGranted": "{name} reçoit : {names}."
     },
@@ -442,6 +443,7 @@
         "RequiresRoll": "Nécessite un jet",
         "RollFormula": "Formule de jet",
         "Source": "Source",
+        "CostsResource": "Consomme la réserve (nom exact d'une autre Capacité, ex. Ki)",
         "Uses": "Utilisations limitées",
         "UsesHelp": "Laisser Maximum à 0 pour une capacité toujours disponible (pas de suivi).",
         "UsesMax": "Maximum",

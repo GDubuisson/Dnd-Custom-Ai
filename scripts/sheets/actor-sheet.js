@@ -104,7 +104,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
-      useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge
+      useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
+      useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique
     }
   };
 
@@ -297,6 +298,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Techniques consommant la réserve d'une autre Capacité (`system.costsResource`, ex. les
+    // techniques de Moine consommant du Ki) : état de la réserve au moment du render, par id
+    // de la technique (même convention lookup-par-id que weaponStats/armorStats) — grisé/
+    // non cliquable dès que la réserve est vide (retour de test).
+    context.featureResourceState = {};
+    for (const feature of context.features) {
+      const resourceName = feature.system.costsResource;
+      if (!resourceName) continue;
+      const resource = context.features.find((candidate) => candidate.name === resourceName);
+      if (!resource) continue;
+      context.featureResourceState[feature.id] = {
+        resourceName,
+        // Nom de la technique dupliqué ici (déjà accessible via `this.name` dans la boucle
+        // `{{#each features}}` du template) pour rester entièrement autonome une fois entré
+        // dans le `{{#with (lookup ...)}}` qui suit — évite toute dépendance à la résolution
+        // Handlebars `../` d'un contexte `#with` imbriqué dans un `#each`.
+        techniqueName: feature.name,
+        remaining: resource.system.uses.value,
+        max: resource.system.uses.max
+      };
+    }
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
     // ajoutées à la main (glisser depuis le compendium Langues).
@@ -697,6 +719,36 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const remaining = item.system.uses.value - 1;
     await item.update({ "system.uses.value": remaining });
     return remaining;
+  }
+
+  /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
+   *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
+   *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
+   *  de la Capacité réservoir (trouvée par nom exact sur l'Actor) et l'annonce dans le chat.
+   *  Bouton grisé côté template (tab-abilities.hbs > featureResourceState) dès que la réserve
+   *  est vide, mais revérifié ici au cas où plusieurs clients cliqueraient en même temps. */
+  static async #onUseResourceTechnique(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.costsResource) return;
+
+    const resource = this.actor.items.contents.find(
+      (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+    );
+    if (!resource) return;
+
+    const remaining = await this.#consumeFeatureCharge(resource);
+    if (remaining === null) return;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseResourceTechnique", {
+        name: this.actor.name,
+        technique: item.name,
+        resource: resource.name,
+        remaining,
+        max: resource.system.uses.max
+      })
+    });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =

@@ -165,7 +165,13 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
           initial: "longRest",
           choices: ["shortRest", "longRest"]
         })
-      })
+      }),
+      // Technique consommant 1 charge d'une AUTRE Capacité "réservoir" à charges partagées
+      // (ex. les techniques de Moine — Rafale de coups, Défense patiente... — consomment
+      // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
+      // exact de cette Capacité réservoir sur l'Actor (même convention texte libre que
+      // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
+      costsResource: new StringField({ required: false, blank: true, initial: "" })
     };
   }
 }
