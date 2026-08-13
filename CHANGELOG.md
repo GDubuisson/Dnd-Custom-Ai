@@ -121,6 +121,12 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   glissant manuellement depuis le compendium "Dons", jamais proposé au moment de la montée de
   niveau. Le choix "Don" liste ceux du compendium non déjà possédés, description complète
   affichée pour décider.
+- Montée de niveau, au niveau propre à chaque classe (SRD 5e) : petite fenêtre de choix de
+  sous-classe (`offerSubclassChoiceDialog`, `scripts/helpers/subclass-choice.js`), description
+  complète de chaque sous-classe affichée — jusqu'ici seul le sélecteur permanent de l'en-tête de
+  la fiche permettait ce choix, jamais proposé au moment précis de la montée de niveau (même
+  lacune que pour le Don). Le sélecteur d'en-tête reste disponible en secours si la fenêtre est
+  fermée sans choisir.
 - Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
   la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
   informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.

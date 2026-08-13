@@ -117,12 +117,23 @@ async function buildProgressionPage() {
     <h2>Montée de niveau</h2>
     <p>Le bouton "Monter de niveau" n'apparaît sur la fiche que si l'XP accumulé atteint le seuil
     du niveau suivant. À l'usage, il octroie automatiquement les nouvelles Capacités/nouveaux
-    Sorts de la classe, et aux niveaux 4, 8, 12, 16 et 19 (SRD 5e) propose une petite fenêtre de
-    choix : Amélioration de caractéristiques (+2 sur une caractéristique, ou +1 sur deux), ou Don
-    (règle optionnelle) — le joueur choisit alors un Don parmi ceux du compendium "Dons" qu'il ne
-    possède pas déjà, description complète affichée pour décider. Le champ Niveau reste aussi
-    éditable directement par toi (override manuel, ex. pour corriger une erreur) — dans ce cas,
-    ni l'octroi automatique de contenu ni cette fenêtre de choix ne se déclenchent.</p>
+    Sorts de la classe, puis propose deux petites fenêtres de choix, l'une après l'autre selon le
+    niveau atteint :</p>
+    <ul>
+      <li><strong>Sous-classe</strong> (niveau propre à chaque classe, SRD 5e — 1 pour Clerc/
+      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 8 autres) : liste les sous-classes
+      de la classe du personnage, description complète affichée. Ne se propose plus une fois le
+      choix fait (verrouillé) ; tant qu'il n'a pas encore été fait, la fenêtre revient à chaque
+      montée de niveau suivante, et le sélecteur permanent de l'en-tête reste aussi disponible en
+      secours si elle est fermée sans choisir.</li>
+      <li><strong>Amélioration de caractéristiques ou Don</strong> (niveaux 4, 8, 12, 16 et 19,
+      SRD 5e) : +2 sur une caractéristique/+1 sur deux, ou un Don (règle optionnelle) parmi ceux
+      du compendium "Dons" que le personnage ne possède pas déjà, description complète affichée
+      pour décider.</li>
+    </ul>
+    <p>Le champ Niveau reste aussi éditable directement par toi (override manuel, ex. pour
+    corriger une erreur) — dans ce cas, ni l'octroi automatique de contenu ni ces fenêtres de
+    choix ne se déclenchent.</p>
   `;
 }
 

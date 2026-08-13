@@ -338,7 +338,9 @@
       "FeatOption": "Don",
       "FeatDialogTitle": "Choisir un Don",
       "FeatConfirm": "Choisir",
-      "AllFeatsOwned": "Ce personnage possède déjà tous les Dons du compendium."
+      "AllFeatsOwned": "Ce personnage possède déjà tous les Dons du compendium.",
+      "SubclassDialogTitle": "Choisir une sous-classe",
+      "SubclassConfirm": "Choisir"
     },
     "Conditions": {
       "Title": "États",

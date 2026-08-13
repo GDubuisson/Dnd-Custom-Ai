@@ -338,7 +338,9 @@
       "FeatOption": "Feat",
       "FeatDialogTitle": "Choose a Feat",
       "FeatConfirm": "Choose",
-      "AllFeatsOwned": "This character already has every Feat from the compendium."
+      "AllFeatsOwned": "This character already has every Feat from the compendium.",
+      "SubclassDialogTitle": "Choose a Subclass",
+      "SubclassConfirm": "Choose"
     },
     "Conditions": {
       "Title": "Conditions",

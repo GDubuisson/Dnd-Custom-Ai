@@ -26,6 +26,7 @@ import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
+import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -597,6 +598,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         })
       });
     }
+
+    // Choix de sous-classe, SRD 5e (cf. DND_CUSTOM.subclassLevel, config.js) : proposé dès que
+    // le niveau requis est atteint et tant qu'aucune sous-classe n'est encore choisie (cf.
+    // offerSubclassChoiceDialog, subclass-choice.js) — le sélecteur de l'en-tête reste
+    // disponible en secours si cette fenêtre est fermée sans choisir.
+    await offerSubclassChoiceDialog(this.actor, this.actor.system.class, next);
 
     // Amélioration de caractéristiques OU Don au choix, SRD 5e (règle optionnelle, cf.
     // commentaire de DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après
