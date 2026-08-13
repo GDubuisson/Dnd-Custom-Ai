@@ -17,7 +17,8 @@ import {
   spellAttackBonus,
   toolCheckModifier,
   weaponAttackDamage,
-  hasFeature
+  hasFeature,
+  canUseReaction
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
@@ -105,7 +106,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
-      useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique
+      useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
+      toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
 
@@ -189,6 +191,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/${
       DND_CUSTOM.classes[system.class] ? system.class : "default"
     }.hbs`;
+
+    // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
+    // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
+    // Capacités/Sorts (cf. #consumeReaction ci-dessous, hooks updateCombat/deleteCombat).
+    context.reactionAvailable = canUseReaction(system);
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -683,6 +690,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
+    if (!(await this.#consumeReaction(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -699,6 +707,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseFeatureCharge(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
+    if (!(await this.#consumeReaction(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -729,6 +738,31 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     return remaining;
   }
 
+  /** Économie d'action de combat (SRD 5e) : si `item` (Capacité ou Sort) est de type
+   *  "reaction", vérifie que la réaction n'est pas déjà consommée ce round-ci
+   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée.
+   *  Renvoie `true` si l'action associée peut se poursuivre (item non-réaction, ou réaction
+   *  disponible et désormais consommée), `false` sinon (avec avertissement) — l'appelant doit
+   *  alors annuler l'action, sans avoir encore décompté de charge. */
+  async #consumeReaction(item) {
+    if (item.system.activation !== "reaction") return true;
+    if (!canUseReaction(this.actor.system)) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
+      return false;
+    }
+    await this.actor.update({ "system.combat.reactionAvailable": false });
+    return true;
+  }
+
+  /** Rattrapage manuel de la réaction (MJ ou joueur) : capacité qui rend une réaction
+   *  supplémentaire, correction d'un clic malencontreux... Bascule simplement l'état, sans
+   *  attendre un changement de tour (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js,
+   *  pour la régénération automatique au début de son propre tour). */
+  static async #onToggleReaction() {
+    const available = this.actor.system.combat.reactionAvailable;
+    await this.actor.update({ "system.combat.reactionAvailable": !available });
+  }
+
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
    *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
    *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
@@ -738,6 +772,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseResourceTechnique(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.costsResource) return;
+    if (!(await this.#consumeReaction(item))) return;
 
     const resource = this.actor.items.contents.find(
       (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
@@ -899,6 +934,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
+    if (!(await this.#consumeReaction(item))) return;
 
     // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
     // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —

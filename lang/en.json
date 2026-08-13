@@ -179,6 +179,7 @@
       "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
       "UseResourceTechnique": "{name} uses {resource}: {technique} ({remaining}/{max} left).",
       "NoChargesLeft": "No uses left for {feature}.",
+      "ReactionUnavailable": "Reaction already used this round ({name}).",
       "ClassContentGranted": "{name} gains: {names}."
     },
     "Tabs": {

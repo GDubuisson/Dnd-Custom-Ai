@@ -549,6 +549,33 @@ Hooks.on("updateActor", async (actor, changes, options) => {
 // mort d'un PNJ, il retire manuellement le statut "Mort" (menu des états du token) et le
 // marqueur "vaincu" (clic droit sur le Combattant dans le Combat Tracker).
 
+// Régénère la réaction du personnage dont c'est désormais le tour, SRD 5e ("vous récupérez
+// votre réaction au début de votre tour") — pas un reset global par round, pour rester fidèle à
+// la règle. Ne réagit qu'à un changement effectif de tour/round (`turn`/`round` dans `changes`,
+// pas une simple édition du Combat comme l'ajout d'un Combattant), même garde MJ actif que la
+// mort de PNJ ci-dessus pour n'agir qu'une fois même à plusieurs MJ connectés.
+Hooks.on("updateCombat", async (combat, changes) => {
+  if (!("turn" in changes) && !("round" in changes)) return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+
+  const actor = combat.combatant?.actor;
+  if (actor?.type !== "character" || actor.system.combat.reactionAvailable) return;
+  await actor.update({ "system.combat.reactionAvailable": true });
+});
+
+// Filet de sécurité : ne laisse pas un personnage "réaction bloquée" une fois le combat terminé
+// (ex. combat clos sans que ce soit revenu à son tour). Régénère la réaction de tous les
+// personnages ayant participé, même garde MJ actif que ci-dessus.
+Hooks.on("deleteCombat", async (combat) => {
+  if (game.users.activeGM?.id !== game.user.id) return;
+
+  const updates = combat.combatants
+    .map((combatant) => combatant.actor)
+    .filter((actor) => actor?.type === "character" && !actor.system.combat.reactionAvailable)
+    .map((actor) => ({ _id: actor.id, "system.combat.reactionAvailable": true }));
+  if (updates.length) await Actor.updateDocuments(updates);
+});
+
 
 // Ajoute un bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts (cf.
 // rollDamage dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
