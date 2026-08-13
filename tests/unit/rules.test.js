@@ -26,9 +26,24 @@ import {
   isOffHandEligible,
   isProficientWithWeapon,
   weaponAttackDamage,
-  hasFeature
+  hasFeature,
+  canUseReaction
 } from "../../scripts/helpers/rules.js";
 import { SPELL_SLOT_TABLES } from "../support/fixtures.js";
+
+describe("canUseReaction (économie d'action, SRD 5e : 1 réaction/round)", () => {
+  test("réaction disponible : true", () => {
+    assert.equal(canUseReaction({ combat: { reactionAvailable: true } }), true);
+  });
+
+  test("réaction déjà consommée ce round-ci : false", () => {
+    assert.equal(canUseReaction({ combat: { reactionAvailable: false } }), false);
+  });
+
+  test("system.combat absent (donnée pas encore migrée) : disponible par défaut", () => {
+    assert.equal(canUseReaction({}), true);
+  });
+});
 
 describe("abilityModifier (SRD 5e: floor((score - 10) / 2))", () => {
   const cases = [

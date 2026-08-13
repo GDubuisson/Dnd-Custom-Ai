@@ -149,6 +149,16 @@ describe("world-items/features.json — cohérence (FeatureData)", () => {
   }
 });
 
+describe("world-items/features.json et spells.json — activation valide si renseignée (FeatureData/SpellData#activation)", () => {
+  const ACTIVATION_KEYS = new Set(Object.keys(DND_CUSTOM.activationTypes));
+  for (const item of [...WORLD_FEATURES, ...WORLD_SPELLS]) {
+    if (!("activation" in item.system)) continue;
+    test(`${item.name} : activation "${item.system.activation}" valide`, () => {
+      assert.ok(ACTIVATION_KEYS.has(item.system.activation), `activation invalide sur "${item.name}"`);
+    });
+  }
+});
+
 describe("world-items/*.json — objets physiques (armes/armures/objets/outils)", () => {
   const collections = { weapons: WORLD_WEAPONS, armors: WORLD_ARMORS, gear: WORLD_GEAR, tools: WORLD_TOOLS };
   for (const [label, entries] of Object.entries(collections)) {

@@ -413,6 +413,12 @@
         "shortRest": "Short rest",
         "longRest": "Long rest"
       },
+      "ActivationTypes": {
+        "action": "Action",
+        "bonusAction": "Bonus action",
+        "reaction": "Reaction",
+        "free": "Free"
+      },
       "LanguageCategories": {
         "common": "Common",
         "origin": "Origin",
@@ -456,6 +462,9 @@
         "Level": "Level",
         "RequiresRoll": "Requires a Roll",
         "RollFormula": "Roll Formula",
+        "Activation": "Activation",
+        "ReactionTrigger": "Trigger (if Reaction)",
+        "ReactionTriggerHelp": "Describes when to use this Reaction (e.g. \"When a creature you can see within 60 ft. is hit by an attack\").",
         "Source": "Source",
         "CostsResource": "Draws from pool (exact name of another Feature, e.g. Ki)",
         "Uses": "Limited Uses",

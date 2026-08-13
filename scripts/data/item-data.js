@@ -151,6 +151,20 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       subclass: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
+      // Type d'action SRD 5e nécessaire pour utiliser cette Capacité (cf. DND_CUSTOM.activationTypes,
+      // config.js). "reaction" active le suivi d'économie d'action (cf. system.combat.reactionAvailable,
+      // CharacterData ; #consumeReaction, actor-sheet.js) : une seule réaction utilisable par round,
+      // régénérée au début de son propre tour (hook updateCombat, dnd-custom-ai.js).
+      activation: new StringField({
+        required: true,
+        initial: "action",
+        choices: ["action", "bonusAction", "reaction", "free"]
+      }),
+      // Texte libre décrivant quand déclencher une Capacité "Réaction" (ex. "Quand une créature
+      // que vous voyez à moins de 18 m est touchée par une attaque") — ce système ne détecte/
+      // déclenche jamais automatiquement un trigger (hors scope "combat automatisé", cf.
+      // SpellData#attack ci-dessous), affiché en aide au joueur sur l'onglet Capacités/Sorts.
+      reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
       source: new StringField({ required: false, blank: true, initial: "" }),
@@ -219,6 +233,14 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       classes: new StringField({ required: false, blank: true, initial: "" }),
       level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
       details: new StringField({ required: false, blank: true, initial: "" }),
+      // Type d'action SRD 5e nécessaire pour lancer ce sort (cf. FeatureData#activation
+      // ci-dessus, même choix/même mécanique de suivi de réaction).
+      activation: new StringField({
+        required: true,
+        initial: "action",
+        choices: ["action", "bonusAction", "reaction", "free"]
+      }),
+      reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       concentration: new BooleanField({ required: true, initial: false }),
       ritual: new BooleanField({ required: true, initial: false }),
       // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à

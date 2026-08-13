@@ -413,6 +413,12 @@
         "shortRest": "Repos court",
         "longRest": "Repos long"
       },
+      "ActivationTypes": {
+        "action": "Action",
+        "bonusAction": "Action bonus",
+        "reaction": "Réaction",
+        "free": "Libre"
+      },
       "LanguageCategories": {
         "common": "Commune",
         "origin": "Origine",
@@ -456,6 +462,9 @@
         "Level": "Niveau",
         "RequiresRoll": "Nécessite un jet",
         "RollFormula": "Formule de jet",
+        "Activation": "Activation",
+        "ReactionTrigger": "Déclencheur (si Réaction)",
+        "ReactionTriggerHelp": "Décrit quand utiliser cette Réaction (ex. \"Quand une créature que vous voyez à moins de 18 m est touchée par une attaque\").",
         "Source": "Source",
         "CostsResource": "Consomme la réserve (nom exact d'une autre Capacité, ex. Ki)",
         "Uses": "Utilisations limitées",

@@ -172,6 +172,16 @@ DND_CUSTOM.spellcastingAbility = {
   wizard: "int"
 };
 
+/** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé
+ *  pour le select des fiches de Capacité/Sort et le libellé du badge "Réaction" sur l'onglet
+ *  Capacités/Sorts. Seule "reaction" déclenche un suivi (system.combat.reactionAvailable). */
+DND_CUSTOM.activationTypes = {
+  action: "DND_CUSTOM.Item.ActivationTypes.action",
+  bonusAction: "DND_CUSTOM.Item.ActivationTypes.bonusAction",
+  reaction: "DND_CUSTOM.Item.ActivationTypes.reaction",
+  free: "DND_CUSTOM.Item.ActivationTypes.free"
+};
+
 /** Vitesse de base (en pieds) : les origines de ce système sont des cultures/régions,
  *  pas des espèces, donc pas de variation de vitesse par origine pour l'instant. */
 DND_CUSTOM.baseSpeed = 30;

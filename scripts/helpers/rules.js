@@ -47,6 +47,13 @@ export function carryingCapacityBonus(items) {
   }, 0);
 }
 
+/** Économie d'action de combat, SRD 5e : une réaction n'est utilisable que si elle n'a pas déjà
+ *  été consommée ce round-ci (cf. system.combat.reactionAvailable, CharacterData ; régénérée au
+ *  début de son propre tour par le hook updateCombat, dnd-custom-ai.js). */
+export function canUseReaction(system) {
+  return system.combat?.reactionAvailable ?? true;
+}
+
 /** Bonus total d'un test de compétence : modificateur de la caractéristique liée + bonus
  *  de maîtrise si la compétence est maîtrisée (même formule que l'onglet Statistiques,
  *  cf. actor-sheet.js > context.skills). `jackOfAllTrades` (Capacité "Aptitudes multiples" du
