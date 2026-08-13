@@ -166,7 +166,39 @@ Hooks.once("ready", async () => {
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
   await importSystemContent({ notifyIfEmpty: false });
+  await ensureCharacterTokensLinked();
 });
+
+/** Migration ponctuelle (monde déjà en cours, cf. hook preCreateActor plus bas pour les
+ *  nouveaux personnages) : relie le token au personnage joueur là où ce n'est pas déjà le cas
+ *  (`prototypeToken.actorLink`) — retour de test, désynchronisation PV constatée entre un
+ *  token et sa fiche. Un token déjà placé sur une scène et actuellement désynchronisé (PV
+ *  différents de ceux de la fiche) n'est PAS relié automatiquement ici : la valeur "correcte"
+ *  entre les deux n'est pas déterminable à coup sûr, mieux vaut laisser le MJ trancher à la
+ *  main plutôt que d'écraser silencieusement l'une des deux en pleine partie. Seuls les
+ *  tokens déjà synchronisés (donc sans risque) sont reliés directement. */
+async function ensureCharacterTokensLinked() {
+  if (!game.user.isGM) return;
+
+  const characterUpdates = game.actors
+    .filter((actor) => actor.type === "character" && !actor.prototypeToken.actorLink)
+    .map((actor) => ({ _id: actor.id, "prototypeToken.actorLink": true }));
+  if (characterUpdates.length) await Actor.updateDocuments(characterUpdates);
+
+  for (const scene of game.scenes) {
+    const tokenUpdates = scene.tokens
+      .filter((token) => {
+        if (token.actorLink || token.actor?.type !== "character") return false;
+        // `token.actor` (synthétique, delta appliqué) vs l'Actor maître (game.actors.get,
+        // jamais affecté par le delta d'un token précis) : ne relie que si les deux
+        // s'accordent déjà sur les PV actuels, seul cas sans risque de perte de donnée.
+        const masterActor = game.actors.get(token.actorId);
+        return masterActor && token.actor.system.attributes.hp.value === masterActor.system.attributes.hp.value;
+      })
+      .map((token) => ({ _id: token.id, actorLink: true }));
+    if (tokenUpdates.length) await scene.updateEmbeddedDocuments("Token", tokenUpdates);
+  }
+}
 
 // Écoute du canal socket (cf. requestActorUpdate) : un joueur sans permission de modification
 // sur l'Actor ciblé (PNJ non possédé, le cas courant) délègue sa mise à jour au MJ actif, seul
@@ -270,6 +302,17 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
   const usesValue = sys.uses?.value;
   for (const key of Object.keys(sys)) delete sys[key];
   if (usesValue !== undefined) sys.uses = { value: usesValue };
+});
+
+// Lie le token à l'Actor par défaut pour un personnage joueur (`prototypeToken.actorLink`,
+// `false` par défaut côté Foundry, quel que soit le type d'Actor) — retour de test :
+// désynchronisation PV constatée entre un token et sa fiche (le token affichait 0 PV, la
+// fiche encore son max), symptôme classique d'un token non lié à son Actor. Pas touché pour
+// les PNJ/montures (`npc`/`mount`) : plusieurs instances indépendantes du même Actor (ex.
+// plusieurs gobelins avec des PV propres) restent un usage volontaire et courant côté MJ.
+Hooks.on("preCreateActor", (actor) => {
+  if (actor.type !== "character") return;
+  actor.updateSource({ "prototypeToken.actorLink": true });
 });
 
 // Empêche le dialogue natif "Créer un acteur" d'ouvrir la fiche de personnage juste après

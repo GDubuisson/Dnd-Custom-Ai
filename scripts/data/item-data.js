@@ -230,6 +230,16 @@ export class SpellData extends foundry.abstract.TypeDataModel {
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({ required: false, blank: true, initial: "" })
       }),
+      // Sort émettant de la lumière (ex. Lumière) : mêmes unités que GearData#use.light
+      // (`dim` = rayon SUPPLÉMENTAIRE au-delà de `bright`, formulation SRD) — allume le(s)
+      // token(s) du lanceur au moment du lancer (cf. #onCastSpell, actor-sheet.js). Vide
+      // (0/0) pour l'immense majorité des sorts, qui n'ont aucun effet sur la lumière du
+      // token. Retour de test : rien ne liait les sorts de lumière (Lumière...) au système de
+      // lumière des tokens, contrairement aux objets `gear` équivalents (Torche...).
+      light: new SchemaField({
+        bright: new NumberField({ required: true, min: 0, initial: 0 }),
+        dim: new NumberField({ required: true, min: 0, initial: 0 })
+      }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }
