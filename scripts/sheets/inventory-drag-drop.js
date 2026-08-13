@@ -1,9 +1,51 @@
+import { DND_CUSTOM } from "../helpers/config.js";
+import { carryingCapacity, carryingCapacityBonus, carriedWeight } from "../helpers/rules.js";
+
 // Objets physiques (quantité empilable) + Capacités/Sorts/Langues (ni quantité ni doublon
 // voulu, cf. _onDropItem ci-dessous) : ces derniers étaient absents de cette liste jusqu'ici,
 // ce qui bloquait silencieusement tout glisser-déposer d'une Capacité/d'un Sort/d'une Langue
 // depuis un compendium ou une autre fiche vers la fiche de personnage (retour de test).
 const PHYSICAL_TYPES = ["weapon", "armor", "gear", "tool"];
+// Armes/armures NON empilables (retour de test — contrairement aux Objets/Outils, chaque arme
+// ou armure garde sa propre ligne d'inventaire même si une autre du même nom est déjà
+// possédée : chacune a son propre état "Équipée", cf. tab-equipment.hbs) — sous-ensemble de
+// PHYSICAL_TYPES ci-dessus.
+const STACKABLE_PHYSICAL_TYPES = ["gear", "tool"];
 const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell", "language"];
+
+/** Un Sort (SpellData#classes, liste de libellés de classe séparés par virgule — cf.
+ *  grantClassContent dans class-content.js pour la même convention) peut-il être glissé sur
+ *  `actor` ? Retour de test : rien n'empêchait de poser un sort d'une autre classe (ex.
+ *  "Décharge occulte", Occultiste, sur un Magicien). Un sort sans classes renseignées (donnée
+ *  incomplète) ou un Actor sans classe encore choisie reste accepté par défaut, pour ne pas
+ *  bloquer un cas de données incomplètes plutôt qu'une vraie incompatibilité connue. */
+function isSpellAllowedForActor(item, actor) {
+  if (item.type !== "spell" || actor.type !== "character") return true;
+  const classes = String(item.system.classes ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (!classes.length || !actor.system.class) return true;
+  const classLabel = game.i18n.localize(DND_CUSTOM.classes[actor.system.class]);
+  return classes.includes(classLabel);
+}
+
+/** Le poids ajouté par `item` (un nouvel exemplaire, ou `addedQuantity` unités d'un objet déjà
+ *  empilable, cf. STACKABLE_PHYSICAL_TYPES) ferait-il dépasser la capacité de charge de
+ *  `actor` ? Retour de test : rien n'empêchait d'ajouter un objet au-delà du max, contrairement
+ *  à la règle SRD 5e de base (capacité de charge = Force x 15 lb, un dépassement n'est pas
+ *  possible en jeu normal). Uniquement pour un personnage (`character`) : les PNJ/montures/
+ *  véhicules n'ont pas cette même formule dérivée de la Force. */
+function wouldExceedCarryingCapacity(item, actor, addedQuantity = null) {
+  if (actor.type !== "character" || !PHYSICAL_TYPES.includes(item.type)) return false;
+
+  const addedWeight = (item.system.weight ?? 0) * (addedQuantity ?? item.system.quantity ?? 1);
+  if (addedWeight <= 0) return false;
+
+  const items = actor.items.contents;
+  const capacity = carryingCapacity(actor.system.abilities.str.total, "kg") + carryingCapacityBonus(items);
+  return carriedWeight(items) + addedWeight > capacity;
+}
 
 /** Mixin ApplicationV2 : glisser-déposer d'objet entre deux fiches ouvertes (personnage ↔
  *  véhicule, ou depuis un compendium/le monde), édition directe des lignes d'inventaire
@@ -60,7 +102,17 @@ export function InventoryDragDropMixin(Base) {
       if (!item) return;
 
       if (target.matches("[data-item-quantity]")) {
-        await item.update({ "system.quantity": Math.max(0, Math.trunc(Number(target.value) || 0)) });
+        const newQuantity = Math.max(0, Math.trunc(Number(target.value) || 0));
+        const delta = newQuantity - (item.system.quantity ?? 0);
+        // Une augmentation de quantité ajoute du poids comme un nouvel objet (cf.
+        // wouldExceedCarryingCapacity) : bloquée de la même façon en cas de surcharge, valeur
+        // de saisie remise à l'ancienne quantité. Une diminution reste toujours autorisée.
+        if (delta > 0 && wouldExceedCarryingCapacity(item, this.actor, delta)) {
+          ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.OverCapacityBlocked"));
+          target.value = item.system.quantity ?? 0;
+          return;
+        }
+        await item.update({ "system.quantity": newQuantity });
       } else if (target.matches("[data-item-equipped]")) {
         await item.update({ "system.equipped": target.checked });
       } else if (target.matches("[data-item-prepared]")) {
@@ -78,6 +130,16 @@ export function InventoryDragDropMixin(Base) {
       if (!this.actor.isOwner) return null;
       if (this.actor.uuid === item.parent?.uuid) return super._onDropItem(event, item);
       if (!TRANSFERABLE_TYPES.includes(item.type)) return null;
+      if (!isSpellAllowedForActor(item, this.actor)) {
+        ui.notifications.warn(
+          game.i18n.format("DND_CUSTOM.Inventory.SpellWrongClass", { spell: item.name })
+        );
+        return null;
+      }
+      if (wouldExceedCarryingCapacity(item, this.actor)) {
+        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.OverCapacityBlocked"));
+        return null;
+      }
 
       try {
         const existing = this.actor.items.contents.find(
@@ -85,10 +147,15 @@ export function InventoryDragDropMixin(Base) {
         );
 
         let result;
-        if (existing && PHYSICAL_TYPES.includes(item.type)) {
+        if (existing && STACKABLE_PHYSICAL_TYPES.includes(item.type)) {
           const addedQuantity = item.system.quantity ?? 1;
           await existing.update({ "system.quantity": (existing.system.quantity ?? 0) + addedQuantity });
           result = existing;
+        } else if (existing && PHYSICAL_TYPES.includes(item.type)) {
+          // Arme/armure : jamais empilée, même nom ou pas (retour de test) — chacune garde sa
+          // propre ligne, son propre état "Équipée" (cf. tab-equipment.hbs/tab-inventory.hbs).
+          const [created] = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
+          result = created;
         } else if (existing) {
           // Capacité/Sort : pas de champ quantité (FeatureData/SpellData), un exemplaire de
           // plus n'a pas de sens (ex. Rage ou Boule de feu en double) — on garde l'existant

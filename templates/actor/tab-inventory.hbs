@@ -71,7 +71,11 @@
         <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
         <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
-        <td><input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}}></td>
+        <td>
+          {{#if this.system.capacityBonus}}
+          <input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}} title="{{localize 'DND_CUSTOM.Inventory.EquippedBagTooltip'}}">
+          {{/if}}
+        </td>
         <td class="inventory-actions">
           {{#if (isUsableItem this)}}
           <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
