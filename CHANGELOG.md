@@ -96,6 +96,17 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   Frappe étourdissante (Moine), Canalisation divine : Préserver la vie (Clerc) et Arme sacrée
   (Paladin), Affinité élémentaire (Ensorceleur, option active seulement — le bonus passif de
   dégâts reste automatique et gratuit) sur leurs réserves respectives.
+- Onglet Capacités/Sorts : en-tête spécialisé par classe (titre thématique, icône, accroche —
+  ex. "Rage" pour le Barbare, "Voie du Ki" pour le Moine), une partial Handlebars dédiée par
+  classe (`templates/actor/abilities/*.hbs`).
+- Système de réaction en combat (économie d'action SRD 5e) : nouveau champ `activation`
+  (Action/Action bonus/Réaction/Libre) et `reactionTrigger` sur les Capacités/Sorts ; une seule
+  réaction utilisable par round, régénérée automatiquement au début de son propre tour (hooks
+  `updateCombat`/`deleteCombat`, Combat Tracker natif) ; badge "Réaction" et bouton grisé sur
+  l'onglet Capacités/Sorts, indicateur cliquable (rattrapage manuel) dans l'en-tête commune.
+- Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
+  la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
+  informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.
 
 ## [0.15.0] - 2026-08-10
 
