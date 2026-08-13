@@ -72,7 +72,7 @@ function buildRulesPage(glossary) {
 function buildSpellsPage(glossary) {
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   return `
-    <p><strong>Ce système simplifie volontairement la magie de D&amp;D 5e</strong> pour rester
+    <p><strong>Ce système simplifie volontairement la gestion des sorts</strong> pour rester
     facile à suivre à table : pas d'emplacements de sorts par niveau (1 à 9) à gérer
     séparément.</p>
     <h2>Le pool "${abbr("Sorts par repos")}"</h2>
@@ -105,9 +105,11 @@ async function buildClassesPage() {
   const sections = classes
     .map((entry) => `<h3>${entry.name}</h3>${entry.system.description}`)
     .join("");
-  return `<p>Les 12 classes du SRD 5e sont disponibles dans ce système. Le dé de vie, les
-    sauvegardes maîtrisées et le nombre de compétences au choix sont fixés par la classe et
-    appliqués automatiquement par l'assistant de création de personnage.</p>${sections}`;
+  return `<p>Les 12 classes suivantes sont disponibles dans ce système. Les points de vie
+    maximum, les sauvegardes maîtrisées et le nombre de compétences au choix sont fixés par la
+    classe et appliqués automatiquement par l'assistant de création de personnage (pas de jet de
+    Dé de vie dans ce système : les points de vie maximum sont calculés automatiquement à
+    chaque niveau).</p>${sections}`;
 }
 
 async function buildOriginsPage(glossary) {
@@ -128,7 +130,7 @@ async function buildOriginsPage(glossary) {
         <p><strong>${system.specialTrait.name}</strong> — ${system.specialTrait.description}</p>`;
     })
     .join("");
-  return `<p>Ce système remplace les races classiques de D&amp;D par 6
+  return `<p>Ce système remplace les races classiques de jeu de rôle par 6
     ${abbr("Origine", "Origines")} culturelles humaines, choisies à la création du personnage. Un
     tableau comparatif complet existe aussi dans le Journal "Comparatif des Origines".</p>${sections}`;
 }

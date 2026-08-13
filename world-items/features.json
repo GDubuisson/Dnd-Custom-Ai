@@ -384,7 +384,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Pendant un repos court, si vous ou des alliés à portée de voix vous reposez, chaque participant qui dépense au moins un Dé de vie pour récupérer des points de vie en récupère 1d6 supplémentaires (progression simplifiée : ne monte pas avec le niveau dans ce système)."
+      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas)."
     }
   },
   {

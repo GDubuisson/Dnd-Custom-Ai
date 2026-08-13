@@ -4,7 +4,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Barbare.webp",
     "system": {
-      "description": "<p>Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute.</p><ul><li>Dé de vie : d12</li><li>Jets de sauvegarde maîtrisés : Force, Constitution</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non</li></ul>"
+      "description": "<p>Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute.</p><ul><li>Jets de sauvegarde maîtrisés : Force, Constitution</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non</li></ul>"
     }
   },
   {
@@ -12,7 +12,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Barde.webp",
     "system": {
-      "description": "<p>Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Dextérité, Charisme</li><li>Compétences à choisir à la création : 3</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
+      "description": "<p>Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société.</p><ul><li>Jets de sauvegarde maîtrisés : Dextérité, Charisme</li><li>Compétences à choisir à la création : 3</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
     }
   },
   {
@@ -20,7 +20,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Clerc.webp",
     "system": {
-      "description": "<p>Intermédiaire entre le monde mortel et les puissances divines, soignant et combattant au nom de sa divinité.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Sagesse)</li></ul>"
+      "description": "<p>Intermédiaire entre le monde mortel et les puissances divines, soignant et combattant au nom de sa divinité.</p><ul><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Sagesse)</li></ul>"
     }
   },
   {
@@ -28,7 +28,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Druide.webp",
     "system": {
-      "description": "<p>Gardien de la nature qui puise sa magie dans les éléments et la faune, capable de se transformer en créature sauvage.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Intelligence, Sagesse</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Sagesse)</li></ul>"
+      "description": "<p>Gardien de la nature qui puise sa magie dans les éléments et la faune, capable de se transformer en créature sauvage.</p><ul><li>Jets de sauvegarde maîtrisés : Intelligence, Sagesse</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Sagesse)</li></ul>"
     }
   },
   {
@@ -36,7 +36,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Guerrier.webp",
     "system": {
-      "description": "<p>Maître d'armes et d'armures, entraîné à toutes les formes de combat martial.</p><ul><li>Dé de vie : d10</li><li>Jets de sauvegarde maîtrisés : Force, Constitution</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non</li></ul>"
+      "description": "<p>Maître d'armes et d'armures, entraîné à toutes les formes de combat martial.</p><ul><li>Jets de sauvegarde maîtrisés : Force, Constitution</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non</li></ul>"
     }
   },
   {
@@ -44,7 +44,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Moine.webp",
     "system": {
-      "description": "<p>Combattant à mains nues qui canalise une énergie intérieure (le Ki) pour frapper vite et fort sans armure ni armes lourdes.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Force, Dextérité</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : non</li></ul>"
+      "description": "<p>Combattant à mains nues qui canalise une énergie intérieure (le Ki) pour frapper vite et fort sans armure ni armes lourdes.</p><ul><li>Jets de sauvegarde maîtrisés : Force, Dextérité</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : non</li></ul>"
     }
   },
   {
@@ -52,7 +52,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Paladin.webp",
     "system": {
-      "description": "<p>Guerrier sacré lié par un serment, mêlant prouesses martiales et magie divine au service d'une cause.</p><ul><li>Dé de vie : d10</li><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
+      "description": "<p>Guerrier sacré lié par un serment, mêlant prouesses martiales et magie divine au service d'une cause.</p><ul><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
     }
   },
   {
@@ -60,7 +60,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Rodeur.webp",
     "system": {
-      "description": "<p>Chasseur et éclaireur à l'aise en terrain sauvage, combinant maîtrise du combat et magie discrète liée à la nature.</p><ul><li>Dé de vie : d10</li><li>Jets de sauvegarde maîtrisés : Force, Dextérité</li><li>Compétences à choisir à la création : 3</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non (pas de sorts modélisés dans ce système)</li></ul>"
+      "description": "<p>Chasseur et éclaireur à l'aise en terrain sauvage, combinant maîtrise du combat et magie discrète liée à la nature.</p><ul><li>Jets de sauvegarde maîtrisés : Force, Dextérité</li><li>Compétences à choisir à la création : 3</li><li>Armes maîtrisées : courantes et de guerre (corps à corps et à distance)</li><li>Lanceur de sorts : non (pas de sorts modélisés dans ce système)</li></ul>"
     }
   },
   {
@@ -68,7 +68,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Roublard.webp",
     "system": {
-      "description": "<p>Expert de la discrétion et de la ruse, redoutable par ses attaques sournoises et son habileté à déjouer pièges et serrures.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Dextérité, Intelligence</li><li>Compétences à choisir à la création : 4</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : non</li></ul>"
+      "description": "<p>Expert de la discrétion et de la ruse, redoutable par ses attaques sournoises et son habileté à déjouer pièges et serrures.</p><ul><li>Jets de sauvegarde maîtrisés : Dextérité, Intelligence</li><li>Compétences à choisir à la création : 4</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : non</li></ul>"
     }
   },
   {
@@ -76,7 +76,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Ensorceleur.webp",
     "system": {
-      "description": "<p>Lanceur de sorts dont la magie jaillit d'un don inné plutôt que d'une étude, souvent lié à une lignée ou un événement surnaturel.</p><ul><li>Dé de vie : d6</li><li>Jets de sauvegarde maîtrisés : Constitution, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
+      "description": "<p>Lanceur de sorts dont la magie jaillit d'un don inné plutôt que d'une étude, souvent lié à une lignée ou un événement surnaturel.</p><ul><li>Jets de sauvegarde maîtrisés : Constitution, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme)</li></ul>"
     }
   },
   {
@@ -84,7 +84,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Occultiste.webp",
     "system": {
-      "description": "<p>Lanceur de sorts lié par un pacte à une entité puissante, dont il tire des pouvoirs en échange de services ou de sa loyauté.</p><ul><li>Dé de vie : d8</li><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme, emplacements de Magie de Pacte)</li></ul>"
+      "description": "<p>Lanceur de sorts lié par un pacte à une entité puissante, dont il tire des pouvoirs en échange de services ou de sa loyauté.</p><ul><li>Jets de sauvegarde maîtrisés : Sagesse, Charisme</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Charisme, emplacements de Magie de Pacte)</li></ul>"
     }
   },
   {
@@ -92,7 +92,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Magicien.webp",
     "system": {
-      "description": "<p>Érudit de la magie arcanique, dont le savoir méticuleux permet de façonner la réalité par le sort.</p><ul><li>Dé de vie : d6</li><li>Jets de sauvegarde maîtrisés : Intelligence, Sagesse</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Intelligence)</li></ul>"
+      "description": "<p>Érudit de la magie arcanique, dont le savoir méticuleux permet de façonner la réalité par le sort.</p><ul><li>Jets de sauvegarde maîtrisés : Intelligence, Sagesse</li><li>Compétences à choisir à la création : 2</li><li>Armes maîtrisées : courantes et à distance simples</li><li>Lanceur de sorts : oui (Intelligence)</li></ul>"
     }
   }
 ]
