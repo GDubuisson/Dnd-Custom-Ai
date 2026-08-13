@@ -46,6 +46,10 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   classe concernées).
 - Deux bugs CSS : ellipsis manquant sur la colonne "Traits culturels" du Journal "Comparatif
   des Origines", police forcée sur la dernière pastille de langue de l'onglet Journal.
+- Paladin : n'avait jamais sa propre Capacité "Canalisation divine" (réservée au Clerc dans
+  les données), rendant "Arme sacrée" (Serment de Dévotion) inutilisable faute de réserve à
+  consommer — Clerc/Paladin ont maintenant chacun la leur ("Canalisation divine (Clerc)"/
+  "(Paladin)", même principe déjà en place pour "Incantation rituelle").
 
 ### Ajouté
 - 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
@@ -84,6 +88,14 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   pointillés.
 - Sorts émettant de la lumière (nouveau champ `SpellData#light`, ex. le sort Lumière) :
   allument désormais le(s) token(s) du lanceur, comme un objet `gear` "light" équivalent.
+- Techniques consommant la réserve d'une autre Capacité (nouveau champ générique
+  `FeatureData#costsResource`, ex. les techniques de Moine consommant du Ki) : bouton dédié
+  "Réserve : Technique" sur la fiche, grisé/non cliquable dès la réserve épuisée, décompte au
+  clic. Trois nouvelles Capacités de Moine niveau 2 (Rafale de coups, Défense patiente, Pas du
+  vent, jusqu'ici seulement citées en texte dans la description de "Ki") plus reliage de
+  Frappe étourdissante (Moine), Canalisation divine : Préserver la vie (Clerc) et Arme sacrée
+  (Paladin), Affinité élémentaire (Ensorceleur, option active seulement — le bonus passif de
+  dégâts reste automatique et gratuit) sur leurs réserves respectives.
 
 ## [0.15.0] - 2026-08-10
 
