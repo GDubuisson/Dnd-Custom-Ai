@@ -630,12 +630,14 @@
     }
   },
   {
-    "name": "Esquive totale",
+    "name": "Esquive instinctive",
     "type": "feature",
-    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-totale.png",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-instinctive.png",
     "system": {
       "class": "Roublard",
       "level": 5,
+      "activation": "reaction",
+      "reactionTrigger": "Un adversaire que vous voyez vous touche par une attaque",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -997,21 +999,6 @@
       "rollFormula": "",
       "source": "",
       "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
-    }
-  },
-  {
-    "name": "Esquive instinctive",
-    "type": "feature",
-    "img": "systems/dnd-custom-ai/assets/icons/features/Esquive-instinctive.png",
-    "system": {
-      "class": "Roublard",
-      "level": 5,
-      "activation": "reaction",
-      "reactionTrigger": "Un adversaire que vous voyez vous touche par une attaque",
-      "requiresRoll": false,
-      "rollFormula": "",
-      "source": "",
-      "description": "Quand un adversaire que vous voyez vous touche par une attaque, vous pouvez utiliser votre réaction pour réduire de moitié les dégâts subis (arrondi à l'inférieur)."
     }
   },
   {
