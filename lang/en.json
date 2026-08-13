@@ -253,7 +253,21 @@
       "Cast": "Cast",
       "NoSpells": "No spell recorded",
       "ConcentratingOn": "Concentrating on:",
-      "DropConcentration": "Drop concentration"
+      "DropConcentration": "Drop concentration",
+      "ClassFlavor": {
+        "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
+        "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },
+        "cleric": { "Title": "Divine Favor", "Tagline": "An intermediary between the mortal world and divine powers, healing and fighting in the name of their deity." },
+        "druid": { "Title": "Call of the Wild", "Tagline": "A guardian of nature who draws magic from the elements and wildlife, able to shapeshift into a wild creature." },
+        "fighter": { "Title": "Martial Mastery", "Tagline": "A master of weapons and armor, trained in every form of martial combat." },
+        "monk": { "Title": "Way of Ki", "Tagline": "An unarmed combatant who channels an inner energy (Ki) to strike fast and hard without armor or heavy weapons." },
+        "paladin": { "Title": "Sacred Oath", "Tagline": "A holy warrior bound by an oath, blending martial prowess with divine magic in service of a cause." },
+        "ranger": { "Title": "Hunter's Instinct", "Tagline": "A hunter and scout at ease in the wilds, combining combat skill with subtle nature magic." },
+        "rogue": { "Title": "Art of Cunning", "Tagline": "An expert in stealth and cunning, deadly with sneak attacks and skilled at bypassing traps and locks." },
+        "sorcerer": { "Title": "Innate Magic", "Tagline": "A spellcaster whose magic springs from an innate gift rather than study, often tied to a bloodline or a supernatural event." },
+        "warlock": { "Title": "Otherworldly Pact", "Tagline": "A spellcaster bound by a pact to a powerful entity, drawing power from it in exchange for service or loyalty." },
+        "wizard": { "Title": "Arcane Lore", "Tagline": "A scholar of arcane magic, whose meticulous learning shapes reality through spells." }
+      }
     },
     "Skills": {
       "acrobatics": "Acrobatics",

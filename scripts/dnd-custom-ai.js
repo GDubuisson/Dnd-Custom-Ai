@@ -142,6 +142,17 @@ Hooks.once("init", async () => {
 
   registerHandlebarsHelpers();
 
+  // En-têtes d'onglet Capacités/Sorts spécialisés par classe (cf. actor-sheet.js >
+  // context.classTabPartial, templates/actor/tab-abilities.hbs) : ces fichiers ne sont jamais
+  // une PART (cf. static PARTS ci-dessus) donc jamais chargés automatiquement par
+  // HandlebarsApplicationMixin — il faut les précharger explicitement pour que
+  // {{> (lookup this "classTabPartial")}} les trouve dès le premier rendu.
+  await foundry.applications.handlebars.loadTemplates(
+    [...Object.keys(DND_CUSTOM.classes), "default"].map(
+      (key) => `systems/${SYSTEM_ID}/templates/actor/abilities/${key}.hbs`
+    )
+  );
+
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").
   game.dndCustomAi = {
     origins: await loadOrigins(),

@@ -253,7 +253,21 @@
       "Cast": "Lancer",
       "NoSpells": "Aucun sort enregistré",
       "ConcentratingOn": "Concentré sur :",
-      "DropConcentration": "Rompre la concentration"
+      "DropConcentration": "Rompre la concentration",
+      "ClassFlavor": {
+        "barbarian": { "Title": "Rage", "Tagline": "Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute." },
+        "bard": { "Title": "Inspiration bardique", "Tagline": "Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société." },
+        "cleric": { "Title": "Faveur divine", "Tagline": "Intermédiaire entre le monde mortel et les puissances divines, soignant et combattant au nom de sa divinité." },
+        "druid": { "Title": "Appel de la nature", "Tagline": "Gardien de la nature qui puise sa magie dans les éléments et la faune, capable de se transformer en créature sauvage." },
+        "fighter": { "Title": "Maîtrise martiale", "Tagline": "Maître d'armes et d'armures, entraîné à toutes les formes de combat martial." },
+        "monk": { "Title": "Voie du Ki", "Tagline": "Combattant à mains nues qui canalise une énergie intérieure (le Ki) pour frapper vite et fort sans armure ni armes lourdes." },
+        "paladin": { "Title": "Serment sacré", "Tagline": "Guerrier sacré lié par un serment, mêlant prouesses martiales et magie divine au service d'une cause." },
+        "ranger": { "Title": "Instinct du chasseur", "Tagline": "Chasseur et éclaireur à l'aise en terrain sauvage, combinant maîtrise du combat et magie discrète liée à la nature." },
+        "rogue": { "Title": "Art de la ruse", "Tagline": "Expert de la discrétion et de la ruse, redoutable par ses attaques sournoises et son habileté à déjouer pièges et serrures." },
+        "sorcerer": { "Title": "Magie innée", "Tagline": "Lanceur de sorts dont la magie jaillit d'un don inné plutôt que d'une étude, souvent lié à une lignée ou un événement surnaturel." },
+        "warlock": { "Title": "Pacte occulte", "Tagline": "Lanceur de sorts lié par un pacte à une entité puissante, dont il tire des pouvoirs en échange de services ou de sa loyauté." },
+        "wizard": { "Title": "Savoir arcanique", "Tagline": "Érudit de la magie arcanique, dont le savoir méticuleux permet de façonner la réalité par le sort." }
+      }
     },
     "Skills": {
       "acrobatics": "Acrobaties",

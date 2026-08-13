@@ -1482,6 +1482,42 @@
   color: var(--dca-on-surface-variant);
 }
 
+/* En-tête d'identité de classe, en haut de l'onglet Capacités/Sorts (cf.
+   templates/actor/abilities/<classe>.hbs) : icône + titre thématique + phrase d'ambiance. */
+.dnd-custom-ai .class-flavor-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.3rem;
+  background: var(--dca-surface-container);
+  border-left: 3px solid var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-header i {
+  font-size: 1.3rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.dnd-custom-ai .class-flavor-title {
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  color: var(--dca-primary);
+}
+
+.dnd-custom-ai .class-flavor-tagline {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--dca-on-surface-variant);
+}
+
 /* Capacités (gauche) / Sorts (droite) côte à côte pour les classes lanceuses de sorts ; une
    seule colonne (Capacités) sinon — .features-column s'étire naturellement sur toute la
    largeur quand .spells-column est absent du DOM (retour de test — demande explicite de

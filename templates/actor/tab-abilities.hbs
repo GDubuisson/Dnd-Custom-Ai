@@ -8,6 +8,8 @@
     {{/if}}
   </h2>
 
+  {{#if classTabPartial}}{{> (lookup this "classTabPartial") }}{{/if}}
+
   {{#if isSpellcaster}}
   <div class="spellcasting-stats">
     <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>

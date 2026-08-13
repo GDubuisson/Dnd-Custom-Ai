@@ -181,6 +181,14 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.showCreationWizardButton = !(system.class && system.origin);
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
+    // En-tête spécialisé de l'onglet Capacités/Sorts (habillage seulement — titre/icône/
+    // accroche propres à la classe, cf. templates/actor/abilities/*.hbs) : partial Handlebars
+    // résolue dynamiquement via {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs.
+    // Préchargée/enregistrée au hook "init" (cf. dnd-custom-ai.js > loadTemplates). Repli sur
+    // "default" tant qu'aucune classe valide n'est choisie (ex. assistant de création en cours).
+    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/${
+      DND_CUSTOM.classes[system.class] ? system.class : "default"
+    }.hbs`;
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont

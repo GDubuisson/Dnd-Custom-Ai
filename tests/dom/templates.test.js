@@ -288,6 +288,44 @@ describe("tab-abilities.hbs — technique consommant la réserve d'une autre Cap
   });
 });
 
+describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/*.hbs)", () => {
+  function render(classTabPartial) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        features: [],
+        classTabPartial
+      })
+    );
+  }
+
+  test("chacune des 12 classes a sa propre partial, résolue sans erreur Handlebars", () => {
+    for (const key of [
+      "barbarian", "bard", "cleric", "druid", "fighter", "monk",
+      "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"
+    ]) {
+      const doc = render(`systems/dnd-custom-ai/templates/actor/abilities/${key}.hbs`);
+      const header = doc.querySelector(".class-flavor-header");
+      assert.ok(header, `en-tête de classe manquant pour ${key}`);
+      assert.ok(header.querySelector(".class-flavor-title").textContent.trim(), `titre vide pour ${key}`);
+      assert.ok(header.querySelector(".class-flavor-tagline").textContent.trim(), `accroche vide pour ${key}`);
+    }
+  });
+
+  test("partial 'default' (pas de classe assignée) : pas d'en-tête de classe, pas d'erreur", () => {
+    const doc = render("systems/dnd-custom-ai/templates/actor/abilities/default.hbs");
+    assert.equal(doc.querySelector(".class-flavor-header"), null);
+  });
+
+  test("classTabPartial absent du contexte (anciens appelants) : rendu inchangé, pas d'erreur", () => {
+    const doc = render(undefined);
+    assert.equal(doc.querySelector(".class-flavor-header"), null);
+  });
+});
+
 describe("item/spell-sheet.hbs — schéma simplifié", () => {
   const context = {
     item: { img: "spell.webp", name: "Boule de feu" },
