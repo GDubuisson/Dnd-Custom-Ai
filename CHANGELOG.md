@@ -10,10 +10,42 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
 modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 
+Traitement complet de `ClaudeFiles/FIRST_FEEDBACK.md` (première vague de retours testeurs,
+~28 points) : PV/pool de sorts plafonnés au max, montée de niveau et choix de sous-classe
+accessibles aux joueurs (pas seulement au MJ), token toujours lié au personnage joueur,
+inventaire (surcharge bloquée, armes/armures non empilables, équipement restreint aux sacs,
+outils consommés à l'usage), sorts filtrés par classe et connectés au système de lumière des
+tokens, combat (dégâts à usage unique et réservés à l'auteur du jet, PvP bloqué, comparaison
+auto à la CA de la cible, XP plein pour chaque participant), barre d'XP et états actifs
+visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mirror>` à la
+place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
+
 ### Corrigé
 - `world-items/spells.json` : le Rôdeur ne figure plus dans les classes de "Soin des
   blessures"/"Parler aux animaux" — il n'est pas dans `DND_CUSTOM.spellcastingClasses`
   (`config.js`) et ne les recevait donc jamais malgré sa présence dans `system.classes`.
+- PV/pool de sorts par repos : ne peuvent plus dépasser leur max (création, saisie manuelle,
+  variation du max lui-même).
+- Montée de niveau et choix de sous-classe : accessibles à tout propriétaire de la fiche, pas
+  réservés au MJ ; la montée de niveau rend aussi tous les PV.
+- PNJ/monture : vitesse par défaut et données pré-remplies converties en mètres (affichait 30,
+  valeur en pieds, au lieu de 9).
+- Token lié à l'Actor par défaut pour un personnage joueur (`actorLink`) : désynchronisation
+  PV token/fiche corrigée pour les nouveaux personnages, migration ponctuelle pour les
+  existants.
+- Chat "Appliquer les dégâts" : restreint à l'auteur du jet (ou au MJ), application unique.
+- PvP bloqué entre personnages joueurs ; XP de combat attribué en entier à chaque participant
+  (plus divisé).
+- Inventaire : ajout/augmentation de quantité bloqués en cas de surcharge ; armes/armures ne
+  se stackent plus (une ligne par objet) ; seuls les sacs restent équipables ; outils
+  décrémentés à l'utilisation ; sorts filtrés par classe au glisser-déposer.
+- Toutes les fiches d'Item + Journal/Capacités spéciales (PNJ) : descriptions HTML affichées
+  en texte brut, balises comprises, remplacées par l'éditeur riche `<prose-mirror>`.
+- Retire les mentions de dés de vie (système à PV calculés automatiquement) et les références
+  explicites à D&D/SRD 5e du contenu visible des joueurs (Guide du Joueur, capacités de
+  classe concernées).
+- Deux bugs CSS : ellipsis manquant sur la colonne "Traits culturels" du Journal "Comparatif
+  des Origines", police forcée sur la dernière pastille de langue de l'onglet Journal.
 
 ### Ajouté
 - 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
@@ -44,6 +76,14 @@ modélisés, système de sous-classes (une par classe, SRD) et système de dons 
   Amélioration de caractéristiques) : nouveau compendium "Dons", réutilisant le type d'Item
   `feature` existant (jamais auto-octroyé, `class`/`subclass` vides) — Athlète, Doué,
   Sentinelle, Alerte, Tenace, Chanceux, Magie d'initié, Résilient, Guérisseur, Combat monté.
+- Barre de progression XP visible au joueur (pourcentage relatif au niveau suivant
+  uniquement, jamais de chiffre — le total et les seuils exacts restent réservés au MJ) ;
+  résumé des états actifs visible dans l'en-tête, partagé par tous les onglets.
+- Boutons Attaque/Dégâts de l'onglet Équipement mis en évidence (vrais boutons avec icônes) ;
+  icône de dé sur les autres boutons de jet de la fiche, à la place du seul soulignement en
+  pointillés.
+- Sorts émettant de la lumière (nouveau champ `SpellData#light`, ex. le sort Lumière) :
+  allument désormais le(s) token(s) du lanceur, comme un objet `gear` "light" équivalent.
 
 ## [0.15.0] - 2026-08-10
 
