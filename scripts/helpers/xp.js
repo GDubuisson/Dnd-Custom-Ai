@@ -19,27 +19,27 @@ export async function ensureAwardXpMacro() {
   });
 }
 
-/** Répartit `amount` XP également entre les Actors `character` fournis (arrondi à
- *  l'inférieur) et l'ajoute à leur `system.xp` (compteur interne, jamais affiché au joueur —
- *  cf. PROJECT.md > "Système de progression"). Confirmation postée en chuchotement MJ
- *  uniquement, pour ne jamais exposer de chiffre d'XP aux joueurs via le chat. */
+/** Attribue `amount` XP à CHAQUE Actor `character` fourni (pas de répartition/division du
+ *  montant entre eux — retour de test : tout personnage ayant participé au combat doit
+ *  recevoir le même montant plein, pas une part) et l'ajoute à leur `system.xp` (compteur
+ *  interne, jamais affiché au joueur — cf. PROJECT.md > "Système de progression"). Confirmation
+ *  postée en chuchotement MJ uniquement, pour ne jamais exposer de chiffre d'XP aux joueurs via
+ *  le chat. */
 export async function awardXp(amount, actors) {
   const recipients = actors.filter((actor) => actor.type === "character");
-  const share = Math.floor(amount / (recipients.length || 1));
-  if (!recipients.length || share <= 0) {
+  if (!recipients.length || amount <= 0) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoXpAwarded"));
     return;
   }
 
   for (const actor of recipients) {
-    await actor.update({ "system.xp": actor.system.xp + share });
+    await actor.update({ "system.xp": actor.system.xp + amount });
   }
 
   const gmIds = game.users.filter((user) => user.isGM).map((user) => user.id);
   await ChatMessage.create({
     content: game.i18n.format("DND_CUSTOM.Chat.XpAwarded", {
       amount,
-      share,
       names: recipients.map((actor) => actor.name).join(", ")
     }),
     whisper: gmIds

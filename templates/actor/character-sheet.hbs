@@ -12,9 +12,7 @@
       {{#if levelUpAvailable}}
       <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
         <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
-        {{#if isGM}}
         <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
-        {{/if}}
       </span>
       {{/if}}
       {{#if isGM}}
@@ -36,7 +34,7 @@
       {{#if subclassAvailable}}
       <div class="fixed-field">
         <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
-        <select name="system.subclass" {{#unless isGM}}disabled{{/unless}}>
+        <select name="system.subclass" {{#if subclassLabel}}{{#unless isGM}}disabled{{/unless}}{{/if}}>
           <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
           {{#each subclassOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -67,7 +65,7 @@
     <div class="header-row">
       <label class="hp-field" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">{{localize "DND_CUSTOM.Actor.HP"}}
         <span class="hp-values">
-          <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
+          <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}">
           / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
           <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
         </span>

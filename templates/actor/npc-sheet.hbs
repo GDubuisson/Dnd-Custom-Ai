@@ -31,14 +31,14 @@
 
     <div class="header-row">
       <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
-        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0">
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}">
         / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
         <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.AC"}}
         <input type="number" name="system.attributes.ac.value" value="{{system.attributes.ac.value}}" min="0">
       </label>
-      <label>{{localize "DND_CUSTOM.Actor.Speed"}}
+      <label>{{localize "DND_CUSTOM.Actor.Speed"}} (m)
         <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.XpReward"}}

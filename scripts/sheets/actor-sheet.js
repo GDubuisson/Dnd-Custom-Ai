@@ -498,13 +498,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Monte le personnage d'UN niveau (jamais directement au niveau maximal éligible, cf.
    *  levelForXp) : PV max/emplacements de sorts/vitesse se recalculent automatiquement
-   *  (CharacterData#prepareDerivedData). Champ verrouillé MJ (cf. hook preUpdateActor,
-   *  dnd-custom-ai.js) : la mise à jour est silencieusement ignorée si un joueur clique
-   *  malgré le bouton masqué côté template. */
+   *  (CharacterData#prepareDerivedData). Accessible à tout propriétaire de la fiche, pas
+   *  seulement au MJ (retour de test) : l'option `dndCustomLevelUp` est l'exception ciblée
+   *  reconnue par le hook preUpdateActor (dnd-custom-ai.js) pour laisser passer `level` sans
+   *  ouvrir les autres champs verrouillés MJ (classe/origine/caractéristiques...). Rend aussi
+   *  tous les PV au joueur (retour de test — jusqu'ici seul le max se recalculait, les PV
+   *  actuels restaient inchangés). */
   static async #onLevelUp() {
     const system = this.actor.system;
     const next = system.attributes.level + 1;
-    await this.actor.update({ "system.attributes.level": next });
+    await this.actor.update({ "system.attributes.level": next }, { dndCustomLevelUp: true });
+    await this.actor.update({ "system.attributes.hp.value": this.actor.system.attributes.hp.max });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
@@ -757,7 +761,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       formula: formatModifier(atk.attackBonus),
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
       advantage: event.shiftKey || cond.advantage,
-      disadvantage: event.ctrlKey || cond.disadvantage
+      disadvantage: event.ctrlKey || cond.disadvantage,
+      compareToTargetAc: true
     });
   }
 
@@ -858,7 +863,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         formula: formatModifier(attackBonus),
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
         advantage: event.shiftKey || cond.advantage,
-        disadvantage: event.ctrlKey || cond.disadvantage
+        disadvantage: event.ctrlKey || cond.disadvantage,
+        compareToTargetAc: true
       });
       return;
     }
@@ -915,10 +921,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  confère sa propre maîtrise (bonus de maîtrise toujours appliqué, indépendamment de la
    *  maîtrise de la compétence elle-même — cf. toolCheckModifier dans rules.js), plus
    *  l'éventuel bonus fixe de l'objet (`system.useEffect.bonus`). Maj/Ctrl-clic = avantage/
-   *  désavantage, même convention que #onRollSkill. */
+   *  désavantage, même convention que #onRollSkill. Décrémente `system.quantity` à chaque
+   *  utilisation (retour de test — s'écarte du SRD 5e, où un kit d'outils est réutilisable à
+   *  l'infini, mais explicitement demandé) ; bloqué avec un avertissement une fois épuisé. */
   static async #onUseTool(event, actor, item) {
     const skillKey = item.system.useEffect.skill;
     if (!skillKey) return;
+
+    if (item.system.quantity <= 0) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.NoChargesLeft", { feature: item.name }));
+      return;
+    }
 
     const profBonus = proficiencyBonus(actor.system.attributes.level);
     const mod = toolCheckModifier(actor.system, skillKey, profBonus, item.system.useEffect.bonus);
@@ -932,6 +945,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       advantage: event.shiftKey,
       disadvantage: event.ctrlKey
     });
+    await item.update({ "system.quantity": item.system.quantity - 1 });
   }
 
   static async #toggleLight(actor, item) {

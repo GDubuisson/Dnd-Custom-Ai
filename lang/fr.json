@@ -146,6 +146,8 @@
       "DeathSave": "Jet de sauvegarde de la mort",
       "Advantage": "Avantage",
       "Disadvantage": "Désavantage",
+      "AttackHit": "Touche {target} (CA {ac})",
+      "AttackMiss": "Rate {target} (CA {ac})",
       "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
     },
     "Chat": {
@@ -161,11 +163,14 @@
       "FallsUnconscious": "{name} tombe à 0 point de vie et perd connaissance !",
       "Death": "{name} a échoué trois jets de sauvegarde de la mort et succombe...",
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
+      "DamageAlreadyApplied": "Dégâts déjà appliqués",
+      "ApplyDamageNotAuthor": "Seul l'auteur du jet (ou le MJ) peut appliquer ces dégâts",
+      "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
       "XpAmount": "Montant d'XP",
-      "XpAwarded": "{amount} XP répartis ({share} chacun) entre : {names}.",
+      "XpAwarded": "{amount} XP attribués à chacun : {names}.",
       "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
       "NoCharacters": "Aucun personnage joueur dans ce monde.",
       "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
@@ -203,10 +208,12 @@
       "Attack": "Attaque",
       "Damage": "Dégâts",
       "Equipped": "Équipé",
+      "EquippedBagTooltip": "Seuls les sacs/contenants (bonus de capacité de charge) peuvent être équipés.",
       "WeaponsArmorTitle": "Armes et Armures",
       "GearToolsTitle": "Objets et Outils",
       "Empty": "Aucun objet dans l'inventaire",
       "CarriedWeight": "Poids transporté",
+      "OverCapacityBlocked": "Impossible d'ajouter cet objet : la capacité de charge maximale serait dépassée.",
       "Currency": "Monnaie",
       "DeleteItem": "Retirer",
       "ViewItem": "Ouvrir la fiche de l'objet",
@@ -215,7 +222,8 @@
       "UseItem": "Utiliser",
       "NoTokenOnScene": "Aucun token de ce personnage sur la scène active.",
       "DropHint": "Glissez un objet ici depuis une autre fiche ouverte (ou un compendium) pour l'ajouter à l'inventaire.",
-      "DropError": "Impossible de déplacer cet objet (droits insuffisants)."
+      "DropError": "Impossible de déplacer cet objet (droits insuffisants).",
+      "SpellWrongClass": "{spell} n'appartient pas à la liste de sorts de cette classe."
     },
     "Currency": {
       "pc": "Pièces de cuivre",

@@ -205,17 +205,43 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   if (actor.type !== "character") return;
   if (game.users.get(userId)?.isGM) return;
   // Exception délibérée : l'assistant de création de personnage (character-creation-
-  // wizard.js) est le seul flux autorisé à laisser un joueur fixer ces champs lui-même,
-  // en marquant explicitement son update via cette option — jamais via le formulaire
-  // normal de la fiche (qui reste verrouillé/`disabled` côté template pour un non-MJ).
+  // wizard.js) est le seul flux autorisé à laisser un joueur fixer TOUS ces champs
+  // lui-même, en marquant explicitement son update via cette option — jamais via le
+  // formulaire normal de la fiche (qui reste verrouillé/`disabled` côté template pour un
+  // non-MJ).
   if (options.dndCustomWizard) return;
 
   const sys = changes.system;
   if (!sys) return;
 
+  // Montée de niveau (#onLevelUp, actor-sheet.js) : accessible à tout propriétaire de la
+  // fiche depuis 0.16.0 (retour de test — bouton jusqu'ici réservé au MJ), reconnue par
+  // cette option dédiée. Seul `level` passe, jamais posée en même temps que class/origin/
+  // abilities/saves/skills par ce flux.
+  if (options.dndCustomLevelUp) {
+    delete sys.class;
+    delete sys.origin;
+    delete sys.subclass;
+    if (sys.abilities) {
+      for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
+    }
+    if (sys.saves) {
+      for (const key of Object.keys(sys.saves)) delete sys.saves[key].proficient;
+    }
+    if (sys.skills) {
+      for (const key of Object.keys(sys.skills)) delete sys.skills[key].proficient;
+    }
+    return;
+  }
+
   delete sys.class;
   delete sys.origin;
-  delete sys.subclass;
+  // Choix de sous-classe (select "system.subclass", character-sheet.hbs) : accessible à
+  // tout propriétaire depuis 0.16.0, mais verrouillé dès qu'une sous-classe est déjà posée
+  // (retour de test — le choix doit être définitif une fois fait, le template ne rend le
+  // select modifiable que jusque-là). `actor.system.subclass` reflète encore l'état AVANT
+  // cet update (preUpdateActor), donc sûr à vérifier ici plutôt qu'une option dédiée.
+  if (actor.system.subclass) delete sys.subclass;
   if (sys.attributes) delete sys.attributes.level;
   if (sys.abilities) {
     for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
@@ -285,6 +311,18 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
   if (changes.system?.subclass === undefined) return;
 
   await grantClassContent(actor, actor.system.class, actor.system.attributes.level);
+});
+
+// Seuls les contenants (sacs, `capacityBonus > 0`, cf. hook ci-dessous) peuvent être équipés
+// parmi les Objets/Outils — retour de test : rien n'empêchait d'équiper n'importe quel objet
+// (Trousse de soins, Torche...), sans aucun effet mécanique puisque seul le bonus de charge
+// des contenants est lu (cf. carryingCapacityBonus, rules.js). Ne bloque jamais la mécanique
+// d'utilisation (#onUseItem/#onUseTool, actor-sheet.js), entièrement indépendante de
+// `equipped`. Les Outils n'ont pas `capacityBonus` du tout (ToolData) : toujours refusés.
+Hooks.on("preUpdateItem", (item, changes, options) => {
+  if (!["gear", "tool"].includes(item.type)) return;
+  if (changes.system?.equipped !== true) return;
+  if (!(item.system.capacityBonus > 0)) delete changes.system.equipped;
 });
 
 // Un seul contenant (sac...) équipé à la fois : équiper un objet `gear` porteur d'un bonus
@@ -402,6 +440,30 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
   }
 });
 
+// Empêche les PV actuels de dépasser le max, quelle qu'en soit la cause (saisie manuelle
+// directe, mais aussi toute variation du max lui-même : caractéristique, niveau, Exhaustion,
+// création de personnage) : après chaque update, si le max déjà recalculé par
+// prepareDerivedData est désormais inférieur aux PV actuels, un update de correction les
+// ramène au max. Même principe pour le pool de sorts par repos (system.spells.uses) — retour
+// de test, les deux pouvaient dépasser leur max. Seul le client à l'origine du changement
+// corrige (garde userId), pour ne pas déclencher la même correction depuis chaque client
+// connecté.
+Hooks.on("updateActor", async (actor, changes, options, userId) => {
+  if (game.user.id !== userId) return;
+  if (!["character", "npc", "mount"].includes(actor.type)) return;
+
+  const updates = {};
+  const hp = actor.system.attributes?.hp;
+  if (hp && hp.value > hp.max) updates["system.attributes.hp.value"] = hp.max;
+
+  if (actor.type === "character") {
+    const uses = actor.system.spells?.uses;
+    if (uses && uses.value > uses.max) updates["system.spells.uses.value"] = uses.max;
+  }
+
+  if (Object.keys(updates).length) await actor.update(updates);
+});
+
 // Mort d'un PNJ, SRD 5e simplifié (contrairement à un personnage : pas d'agonie ni de jet de
 // sauvegarde de la mort pour un PNJ — 0 PV = mort directe) : statut "Mort" (cf. declareDeath,
 // death.js), Combattant marqué "vaincu" dans le Combat Tracker s'il participe au combat en
@@ -437,10 +499,13 @@ Hooks.on("updateActor", async (actor, changes, options) => {
 // Ajoute un bouton "Appliquer les dégâts" sur toute carte de chat de jet de dégâts (cf.
 // rollDamage dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
 // client qui clique (game.user.targets), PV temporaires absorbés en premier (SRD 5e).
-// Aucune restriction MJ/joueur ici : un joueur ciblant un PNJ qu'il ne possède pas (cas
-// courant) n'a pas la permission de le modifier lui-même — requestActorUpdate relaie alors la
-// mise à jour au MJ actif via socket plutôt que de laisser Actor#update lever une erreur de
-// permission.
+// Restreint à l'auteur du jet (ou au MJ, toujours habilité) — retour de test : n'importe quel
+// joueur pouvait cliquer sur le bouton d'un autre. Un joueur ciblant un PNJ qu'il ne possède
+// pas (cas courant) n'a de toute façon pas la permission de le modifier lui-même —
+// requestActorUpdate relaie alors la mise à jour au MJ actif via socket plutôt que de laisser
+// Actor#update lever une erreur de permission. Marqué "déjà appliqué" (flag persistant sur le
+// message) après un premier clic, pour empêcher toute application répétée du même jet — retour
+// de test, le bouton restait cliquable indéfiniment.
 Hooks.on("renderChatMessageHTML", (message, html) => {
   if (!message.getFlag(SYSTEM_ID, "damageRoll")) return;
   const amount = message.rolls?.[0]?.total;
@@ -450,21 +515,49 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   button.type = "button";
   button.className = "dnd-apply-damage-btn";
   button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyDamage", { amount });
-  button.addEventListener("click", () => applyDamageToTargets(amount));
+
+  if (message.getFlag(SYSTEM_ID, "damageApplied")) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.DamageAlreadyApplied");
+  } else if (message.author?.id !== game.user.id && !game.user.isGM) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.ApplyDamageNotAuthor");
+  } else {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await applyDamageToTargets(amount, message.speaker?.actor);
+      await message.setFlag(SYSTEM_ID, "damageApplied", true);
+    });
+  }
   html.querySelector(".message-content")?.appendChild(button);
 });
 
-async function applyDamageToTargets(amount) {
+/** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
+ *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
+ *  des dégâts à un PNJ/une monture. */
+async function applyDamageToTargets(amount, sourceActorId) {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
     return;
   }
 
+  const sourceActor = sourceActorId ? game.actors.get(sourceActorId) : null;
+
   for (const token of targets) {
     const actor = token.actor;
     const hp = actor?.system.attributes?.hp;
     if (!hp) continue;
+
+    // PvP bloqué (retour de test) : un personnage joueur ne peut pas infliger de dégâts à un
+    // autre personnage joueur (PNJ/monture non concernés, ni un personnage qui s'inflige des
+    // dégâts à lui-même — poison, chute...).
+    if (sourceActor?.type === "character" && actor.type === "character" && actor.id !== sourceActor.id) {
+      ui.notifications.warn(
+        game.i18n.format("DND_CUSTOM.Chat.PvpBlocked", { attacker: sourceActor.name, target: actor.name })
+      );
+      continue;
+    }
 
     let remaining = amount;
     const updates = {};

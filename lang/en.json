@@ -146,6 +146,8 @@
       "DeathSave": "Death saving throw",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
+      "AttackHit": "Hits {target} (AC {ac})",
+      "AttackMiss": "Misses {target} (AC {ac})",
       "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {
@@ -161,11 +163,14 @@
       "FallsUnconscious": "{name} drops to 0 hit points and falls unconscious!",
       "Death": "{name} has failed three death saving throws and succumbs...",
       "ApplyDamage": "Apply {amount} damage to target",
+      "DamageAlreadyApplied": "Damage already applied",
+      "ApplyDamageNotAuthor": "Only the roll's author (or the GM) can apply this damage",
+      "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
-      "XpAwarded": "{amount} XP split ({share} each) between: {names}.",
+      "XpAwarded": "{amount} XP awarded to each: {names}.",
       "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
       "NoCharacters": "No player character in this world.",
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
@@ -203,10 +208,12 @@
       "Attack": "Attack",
       "Damage": "Damage",
       "Equipped": "Equipped",
+      "EquippedBagTooltip": "Only bags/containers (carrying capacity bonus) can be equipped.",
       "WeaponsArmorTitle": "Weapons and Armor",
       "GearToolsTitle": "Gear and Tools",
       "Empty": "No items in inventory",
       "CarriedWeight": "Carried weight",
+      "OverCapacityBlocked": "Can't add this item: it would exceed the maximum carrying capacity.",
       "Currency": "Currency",
       "DeleteItem": "Remove",
       "ViewItem": "Open item sheet",
@@ -215,7 +222,8 @@
       "UseItem": "Use",
       "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
-      "DropError": "Could not move this item (insufficient permissions)."
+      "DropError": "Could not move this item (insufficient permissions).",
+      "SpellWrongClass": "{spell} isn't on this class's spell list."
     },
     "Currency": {
       "pc": "Copper pieces",
