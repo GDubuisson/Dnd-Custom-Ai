@@ -1,0 +1,52 @@
+# Instance Foundry VTT isolée pour les tests "au réel" (E2E Cypress + intégration Quench),
+# cf. ClaudeFiles/testing/SETUP_TESTING.md et tests/README.md. N'affecte jamais le système
+# livré : image officielle felddy/foundryvtt, ne monte que les chemins réellement publiés par
+# .github/workflows/release.yml (system.json, scripts, styles, templates, lang, assets, packs,
+# world-items), pas tout le repo (évite de polluer le conteneur avec node_modules/.git/
+# ClaudeFiles/tests).
+#
+# Prérequis avant `npm run docker:up` :
+#   1. Copier .env.example en .env et renseigner vos identifiants Foundry (cf. ce fichier).
+#   2. Récupérer le vrai module Quench (le paquet npm @ethaks/fvtt-quench ne fournit que des
+#      types TS, pas le module) : voir la commande dans tests/README.md.
+services:
+  foundryvtt:
+    image: felddy/foundryvtt:release
+    container_name: dnd-custom-ai-foundry-test
+    env_file:
+      - .env
+    environment:
+      - FOUNDRY_ADMIN_KEY=${FOUNDRY_ADMIN_KEY:-test-admin-key}
+    ports:
+      - "30001:30000"
+    volumes:
+      # Données/config/mondes persistés entre les runs (gitignored, cf. .gitignore).
+      - ./data:/data
+      # Système en cours de développement, chemin par chemin (cf. commentaire ci-dessus) sous
+      # l'id réel du système (system.json > "id"). IMPORTANT : la racine de données réelle de
+      # Foundry est /data (DATA_DIR dans entrypoint.sh, confirmé par le log "User Data
+      # Directory - /data"), donc les paquets scannés vivent sous /data/Data/<type>/<id>, PAS
+      # sous /home/foundry/data/... (chemin mort, jamais lu par Foundry — piégé une première
+      # fois : les montages y pointaient et le conteneur chargeait silencieusement une copie du
+      # système précédemment installée via le gestionnaire de paquets Foundry, jamais notre
+      # code local).
+      - ./system.json:/data/Data/systems/dnd-custom-ai/system.json
+      - ./scripts:/data/Data/systems/dnd-custom-ai/scripts
+      - ./styles:/data/Data/systems/dnd-custom-ai/styles
+      - ./templates:/data/Data/systems/dnd-custom-ai/templates
+      - ./lang:/data/Data/systems/dnd-custom-ai/lang
+      - ./assets:/data/Data/systems/dnd-custom-ai/assets
+      # PAS de :ro ici : testé, ça casse l'ouverture des compendiums LevelDB ("IO error: ...
+      # Read-only file system", monde impossible à charger dès qu'il lit un compendium) — même
+      # un accès en lecture seule applicative doit pouvoir écrire son fichier LOCK/journal
+      # LevelDB. Foundry écrit donc des fichiers de service (LOCK, LOG, CURRENT, MANIFEST...)
+      # dans ./packs au chargement du monde ; nettoyer après un run avec
+      # `git clean -f -- packs/` avant de committer (aucun contenu suivi n'est modifié par ça,
+      # uniquement de nouveaux fichiers de housekeeping LevelDB).
+      - ./packs:/data/Data/systems/dnd-custom-ai/packs
+      - ./world-items:/data/Data/systems/dnd-custom-ai/world-items
+      # Module Quench réel (récupéré séparément, cf. tests/README.md) et notre batch de tests
+      # d'intégration (jamais livrés avec le système, cf. tests/quench/module.json).
+      - ./.quench-module:/data/Data/modules/quench
+      - ./tests/quench:/data/Data/modules/dnd-custom-ai-quench-tests
+    restart: unless-stopped
