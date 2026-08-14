@@ -47,10 +47,77 @@ npm run test:all      # les deux
 
 ## Limites connues
 
-- Rien ici ne remplace un test en conditions réelles dans Foundry (permissions, synchronisation
-  multi-client, ActiveEffects, Combat Tracker...) : cette suite couvre les calculs, la
-  cohérence des données, le câblage template/contexte et le layout CSS isolé — pas l'intégration
-  complète avec le client Foundry.
+- Rien dans `tests/unit`, `tests/data`, `tests/dom` et `tests/visual` ne remplace un test en
+  conditions réelles dans Foundry (permissions, synchronisation multi-client, ActiveEffects,
+  Combat Tracker...) : cette suite couvre les calculs, la cohérence des données, le câblage
+  template/contexte et le layout CSS isolé — pas l'intégration complète avec le client Foundry.
+  Voir "Tests au réel" ci-dessous pour cette couche.
 - Le test visuel "Attaque/Dégâts" simule une approximation minimale (et non extraite du code
   source de Foundry, absent de ce repo) du reset de `<button>` du cœur Foundry, reconstruite à
   partir du bug observé — pas une copie fidèle garantie à 100 %.
+
+## Tests "au réel" (Docker + Cypress + Quench)
+
+Couche complémentaire qui comble la limite ci-dessus : lance une vraie instance Foundry VTT
+dans Docker et teste le vrai client (E2E via Cypress) et le vrai pipeline Document/DataModel
+(intégration via Quench), plutôt que des fixtures isolées. Détail de la démarche d'origine :
+`ClaudeFiles/testing/SETUP_TESTING.md` (gitignored, non versionné).
+
+### Prérequis (manuels, non automatisables depuis une session Claude Code)
+
+1. **Docker Desktop** installé et lancé.
+2. **Une licence Foundry VTT** valide (l'image `felddy/foundryvtt` doit soit télécharger le
+   logiciel avec vos identifiants, soit trouver une install manuelle dans `./data`).
+3. Copier `.env.example` en `.env` et renseigner `FOUNDRY_ADMIN_KEY` (libre) et
+   `FOUNDRY_USERNAME`/`FOUNDRY_PASSWORD`/`FOUNDRY_LICENSE_KEY` (votre compte Foundry).
+4. Un monde nommé **"Test World"** avec le système `dnd-custom-ai` actif, créé une fois à la
+   main dans l'instance (`http://localhost:30001` après `npm run docker:up`) — persiste ensuite
+   dans `./data` (gitignored). Foundry ne propose pas de création de monde via une simple
+   requête HTTP (formulaire multi-étapes), donc ce n'est pas scriptable simplement.
+
+### Installation et lancement
+
+```
+npm install                # installe aussi cypress, @testing-library/cypress, husky, wait-on
+npm run e2e:fetch-quench   # télécharge le vrai module Quench (le paquet npm @ethaks/fvtt-quench
+                            # ne fournit que des types TS, pas le module exécutable) dans
+                            # .quench-module/ (gitignored) — à relancer pour mettre à jour Quench
+npm run docker:up          # lance l'instance Foundry de test (docker-compose.yml)
+npm run test:e2e:open      # Cypress en mode interactif, une fois le monde de test créé (étape 4)
+npm run test:e2e:run       # Cypress en mode terminal
+npm run docker:down        # arrête l'instance
+```
+
+`npm run test:e2e:full` enchaîne `docker:up` + attente du port 30001 + `test:e2e:run` +
+`docker:down` — utile une fois le monde de test déjà créé (n'automatise pas sa création).
+
+### Organisation
+
+- `docker-compose.yml` — instance Foundry isolée ; ne monte que les chemins réellement livrés
+  par `.github/workflows/release.yml` (`system.json`, `scripts`, `styles`, `templates`, `lang`,
+  `assets`, `packs`, `world-items`), plus le module Quench et `tests/quench/`.
+- `cypress.config.js`, `cypress/` — tests E2E contre le vrai client (`cypress/e2e/
+  system-load.cy.js` : connexion admin + chargement du monde de test ; `cypress/e2e/quench.cy.js` :
+  déclenche les tests d'intégration Quench).
+- `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
+  montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation :
+  chaque scénario listé y est encore **à coder**, ce fichier n'est pas une suite exécutable.
+- `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
+  `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
+  (`quench-tests.js`) qui tournent dans le vrai pipeline Document/DataModel.
+- `.github/workflows/test.yml` — CI équivalente ; nécessite 3 secrets de dépôt
+  (`FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, `FOUNDRY_LICENSE_KEY`) non configurés par ce
+  fichier — le job échoue tant qu'ils ne sont pas ajoutés dans Settings > Secrets and
+  variables > Actions. Limite connue : `./data` repart vide à chaque run CI (pas de volume
+  persistant entre jobs), donc le test "charge le monde de test" de `system-load.cy.js`
+  échouera en CI tant qu'une étape de création/import automatique du monde n'est pas ajoutée
+  — non couvert par cette mise en place initiale.
+
+### Limites connues de cette couche
+
+- Mise en place le 2026-08-14 sans accès à Docker dans l'environnement d'exécution : la
+  configuration (fichiers, scripts, module Quench réellement téléchargé et vérifié) est
+  fonctionnelle sur le papier, mais **aucun test E2E/Quench n'a pu être réellement exécuté**
+  contre une instance Foundry vivante. Les sélecteurs DOM de `system-load.cy.js` sont donc à
+  vérifier/ajuster au premier lancement réel.
+- Nécessite une licence Foundry VTT payante — pas de mode démo/gratuit pour l'image Docker.

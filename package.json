@@ -7,11 +7,26 @@
     "test": "node tests/run.js tests/unit tests/data tests/dom",
     "test:visual": "node tests/run.js tests/visual",
     "test:all": "npm test && npm run test:visual",
-    "test:visual:install": "playwright install chromium"
+    "test:visual:install": "playwright install chromium",
+    "prepare": "husky",
+    "e2e:fetch-quench": "bash tests/fetch-quench-module.sh",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "test:e2e:open": "cypress open",
+    "test:e2e:run": "cypress run",
+    "test:e2e:full": "npm run docker:up && wait-on http://localhost:30001 && npm run test:e2e:run && npm run docker:down"
   },
   "devDependencies": {
+    "@ethaks/fvtt-quench": "^0.10.0",
+    "@testing-library/cypress": "^10.1.3",
+    "cypress": "^15.20.1",
     "handlebars": "^4.7.8",
+    "husky": "^9.1.7",
     "jsdom": "^25.0.1",
-    "playwright": "^1.48.2"
+    "playwright": "^1.48.2",
+    "wait-on": "^9.1.0"
+  },
+  "allowScripts": {
+    "cypress@15.20.1": true
   }
 }

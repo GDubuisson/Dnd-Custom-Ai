@@ -1,0 +1,32 @@
+{
+  "id": "dnd-custom-ai-quench-tests",
+  "title": "D&D Custom Ai — Tests Quench",
+  "description": "Module de développement, jamais livré avec le système (cf. tests/README.md) : enregistre les tests d'intégration Quench qui s'exécutent dans un vrai monde Foundry (permissions, ActiveEffects, Combat Tracker...), en complément de la suite tests/ isolée.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "GDubuisson"
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "quench",
+        "type": "module",
+        "compatibility": {}
+      }
+    ],
+    "systems": [
+      {
+        "id": "dnd-custom-ai",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "esmodules": ["quench-tests.js"]
+}
