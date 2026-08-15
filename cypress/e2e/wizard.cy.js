@@ -17,30 +17,76 @@
 //     monde (hook "ready", cf. scripts/helpers/content-import.js, world-items/README.md) : rien
 //     à faire à la main tant que le monde de test a déjà tourné une fois.
 //
-// Sélecteurs non encore vérifiés en conditions réelles (pas de Docker/licence Foundry
-// disponible dans l'environnement où ce fichier a été écrit, cf. tests/README.md > "Limites
-// connues" de la couche E2E/Quench) : la zone de notifications (`.notification`) et le bouton
-// de fermeture de fenêtre AppV2 (`[data-action="close"]` dans `.window-header`) sont écrits
-// d'après les conventions Foundry v13/14 usuelles, à ajuster au premier lancement réel comme
-// pour cypress/e2e/system-load.cy.js.
+// Vérifié au réel le 2026-08-15 (14/14, Chrome headless, cf. package.json > test:e2e:run) contre
+// une vraie instance Docker. Pièges rencontrés et corrigés au passage, à connaître avant de
+// copier ces patterns dans une future spec :
+//   - Un objet littéral `{...}` écrit dans le code de la spec appartient à la réalité JS de
+//     Cypress, pas à celle de la page Foundry testée : Foundry le rejette ("Actor must be
+//     constructed with a DataModel or Object") dès qu'on le passe à une méthode Foundry
+//     (Actor.create...) — cf. toAutObject ci-dessous.
+//   - Foundry ouvre automatiquement la fenêtre "User Configuration" pour un Joueur sans
+//     personnage assigné ; elle reste ouverte et entre en collision avec des sélecteurs
+//     génériques (`input[name="name"]`) — fermée systématiquement dans cy.loginAsPlayer().
+//   - Le monde de test peut tourner dans une langue différente de celle supposée à l'écriture
+//     (ici : anglais) — les chaînes localisées sont donc chargées dynamiquement depuis
+//     `game.i18n.lang`, jamais depuis lang/fr.json en dur (cf. loadStringsForActiveLocale).
+//   - Viewport Cypress par défaut (1000x660) sous le minimum exigé par Foundry (1024x768) :
+//     déclenche une notification d'erreur permanente qui finit par recouvrir des boutons —
+//     cf. viewportWidth/Height, cypress.config.js.
 //
 // Actor.create() est appelé directement via cy.window() plutôt qu'en pilotant le dialogue natif
 // "Créer un acteur" de la sidebar : ce qui est testé ici est le comportement déclenché par la
 // création (hook createActor, dnd-custom-ai.js), pas ce formulaire natif lui-même — même
 // approche que tests/quench/quench-tests.js.
 
-let fr;
+// Chaînes localisées (DND_CUSTOM.* de lang/<langue active>.json) et langue active elle-même :
+// déterminées dynamiquement par session plutôt que fixées à "fr" à l'écriture de ce fichier —
+// le monde de test s'est avéré tourner en anglais au premier run réel (2026-08-15), ce que rien
+// n'imposait de deviner à l'avance. origins.json (scripts/data/origins.json), lui, n'est PAS
+// localisé (buildOriginInfoText affiche `specialTrait.name` tel quel, cf.
+// character-creation-wizard.js) : ses valeurs restent valides quelle que soit la langue active,
+// pas besoin de le recharger par langue.
+let strings;
+let activeLang;
 let origins;
 const createdActorIds = [];
+const stringsCache = {};
+
+function loadStringsForActiveLocale() {
+  return cy
+    .window()
+    .its("game.i18n.lang")
+    .then((lang) => {
+      activeLang = lang;
+      if (stringsCache[lang]) {
+        strings = stringsCache[lang];
+        return;
+      }
+      return cy.readFile(`lang/${lang}.json`).then((json) => {
+        stringsCache[lang] = json.DND_CUSTOM;
+        strings = stringsCache[lang];
+      });
+    });
+}
 
 function format(template, vars = {}) {
   return template.replace(/\{(\w+)\}/g, (_, key) => String(vars[key] ?? ""));
 }
 
+// Un objet littéral `{...}` créé dans le code de la spec appartient à la réalité JS de Cypress
+// (bundle du test runner), pas à celle de la page Foundry testée : Foundry rejette ces objets
+// "d'un autre monde" ("Actor must be constructed with a DataModel or Object", découvert au
+// premier run réel de ce fichier) car leur chaîne de prototypes ne remonte pas au `Object` du
+// contexte AUT. `win.Object.assign(new win.Object(), data)` reconstruit un objet appartenant à
+// la bonne réalité avant de le passer à une méthode Foundry (Actor.create, etc.).
+function toAutObject(win, data) {
+  return win.Object.assign(new win.Object(), data);
+}
+
 function createBlankCharacter(name) {
   return cy
     .window()
-    .then((win) => win.Actor.create({ name, type: "character" }))
+    .then((win) => win.Actor.create(toAutObject(win, { name, type: "character" })))
     .then((actor) => {
       createdActorIds.push(actor.id);
       return actor.id;
@@ -52,7 +98,6 @@ function getWizardForm() {
 }
 
 before(() => {
-  cy.readFile("lang/fr.json").then((json) => { fr = json.DND_CUSTOM; });
   cy.readFile("scripts/data/origins.json").then((json) => { origins = json; });
 });
 
@@ -63,13 +108,18 @@ before(() => {
 // tests/quench/quench-tests.js).
 after(() => {
   if (!createdActorIds.length) return;
-  cy.loginAsPlayer();
+  // Session MJ, pas Joueur : T-WIZ-013 crée son Actor sous la session MJ (c'est justement ce
+  // rôle que ce scénario teste), et un Joueur n'a pas le droit de supprimer un Actor dont il
+  // n'est pas propriétaire (`User Player1 lacks permission to delete Actor`, découvert au
+  // premier run réel) — le MJ, lui, peut toujours tout supprimer.
+  cy.loginAsGM();
   cy.window().then((win) => win.Actor.deleteDocuments(createdActorIds));
 });
 
 describe("Assistant de création de personnage — session Joueur", () => {
   beforeEach(() => {
     cy.loginAsPlayer();
+    loadStringsForActiveLocale();
   });
 
   it("s'ouvre automatiquement sur un Actor vierge, sans jamais afficher la fiche native (T-WIZ-001)", () => {
@@ -87,7 +137,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     });
     cy.get('select[name="origin"] option').then(($options) => {
       const labels = [...$options].slice(1).map((option) => option.textContent.trim());
-      const sorted = [...labels].sort((a, b) => a.localeCompare(b, "fr"));
+      const sorted = [...labels].sort((a, b) => a.localeCompare(b, activeLang));
       expect(labels).to.deep.equal(sorted);
     });
 
@@ -95,7 +145,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get('select[name="classKey"] option').should("have.length", 13);
     cy.get('select[name="classKey"] option').then(($options) => {
       const labels = [...$options].slice(1).map((option) => option.textContent.trim());
-      const sorted = [...labels].sort((a, b) => a.localeCompare(b, "fr"));
+      const sorted = [...labels].sort((a, b) => a.localeCompare(b, activeLang));
       expect(labels).to.deep.equal(sorted);
     });
   });
@@ -106,17 +156,17 @@ describe("Assistant de création de personnage — session Joueur", () => {
 
     cy.get('select[name="origin"]').select("fleuraine");
     cy.get("[data-origin-info]").invoke("text").then((textFleuraine) => {
-      expect(textFleuraine).to.include(fr.Abilities.cha);
-      expect(textFleuraine).to.include(fr.Abilities.str);
-      expect(textFleuraine).to.include(fr.Skills.persuasion);
+      expect(textFleuraine).to.include(strings.Abilities.cha);
+      expect(textFleuraine).to.include(strings.Abilities.str);
+      expect(textFleuraine).to.include(strings.Skills.persuasion);
       expect(textFleuraine).to.include(origins.fleuraine.specialTrait.name);
 
       cy.get('select[name="origin"]').select("altenmark");
       cy.get("[data-origin-info]").invoke("text").should((textAltenmark) => {
         expect(textAltenmark, "le résumé doit changer avec la sélection").to.not.equal(textFleuraine);
-        expect(textAltenmark).to.include(fr.Abilities.str);
-        expect(textAltenmark).to.include(fr.Abilities.con);
-        expect(textAltenmark).to.include(fr.Skills.athletics);
+        expect(textAltenmark).to.include(strings.Abilities.str);
+        expect(textAltenmark).to.include(strings.Abilities.con);
+        expect(textAltenmark).to.include(strings.Skills.athletics);
         expect(textAltenmark).to.include(origins.altenmark.specialTrait.name);
       });
     });
@@ -129,20 +179,20 @@ describe("Assistant de création de personnage — session Joueur", () => {
     // fighter : non lanceur de sorts, sauvegardes Force/Constitution (SRD 5e).
     cy.get('select[name="classKey"]').select("fighter");
     cy.get("[data-class-info]").invoke("text").then((textFighter) => {
-      expect(textFighter).to.include(fr.Abilities.str);
-      expect(textFighter).to.include(fr.Abilities.con);
+      expect(textFighter).to.include(strings.Abilities.str);
+      expect(textFighter).to.include(strings.Abilities.con);
       expect(textFighter, "un non-lanceur de sorts ne doit pas mentionner l'incantation").to.not.include(
-        format(fr.Wizard.ClassInfoSpellcasting, { ability: "" }).split("(")[0].trim()
+        format(strings.Wizard.ClassInfoSpellcasting, { ability: "" }).split("(")[0].trim()
       );
 
       // wizard (magicien) : lanceur de sorts (Intelligence), sauvegardes Intelligence/Sagesse.
       cy.get('select[name="classKey"]').select("wizard");
       cy.get("[data-class-info]").invoke("text").should((textWizard) => {
         expect(textWizard, "le résumé doit changer avec la sélection").to.not.equal(textFighter);
-        expect(textWizard).to.include(fr.Abilities.int);
-        expect(textWizard).to.include(fr.Abilities.wis);
+        expect(textWizard).to.include(strings.Abilities.int);
+        expect(textWizard).to.include(strings.Abilities.wis);
         expect(textWizard).to.include(
-          format(fr.Wizard.ClassInfoSpellcasting, { ability: fr.Abilities.int }).split("(")[0].trim()
+          format(strings.Wizard.ClassInfoSpellcasting, { ability: strings.Abilities.int }).split("(")[0].trim()
         );
       });
     });
@@ -153,10 +203,10 @@ describe("Assistant de création de personnage — session Joueur", () => {
     getWizardForm().should("be.visible");
 
     cy.get('select[name="classKey"]').select("fighter"); // 2 compétences (classSkillChoices)
-    cy.get("[data-skill-count-hint]").should("have.text", format(fr.Wizard.SkillCountHint, { count: 2 }));
+    cy.get("[data-skill-count-hint]").should("have.text", format(strings.Wizard.SkillCountHint, { count: 2 }));
 
     cy.get('select[name="classKey"]').select("rogue"); // 4 compétences (classSkillChoices)
-    cy.get("[data-skill-count-hint]").should("have.text", format(fr.Wizard.SkillCountHint, { count: 4 }));
+    cy.get("[data-skill-count-hint]").should("have.text", format(strings.Wizard.SkillCountHint, { count: 4 }));
   });
 
   it("verrouille les compétences non cochées une fois le quota de la classe atteint (T-WIZ-006)", () => {
@@ -252,7 +302,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
 
     cy.get('form.character-wizard button[type="submit"]').click();
 
-    cy.contains(".notification", fr.Wizard.InvalidAbilities, { timeout: 10000 }).should("exist");
+    cy.contains(".notification", strings.Wizard.InvalidAbilities, { timeout: 10000 }).should("exist");
     getWizardForm().should("be.visible"); // pas fermé
     cy.window().then((win) => {
       expect(win.game.actors.get(actorId).system.class).to.equal("");
@@ -287,7 +337,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
 
     cy.get('form.character-wizard button[type="submit"]').click();
 
-    cy.contains(".notification", format(fr.Wizard.InvalidSkillCount, { count: 2 }), { timeout: 10000 }).should(
+    cy.contains(".notification", format(strings.Wizard.InvalidSkillCount, { count: 2 }), { timeout: 10000 }).should(
       "exist"
     );
     getWizardForm().should("be.visible");
@@ -345,23 +395,14 @@ describe("Assistant de création de personnage — session Joueur", () => {
 // cypress/e2e/system-load.cy.js plutôt que cy.loginAsPlayer().
 describe("Assistant de création de personnage — session MJ", () => {
   it("ne lie pas automatiquement le personnage créé au MJ (T-WIZ-013)", () => {
-    cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-    cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-
-    cy.visit("/", { timeout: 30000 });
-    cy.url({ timeout: 15000 }).should("include", "/join");
-    cy.get('select[name="userid"]').select("Gamemaster");
-    cy.get('#join-game-form button[type="submit"]').click();
-    cy.get("#interface", { timeout: 30000 }).should("be.visible");
-    cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
-    cy.assertSystemVersionMatches();
+    cy.loginAsGM();
 
     let previousCharacterId;
     let actorId;
     cy.window()
       .then((win) => {
         previousCharacterId = win.game.user.character?.id ?? null;
-        return win.Actor.create({ name: "Wizard T-WIZ-013 GM", type: "character" });
+        return win.Actor.create(toAutObject(win, { name: "Wizard T-WIZ-013 GM", type: "character" }));
       })
       .then((actor) => {
         actorId = actor.id;

@@ -30,6 +30,23 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
 // scénarios dont le comportement dépend explicitement du rôle (ex. T-WIZ-013) utilisent une
 // connexion Gamemaster dédiée, comme dans system-load.cy.js/quench.cy.js. Même séquence
 // join/garde-fous que ces deux specs (iframe Sec-Fetch-Dest, vérification de version).
+// Même séquence que system-load.cy.js/quench.cy.js, factorisée ici pour être réutilisable par
+// toute nouvelle spec (cf. wizard.cy.js > T-WIZ-013 et son nettoyage final, seul scénario de la
+// section 1 dont le comportement dépend explicitement du rôle MJ).
+Cypress.Commands.add("loginAsGM", () => {
+  cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
+  cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
+
+  cy.visit("/", { timeout: 30000 });
+  cy.url({ timeout: 15000 }).should("include", "/join");
+  cy.get('select[name="userid"]').select("Gamemaster");
+  cy.get('#join-game-form button[type="submit"]').click();
+
+  cy.get("#interface", { timeout: 30000 }).should("be.visible");
+  cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
+  cy.assertSystemVersionMatches();
+});
+
 Cypress.Commands.add("loginAsPlayer", () => {
   cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
   cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
@@ -43,4 +60,20 @@ Cypress.Commands.add("loginAsPlayer", () => {
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
   cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
   cy.assertSystemVersionMatches();
+
+  // Foundry ouvre automatiquement la fenêtre "User Configuration" pour un Joueur qui n'a pas
+  // encore de personnage assigné (`game.user.character` vide) — comportement du cœur Foundry,
+  // rien à voir avec ce système. Découvert au premier run réel (2026-08-15) : cette fenêtre
+  // reste ouverte pendant tout le test, entre en collision avec des sélecteurs génériques
+  // (`input[name="name"]` matchait son champ à elle plutôt que celui de l'assistant, cf.
+  // wizard.cy.js > T-WIZ-008) et peut recouvrir d'autres éléments. On la ferme systématiquement
+  // ici plutôt que dans chaque spec. `{force: true}` : son bouton de fermeture peut lui-même
+  // être recouvert par une notification au moment de ce clic (cf. viewportWidth/Height,
+  // cypress.config.js).
+  cy.get("body").then(($body) => {
+    const userConfig = $body.find('[id^="UserConfig-"]');
+    if (userConfig.length) {
+      cy.wrap(userConfig).find('[data-action="close"]').first().click({ force: true });
+    }
+  });
 });
