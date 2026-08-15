@@ -115,7 +115,11 @@ npm run docker:down        # arrête l'instance
   `cypress/e2e/tab-equipment.cy.js` : section 4, onglet Équipement — T-EQUIP-001 à T-EQUIP-005
   (emplacements main principale/secondaire/armure/accessoires, arme à deux mains, bascule
   Polyvalente), avec une fixture Item minimale pour l'emplacement "accessory" qu'aucun Item
-  livré avec le système n'utilise). `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
+  livré avec le système n'utilise ; `cypress/e2e/tab-inventory.cy.js` : section 5, onglet
+  Inventaire — T-INV-001 à T-INV-010 (deux tableaux distincts, poids porté/capacité de charge,
+  jets d'attaque/dégâts d'arme — dont les boutons vivent en réalité sur l'onglet Équipement, pas
+  l'Inventaire, cf. commentaire d'en-tête du fichier —, objets soin/lumière/outil). `cypress/
+  support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
   `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via
@@ -125,9 +129,12 @@ npm run docker:down        # arrête l'instance
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
   `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`), 2 (en-tête/navigation de la
   fiche, `cypress/e2e/character-sheet.cy.js`, pas de volet Quench — tous ses scénarios sont
-  marqués "E2E" seul dans le plan), 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`) et
-  4 (onglet Équipement, `cypress/e2e/tab-equipment.cy.js`, pas de volet Quench non plus).
-  Sections 5 à 16 restent **à coder**.
+  marqués "E2E" seul dans le plan), 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`),
+  4 (onglet Équipement, `cypress/e2e/tab-equipment.cy.js`, pas de volet Quench non plus) et
+  5 (onglet Inventaire, `cypress/e2e/tab-inventory.cy.js`, pas de volet Quench non plus malgré
+  T-INV-002/003/006/009 marqués "E2E+Quench" dans le plan — les vérifier une fois en E2E contre
+  le vrai pipeline suffit, pas besoin d'un doublon Quench isolé pour ces calculs-là).
+  Sections 6 à 16 restent **à coder**.
 - **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
   donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
   français (compare le nom de classe français codé en dur dans `world-items/features.json`/

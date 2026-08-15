@@ -52,16 +52,28 @@ function updateActor(win, actor, data) {
 // distribuer l'évènement DOM, la promesse du gestionnaire (rollCheck -> roll.evaluate() ->
 // roll.toMessage()) continue de tourner après que la commande `.click()` de Cypress s'est
 // terminée — lire `game.messages` immédiatement pouvait tomber avant que le message n'existe
-// encore (formule vide, flake découvert au 5e run réel de cette spec, 2026-08-15). `.should()`
-// réessaie jusqu'à ce que le message soit bien là.
+// encore (formule vide, flake découvert au 5e run réel de cette spec, 2026-08-15).
+//
+// Vérifier juste "un message avec une formule existe" ne suffit PAS : lancé en tout début de
+// fichier (T-STATS-001), ça peut retomber sur le tout DERNIER message d'une AUTRE spec exécutée
+// juste avant dans la même session (`npm run test:e2e:run` partage le même monde entre toutes
+// les specs, cf. tests/README.md) — flake découvert sur un run combiné, 2026-08-15.
+// `knownMessageCount` (mis à jour par resetMessageBaseline() dans chaque beforeEach concerné,
+// puis après chaque lecture ici) garantit qu'on attend un message réellement NOUVEAU.
+let knownMessageCount = null;
+function resetMessageBaseline() {
+  return cy.window().its("game.messages.size").then((size) => {
+    knownMessageCount = size;
+  });
+}
 function lastMessageRoll() {
   return cy
     .window()
     .should((win) => {
-      const message = win.game.messages.contents.at(-1);
-      expect(message?.rolls?.[0]?.formula, "un message de jet doit être posté").to.exist;
+      expect(win.game.messages.size, "un nouveau message de jet doit être posté").to.be.greaterThan(knownMessageCount);
     })
     .then((win) => {
+      knownMessageCount = win.game.messages.size;
       const message = win.game.messages.contents.at(-1);
       return {
         formula: (message.rolls[0]?.formula ?? "").replace(/\s+/g, ""),
@@ -103,6 +115,7 @@ describe("Onglet Statistiques — jets de dés", () => {
   beforeEach(() => {
     cy.loginAsPlayer();
     cy.openActorSheet(sharedActorId);
+    resetMessageBaseline();
   });
 
   it("jet de caractéristique simple (T-STATS-001)", () => {
@@ -269,7 +282,11 @@ describe("Onglet Statistiques — repos", () => {
 
     lastMessageCount().then((before) => {
       sheetRoot().find('button[data-action="restShort"]').click();
-      cy.window().then((win) => {
+      // `.should()` (pas un `.then()` isolé) : le clic ne fait que distribuer l'évènement DOM,
+      // le gestionnaire (#onRestShort, plusieurs `await` avant le ChatMessage.create final)
+      // continue de tourner après — même piège/même fix que lastMessageRoll ci-dessus, découvert
+      // ici sur un deuxième run réel de cette spec dans la même session que d'autres specs.
+      cy.window().should((win) => {
         const actor = win.game.actors.get(sharedActorId);
         const expected = Math.min(1 + Math.floor(actor.system.attributes.hp.max / 2), actor.system.attributes.hp.max);
         expect(actor.system.attributes.hp.value).to.equal(expected);
@@ -334,7 +351,8 @@ describe("Onglet Statistiques — repos", () => {
 
       lastMessageCount().then((before) => {
         sheetRoot().find('button[data-action="restLong"]').click();
-        cy.window().then((win) => {
+        // `.should()` : même piège/même fix que T-STATS-009 ci-dessus.
+        cy.window().should((win) => {
           const actor = win.game.actors.get(casterId);
           expect(actor.system.attributes.hp.value).to.equal(actor.system.attributes.hp.max);
           expect(actor.system.spells.uses.value).to.equal(actor.system.spells.uses.max);
