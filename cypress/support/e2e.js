@@ -77,3 +77,39 @@ Cypress.Commands.add("loginAsPlayer", () => {
     }
   });
 });
+
+// Un objet littéral `{...}` créé dans le code de la spec appartient à la réalité JS de Cypress,
+// pas à celle de la page Foundry testée : Foundry le rejette dès qu'on le passe à une méthode
+// comme Actor.create() ("Actor must be constructed with a DataModel or Object", découvert au
+// premier run réel de wizard.cy.js, 2026-08-15). Aller-retour JSON (pas juste
+// `win.Object.assign(new win.Object(), data)`, une surface suffisante pour un objet plat mais
+// pas pour un objet imbriqué comme `{system: {attributes: {...}}}`) : reconstruit l'objet dans
+// la bonne réalité à toute profondeur.
+Cypress.Commands.add("toAutObject", (win, data) => win.JSON.parse(win.JSON.stringify(data)));
+
+// Crée un Actor "character" et termine l'assistant de création pour lui (stratégie de fixtures
+// retenue pour toute la suite E2E, cf. wizard.cy.js : Actor.create + assistant rejoué à chaque
+// fois, pas de fixtures JSON pré-importées). Réutilisable par toute spec ayant besoin d'un
+// personnage prêt sans tester l'assistant lui-même (sections 2+ de tests/E2E_TEST_PLAN.md).
+// `skills` doit correspondre exactement au quota de la classe choisie (DND_CUSTOM.classSkillChoices,
+// scripts/helpers/config.js) — l'appelant est responsable de l'accord, cf. wizard.cy.js > T-WIZ-011
+// pour ce qui se passe sinon (assistant non soumis). Suppose une session déjà connectée
+// (cy.loginAsPlayer()/cy.loginAsGM() déjà appelé) : ne se logge pas lui-même, pour rester
+// utilisable aussi bien en session Joueur que MJ.
+Cypress.Commands.add(
+  "createReadyCharacter",
+  ({ name = "Test Character", origin = "fleuraine", classKey = "fighter", skills = ["athletics", "intimidation"] } = {}) => {
+    return cy
+      .window()
+      .then((win) => win.Actor.create(win.JSON.parse(win.JSON.stringify({ name, type: "character" }))))
+      .then((actor) => {
+        cy.get("form.character-wizard", { timeout: 15000 }).should("be.visible");
+        cy.get('select[name="origin"]').select(origin);
+        cy.get('select[name="classKey"]').select(classKey);
+        skills.forEach((skill) => cy.get(`input[type="checkbox"][name="skills.${skill}"]`).check());
+        cy.get('form.character-wizard button[type="submit"]').click();
+        cy.get("form.character-wizard").should("not.exist");
+        return cy.wrap(actor.id);
+      });
+  }
+);

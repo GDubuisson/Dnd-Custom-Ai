@@ -251,7 +251,12 @@ describe("Assistant de création de personnage — session Joueur", () => {
     createBlankCharacter("Gareth le Preux").then((id) => { actorId = id; });
     getWizardForm().should("be.visible");
 
-    cy.get('input[name="name"]').clear().type("Gareth le Preux");
+    // .clear() puis .type() séparément (pas chaîné) : un re-render de l'assistant entre les deux
+    // détachait parfois le champ du DOM ("The subject is no longer attached to the DOM"),
+    // découvert en flake au 4e run réel (2026-08-15) — chaque commande indépendante requery le
+    // DOM à son propre déclenchement plutôt que de réutiliser un sujet potentiellement périmé.
+    cy.get('input[name="name"]').clear();
+    cy.get('input[name="name"]').type("Gareth le Preux");
     cy.get('select[name="origin"]').select("ravenmoor");
     cy.get('select[name="classKey"]').select("fighter"); // arme+armure de départ (classStartingEquipment)
     cy.get('input[type="checkbox"][name="skills.athletics"]').check();

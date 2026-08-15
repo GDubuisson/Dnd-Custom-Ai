@@ -106,12 +106,18 @@ npm run docker:down        # arrête l'instance
   system-load.cy.js` : connexion admin + chargement du monde de test ; `cypress/e2e/quench.cy.js` :
   déclenche les tests d'intégration Quench ; `cypress/e2e/wizard.cy.js` : section 1 de
   `tests/E2E_TEST_PLAN.md`, assistant de création de personnage — T-WIZ-001 à T-WIZ-018,
-  en session Joueur sauf T-WIZ-013 qui teste explicitement le comportement MJ).
+  en session Joueur sauf T-WIZ-013 qui teste explicitement le comportement MJ ;
+  `cypress/e2e/character-sheet.cy.js` : section 2, en-tête et navigation de la fiche personnage
+  — T-SHEET-001 à T-SHEET-008, sur un personnage complet partagé entre les tests plutôt que
+  recréé à chaque fois). `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`
+  et `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
+  par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même).
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
   montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
-  Sa section 1 (assistant de création) est codée (`cypress/e2e/wizard.cy.js` +
-  `tests/quench/quench-tests.js`, batch `dndCustomAi.wizard`) ; les sections 2 à 16 restent
-  **à coder**.
+  Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
+  `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`) et 2 (en-tête/navigation de la
+  fiche, `cypress/e2e/character-sheet.cy.js`, pas de volet Quench — tous ses scénarios sont
+  marqués "E2E" seul dans le plan). Sections 3 à 16 restent **à coder**.
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
   (`quench-tests.js`, batches `dndCustomAi.actorCreation` et `dndCustomAi.wizard`) qui tournent
