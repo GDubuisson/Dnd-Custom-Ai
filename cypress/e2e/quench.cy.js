@@ -11,7 +11,7 @@
 // éléments DOM qui n'existent pas encore. Il faut donc appeler `quench.app.render({force:true})`
 // et laisser le temps au rendu avant de lancer les tests.
 describe("Tests d'intégration Quench (vrai pipeline Document)", () => {
-  it("exécute les batches dndCustomAi.actorCreation et dndCustomAi.wizard sans échec", () => {
+  it("exécute les batches dndCustomAi.actorCreation, dndCustomAi.wizard et dndCustomAi.combatReaction sans échec", () => {
     cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
     cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
 
@@ -34,7 +34,7 @@ describe("Tests d'intégration Quench (vrai pipeline Document)", () => {
       .then((win) => {
         return new Promise((resolve, reject) => {
           win.Hooks.once("quenchReports", resolve);
-          win.quench.runBatches("dndCustomAi.actorCreation", "dndCustomAi.wizard").catch(reject);
+          win.quench.runBatches("dndCustomAi.actorCreation", "dndCustomAi.wizard", "dndCustomAi.combatReaction").catch(reject);
         });
       })
       .then((results) => {

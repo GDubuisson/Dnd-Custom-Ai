@@ -242,4 +242,52 @@ Hooks.on("quenchReady", (quench) => {
     },
     { displayName: "D&D Custom Ai — Assistant de création" }
   );
+
+  // T-ABIL-021 (section 6, tab-abilities.hbs) : seul scénario de cette section marqué "Quench"
+  // seul dans le plan — simule un changement de tour via l'API Combat plutôt qu'un clic sur le
+  // Combat Tracker, cf. hook updateCombat (dnd-custom-ai.js) qui ne réagit qu'à `game.users.
+  // activeGM`, déjà la session de ce batch.
+  quench.registerBatch(
+    "dndCustomAi.combatReaction",
+    (context) => {
+      const { describe, it, assert, after } = context;
+
+      describe("Régénération de la réaction en début de tour (hook updateCombat)", () => {
+        const createdActorIds = [];
+        const createdCombatIds = [];
+
+        after(async () => {
+          if (createdCombatIds.length) await Combat.deleteDocuments(createdCombatIds);
+          if (createdActorIds.length) await Actor.deleteDocuments(createdActorIds);
+        });
+
+        it("repasse à true dès que c'est le tour du personnage (T-ABIL-021)", async () => {
+          assert.isTrue(game.user.isGM, "ce test doit tourner en session MJ (cf. cypress/e2e/quench.cy.js)");
+
+          const actor = await Actor.create({ name: "Quench Reaction Actor", type: "character" });
+          createdActorIds.push(actor.id);
+          await actor.update({ "system.combat.reactionAvailable": false });
+
+          const combat = await Combat.create({ scene: canvas.scene.id, active: true });
+          createdCombatIds.push(combat.id);
+          await combat.createEmbeddedDocuments("Combatant", [{ actorId: actor.id }]);
+
+          // startCombat() pose round=1/turn=0 (changement réel depuis l'état initial du Combat),
+          // ce qui déclenche bien le hook updateCombat (condition `"turn" in changes`).
+          await combat.startCombat();
+
+          // Le hook est asynchrone (son propre `await actor.update(...)`) : laisse le temps à
+          // cette mise à jour de retomber avant de vérifier — `actor` reste la même référence
+          // que celle de la collection du monde, mise à jour en place par Foundry.
+          await new Promise((resolve) => setTimeout(resolve, 500));
+
+          assert.isTrue(
+            actor.system.combat.reactionAvailable,
+            "combat.reactionAvailable doit repasser à true au début du tour du personnage"
+          );
+        });
+      });
+    },
+    { displayName: "D&D Custom Ai — Réaction (Combat Tracker)" }
+  );
 });
