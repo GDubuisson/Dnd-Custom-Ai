@@ -42,6 +42,13 @@ export default defineConfig({
       testWorld: "Test World",
       testWorldId: "test-world", // Nom du dossier dans data/Data/worlds/, utilisé pour relancer le monde via l'API POST /setup (action launchWorld)
       expectedSystemVersion,
+      // Utilisateur Joueur (non-GM) du monde de test, requis par cypress/e2e/wizard.cy.js — la
+      // majorité des scénarios de l'assistant de création s'exécutent en tant que Joueur, pas
+      // MJ (cf. tests/E2E_TEST_PLAN.md > Conventions). Doit exister dans le monde de test
+      // (Configurer les joueurs) ET avoir la permission "Créer des acteurs" accordée
+      // (Configuration du monde > Permissions), sans quoi Actor.create() échoue côté serveur
+      // pour ce rôle — nouveau prérequis, cf. tests/README.md.
+      testPlayerName: "Player1",
     },
     setupNodeEvents(on, config) {
       // Rien à brancher pour l'instant (pas de plugin/tâche custom nécessaire).

@@ -23,3 +23,24 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
       ).to.equal(expected);
     });
 });
+
+// Connexion en tant qu'utilisateur Joueur (cf. Cypress.env("testPlayerName"), cypress.config.js)
+// plutôt que Gamemaster : la majorité des scénarios de tests/E2E_TEST_PLAN.md s'exécutent
+// délibérément côté Joueur propriétaire (cf. sa section "Conventions"), pas MJ — seuls les
+// scénarios dont le comportement dépend explicitement du rôle (ex. T-WIZ-013) utilisent une
+// connexion Gamemaster dédiée, comme dans system-load.cy.js/quench.cy.js. Même séquence
+// join/garde-fous que ces deux specs (iframe Sec-Fetch-Dest, vérification de version).
+Cypress.Commands.add("loginAsPlayer", () => {
+  cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
+  cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
+
+  cy.visit("/", { timeout: 30000 });
+  cy.url({ timeout: 15000 }).should("include", "/join");
+
+  cy.get('select[name="userid"]').select(Cypress.env("testPlayerName"));
+  cy.get('#join-game-form button[type="submit"]').click();
+
+  cy.get("#interface", { timeout: 30000 }).should("be.visible");
+  cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
+  cy.assertSystemVersionMatches();
+});

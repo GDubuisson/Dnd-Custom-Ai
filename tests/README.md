@@ -74,6 +74,12 @@ dans Docker et teste le vrai client (E2E via Cypress) et le vrai pipeline Docume
    main dans l'instance (`http://localhost:30001` après `npm run docker:up`) — persiste ensuite
    dans `./data` (gitignored). Foundry ne propose pas de création de monde via une simple
    requête HTTP (formulaire multi-étapes), donc ce n'est pas scriptable simplement.
+5. Un utilisateur **Joueur** (nommé "Player1" par défaut, cf. `Cypress.env("testPlayerName")`
+   dans `cypress.config.js`) créé une fois dans ce monde (Configurer les joueurs), avec la
+   permission **"Créer des acteurs"** accordée (Configuration du monde > Permissions) — requis
+   par `cypress/e2e/wizard.cy.js`, qui teste l'assistant de création en tant que Joueur
+   propriétaire (convention par défaut de `tests/E2E_TEST_PLAN.md`), pas seulement en tant que
+   MJ comme le reste de cette couche jusqu'ici.
 
 ### Installation et lancement
 
@@ -98,13 +104,18 @@ npm run docker:down        # arrête l'instance
   `assets`, `packs`, `world-items`), plus le module Quench et `tests/quench/`.
 - `cypress.config.js`, `cypress/` — tests E2E contre le vrai client (`cypress/e2e/
   system-load.cy.js` : connexion admin + chargement du monde de test ; `cypress/e2e/quench.cy.js` :
-  déclenche les tests d'intégration Quench).
+  déclenche les tests d'intégration Quench ; `cypress/e2e/wizard.cy.js` : section 1 de
+  `tests/E2E_TEST_PLAN.md`, assistant de création de personnage — T-WIZ-001 à T-WIZ-018,
+  en session Joueur sauf T-WIZ-013 qui teste explicitement le comportement MJ).
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
-  montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation :
-  chaque scénario listé y est encore **à coder**, ce fichier n'est pas une suite exécutable.
+  montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
+  Sa section 1 (assistant de création) est codée (`cypress/e2e/wizard.cy.js` +
+  `tests/quench/quench-tests.js`, batch `dndCustomAi.wizard`) ; les sections 2 à 16 restent
+  **à coder**.
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
-  (`quench-tests.js`) qui tournent dans le vrai pipeline Document/DataModel.
+  (`quench-tests.js`, batches `dndCustomAi.actorCreation` et `dndCustomAi.wizard`) qui tournent
+  dans le vrai pipeline Document/DataModel.
 - `.github/workflows/test.yml` — CI équivalente ; nécessite 3 secrets de dépôt
   (`FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, `FOUNDRY_LICENSE_KEY`) non configurés par ce
   fichier — le job échoue tant qu'ils ne sont pas ajoutés dans Settings > Secrets and
@@ -120,4 +131,11 @@ npm run docker:down        # arrête l'instance
   fonctionnelle sur le papier, mais **aucun test E2E/Quench n'a pu être réellement exécuté**
   contre une instance Foundry vivante. Les sélecteurs DOM de `system-load.cy.js` sont donc à
   vérifier/ajuster au premier lancement réel.
+- Même limite pour `cypress/e2e/wizard.cy.js` et le batch Quench `dndCustomAi.wizard` (écrits le
+  2026-08-15, toujours sans accès à Docker) : en particulier la zone de notifications
+  (sélecteur `.notification`), le bouton de fermeture de fenêtre AppV2 (`[data-action="close"]`
+  dans `.window-header`) et le nom du hook `closeCharacterCreationWizard` (utilisé par
+  `submitWizardForm` dans `quench-tests.js` pour savoir quand une soumission valide est
+  terminée) sont écrits d'après les conventions Foundry v13/14 usuelles, jamais vérifiés en
+  conditions réelles.
 - Nécessite une licence Foundry VTT payante — pas de mode démo/gratuit pour l'image Docker.
