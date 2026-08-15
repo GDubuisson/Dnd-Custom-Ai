@@ -13,7 +13,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run",
+    "test:e2e:run": "cypress run --browser chrome",
     "test:e2e:full": "npm run docker:up && wait-on http://localhost:30001 && npm run test:e2e:run && npm run docker:down"
   },
   "devDependencies": {

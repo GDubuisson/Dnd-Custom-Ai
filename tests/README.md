@@ -74,6 +74,12 @@ dans Docker et teste le vrai client (E2E via Cypress) et le vrai pipeline Docume
    main dans l'instance (`http://localhost:30001` après `npm run docker:up`) — persiste ensuite
    dans `./data` (gitignored). Foundry ne propose pas de création de monde via une simple
    requête HTTP (formulaire multi-étapes), donc ce n'est pas scriptable simplement.
+5. Un utilisateur **Joueur** (nommé "Player1" par défaut, cf. `Cypress.env("testPlayerName")`
+   dans `cypress.config.js`) créé une fois dans ce monde (Configurer les joueurs), avec la
+   permission **"Créer des acteurs"** accordée (Configuration du monde > Permissions) — requis
+   par `cypress/e2e/wizard.cy.js`, qui teste l'assistant de création en tant que Joueur
+   propriétaire (convention par défaut de `tests/E2E_TEST_PLAN.md`), pas seulement en tant que
+   MJ comme le reste de cette couche jusqu'ici.
 
 ### Installation et lancement
 
@@ -98,13 +104,56 @@ npm run docker:down        # arrête l'instance
   `assets`, `packs`, `world-items`), plus le module Quench et `tests/quench/`.
 - `cypress.config.js`, `cypress/` — tests E2E contre le vrai client (`cypress/e2e/
   system-load.cy.js` : connexion admin + chargement du monde de test ; `cypress/e2e/quench.cy.js` :
-  déclenche les tests d'intégration Quench).
+  déclenche les tests d'intégration Quench ; `cypress/e2e/wizard.cy.js` : section 1 de
+  `tests/E2E_TEST_PLAN.md`, assistant de création de personnage — T-WIZ-001 à T-WIZ-018,
+  en session Joueur sauf T-WIZ-013 qui teste explicitement le comportement MJ ;
+  `cypress/e2e/character-sheet.cy.js` : section 2, en-tête et navigation de la fiche personnage
+  — T-SHEET-001 à T-SHEET-008, sur un personnage complet partagé entre les tests plutôt que
+  recréé à chaque fois ; `cypress/e2e/tab-stats.cy.js` : section 3, onglet Statistiques —
+  T-STATS-001 à T-STATS-022 (jets de dés, repos, Initiative, états/Exhaustion, Agonie/jets de
+  sauvegarde de la mort), T-STATS-012 volontairement rouge — cf. bug connu ci-dessous ;
+  `cypress/e2e/tab-equipment.cy.js` : section 4, onglet Équipement — T-EQUIP-001 à T-EQUIP-005
+  (emplacements main principale/secondaire/armure/accessoires, arme à deux mains, bascule
+  Polyvalente), avec une fixture Item minimale pour l'emplacement "accessory" qu'aucun Item
+  livré avec le système n'utilise ; `cypress/e2e/tab-inventory.cy.js` : section 5, onglet
+  Inventaire — T-INV-001 à T-INV-010 (deux tableaux distincts, poids porté/capacité de charge,
+  jets d'attaque/dégâts d'arme — dont les boutons vivent en réalité sur l'onglet Équipement, pas
+  l'Inventaire, cf. commentaire d'en-tête du fichier —, objets soin/lumière/outil) ;
+  `cypress/e2e/tab-abilities.cy.js` : section 6, onglet Capacités/Sorts — T-ABIL-001 à
+  T-ABIL-020 (en-tête par classe, jets/charges/réserves de Capacité, Sentinelle, emplacements
+  de sorts, Incantation rituelle, concentration, sort d'attaque/dégâts/lumière, économie de
+  réaction), toutes les Capacités/tous les Sorts octroyés directement depuis leur compendium
+  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici). `cypress/
+  support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
+  `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
+  par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
+  `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via
+  `CONFIG.Dice.randomUniform` — Foundry n'utilise PAS `Math.random()` pour ses jets).
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
-  montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation :
-  chaque scénario listé y est encore **à coder**, ce fichier n'est pas une suite exécutable.
+  montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
+  Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
+  `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`), 2 (en-tête/navigation de la
+  fiche, `cypress/e2e/character-sheet.cy.js`, pas de volet Quench — tous ses scénarios sont
+  marqués "E2E" seul dans le plan), 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`),
+  4 (onglet Équipement, `cypress/e2e/tab-equipment.cy.js`, pas de volet Quench non plus),
+  5 (onglet Inventaire, `cypress/e2e/tab-inventory.cy.js`, pas de volet Quench non plus malgré
+  T-INV-002/003/006/009 marqués "E2E+Quench" dans le plan — les vérifier une fois en E2E contre
+  le vrai pipeline suffit, pas besoin d'un doublon Quench isolé pour ces calculs-là) et
+  6 (onglet Capacités/Sorts, `cypress/e2e/tab-abilities.cy.js` + `tests/quench/quench-tests.js`
+  batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul).
+  Sections 7 à 16 restent **à coder**.
+- **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
+  donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
+  français (compare le nom de classe français codé en dur dans `world-items/features.json`/
+  `spells.json` au libellé localisé dynamiquement) — seules les Capacités "universelles" (ex.
+  Attaque d'opportunité) passent. Touche l'assistant de création ET la montée de niveau.
+  Découvert le 2026-08-15 en écrivant T-STATS-012 (`tab-stats.cy.js`), laissé volontairement
+  rouge (même consigne que T-WIZ-010) — cf. mémoire projet pour la piste de correction.
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
-  (`quench-tests.js`) qui tournent dans le vrai pipeline Document/DataModel.
+  (`quench-tests.js`, batches `dndCustomAi.actorCreation`, `dndCustomAi.wizard` et
+  `dndCustomAi.combatReaction`) qui tournent
+  dans le vrai pipeline Document/DataModel.
 - `.github/workflows/test.yml` — CI équivalente ; nécessite 3 secrets de dépôt
   (`FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, `FOUNDRY_LICENSE_KEY`) non configurés par ce
   fichier — le job échoue tant qu'ils ne sont pas ajoutés dans Settings > Secrets and
@@ -120,4 +169,11 @@ npm run docker:down        # arrête l'instance
   fonctionnelle sur le papier, mais **aucun test E2E/Quench n'a pu être réellement exécuté**
   contre une instance Foundry vivante. Les sélecteurs DOM de `system-load.cy.js` sont donc à
   vérifier/ajuster au premier lancement réel.
+- Même limite pour `cypress/e2e/wizard.cy.js` et le batch Quench `dndCustomAi.wizard` (écrits le
+  2026-08-15, toujours sans accès à Docker) : en particulier la zone de notifications
+  (sélecteur `.notification`), le bouton de fermeture de fenêtre AppV2 (`[data-action="close"]`
+  dans `.window-header`) et le nom du hook `closeCharacterCreationWizard` (utilisé par
+  `submitWizardForm` dans `quench-tests.js` pour savoir quand une soumission valide est
+  terminée) sont écrits d'après les conventions Foundry v13/14 usuelles, jamais vérifiés en
+  conditions réelles.
 - Nécessite une licence Foundry VTT payante — pas de mode démo/gratuit pour l'image Docker.
