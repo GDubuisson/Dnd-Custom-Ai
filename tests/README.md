@@ -111,8 +111,11 @@ npm run docker:down        # arrête l'instance
   — T-SHEET-001 à T-SHEET-008, sur un personnage complet partagé entre les tests plutôt que
   recréé à chaque fois ; `cypress/e2e/tab-stats.cy.js` : section 3, onglet Statistiques —
   T-STATS-001 à T-STATS-022 (jets de dés, repos, Initiative, états/Exhaustion, Agonie/jets de
-  sauvegarde de la mort), T-STATS-012 volontairement rouge — cf. bug connu ci-dessous).
-  `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
+  sauvegarde de la mort), T-STATS-012 volontairement rouge — cf. bug connu ci-dessous ;
+  `cypress/e2e/tab-equipment.cy.js` : section 4, onglet Équipement — T-EQUIP-001 à T-EQUIP-005
+  (emplacements main principale/secondaire/armure/accessoires, arme à deux mains, bascule
+  Polyvalente), avec une fixture Item minimale pour l'emplacement "accessory" qu'aucun Item
+  livré avec le système n'utilise). `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
   `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via
@@ -122,8 +125,9 @@ npm run docker:down        # arrête l'instance
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
   `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`), 2 (en-tête/navigation de la
   fiche, `cypress/e2e/character-sheet.cy.js`, pas de volet Quench — tous ses scénarios sont
-  marqués "E2E" seul dans le plan) et 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`).
-  Sections 4 à 16 restent **à coder**.
+  marqués "E2E" seul dans le plan), 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`) et
+  4 (onglet Équipement, `cypress/e2e/tab-equipment.cy.js`, pas de volet Quench non plus).
+  Sections 5 à 16 restent **à coder**.
 - **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
   donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
   français (compare le nom de classe français codé en dur dans `world-items/features.json`/
