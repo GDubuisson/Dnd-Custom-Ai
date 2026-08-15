@@ -113,3 +113,34 @@ Cypress.Commands.add(
       });
   }
 );
+
+// Ouvre (ou réaffiche) la fiche d'un Actor déjà créé, sans repasser par l'assistant — pour les
+// specs qui testent la fiche elle-même sur un personnage déjà prêt (cf. cy.createReadyCharacter).
+// Suppose une session déjà connectée, comme cy.createReadyCharacter.
+Cypress.Commands.add("openActorSheet", (actorId) => {
+  cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
+  return cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+});
+
+// Force le résultat du PROCHAIN d20 lancé (une seule face de dé, une seule fois) sans dépendre
+// de Math.random : Foundry n'utilise PAS Math.random pour ses jets (vérifié dans le bundle
+// client, scripts/foundry.mjs) mais `CONFIG.Dice.randomUniform` (par défaut
+// `MersenneTwister.random`), un point d'extension officiel documenté par Foundry lui-même —
+// c'est donc lui qu'il faut remplacer, pas Math.random. `DiceTerm#mapRandomFace` calcule
+// `Math.ceil((1 - randomUniform) * faces)` : pour obtenir la face `face` avec certitude (pas
+// seulement en probabilité, cf. arrondi flottant sur les bornes exactes), on vise le milieu de
+// l'intervalle qui y correspond plutôt que sa borne. Se restaure tout seul après le premier
+// appel (pas de fuite vers les jets suivants ni besoin d'un `cy.restoreDice()` séparé à ne pas
+// oublier) — utiliser une fois par d20 à forcer (ex. jet de sauvegarde de la mort, `1d20` sans
+// modificateur, cf. tab-stats.cy.js > T-STATS-019). Ne convient pas à une formule à plusieurs
+// dés (ex. avantage `2d20kh1`) dont on voudrait fixer chaque dé indépendamment — pas nécessaire
+// dans cette suite (l'avantage/désavantage y est vérifié via la formule du jet, pas son résultat).
+Cypress.Commands.add("forceD20", (face) => {
+  return cy.window().then((win) => {
+    const original = win.CONFIG.Dice.randomUniform;
+    win.CONFIG.Dice.randomUniform = () => {
+      win.CONFIG.Dice.randomUniform = original;
+      return 1 - (face - 0.5) / 20;
+    };
+  });
+});

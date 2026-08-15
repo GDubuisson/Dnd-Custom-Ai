@@ -109,15 +109,28 @@ npm run docker:down        # arrête l'instance
   en session Joueur sauf T-WIZ-013 qui teste explicitement le comportement MJ ;
   `cypress/e2e/character-sheet.cy.js` : section 2, en-tête et navigation de la fiche personnage
   — T-SHEET-001 à T-SHEET-008, sur un personnage complet partagé entre les tests plutôt que
-  recréé à chaque fois). `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`
-  et `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
-  par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même).
+  recréé à chaque fois ; `cypress/e2e/tab-stats.cy.js` : section 3, onglet Statistiques —
+  T-STATS-001 à T-STATS-022 (jets de dés, repos, Initiative, états/Exhaustion, Agonie/jets de
+  sauvegarde de la mort), T-STATS-012 volontairement rouge — cf. bug connu ci-dessous).
+  `cypress/support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
+  `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
+  par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
+  `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via
+  `CONFIG.Dice.randomUniform` — Foundry n'utilise PAS `Math.random()` pour ses jets).
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
   montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
-  `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`) et 2 (en-tête/navigation de la
+  `tests/quench/quench-tests.js` batch `dndCustomAi.wizard`), 2 (en-tête/navigation de la
   fiche, `cypress/e2e/character-sheet.cy.js`, pas de volet Quench — tous ses scénarios sont
-  marqués "E2E" seul dans le plan). Sections 3 à 16 restent **à coder**.
+  marqués "E2E" seul dans le plan) et 3 (onglet Statistiques, `cypress/e2e/tab-stats.cy.js`).
+  Sections 4 à 16 restent **à coder**.
+- **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
+  donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
+  français (compare le nom de classe français codé en dur dans `world-items/features.json`/
+  `spells.json` au libellé localisé dynamiquement) — seules les Capacités "universelles" (ex.
+  Attaque d'opportunité) passent. Touche l'assistant de création ET la montée de niveau.
+  Découvert le 2026-08-15 en écrivant T-STATS-012 (`tab-stats.cy.js`), laissé volontairement
+  rouge (même consigne que T-WIZ-010) — cf. mémoire projet pour la piste de correction.
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
   (`quench-tests.js`, batches `dndCustomAi.actorCreation` et `dndCustomAi.wizard`) qui tournent
