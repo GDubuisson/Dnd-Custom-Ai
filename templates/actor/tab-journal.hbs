@@ -10,21 +10,4 @@
     <h3>{{localize "DND_CUSTOM.Journal.Notes"}}</h3>
     <prose-mirror name="system.notes" value="{{system.notes}}"></prose-mirror>
   </div>
-
-  <div class="journal-block">
-    <h3>{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
-    <ul class="languages-list">
-      {{#each languages}}
-      <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" title="{{htmlSnippet this.system.description}}">
-        <a class="item-name-link" data-action="viewItem">{{this.name}}</a>
-        <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </li>
-      {{else}}
-      <li class="empty-slot">{{localize "DND_CUSTOM.Journal.NoLanguages"}}</li>
-      {{/each}}
-    </ul>
-    <p class="drop-hint">{{localize "DND_CUSTOM.Journal.LanguagesDropHint"}}</p>
-  </div>
 </section>

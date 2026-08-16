@@ -145,7 +145,7 @@ async function buildOriginsPage(glossary) {
         .map(([key, value]) => `${game.i18n.localize(DND_CUSTOM.abilities[key])} +${value}`)
         .join(", ");
       const skills = system.skillAdvantages.map((key) => game.i18n.localize(DND_CUSTOM.skills[key])).join(", ");
-      return `<h3>${entry.name} <em>(${system.inspiration})</em></h3>
+      return `<h3>${entry.name}</h3>
         ${system.description}
         <p><strong>Bonus de caractéristiques :</strong> ${bonuses} · <strong>Compétences
         avantagées :</strong> ${skills}</p>

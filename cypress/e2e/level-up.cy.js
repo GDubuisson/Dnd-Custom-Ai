@@ -40,6 +40,24 @@ function openSheet(actorId) {
   return cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 }
 
+// `win.Actor.create({name, type: "character"})` sur un Actor vierge déclenche l'ouverture
+// automatique de l'assistant de création (même hook que wizard.cy.js). Les scénarios ci-dessous
+// posent class/origin/niveau directement via `updateActor(..., {dndCustomWizard: true})` sans
+// jamais soumettre ni fermer cet assistant — depuis le correctif du 2026-08-16 (render() de
+// DndCustomActorSheet, actor-sheet.js, qui bloque tout rendu de la fiche tant qu'un assistant
+// reste ouvert pour le même Actor), un assistant laissé ouvert en arrière-plan empêche
+// `openSheet` de jamais afficher la fiche. Un vrai utilisateur soumettrait ou fermerait toujours
+// l'assistant avant d'aller voir la fiche — fermer ici reproduit fidèlement ce geste plutôt que
+// de contourner le correctif.
+function closeAutoWizard(actorId) {
+  return cy.window().then((win) => {
+    const wizard = [...win.foundry.applications.instances.values()].find(
+      (app) => app.actor?.id === actorId && app.constructor.name === "CharacterCreationWizard"
+    );
+    return wizard ? wizard.close() : null;
+  });
+}
+
 function updateActor(win, actor, data, options = {}) {
   return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
@@ -220,6 +238,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
         );
       });
 
+    cy.then(() => closeAutoWizard(dedicatedActorId));
     cy.then(() => openSheet(dedicatedActorId));
 
     // Niveau 2 -> 3 : subclassLevel fighter = 3 (config.js), aucune sous-classe encore choisie ->
@@ -278,6 +297,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
         );
       });
 
+    cy.then(() => closeAutoWizard(dedicatedActorId));
     cy.then(() => openSheet(dedicatedActorId));
     sheetRoot().find('button[data-action="levelUp"]').click();
 
@@ -326,6 +346,7 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
           )
         );
       });
+    cy.then(() => closeAutoWizard(dedicatedActorId));
     return cy.then(() => dedicatedActorId);
   }
 

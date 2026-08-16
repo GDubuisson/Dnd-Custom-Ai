@@ -3,13 +3,26 @@
 
   <div class="conditions-panel">
     <h3 class="section-subtitle">{{localize "DND_CUSTOM.Conditions.Title"}}</h3>
-    <div class="conditions-grid">
-      {{#each conditions}}
-      <button type="button" class="condition-chip {{#if this.active}}active{{/if}}" data-action="toggleCondition" data-key="{{this.id}}" title="{{this.label}}">
-        <img src="{{this.img}}" alt="">
-        <span>{{this.label}}</span>
-      </button>
-      {{/each}}
+    <div class="conditions-row">
+      <details class="conditions-dropdown">
+        <summary class="conditions-summary">
+          {{#if activeConditions.length}}
+          {{#each activeConditions}}<span class="conditions-summary-chip">{{this.label}}</span>{{/each}}
+          {{else}}
+          <span class="conditions-summary-empty">{{localize "DND_CUSTOM.Conditions.None"}}</span>
+          {{/if}}
+          <i class="fa-solid fa-caret-down conditions-summary-caret"></i>
+        </summary>
+        <div class="conditions-checklist">
+          {{#each conditions}}
+          <button type="button" class="condition-checkbox-row {{#if this.active}}active{{/if}}" data-action="toggleCondition" data-key="{{this.id}}">
+            <i class="fa-solid {{#if this.active}}fa-square-check{{else}}fa-square{{/if}}"></i>
+            <img src="{{this.img}}" alt="">
+            <span>{{this.label}}</span>
+          </button>
+          {{/each}}
+        </div>
+      </details>
 
       <div class="exhaustion-chip" title="{{localize 'DND_CUSTOM.Conditions.ExhaustionTooltip'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>

@@ -637,3 +637,79 @@ describe("Onglet Capacités/Sorts", () => {
     });
   });
 });
+
+// Langues connues, déplacées de l'onglet Journal vers l'onglet Capacités le 2026-08-16 (retour
+// de test), affichées juste au-dessus du panneau de la capacité d'Origine (cf.
+// templates/actor/tab-abilities.hbs). Anciennement T-JOURNAL-001/002 (tests/E2E_TEST_PLAN.md >
+// section 7) — Actor dédié distinct des fixtures partagées ci-dessus, pour ne pas dépendre de
+// leur composition de Capacités/Sorts.
+describe("Onglet Capacités/Sorts — langues connues", () => {
+  const languagesActorIds = [];
+  let languagesActorId;
+
+  before(() => {
+    cy.loginAsPlayer();
+    cy.createReadyCharacter({
+      name: "Abilities Languages",
+      origin: "fleuraine",
+      classKey: "fighter",
+      skills: ["athletics", "intimidation"]
+    }).then((id) => {
+      languagesActorId = id;
+      languagesActorIds.push(id);
+    });
+  });
+
+  after(() => {
+    if (!languagesActorIds.length) return;
+    cy.loginAsGM();
+    cy.window().then((win) => win.Actor.deleteDocuments(languagesActorIds));
+  });
+
+  beforeEach(() => {
+    cy.loginAsPlayer();
+    cy.openActorSheet(languagesActorId);
+    goToTab("abilities");
+  });
+
+  it("liste Commune + la langue d'Origine, triées alphabétiquement (T-ABIL-022)", () => {
+    sheetRoot()
+      .find(".languages-list .language-chip .item-name-link")
+      .should(($links) => {
+        const names = Array.from($links, (el) => el.textContent.trim());
+        // Origine "fleuraine" -> langue "Fleurain" ; "Commune" < "Fleurain" quelle que soit la
+        // locale active du monde de test (E avant F), cf. tab-journal.cy.js d'origine.
+        expect(names).to.deep.equal(["Commune", "Fleurain"]);
+      });
+  });
+
+  it("glisser un Item langue depuis le compendium Langues l'ajoute à la liste (T-ABIL-023)", () => {
+    let sourceUuid;
+
+    cy.window()
+      .then((win) => win.game.packs.get("dnd-custom-ai.langues").getDocuments())
+      .then((docs) => {
+        sourceUuid = docs.find((doc) => doc.name === "Argot des rues").uuid;
+      });
+
+    cy.window().then((win) => {
+      const dataTransfer = new win.DataTransfer();
+      dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: sourceUuid }));
+      const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
+      win.document.querySelector(".application.character").dispatchEvent(dropEvent);
+    });
+
+    sheetRoot()
+      .find(".languages-list .language-chip .item-name-link")
+      .should(($links) => {
+        const names = Array.from($links, (el) => el.textContent.trim());
+        expect(names).to.include("Argot des rues");
+      });
+
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(languagesActorId);
+      const added = actor.items.find((item) => item.name === "Argot des rues");
+      return added?.delete();
+    });
+  });
+});

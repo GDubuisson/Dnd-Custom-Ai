@@ -101,6 +101,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       img: status.img,
       active: this.actor.statuses.has(status.id)
     }));
+    // Résumé affiché dans le libellé replié de la liste déroulante (cf. npc-tab-stats.hbs) sans
+    // avoir à ouvrir le menu — même principe que la fiche personnage (actor-sheet.js).
+    context.activeConditions = context.conditions.filter((condition) => condition.active);
 
     return context;
   }

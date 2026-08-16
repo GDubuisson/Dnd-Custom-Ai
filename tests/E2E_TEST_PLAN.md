@@ -56,6 +56,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-WIZ-016 | Capacités/sorts de niveau 1 octroyés | P1 | E2E+Quench | Terminer l'assistant avec une classe lanceuse de sorts | Les capacités de classe niveau 1 et les sorts/tours de magie de niveau 1 apparaissent sur l'Actor |
 | T-WIZ-017 | Langues octroyées | P2 | Quench | Terminer l'assistant avec n'importe quelle origine | L'Actor possède un Item "Commune" + la langue propre à l'origine choisie |
 | T-WIZ-018 | Réouverture après fermeture sans terminer | P2 | E2E | Fermer l'assistant sans soumettre, rouvrir la fiche | Le bouton "Créer un personnage" reste visible, aucune donnée n'a été modifiée |
+| T-WIZ-019 | Token configuré dès la création de l'Actor | P2 | E2E | Créer un Actor "character" vierge | `prototypeToken.displayName`/`displayBars` = `ALWAYS`, `bar1.attribute` = `attributes.hp` |
 
 ---
 
@@ -157,15 +158,21 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-019 | Réaction — capacité de type "reaction" bloquée si déjà utilisée | P1 | E2E+Quench | Réaction déjà consommée ce round, tenter d'utiliser une autre capacité/sort de type "reaction" | Avertissement `ReactionUnavailable`, action annulée sans décompte de charge |
 | T-ABIL-020 | Bascule manuelle de la réaction | P2 | E2E | Cliquer l'indicateur de réaction dans l'en-tête | `combat.reactionAvailable` bascule |
 | T-ABIL-021 | Régénération de la réaction en début de tour | P1 | Quench | Simuler `updateCombat` faisant passer au tour du personnage | `combat.reactionAvailable` repasse à `true` (hook, à vérifier côté `dnd-custom-ai.js`) |
+| T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commune + langue d'origine listées, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
+| T-ABIL-023 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans la liste de l'onglet Capacités |
 
 ---
 
 ## 7. Onglet Journal (`tab-journal.hbs`)
 
+Les langues connues (ex T-JOURNAL-001/002) ont été déplacées vers l'onglet Capacités le
+2026-08-16 (retour de test — cf. T-ABIL-022/023 ci-dessus). Le Journal ne contient plus que les
+deux champs de texte libre ci-dessous.
+
 | ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
 |---|---|---|---|---|---|
-| T-JOURNAL-001 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Journal | Commune + langue d'origine listées, triées alphabétiquement |
-| T-JOURNAL-002 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans l'onglet Journal |
+| T-JOURNAL-001 | Champ Biographie éditable | P2 | E2E | Taper du texte dans le champ Biographie, perdre le focus | La valeur persiste sur `system.biography` |
+| T-JOURNAL-002 | Champ Notes éditable | P2 | E2E | Taper du texte dans le champ Notes, perdre le focus | La valeur persiste sur `system.notes` |
 
 ---
 
@@ -208,6 +215,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-NPC-003 | Bascule d'état | P2 | E2E | Cliquer une icône d'état | ActiveEffect créée/retirée |
 | T-NPC-004 | Jet d'Initiative | P1 | E2E | Cliquer Initiative sur une scène avec combat actif | Combattant créé/mis à jour |
 | T-NPC-005 | Octroi d'XP au groupe | P1 | E2E+Quench | Cliquer "Octroyer XP" avec des Actors joueurs sélectionnés/ciblés | XP répartie, notification |
+| T-NPC-006 | Token configuré dès la création de l'Actor | P2 | E2E | Créer un Actor "npc" | `prototypeToken.displayName`/`displayBars` = `ALWAYS`, `bar1.attribute` = `attributes.hp` |
 
 ---
 
@@ -268,6 +276,29 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 |---|---|---|---|---|---|
 | T-I18N-001 | Bascule de langue serveur | P2 | E2E | Changer la langue du monde en anglais, recharger une fiche | Tous les libellés basculent en anglais, aucune clé brute `DND_CUSTOM.*` affichée à l'écran |
 | T-I18N-002 | Assistant de création en anglais | P2 | E2E | Même bascule, ouvrir l'assistant | Résumés dynamiques (origine/classe/quota compétences) aussi traduits, pas seulement les libellés statiques |
+
+---
+
+## 17. Combat — Coups et échecs critiques (`rollCheck` > `criticalRules`, `scripts/helpers/rolls.js`)
+
+Ajouté le 2026-08-16, retour de test explicite (hors 16 sections initiales) : 1 naturel = échec
+critique automatique, 20 naturel = coup critique automatique, sur les jets d'attaque (arme/sort)
+et de sauvegarde, **uniquement pendant un combat actif** (Actor Combattant d'un `Combat`
+existant). Dés de dégâts doublés sur un coup critique d'attaque (`Roll#alter(2, 0)`), jamais le
+modificateur.
+
+| ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
+|---|---|---|---|---|---|
+| T-CRIT-001 | Coup critique — attaque d'arme | P1 | E2E | 20 naturel forcé, cible à CA hors de portée, en combat | Touche quand même, libellé "Coup critique !", dés du jet de dégâts suivant doublés |
+| T-CRIT-002 | Échec critique — attaque d'arme | P1 | E2E | 1 naturel forcé, cible à CA très basse, en combat | Rate quand même, libellé "Échec critique !" |
+| T-CRIT-003 | Pas de règle critique hors combat | P1 | E2E | 20 naturel forcé, cible à CA hors de portée, Actor retiré du combat | Comparaison normale à la CA (raté), aucun libellé critique |
+| T-CRIT-004 | Coup critique — attaque de sort | P1 | E2E | 20 naturel forcé sur un sort d'attaque, en combat | Touche quand même, dés de dégâts du sort doublés |
+| T-CRIT-005 | Échec critique — sauvegarde en combat | P1 | E2E | 1 naturel forcé sur une sauvegarde, en combat | Libellé "Échec critique !" affiché (pas de CD comparée automatiquement dans ce système, au MJ de juger) |
+| T-CRIT-006 | Pas de règle critique sur une sauvegarde hors combat | P1 | E2E | 20 naturel forcé sur une sauvegarde, Actor retiré du combat | Aucun libellé critique |
+
+Implémenté dans `cypress/e2e/combat-criticals.cy.js`. Écart volontaire au RAW 5e (2014) signalé :
+le SRD de base ne donne cette règle qu'aux jets d'attaque (et aux sauvegardes de mort, déjà
+gérées séparément) — étendue ici aux sauvegardes normales, sur demande explicite.
 
 ---
 

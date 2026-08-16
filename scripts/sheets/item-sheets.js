@@ -168,6 +168,10 @@ export class OriginItemSheet extends DndCustomItemSheet {
       label: DND_CUSTOM.skills[key],
       checked: context.system.skillAdvantages.has(key)
     }));
+    // Retour de test : la liste complète (une case par compétence, ~18 lignes) prenait trop de
+    // place affichée en permanence — repliée par défaut dans une liste déroulante (cf.
+    // origin-sheet.hbs), dont le résumé montre uniquement les compétences déjà cochées.
+    context.checkedSkillAdvantages = context.skillAdvantageOptions.filter((option) => option.checked);
     return context;
   }
 }

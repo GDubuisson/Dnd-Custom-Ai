@@ -1,22 +1,9 @@
 // Implémente la section 7 (T-JOURNAL-001, T-JOURNAL-002) de tests/E2E_TEST_PLAN.md — onglet
-// Journal (tab-journal.hbs). Section volontairement petite (2 scénarios P2, E2E seul, pas de
-// volet Quench) : listing des langues connues (auto-octroyées à la création, cf.
-// class-content.js > grantLanguages) + ajout manuel par glisser-déposer d'une langue "special"
-// depuis le compendium "Langues" (cf. world-items/languages.json — ces langues-là ne sont
-// jamais auto-octroyées, quelle que soit l'origine, donc jamais présentes tant qu'on ne les
-// glisse pas : cible sûre pour ce test, contrairement à une langue "origin" qui pourrait déjà
-// être présente selon l'Actor de fixture utilisé).
-//
-// T-JOURNAL-002 simule le glisser-déposer sans repasser par le DOM source (la sidebar de
-// compendium Foundry, hors de la fiche testée elle-même, n'est pas dans le périmètre ici) :
-// construit un vrai DragEvent avec un DataTransfer contenant {type: "Item", uuid} — exactement
-// la charge que Foundry lit lui-même côté récepteur — et le dispatch directement sur la racine
-// de la fiche (`.application.character`, cf. character-sheet.cy.js), là où ActorSheetV2 attache
-// son propre listener "drop" (dropSelector par défaut = tout l'élément, cf. commentaire de
-// InventoryDragDropMixin._onDropItem sur ce point). Pas de dragover à simuler : contrairement à
-// un vrai drag utilisateur, ce drop synthétique ne passe jamais par le moteur HTML5 natif du
-// navigateur, donc aucun `preventDefault` sur dragover n'est requis pour que l'event "drop" soit
-// traité par le listener de Foundry.
+// Journal (tab-journal.hbs) : Biographie et Notes (deux champs ProseMirror libres, propriété du
+// Joueur). Les langues connues (ex T-JOURNAL-001/002, "liste + glisser-déposer") ont été
+// déplacées vers l'onglet Capacités le 2026-08-16 (retour de test — cf. tab-abilities.cy.js >
+// "Onglet Capacités/Sorts — langues connues", T-ABIL-022/023) ; le Journal ne contient donc plus
+// que ces deux champs de texte libre.
 
 const createdActorIds = [];
 let sharedActorId;
@@ -45,8 +32,6 @@ before(() => {
 
 after(() => {
   if (!createdActorIds.length) return;
-  // Session MJ : peut toujours supprimer, quel que soit le propriétaire (même piège que dans
-  // les autres specs de section, cf. wizard.cy.js).
   cy.loginAsGM();
   cy.window().then((win) => win.Actor.deleteDocuments(createdActorIds));
 });
@@ -59,47 +44,24 @@ describe("Onglet Journal, session Joueur", () => {
     sheetRoot().find('section.tab[data-tab="journal"]').should("have.class", "active");
   });
 
-  it("liste Commune + la langue d'Origine, triées alphabétiquement (T-JOURNAL-001)", () => {
-    sheetRoot()
-      .find(".language-chip .item-name-link")
-      .should(($links) => {
-        const names = Array.from($links, (el) => el.textContent.trim());
-        // Origine "fleuraine" (cf. cy.createReadyCharacter ci-dessus) -> langue "Fleurain" ;
-        // "Commune" < "Fleurain" alphabétiquement quelle que soit la locale active du monde de
-        // test (E avant F), donc l'ordre attendu est stable sans dépendre de game.i18n.lang.
-        expect(names).to.deep.equal(["Commune", "Fleurain"]);
-      });
+  it("le champ Biographie est éditable et la valeur persiste (T-JOURNAL-001)", () => {
+    sheetRoot().find('prose-mirror[name="system.biography"] [contenteditable="true"]').click().type("Née à Fleuraine.");
+    // Un simple blur (perte de focus, ex. cliquer ailleurs) ne suffit PAS à sauvegarder : le
+    // `<prose-mirror>` de Foundry ne déclenche aucun évènement natif "change" sur un
+    // contenteditable au blur (limitation connue des navigateurs) — vérifié en conditions
+    // réelles (blur explicite + 2s d'attente, toujours rien en base). La sauvegarde passe par le
+    // bouton dédié de la barre d'outils, `data-action="save"` (menu du haut de l'éditeur).
+    sheetRoot().find('prose-mirror[name="system.biography"] button[data-action="save"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(sharedActorId).system.biography).to.include("Née à Fleuraine.");
+    });
   });
 
-  it("glisser un Item langue depuis le compendium Langues l'ajoute au Journal (T-JOURNAL-002)", () => {
-    let sourceUuid;
-
-    cy.window()
-      .then((win) => win.game.packs.get("dnd-custom-ai.langues").getDocuments())
-      .then((docs) => {
-        sourceUuid = docs.find((doc) => doc.name === "Argot des rues").uuid;
-      });
-
-    cy.window().then((win) => {
-      const dataTransfer = new win.DataTransfer();
-      dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: sourceUuid }));
-      const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
-      win.document.querySelector(".application.character").dispatchEvent(dropEvent);
-    });
-
-    sheetRoot()
-      .find(".language-chip .item-name-link")
-      .should(($links) => {
-        const names = Array.from($links, (el) => el.textContent.trim());
-        expect(names).to.include("Argot des rues");
-      });
-
-    // Nettoyage : retire la langue ajoutée pour que ce test reste rejouable sans recréer l'Actor
-    // (ex. en `cypress open` interactif où les tests sont relancés individuellement).
-    cy.window().then((win) => {
-      const actor = win.game.actors.get(sharedActorId);
-      const added = actor.items.find((item) => item.name === "Argot des rues");
-      return added?.delete();
+  it("le champ Notes est éditable et la valeur persiste (T-JOURNAL-002)", () => {
+    sheetRoot().find('prose-mirror[name="system.notes"] [contenteditable="true"]').click().type("Doit de l'argent au forgeron.");
+    sheetRoot().find('prose-mirror[name="system.notes"] button[data-action="save"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(sharedActorId).system.notes).to.include("Doit de l'argent au forgeron.");
     });
   });
 });

@@ -120,16 +120,18 @@ npm run docker:down        # arrête l'instance
   jets d'attaque/dégâts d'arme — dont les boutons vivent en réalité sur l'onglet Équipement, pas
   l'Inventaire, cf. commentaire d'en-tête du fichier —, objets soin/lumière/outil) ;
   `cypress/e2e/tab-abilities.cy.js` : section 6, onglet Capacités/Sorts — T-ABIL-001 à
-  T-ABIL-020 (en-tête par classe, jets/charges/réserves de Capacité, Sentinelle, emplacements
+  T-ABIL-021 (en-tête par classe, jets/charges/réserves de Capacité, Sentinelle, emplacements
   de sorts, Incantation rituelle, concentration, sort d'attaque/dégâts/lumière, économie de
   réaction), toutes les Capacités/tous les Sorts octroyés directement depuis leur compendium
-  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici) ; `cypress/e2e/
-  tab-journal.cy.js` : section 7, onglet Journal — T-JOURNAL-001 (langues connues, Commune +
-  langue d'Origine, triées alphabétiquement) et T-JOURNAL-002 (ajout manuel d'une langue
-  "special", ex. "Argot des rues" — jamais auto-octroyée quelle que soit l'Origine, cf.
-  world-items/languages.json — glissée depuis le compendium Langues en simulant un vrai
-  DragEvent/DataTransfer dispatché sur la racine de la fiche, pas de dragover à simuler pour un
-  drop synthétique) ; `cypress/e2e/level-up.cy.js` : section 8, montée de niveau — T-LVL-001 à
+  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici), plus T-ABIL-022/023
+  (langues connues, déplacées depuis l'onglet Journal le 2026-08-16 — retour de test, cf.
+  describe dédié en fin de fichier : Commune + langue d'Origine triées alphabétiquement, ajout
+  manuel d'une langue "special" par glisser-déposer depuis le compendium Langues, ex. "Argot des
+  rues" — jamais auto-octroyée quelle que soit l'Origine, cf. world-items/languages.json,
+  DragEvent/DataTransfer synthétique dispatché sur la racine de la fiche) ; `cypress/e2e/
+  tab-journal.cy.js` : section 7, onglet Journal — T-JOURNAL-001/002 (champs Biographie/Notes,
+  ProseMirror, édition + persistance après perte de focus ; contenu redéfini le 2026-08-16 après
+  le déplacement des langues vers l'onglet Capacités ci-dessus) ; `cypress/e2e/level-up.cy.js` : section 8, montée de niveau — T-LVL-001 à
   T-LVL-003/005 à T-LVL-012 (un seul niveau par clic, PV recalculés/remplis, accessible au
   Joueur, pas de message parasite si rien d'octroyé, choix de sous-classe au bon niveau + pas de
   re-proposition + sélecteur d'en-tête en secours, choix Amélioration de caractéristiques/Don
@@ -154,7 +156,7 @@ npm run docker:down        # arrête l'instance
   drag-drop.cy.js` : section 13, glisser-déposer entre fiches — T-DND-001 à T-DND-003 (transfert
   entre deux Actors sans duplication, drop hors de toute fiche sans erreur, import compendium
   dupliqué localement), même technique DragEvent/DataTransfer synthétique que
-  `tab-journal.cy.js` > T-JOURNAL-002 ; `cypress/e2e/combat-tracker.cy.js` : section 14,
+  `tab-abilities.cy.js` > T-ABIL-023 ; `cypress/e2e/combat-tracker.cy.js` : section 14,
   intégration Combat Tracker — T-COMBAT-001 à T-COMBAT-003 (Combattant visible dans le DOM du
   tracker après un jet d'Initiative, réaction régénérée en avançant le tour via le VRAI bouton
   "Tour suivant" — complément E2E de T-ABIL-021/Quench, pas un doublon —, suppression du combat
@@ -168,7 +170,13 @@ npm run docker:down        # arrête l'instance
   que de basculer réellement la langue du monde (risque de rechargement client jugé
   disproportionné après les incidents Docker de cette session), balaie le texte affiché de la
   fiche personnage/l'assistant sous la locale déjà active (anglais) à la recherche de fuites de
-  clé brute `DND_CUSTOM.*`. `cypress/
+  clé brute `DND_CUSTOM.*` ; `cypress/e2e/combat-criticals.cy.js` : section 17 (ajoutée le
+  2026-08-16, hors 16 sections initiales, retour de test explicite) — T-CRIT-001 à 006, coups/
+  échecs critiques sur 1/20 naturel (`rollCheck` > `criticalRules`, `scripts/helpers/rolls.js`)
+  UNIQUEMENT pendant un combat actif, sur les jets d'attaque (arme/sort) et de sauvegarde ; dés
+  de dégâts doublés sur un coup critique (`Roll#alter(2, 0)`, jamais le modificateur). Preuve
+  "même avec des bonus" par CA délibérément extrême (999/1) combinée à `cy.forceD20` — pas
+  utilisés ensemble jusque-là dans la suite. `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -197,7 +205,9 @@ npm run docker:down        # arrête l'instance
   (glisser-déposer, `cypress/e2e/drag-drop.cy.js`), 14 (Combat Tracker, `cypress/e2e/
   combat-tracker.cy.js`), 15 (permissions, `cypress/e2e/permissions.cy.js`, en E2E malgré le
   plan qui suggère Quench — cf. détail plus haut) et 16 (internationalisation, `cypress/e2e/
-  i18n.cy.js`, scénarios adaptés — cf. détail plus haut). **Les 16 sections du plan sont
+  i18n.cy.js`, scénarios adaptés — cf. détail plus haut) et 17 (Combat — coups/échecs critiques,
+  `cypress/e2e/combat-criticals.cy.js`, ajoutée le 2026-08-16 hors plan initial — cf. détail
+  plus haut). **Les 16 sections du plan initial + la section 17 (retour de test) sont
   codées** (2026-08-16).
 - **Bug connu — CORRIGÉ le 2026-08-16** : toute comparaison entre un libellé de classe/sous-classe
   LOCALISÉ (`game.i18n.localize(DND_CUSTOM.classes[...]/.subclasses[...])`) et un nom d'Item
