@@ -123,7 +123,13 @@ npm run docker:down        # arrête l'instance
   T-ABIL-020 (en-tête par classe, jets/charges/réserves de Capacité, Sentinelle, emplacements
   de sorts, Incantation rituelle, concentration, sort d'attaque/dégâts/lumière, économie de
   réaction), toutes les Capacités/tous les Sorts octroyés directement depuis leur compendium
-  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici). `cypress/
+  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici) ; `cypress/e2e/
+  tab-journal.cy.js` : section 7, onglet Journal — T-JOURNAL-001 (langues connues, Commune +
+  langue d'Origine, triées alphabétiquement) et T-JOURNAL-002 (ajout manuel d'une langue
+  "special", ex. "Argot des rues" — jamais auto-octroyée quelle que soit l'Origine, cf.
+  world-items/languages.json — glissée depuis le compendium Langues en simulant un vrai
+  DragEvent/DataTransfer dispatché sur la racine de la fiche, pas de dragover à simuler pour un
+  drop synthétique). `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -140,8 +146,9 @@ npm run docker:down        # arrête l'instance
   T-INV-002/003/006/009 marqués "E2E+Quench" dans le plan — les vérifier une fois en E2E contre
   le vrai pipeline suffit, pas besoin d'un doublon Quench isolé pour ces calculs-là) et
   6 (onglet Capacités/Sorts, `cypress/e2e/tab-abilities.cy.js` + `tests/quench/quench-tests.js`
-  batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul).
-  Sections 7 à 16 restent **à coder**.
+  batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul) et
+  7 (onglet Journal, `cypress/e2e/tab-journal.cy.js`, pas de volet Quench).
+  Sections 8 à 16 restent **à coder**.
 - **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
   donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
   français (compare le nom de classe français codé en dur dans `world-items/features.json`/
