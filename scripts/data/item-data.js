@@ -1,7 +1,13 @@
 import { SKILL_ABILITIES } from "./character-data.js";
 import { currencySchema } from "./shared-schema.js";
+import { DND_CUSTOM } from "../helpers/config.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
+
+/** Union de toutes les clés de sous-classe (ex. "champion"), toutes classes confondues — sert de
+ *  contrainte `choices` pour FeatureData#subclass ci-dessous. Aplati une seule fois au chargement
+ *  du module plutôt qu'à chaque définition de schéma. */
+const ALL_SUBCLASS_KEYS = Object.values(DND_CUSTOM.subclasses).flatMap((bySubclass) => Object.keys(bySubclass));
 
 /** Champs communs aux armes/armures : objets physiques qui peuvent être équipés dans un
  *  emplacement de la fiche de personnage (cf. onglet "Équipement"). Poids toujours en kg
@@ -143,12 +149,16 @@ export class GearData extends foundry.abstract.TypeDataModel {
 export class FeatureData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      class: new StringField({ required: false, blank: true, initial: "" }),
-      // Sous-classe (libellé localisé exact, ex. "Voie du Berserker") : vide pour une Capacité
-      // de classe de base, renseigné pour une Capacité propre à une sous-classe précise. Même
-      // convention que `class` (cf. DND_CUSTOM.subclasses, config.js) — grantClassContent ne
-      // l'octroie qu'une fois actor.system.subclass résolu vers ce libellé.
-      subclass: new StringField({ required: false, blank: true, initial: "" }),
+      // Clé de classe stable (ex. "fighter", cf. DND_CUSTOM.classes, config.js) — PAS un
+      // libellé localisé/traduit : la comparaison à `actor.system.class` (grantClassContent,
+      // helpers/class-content.js) doit rester correcte quelle que soit la langue active du
+      // monde. Vide pour une Capacité universelle (system.universal, ex. Attaque d'opportunité).
+      class: new StringField({ required: false, blank: true, initial: "", choices: Object.keys(DND_CUSTOM.classes) }),
+      // Clé de sous-classe stable (ex. "champion", cf. DND_CUSTOM.subclasses, config.js) — même
+      // principe que `class` ci-dessus : vide pour une Capacité de classe de base, renseignée
+      // pour une Capacité propre à une sous-classe précise. grantClassContent ne l'octroie
+      // qu'une fois actor.system.subclass (déjà une clé, jamais un libellé) égal à cette valeur.
+      subclass: new StringField({ required: false, blank: true, initial: "", choices: ALL_SUBCLASS_KEYS }),
       // Capacité universelle (ex. Attaque d'opportunité) : octroyée à TOUTE classe au niveau
       // requis, `class` restant vide (pas propre à une classe précise) — cf. grantClassContent,
       // helpers/class-content.js, qui l'inclut en plus du filtrage habituel par classe.
@@ -228,13 +238,13 @@ export class ToolData extends foundry.abstract.TypeDataModel {
 export class SpellData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      // Classes pouvant apprendre ce sort (SRD 5e, liste de sorts par classe) : texte libre à
-      // séparer par virgule, plusieurs classes possibles par sort (ex. "Ensorceleur, Magicien")
-      // — même convention que FeatureData.class (libellé localisé, ex. "Magicien"), mais au
+      // Classes pouvant apprendre ce sort (SRD 5e, liste de sorts par classe) : ensemble de clés
+      // de classe stables (ex. {"sorcerer", "wizard"}, cf. DND_CUSTOM.classes, config.js) — même
+      // principe que FeatureData.class (clé stable, jamais un libellé localisé/traduit), mais au
       // pluriel puisqu'un sort n'est pas exclusif à une classe contrairement à une Capacité.
       // Utilisé par grantClassContent (helpers/class-content.js) pour l'attribution automatique
       // à la création du personnage et à la montée de niveau.
-      classes: new StringField({ required: false, blank: true, initial: "" }),
+      classes: new SetField(new StringField({ choices: Object.keys(DND_CUSTOM.classes) })),
       level: new NumberField({ required: true, integer: true, min: 0, max: 9, initial: 1 }),
       details: new StringField({ required: false, blank: true, initial: "" }),
       // Type d'action SRD 5e nécessaire pour lancer ce sort (cf. FeatureData#activation

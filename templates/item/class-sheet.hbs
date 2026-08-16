@@ -5,6 +5,25 @@
 </header>
 
 <div class="item-sheet-body">
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ClassKey"}}</label>
+    <select name="system.classKey">
+      <option value=""></option>
+      {{selectOptions config.classes selected=system.classKey localize=true}}
+    </select>
+  </div>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ClassKeyHelp"}}</p>
+
+  {{#if isSubclass}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.SubclassKey"}}</label>
+    <select name="system.subclassKey">
+      <option value=""></option>
+      {{selectOptions subclassKeyOptions selected=system.subclassKey localize=true}}
+    </select>
+  </div>
+  {{/if}}
+
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.ClassSavingThrows"}}</legend>
     {{#each savingThrowOptions}}

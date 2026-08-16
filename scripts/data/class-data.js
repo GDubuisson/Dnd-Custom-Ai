@@ -17,6 +17,16 @@ const { HTMLField, SetField, StringField, NumberField } = foundry.data.fields;
 export class ClassData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
+      // Clé de classe stable (ex. "fighter", cf. DND_CUSTOM.classes, config.js), renseignée sur
+      // les Items de type "class" ET "subclass" (une sous-classe porte aussi la clé de sa classe
+      // parente) — permet à #onOpenClassSheet/#onOpenSubclassSheet (actor-sheet.js) de retrouver
+      // la fiche de description par clé plutôt que par nom localisé, indépendamment de la langue
+      // active du monde (cf. le bug historique documenté dans tests/README.md). Laissée vide
+      // pour un Item "class"/"subclass" homebrew ne correspondant à aucune des 12 classes SRD.
+      classKey: new StringField({ required: false, blank: true, initial: "", choices: Object.keys(DND_CUSTOM.classes) }),
+      // Clé de sous-classe stable (ex. "champion") : vide pour un Item de type "class", renseignée
+      // pour un Item de type "subclass" (cf. classKey ci-dessus pour sa classe parente).
+      subclassKey: new StringField({ required: false, blank: true, initial: "" }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       savingThrows: new SetField(new StringField({ choices: Object.keys(DND_CUSTOM.abilities) })),
       skillChoiceCount: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),

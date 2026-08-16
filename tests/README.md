@@ -123,7 +123,52 @@ npm run docker:down        # arrête l'instance
   T-ABIL-020 (en-tête par classe, jets/charges/réserves de Capacité, Sentinelle, emplacements
   de sorts, Incantation rituelle, concentration, sort d'attaque/dégâts/lumière, économie de
   réaction), toutes les Capacités/tous les Sorts octroyés directement depuis leur compendium
-  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici). `cypress/
+  (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici) ; `cypress/e2e/
+  tab-journal.cy.js` : section 7, onglet Journal — T-JOURNAL-001 (langues connues, Commune +
+  langue d'Origine, triées alphabétiquement) et T-JOURNAL-002 (ajout manuel d'une langue
+  "special", ex. "Argot des rues" — jamais auto-octroyée quelle que soit l'Origine, cf.
+  world-items/languages.json — glissée depuis le compendium Langues en simulant un vrai
+  DragEvent/DataTransfer dispatché sur la racine de la fiche, pas de dragover à simuler pour un
+  drop synthétique) ; `cypress/e2e/level-up.cy.js` : section 8, montée de niveau — T-LVL-001 à
+  T-LVL-003/005 à T-LVL-012 (un seul niveau par clic, PV recalculés/remplis, accessible au
+  Joueur, pas de message parasite si rien d'octroyé, choix de sous-classe au bon niveau + pas de
+  re-proposition + sélecteur d'en-tête en secours, choix Amélioration de caractéristiques/Don
+  proposé aux bons niveaux et appliqué), boîtes `DialogV2` pilotées via leurs vrais sélecteurs
+  (`dialog.application.dialog`, boutons `data-action="asi"/"feat"/"ok"/"close"`) — T-LVL-004
+  a longtemps été volontairement rouge (bug de locale sur `grantClassContent`, appelé par
+  `#onLevelUp` — cf. "Bug connu — CORRIGÉ" plus bas), corrigé et vert depuis le 2026-08-16 ;
+  `cypress/e2e/reference-sheets.cy.js` : section 9, fiches de référence Classe/Sous-classe/
+  Origine — T-REF-001 à T-REF-004 (ouverture des fiches de Classe/Sous-classe/Origine par clé
+  stable, avertissement non bloquant `OriginSheetMissing` si l'Item de référence est introuvable
+  — supprimé/restauré en session MJ dans le compendium `origines`, seule permission requise pour
+  ce scénario, cf. `ownership` du pack dans `system.json`) ; `cypress/e2e/npc-sheet.cy.js` :
+  section 10, fiche PNJ — T-NPC-001 à
+  T-NPC-005 (3 onglets, jet de caractéristique, bascule d'état, Initiative, octroi d'XP via
+  `DialogV2`), toute la section en session MJ (un PNJ n'a normalement pas de propriétaire
+  Joueur) ; `cypress/e2e/vehicle-sheet.cy.js` : section 11, fiche Véhicule — T-VEH-001 à
+  T-VEH-003 (champs de base, barre de PV bornée, inventaire), session MJ également ;
+  `cypress/e2e/item-sheets.cy.js` : section 12, fiches d'Item — T-ITEM-001 à T-ITEM-003
+  (ouverture des 9 types sans erreur, édition d'un champ simple qui persiste, champ
+  `damageVersatile.dice` qui apparaît seulement une fois "Polyvalente" cochée), session MJ (les
+  types non physiques vivent en compendium, en écriture réservée au MJ) ; `cypress/e2e/
+  drag-drop.cy.js` : section 13, glisser-déposer entre fiches — T-DND-001 à T-DND-003 (transfert
+  entre deux Actors sans duplication, drop hors de toute fiche sans erreur, import compendium
+  dupliqué localement), même technique DragEvent/DataTransfer synthétique que
+  `tab-journal.cy.js` > T-JOURNAL-002 ; `cypress/e2e/combat-tracker.cy.js` : section 14,
+  intégration Combat Tracker — T-COMBAT-001 à T-COMBAT-003 (Combattant visible dans le DOM du
+  tracker après un jet d'Initiative, réaction régénérée en avançant le tour via le VRAI bouton
+  "Tour suivant" — complément E2E de T-ABIL-021/Quench, pas un doublon —, suppression du combat
+  en cours sans casser la fiche) ; `cypress/e2e/permissions.cy.js` : section 15, permissions et
+  champs verrouillés — T-PERM-001 à T-PERM-004 (implémentés en E2E, PAS en Quench comme suggéré
+  par le plan : les batches Quench de cette suite tournent tous en session MJ, or le hook ne
+  restreint QUE les non-MJ — un test Quench GM ne pourrait jamais exercer la restriction
+  elle-même), y compris l'exception `dndCustomLevelUp` qui ne laisse passer QUE `level` même si
+  `class` est posé dans le même update ; `cypress/e2e/i18n.cy.js` : section 16,
+  internationalisation — T-I18N-001/002 adaptés (cf. commentaire d'en-tête du fichier) : plutôt
+  que de basculer réellement la langue du monde (risque de rechargement client jugé
+  disproportionné après les incidents Docker de cette session), balaie le texte affiché de la
+  fiche personnage/l'assistant sous la locale déjà active (anglais) à la recherche de fuites de
+  clé brute `DND_CUSTOM.*`. `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -140,15 +185,64 @@ npm run docker:down        # arrête l'instance
   T-INV-002/003/006/009 marqués "E2E+Quench" dans le plan — les vérifier une fois en E2E contre
   le vrai pipeline suffit, pas besoin d'un doublon Quench isolé pour ces calculs-là) et
   6 (onglet Capacités/Sorts, `cypress/e2e/tab-abilities.cy.js` + `tests/quench/quench-tests.js`
-  batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul).
-  Sections 7 à 16 restent **à coder**.
-- **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
-  donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
-  français (compare le nom de classe français codé en dur dans `world-items/features.json`/
-  `spells.json` au libellé localisé dynamiquement) — seules les Capacités "universelles" (ex.
-  Attaque d'opportunité) passent. Touche l'assistant de création ET la montée de niveau.
-  Découvert le 2026-08-15 en écrivant T-STATS-012 (`tab-stats.cy.js`), laissé volontairement
-  rouge (même consigne que T-WIZ-010) — cf. mémoire projet pour la piste de correction.
+  batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul) et
+  7 (onglet Journal, `cypress/e2e/tab-journal.cy.js`, pas de volet Quench) et 8 (montée de
+  niveau, `cypress/e2e/level-up.cy.js`, pas de volet Quench malgré plusieurs scénarios marqués
+  "E2E+Quench"/"Quench" dans le plan — `#onLevelUp` est une méthode privée d'`actor-sheet.js`,
+  inatteignable directement depuis Quench, même limite déjà documentée pour
+  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`), 9
+  (fiches de référence Classe/Sous-classe/Origine, `cypress/e2e/reference-sheets.cy.js`), 10
+  (fiche PNJ, `cypress/e2e/npc-sheet.cy.js`), 11 (fiche Véhicule, `cypress/e2e/
+  vehicle-sheet.cy.js`), 12 (fiches d'Item, `cypress/e2e/item-sheets.cy.js`), 13
+  (glisser-déposer, `cypress/e2e/drag-drop.cy.js`), 14 (Combat Tracker, `cypress/e2e/
+  combat-tracker.cy.js`), 15 (permissions, `cypress/e2e/permissions.cy.js`, en E2E malgré le
+  plan qui suggère Quench — cf. détail plus haut) et 16 (internationalisation, `cypress/e2e/
+  i18n.cy.js`, scénarios adaptés — cf. détail plus haut). **Les 16 sections du plan sont
+  codées** (2026-08-16).
+- **Bug connu — CORRIGÉ le 2026-08-16** : toute comparaison entre un libellé de classe/sous-classe
+  LOCALISÉ (`game.i18n.localize(DND_CUSTOM.classes[...]/.subclasses[...])`) et un nom d'Item
+  codé en dur en FRANÇAIS dans `world-items/*.json` échouait systématiquement sous un monde dont
+  la langue n'est pas le français — deux manifestations connues, même cause :
+  - `grantClassContent` (`scripts/helpers/class-content.js`) ne donnait jamais de Capacité/Sort
+    propre à la classe (seules les Capacités "universelles", ex. Attaque d'opportunité,
+    passaient). Touchait l'assistant de création ET la montée de niveau. Découvert le 2026-08-15
+    en écrivant T-STATS-012 (`tab-stats.cy.js`), laissé volontairement rouge le temps de la
+    session de tests (même consigne que T-WIZ-010) ; T-LVL-004 (`level-up.cy.js`, section 8)
+    l'illustrait aussi côté montée de niveau.
+  - `#onOpenClassSheet` (`scripts/sheets/actor-sheet.js`) ne trouvait jamais la fiche de
+    description d'une Classe (avertissement `ClassSheetMissing` non bloquant à la place) —
+    découvert le 2026-08-16 en écrivant T-REF-001 (`reference-sheets.cy.js`, section 9), laissé
+    volontairement rouge pour la même raison. `#onOpenSubclassSheet`/`#onOpenOriginSheet` n'y
+    étaient PAS soumis : les sous-classes ont des noms français qui coïncident avec l'anglais
+    pour les cas testés (ex. "Champion"), et l'Origine ne passe jamais par `game.i18n.localize`
+    (son libellé vient directement de `scripts/data/origins.json`, déjà dans la bonne langue).
+
+  **Correction** (sur demande explicite de l'utilisateur, 2026-08-16) : le contenu de référence
+  stocke désormais une CLÉ de classe/sous-classe stable (ex. `"fighter"`/`"champion"`,
+  indépendante de toute langue) plutôt qu'un libellé localisé/traduit — comparer des clés est
+  correct quelle que soit la langue active du monde, contrairement à comparer des chaînes
+  traduites.
+  - `FeatureData#class`/`#subclass` (`scripts/data/item-data.js`) : `StringField` avec
+    `choices` contraintes aux clés de `DND_CUSTOM.classes`/l'union de `DND_CUSTOM.subclasses`.
+  - `SpellData#classes` : `StringField` texte libre séparé par virgules → `SetField` de clés
+    (ex. `{"sorcerer", "wizard"}`) — UI passée d'un champ texte à des cases à cocher
+    (`item/spell-sheet.hbs`).
+  - `ClassData` (`scripts/data/class-data.js`) : nouveaux champs `classKey`/`subclassKey`,
+    partagés entre les types "class" et "subclass" — permettent à `#onOpenClassSheet`/
+    `#onOpenSubclassSheet` de retrouver l'Item de référence par clé plutôt que par nom déduit
+    d'un libellé traduit. UI : selects dédiés dans `item/class-sheet.hbs`.
+  - `world-items/features.json`/`spells.json`/`classes.json`/`subclasses.json` migrés (script
+    ponctuel, non conservé) : tous les libellés français en dur remplacés par leurs clés
+    (`classKey`/`subclassKey` ajoutés pour classes/sous-classes). **Après toute recréation du
+    monde de test/nettoyage des compendiums (`packs/*`), le premier login MJ doit lui-même
+    d'abord VIDER les compendiums `classes`/`sous-classes`/`capacites`/`sorts`** (dédoublonnage
+    par nom à l'import : un Item déjà présent avec l'ancien format n'est jamais mis à jour) avant
+    de rappeler `game.dndCustomAi.importSystemContent()`, sans quoi le monde reste bloqué sur des
+    données pré-migration.
+  - `grantClassContent`/`#onOpenClassSheet`/`#onOpenSubclassSheet`/`isSpellAllowedForActor`
+    (`inventory-drag-drop.js`) comparent désormais les clés directement, sans jamais appeler
+    `game.i18n.localize()` pour la comparaison (uniquement pour l'affichage).
+  - T-STATS-012/T-LVL-004/T-REF-001 sont la preuve directe de la correction (verts depuis).
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
   (`quench-tests.js`, batches `dndCustomAi.actorCreation`, `dndCustomAi.wizard` et

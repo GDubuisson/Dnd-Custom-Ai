@@ -7,6 +7,7 @@ import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 import { renderTemplate } from "../support/handlebars-env.js";
+import { DND_CUSTOM } from "../../scripts/helpers/config.js";
 
 function parse(html) {
   return new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
@@ -431,8 +432,15 @@ describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/acto
 describe("item/spell-sheet.hbs — schéma simplifié", () => {
   const context = {
     item: { img: "spell.webp", name: "Boule de feu" },
+    // classOptions : cases à cocher pré-calculées par SpellItemSheet#_prepareContext (item-
+    // sheets.js), pas un texte libre séparé par virgules — cf. SpellData#classes, item-data.js,
+    // et le bug historique documenté dans tests/README.md > "Bug connu".
+    classOptions: [
+      { key: "sorcerer", label: "Ensorceleur", checked: true },
+      { key: "wizard", label: "Magicien", checked: true }
+    ],
     system: {
-      classes: "Ensorceleur, Magicien",
+      classes: new Set(["sorcerer", "wizard"]),
       level: 3,
       details: "1 action, 45 m, Instantanée",
       concentration: false,
@@ -443,8 +451,10 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
   };
   const doc = parse(renderTemplate("item/spell-sheet.hbs", context));
 
-  test("champ Classes et champ Détails (fusionné) présents", () => {
-    assert.ok(doc.querySelector('input[name="system.classes"]'));
+  test("champ Classes (cases à cocher) et champ Détails (fusionné) présents", () => {
+    const classCheckboxes = doc.querySelectorAll('input[name="system.classes"]');
+    assert.equal(classCheckboxes.length, 2, "une case à cocher par classe attendue");
+    assert.ok([...classCheckboxes].every((input) => input.checked), "les deux classes du sort doivent être cochées");
     assert.ok(doc.querySelector('input[name="system.details"]'));
   });
 
@@ -470,8 +480,9 @@ describe("item/spell-sheet.hbs — sort de type Réaction", () => {
     renderTemplate("item/spell-sheet.hbs", {
       item: { img: "spell.webp", name: "Bouclier" },
       config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
+      classOptions: [{ key: "wizard", label: "Magicien", checked: true }],
       system: {
-        classes: "Magicien", level: 1, details: "1 réaction", concentration: false, ritual: false, prepared: false,
+        classes: new Set(["wizard"]), level: 1, details: "1 réaction", concentration: false, ritual: false, prepared: false,
         activation: "reaction", reactionTrigger: "Vous êtes touché par une attaque", description: ""
       },
       isReaction: true
@@ -496,9 +507,11 @@ describe("item/feature-sheet.hbs — champ Activation / Déclencheur", () => {
       renderTemplate("item/feature-sheet.hbs", {
         item: { img: "f.webp", name: "Attaque d'opportunité" },
         isGM: true,
-        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
-        classOptions: [],
-        subclassOptions: [],
+        config: {
+          activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" },
+          classes: DND_CUSTOM.classes
+        },
+        subclassOptions: {},
         rechargeOptions: { shortRest: "DND_CUSTOM.Item.RechargeTypes.shortRest", longRest: "DND_CUSTOM.Item.RechargeTypes.longRest" },
         system: {
           class: "", subclass: "", level: 1, source: "", requiresRoll: false, costsResource: "",
@@ -524,9 +537,11 @@ describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", 
       renderTemplate("item/feature-sheet.hbs", {
         item: { img: "f.webp", name: "Attaque d'opportunité" },
         isGM: true,
-        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action" } },
-        classOptions: [],
-        subclassOptions: [],
+        config: {
+          activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action" },
+          classes: DND_CUSTOM.classes
+        },
+        subclassOptions: {},
         rechargeOptions: {},
         system: {
           class: "", subclass: "", level: 1, source: "", requiresRoll: false, costsResource: "",
@@ -539,8 +554,8 @@ describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", 
   }
 
   test("champ Classe masqué quand la Capacité est universelle", () => {
-    assert.equal(render(true).querySelector('input[name="system.class"]'), null);
-    assert.ok(render(false).querySelector('input[name="system.class"]'), "champ Classe devrait être visible sinon");
+    assert.equal(render(true).querySelector('select[name="system.class"]'), null);
+    assert.ok(render(false).querySelector('select[name="system.class"]'), "champ Classe devrait être visible sinon");
   });
 
   test("case à cocher Universelle reflète system.universal", () => {
@@ -554,8 +569,17 @@ describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", 
 describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences, maîtrises)", () => {
   const doc = parse(
     renderTemplate("item/class-sheet.hbs", {
-      item: { img: "c.webp", name: "Guerrier" },
-      system: { description: "<p>Maître d'armes.</p>", savingThrows: new Set(["str", "con"]), skillChoiceCount: 2, weaponProficiencies: new Set(["meleeSimple", "meleeMartial"]) },
+      item: { img: "c.webp", name: "Guerrier", type: "class" },
+      config: { classes: DND_CUSTOM.classes },
+      isSubclass: false,
+      system: {
+        description: "<p>Maître d'armes.</p>",
+        classKey: "fighter",
+        subclassKey: "",
+        savingThrows: new Set(["str", "con"]),
+        skillChoiceCount: 2,
+        weaponProficiencies: new Set(["meleeSimple", "meleeMartial"])
+      },
       savingThrowOptions: [
         { key: "str", label: "DND_CUSTOM.Abilities.str", checked: true },
         { key: "dex", label: "DND_CUSTOM.Abilities.dex", checked: false },
@@ -587,5 +611,12 @@ describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences
 
   test("la description reste un champ narratif distinct", () => {
     assert.ok(doc.querySelector('prose-mirror[name="system.description"]'));
+  });
+
+  test("le select Classe SRD affiche la classe correspondante sélectionnée, pas de select Sous-classe pour un Item 'class'", () => {
+    const select = doc.querySelector('select[name="system.classKey"]');
+    assert.ok(select, "select classKey introuvable");
+    assert.ok(select.querySelector('option[value="fighter"][selected]'), "option 'fighter' devrait être sélectionnée");
+    assert.equal(doc.querySelector('select[name="system.subclassKey"]'), null);
   });
 });

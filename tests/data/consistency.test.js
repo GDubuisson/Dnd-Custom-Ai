@@ -11,6 +11,7 @@ import {
   WORLD_GEAR,
   WORLD_TOOLS,
   WORLD_CLASSES,
+  WORLD_SUBCLASSES,
   WORLD_ORIGIN_ITEMS,
   WORLD_LANGUAGES,
   GLOSSARY
@@ -129,29 +130,44 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
         assert.ok(!(field in spell.system), `champ obsolète "${field}" présent sur "${spell.name}"`);
       }
     });
-    test(`${spell.name} : niveau 0-9, classes non vide, ne référence que des classes réelles`, () => {
+    test(`${spell.name} : niveau 0-9, classes non vide, ne référence que des clés de classe réelles`, () => {
       assert.ok(spell.system.level >= 0 && spell.system.level <= 9);
-      const classes = String(spell.system.classes ?? "").split(",").map((c) => c.trim()).filter(Boolean);
-      assert.ok(classes.length > 0, `"${spell.name}" ne liste aucune classe`);
-      for (const label of classes) {
-        assert.ok(CLASS_LABELS_FR.has(label), `"${spell.name}" référence une classe inconnue : "${label}"`);
+      // system.classes : ensemble de CLÉS stables (ex. "wizard"), pas des libellés localisés/
+      // traduits — cf. SpellData#classes, item-data.js, et le bug historique documenté dans
+      // tests/README.md > "Bug connu". En JSON brut (pas encore passé par le pipeline DataModel
+      // de Foundry), c'est un simple tableau.
+      assert.ok(spell.system.classes.length > 0, `"${spell.name}" ne liste aucune classe`);
+      for (const key of spell.system.classes) {
+        assert.ok(CLASS_KEYS.includes(key), `"${spell.name}" référence une clé de classe inconnue : "${key}"`);
       }
     });
   }
 });
 
 describe("world-items/features.json — cohérence (FeatureData)", () => {
+  const ALL_SUBCLASS_KEYS = new Set(Object.values(DND_CUSTOM.subclasses).flatMap((byKey) => Object.keys(byKey)));
   for (const feature of WORLD_FEATURES) {
-    test(`${feature.name} : classe réelle (ou universelle), niveau >= 1`, () => {
-      // Une Capacité universelle (system.universal, ex. Attaque d'opportunité) n'a
-      // volontairement pas de classe propre — octroyée à toutes (cf. grantClassContent).
+    test(`${feature.name} : clé de classe réelle (ou universelle), niveau >= 1`, () => {
+      // system.class : CLÉ stable (ex. "fighter"), pas un libellé localisé/traduit — cf.
+      // FeatureData#class, item-data.js, et le bug historique documenté dans
+      // tests/README.md > "Bug connu". Une Capacité universelle (system.universal, ex. Attaque
+      // d'opportunité) n'a volontairement pas de classe propre — octroyée à toutes (cf.
+      // grantClassContent).
       if (feature.system.universal) {
         assert.equal(feature.system.class, "", `"${feature.name}" est universelle : le champ classe devrait rester vide`);
       } else {
-        assert.ok(CLASS_LABELS_FR.has(feature.system.class), `"${feature.name}" référence une classe inconnue : "${feature.system.class}"`);
+        assert.ok(CLASS_KEYS.includes(feature.system.class), `"${feature.name}" référence une clé de classe inconnue : "${feature.system.class}"`);
       }
       assert.ok((feature.system.level ?? 1) >= 1);
     });
+    if (feature.system.subclass) {
+      test(`${feature.name} : clé de sous-classe réelle`, () => {
+        assert.ok(
+          ALL_SUBCLASS_KEYS.has(feature.system.subclass),
+          `"${feature.name}" référence une clé de sous-classe inconnue : "${feature.system.subclass}"`
+        );
+      });
+    }
   }
 });
 
@@ -231,9 +247,16 @@ describe("world-items/classes.json — une entrée par classe de config.js, cont
 });
 
 describe("world-items/classes.json — champs structurés cohérents avec config.js (duplication assumée, cf. ClassData)", () => {
+  // classKeyByLabel (nom d'Item français -> clé) sert uniquement à VÉRIFIER que system.classKey
+  // correspond bien au nom porté par l'Item — pas à le déduire (cf. test dédié ci-dessous) :
+  // system.classKey est la source de vérité utilisée par #onOpenClassSheet (actor-sheet.js),
+  // indépendante du nom localisé/traduit de l'Item (cf. tests/README.md > "Bug connu").
   const classKeyByLabel = new Map(CLASS_KEYS.map((key) => [LOCALES.fr[DND_CUSTOM.classes[key]], key]));
   for (const entry of WORLD_CLASSES) {
-    const classKey = classKeyByLabel.get(entry.name);
+    const classKey = entry.system.classKey;
+    test(`${entry.name} : system.classKey correspond au nom de l'Item`, () => {
+      assert.equal(classKey, classKeyByLabel.get(entry.name), `"${entry.name}" : classKey "${classKey}" ne correspond pas à son nom`);
+    });
     test(`${entry.name} : savingThrows identiques à DND_CUSTOM.classSavingThrows`, () => {
       assert.deepEqual(new Set(entry.system.savingThrows), new Set(DND_CUSTOM.classSavingThrows[classKey]));
     });
@@ -242,6 +265,30 @@ describe("world-items/classes.json — champs structurés cohérents avec config
     });
     test(`${entry.name} : weaponProficiencies identiques à DND_CUSTOM.classWeaponProficiencies`, () => {
       assert.deepEqual(new Set(entry.system.weaponProficiencies), new Set(DND_CUSTOM.classWeaponProficiencies[classKey]));
+    });
+  }
+});
+
+describe("world-items/subclasses.json — une entrée par sous-classe de config.js, classKey/subclassKey cohérents", () => {
+  const ALL_SUBCLASSES = Object.entries(DND_CUSTOM.subclasses).flatMap(([classKey, byKey]) =>
+    Object.entries(byKey).map(([subclassKey, labelKey]) => ({
+      classKey,
+      subclassKey,
+      label: LOCALES.fr[labelKey]
+    }))
+  );
+
+  test("exactement une entrée par sous-classe (pas plus, pas moins)", () => {
+    const names = WORLD_SUBCLASSES.map((entry) => entry.name);
+    assert.deepEqual(new Set(names), new Set(ALL_SUBCLASSES.map((s) => s.label)));
+  });
+
+  for (const entry of WORLD_SUBCLASSES) {
+    const expected = ALL_SUBCLASSES.find((s) => s.label === entry.name);
+    test(`${entry.name} : system.classKey/subclassKey correspondent au nom de l'Item`, () => {
+      assert.ok(expected, `"${entry.name}" ne correspond à aucune sous-classe de config.js`);
+      assert.equal(entry.system.classKey, expected.classKey, `"${entry.name}" : classKey attendu "${expected.classKey}"`);
+      assert.equal(entry.system.subclassKey, expected.subclassKey, `"${entry.name}" : subclassKey attendu "${expected.subclassKey}"`);
     });
   }
 });

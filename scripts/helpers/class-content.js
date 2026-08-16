@@ -34,14 +34,15 @@ function countAvailableContent(type, packName) {
 
 /** Octroie à `actor` les Capacités de classe et, s'il s'agit d'une classe lanceuse, les Sorts
  *  correspondant à sa classe/son niveau actuel, s'il ne les possède pas déjà (par nom) :
- *  - Capacités (FeatureData.class/level, libellé de classe localisé exact, ex. "Barbare") :
- *    toute Capacité dont le niveau requis est atteint (`level` <= niveau du personnage). Une
- *    Capacité de sous-classe (FeatureData.subclass renseigné) n'est incluse que si elle
- *    correspond à la sous-classe choisie par le personnage (actor.system.subclass, cf.
+ *  - Capacités (FeatureData.class/level, CLÉ de classe stable, ex. "barbarian" — indépendante de
+ *    la langue active du monde, cf. commentaire de FeatureData#class, item-data.js) : toute
+ *    Capacité dont le niveau requis est atteint (`level` <= niveau du personnage). Une Capacité
+ *    de sous-classe (FeatureData.subclass renseigné, clé stable elle aussi) n'est incluse que si
+ *    elle correspond à la sous-classe choisie par le personnage (actor.system.subclass, cf.
  *    DND_CUSTOM.subclasses, config.js) — vide, elle reste une Capacité de classe de base. Une
  *    Capacité universelle (FeatureData.universal, ex. Attaque d'opportunité) est octroyée à
  *    toute classe au niveau requis, indépendamment de FeatureData.class (laissé vide).
- *  - Sorts (SpellData.classes/level, liste de libellés séparés par virgule) : tours de magie
+ *  - Sorts (SpellData.classes/level, ensemble de clés de classe stables) : tours de magie
  *    (niveau 0, toujours connus) + sorts dont le niveau est couvert par le plus haut niveau de
  *    sort accessible au personnage (system.spells.maxLevel, déjà recalculé pour le niveau
  *    courant, cf. CharacterData#prepareDerivedData). Reflète l'esprit "lanceur préparé" du
@@ -55,16 +56,15 @@ function countAvailableContent(type, packName) {
  *  (pour un éventuel message de chat), tableau vide si rien de nouveau. */
 export async function grantClassContent(actor, classKey, level) {
   if (!classKey) return [];
-  const classLabel = game.i18n.localize(DND_CUSTOM.classes[classKey]);
   const ownedNames = new Set(actor.items.contents.map((item) => item.name));
   const isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(classKey);
 
   // Sous-classe (facultative) : lue directement sur l'Actor plutôt que passée en paramètre —
   // grantClassContent est déjà rappelée telle quelle à la montée de niveau (actor-sheet.js >
   // #onLevelUp) et au changement de sous-classe (hook updateActor, dnd-custom-ai.js), les deux
-  // fois avec actor.system.subclass à jour. Vide tant qu'aucune sous-classe n'est choisie.
+  // fois avec actor.system.subclass à jour. Vide tant qu'aucune sous-classe n'est choisie. Déjà
+  // une clé stable (ex. "champion"), jamais localisée — cf. subclass-choice.js.
   const subclassKey = actor.system.subclass;
-  const subclassLabel = subclassKey ? game.i18n.localize(DND_CUSTOM.subclasses[classKey]?.[subclassKey]) : "";
 
   // Plus haut niveau de sort accessible à la classe/au niveau du personnage : donnée dérivée
   // exposée par CharacterData#prepareDerivedData (cf. rules.js > spellUsesForClass), pas
@@ -81,23 +81,22 @@ export async function grantClassContent(actor, classKey, level) {
       (system) =>
         // Une Capacité universelle (ex. Attaque d'opportunité, system.universal) est éligible
         // pour toute classe, `system.class` restant vide dans ce cas — sinon, elle doit
-        // correspondre exactement à la classe du personnage.
-        (system.universal || system.class === classLabel) &&
+        // correspondre exactement à la clé de classe du personnage (comparaison de CLÉS, jamais
+        // de libellés localisés — cf. le bug historique documenté dans tests/README.md).
+        (system.universal || system.class === classKey) &&
         (system.level ?? 1) <= level &&
         // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
         // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
-        // choisie par le personnage (cf. subclassLabel ci-dessus).
-        (!system.subclass || system.subclass === subclassLabel)
+        // choisie par le personnage (cf. subclassKey ci-dessus).
+        (!system.subclass || system.subclass === subclassKey)
     ),
     isSpellcaster
-      ? findClassContentCandidates("spell", "sorts", (system) => {
-          const classes = String(system.classes ?? "")
-            .split(",")
-            .map((entry) => entry.trim())
-            .filter(Boolean);
-          if (!classes.includes(classLabel)) return false;
-          return system.level === 0 || system.level <= maxSpellLevel;
-        })
+      ? findClassContentCandidates(
+          "spell",
+          "sorts",
+          (system) =>
+            system.classes?.has?.(classKey) && (system.level === 0 || system.level <= maxSpellLevel)
+        )
       : []
   ]);
 

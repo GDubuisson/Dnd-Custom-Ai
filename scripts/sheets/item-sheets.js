@@ -133,18 +133,18 @@ export class FeatureItemSheet extends DndCustomItemSheet {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    // Référence texte libre vers un Item "class" du monde (cf. ClaudeFiles/ITEMS.md) :
-    // liste dynamique, pas une "choices" figée du DataModel.
-    context.classOptions = game.items
-      .filter((item) => item.type === "class")
-      .map((item) => item.name)
-      .sort((a, b) => a.localeCompare(b, game.i18n.lang));
-    // Même principe pour la sous-classe : référence texte libre vers un Item "subclass" du
-    // monde (system.subclass), pas une "choices" figée du DataModel.
-    context.subclassOptions = game.items
-      .filter((item) => item.type === "subclass")
-      .map((item) => item.name)
-      .sort((a, b) => a.localeCompare(b, game.i18n.lang));
+    // system.class/system.subclass stockent désormais une clé stable (ex. "fighter"/"champion"),
+    // jamais un libellé localisé/traduit (cf. FeatureData#class, item-data.js) — l'ancien champ
+    // texte libre + datalist branché sur les noms d'Items "class"/"subclass" du monde a été
+    // retiré (retour de test : cassait la comparaison de grantClassContent dès que le monde
+    // n'était pas en français, cf. tests/README.md > "Bug connu"). Le select Classe rend
+    // directement depuis `config.classes` (helper Handlebars natif `selectOptions`, même
+    // convention que weapon-sheet.hbs > weaponType/slot) ; le select Sous-classe a besoin d'être
+    // précalculé ici plutôt qu'un `{{lookup config.subclasses system.class}}` dans le template —
+    // `DND_CUSTOM.subclasses[""]` (Capacité sans classe encore choisie) vaut `undefined`, que le
+    // VRAI `selectOptions` de Foundry (contrairement à sa réimplémentation dans les tests DOM)
+    // ne tolère pas ("Cannot convert undefined or null to object", retour de test réel).
+    context.subclassOptions = DND_CUSTOM.subclasses[context.system.class] ?? {};
     context.rechargeOptions = FEATURE_RECHARGE_OPTIONS;
     context.isReaction = context.system.activation === "reaction";
     return context;
@@ -189,6 +189,17 @@ export class ClassItemSheet extends DndCustomItemSheet {
       label: DND_CUSTOM.weaponTypes[key],
       checked: context.system.weaponProficiencies.has(key)
     }));
+    // system.classKey/subclassKey (cf. ClassData, class-data.js) identifient l'Item pour
+    // #onOpenClassSheet/#onOpenSubclassSheet (actor-sheet.js), indépendamment de la langue
+    // active du monde — jamais déduits du nom de l'Item (cf. tests/README.md > "Bug connu").
+    // Partagé entre les types "class" et "subclass" (une sous-classe porte aussi la clé de sa
+    // classe parente, cf. commentaire de classe de ClassData) ; le select Classe rend
+    // directement depuis `config.classes` (`selectOptions`), le select Sous-classe a besoin
+    // d'être précalculé (comme FeatureItemSheet ci-dessus) : `DND_CUSTOM.subclasses[""]` vaut
+    // `undefined`, que le VRAI `selectOptions` de Foundry ne tolère pas ("Cannot convert
+    // undefined or null to object", retour de test réel).
+    context.isSubclass = context.item.type === "subclass";
+    if (context.isSubclass) context.subclassKeyOptions = DND_CUSTOM.subclasses[context.system.classKey] ?? {};
     return context;
   }
 }
@@ -206,6 +217,16 @@ export class SpellItemSheet extends DndCustomItemSheet {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
+    // Cases à cocher sur les classes lanceuses de sorts (DND_CUSTOM.spellcastingClasses) : un
+    // sort ne concerne jamais une classe non lanceuse, pas besoin de proposer les 12 classes.
+    // system.classes stocke un ensemble de clés stables, jamais des libellés localisés/traduits
+    // (cf. SpellData#classes, item-data.js — l'ancien champ texte libre séparé par virgules a
+    // été retiré, cf. tests/README.md > "Bug connu").
+    context.classOptions = DND_CUSTOM.spellcastingClasses.map((key) => ({
+      key,
+      label: game.i18n.localize(DND_CUSTOM.classes[key]),
+      checked: context.system.classes.has(key)
+    }));
     context.isReaction = context.system.activation === "reaction";
     return context;
   }

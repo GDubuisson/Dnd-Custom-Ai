@@ -5,6 +5,12 @@ name: Foundry VTT System Tests
 # remplace pas. Nécessite 3 secrets de dépôt (Settings > Secrets and variables > Actions) :
 # FOUNDRY_USERNAME, FOUNDRY_PASSWORD, FOUNDRY_LICENSE_KEY (licence Foundry VTT valide) — le
 # job échouera tant qu'ils ne sont pas renseignés, ce fichier ne les configure pas lui-même.
+#
+# Montages sous /data/Data/systems/dnd-custom-ai/... (PAS /home/foundry/data/...) : la vraie
+# racine de données de Foundry est /data (DATA_DIR de l'entrypoint felddy/foundryvtt), il ne
+# scanne jamais /home/foundry/data — même bug que celui découvert et corrigé dans
+# docker-compose.yml (cf. son commentaire), longtemps resté non reporté ici puisque ce fichier
+# n'est pas exercé localement.
 on:
   push:
   pull_request:
@@ -40,16 +46,16 @@ jobs:
             --env FOUNDRY_LICENSE_KEY=${{ secrets.FOUNDRY_LICENSE_KEY }}
             --publish 30001:30000/tcp
             --volume ${{ github.workspace }}/data:/data
-            --volume ${{ github.workspace }}/system.json:/home/foundry/data/systems/dnd-custom-ai/system.json
-            --volume ${{ github.workspace }}/scripts:/home/foundry/data/systems/dnd-custom-ai/scripts
-            --volume ${{ github.workspace }}/styles:/home/foundry/data/systems/dnd-custom-ai/styles
-            --volume ${{ github.workspace }}/templates:/home/foundry/data/systems/dnd-custom-ai/templates
-            --volume ${{ github.workspace }}/lang:/home/foundry/data/systems/dnd-custom-ai/lang
-            --volume ${{ github.workspace }}/assets:/home/foundry/data/systems/dnd-custom-ai/assets
-            --volume ${{ github.workspace }}/packs:/home/foundry/data/systems/dnd-custom-ai/packs
-            --volume ${{ github.workspace }}/world-items:/home/foundry/data/systems/dnd-custom-ai/world-items
-            --volume ${{ github.workspace }}/.quench-module:/home/foundry/data/modules/quench
-            --volume ${{ github.workspace }}/tests/quench:/home/foundry/data/modules/dnd-custom-ai-quench-tests
+            --volume ${{ github.workspace }}/system.json:/data/Data/systems/dnd-custom-ai/system.json
+            --volume ${{ github.workspace }}/scripts:/data/Data/systems/dnd-custom-ai/scripts
+            --volume ${{ github.workspace }}/styles:/data/Data/systems/dnd-custom-ai/styles
+            --volume ${{ github.workspace }}/templates:/data/Data/systems/dnd-custom-ai/templates
+            --volume ${{ github.workspace }}/lang:/data/Data/systems/dnd-custom-ai/lang
+            --volume ${{ github.workspace }}/assets:/data/Data/systems/dnd-custom-ai/assets
+            --volume ${{ github.workspace }}/packs:/data/Data/systems/dnd-custom-ai/packs
+            --volume ${{ github.workspace }}/world-items:/data/Data/systems/dnd-custom-ai/world-items
+            --volume ${{ github.workspace }}/.quench-module:/data/Data/modules/quench
+            --volume ${{ github.workspace }}/tests/quench:/data/Data/modules/dnd-custom-ai-quench-tests
             felddy/foundryvtt:release
           wait-on: "http://localhost:30001"
           wait-on-timeout: 120

@@ -18,23 +18,19 @@
   {{#unless system.universal}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Class"}}</label>
-    <input type="text" name="system.class" value="{{system.class}}" list="feature-class-options" {{#unless isGM}}disabled{{/unless}}>
-    <datalist id="feature-class-options">
-      {{#each classOptions}}
-      <option value="{{this}}">
-      {{/each}}
-    </datalist>
+    <select name="system.class" {{#unless isGM}}disabled{{/unless}}>
+      <option value=""></option>
+      {{selectOptions config.classes selected=system.class localize=true}}
+    </select>
   </div>
   {{/unless}}
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Subclass"}}</label>
-    <input type="text" name="system.subclass" value="{{system.subclass}}" list="feature-subclass-options" {{#unless isGM}}disabled{{/unless}}>
-    <datalist id="feature-subclass-options">
-      {{#each subclassOptions}}
-      <option value="{{this}}">
-      {{/each}}
-    </datalist>
+    <select name="system.subclass" {{#unless isGM}}disabled{{/unless}}>
+      <option value=""></option>
+      {{selectOptions subclassOptions selected=system.subclass localize=true}}
+    </select>
   </div>
 
   <div class="form-row">

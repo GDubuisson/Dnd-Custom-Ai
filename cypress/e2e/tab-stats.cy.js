@@ -362,19 +362,15 @@ describe("Onglet Statistiques — repos", () => {
     });
   });
 
-  // Régression connue au moment d'écrire ce test (découverte le 2026-08-15, en écrivant
-  // justement ce scénario) : grantClassContent (scripts/helpers/class-content.js) compare le
+  // Historique : ce scénario a longtemps été volontairement rouge (découvert le 2026-08-15,
+  // corrigé le 2026-08-16) — grantClassContent (scripts/helpers/class-content.js) comparait le
   // nom de classe français codé en dur dans world-items/features.json/spells.json (ex.
-  // "Guerrier") au libellé de la classe LOCALISÉ dynamiquement (`game.i18n.localize`) — sous une
-  // langue de monde autre que le français (ce monde de test tourne en anglais), la comparaison
-  // ne correspond jamais. Conséquence vérifiée en direct : un personnage ne reçoit QUE ses
-  // Capacités "universelles" (ex. Attaque d'opportunité, qui ignore ce filtre), jamais celles
-  // propres à sa classe — donc jamais "Second souffle" pour un fighter. Touche aussi bien
-  // l'assistant de création que la montée de niveau (#onLevelUp, actor-sheet.js), pas seulement
-  // ce test. NE PAS neutraliser cette assertion pour faire passer la CI au vert artificiellement
-  // (même consigne que T-WIZ-010, cf. tests/E2E_TEST_PLAN.md) — corriger correctement demande de
-  // stocker une clé de classe stable (pas le libellé français) dans le contenu de référence,
-  // hors du cadre de cette session d'écriture de tests (décision utilisateur, 2026-08-15).
+  // "Guerrier") au libellé de la classe LOCALISÉ dynamiquement (`game.i18n.localize`), ce qui ne
+  // correspondait jamais sous une langue de monde autre que le français (ce monde de test tourne
+  // en anglais). Corrigé en stockant une clé de classe STABLE (ex. "fighter", indépendante de la
+  // langue) dans `system.class`/`system.subclass`/`system.classes` du contenu de référence —
+  // cf. FeatureData/SpellData, scripts/data/item-data.js, et la migration de
+  // world-items/features.json/spells.json. Ce test reste la preuve directe de la correction.
   it("recharge une Capacité à charges au repos, court comme long (T-STATS-012)", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {

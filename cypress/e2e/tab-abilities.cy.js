@@ -3,14 +3,15 @@
 // réaction en début de tour) est marqué "Quench" seul dans le plan : implémenté dans
 // tests/quench/quench-tests.js, pas ici.
 //
-// Bug connu (cf. [[project_bug_grant_class_content_locale]], tests/README.md, T-STATS-012 dans
-// tab-stats.cy.js) : grantClassContent ne donne jamais de Capacité/Sort de classe sous ce monde
-// de test (langue anglaise) — TOUTES les Capacités/tous les Sorts utilisés ici sont donc
-// octroyés directement depuis leur compendium (cf. grantCompendiumItem), jamais via l'assistant
-// de création. Sans rapport avec la classe "officielle" du personnage qui les reçoit (le code de
-// #onCastSpell/#onRollFeature ne revérifie jamais l'éligibilité de classe à l'utilisation, seul
-// grantClassContent le fait au moment d'octroyer — donc un personnage Magicien peut très bien
-// recevoir manuellement un sort de Clerc pour isoler un seul mécanisme à la fois, ex. T-ABIL-013).
+// Écrit à l'origine pour contourner un bug de locale sur grantClassContent (corrigé depuis, cf.
+// tests/README.md > "Bug connu — CORRIGÉ", T-STATS-012 dans tab-stats.cy.js) — le contournement
+// reste néanmoins la bonne approche ici : TOUTES les Capacités/tous les Sorts utilisés dans ce
+// fichier sont octroyés directement depuis leur compendium (cf. grantCompendiumItem), jamais via
+// l'assistant de création, pour isoler un seul mécanisme à la fois SANS dépendre de la classe
+// "officielle" du personnage qui les reçoit. #onCastSpell/#onRollFeature ne revérifient jamais
+// l'éligibilité de classe à l'UTILISATION (seul grantClassContent la vérifie à l'OCTROI) — donc
+// un personnage Magicien peut très bien recevoir manuellement un sort de Clerc pour tester, par
+// exemple, l'Incantation rituelle isolément (T-ABIL-013).
 
 const createdActorIds = [];
 const createdCombatIds = [];
