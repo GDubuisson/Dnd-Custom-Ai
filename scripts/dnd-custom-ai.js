@@ -178,6 +178,7 @@ Hooks.once("ready", async () => {
   await ensureContentImportMacro();
   await importSystemContent({ notifyIfEmpty: false });
   await ensureCharacterTokensLinked();
+  await ensureTokenDisplayDefaults();
 });
 
 /** Migration ponctuelle (monde déjà en cours, cf. hook preCreateActor plus bas pour les
@@ -207,6 +208,38 @@ async function ensureCharacterTokensLinked() {
         return masterActor && token.actor.system.attributes.hp.value === masterActor.system.attributes.hp.value;
       })
       .map((token) => ({ _id: token.id, actorLink: true }));
+    if (tokenUpdates.length) await scene.updateEmbeddedDocuments("Token", tokenUpdates);
+  }
+}
+
+/** Migration ponctuelle (monde déjà en cours, cf. hook preCreateActor plus haut pour les
+ *  nouveaux Actors) : même geste que ensureCharacterTokensLinked mais pour l'affichage
+ *  nom/PV — sans risque de perte de donnée ici (contrairement à actorLink, changer le mode
+ *  d'affichage n'écrase aucune valeur de jeu), donc appliqué à tous les Actors et tokens déjà
+ *  placés, pas seulement les personnages joueurs. */
+async function ensureTokenDisplayDefaults() {
+  if (!game.user.isGM) return;
+
+  const misconfigured = (doc) =>
+    doc.displayName !== CONST.TOKEN_DISPLAY_MODES.ALWAYS || doc.displayBars !== CONST.TOKEN_DISPLAY_MODES.ALWAYS;
+
+  const actorUpdates = game.actors
+    .filter((actor) => misconfigured(actor.prototypeToken))
+    .map((actor) => ({
+      _id: actor.id,
+      "prototypeToken.displayName": CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+      "prototypeToken.displayBars": CONST.TOKEN_DISPLAY_MODES.ALWAYS
+    }));
+  if (actorUpdates.length) await Actor.updateDocuments(actorUpdates);
+
+  for (const scene of game.scenes) {
+    const tokenUpdates = scene.tokens
+      .filter(misconfigured)
+      .map((token) => ({
+        _id: token.id,
+        displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+        displayBars: CONST.TOKEN_DISPLAY_MODES.ALWAYS
+      }));
     if (tokenUpdates.length) await scene.updateEmbeddedDocuments("Token", tokenUpdates);
   }
 }
@@ -324,6 +357,22 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
 Hooks.on("preCreateActor", (actor) => {
   if (actor.type !== "character") return;
   actor.updateSource({ "prototypeToken.actorLink": true });
+});
+
+// Nom et PV affichés en permanence sur les tokens, pour tout le monde, quel que soit le type
+// d'Actor (retour de test : par défaut Foundry n'affiche rien, `DISPLAY_MODES.NONE`, il fallait
+// survoler/sélectionner un token pour identifier qui est qui en combat). `ALWAYS` = visible sans
+// interaction, y compris pour les Joueurs qui ne possèdent pas le token (barre de vie du côté
+// adverse comprise — un choix volontairement permissif, cohérent avec le reste du système qui ne
+// masque déjà aucune information de combat). `bar1.attribute` cible `attributes.hp` (chemin
+// identique sur les 4 types d'Actor, cf. character/npc/vehicle-actor-data.js) pour que la barre
+// de vie ait quelque chose à afficher dès la création, sans réglage manuel du MJ.
+Hooks.on("preCreateActor", (actor) => {
+  actor.updateSource({
+    "prototypeToken.displayName": CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+    "prototypeToken.displayBars": CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+    "prototypeToken.bar1.attribute": "attributes.hp"
+  });
 });
 
 // Best-effort : empêche le dialogue natif "Créer un acteur" d'ouvrir la fiche de personnage

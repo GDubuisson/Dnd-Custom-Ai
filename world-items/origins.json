@@ -4,7 +4,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Fleuraine.webp",
     "system": {
-      "inspiration": "France",
       "demonym": "Fleurainois",
       "language": "Fleurain",
       "traits": "Noblesse, chevalerie, droiture, honneur",
@@ -22,7 +21,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Altenmark.webp",
     "system": {
-      "inspiration": "Germanie",
       "demonym": "Altenmarkois",
       "language": "Altenmarkois",
       "traits": "Force, courage, détermination, discipline",
@@ -40,7 +38,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Lucentia.webp",
     "system": {
-      "inspiration": "Italie",
       "demonym": "Lucentien",
       "language": "Lucentien",
       "traits": "Charme, éloquence, persuasion, commerce",
@@ -58,7 +55,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Ravenmoor.webp",
     "system": {
-      "inspiration": "Angleterre",
       "demonym": "Ravenmoorien",
       "language": "Ravenmoorien",
       "traits": "Loyauté, pragmatisme, stoïcisme, sens du devoir",
@@ -76,7 +72,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Valdera.webp",
     "system": {
-      "inspiration": "Espagne",
       "demonym": "Valderan",
       "language": "Valderan",
       "traits": "Piété, ferveur, passion, ardeur",
@@ -94,7 +89,6 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Ashar.webp",
     "system": {
-      "inspiration": "Arabie",
       "demonym": "Asharite",
       "language": "Asharite",
       "traits": "Sagesse, connaissance, réflexion, patience",

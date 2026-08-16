@@ -881,57 +881,116 @@
   margin-bottom: 1rem;
 }
 
-.dnd-custom-ai .conditions-grid {
+.dnd-custom-ai .conditions-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.dnd-custom-ai .condition-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.7rem 0.3rem 0.3rem;
-  border-radius: 999px;
+/* Retour de test : la version précédente (grille de pastilles cliquables, une par état, toutes
+   visibles en permanence) jugée peu claire — remplacée par une vraie liste déroulante (élément
+   natif `<details>`, pas de JS requis) : repliée par défaut sur un résumé des états actifs
+   uniquement, dépliée sur une liste à cocher complète. Même mécanique de bascule qu'avant
+   (`data-action="toggleCondition"` sur un `<button>`, cf. actor-sheet.js/npc-sheet.js) — seule
+   l'habillage change, l'icône case à cocher (fa-square/fa-square-check) remplace la pastille. */
+.dnd-custom-ai .conditions-dropdown {
   border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.4rem;
   background: var(--dca-surface-lowest);
-  color: var(--dca-muted-text);
+  min-width: 12rem;
+}
+
+.dnd-custom-ai .conditions-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  list-style: none;
   font-family: var(--dca-font-label);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+}
+
+.dnd-custom-ai .conditions-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dnd-custom-ai .conditions-summary-empty {
+  color: var(--dca-muted-text);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dnd-custom-ai .conditions-summary-chip {
+  display: inline-flex;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(43, 32, 17, 0.12);
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  font-size: 0.62rem;
 }
 
-.dnd-custom-ai .condition-chip img {
-  width: 1.3rem;
-  height: 1.3rem;
-  padding: 0.2rem;
+.dnd-custom-ai .conditions-summary-caret {
+  margin-left: auto;
+  color: var(--dca-muted-text);
+  transition: transform 0.15s ease;
+}
+
+.dnd-custom-ai .conditions-dropdown[open] .conditions-summary-caret {
+  transform: rotate(180deg);
+}
+
+.dnd-custom-ai .conditions-checklist {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--dca-outline-variant);
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.dnd-custom-ai .condition-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border: none;
+  background: none;
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.dnd-custom-ai .condition-checkbox-row:hover {
+  background: var(--dca-surface-container);
+}
+
+.dnd-custom-ai .condition-checkbox-row i.fa-square {
+  color: var(--dca-outline-variant);
+}
+
+.dnd-custom-ai .condition-checkbox-row.active i.fa-square-check {
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .condition-checkbox-row img {
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0.15rem;
   border-radius: 999px;
   background: var(--dca-surface-container);
   filter: grayscale(1);
   opacity: 0.65;
-  transition: background 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
 }
 
-.dnd-custom-ai .condition-chip:hover {
-  border-color: var(--dca-secondary);
-  box-shadow: 0 2px 4px rgba(43, 32, 17, 0.18);
-}
-
-.dnd-custom-ai .condition-chip.active {
-  background: var(--dca-secondary-container);
-  border-color: var(--dca-secondary);
-  color: var(--dca-on-secondary-container);
-  box-shadow: inset 0 0 0 1px var(--dca-secondary);
-}
-
-.dnd-custom-ai .condition-chip.active img {
-  background: var(--dca-surface-lowest);
+.dnd-custom-ai .condition-checkbox-row.active img {
   filter: none;
   opacity: 1;
 }
@@ -1718,8 +1777,7 @@
   color: var(--dca-primary);
 }
 
-.dnd-custom-ai .journal-block textarea,
-.dnd-custom-ai .journal-block prose-mirror {
+.dnd-custom-ai .journal-block textarea {
   display: block;
   width: 100%;
   min-height: 8rem;
@@ -1731,6 +1789,37 @@
   font-family: var(--dca-font-body);
   font-size: 0.85rem;
   resize: vertical;
+}
+
+/* Bug retour de test ("aucun texte visible / impossible d'éditer" dans les zones de texte) :
+   `min-height` seul sur `<prose-mirror>` ne se propage pas à sa zone éditable interne
+   (`.editor-content.ProseMirror`, contenteditable). Un champ VIDE (aucun paragraphe -> aucune
+   hauteur intrinsèque de contenu) donnait donc une zone éditable de 0px de haut, invisible et
+   non cliquable, malgré le cadre de 8rem bien affiché autour (measured en conditions réelles :
+   hauteur de la zone éditable persistante à 0px même après 3.5s et un `resize`, donc pas un
+   simple problème de timing d'initialisation). Un champ déjà rempli n'était jamais concerné, sa
+   propre hauteur de contenu masquant le bug — d'où sa découverte tardive. `display: flex` +
+   `flex: 1` sur la zone éditable contourne le calcul de `height: 100%` (qui ne tient jamais
+   compte d'un `min-height` sur son parent, seulement d'une `height` explicite) en laissant le
+   flex layout distribuer l'espace réellement disponible, quel que soit le contenu. */
+.dnd-custom-ai .journal-block prose-mirror {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 8rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface);
+  font-family: var(--dca-font-body);
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.dnd-custom-ai .journal-block prose-mirror .editor-content {
+  flex: 1;
+  min-height: 0;
 }
 
 .dnd-custom-ai .journal-block textarea:focus,
@@ -1922,11 +2011,46 @@
   padding: 0.25rem 0.5rem;
 }
 
-.dnd-custom-ai .item-sheet-body .form-row textarea,
-.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
+.dnd-custom-ai .item-sheet-body .form-row textarea {
   display: block;
   min-height: 6rem;
   resize: vertical;
+}
+
+/* Retour de test : "texte invisible / impossible d'éditer" dans les zones de texte des Items de
+   compendium. Root cause identifiée en conditions réelles (mesure DOM directe, pas une
+   supposition) : `min-height` seul sur `<prose-mirror>` ne se propage jamais à sa zone éditable
+   interne (`.editor-content.ProseMirror`, contenteditable) — un champ VIDE (aucun paragraphe,
+   donc aucune hauteur intrinsèque de contenu) donne une zone éditable de 0px de haut, invisible
+   ET non cliquable, malgré le cadre bien affiché autour. Un champ déjà rempli n'était jamais
+   concerné (sa propre hauteur de contenu masquait le bug), et un compendium fraîchement créé/
+   édité par un Item vierge a justement TOUS ses champs de texte vides au départ — cohérent avec
+   le retour. Même correctif que .journal-block (actor-sheet, cf. plus haut) : `display: flex` +
+   `flex: 1` sur la zone éditable contourne le calcul de `height: 100%` (qui ignore un
+   `min-height` sur son parent, seul une `height` explicite compte). */
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror {
+  display: flex;
+  flex-direction: column;
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror .editor-content {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Un Joueur n'a qu'un accès Observateur sur un Item de compendium (propriété du MJ) : le champ
+   devient `contenteditable="false"` sans AUCUNE indication visuelle de cet état, indiscernable
+   d'un champ cassé pour qui essaie d'y taper sans effet. */
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror [contenteditable="false"] {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.dnd-custom-ai .item-sheet-body .form-row prose-mirror:has([contenteditable="false"]) {
+  background: var(--dca-surface-container);
+  border-style: dashed;
 }
 
 /* Retour de test : un champ texte court (ex. Origine > "Traits culturels") devenait illisible
@@ -1949,6 +2073,75 @@
   gap: 0.4rem;
   font-family: var(--dca-font-label);
   font-size: 0.8rem;
+  color: var(--dca-on-surface-variant);
+}
+
+/* Retour de test : la liste complète des compétences (Origine > Compétences avantagées, une
+   case par compétence SRD) prenait trop de place affichée en permanence sur la fiche d'Item —
+   repliée dans une liste déroulante (même mécanique que .conditions-dropdown, actor-sheet), dont
+   le résumé n'affiche que les compétences déjà cochées. */
+.dnd-custom-ai .checklist-dropdown {
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.35rem;
+  background: var(--dca-surface-lowest);
+}
+
+.dnd-custom-ai .checklist-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--dca-font-label);
+  font-size: 0.75rem;
+}
+
+.dnd-custom-ai .checklist-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dnd-custom-ai .checklist-summary-empty {
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .checklist-summary-chip {
+  display: inline-flex;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: var(--dca-secondary-container);
+  color: var(--dca-on-secondary-container);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.dnd-custom-ai .checklist-summary-caret {
+  margin-left: auto;
+  color: var(--dca-muted-text);
+  transition: transform 0.15s ease;
+}
+
+.dnd-custom-ai .checklist-dropdown[open] .checklist-summary-caret {
+  transform: rotate(180deg);
+}
+
+.dnd-custom-ai .checklist-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.4rem 0.6rem 0.5rem;
+  border-top: 1px solid var(--dca-outline-variant);
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.dnd-custom-ai .checklist-option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.78rem;
   color: var(--dca-on-surface-variant);
 }
 

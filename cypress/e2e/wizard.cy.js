@@ -134,6 +134,22 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get("input.actor-name").should("not.exist");
   });
 
+  // Retour de test (2026-08-16) : par défaut Foundry n'affiche ni le nom ni la barre de vie
+  // d'un token (DISPLAY_MODES.NONE) — corrigé via un hook `preCreateActor` générique
+  // (dnd-custom-ai.js, indépendant du type d'Actor, cf. aussi ensureTokenDisplayDefaults pour
+  // la migration des Actors déjà existants). Testé ici sur un Actor "character" nu, sans passer
+  // par l'assistant : le hook agit à la création, avant même que l'assistant n'intervienne.
+  it("configure le token (nom/PV toujours visibles) dès la création de l'Actor (T-WIZ-019)", () => {
+    createBlankCharacter("Wizard T-WIZ-019").then((id) => {
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(id);
+        expect(actor.prototypeToken.displayName).to.equal(win.CONST.TOKEN_DISPLAY_MODES.ALWAYS);
+        expect(actor.prototypeToken.displayBars).to.equal(win.CONST.TOKEN_DISPLAY_MODES.ALWAYS);
+        expect(actor.prototypeToken.bar1.attribute).to.equal("attributes.hp");
+      });
+    });
+  });
+
   it("liste toutes les origines et les 12 classes, triées alphabétiquement (T-WIZ-002)", () => {
     createBlankCharacter("Wizard T-WIZ-002");
     getWizardForm().should("be.visible");

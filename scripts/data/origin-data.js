@@ -19,7 +19,6 @@ function abilityBonusesSchema() {
 export class OriginData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      inspiration: new StringField({ required: false, blank: true, initial: "" }),
       demonym: new StringField({ required: false, blank: true, initial: "" }),
       language: new StringField({ required: false, blank: true, initial: "" }),
       traits: new StringField({ required: false, blank: true, initial: "" }),

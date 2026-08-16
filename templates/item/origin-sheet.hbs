@@ -16,11 +16,6 @@
   </div>
 
   <div class="form-row">
-    <label>{{localize "DND_CUSTOM.Item.Fields.Inspiration"}}</label>
-    <input type="text" name="system.inspiration" value="{{system.inspiration}}">
-  </div>
-
-  <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Traits"}}</label>
     <input type="text" name="system.traits" value="{{system.traits}}" title="{{system.traits}}">
   </div>
@@ -37,12 +32,24 @@
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.SkillAdvantages"}}</legend>
-    {{#each skillAdvantageOptions}}
-    <label class="checkbox-row">
-      <input type="checkbox" name="system.skillAdvantages" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
-      {{localize this.label}}
-    </label>
-    {{/each}}
+    <details class="checklist-dropdown">
+      <summary class="checklist-summary">
+        {{#if checkedSkillAdvantages.length}}
+        {{#each checkedSkillAdvantages}}<span class="checklist-summary-chip">{{localize this.label}}</span>{{/each}}
+        {{else}}
+        <span class="checklist-summary-empty">{{localize "DND_CUSTOM.Item.Fields.SkillAdvantagesNone"}}</span>
+        {{/if}}
+        <i class="fa-solid fa-caret-down checklist-summary-caret"></i>
+      </summary>
+      <div class="checklist-options">
+        {{#each skillAdvantageOptions}}
+        <label class="checklist-option-row">
+          <input type="checkbox" name="system.skillAdvantages" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+          {{localize this.label}}
+        </label>
+        {{/each}}
+      </div>
+    </details>
   </fieldset>
 
   <fieldset class="form-group">

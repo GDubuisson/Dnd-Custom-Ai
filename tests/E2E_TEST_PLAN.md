@@ -56,6 +56,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-WIZ-016 | Capacités/sorts de niveau 1 octroyés | P1 | E2E+Quench | Terminer l'assistant avec une classe lanceuse de sorts | Les capacités de classe niveau 1 et les sorts/tours de magie de niveau 1 apparaissent sur l'Actor |
 | T-WIZ-017 | Langues octroyées | P2 | Quench | Terminer l'assistant avec n'importe quelle origine | L'Actor possède un Item "Commune" + la langue propre à l'origine choisie |
 | T-WIZ-018 | Réouverture après fermeture sans terminer | P2 | E2E | Fermer l'assistant sans soumettre, rouvrir la fiche | Le bouton "Créer un personnage" reste visible, aucune donnée n'a été modifiée |
+| T-WIZ-019 | Token configuré dès la création de l'Actor | P2 | E2E | Créer un Actor "character" vierge | `prototypeToken.displayName`/`displayBars` = `ALWAYS`, `bar1.attribute` = `attributes.hp` |
 
 ---
 
@@ -157,15 +158,21 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-019 | Réaction — capacité de type "reaction" bloquée si déjà utilisée | P1 | E2E+Quench | Réaction déjà consommée ce round, tenter d'utiliser une autre capacité/sort de type "reaction" | Avertissement `ReactionUnavailable`, action annulée sans décompte de charge |
 | T-ABIL-020 | Bascule manuelle de la réaction | P2 | E2E | Cliquer l'indicateur de réaction dans l'en-tête | `combat.reactionAvailable` bascule |
 | T-ABIL-021 | Régénération de la réaction en début de tour | P1 | Quench | Simuler `updateCombat` faisant passer au tour du personnage | `combat.reactionAvailable` repasse à `true` (hook, à vérifier côté `dnd-custom-ai.js`) |
+| T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commune + langue d'origine listées, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
+| T-ABIL-023 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans la liste de l'onglet Capacités |
 
 ---
 
 ## 7. Onglet Journal (`tab-journal.hbs`)
 
+Les langues connues (ex T-JOURNAL-001/002) ont été déplacées vers l'onglet Capacités le
+2026-08-16 (retour de test — cf. T-ABIL-022/023 ci-dessus). Le Journal ne contient plus que les
+deux champs de texte libre ci-dessous.
+
 | ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
 |---|---|---|---|---|---|
-| T-JOURNAL-001 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Journal | Commune + langue d'origine listées, triées alphabétiquement |
-| T-JOURNAL-002 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans l'onglet Journal |
+| T-JOURNAL-001 | Champ Biographie éditable | P2 | E2E | Taper du texte dans le champ Biographie, perdre le focus | La valeur persiste sur `system.biography` |
+| T-JOURNAL-002 | Champ Notes éditable | P2 | E2E | Taper du texte dans le champ Notes, perdre le focus | La valeur persiste sur `system.notes` |
 
 ---
 
@@ -208,6 +215,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-NPC-003 | Bascule d'état | P2 | E2E | Cliquer une icône d'état | ActiveEffect créée/retirée |
 | T-NPC-004 | Jet d'Initiative | P1 | E2E | Cliquer Initiative sur une scène avec combat actif | Combattant créé/mis à jour |
 | T-NPC-005 | Octroi d'XP au groupe | P1 | E2E+Quench | Cliquer "Octroyer XP" avec des Actors joueurs sélectionnés/ciblés | XP répartie, notification |
+| T-NPC-006 | Token configuré dès la création de l'Actor | P2 | E2E | Créer un Actor "npc" | `prototypeToken.displayName`/`displayBars` = `ALWAYS`, `bar1.attribute` = `attributes.hp` |
 
 ---
 

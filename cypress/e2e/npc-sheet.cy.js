@@ -77,10 +77,14 @@ describe("Fiche PNJ, session MJ", () => {
   });
 
   it("bascule d'un état : l'ActiveEffect est créée puis retirée (T-NPC-003)", () => {
+    // Liste déroulante repliée par défaut (retour de test, cf. tab-stats.cy.js > T-STATS-015) :
+    // rouverte avant chaque clic, un re-render complet suivant chaque bascule.
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(npcActorId).statuses.has("poisoned"), "état actif après le 1er clic").to.be.true;
     });
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(npcActorId).statuses.has("poisoned"), "état retiré après le 2e clic").to.be.false;
@@ -139,6 +143,19 @@ describe("Fiche PNJ, session MJ", () => {
     cy.window().should((win) => {
       const actor = win.game.actors.get(playerActorId);
       expect(actor.system.xp, "l'XP rapporté (50) doit avoir été ajouté").to.equal(50);
+    });
+  });
+
+  // Retour de test (2026-08-16) : nom/PV toujours visibles par défaut, "quels que soient les
+  // tokens" (dixit le retour) — pas seulement les personnages joueurs. Le hook `preCreateActor`
+  // qui pose ces valeurs (dnd-custom-ai.js) n'est pas restreint par type d'Actor, contrairement
+  // à `prototypeToken.actorLink` (cf. commentaire du hook) qui ne concerne que les PJ.
+  it("configure le token PNJ (nom/PV toujours visibles) dès sa création (T-NPC-006)", () => {
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(npcActorId);
+      expect(actor.prototypeToken.displayName).to.equal(win.CONST.TOKEN_DISPLAY_MODES.ALWAYS);
+      expect(actor.prototypeToken.displayBars).to.equal(win.CONST.TOKEN_DISPLAY_MODES.ALWAYS);
+      expect(actor.prototypeToken.bar1.attribute).to.equal("attributes.hp");
     });
   });
 });

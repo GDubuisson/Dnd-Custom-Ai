@@ -120,7 +120,11 @@ describe("Fiche personnage — en-tête et navigation, session Joueur", () => {
   });
 
   it("un état actif reste visible dans le résumé de l'en-tête quel que soit l'onglet ouvert (T-SHEET-003)", () => {
+    // Liste déroulante repliée par défaut (retour de test, cf. tab-stats.cy.js > T-STATS-015) :
+    // rouverte avant chaque clic, un re-render complet suivant chaque bascule.
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("have.class", "active");
 
     cy.window()
@@ -133,9 +137,13 @@ describe("Fiche personnage — en-tête et navigation, session Joueur", () => {
         sheetRoot().find(".active-condition-chip").should("contain.text", poisonedLabel);
       });
 
-    // Nettoyage : retire l'état pour ne pas fausser un test suivant de la même spec.
+    // Nettoyage : retire l'état pour ne pas fausser un test suivant de la même spec. `{force:
+    // true}` : l'état `open` du `<details>` après un aller-retour d'onglet (pas de re-render
+    // entre-temps, juste une bascule de classe CSS) est incertain à ce stade du test — le geste
+    // de bascule d'état lui-même est déjà couvert ailleurs (tab-stats.cy.js > T-STATS-015), ici
+    // seul le nettoyage compte, `data-action` se déclenche normalement même hors-écran/couvert.
     sheetRoot().find('nav.tabs [data-tab="stats"]').click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click({ force: true });
     sheetRoot().find(".active-condition-chip").should("not.exist");
   });
 

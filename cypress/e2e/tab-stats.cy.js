@@ -460,16 +460,24 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
   });
 
   it("bascule un état : l'ActiveEffect est créée puis retirée (T-STATS-015)", () => {
+    // La liste des états est repliée par défaut (`<details>`, retour de test — cf.
+    // styles/dnd-custom-ai.css > .conditions-dropdown) : un re-render complet de la fiche suit
+    // chaque bascule (donnée modifiée), qui régénère le HTML et referme le `<details>` — il faut
+    // donc le rouvrir avant chaque clic, pas seulement le premier.
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(sharedActorId).statuses.has("poisoned")).to.be.true;
     });
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("have.class", "active");
 
+    sheetRoot().find(".conditions-dropdown summary").click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("have.class", "active");
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(sharedActorId).statuses.has("poisoned")).to.be.false;
     });
+
+    sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("not.have.class", "active");
   });
 
