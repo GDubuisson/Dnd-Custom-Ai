@@ -13,22 +13,25 @@ import dns from "node:dns";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Résolution DNS de "localhost" ici, PAS le choix IPv4/IPv6 lui-même : diagnostiqué le
-// 2026-08-15 sur cette machine, situation inverse de celle documentée ci-dessous pour baseUrl
-// (::1 fonctionnait, 127.0.0.1 renvoyait "Empty reply from server"/"socket hang up" — l'exact
-// opposé du problème résolu le 2026-08-14). Cause réelle : l'ordre par défaut de
-// dns.lookup("localhost") sous Node (pas Windows Defender, ni un antivirus, ni un proxy —
-// écartés un par un) renvoyait l'adresse IPv4 en premier sans se rabattre sur IPv6 en cas
-// d'échec (contrairement à curl/navigateurs qui font un vrai Happy Eyeballs), donc `baseUrl`
-// en hostname échouait même quand IPv6 fonctionnait très bien. `dns.setDefaultResultOrder`
-// est l'API Node équivalente au flag CLI `--dns-result-order`, utilisable ici (contrairement à
-// NODE_OPTIONS, qu'il faut fixer avant le démarrage du process). **Ce comportement s'est déjà
-// inversé une fois entre le 2026-08-14 et le 2026-08-15 sur cette même machine (fiabilité
-// IPv4 vs IPv6 du transfert de port Docker Desktop) : si "socket hang up" ou "Empty reply from
-// server" réapparaît, retester les deux familles avant de supposer que ce réglage est encore le
-// bon** (cf. [[project_docker_e2e_testing_setup]] pour la méthode de diagnostic complète : curl
-// + `node -e "fetch(...)"` sur les deux adresses, comparés au comportement de Cypress).
+// Résolution DNS de "localhost" : gardée en tentative de mitigation (cf. historique ci-dessous),
+// mais s'est révélée INSUFFISANTE à elle seule le 2026-08-16 — `dns.setDefaultResultOrder`
+// n'affecte que la résolution DNS de hostnames, or le processus Cypress a continué à échouer
+// ("socket hang up") avec `baseUrl` en hostname MÊME AVEC ce réglage actif, alors qu'un `curl`
+// simultané vers `http://localhost:30001/` réussissait sans problème et que forcer `baseUrl` en
+// adresse LITTÉRALE IPv6 (`http://[::1]:30001`, cf. plus bas) a immédiatement résolu le
+// problème. Diagnostic exact non élucidé (comportement de résolution DNS spécifique au
+// sous-processus Cypress, différent de celui de Node "nu" testé via `node -e "fetch(...)"`, qui
+// lui réussissait) — plutôt que de continuer à chasser ce mécanisme, `baseUrl` contourne
+// maintenant la résolution DNS entièrement (voir plus bas), rendant ce réglage best-effort.
 dns.setDefaultResultOrder("ipv6first");
+
+// Historique (résumé, cf. [[project_docker_e2e_testing_setup]] pour le détail complet) : la
+// fiabilité IPv4 vs IPv6 du transfert de port Docker Desktop sur cette machine s'est déjà
+// inversée au moins 3 fois entre le 2026-08-14 et le 2026-08-16. Si "socket hang up"/"Empty
+// reply from server" réapparaît malgré `baseUrl` en adresse littérale ci-dessous : retester les
+// deux familles (`curl -4`/`curl -6 http://localhost:30001/`, `curl "http://[::1]:30001/"`,
+// `curl -4 http://127.0.0.1:30001/`) AVANT de supposer que `[::1]` est encore la bonne adresse —
+// si IPv4 redevient la famille fiable, remplacer `[::1]` par `127.0.0.1` ci-dessous.
 
 // Version locale de system.json au moment de lancer Cypress : comparée à game.system.version
 // une fois le monde chargé (cf. cy.assertSystemVersionMatches(), cypress/support/e2e.js).
@@ -42,10 +45,11 @@ const expectedSystemVersion = JSON.parse(
 
 export default defineConfig({
   e2e: {
-    // "localhost" (pas une IP littérale) : cf. dns.setDefaultResultOrder ci-dessus, qui décide
-    // désormais de la famille IPv4/IPv6 réellement utilisée — un futur changement de ce
-    // comportement Docker Desktop se corrige à un seul endroit (l'appel dns), pas ici.
-    baseUrl: "http://localhost:30001", // Port mappé par docker-compose.yml
+    // Adresse IPv6 littérale (pas un hostname) : contourne complètement la résolution DNS,
+    // dont le comportement s'est avéré peu fiable pour le processus Cypress lui-même (cf.
+    // dns.setDefaultResultOrder ci-dessus). Un futur retournement de la famille IPv4/IPv6
+    // fiable côté Docker Desktop se corrige à un seul endroit (cette ligne).
+    baseUrl: "http://[::1]:30001", // Port mappé par docker-compose.yml
     supportFile: "cypress/support/e2e.js",
     specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
     video: true, // Enregistre les échecs en vidéo

@@ -142,7 +142,33 @@ npm run docker:down        # arrête l'instance
   introuvable — supprimé/restauré en session MJ dans le compendium `origines`, seule permission
   requise pour ce scénario, cf. `ownership` du pack dans `system.json`) — **T-REF-001
   volontairement rouge**, 3e manifestation du même bug de locale (`#onOpenClassSheet`, cf.
-  "Bug connu" plus bas). `cypress/
+  "Bug connu" plus bas) ; `cypress/e2e/npc-sheet.cy.js` : section 10, fiche PNJ — T-NPC-001 à
+  T-NPC-005 (3 onglets, jet de caractéristique, bascule d'état, Initiative, octroi d'XP via
+  `DialogV2`), toute la section en session MJ (un PNJ n'a normalement pas de propriétaire
+  Joueur) ; `cypress/e2e/vehicle-sheet.cy.js` : section 11, fiche Véhicule — T-VEH-001 à
+  T-VEH-003 (champs de base, barre de PV bornée, inventaire), session MJ également ;
+  `cypress/e2e/item-sheets.cy.js` : section 12, fiches d'Item — T-ITEM-001 à T-ITEM-003
+  (ouverture des 9 types sans erreur, édition d'un champ simple qui persiste, champ
+  `damageVersatile.dice` qui apparaît seulement une fois "Polyvalente" cochée), session MJ (les
+  types non physiques vivent en compendium, en écriture réservée au MJ) ; `cypress/e2e/
+  drag-drop.cy.js` : section 13, glisser-déposer entre fiches — T-DND-001 à T-DND-003 (transfert
+  entre deux Actors sans duplication, drop hors de toute fiche sans erreur, import compendium
+  dupliqué localement), même technique DragEvent/DataTransfer synthétique que
+  `tab-journal.cy.js` > T-JOURNAL-002 ; `cypress/e2e/combat-tracker.cy.js` : section 14,
+  intégration Combat Tracker — T-COMBAT-001 à T-COMBAT-003 (Combattant visible dans le DOM du
+  tracker après un jet d'Initiative, réaction régénérée en avançant le tour via le VRAI bouton
+  "Tour suivant" — complément E2E de T-ABIL-021/Quench, pas un doublon —, suppression du combat
+  en cours sans casser la fiche) ; `cypress/e2e/permissions.cy.js` : section 15, permissions et
+  champs verrouillés — T-PERM-001 à T-PERM-004 (implémentés en E2E, PAS en Quench comme suggéré
+  par le plan : les batches Quench de cette suite tournent tous en session MJ, or le hook ne
+  restreint QUE les non-MJ — un test Quench GM ne pourrait jamais exercer la restriction
+  elle-même), y compris l'exception `dndCustomLevelUp` qui ne laisse passer QUE `level` même si
+  `class` est posé dans le même update ; `cypress/e2e/i18n.cy.js` : section 16,
+  internationalisation — T-I18N-001/002 adaptés (cf. commentaire d'en-tête du fichier) : plutôt
+  que de basculer réellement la langue du monde (risque de rechargement client jugé
+  disproportionné après les incidents Docker de cette session), balaie le texte affiché de la
+  fiche personnage/l'assistant sous la locale déjà active (anglais) à la recherche de fuites de
+  clé brute `DND_CUSTOM.*`. `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -164,10 +190,15 @@ npm run docker:down        # arrête l'instance
   niveau, `cypress/e2e/level-up.cy.js`, pas de volet Quench malgré plusieurs scénarios marqués
   "E2E+Quench"/"Quench" dans le plan — `#onLevelUp` est une méthode privée d'`actor-sheet.js`,
   inatteignable directement depuis Quench, même limite déjà documentée pour
-  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`) et 9
-  (fiches de référence Classe/Sous-classe/Origine, `cypress/e2e/reference-sheets.cy.js`, pas de
-  volet Quench).
-  Sections 10 à 16 restent **à coder**.
+  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`), 9
+  (fiches de référence Classe/Sous-classe/Origine, `cypress/e2e/reference-sheets.cy.js`), 10
+  (fiche PNJ, `cypress/e2e/npc-sheet.cy.js`), 11 (fiche Véhicule, `cypress/e2e/
+  vehicle-sheet.cy.js`), 12 (fiches d'Item, `cypress/e2e/item-sheets.cy.js`), 13
+  (glisser-déposer, `cypress/e2e/drag-drop.cy.js`), 14 (Combat Tracker, `cypress/e2e/
+  combat-tracker.cy.js`), 15 (permissions, `cypress/e2e/permissions.cy.js`, en E2E malgré le
+  plan qui suggère Quench — cf. détail plus haut) et 16 (internationalisation, `cypress/e2e/
+  i18n.cy.js`, scénarios adaptés — cf. détail plus haut). **Les 16 sections du plan sont
+  codées** (2026-08-16).
 - **Bug connu (non corrigé)** : toute comparaison entre un libellé de classe/sous-classe
   LOCALISÉ (`game.i18n.localize(DND_CUSTOM.classes[...]/.subclasses[...])`) et un nom d'Item
   codé en dur en FRANÇAIS dans `world-items/*.json` échoue systématiquement sous un monde dont
