@@ -170,7 +170,13 @@ npm run docker:down        # arrête l'instance
   que de basculer réellement la langue du monde (risque de rechargement client jugé
   disproportionné après les incidents Docker de cette session), balaie le texte affiché de la
   fiche personnage/l'assistant sous la locale déjà active (anglais) à la recherche de fuites de
-  clé brute `DND_CUSTOM.*`. `cypress/
+  clé brute `DND_CUSTOM.*` ; `cypress/e2e/combat-criticals.cy.js` : section 17 (ajoutée le
+  2026-08-16, hors 16 sections initiales, retour de test explicite) — T-CRIT-001 à 006, coups/
+  échecs critiques sur 1/20 naturel (`rollCheck` > `criticalRules`, `scripts/helpers/rolls.js`)
+  UNIQUEMENT pendant un combat actif, sur les jets d'attaque (arme/sort) et de sauvegarde ; dés
+  de dégâts doublés sur un coup critique (`Roll#alter(2, 0)`, jamais le modificateur). Preuve
+  "même avec des bonus" par CA délibérément extrême (999/1) combinée à `cy.forceD20` — pas
+  utilisés ensemble jusque-là dans la suite. `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -199,7 +205,9 @@ npm run docker:down        # arrête l'instance
   (glisser-déposer, `cypress/e2e/drag-drop.cy.js`), 14 (Combat Tracker, `cypress/e2e/
   combat-tracker.cy.js`), 15 (permissions, `cypress/e2e/permissions.cy.js`, en E2E malgré le
   plan qui suggère Quench — cf. détail plus haut) et 16 (internationalisation, `cypress/e2e/
-  i18n.cy.js`, scénarios adaptés — cf. détail plus haut). **Les 16 sections du plan sont
+  i18n.cy.js`, scénarios adaptés — cf. détail plus haut) et 17 (Combat — coups/échecs critiques,
+  `cypress/e2e/combat-criticals.cy.js`, ajoutée le 2026-08-16 hors plan initial — cf. détail
+  plus haut). **Les 16 sections du plan initial + la section 17 (retour de test) sont
   codées** (2026-08-16).
 - **Bug connu — CORRIGÉ le 2026-08-16** : toute comparaison entre un libellé de classe/sous-classe
   LOCALISÉ (`game.i18n.localize(DND_CUSTOM.classes[...]/.subclasses[...])`) et un nom d'Item

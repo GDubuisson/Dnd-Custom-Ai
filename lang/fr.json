@@ -152,6 +152,9 @@
       "Disadvantage": "Désavantage",
       "AttackHit": "Touche {target} (CA {ac})",
       "AttackMiss": "Rate {target} (CA {ac})",
+      "CriticalHit": "Coup critique !",
+      "CriticalFumble": "Échec critique !",
+      "CriticalDamage": "dégâts critiques, dés doublés",
       "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
     },
     "Chat": {

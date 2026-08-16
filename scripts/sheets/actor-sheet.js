@@ -881,7 +881,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Jet de sauvegarde (1d20 + modificateur de caractéristique + bonus de maîtrise si
-   *  maîtrisée). */
+   *  maîtrisée). `criticalRules: true` : un 1/20 naturel est un échec/succès critique
+   *  automatique EN COMBAT (retour de test) — ce système ne compare déjà aucune sauvegarde à
+   *  une CD (le MJ juge à l'œil), donc seul le libellé de chat change, au MJ d'appliquer la
+   *  règle. */
   static async #onRollSave(event, target) {
     const key = target.dataset.key;
     const system = this.actor.system;
@@ -895,7 +898,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
       advantage: event.shiftKey || cond.advantage,
-      disadvantage: event.ctrlKey || cond.disadvantage
+      disadvantage: event.ctrlKey || cond.disadvantage,
+      criticalRules: true
     });
   }
 
@@ -926,7 +930,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Jet d'attaque d'une arme de l'inventaire (1d20 + bonus d'attaque, cf. weaponAttackDamage
-   *  dans rules.js — bonus de maîtrise seulement si la classe couvre la catégorie de l'arme). */
+   *  dans rules.js — bonus de maîtrise seulement si la classe couvre la catégorie de l'arme).
+   *  `criticalRules: true` : 1/20 naturel = échec/coup critique automatique EN COMBAT (retour de
+   *  test) — un coup critique pose un flag transitoire sur CETTE arme précise (pas sur l'Actor,
+   *  pour ne jamais affecter une autre arme/un autre sort en cours d'usage), consommé par le
+   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés. */
   static async #onRollWeaponAttack(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "weapon") return;
@@ -938,14 +946,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       proficient
     );
     const cond = conditionRollEffects(this.actor, "attack");
-    await rollCheck({
+    const { isCriticalHit } = await rollCheck({
       actor: this.actor,
       formula: formatModifier(atk.attackBonus),
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
-      compareToTargetAc: true
+      compareToTargetAc: true,
+      criticalRules: true
     });
+    if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
   }
 
   /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
@@ -984,11 +994,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const damageType = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
+    // Consomme le flag posé par #onRollWeaponAttack sur un coup critique (jamais sur l'Actor,
+    // cf. son commentaire) : dés doublés une seule fois, puis retiré même si ce jet de dégâts
+    // ne correspond finalement pas à l'attaque qui l'a posé (le joueur reste libre de l'ordre
+    // de ses clics, cohérent avec "le jet reste manuel").
+    const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
+    if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
     await rollDamage({
       actor: this.actor,
       dice,
       formula: formatModifier(atk.abilityMod),
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`,
+      critical
     });
   }
 
@@ -1051,14 +1068,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
       const attackBonus = spellAttackBonus(proficiencyBonus(system.attributes.level), spellAbilityMod);
       const cond = conditionRollEffects(this.actor, "attack");
-      await rollCheck({
+      // criticalRules/pendingCritical : même mécanique que #onRollWeaponAttack (cf. son
+      // commentaire) — flag posé sur CE sort précis, consommé par #onRollSpellDamage.
+      const { isCriticalHit } = await rollCheck({
         actor: this.actor,
         formula: formatModifier(attackBonus),
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
         advantage: event.shiftKey || cond.advantage,
         disadvantage: event.ctrlKey || cond.disadvantage,
-        compareToTargetAc: true
+        compareToTargetAc: true,
+        criticalRules: true
       });
+      if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
       return;
     }
 
@@ -1079,10 +1100,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const damageType = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
+    const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
+    if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
     await rollDamage({
       actor: this.actor,
       dice: item.system.damage.dice,
       formula: "",
+      critical,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageType ? ` (${damageType})` : ""}`
     });
   }

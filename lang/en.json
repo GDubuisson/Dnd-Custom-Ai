@@ -152,6 +152,9 @@
       "Disadvantage": "Disadvantage",
       "AttackHit": "Hits {target} (AC {ac})",
       "AttackMiss": "Misses {target} (AC {ac})",
+      "CriticalHit": "Critical hit!",
+      "CriticalFumble": "Critical fumble!",
+      "CriticalDamage": "critical damage, dice doubled",
       "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {

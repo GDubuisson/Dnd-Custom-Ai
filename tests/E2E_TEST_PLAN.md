@@ -279,6 +279,29 @@ deux champs de texte libre ci-dessous.
 
 ---
 
+## 17. Combat — Coups et échecs critiques (`rollCheck` > `criticalRules`, `scripts/helpers/rolls.js`)
+
+Ajouté le 2026-08-16, retour de test explicite (hors 16 sections initiales) : 1 naturel = échec
+critique automatique, 20 naturel = coup critique automatique, sur les jets d'attaque (arme/sort)
+et de sauvegarde, **uniquement pendant un combat actif** (Actor Combattant d'un `Combat`
+existant). Dés de dégâts doublés sur un coup critique d'attaque (`Roll#alter(2, 0)`), jamais le
+modificateur.
+
+| ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
+|---|---|---|---|---|---|
+| T-CRIT-001 | Coup critique — attaque d'arme | P1 | E2E | 20 naturel forcé, cible à CA hors de portée, en combat | Touche quand même, libellé "Coup critique !", dés du jet de dégâts suivant doublés |
+| T-CRIT-002 | Échec critique — attaque d'arme | P1 | E2E | 1 naturel forcé, cible à CA très basse, en combat | Rate quand même, libellé "Échec critique !" |
+| T-CRIT-003 | Pas de règle critique hors combat | P1 | E2E | 20 naturel forcé, cible à CA hors de portée, Actor retiré du combat | Comparaison normale à la CA (raté), aucun libellé critique |
+| T-CRIT-004 | Coup critique — attaque de sort | P1 | E2E | 20 naturel forcé sur un sort d'attaque, en combat | Touche quand même, dés de dégâts du sort doublés |
+| T-CRIT-005 | Échec critique — sauvegarde en combat | P1 | E2E | 1 naturel forcé sur une sauvegarde, en combat | Libellé "Échec critique !" affiché (pas de CD comparée automatiquement dans ce système, au MJ de juger) |
+| T-CRIT-006 | Pas de règle critique sur une sauvegarde hors combat | P1 | E2E | 20 naturel forcé sur une sauvegarde, Actor retiré du combat | Aucun libellé critique |
+
+Implémenté dans `cypress/e2e/combat-criticals.cy.js`. Écart volontaire au RAW 5e (2014) signalé :
+le SRD de base ne donne cette règle qu'aux jets d'attaque (et aux sauvegardes de mort, déjà
+gérées séparément) — étendue ici aux sauvegardes normales, sur demande explicite.
+
+---
+
 ## Hors scope (rappel, cf. `tests/README.md` et mémoire projet)
 
 - Pas de Hit Dice côté joueur : ne pas écrire de test qui en suppose l'existence.
