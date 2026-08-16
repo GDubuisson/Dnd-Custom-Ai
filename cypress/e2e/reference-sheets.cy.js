@@ -81,21 +81,34 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
     openSheet(sharedActorId);
   });
 
-  // **Volontairement rouge** — 3e manifestation du même bug de locale que T-STATS-012/T-LVL-004
-  // (cf. tests/README.md > "Bug connu"), mais dans un chemin de code différent :
-  // #onOpenClassSheet (actor-sheet.js) résout `name = game.i18n.localize(DND_CUSTOM.classes.
-  // fighter)` = "Fighter" sous ce monde anglais, puis cherche un Item nommé EXACTEMENT "Fighter"
-  // (Items du monde puis compendium `classes`) — mais l'Item réel s'appelle "Guerrier" (nom
-  // français codé en dur dans world-items/classes.json, jamais traduit). La recherche échoue
-  // donc systématiquement sous cette locale : #openReferenceItem se contente d'un avertissement
-  // non bloquant (`ClassSheetMissing`) plutôt que d'ouvrir la fiche attendue. NE PAS neutraliser.
-  it("ouvre la fiche de Classe (T-REF-001, régression connue)", () => {
+  // Referme toute fiche d'Item ouverte par le test qui vient de tourner : sans ça, les fenêtres
+  // s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario suivant
+  // (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un run
+  // combiné avec toute la suite, jamais isolément).
+  afterEach(() => {
+    cy.window().then((win) => {
+      const closing = [];
+      for (const app of win.foundry.applications.instances.values()) {
+        if (app.document?.documentName === "Item") closing.push(app.close());
+      }
+      return Promise.all(closing);
+    });
+  });
+
+  // Corrigé (cf. tests/README.md > "Bug connu — CORRIGÉ") : #onOpenClassSheet (actor-sheet.js)
+  // recherche désormais l'Item de référence par `system.classKey` (clé stable, ex. "fighter"),
+  // jamais par un nom déduit d'un libellé localisé/traduit — indépendant de la langue active du
+  // monde. Le TITRE affiché reste néanmoins le vrai nom français de l'Item ("Guerrier", jamais
+  // traduit, cf. ClassData/#openReferenceItem) : on vérifie donc que la fiche OUVERTE est la
+  // bonne (son nom exact), pas un libellé anglais qui n'a jamais existé sur cet Item.
+  it("ouvre la fiche de Classe correspondant à la clé de classe de l'Actor (T-REF-001)", () => {
     cy.window()
-      .its("game.i18n")
-      .then((i18n) => i18n.localize("DND_CUSTOM.Classes.fighter"))
-      .then((classLabel) => {
+      .then((win) => win.game.packs.get("dnd-custom-ai.classes").getDocuments())
+      .then((docs) => docs.find((item) => item.system.classKey === "fighter"))
+      .then((expected) => {
+        expect(expected, "prérequis : un Item 'class' avec classKey='fighter' existe").to.exist;
         sheetRoot().find('button[data-action="openClassSheet"]').click();
-        latestItemSheetTitle().should("contain.text", classLabel);
+        latestItemSheetTitle().should("contain.text", expected.name);
       });
   });
 

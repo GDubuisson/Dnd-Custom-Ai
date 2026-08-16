@@ -1,4 +1,3 @@
-import { DND_CUSTOM } from "../helpers/config.js";
 import { carryingCapacity, carryingCapacityBonus, carriedWeight } from "../helpers/rules.js";
 
 // Objets physiques (quantité empilable) + Capacités/Sorts/Langues (ni quantité ni doublon
@@ -13,21 +12,16 @@ const PHYSICAL_TYPES = ["weapon", "armor", "gear", "tool"];
 const STACKABLE_PHYSICAL_TYPES = ["gear", "tool"];
 const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell", "language"];
 
-/** Un Sort (SpellData#classes, liste de libellés de classe séparés par virgule — cf.
- *  grantClassContent dans class-content.js pour la même convention) peut-il être glissé sur
- *  `actor` ? Retour de test : rien n'empêchait de poser un sort d'une autre classe (ex.
- *  "Décharge occulte", Occultiste, sur un Magicien). Un sort sans classes renseignées (donnée
- *  incomplète) ou un Actor sans classe encore choisie reste accepté par défaut, pour ne pas
- *  bloquer un cas de données incomplètes plutôt qu'une vraie incompatibilité connue. */
+/** Un Sort (SpellData#classes, ensemble de clés de classe stables — cf. grantClassContent dans
+ *  class-content.js pour la même convention, jamais un libellé localisé/traduit) peut-il être
+ *  glissé sur `actor` ? Retour de test : rien n'empêchait de poser un sort d'une autre classe
+ *  (ex. "Décharge occulte", Occultiste, sur un Magicien). Un sort sans classes renseignées
+ *  (donnée incomplète) ou un Actor sans classe encore choisie reste accepté par défaut, pour ne
+ *  pas bloquer un cas de données incomplètes plutôt qu'une vraie incompatibilité connue. */
 function isSpellAllowedForActor(item, actor) {
   if (item.type !== "spell" || actor.type !== "character") return true;
-  const classes = String(item.system.classes ?? "")
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter(Boolean);
-  if (!classes.length || !actor.system.class) return true;
-  const classLabel = game.i18n.localize(DND_CUSTOM.classes[actor.system.class]);
-  return classes.includes(classLabel);
+  if (!item.system.classes.size || !actor.system.class) return true;
+  return item.system.classes.has(actor.system.class);
 }
 
 /** Le poids ajouté par `item` (un nouvel exemplaire, ou `addedQuantity` unités d'un objet déjà

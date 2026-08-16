@@ -4,6 +4,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Barbare.webp",
     "system": {
+      "classKey": "barbarian",
       "description": "<p>Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute.</p>",
       "savingThrows": ["str", "con"],
       "skillChoiceCount": 2,
@@ -15,6 +16,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Barde.webp",
     "system": {
+      "classKey": "bard",
       "description": "<p>Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société.</p>",
       "savingThrows": ["dex", "cha"],
       "skillChoiceCount": 3,
@@ -26,6 +28,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Clerc.webp",
     "system": {
+      "classKey": "cleric",
       "description": "<p>Intermédiaire entre le monde mortel et les puissances divines, soignant et combattant au nom de sa divinité.</p>",
       "savingThrows": ["wis", "cha"],
       "skillChoiceCount": 2,
@@ -37,6 +40,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Druide.webp",
     "system": {
+      "classKey": "druid",
       "description": "<p>Gardien de la nature qui puise sa magie dans les éléments et la faune, capable de se transformer en créature sauvage.</p>",
       "savingThrows": ["int", "wis"],
       "skillChoiceCount": 2,
@@ -48,6 +52,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Guerrier.webp",
     "system": {
+      "classKey": "fighter",
       "description": "<p>Maître d'armes et d'armures, entraîné à toutes les formes de combat martial.</p>",
       "savingThrows": ["str", "con"],
       "skillChoiceCount": 2,
@@ -59,6 +64,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Moine.webp",
     "system": {
+      "classKey": "monk",
       "description": "<p>Combattant à mains nues qui canalise une énergie intérieure (le Ki) pour frapper vite et fort sans armure ni armes lourdes.</p>",
       "savingThrows": ["str", "dex"],
       "skillChoiceCount": 2,
@@ -70,6 +76,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Paladin.webp",
     "system": {
+      "classKey": "paladin",
       "description": "<p>Guerrier sacré lié par un serment, mêlant prouesses martiales et magie divine au service d'une cause.</p>",
       "savingThrows": ["wis", "cha"],
       "skillChoiceCount": 2,
@@ -81,6 +88,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Rodeur.webp",
     "system": {
+      "classKey": "ranger",
       "description": "<p>Chasseur et éclaireur à l'aise en terrain sauvage, combinant maîtrise du combat et magie discrète liée à la nature.</p>",
       "savingThrows": ["str", "dex"],
       "skillChoiceCount": 3,
@@ -92,6 +100,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Roublard.webp",
     "system": {
+      "classKey": "rogue",
       "description": "<p>Expert de la discrétion et de la ruse, redoutable par ses attaques sournoises et son habileté à déjouer pièges et serrures.</p>",
       "savingThrows": ["dex", "int"],
       "skillChoiceCount": 4,
@@ -103,6 +112,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Ensorceleur.webp",
     "system": {
+      "classKey": "sorcerer",
       "description": "<p>Lanceur de sorts dont la magie jaillit d'un don inné plutôt que d'une étude, souvent lié à une lignée ou un événement surnaturel.</p>",
       "savingThrows": ["con", "cha"],
       "skillChoiceCount": 2,
@@ -114,6 +124,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Occultiste.webp",
     "system": {
+      "classKey": "warlock",
       "description": "<p>Lanceur de sorts lié par un pacte à une entité puissante, dont il tire des pouvoirs en échange de services ou de sa loyauté.</p>",
       "savingThrows": ["wis", "cha"],
       "skillChoiceCount": 2,
@@ -125,6 +136,7 @@
     "type": "class",
     "img": "systems/dnd-custom-ai/assets/icons/classes/Magicien.webp",
     "system": {
+      "classKey": "wizard",
       "description": "<p>Érudit de la magie arcanique, dont le savoir méticuleux permet de façonner la réalité par le sort.</p>",
       "savingThrows": ["int", "wis"],
       "skillChoiceCount": 2,

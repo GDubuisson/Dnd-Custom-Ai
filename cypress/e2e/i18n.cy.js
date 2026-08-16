@@ -8,8 +8,9 @@
 // périmé, cf. mémoire projet [[project_e2e_test_plan_progress]]) — un rechargement client
 // in-session ajoute un risque équivalent pour un gain limité : le monde de test tourne DÉJÀ en
 // anglais (`game.i18n.lang === "en"`, cf. tests/README.md), soit précisément l'autre langue que
-// le français câblé en dur dans une bonne partie du contenu de référence (cf. le bug de locale
-// documenté sur grantClassContent/#onOpenClassSheet). T-I18N-001/002 vérifient donc, sous cette
+// le français dans lequel le contenu de référence est écrit (cf. le bug de locale historique,
+// corrigé depuis, documenté sur grantClassContent/#onOpenClassSheet — tests/README.md > "Bug
+// connu"). T-I18N-001/002 vérifient donc, sous cette
 // locale déjà active, qu'aucune clé brute `DND_CUSTOM.*` ne fuite dans le texte affiché — la
 // garantie concrète que "Tous les libellés basculent" (le plan) demande, sans reproduire le
 // switch lui-même.

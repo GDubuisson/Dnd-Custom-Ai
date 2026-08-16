@@ -23,6 +23,7 @@ export const WORLD_ARMORS = loadJson("world-items/armors.json");
 export const WORLD_GEAR = loadJson("world-items/gear.json");
 export const WORLD_TOOLS = loadJson("world-items/tools.json");
 export const WORLD_CLASSES = loadJson("world-items/classes.json");
+export const WORLD_SUBCLASSES = loadJson("world-items/subclasses.json");
 export const WORLD_ORIGIN_ITEMS = loadJson("world-items/origins.json");
 export const WORLD_LANGUAGES = loadJson("world-items/languages.json");
 export const GLOSSARY = loadJson("scripts/data/glossary.json");

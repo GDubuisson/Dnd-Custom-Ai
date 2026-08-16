@@ -5,10 +5,15 @@
 </header>
 
 <div class="item-sheet-body">
-  <div class="form-row">
-    <label>{{localize "DND_CUSTOM.Item.Fields.SpellClasses"}}</label>
-    <input type="text" name="system.classes" value="{{system.classes}}" placeholder="Ensorceleur, Magicien">
-  </div>
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.SpellClasses"}}</legend>
+    {{#each classOptions}}
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.classes" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      {{this.label}}
+    </label>
+    {{/each}}
+  </fieldset>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.SpellLevel"}}</label>

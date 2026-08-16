@@ -6,9 +6,16 @@ import { WORLD_FEATURES, WORLD_SPELLS, WORLD_LANGUAGES, ORIGINS } from "../suppo
 import { grantClassContent, grantLanguages } from "../../scripts/helpers/class-content.js";
 
 /** Enrobe une entrée JSON brute (world-items/*.json) en simili-Item Foundry : seuls `name`,
- *  `type`, `system` et `toObject()` sont lus par class-content.js. */
+ *  `type`, `system` et `toObject()` sont lus par class-content.js. `system.classes` (SpellData,
+ *  cf. item-data.js > SetField) est un vrai `Set` une fois passé par le pipeline DataModel réel
+ *  de Foundry, jamais un tableau brut — reconstruit ici pour que `.has()` (grantClassContent)
+ *  se comporte comme en conditions réelles, ce stub ne rejouant pas ce pipeline. */
 function asItem(raw) {
-  return { name: raw.name, type: raw.type, system: raw.system, toObject: () => ({ ...raw }) };
+  const system =
+    raw.type === "spell" && Array.isArray(raw.system.classes)
+      ? { ...raw.system, classes: new Set(raw.system.classes) }
+      : raw.system;
+  return { name: raw.name, type: raw.type, system, toObject: () => ({ ...raw }) };
 }
 
 /** Fausse Actor : seuls `items.contents` et `createEmbeddedDocuments` sont lus/appelés par
@@ -135,10 +142,10 @@ describe("grantClassContent — Capacités de sous-classe", () => {
   // Capacité d'une autre sous-classe (Collège du Savoir, Barde) — teste le mécanisme
   // indépendamment du contenu réel écrit dans world-items/features.json.
   const SUBCLASS_FEATURES = [
-    { name: "Rage", type: "feature", system: { class: "Barbare", subclass: "", level: 1 } },
-    { name: "Frénésie", type: "feature", system: { class: "Barbare", subclass: "Voie du Berserker", level: 3 } },
-    { name: "Rage sans esprit", type: "feature", system: { class: "Barbare", subclass: "Voie du Berserker", level: 6 } },
-    { name: "Mots cinglants", type: "feature", system: { class: "Barde", subclass: "Collège du Savoir", level: 3 } }
+    { name: "Rage", type: "feature", system: { class: "barbarian", subclass: "", level: 1 } },
+    { name: "Frénésie", type: "feature", system: { class: "barbarian", subclass: "berserker", level: 3 } },
+    { name: "Rage sans esprit", type: "feature", system: { class: "barbarian", subclass: "berserker", level: 6 } },
+    { name: "Mots cinglants", type: "feature", system: { class: "bard", subclass: "lore", level: 3 } }
   ];
 
   beforeEach(() => {

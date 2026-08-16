@@ -11,12 +11,13 @@
 // abilities/saves/skills le sont) : un Joueur peut le poser librement sans bypass, direct depuis
 // la session Joueur.
 //
-// T-LVL-004 (Capacités/Sorts octroyés à la montée de niveau) : **volontairement rouge**, même
-// bug et même consigne que T-STATS-012 (tab-stats.cy.js) — grantClassContent (class-content.js)
-// compare le libellé de classe localisé (`game.i18n.localize`, "Fighter" sous ce monde anglais)
-// au libellé français codé en dur dans world-items/features.json ("Guerrier"), qui ne
-// correspond jamais. #onLevelUp (actor-sheet.js) rappelle cette même fonction bugguée. NE PAS
-// neutraliser cette assertion.
+// T-LVL-004 (Capacités/Sorts octroyés à la montée de niveau) a longtemps été volontairement
+// rouge (même bug que T-STATS-012, tab-stats.cy.js, corrigé le 2026-08-16) : grantClassContent
+// (class-content.js) comparait le libellé de classe localisé (`game.i18n.localize`) au libellé
+// français codé en dur dans world-items/features.json, ce qui ne correspondait jamais sous une
+// langue de monde non française. Corrigé en comparant des clés de classe stables (cf.
+// FeatureData/SpellData, scripts/data/item-data.js) — #onLevelUp (actor-sheet.js) rappelle cette
+// même fonction, désormais correcte quelle que soit la langue active.
 //
 // Structure DOM des boîtes de dialogue (DialogV2, capturée en conditions réelles) :
 // - Choix de sous-classe (subclass-choice.js) : `dialog.application.dialog` avec des
@@ -125,7 +126,7 @@ describe("Montée de niveau — clic simple, PV, accessibilité Joueur", () => {
 });
 
 describe("Montée de niveau — octroi de contenu de classe", () => {
-  it("octroie les Capacités/Sorts du nouveau niveau et les annonce en chat (T-LVL-004, régression connue)", () => {
+  it("octroie les Capacités/Sorts du nouveau niveau et les annonce en chat (T-LVL-004)", () => {
     cy.loginAsPlayer();
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
@@ -164,9 +165,7 @@ describe("Montée de niveau — octroi de contenu de classe", () => {
     // en E2E via le vrai bouton, seul chemin qui exerce réellement le mécanisme "pas de message
     // si grantedNames est vide". Niveau 6 -> 7 : aucune Capacité de Guerrier/Champion à ce
     // niveau (world-items/features.json : Guerrier en a en 1/2/5/9, Champion en 3/7 -- 7 est
-    // exclu ici via un personnage SANS sous-classe choisie, cf. mise en place ci-dessous) —
-    // vrai indépendamment du bug de locale (cf. T-LVL-004 ci-dessus) : aucun contenu ne
-    // correspond à ce niveau de toute façon.
+    // exclu ici via un personnage SANS sous-classe choisie, cf. mise en place ci-dessous).
     cy.loginAsPlayer();
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);

@@ -80,9 +80,10 @@ l'emplacement de sort au moment de lancer (cf. bouton "Lancer" de l'onglet Sorts
 `features.json` couvre les capacités de classe de base (hors sous-classe) des niveaux 1 à 9
 selon les classes, plus deux capacités par sous-classe SRD modélisée (cf. "Note sur les
 sous-classes" plus bas) — pas la progression complète des 12 classes jusqu'au niveau 20. Le
-champ `class` contient le nom de la classe en texte libre (ex. "Barbare"), pas une référence
-stricte à un Item Classe ; `subclass` fonctionne pareil (ex. "Voie du Berserker"), vide pour
-une capacité de classe de base. Quand
+champ `class` contient la CLÉ stable de la classe (ex. `"barbarian"`, cf. `DND_CUSTOM.classes`,
+`scripts/helpers/config.js`) — jamais un libellé localisé/traduit, pour que la comparaison
+(`grantClassContent`) reste correcte quelle que soit la langue active du monde ; `subclass`
+fonctionne pareil (ex. `"berserker"`), vide pour une capacité de classe de base. Quand
 `requiresRoll` est actif (ex. Second souffle), un bouton "1d10 + niveau" apparaît sur la
 fiche du personnage et poste le jet dans le chat.
 

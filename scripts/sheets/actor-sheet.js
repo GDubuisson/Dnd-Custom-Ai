@@ -626,44 +626,64 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   static async #onOpenClassSheet() {
     const classKey = this.actor.system.class;
-    const name = classKey ? game.i18n.localize(DND_CUSTOM.classes[classKey]) : "";
-    await DndCustomActorSheet.#openReferenceItem(name, "classes", "DND_CUSTOM.Actor.ClassSheetMissing");
+    if (!classKey) return;
+    await DndCustomActorSheet.#openReferenceItem(
+      "classes",
+      (item) => item.type === "class" && item.system.classKey === classKey,
+      "DND_CUSTOM.Actor.ClassSheetMissing",
+      game.i18n.localize(DND_CUSTOM.classes[classKey])
+    );
   }
 
   static async #onOpenSubclassSheet() {
     const classKey = this.actor.system.class;
     const subclassKey = this.actor.system.subclass;
-    const name = subclassKey ? game.i18n.localize(DND_CUSTOM.subclasses[classKey]?.[subclassKey]) : "";
-    await DndCustomActorSheet.#openReferenceItem(name, "sous-classes", "DND_CUSTOM.Actor.SubclassSheetMissing");
+    if (!subclassKey) return;
+    await DndCustomActorSheet.#openReferenceItem(
+      "sous-classes",
+      (item) => item.type === "subclass" && item.system.classKey === classKey && item.system.subclassKey === subclassKey,
+      "DND_CUSTOM.Actor.SubclassSheetMissing",
+      game.i18n.localize(DND_CUSTOM.subclasses[classKey]?.[subclassKey])
+    );
   }
 
   static async #onOpenOriginSheet() {
     const origin = game.dndCustomAi?.origins?.[this.actor.system.origin];
-    await DndCustomActorSheet.#openReferenceItem(origin?.label, "origines", "DND_CUSTOM.Actor.OriginSheetMissing");
+    if (!origin?.label) return;
+    await DndCustomActorSheet.#openReferenceItem(
+      "origines",
+      (item) => item.type === "origin" && item.name === origin.label,
+      "DND_CUSTOM.Actor.OriginSheetMissing",
+      origin.label
+    );
   }
 
-  /** Ouvre la fiche de description d'une Classe/Origine par son nom exact : cherchée d'abord
-   *  dans les Items du monde (import world-items/classes.json ou origins.json), puis dans le
-   *  compendium `packName` une fois peuplé par le MJ (cf. packs/classes ou packs/origines,
-   *  README de chacun) — avertit sans bloquer si introuvable, ces fiches restent optionnelles. */
-  static async #openReferenceItem(name, packName, missingKey) {
-    if (!name) return;
-
-    const worldItem = game.items.getName(name);
+  /** Ouvre la fiche de description d'une Classe/Sous-classe/Origine correspondant à `predicate` :
+   *  cherchée d'abord dans les Items du monde (import world-items/*.json), puis dans le
+   *  compendium `packName` une fois peuplé par le MJ (cf. packs/<nom>, README de chacun) —
+   *  avertit sans bloquer si introuvable, ces fiches restent optionnelles. Classe/Sous-classe
+   *  identifiées par une clé stable (`system.classKey`/`subclassKey`, cf. ClassData,
+   *  scripts/data/class-data.js), jamais par un nom localisé/traduit — comparer des libellés
+   *  `game.i18n.localize()` à des noms d'Items codés en français échouait systématiquement sous
+   *  un monde non francophone (bug historique, cf. tests/README.md > "Bug connu"). Origine
+   *  identifiée par son nom exact, qui n'est de toute façon jamais localisé (cf. `origin.label`,
+   *  scripts/data/origins.json). `displayName` sert uniquement au message d'avertissement,
+   *  affiché dans la langue active du monde — aucun rôle dans la recherche elle-même. */
+  static async #openReferenceItem(packName, predicate, missingKey, displayName) {
+    const worldItem = game.items.find(predicate);
     if (worldItem) {
       worldItem.sheet.render(true);
       return;
     }
 
     const pack = game.packs.get(`${SYSTEM_ID}.${packName}`);
-    const indexEntry = pack ? [...pack.index].find((entry) => entry.name === name) : null;
-    if (indexEntry) {
-      const document = await pack.getDocument(indexEntry._id);
+    const document = pack ? (await pack.getDocuments()).find(predicate) : null;
+    if (document) {
       document.sheet.render(true);
       return;
     }
 
-    ui.notifications.warn(game.i18n.format(missingKey, { name }));
+    ui.notifications.warn(game.i18n.format(missingKey, { name: displayName }));
   }
 
   /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée

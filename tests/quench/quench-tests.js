@@ -225,6 +225,16 @@ Hooks.on("quenchReady", (quench) => {
           const features = actor.items.filter((item) => item.type === "feature");
           const spells = actor.items.filter((item) => item.type === "spell" && (item.system.level ?? 0) <= 1);
           assert.isAbove(features.length + spells.length, 0, "au moins une Capacité ou un Sort/tour de magie attendu");
+          // Vérifie explicitement au moins une Capacité NON universelle (propre à la classe) : une
+          // Capacité universelle seule (ex. Attaque d'opportunité) suffisait à satisfaire
+          // grantedNames.length > 0 ci-dessus même quand grantClassContent était cassé pour tout
+          // contenu propre à la classe (bug de locale historique, corrigé le 2026-08-16, cf.
+          // tests/README.md > "Bug connu — CORRIGÉ") — sans cette assertion, ce test donnait un
+          // faux sentiment de couverture sur ce point précis.
+          assert.ok(
+            features.some((f) => !f.system.universal) || spells.length > 0,
+            "au moins une Capacité/un Sort PROPRE à la classe (pas seulement universelle) attendu"
+          );
         });
 
         it("octroie Commune et la langue propre à l'Origine choisie (T-WIZ-017)", async () => {
