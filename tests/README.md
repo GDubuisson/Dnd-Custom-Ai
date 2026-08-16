@@ -129,7 +129,14 @@ npm run docker:down        # arrête l'instance
   "special", ex. "Argot des rues" — jamais auto-octroyée quelle que soit l'Origine, cf.
   world-items/languages.json — glissée depuis le compendium Langues en simulant un vrai
   DragEvent/DataTransfer dispatché sur la racine de la fiche, pas de dragover à simuler pour un
-  drop synthétique). `cypress/
+  drop synthétique) ; `cypress/e2e/level-up.cy.js` : section 8, montée de niveau — T-LVL-001 à
+  T-LVL-003/005 à T-LVL-012 (un seul niveau par clic, PV recalculés/remplis, accessible au
+  Joueur, pas de message parasite si rien d'octroyé, choix de sous-classe au bon niveau + pas de
+  re-proposition + sélecteur d'en-tête en secours, choix Amélioration de caractéristiques/Don
+  proposé aux bons niveaux et appliqué), boîtes `DialogV2` pilotées via leurs vrais sélecteurs
+  (`dialog.application.dialog`, boutons `data-action="asi"/"feat"/"ok"/"close"`) — **T-LVL-004
+  volontairement rouge**, même bug que T-STATS-012 ci-dessous (`grantClassContent` appelé par
+  `#onLevelUp`). `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -147,8 +154,12 @@ npm run docker:down        # arrête l'instance
   le vrai pipeline suffit, pas besoin d'un doublon Quench isolé pour ces calculs-là) et
   6 (onglet Capacités/Sorts, `cypress/e2e/tab-abilities.cy.js` + `tests/quench/quench-tests.js`
   batch `dndCustomAi.combatReaction` pour T-ABIL-021, seul scénario marqué "Quench" seul) et
-  7 (onglet Journal, `cypress/e2e/tab-journal.cy.js`, pas de volet Quench).
-  Sections 8 à 16 restent **à coder**.
+  7 (onglet Journal, `cypress/e2e/tab-journal.cy.js`, pas de volet Quench) et 8 (montée de
+  niveau, `cypress/e2e/level-up.cy.js`, pas de volet Quench malgré plusieurs scénarios marqués
+  "E2E+Quench"/"Quench" dans le plan — `#onLevelUp` est une méthode privée d'`actor-sheet.js`,
+  inatteignable directement depuis Quench, même limite déjà documentée pour
+  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`).
+  Sections 9 à 16 restent **à coder**.
 - **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
   donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
   français (compare le nom de classe français codé en dur dans `world-items/features.json`/
