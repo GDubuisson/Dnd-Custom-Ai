@@ -136,7 +136,13 @@ npm run docker:down        # arrête l'instance
   proposé aux bons niveaux et appliqué), boîtes `DialogV2` pilotées via leurs vrais sélecteurs
   (`dialog.application.dialog`, boutons `data-action="asi"/"feat"/"ok"/"close"`) — **T-LVL-004
   volontairement rouge**, même bug que T-STATS-012 ci-dessous (`grantClassContent` appelé par
-  `#onLevelUp`). `cypress/
+  `#onLevelUp`) ; `cypress/e2e/reference-sheets.cy.js` : section 9, fiches de référence Classe/
+  Sous-classe/Origine — T-REF-002 à T-REF-004 (ouverture de la fiche de Sous-classe, ouverture de
+  la fiche d'Origine, avertissement non bloquant `OriginSheetMissing` si l'Item de référence est
+  introuvable — supprimé/restauré en session MJ dans le compendium `origines`, seule permission
+  requise pour ce scénario, cf. `ownership` du pack dans `system.json`) — **T-REF-001
+  volontairement rouge**, 3e manifestation du même bug de locale (`#onOpenClassSheet`, cf.
+  "Bug connu" plus bas). `cypress/
   support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
@@ -158,15 +164,27 @@ npm run docker:down        # arrête l'instance
   niveau, `cypress/e2e/level-up.cy.js`, pas de volet Quench malgré plusieurs scénarios marqués
   "E2E+Quench"/"Quench" dans le plan — `#onLevelUp` est une méthode privée d'`actor-sheet.js`,
   inatteignable directement depuis Quench, même limite déjà documentée pour
-  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`).
-  Sections 9 à 16 restent **à coder**.
-- **Bug connu (non corrigé)** : `grantClassContent` (`scripts/helpers/class-content.js`) ne
-  donne jamais de Capacité/Sort propre à la classe sous un monde dont la langue n'est pas le
-  français (compare le nom de classe français codé en dur dans `world-items/features.json`/
-  `spells.json` au libellé localisé dynamiquement) — seules les Capacités "universelles" (ex.
-  Attaque d'opportunité) passent. Touche l'assistant de création ET la montée de niveau.
-  Découvert le 2026-08-15 en écrivant T-STATS-012 (`tab-stats.cy.js`), laissé volontairement
-  rouge (même consigne que T-WIZ-010) — cf. mémoire projet pour la piste de correction.
+  `#grantStartingEquipment`, cf. `tests/quench/quench-tests.js` > `submitWizardForm`) et 9
+  (fiches de référence Classe/Sous-classe/Origine, `cypress/e2e/reference-sheets.cy.js`, pas de
+  volet Quench).
+  Sections 10 à 16 restent **à coder**.
+- **Bug connu (non corrigé)** : toute comparaison entre un libellé de classe/sous-classe
+  LOCALISÉ (`game.i18n.localize(DND_CUSTOM.classes[...]/.subclasses[...])`) et un nom d'Item
+  codé en dur en FRANÇAIS dans `world-items/*.json` échoue systématiquement sous un monde dont
+  la langue n'est pas le français — deux manifestations connues à ce jour, même cause :
+  - `grantClassContent` (`scripts/helpers/class-content.js`) ne donne jamais de Capacité/Sort
+    propre à la classe (seules les Capacités "universelles", ex. Attaque d'opportunité, passent).
+    Touche l'assistant de création ET la montée de niveau. Découvert le 2026-08-15 en écrivant
+    T-STATS-012 (`tab-stats.cy.js`), laissé volontairement rouge (même consigne que T-WIZ-010) —
+    cf. mémoire projet pour la piste de correction. T-LVL-004 (`level-up.cy.js`, section 8)
+    l'illustre aussi côté montée de niveau.
+  - `#onOpenClassSheet` (`scripts/sheets/actor-sheet.js`) ne trouve jamais la fiche de
+    description d'une Classe (avertissement `ClassSheetMissing` non bloquant à la place) —
+    découvert le 2026-08-16 en écrivant T-REF-001 (`reference-sheets.cy.js`, section 9), laissé
+    volontairement rouge pour la même raison. `#onOpenSubclassSheet`/`#onOpenOriginSheet` n'y
+    sont PAS soumis : les sous-classes ont des noms français qui coïncident avec l'anglais pour
+    les cas testés (ex. "Champion"), et l'Origine ne passe jamais par `game.i18n.localize` (son
+    libellé vient directement de `scripts/data/origins.json`, déjà dans la bonne langue).
 - `tests/quench/` — module Foundry autonome (jamais livré avec le système, cf. son
   `module.json` non référencé par `system.json`) enregistrant des tests d'intégration Quench
   (`quench-tests.js`, batches `dndCustomAi.actorCreation`, `dndCustomAi.wizard` et
