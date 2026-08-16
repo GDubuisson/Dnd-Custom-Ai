@@ -326,11 +326,13 @@ Hooks.on("preCreateActor", (actor) => {
   actor.updateSource({ "prototypeToken.actorLink": true });
 });
 
-// Empêche le dialogue natif "Créer un acteur" d'ouvrir la fiche de personnage juste après
-// la création (`options.renderSheet`, posé par Document#createDialog) quand l'assistant va de
-// toute façon prendre le relais ci-dessous : preCreateActor s'exécute avant que Foundry ne
-// décide d'ouvrir cette fiche, donc désactiver le flag ici l'empêche réellement de s'afficher
-// (contrairement à une fermeture après coup dans createActor, qui laissait un flash visible).
+// Best-effort : empêche le dialogue natif "Créer un acteur" d'ouvrir la fiche de personnage
+// juste après la création (`options.renderSheet`, posé par Document#createDialog) quand
+// l'assistant va de toute façon prendre le relais ci-dessous. Gardé, mais ne plus compter
+// dessus comme seule protection : retour de test répété — insuffisant à lui seul selon la
+// version de Foundry (la fiche flashait quand même par-dessus l'assistant). La vraie protection
+// est désormais `DndCustomActorSheet#render` (actor-sheet.js), qui refuse de se rendre tant que
+// l'assistant est ouvert pour le même Actor, indépendamment de ce flag.
 Hooks.on("preCreateActor", (actor, data, options, userId) => {
   if (actor.type !== "character") return;
   if (game.user.id !== userId) return;

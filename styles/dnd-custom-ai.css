@@ -1929,6 +1929,20 @@
   resize: vertical;
 }
 
+/* Retour de test : un champ texte court (ex. Origine > "Traits culturels") devenait illisible
+   en fenêtre étroite — la valeur restait présente (pas perdue) mais totalement invisible, sans
+   troncature ni indication qu'il y avait plus de texte que ce qui tenait dans la largeur
+   disponible (comportement par défaut d'un `<input>` : le texte défile hors-champ sans jamais
+   raccourcir visuellement). `min-width: 0` déjà posé ci-dessus sur ces champs (nécessaire pour
+   qu'un enfant flex accepte de rétrécir sous sa largeur de contenu naturelle, sinon ces 3
+   propriétés resteraient sans effet) ; `title="{{system.traits}}"` posé côté template (attribut
+   natif HTML) affiche le texte complet au survol malgré la troncature visuelle. */
+.dnd-custom-ai .item-sheet-body .form-row input[type="text"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dnd-custom-ai .item-sheet-body .checkbox-row {
   display: flex;
   align-items: center;

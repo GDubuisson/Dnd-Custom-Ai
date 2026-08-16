@@ -138,6 +138,31 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   };
 
   /** @override
+   *  Ne rend JAMAIS cette fiche tant que l'assistant de création (CharacterCreationWizard) est
+   *  actuellement ouvert pour ce même Actor — bloque directement à la source la course entre le
+   *  rendu natif post-création de Foundry et l'ouverture de l'assistant (cf. Hooks.on(
+   *  "createActor"), dnd-custom-ai.js), plutôt que de dépendre du timing interne des hooks
+   *  Foundry pour supprimer ce rendu natif : 3 tentatives précédentes insuffisantes (retour de
+   *  test répété — la fiche continuait de flasher par-dessus l'assistant), la dernière en date
+   *  posant `options.renderSheet = false` dans `preCreateActor` (toujours en place ci-dessous,
+   *  best-effort, mais visiblement pas fiable à elle seule selon la version de Foundry). Ici, la
+   *  détection ne dépend d'aucune hypothèse de timing/plomberie interne : `this.actor` reste la
+   *  même référence quel que soit l'appelant, et `foundry.applications.instances` est mis à jour
+   *  de façon synchrone dès la construction/fermeture d'une Application (cf. doc Foundry v11+).
+   *  Contrairement à bloquer sur `!(system.class && system.origin)` (root cause initialement
+   *  envisagée), cette approche scope précisément la fenêtre de course : une fois l'assistant
+   *  refermé — même sans avoir terminé — la fiche native redevient normalement accessible (cf.
+   *  T-WIZ-018, wizard.cy.js : rouvrir la fiche après une fermeture sans soumission doit encore
+   *  afficher le bouton "Créer un personnage"). */
+  render(...args) {
+    const wizardOpen = [...foundry.applications.instances.values()].some(
+      (app) => app instanceof CharacterCreationWizard && app.actor?.id === this.actor.id
+    );
+    if (wizardOpen) return Promise.resolve(this);
+    return super.render(...args);
+  }
+
+  /** @override
    * Construit le contexte partagé par tous les onglets (PARTS) : valeurs brutes du système
    * + valeurs dérivées (modificateurs, bonus de maîtrise, poids, richesse) calculées ici
    * pour garder les templates .hbs sans logique.

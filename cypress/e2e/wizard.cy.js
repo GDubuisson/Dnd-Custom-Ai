@@ -83,10 +83,16 @@ function toAutObject(win, data) {
   return win.Object.assign(new win.Object(), data);
 }
 
-function createBlankCharacter(name) {
+// `renderSheet` : par défaut absent (comportement d'un appel programmatique classique, ex.
+// macro/script). Le vrai déclencheur du bug T-WIZ-010 est le bouton natif "Créer un Acteur" de
+// la sidebar, qui appelle en interne `Document.create(data, {renderSheet: true})` (cf.
+// `Document#createDialog()` du core Foundry) — un `Actor.create()` sans options ne l'exerce
+// jamais. Passer `{ renderSheet: true }` ici reproduit fidèlement ce chemin sans dépendre d'une
+// interaction UI avec la boîte de dialogue native elle-même.
+function createBlankCharacter(name, { renderSheet = false } = {}) {
   return cy
     .window()
-    .then((win) => win.Actor.create(toAutObject(win, { name, type: "character" })))
+    .then((win) => win.Actor.create(toAutObject(win, { name, type: "character" }), { renderSheet }))
     .then((actor) => {
       createdActorIds.push(actor.id);
       return actor.id;
@@ -314,19 +320,26 @@ describe("Assistant de création de personnage — session Joueur", () => {
     });
   });
 
-  // Régression connue au moment d'écrire ce test (cf. [[project_souci1_wizard_sheet_race]],
+  // Régression connue historiquement (cf. [[project_souci1_wizard_sheet_race]],
   // tests/E2E_TEST_PLAN.md > "Prérequis d'infrastructure") : la fiche native flashait par-dessus
-  // l'assistant malgré 3 correctifs antérieurs. NE PAS neutraliser cette assertion (skip,
-  // condition affaiblie...) pour faire passer la CI au vert artificiellement tant que le bug
-  // n'est pas réellement corrigé — ce test doit rester rouge jusque-là.
+  // l'assistant malgré 3 correctifs antérieurs. Corrigée le 2026-08-16 par un override de
+  // `render()` dans DndCustomActorSheet (scripts/sheets/actor-sheet.js) qui court-circuite tout
+  // rendu tant que l'assistant est ouvert pour ce même Actor (comparaison par référence via
+  // `foundry.applications.instances`), plutôt que de dépendre du seul flag `options.renderSheet`
+  // du hook `preCreateActor` (best-effort, insuffisant seul).
+  //
+  // `{ renderSheet: true }` ci-dessous est essentiel : c'est le vrai déclencheur du bug (celui
+  // qu'utilise en interne le bouton natif "Créer un Acteur" de la sidebar). Un `Actor.create()`
+  // sans options n'exerce jamais ce chemin — utiliser createBlankCharacter() sans cette option
+  // ferait passer ce test trivialement, qu'il y ait bug ou non.
   //
   // Limite connue de cette vérification : Cypress observe des points discrets dans le temps
   // (les deux cy.get ci-dessous), pas un flux continu — un flash isolé entre deux vérifications
   // pourrait échapper à ce test. Insuffisant pour prouver l'absence totale du bug, suffisant
   // pour détecter le cas déjà observé (fiche visible juste après la création, avant que
   // l'assistant ne prenne l'écran).
-  it("ne laisse jamais apparaître la fiche native pendant que l'assistant est ouvert (T-WIZ-010, régression connue)", () => {
-    createBlankCharacter("Wizard T-WIZ-010");
+  it("ne laisse jamais apparaître la fiche native pendant que l'assistant est ouvert (T-WIZ-010)", () => {
+    createBlankCharacter("Wizard T-WIZ-010", { renderSheet: true });
     cy.get("input.actor-name").should("not.exist");
     getWizardForm().should("be.visible");
     cy.get("input.actor-name").should("not.exist");
