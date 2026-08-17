@@ -43,7 +43,7 @@ describe("character-sheet.hbs (en-tête)", () => {
     assert.doesNotMatch(speedLabel.textContent, /\b30\b/);
   });
 
-  test("aucun bouton Initiative dans l'en-tête (retiré, redondant avec l'onglet Statistiques)", () => {
+  test("aucun bouton Initiative dans l'en-tête (jamais eu — retiré aussi de l'onglet Statistiques depuis, cf. tab-stats.hbs)", () => {
     assert.equal(doc.querySelector('[data-action="rollInitiative"]'), null);
   });
 
@@ -102,6 +102,57 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
   test("le badge 'niveau disponible' et son bouton sont accessibles au joueur, pas seulement au MJ", () => {
     assert.ok(doc.querySelector(".level-up-badge"), "badge niveau disponible introuvable");
     assert.ok(doc.querySelector('[data-action="levelUp"]'), "bouton de montée de niveau introuvable côté joueur");
+  });
+
+  test("Retour de test (sécurité) : le champ PV actuels est verrouillé côté Joueur, pas de self-dégâts en tapant une valeur", () => {
+    const hpInput = doc.querySelector('input[name="system.attributes.hp.value"]');
+    assert.ok(hpInput, "champ PV actuels introuvable");
+    assert.ok(hpInput.disabled, "le champ PV actuels devrait être désactivé pour un Joueur");
+  });
+});
+
+describe("character-sheet.hbs (en-tête) — sous-classe", () => {
+  function render({ isGM, subclassLabel }) {
+    return parse(
+      renderTemplate("actor/character-sheet.hbs", {
+        actor: { img: "img.webp", name: "Aldric" },
+        system: { xp: 0, attributes: { level: 3, hp: { value: 18, max: 24, temp: 0 }, ac: { value: 15 }, speed: 30 } },
+        isGM,
+        levelUpAvailable: false,
+        classLabel: "Guerrier",
+        originLabel: "Altenmark",
+        hpPercent: 75,
+        dying: { active: false },
+        showCreationWizardButton: false,
+        subclassAvailable: true,
+        subclassLabel,
+        subclassOptions: [{ key: "champion", label: "Champion", selected: subclassLabel === "Champion" }]
+      })
+    );
+  }
+
+  // Retour de test (lot 3) : une fois choisie, la sous-classe s'affichait côté Joueur comme une
+  // liste déroulante désactivée (visuellement trompeuse, a l'air cliquable) plutôt qu'un champ
+  // classique — la liste déroulante reste réservée au MJ (correction possible à tout moment).
+  test("sous-classe déjà choisie, côté Joueur : champ texte, pas de <select>", () => {
+    const doc = render({ isGM: false, subclassLabel: "Champion" });
+    assert.equal(doc.querySelector('select[name="system.subclass"]'), null, "aucun <select> ne devrait être rendu côté Joueur");
+    const label = [...doc.querySelectorAll(".fixed-field-value")].find((el) => el.textContent.trim() === "Champion");
+    assert.ok(label, "champ texte 'Champion' introuvable côté Joueur");
+  });
+
+  test("sous-classe déjà choisie, côté MJ : <select> toujours utilisable pour corriger", () => {
+    const doc = render({ isGM: true, subclassLabel: "Champion" });
+    const select = doc.querySelector('select[name="system.subclass"]');
+    assert.ok(select, "le <select> devrait rester disponible côté MJ");
+    assert.ok(!select.disabled, "le <select> ne devrait pas être désactivé côté MJ");
+  });
+
+  test("sous-classe pas encore choisie, côté Joueur : <select> fonctionnel (secours du choix normal, cf. T-LVL-008)", () => {
+    const doc = render({ isGM: false, subclassLabel: "" });
+    const select = doc.querySelector('select[name="system.subclass"]');
+    assert.ok(select, "le <select> devrait être disponible pour faire le choix initial");
+    assert.ok(!select.disabled, "le <select> ne devrait pas être désactivé avant tout choix");
   });
 });
 
@@ -169,13 +220,83 @@ describe("tab-stats.hbs", () => {
     assert.ok(labels.some((text) => text.startsWith("Sauv")), `pas de libellé Sauv. dans ${JSON.stringify(labels)}`);
   });
 
-  test("la case à cocher de maîtrise de sauvegarde est bien reliée au bon champ", () => {
+  test("la case à cocher de maîtrise de sauvegarde est bien reliée au bon champ (MJ)", () => {
     assert.ok(doc.querySelector('input[name="system.saves.str.proficient"]'));
+  });
+
+  test("côté Joueur : pas de case à cocher (lecture seule), juste un indicateur visuel si maîtrisée", () => {
+    // Retour de test : la case à cocher restait affichée pour un Joueur alors qu'elle était
+    // toujours désactivée (la maîtrise ne dépend que de la classe, non éditable par lui) —
+    // remplacée par un simple libellé, sans input du tout.
+    const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
+    assert.equal(playerDoc.querySelector('input[name="system.saves.str.proficient"]'), null);
+    const label = [...playerDoc.querySelectorAll(".ability-side-label")].find((el) => el.textContent.trim().startsWith("Sauv"));
+    assert.ok(label, "libellé Sauv. introuvable côté Joueur");
+    assert.ok(label.classList.contains("proficient"), "indicateur de maîtrise manquant (Force maîtrisée dans ce fixture)");
   });
 
   test("Aptitudes multiples : une pastille apparaît sur une compétence non maîtrisée qui en bénéficie", () => {
     const arcana = [...doc.querySelectorAll(".skill")].find((li) => li.textContent.includes("Arcanes"));
     assert.ok(arcana.querySelector(".origin-advantage-tag"), "pastille Aptitudes multiples manquante");
+  });
+});
+
+// Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
+// profil d'attaque simplifié (NpcData#attack, npc-data.js), un seul par PNJ sur le modèle des
+// stat-blocks SRD 5e, au lieu d'un système d'armes/inventaire complet.
+describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
+  function render(attackOverrides = {}) {
+    return parse(
+      renderTemplate("actor/npc-tab-stats.hbs", {
+        tab: {},
+        conditions: [],
+        activeConditions: [],
+        abilities: [
+          { key: "str", label: "DND_CUSTOM.Abilities.str", mod: 3, modLabel: "+3" },
+          { key: "dex", label: "DND_CUSTOM.Abilities.dex", mod: 1, modLabel: "+1" }
+        ],
+        attack: {
+          name: "",
+          defaultName: "Attaque",
+          abilityOptions: [
+            { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
+            { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
+          ],
+          bonus: 0,
+          attackBonusLabel: "+3",
+          damageDice: "",
+          damageBonus: 0,
+          damageTypeOptions: [{ key: "", label: "", selected: true }],
+          damageLabel: "",
+          ...attackOverrides
+        }
+      })
+    );
+  }
+
+  test("le bouton Attaque est toujours affiché, avec le bonus total déjà calculé", () => {
+    const doc = render();
+    const button = doc.querySelector('[data-action="rollAttack"]');
+    assert.ok(button, "bouton d'attaque introuvable");
+    assert.match(button.textContent, /\+3/);
+  });
+
+  test("le bouton Dégâts n'apparaît que si un dé de dégâts est configuré", () => {
+    assert.equal(render().querySelector('[data-action="rollAttackDamage"]'), null);
+    const doc = render({ damageDice: "1d6", damageLabel: "1d6+3" });
+    const button = doc.querySelector('[data-action="rollAttackDamage"]');
+    assert.ok(button, "bouton de dégâts introuvable une fois le dé configuré");
+    assert.match(button.textContent, /1d6\+3/);
+  });
+
+  test("les champs de configuration sont bien reliés à system.attack.*", () => {
+    const doc = render();
+    assert.ok(doc.querySelector('input[name="system.attack.name"]'));
+    assert.ok(doc.querySelector('select[name="system.attack.ability"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.bonus"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.damage.dice"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.damage.bonus"]'));
+    assert.ok(doc.querySelector('select[name="system.attack.damage.type"]'));
   });
 });
 
@@ -251,7 +372,7 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
                 item: {
                   id: "s1",
                   name: "Projectile magique",
-                  system: { details: "1 action, 36 m, Instantanée", concentration: false, ritual: false, level: 1, prepared: false }
+                  system: { details: "1 action, 36 m, Instantanée", concentration: false, ritual: false, level: 1 }
                 }
               }
             ]
@@ -284,6 +405,14 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
   test("aucune trace de l'ancien système d'emplacements par niveau dans le HTML rendu", () => {
     const doc = render({ value: 2, max: 4 });
     assert.equal(doc.body.innerHTML.includes("system.spells.slots"), false);
+  });
+
+  // Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared) — purement
+  // informatif, jamais utilisé par aucune règle, source de confusion pour les testeurs.
+  test("aucune case 'Préparé' (concept retiré, cf. system.prepared)", () => {
+    const doc = render({ value: 2, max: 4 });
+    assert.equal(doc.querySelector("[data-item-prepared]"), null, "case Préparé encore présente");
+    assert.equal(doc.querySelector(".spell-prepared"), null, "libellé Préparé encore présent");
   });
 });
 
@@ -321,6 +450,61 @@ describe("tab-abilities.hbs — technique consommant la réserve d'une autre Cap
   });
 });
 
+// Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
+// dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage, cf. system.requiresState
+// dans item-data.js) doit être grisée par défaut et se dégriser automatiquement dès que l'état
+// correspondant est actif sur l'Actor — pas de contrôle manuel séparé à faire par le joueur.
+describe("tab-abilities.hbs — Capacité nécessitant un état actif (system.requiresState)", () => {
+  function render(activeStatuses) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        conditions: [{ id: "raging", label: "En Rage" }],
+        activeStatuses,
+        features: [
+          { id: "frenzy", name: "Frénésie", system: { source: "", uses: { max: 0 }, requiresRoll: false, costsResource: "", requiresState: "raging" } }
+        ],
+        featureResourceState: {}
+      })
+    );
+  }
+
+  test("bouton grisé par défaut, état requis absent d'activeStatuses", () => {
+    const doc = render(new Set());
+    const button = doc.querySelector('[data-action="useConditionalFeature"]');
+    assert.ok(button, "bouton de Capacité conditionnelle introuvable");
+    assert.ok(button.hasAttribute("disabled"), "devrait être grisé sans l'état requis actif");
+    assert.match(button.getAttribute("title"), /En Rage/, "le tooltip doit nommer l'état requis");
+  });
+
+  test("bouton dégrisé automatiquement dès que l'état requis est actif", () => {
+    const doc = render(new Set(["raging"]));
+    const button = doc.querySelector('[data-action="useConditionalFeature"]');
+    assert.equal(button.hasAttribute("disabled"), false);
+  });
+
+  test("une Capacité sans requiresState n'affiche jamais ce bouton", () => {
+    const doc = parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        conditions: [],
+        activeStatuses: new Set(),
+        features: [{ id: "f1", name: "Instinct sauvage", system: { source: "", uses: { max: 0 }, requiresRoll: false, costsResource: "" } }],
+        featureResourceState: {}
+      })
+    );
+    assert.equal(doc.querySelector('[data-action="useConditionalFeature"]'), null);
+  });
+});
+
 describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#activation)", () => {
   function render(reactionAvailable) {
     return parse(
@@ -341,7 +525,7 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
             level: 1,
             label: "Sorts de niveau 1",
             spells: [
-              { item: { id: "s1", name: "Bouclier", system: { details: "1 réaction", concentration: false, ritual: false, level: 1, prepared: false, activation: "reaction" } } }
+              { item: { id: "s1", name: "Bouclier", system: { details: "1 réaction", concentration: false, ritual: false, level: 1, activation: "reaction" } } }
             ]
           }
         ]
@@ -445,7 +629,6 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
       details: "1 action, 45 m, Instantanée",
       concentration: false,
       ritual: false,
-      prepared: false,
       description: "<p>Explosion de flammes.</p>"
     }
   };
@@ -458,9 +641,9 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
     assert.ok(doc.querySelector('input[name="system.details"]'));
   });
 
-  test("aucun champ obsolète (école, composantes, temps/portée/durée séparés)", () => {
+  test("aucun champ obsolète (école, composantes, temps/portée/durée séparés, préparation)", () => {
     const html = doc.body.innerHTML;
-    for (const removed of ["system.school", "system.castingTime", "system.range", "system.components", "system.duration"]) {
+    for (const removed of ["system.school", "system.castingTime", "system.range", "system.components", "system.duration", "system.prepared"]) {
       assert.equal(html.includes(`name="${removed}`), false, `champ obsolète encore présent : ${removed}`);
     }
   });
@@ -473,6 +656,39 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
   test("champ Déclencheur absent quand le sort n'est pas une réaction", () => {
     assert.equal(doc.querySelector('input[name="system.reactionTrigger"]'), null);
   });
+
+  // Retour de test (lot 3) : "Mot de guérison"/"Soin des blessures" ne soignaient rien et ne
+  // lançaient aucun dé — system.heal.dice (cf. SpellData, item-data.js) permet désormais de
+  // configurer un dé de soin sur n'importe quel sort, toujours visible (pas de case à cocher
+  // séparée, contrairement à system.attack/damage).
+  test("champ Dé de soin (system.heal.dice) toujours présent", () => {
+    const healInput = doc.querySelector('input[name="system.heal.dice"]');
+    assert.ok(healInput, "champ Dé de soin introuvable");
+  });
+});
+
+describe("item/spell-sheet.hbs — sort de soin (system.heal)", () => {
+  const doc = parse(
+    renderTemplate("item/spell-sheet.hbs", {
+      item: { img: "spell.webp", name: "Mot de guérison" },
+      isGM: true,
+      classOptions: [{ key: "bard", label: "Barde", checked: true }],
+      system: {
+        classes: new Set(["bard"]),
+        level: 1,
+        details: "1 action bonus, 18 m, Instantanée",
+        concentration: false,
+        ritual: false,
+        heal: { dice: "1d4" },
+        description: ""
+      }
+    })
+  );
+
+  test("le dé de soin configuré est bien affiché dans le champ", () => {
+    const healInput = doc.querySelector('input[name="system.heal.dice"]');
+    assert.equal(healInput.getAttribute("value"), "1d4");
+  });
 });
 
 describe("item/spell-sheet.hbs — sort de type Réaction", () => {
@@ -482,7 +698,7 @@ describe("item/spell-sheet.hbs — sort de type Réaction", () => {
       config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
       classOptions: [{ key: "wizard", label: "Magicien", checked: true }],
       system: {
-        classes: new Set(["wizard"]), level: 1, details: "1 réaction", concentration: false, ritual: false, prepared: false,
+        classes: new Set(["wizard"]), level: 1, details: "1 réaction", concentration: false, ritual: false,
         activation: "reaction", reactionTrigger: "Vous êtes touché par une attaque", description: ""
       },
       isReaction: true
@@ -618,5 +834,49 @@ describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences
     assert.ok(select, "select classKey introuvable");
     assert.ok(select.querySelector('option[value="fighter"][selected]'), "option 'fighter' devrait être sélectionnée");
     assert.equal(doc.querySelector('select[name="system.subclassKey"]'), null);
+  });
+});
+
+// Retour de test (lot 3) : les zones de texte (ProseMirror) des fiches d'Item de compendium
+// restaient pleinement éditables (barre d'outils complète) même pour un Joueur sans droit
+// d'édition réel — verrouillées au même niveau que item/feature-sheet.hbs (déjà correct avant ce
+// lot). Un seul template représentatif ici (Origine, cf. images_test/img_4.png) plutôt qu'une
+// couverture exhaustive des 6 fiches concernées (armor/gear/tool/language/class/spell partagent
+// le même pattern `{{#unless isGM}}disabled{{/unless}}`, déjà vérifié visuellement).
+describe("item/origin-sheet.hbs — verrouillage MJ/Joueur", () => {
+  function render(isGM) {
+    return parse(
+      renderTemplate("item/origin-sheet.hbs", {
+        item: { img: "o.webp", name: "Azhar" },
+        isGM,
+        system: {
+          demonym: "Azharite",
+          language: "Azharite",
+          traits: "Sagesse",
+          description: "<p>Désert.</p>",
+          abilityBonuses: { int: 2, wis: 1 },
+          specialTrait: { name: "Sagesse Ancienne", description: "<p>Bonus.</p>" }
+        },
+        abilityBonusFields: [{ key: "int", label: "DND_CUSTOM.Abilities.int", value: 2 }],
+        skillAdvantageOptions: [{ key: "history", label: "DND_CUSTOM.Skills.history", checked: true }],
+        checkedSkillAdvantages: [{ key: "history", label: "DND_CUSTOM.Skills.history", checked: true }]
+      })
+    );
+  }
+
+  test("côté Joueur : tous les champs et la zone de description sont désactivés, note affichée", () => {
+    const doc = render(false);
+    assert.ok(doc.querySelector(".field-note"), "note MJ-uniquement introuvable");
+    for (const el of doc.querySelectorAll("input, select, prose-mirror")) {
+      assert.ok(el.hasAttribute("disabled"), `${el.tagName}[name="${el.getAttribute("name")}"] devrait être désactivé côté Joueur`);
+    }
+  });
+
+  test("côté MJ : rien n'est désactivé, pas de note", () => {
+    const doc = render(true);
+    assert.equal(doc.querySelectorAll(".field-note").length, 0, "aucune note MJ-uniquement attendue côté MJ");
+    for (const el of doc.querySelectorAll("input, select, prose-mirror")) {
+      assert.ok(!el.hasAttribute("disabled"), `${el.tagName}[name="${el.getAttribute("name")}"] ne devrait pas être désactivé côté MJ`);
+    }
   });
 });

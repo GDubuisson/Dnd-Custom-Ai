@@ -42,31 +42,14 @@ const SYSTEM_ID = "dnd-custom-ai";
 // PNJ ciblé pour l'application de dégâts, notamment).
 const SOCKET_EVENT = `system.${SYSTEM_ID}`;
 
-// Les 14 états SRD 5e (hors Exhaustion, qui a des niveaux 0-6 et vit sur
-// system.attributes.exhaustion plutôt qu'en ActiveEffect on/off, cf. character-data.js).
-// Remplace la liste générique de Foundry (CONFIG.statusEffects) : icônes réutilisées du
-// cœur Foundry quand elles correspondent, libellés propres au système pour coller au
-// vocabulaire SRD 5e exact plutôt qu'aux libellés génériques de Foundry.
-const DND_CUSTOM_CONDITIONS = [
-  { id: "blinded", name: "DND_CUSTOM.Conditions.blinded", img: "icons/svg/blind.svg" },
-  { id: "charmed", name: "DND_CUSTOM.Conditions.charmed", img: "icons/svg/aura.svg" },
-  { id: "deafened", name: "DND_CUSTOM.Conditions.deafened", img: "icons/svg/deaf.svg" },
-  { id: "frightened", name: "DND_CUSTOM.Conditions.frightened", img: "icons/svg/terror.svg" },
-  { id: "grappled", name: "DND_CUSTOM.Conditions.grappled", img: "icons/svg/net.svg" },
-  { id: "incapacitated", name: "DND_CUSTOM.Conditions.incapacitated", img: "icons/svg/daze.svg" },
-  { id: "invisible", name: "DND_CUSTOM.Conditions.invisible", img: "icons/svg/invisible.svg" },
-  { id: "paralyzed", name: "DND_CUSTOM.Conditions.paralyzed", img: "icons/svg/paralysis.svg" },
-  { id: "petrified", name: "DND_CUSTOM.Conditions.petrified", img: "icons/svg/statue.svg" },
-  { id: "poisoned", name: "DND_CUSTOM.Conditions.poisoned", img: "icons/svg/poison.svg" },
-  { id: "prone", name: "DND_CUSTOM.Conditions.prone", img: "icons/svg/falling.svg" },
-  { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
-  { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
-  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" },
-  // Pas un état SRD 5e classique (pas d'avantage/désavantage associé) mais nécessaire pour
-  // marquer visuellement un personnage mort sur son token (cf. hook updateActor > mort par
-  // échec de jets de sauvegarde, plus bas dans ce fichier).
-  { id: "dead", name: "DND_CUSTOM.Conditions.dead", img: "icons/svg/skull.svg" }
-];
+// Durée de la Rage, SRD 5e (jusqu'à 1 minute = 10 rounds) : décomptée automatiquement round par
+// round UNIQUEMENT si un combat Foundry est déjà démarré au moment où l'état "En Rage" (cf.
+// DND_CUSTOM.conditions, config.js) est activé — cf. hooks createActiveEffect/updateCombat plus
+// bas. Hors combat, la Rage reste manuelle (bascule/désactive l'état à la main), comme avant.
+// Ne modélise QUE cette limite de durée, pas la condition de fin anticipée SRD ("un tour sans
+// attaque ni dégât subi") : ce système ne verrouille pas l'économie d'action du tour lui-même
+// (cf. commentaire sur system.combat, character-data.js), fidèle à ce parti pris existant.
+const RAGE_DURATION_ROUNDS = 10;
 
 Hooks.once("init", async () => {
   console.log(`${SYSTEM_ID} | Initialisation du système`);
@@ -100,7 +83,7 @@ Hooks.once("init", async () => {
   // Actor#toggleStatusEffect) : le vider puis le repeupler par push() plutôt que de
   // l'écraser par une simple affectation, sous peine de perdre cet accès par id.
   CONFIG.statusEffects.length = 0;
-  for (const condition of DND_CUSTOM_CONDITIONS) CONFIG.statusEffects.push(condition);
+  for (const condition of DND_CUSTOM.conditions) CONFIG.statusEffects.push(condition);
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],
@@ -261,15 +244,18 @@ Hooks.once("ready", () => {
  *  propriétaire (cas courant : dégâts appliqués à un monstre ciblé, cf.
  *  applyDamageToTargets plus bas), sans quoi Actor#update lève une erreur de permission
  *  ("User lacks permission...") côté joueur au lieu d'échouer silencieusement comme espéré. */
-async function requestActorUpdate(actor, updates) {
+async function requestActorUpdate(actor, updates, options = {}) {
   if (actor.isOwner) {
-    await actor.update(updates);
+    await actor.update(updates, options);
     return;
   }
   if (!game.users.activeGM) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
     return;
   }
+  // `options` (ex. dndCustomDamageApply, cf. preUpdateActor plus bas) n'a de sens que pour un
+  // update local direct : relayé au MJ actif, c'est SON client qui appelle doc.update(), déjà
+  // hors du filtre non-MJ de preUpdateActor (`game.users.get(userId)?.isGM`) — rien à transmettre.
   game.socket.emit(SOCKET_EVENT, { uuid: actor.uuid, updates });
 }
 
@@ -319,6 +305,21 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   // cet update (preUpdateActor), donc sûr à vérifier ici plutôt qu'une option dédiée.
   if (actor.system.subclass) delete sys.subclass;
   if (sys.attributes) delete sys.attributes.level;
+  // Retour de test (bug majeur, sécurité) : un Joueur pouvait s'appliquer lui-même des dégâts
+  // en tapant directement une valeur dans le champ PV de l'en-tête (déjà `disabled` côté
+  // template pour lui désormais, cf. character-sheet.hbs) — filet de sécurité côté données ici,
+  // au cas où l'update viendrait d'ailleurs qu'un vrai clic (macro, console). Seule une BAISSE
+  // est bloquée : la guérison (repos, objet de soin, jet de sauvegarde de la mort réussi...)
+  // reste un update légitime venant directement du client Joueur, jamais marqué par une option
+  // dédiée contrairement à dndCustomWizard/dndCustomLevelUp ci-dessus. `dndCustomDamageApply`
+  // (posé par applyDamageToTargets ci-dessous) est la seule exception à cette baisse bloquée :
+  // dégâts appliqués via un vrai jet de dés posté en chat, bouton cliqué explicitement — couvre
+  // le cas légitime d'un Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...).
+  // `dndCustomHpClamp` : deuxième exception légitime, cf. hook updateActor plus bas (correctif
+  // PV > max après une hausse d'Exhaustion, PAS un dégât).
+  if (sys.attributes?.hp?.value !== undefined && !options.dndCustomDamageApply && !options.dndCustomHpClamp) {
+    if (sys.attributes.hp.value < actor.system.attributes.hp.value) delete sys.attributes.hp.value;
+  }
   if (sys.abilities) {
     for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
   }
@@ -566,7 +567,11 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
     if (uses && uses.value > uses.max) updates["system.spells.uses.value"] = uses.max;
   }
 
-  if (Object.keys(updates).length) await actor.update(updates);
+  // `dndCustomHpClamp` : ce correctif peut faire BAISSER system.attributes.hp.value (ex. un
+  // Joueur augmente lui-même son Exhaustion, cf. exhaustionIncrease/tab-stats.hbs, ce qui réduit
+  // son PV max sous ses PV actuels) — à distinguer explicitement d'un vrai dégât pour ne pas se
+  // faire bloquer par le filet de sécurité anti-self-dégâts de preUpdateActor ci-dessus.
+  if (Object.keys(updates).length) await actor.update(updates, { dndCustomHpClamp: true });
 });
 
 // Mort d'un PNJ, SRD 5e simplifié (contrairement à un personnage : pas d'agonie ni de jet de
@@ -610,8 +615,70 @@ Hooks.on("updateCombat", async (combat, changes) => {
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const actor = combat.combatant?.actor;
-  if (actor?.type !== "character" || actor.system.combat.reactionAvailable) return;
-  await actor.update({ "system.combat.reactionAvailable": true });
+  if (actor?.type === "character" && !actor.system.combat.reactionAvailable) {
+    await actor.update({ "system.combat.reactionAvailable": true });
+  }
+
+  // Décompte de la durée de Rage (cf. RAGE_DURATION_ROUNDS ci-dessus), round par round, pour
+  // tout Combattant de CE combat en Rage avec un suivi actif (rageRoundsRemaining > 0, posé par
+  // le hook createActiveEffect plus bas). `rageLastRound` (plutôt que `combat.previous?.round`,
+  // abandonné : Foundry redéclenche "updateCombat" avec `round` dans les changements PLUSIEURS
+  // FOIS lors du démarrage d'un combat, sans que sa valeur n'ait réellement progressé entre deux
+  // de ces déclenchements — `combat.previous` s'est révélé peu fiable pour distinguer une
+  // vraie avancée d'un redéclenchement sans effet, constaté en pratique lors des tests E2E)
+  // rend le décompte idempotent : seul un `combat.round` strictement supérieur au dernier round
+  // traité pour CET Actor fait avancer le compteur, quel que soit le nombre de déclenchements.
+  if (!("round" in changes)) return;
+  for (const combatant of combat.combatants) {
+    const ragingActor = combatant.actor;
+    if (ragingActor?.type !== "character" || !ragingActor.statuses.has("raging")) continue;
+    const remaining = ragingActor.system.combat.rageRoundsRemaining;
+    if (!remaining) continue;
+    const elapsedRounds = combat.round - ragingActor.system.combat.rageLastRound;
+    if (elapsedRounds <= 0) continue;
+
+    if (remaining <= elapsedRounds) {
+      await ragingActor.toggleStatusEffect("raging", { active: false });
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: ragingActor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.RageEnded", { name: ragingActor.name })
+      });
+    } else {
+      await ragingActor.update({
+        "system.combat.rageRoundsRemaining": remaining - elapsedRounds,
+        "system.combat.rageLastRound": combat.round
+      });
+    }
+  }
+});
+
+// Amorce le décompte de durée de Rage (cf. RAGE_DURATION_ROUNDS) dès que l'état "raging" est
+// activé (Actor#toggleStatusEffect crée une ActiveEffect portant ce statut) ET qu'un combat est
+// déjà démarré (`game.combat.round` > 0, cf. `Combat#round` reste à 0 avant "Démarrer le combat").
+// Hors combat : rageRoundsRemaining reste à 0 (valeur par défaut du schéma), aucun suivi — la
+// Rage reste alors purement manuelle, comme avant cette fonctionnalité.
+Hooks.on("createActiveEffect", async (effect) => {
+  const actor = effect.parent;
+  if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  if (!game.combat?.round) return;
+
+  await actor.update({
+    "system.combat.rageRoundsRemaining": RAGE_DURATION_ROUNDS,
+    "system.combat.rageLastRound": game.combat.round
+  });
+});
+
+// Symétrique de la création ci-dessus : remet le compteur à zéro quand "raging" est retiré
+// (bascule manuelle du joueur, ou fin automatique par le hook updateCombat ci-dessus) — pur
+// nettoyage, `rageRoundsRemaining`/`rageLastRound` n'ont de sens que tant que l'état est actif.
+Hooks.on("deleteActiveEffect", async (effect) => {
+  const actor = effect.parent;
+  if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  if (!actor.system.combat.rageRoundsRemaining) return;
+
+  await actor.update({ "system.combat.rageRoundsRemaining": 0, "system.combat.rageLastRound": 0 });
 });
 
 // Filet de sécurité : ne laisse pas un personnage "réaction bloquée" une fois le combat terminé
@@ -701,10 +768,86 @@ async function applyDamageToTargets(amount, sourceActorId) {
     }
     if (remaining > 0) updates["system.attributes.hp.value"] = Math.max(0, hp.value - remaining);
 
-    if (Object.keys(updates).length) await requestActorUpdate(actor, updates);
+    // dndCustomDamageApply : seul flux autorisé à faire BAISSER system.attributes.hp.value
+    // depuis un client non-MJ (cf. preUpdateActor plus bas) — un jet de dégâts réel a déjà dû
+    // être posté en chat et un bouton cliqué explicitement, ce qui couvre le cas légitime d'un
+    // Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...), tout en fermant le
+    // vrai trou de sécurité signalé par un testeur : taper une valeur arbitraire directement
+    // dans le champ PV de l'en-tête (character-sheet.hbs, désormais `disabled` côté Joueur).
+    if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
     if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
       await checkConcentration(actor, amount);
     }
+  }
+}
+
+// Ajoute un bouton "Appliquer le soin" sur toute carte de chat de jet de soin de sort (cf.
+// rollHeal dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
+// client qui clique (game.user.targets) — même mécanique que "Appliquer les dégâts" ci-dessus
+// (auteur/MJ uniquement, marqué "déjà appliqué" après un premier clic), en PV positifs plutôt
+// que négatifs. Pas de blocage PvP (soigner un autre Joueur est toujours légitime) ni
+// d'absorption de PV temporaires (SRD 5e : les PV temporaires n'interagissent qu'avec les
+// dégâts, jamais avec les soins).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "healRoll")) return;
+  const amount = message.rolls?.[0]?.total;
+  if (!Number.isFinite(amount)) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-apply-heal-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyHeal", { amount });
+
+  if (message.getFlag(SYSTEM_ID, "healApplied")) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.HealAlreadyApplied");
+  } else if (message.author?.id !== game.user.id && !game.user.isGM) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.ApplyDamageNotAuthor");
+  } else {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await applyHealToTargets(amount);
+      await message.setFlag(SYSTEM_ID, "healApplied", true);
+    });
+  }
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Effet visuel sur les coups/échecs critiques (cf. flags criticalHit/criticalFumble posés par
+// rollCheck/rollDamage, rolls.js) : retour de test (lot 3, point 8) — le libellé texte déjà
+// présent dans le flavor ("Coup critique !"/"Échec critique !") ne suffisait pas, ajoute une
+// bordure/halo + icône sur la carte de jet (`.dice-roll`) elle-même. Styles définis dans
+// dnd-custom-ai.css HORS du bloc `.dnd-custom-ai` (les messages de chat vivent dans la barre
+// latérale, jamais imbriqués dans la fiche de personnage/PNJ) : jamais la couleur seule pour
+// distinguer les deux cas (icône différente), conformément aux règles RGAA/WCAG.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  const isCriticalHit = message.getFlag(SYSTEM_ID, "criticalHit");
+  const isCriticalFumble = message.getFlag(SYSTEM_ID, "criticalFumble");
+  if (!isCriticalHit && !isCriticalFumble) return;
+
+  const diceRoll = html.querySelector(".dice-roll");
+  if (!diceRoll) return;
+  diceRoll.classList.add(isCriticalHit ? "dnd-critical-hit" : "dnd-critical-fumble");
+
+  const icon = document.createElement("i");
+  icon.className = isCriticalHit ? "fa-solid fa-burst dnd-critical-icon" : "fa-solid fa-skull-crossbones dnd-critical-icon";
+  icon.setAttribute("aria-hidden", "true");
+  html.querySelector(".dice-total")?.prepend(icon);
+});
+
+async function applyHealToTargets(amount) {
+  const targets = Array.from(game.user.targets);
+  if (!targets.length) {
+    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+    return;
+  }
+
+  for (const token of targets) {
+    const actor = token.actor;
+    const hp = actor?.system.attributes?.hp;
+    if (!hp) continue;
+    await requestActorUpdate(actor, { "system.attributes.hp.value": Math.min(hp.value + amount, hp.max) });
   }
 }
 

@@ -667,6 +667,7 @@
       "level": 3,
       "requiresRoll": false,
       "rollFormula": "",
+      "requiresState": "raging",
       "source": "",
       "description": "En Rage, vous pouvez entrer en Frénésie : en plus de votre action Attaque normale, effectuez une attaque de corps à corps supplémentaire en action bonus à chacun de vos tours tant que la Rage dure. Une fois la Rage terminée, vous subissez un niveau d'Épuisement si vous avez frénétiquement attaqué."
     }

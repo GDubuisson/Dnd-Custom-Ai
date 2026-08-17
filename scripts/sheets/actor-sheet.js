@@ -22,14 +22,14 @@ import {
   opportunityAttackTrigger
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
-import { rollCheck, rollDamage } from "../helpers/rolls.js";
+import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 
-const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -99,7 +99,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       castSpell: DndCustomActorSheet.#onCastSpell,
       rollSpellDamage: DndCustomActorSheet.#onRollSpellDamage,
       dropConcentration: DndCustomActorSheet.#onDropConcentration,
-      rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
@@ -109,6 +108,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollFeature: DndCustomActorSheet.#onRollFeature,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
+      useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -340,6 +340,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Set natif (Actor#statuses), pas une donnée sérialisée : utilisé par le helper Handlebars
+    // featureDisabled (cf. handlebars-helpers.js) pour griser une Capacité tant que l'état
+    // requis par system.requiresState (ex. "raging") n'est pas actif sur l'Actor.
+    context.activeStatuses = this.actor.statuses;
     // Le don Sentinelle modifie le déclencheur affiché d'Attaque d'opportunité si le personnage
     // possède les deux (cf. opportunityAttackTrigger, rules.js) — dérivé ici, jamais écrit sur
     // l'Item lui-même : reste juste automatiquement si Sentinelle est ajoutée/retirée.
@@ -711,13 +715,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     ui.notifications.warn(game.i18n.format(missingKey, { name: displayName }));
   }
 
-  /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée
-   *  le Combattant si besoin (sur la scène active) et met à jour le Combat Tracker — pas de
-   *  logique maison, on branche juste la formule système (cf. system.json > "initiative"). */
-  static async #onRollInitiative() {
-    await this.actor.rollInitiative({ createCombatants: true });
-  }
-
   /** Jet de sauvegarde de la mort, SRD 5e : 1d20 sans modificateur. Naturel 20 = régénère
    *  1 PV — le hook updateActor (dnd-custom-ai.js) détecte alors le retour au-dessus de 0 PV
    *  et réinitialise l'état (retire Inconscient, remet les compteurs à zéro), pas besoin de
@@ -738,7 +735,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       await actor.update({ "system.attributes.death.failures": failures });
       if (failures >= 3) await declareDeath(actor);
     } else if (total >= 10) {
-      await actor.update({ "system.attributes.death.successes": Math.min(3, death.successes + 1) });
+      const successes = Math.min(3, death.successes + 1);
+      const updates = { "system.attributes.death.successes": successes };
+      // Retour de test (lot 3) : troisième réussite = "stabilisé" — remet 1 PV dans la même
+      // update que la 3e réussite (pas un update séparé) pour que le hook updateActor
+      // (dnd-custom-ai.js, branche `newHp > 0 && oldHp === 0`) retire Inconscient et réinitialise
+      // les compteurs d'un seul coup, exactement comme un nat 20 (cf. branche `total === 20`
+      // ci-dessus) — même mécanisme, déclenché par un chemin différent.
+      if (successes >= 3) updates["system.attributes.hp.value"] = 1;
+      await actor.update(updates);
     } else {
       const failures = Math.min(3, death.failures + 1);
       await actor.update({ "system.attributes.death.failures": failures });
@@ -863,6 +868,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
+  /** Utilisation d'une Capacité gratuite mais conditionnée à un état actif sur l'Actor
+   *  (`system.requiresState`, ex. Frénésie qui nécessite d'être En Rage, cf. DND_CUSTOM.conditions
+   *  dans config.js) : pas de charge à décompter (contrairement à #onUseFeatureCharge), juste une
+   *  annonce dans le chat — le bouton est déjà grisé côté template (tab-abilities.hbs >
+   *  featureDisabled) tant que l'état n'est pas actif, revérifié ici au cas où plusieurs clients
+   *  cliqueraient en même temps ou que l'état ait changé entre le render et le clic. */
+  static async #onUseConditionalFeature(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.requiresState) return;
+    if (!this.actor.statuses.has(item.system.requiresState)) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseConditionalFeature", {
+        name: this.actor.name,
+        feature: item.name
+      })
+    });
+  }
+
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
    *  désavantage (cf. tooltip des boutons de jet). */
   static async #onRollAbility(event, target) {
@@ -906,26 +932,48 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Jet de compétence (1d20 + modificateur). L'avantage d'Origine (cf.
    *  CharacterData#prepareDerivedData) et le désavantage d'armure (Discrétion) sont appliqués
    *  automatiquement en plus du Maj/Ctrl-clic manuel — plusieurs avantages ne cumulent jamais
-   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck). */
+   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck).
+   *
+   *  Bonus conditionnel de trait spécial d'Origine (ex. Art de la Parole/Lucentia sur
+   *  Perspicacité, Sagesse Ancienne/Azhar sur Perception, cf. `specialTrait.conditionalBonus`
+   *  dans scripts/data/origins.json) : retour de test, ce bonus ne doit PAS s'appliquer
+   *  automatiquement (contrairement à l'avantage d'Origine ci-dessus, qui lui reste automatique)
+   *  — proposé comme un choix au moment du jet via une boîte de dialogue, le joueur décidant
+   *  d'utiliser ou non son trait pour CE jet précis. */
   static async #onRollSkill(event, target) {
     const key = target.dataset.key;
     const system = this.actor.system;
+    const advantageKey = event.shiftKey;
+    const disadvantageKey = event.ctrlKey;
     const profBonus = proficiencyBonus(system.attributes.level);
     const jackOfAllTrades = hasFeature(this.actor.items.contents, "Aptitudes multiples");
-    const mod = skillModifier(system, key, profBonus, jackOfAllTrades);
+    let mod = skillModifier(system, key, profBonus, jackOfAllTrades);
     const originAdvantage = Boolean(
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
     const cond = conditionRollEffects(this.actor, "check");
+
+    let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
+    const specialTrait = game.dndCustomAi?.origins?.[system.origin]?.specialTrait;
+    if (specialTrait?.conditionalBonus?.skill === key) {
+      const useTrait = await DialogV2.confirm({
+        window: { title: specialTrait.name },
+        content: `<p>${game.i18n.format("DND_CUSTOM.Roll.OriginTraitBonusPrompt", { trait: specialTrait.name })}</p>`,
+        rejectClose: false
+      });
+      if (useTrait) {
+        mod += abilityModifier(system.abilities[specialTrait.conditionalBonus.ability].total);
+        flavor += ` (${specialTrait.name})`;
+      }
+    }
+
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod),
-      flavor: game.i18n.format("DND_CUSTOM.Roll.SkillCheck", {
-        skill: game.i18n.localize(DND_CUSTOM.skills[key])
-      }),
-      advantage: event.shiftKey || originAdvantage || cond.advantage,
-      disadvantage: event.ctrlKey || armorDisadvantage || cond.disadvantage
+      flavor,
+      advantage: advantageKey || originAdvantage || cond.advantage,
+      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
     });
   }
 
@@ -1058,8 +1106,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
     // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
     // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
-    if (item.system.light?.bright || item.system.light?.dim) {
+    // `#setTokensLight` poste déjà son propre message "allume {sort}" : retour de test, un
+    // second message générique "lance {sort}" (plus bas) s'ajoutait en double pour la même
+    // action — sauté ici (sauf sort d'attaque, qui poste son propre jet de toute façon).
+    const hasLight = Boolean(item.system.light?.bright || item.system.light?.dim);
+    if (hasLight) {
       await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
+      if (!item.system.attack) return;
     }
 
     if (item.system.attack) {
@@ -1080,6 +1133,25 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         criticalRules: true
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+      return;
+    }
+
+    // Sort de soin (ex. Mot de guérison, Soin des blessures, cf. SpellData#heal dans
+    // item-data.js) : lance le dé de soin + modificateur de caractéristique d'incantation
+    // immédiatement (contrairement aux dégâts d'un sort d'attaque, un soin n'a pas besoin de
+    // confirmation de touche) — retour de test, ces sorts ne lançaient jusqu'ici aucun dé et ne
+    // soignaient rien. Le bouton "Appliquer le soin" affiché sur ce message (dnd-custom-ai.js)
+    // applique le total aux cibles actuellement ciblées, même mécanique que les dégâts.
+    if (item.system.heal?.dice) {
+      const system = this.actor.system;
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      await rollHeal({
+        actor: this.actor,
+        dice: item.system.heal.dice,
+        formula: formatModifier(spellAbilityMod),
+        flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
+      });
       return;
     }
 

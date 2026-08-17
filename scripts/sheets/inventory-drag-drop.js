@@ -109,8 +109,6 @@ export function InventoryDragDropMixin(Base) {
         await item.update({ "system.quantity": newQuantity });
       } else if (target.matches("[data-item-equipped]")) {
         await item.update({ "system.equipped": target.checked });
-      } else if (target.matches("[data-item-prepared]")) {
-        await item.update({ "system.prepared": target.checked });
       }
     }
 

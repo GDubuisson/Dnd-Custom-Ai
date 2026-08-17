@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
-import { rollCheck } from "../helpers/rolls.js";
+import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
@@ -25,7 +25,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       rollAbility: DndCustomNpcSheet.#onRollAbility,
       toggleCondition: DndCustomNpcSheet.#onToggleCondition,
       rollInitiative: DndCustomNpcSheet.#onRollInitiative,
-      awardXp: DndCustomNpcSheet.#onAwardXp
+      awardXp: DndCustomNpcSheet.#onAwardXp,
+      rollAttack: DndCustomNpcSheet.#onRollAttack,
+      rollAttackDamage: DndCustomNpcSheet.#onRollAttackDamage
     }
   };
 
@@ -93,6 +95,35 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     const items = this.actor.items.contents;
     context.lootItems = items.filter((item) => ["weapon", "armor", "gear", "tool"].includes(item.type));
 
+    // Profil d'attaque simplifié (cf. NpcData#attack, npc-data.js — retour de test : un PNJ ne
+    // pouvait pas attaquer du tout). `abilityMod` : celle des deux (Force/Dextérité) choisie par
+    // le MJ, pilote à la fois le bonus d'attaque et de dégâts affichés (labels déjà formatés,
+    // template sans logique). `damageTypeOptions` inclut une option vide en tête (type facultatif).
+    const attack = system.attack;
+    const attackAbilityMod = system.abilities[attack.ability]?.mod ?? 0;
+    context.attack = {
+      name: attack.name,
+      defaultName: game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName"),
+      abilityOptions: ["str", "dex"].map((key) => ({
+        key,
+        label: DND_CUSTOM.abilities[key],
+        selected: attack.ability === key
+      })),
+      bonus: attack.bonus,
+      attackBonusLabel: formatModifier(attackAbilityMod + attack.bonus),
+      damageDice: attack.damage.dice,
+      damageBonus: attack.damage.bonus,
+      damageTypeOptions: [
+        { key: "", label: "", selected: !attack.damage.type },
+        ...Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({
+          key,
+          label,
+          selected: attack.damage.type === key
+        }))
+      ],
+      damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : ""
+    };
+
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
     // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
     context.conditions = CONFIG.statusEffects.map((status) => ({
@@ -140,6 +171,50 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
   /** Jet d'Initiative : cf. DndCustomActorSheet#onRollInitiative (même mécanisme natif Foundry). */
   static async #onRollInitiative() {
     await this.actor.rollInitiative({ createCombatants: true });
+  }
+
+  /** Jet d'attaque du profil simplifié (cf. NpcData#attack, npc-data.js) : 1d20 + modificateur
+   *  de la caractéristique choisie par le MJ + bonus fixe. Même mécanique que #onRollWeaponAttack
+   *  (actor-sheet.js) — comparaison automatique à la CA des cibles ciblées, coups/échecs
+   *  critiques en combat (1/20 naturel) : un coup critique pose un flag transitoire sur l'ACTOR
+   *  (pas un Item, un PNJ n'a qu'un seul profil d'attaque, pas d'ambiguïté possible), consommé
+   *  par le prochain jet de dégâts (#onRollAttackDamage) pour doubler ses dés. */
+  static async #onRollAttack(event) {
+    const attack = this.actor.system.attack;
+    const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
+    const { isCriticalHit } = await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(abilityMod + attack.bonus),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", {
+        weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
+      }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey,
+      compareToTargetAc: true,
+      criticalRules: true
+    });
+    if (isCriticalHit) await this.actor.setFlag(SYSTEM_ID, "pendingAttackCritical", true);
+  }
+
+  /** Jet de dégâts du profil simplifié : dé(s) configuré(s) + modificateur de la même
+   *  caractéristique que l'attaque (SRD 5e) + bonus fixe. Pas de bouton affiché tant qu'aucun
+   *  dé n'est configuré (cf. npc-tab-stats.hbs > attack.damageDice). */
+  static async #onRollAttackDamage() {
+    const attack = this.actor.system.attack;
+    if (!attack.damage.dice) return;
+    const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
+    const damageType = attack.damage.type ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage.type]) : "";
+    const critical = Boolean(this.actor.getFlag(SYSTEM_ID, "pendingAttackCritical"));
+    if (critical) await this.actor.unsetFlag(SYSTEM_ID, "pendingAttackCritical");
+    await rollDamage({
+      actor: this.actor,
+      dice: attack.damage.dice,
+      formula: formatModifier(abilityMod + attack.damage.bonus),
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", {
+        weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
+      })}${damageType ? ` (${damageType})` : ""}`,
+      critical
+    });
   }
 
   /** Ouvre la boîte de dialogue de distribution d'XP, montant pré-rempli avec le XP rapporté

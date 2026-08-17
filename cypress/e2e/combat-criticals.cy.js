@@ -187,6 +187,9 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
           lastMessageRoll().then((roll) => {
             expect(roll.flavor, "touché malgré une CA de 999").to.include(hit);
             expect(roll.flavor, "libellé Coup critique affiché").to.include(crit);
+            // Retour de test : le modificateur ne doit plus apparaître dans le résultat affiché
+            // sur un critique — juste le d20 naturel (cf. rollCheck > messageRoll, rolls.js).
+            expect(roll.formula, "aucun modificateur affiché sur un coup critique").to.equal("1d20");
           });
         });
 
@@ -220,6 +223,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
           lastMessageRoll().then((roll) => {
             expect(roll.flavor, "raté malgré une CA de 1").to.include(miss);
             expect(roll.flavor, "libellé Échec critique affiché").to.include(fumble);
+            expect(roll.formula, "aucun modificateur affiché sur un échec critique").to.equal("1d20");
           });
         });
     });
@@ -284,6 +288,7 @@ describe("Critiques en combat — jet d'attaque de sort", () => {
           .then((crit) => {
             lastMessageRoll().then((roll) => {
               expect(roll.flavor, "libellé Coup critique affiché").to.include(crit);
+              expect(roll.formula, "aucun modificateur affiché sur un coup critique").to.equal("1d20");
             });
           });
 
@@ -314,6 +319,7 @@ describe("Critiques en combat — jet de sauvegarde", () => {
       .then((fumble) => {
         lastMessageRoll().then((roll) => {
           expect(roll.flavor, "libellé Échec critique affiché sur une sauvegarde en combat").to.include(fumble);
+          expect(roll.formula, "aucun modificateur affiché sur un échec critique").to.equal("1d20");
         });
       });
   });
@@ -341,5 +347,85 @@ describe("Critiques en combat — jet de sauvegarde", () => {
     cy.window().then((win) =>
       win.game.combat?.createEmbeddedDocuments("Combatant", win.JSON.parse(win.JSON.stringify([{ actorId: fighterId, initiative: 10 }])))
     );
+  });
+});
+
+// Retour de test (lot 3, point 8) : au-delà du libellé texte déjà couvert ci-dessus, la carte
+// de jet elle-même (`.dice-roll`) doit porter un effet visuel dédié — bordure/halo + icône
+// distincte, jamais la couleur seule (cf. flags criticalHit/criticalFumble, rolls.js ; hook
+// renderChatMessageHTML, dnd-custom-ai.js).
+describe("Critiques en combat — effet visuel sur la carte de jet", () => {
+  beforeEach(() => {
+    cy.loginAsPlayer();
+  });
+
+  it("coup critique : bordure et icône dédiées sur la carte de jet, dégâts doublés inclus (T-CRIT-007)", () => {
+    createTarget("Crit Visual Target High AC", 999).then((tokenId) => {
+      cy.loginAsPlayer();
+      cy.openActorSheet(fighterId);
+      goToTab("equipment");
+      resetMessageBaseline();
+      cy.forceD20(20);
+      targetToken(tokenId);
+      equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
+      lastMessageRoll();
+
+      cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+      cy.get(".chat-message").last().within(() => {
+        cy.get(".dice-roll").should("have.class", "dnd-critical-hit");
+        cy.get(".dice-total .dnd-critical-icon.fa-burst").should("exist");
+      });
+
+      // Le jet de dégâts doublé qui suit (même mécanique que T-CRIT-001) profite du même effet.
+      resetMessageBaseline();
+      equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click();
+      lastMessageRoll();
+      cy.get(".chat-message").last().within(() => {
+        cy.get(".dice-roll").should("have.class", "dnd-critical-hit");
+        cy.get(".dice-total .dnd-critical-icon.fa-burst").should("exist");
+      });
+    });
+  });
+
+  it("échec critique : bordure et icône dédiées, distinctes du coup critique (T-CRIT-008)", () => {
+    createTarget("Crit Visual Target Low AC", 1).then((tokenId) => {
+      cy.loginAsPlayer();
+      cy.openActorSheet(fighterId);
+      goToTab("equipment");
+      resetMessageBaseline();
+      cy.forceD20(1);
+      targetToken(tokenId);
+      equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
+      lastMessageRoll();
+
+      cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+      cy.get(".chat-message")
+        .last()
+        .within(() => {
+          cy.get(".dice-roll").should("have.class", "dnd-critical-fumble").and("not.have.class", "dnd-critical-hit");
+          cy.get(".dice-total .dnd-critical-icon.fa-skull-crossbones").should("exist");
+        });
+    });
+  });
+
+  it("jet normal (sans critique) : aucune des deux classes, aucune icône ajoutée (T-CRIT-009)", () => {
+    createTarget("Crit Visual Target Normal", 5).then((tokenId) => {
+      cy.loginAsPlayer();
+      cy.openActorSheet(fighterId);
+      goToTab("equipment");
+      resetMessageBaseline();
+      cy.forceD20(10);
+      targetToken(tokenId);
+      equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
+      lastMessageRoll();
+
+      cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+      cy.get(".chat-message")
+        .last()
+        .within(() => {
+          cy.get(".dice-roll").should("not.have.class", "dnd-critical-hit").and("not.have.class", "dnd-critical-fumble");
+          cy.get(".dnd-critical-icon").should("not.exist");
+        });
+    });
   });
 });

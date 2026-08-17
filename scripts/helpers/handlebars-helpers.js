@@ -39,6 +39,24 @@ export function registerHandlebarsHelpers() {
     return item?.system?.activation === "reaction" && !reactionAvailable;
   });
 
+  // Grise un bouton de Capacité si elle nécessite un état actif sur l'Actor qui ne l'est pas
+  // (system.requiresState, cf. FeatureData, item-data.js — ex. Frénésie qui nécessite d'être
+  // En Rage) et/ou si elle consomme une Réaction déjà utilisée ce round-ci (reprend la logique
+  // de reactionBlocked ci-dessus pour les mêmes boutons de Capacité). `activeStatuses` : Set
+  // natif (Actor#statuses, cf. context.activeStatuses, actor-sheet.js), pas une donnée
+  // sérialisée — reste toujours à jour au fil des bascules d'état sans plomberie supplémentaire.
+  Handlebars.registerHelper("featureDisabled", (item, reactionAvailable, activeStatuses) => {
+    const required = item?.system?.requiresState;
+    if (required && !activeStatuses?.has(required)) return true;
+    return item?.system?.activation === "reaction" && !reactionAvailable;
+  });
+
+  // Libellé localisé d'un état (cf. DND_CUSTOM.conditions, config.js) à partir de son id — pour
+  // le tooltip d'une Capacité grisée par requiresState (cf. featureDisabled ci-dessus).
+  // `conditions` : context.conditions déjà construit pour l'onglet Statistiques (actor-sheet.js),
+  // réutilisé tel quel plutôt que dupliqué (déjà les libellés localisés, pas juste les id).
+  Handlebars.registerHelper("conditionLabel", (conditions, id) => conditions?.find((c) => c.id === id)?.label ?? id);
+
   Handlebars.registerHelper("isUsableItem", (item) => {
     if (item?.type === "tool") return Boolean(item.system.useEffect?.skill);
     return Boolean(item?.system?.use) && item.system.use.type !== "none";

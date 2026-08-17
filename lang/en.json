@@ -14,7 +14,15 @@
       "XpReward": "Experience points",
       "SpecialAbilities": "Special abilities",
       "Particularity": "Particularity",
-      "LootEmpty": "No loot to recover"
+      "LootEmpty": "No loot to recover",
+      "AttackTitle": "Attack",
+      "AttackDefaultName": "Attack",
+      "AttackName": "Name",
+      "AttackAbility": "Ability",
+      "AttackBonus": "Attack bonus",
+      "AttackDamageDice": "Damage dice",
+      "AttackDamageBonus": "Damage bonus",
+      "AttackDamageType": "Damage type"
     },
     "CreatureTypes": {
       "aberration": "Aberration",
@@ -143,10 +151,12 @@
       "SavingThrow": "{ability} saving throw",
       "SkillCheck": "{skill} check",
       "ToolCheck": "{tool} — {skill} check",
+      "OriginTraitBonusPrompt": "Use the \"{trait}\" trait to add its bonus to this roll?",
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
       "SpellAttack": "Attack with {spell}",
       "SpellDamage": "{spell} damage",
+      "SpellHeal": "{spell} healing",
       "DeathSave": "Death saving throw",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
@@ -172,6 +182,8 @@
       "ApplyDamage": "Apply {amount} damage to target",
       "DamageAlreadyApplied": "Damage already applied",
       "ApplyDamageNotAuthor": "Only the roll's author (or the GM) can apply this damage",
+      "ApplyHeal": "Apply {amount} HP of healing to target",
+      "HealAlreadyApplied": "Healing already applied",
       "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
@@ -184,6 +196,8 @@
       "LevelUp": "{name} reaches level {level}!",
       "UseFeature": "{name} uses {feature} ({remaining}/{max} left).",
       "UseResourceTechnique": "{name} uses {resource}: {technique} ({remaining}/{max} left).",
+      "UseConditionalFeature": "{name} uses {feature}.",
+      "RageEnded": "{name}'s Rage ends (duration elapsed).",
       "NoChargesLeft": "No uses left for {feature}.",
       "ReactionUnavailable": "Reaction already used this round ({name}).",
       "ClassContentGranted": "{name} gains: {names}.",
@@ -262,6 +276,7 @@
       "NoSpells": "No spell recorded",
       "ConcentratingOn": "Concentrating on:",
       "DropConcentration": "Drop concentration",
+      "RequiresStateTooltip": "Requires: {state}",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
         "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },
@@ -364,7 +379,8 @@
       "restrained": "Restrained",
       "stunned": "Stunned",
       "unconscious": "Unconscious",
-      "dead": "Dead"
+      "dead": "Dead",
+      "raging": "Raging"
     },
     "Journal": {
       "Biography": "Biography",
@@ -445,6 +461,8 @@
       },
       "Fields": {
         "GmOnlyNotice": "Locked sheet: only the GM can edit this Feature. Use the dedicated button on the Features tab to spend a charge.",
+        "EquipmentGmOnlyNotice": "Locked sheet: only the GM can edit this item (rules content). Use the Quantity/Equipped fields on the Inventory tab to manage it.",
+        "CompendiumGmOnlyNotice": "Locked sheet: only the GM can edit this compendium content.",
         "Price": "Price",
         "Weight": "Weight",
         "Quantity": "Quantity",
@@ -521,9 +539,11 @@
         "SpellDetails": "Details (casting time, range, duration)",
         "Concentration": "Concentration",
         "Ritual": "Ritual",
-        "Prepared": "Prepared",
         "SpellClasses": "Classes",
         "SpellAttack": "Attack Roll",
+        "SpellHeal": "Healing (optional)",
+        "SpellHealHelp": "If set, rolls this die + the spellcasting ability modifier when cast, and shows an \"Apply Healing\" button on the chat card.",
+        "HealDice": "Healing Die",
         "SpellLight": "Light emitted (optional, e.g. the Light cantrip)",
         "LanguageCategory": "Category"
       }

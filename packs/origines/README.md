@@ -18,7 +18,7 @@ via sa fiche dédiée (`templates/item/origin-sheet.hbs`) :
 - `system.skillAdvantages` : liste des compétences bénéficiant de l'avantage d'Origine
 - `system.specialTrait.name` / `system.specialTrait.description` : trait spécial
 
-Les 6 Origines actuelles (Fleuraine, Altenmark, Lucentia, Ravenmoor, Valdera, Ashar) et leurs
+Les 6 Origines actuelles (Fleuraine, Altenmark, Lucentia, Ravenmoor, Valdera, Azhar) et leurs
 valeurs sont pour l'instant définies dans `scripts/data/origins.json`, utilisé par la fiche de
 personnage pour les calculs (bonus de caractéristiques, avantages de compétences).
 

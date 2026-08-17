@@ -89,6 +89,18 @@ describe("scripts/data/origins.json", () => {
       assert.ok(origin.specialTrait?.name?.length > 0);
       assert.ok(origin.specialTrait?.description?.length > 0);
     });
+    // Retour de test (lot 3) : "Art de la Parole"/"Sagesse Ancienne" décrivaient un bonus de
+    // compétence dans leur texte mais rien ne l'appliquait — conditionalBonus (facultatif,
+    // cf. #onRollSkill, actor-sheet.js) référence une compétence + caractéristique réelles
+    // quand un trait accorde ce genre de bonus optionnel (proposé au joueur au moment du jet,
+    // jamais automatique).
+    if (origin.specialTrait?.conditionalBonus) {
+      test(`${key} : conditionalBonus référence une compétence/caractéristique valides`, () => {
+        const { skill, ability } = origin.specialTrait.conditionalBonus;
+        assert.ok(SKILL_KEYS.includes(skill), `compétence invalide : ${skill}`);
+        assert.ok(ABILITY_KEYS.includes(ability), `caractéristique invalide : ${ability}`);
+      });
+    }
   }
 });
 
@@ -123,7 +135,7 @@ describe("scripts/data/spell-slots.json", () => {
 });
 
 describe("world-items/spells.json — cohérence avec le schéma simplifié (SpellData)", () => {
-  const OBSOLETE_FIELDS = ["school", "components", "castingTime", "range", "duration"];
+  const OBSOLETE_FIELDS = ["school", "components", "castingTime", "range", "duration", "prepared"];
   for (const spell of WORLD_SPELLS) {
     test(`${spell.name} : pas de champ obsolète (école/composantes/temps/portée/durée séparés)`, () => {
       for (const field of OBSOLETE_FIELDS) {
@@ -142,6 +154,35 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
       }
     });
   }
+});
+
+// Retour de test (lot 3) : "Mot de guérison" et "Soin des blessures" décrivaient un soin en dés
+// dans leur texte mais ne lançaient réellement aucun dé (system.heal.dice absent du schéma à
+// l'époque) — la consigne du testeur ("vérifier plus largement TOUS les sorts censés lancer des
+// dés") va au-delà de ces deux sorts nommés : la deuxième vérification ci-dessous détecte tout
+// sort dont la description mentionne un soin en PV sans dé de soin réellement configuré, pas
+// seulement les deux noms cités.
+describe("world-items/spells.json — sorts de soin (system.heal)", () => {
+  const HEAL_DESCRIPTION_PATTERN = /récupère.*points? de vie/i;
+
+  test("les 3 sorts de soin connus ont bien un dé de soin configuré", () => {
+    const healers = { "Soin des blessures": "1d8", "Mot de guérison": "1d4", "Soins de groupe": "3d8" };
+    for (const [name, expectedDice] of Object.entries(healers)) {
+      const spell = WORLD_SPELLS.find((entry) => entry.name === name);
+      assert.ok(spell, `sort "${name}" introuvable`);
+      assert.equal(spell.system.heal?.dice, expectedDice, `"${name}" : dé de soin attendu "${expectedDice}"`);
+    }
+  });
+
+  test("aucun sort dont la description décrit un soin en PV ne reste sans dé de soin configuré", () => {
+    for (const spell of WORLD_SPELLS) {
+      if (!HEAL_DESCRIPTION_PATTERN.test(spell.system.description)) continue;
+      assert.ok(
+        spell.system.heal?.dice,
+        `"${spell.name}" décrit un soin en PV dans sa description mais n'a pas de system.heal.dice configuré`
+      );
+    }
+  });
 });
 
 describe("world-items/features.json — cohérence (FeatureData)", () => {
@@ -181,6 +222,27 @@ describe("world-items/features.json et spells.json — activation valide si rens
   }
 });
 
+// Retour de test (lot 3, point 5 "Capacités à ressource") : les Capacités qui ne fonctionnent
+// que dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doivent référencer
+// un état réel (cf. DND_CUSTOM.conditions, config.js) pour que le grisage automatique
+// (featureDisabled, handlebars-helpers.js) fonctionne — une faute de frappe silencieuse
+// laisserait le bouton en permanence grisé (id introuvable dans activeStatuses) sans jamais
+// lever d'erreur ailleurs.
+describe("world-items/features.json — requiresState référence un état réel (FeatureData)", () => {
+  const CONDITION_IDS = new Set(DND_CUSTOM.conditions.map((condition) => condition.id));
+  for (const feature of WORLD_FEATURES) {
+    if (!feature.system.requiresState) continue;
+    test(`${feature.name} : requiresState "${feature.system.requiresState}" référence un état réel`, () => {
+      assert.ok(CONDITION_IDS.has(feature.system.requiresState), `état invalide sur "${feature.name}"`);
+    });
+  }
+
+  test("Frénésie référence bien l'état \"raging\" (régression)", () => {
+    const frenzy = WORLD_FEATURES.find((feature) => feature.name === "Frénésie");
+    assert.equal(frenzy?.system.requiresState, "raging");
+  });
+});
+
 describe("world-items/*.json — objets physiques (armes/armures/objets/outils)", () => {
   const collections = { weapons: WORLD_WEAPONS, armors: WORLD_ARMORS, gear: WORLD_GEAR, tools: WORLD_TOOLS };
   for (const [label, entries] of Object.entries(collections)) {
@@ -202,11 +264,24 @@ describe("world-items/*.json — objets physiques (armes/armures/objets/outils)"
 });
 
 describe("classStartingEquipment — les noms référencés existent dans world-items/weapons|armors.json", () => {
-  const weaponNames = new Set(WORLD_WEAPONS.map((entry) => entry.name));
+  const weaponsByName = new Map(WORLD_WEAPONS.map((entry) => [entry.name, entry]));
   const armorNames = new Set(WORLD_ARMORS.map((entry) => entry.name));
   for (const [classKey, kit] of Object.entries(DND_CUSTOM.classStartingEquipment)) {
     test(`${classKey} : arme "${kit.weapon}" existe`, () => {
-      assert.ok(weaponNames.has(kit.weapon), `arme "${kit.weapon}" introuvable dans world-items/weapons.json`);
+      assert.ok(weaponsByName.has(kit.weapon), `arme "${kit.weapon}" introuvable dans world-items/weapons.json`);
+    });
+    // Retour de test (lot 3) : l'arme de départ de 3 classes (Barde/Rapière, Druide/Cimeterre,
+    // Roublard/Rapière) était de type martial alors que ces 3 classes ne maîtrisent QUE les
+    // armes simples (cf. DND_CUSTOM.classWeaponProficiencies) — un Joueur démarrait avec une
+    // arme qu'il ne savait pas manier. Corrigé (Dague/Faucille, toutes deux `meleeSimple`), et
+    // gardé ici pour ne pas régresser sur une future arme de départ mal choisie.
+    test(`${classKey} : l'arme de départ "${kit.weapon}" est d'un type maîtrisé par la classe`, () => {
+      const weapon = weaponsByName.get(kit.weapon);
+      if (!weapon) return; // déjà signalé par le test précédent, évite un échec en cascade illisible
+      assert.ok(
+        DND_CUSTOM.classWeaponProficiencies[classKey].includes(weapon.system.weaponType),
+        `"${kit.weapon}" est de type "${weapon.system.weaponType}", absent des maîtrises de ${classKey} (${DND_CUSTOM.classWeaponProficiencies[classKey].join(", ")})`
+      );
     });
     if (kit.armor) {
       test(`${classKey} : armure "${kit.armor}" existe`, () => {

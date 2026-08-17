@@ -22,7 +22,14 @@
   --dca-secondary-container: #e8c98a;
   --dca-on-secondary-container: #5c2c0d;
   --dca-secondary-fixed: #f0dfae;
-  --dca-secondary-fixed-dim: #c99a52;
+  /* Retour de test (lot 3, point 9 "Accessibilité") : #c99a52 (valeur d'origine) ne contrastait
+     qu'à 3.6:1 sur --dca-primary-container, sous le seuil RGAA/WCAG AA de 4.5:1 pour du texte
+     de cette taille (ex. en-têtes de tableau d'inventaire) — éclairci jusqu'à ~4.7:1 sur ce même
+     fond (audit réel via axe-core, cf. cypress/e2e/accessibility.cy.js), tout en restant plus
+     sourd que --dca-secondary-fixed pour garder la hiérarchie visuelle libellé/valeur voulue.
+     Seul jeton touché par cet audit : les autres usages (texte sombre sur fond clair, ou fond
+     clair sous texte sombre) gagnent aussi en contraste avec cet éclaircissement, jamais l'inverse. */
+  --dca-secondary-fixed-dim: #d7b47f;
   --dca-tertiary: #b3401f;
   --dca-error: #ba1a1a;
 
@@ -618,6 +625,44 @@
   white-space: nowrap;
 }
 
+/* Profil d'attaque simplifié (fiche PNJ, cf. NpcData#attack, npc-data.js — retour de test :
+   un PNJ ne pouvait pas attaquer). Réutilise .equipment-roll-btn/.equipment-roll-row (déjà
+   stylées pour les boutons Attaque/Dégâts de l'onglet Équipement, fiche personnage) pour les
+   deux boutons de jet ci-dessous, seuls les champs de configuration (nom/caractéristique/bonus)
+   sont propres à ce panneau. */
+.dnd-custom-ai .npc-attack-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.6rem 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.dnd-custom-ai .npc-attack-name-field {
+  grid-column: span 2;
+}
+
+.dnd-custom-ai .npc-attack-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .npc-attack-fields input,
+.dnd-custom-ai .npc-attack-fields select {
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface-variant);
+  font-family: var(--dca-font-label);
+  font-size: 0.85rem;
+  padding: 0.2rem 0.35rem;
+}
+
 /* ---------- Caractéristiques + Compétences (fiche personnage) ---------- */
 
 .dnd-custom-ai .stats-columns {
@@ -767,6 +812,13 @@
   height: 0.7rem;
 }
 
+/* Indicateur de maîtrise de sauvegarde côté Joueur (lecture seule, cf. tab-stats.hbs) : la
+   maîtrise elle-même reste éditable uniquement par le MJ (case à cocher, ci-dessus). */
+.dnd-custom-ai .ability-side-label.proficient {
+  color: var(--dca-secondary);
+  font-weight: 700;
+}
+
 .dnd-custom-ai .ability-side .ability-mod {
   font-family: var(--dca-font-headline);
   font-weight: 600;
@@ -781,6 +833,18 @@
   font-weight: 600;
   text-align: center;
   color: var(--dca-on-surface-variant);
+}
+
+/* Retour de test : les icônes de dé de "MOD." et "SAUV." (même carte de caractéristique)
+   s'affichaient à des tailles visiblement différentes. Cause : `.roll-btn i` (règle générale,
+   partagée par tous les boutons de jet du système) fixe la taille de l'icône en `em`, relative
+   au `font-size` du bouton qui la contient — `.ability-mod` (0.9rem) et `.save-mod` (0.7rem) ont
+   des tailles de texte volontairement différentes (hiérarchie visuelle test/sauvegarde), donc
+   leurs icônes héritées l'étaient aussi. Taille fixe en `rem` ici, scopée à cette seule paire de
+   boutons : n'affecte aucun autre bouton de jet du système. */
+.dnd-custom-ai .ability-side .ability-mod i,
+.dnd-custom-ai .ability-side .save-mod i {
+  font-size: 0.75rem;
 }
 
 /* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : indice visuel de clic au repos
@@ -953,9 +1017,17 @@
   overflow-y: auto;
 }
 
+/* Retour de test : la liste apparaissait décalée vers le centre plutôt que collée à gauche.
+   Cause : `.condition-checkbox-row` est un `<button>` — le CSS core de Foundry pose
+   `justify-content: center` sur les boutons par défaut (pensé pour ses propres boutons-icônes
+   carrés), jamais écrasé ici puisque cette règle ne fixait que `display`/`align-items`, pas
+   `justify-content`. `flex-start` explicite règle l'alignement quel que soit l'ordre de
+   chargement des feuilles de style. */
 .dnd-custom-ai .condition-checkbox-row {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  width: 100%;
   gap: 0.5rem;
   padding: 0.35rem 0.6rem;
   border: none;
@@ -1075,6 +1147,13 @@
   border-left: 3px solid transparent;
   font-size: 0.78rem;
   transition: background 0.15s ease;
+  /* Retour de test (lot 3) : la compétence la plus en bas à droite (dernier `<li>` du DOM)
+     tranchait visuellement des autres — même mécanisme que `.language-chip` plus bas dans ce
+     fichier : le CSS core de Foundry pose `margin-bottom: 0.25rem` sur TOUT `<li>` sauf
+     `:last-child`, ce qui grandit la ligne de grille de tous les autres `.skill` (via leur
+     marge) sauf celui-ci, en 2 colonnes -> décalage visible pour la toute dernière carte.
+     `!important` neutralise cette règle core quelle que soit la position dans la liste. */
+  margin-bottom: 0 !important;
 }
 
 .dnd-custom-ai .skills-list .skill:nth-child(odd) {
@@ -1754,14 +1833,11 @@
   letter-spacing: 0.03em;
 }
 
-.dnd-custom-ai .spell-prepared {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
+/* Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared, purement
+   informatif, jamais utilisé par aucune règle) — les boutons d'action restent poussés à droite
+   de la ligne (avant, `.spell-prepared` portait ce `margin-left: auto`). */
+.dnd-custom-ai .spells-list li [data-action="castSpell"] {
   margin-left: auto;
-  font-family: var(--dca-font-label);
-  font-size: 0.68rem;
-  color: var(--dca-muted-text);
 }
 
 /* ---------- Journal ---------- */
@@ -1852,14 +1928,21 @@
   font-size: 0.72rem;
 }
 
-/* Retour de test : la dernière pastille de langue (la plus à droite) s'affichait avec une
-   police plus grosse que les autres. `font-size` n'était fixé nulle part sur `.item-name-link`
-   lui-même (hérité de `.language-chip` ci-dessus) : `!important` neutralise toute règle plus
-   spécifique qui viendrait le réaffecter pour cet élément précis, même principe que
-   `nav.tabs .item` plus haut dans ce fichier (conflit avec le CSS par défaut de Foundry). */
+/* Retour de test : la dernière pastille de langue (la plus à droite/en bas) semblait "plus
+   grosse" que les autres. Root cause exacte fournie par le testeur (2026-08-16) : le CSS core
+   de Foundry (`foundry2.css`) pose `margin-bottom: 0.25rem` sur TOUT `<li>`, sauf
+   `:last-child` (`margin-bottom: 0`) — chaque `.language-chip` est justement un `<li>`
+   (`.languages-list`), donc la dernière pastille d'une ligne recevait un peu moins de marge que
+   ses voisines, perçu comme une différence de taille plutôt que de marge. `!important`
+   neutralise cette règle core quelle que soit la position dans la liste (`:last-child` ou non) —
+   la tentative précédente ciblait `font-size` sur `.item-name-link`, une fausse piste qui
+   n'adressait pas la vraie cause. */
+.dnd-custom-ai .language-chip {
+  margin-bottom: 0 !important;
+}
+
 .dnd-custom-ai .language-chip .item-name-link {
   color: var(--dca-on-surface);
-  font-size: inherit !important;
   text-decoration: none;
   cursor: pointer;
 }
@@ -2337,7 +2420,36 @@
   filter: brightness(1.1);
 }
 
+.dnd-apply-heal-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--dca-outline, #7a5a35);
+  border-radius: 0.3rem;
+  background: var(--dca-secondary, #2e7d32);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dnd-apply-heal-btn:hover {
+  filter: brightness(1.1);
+}
+
 /* ---------- Assistant de création de personnage ---------- */
+
+/* Retour de test : fond noir (thème Foundry par défaut), en rupture avec le reste du système.
+   `.sheet.actor`/`.sheet.item` ont chacun leur propre règle de fond parchemin (cf. plus haut
+   dans ce fichier) mais l'assistant, avec ses propres classes CSS (`character-wizard`, ni
+   `actor` ni `item`), n'était couvert par aucune des deux — jamais de fond de thème appliqué du
+   tout, juste le fond sombre par défaut d'ApplicationV2. */
+.dnd-custom-ai.sheet.character-wizard {
+  height: 100%;
+  font-family: var(--dca-font-body);
+  color: var(--dca-on-surface);
+  background-color: var(--dca-surface);
+}
 
 .dnd-custom-ai .wizard-body {
   max-height: 70vh;
@@ -2413,6 +2525,20 @@
   border-color: var(--dca-outline-variant);
 }
 
+/* Capacité nécessitant un état actif sur l'Actor (ex. Frénésie qui nécessite d'être En Rage,
+   cf. FeatureData#requiresState, item-data.js) : même traitement visuel que la réserve à
+   charges partagées ci-dessus, grisée tant que l'état n'est pas actif (retour de test, lot 3
+   point 5 "Capacités à ressource"). */
+.dnd-custom-ai .conditional-feature-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .conditional-feature-btn:disabled:hover {
+  border-color: var(--dca-outline-variant);
+}
+
 .dnd-custom-ai .not-proficient-tag {
   display: inline-block;
   margin-left: 0.3rem;
@@ -2435,4 +2561,38 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ---------- Effet visuel sur les coups/échecs critiques (cf. rollCheck > criticalRules,
+   rolls.js ; hook renderChatMessageHTML, dnd-custom-ai.js) ---------- */
+/* Pas scopé .dnd-custom-ai (même raison que le Journal ci-dessus) : les cartes de jet de dés
+   vivent dans le journal de chat (barre latérale Foundry), jamais imbriquées dans une fiche du
+   système — les variables --dca-* (définies dans le bloc .dnd-custom-ai) n'y sont pas
+   accessibles, d'où des couleurs en dur ci-dessous plutôt que des jetons partagés. Bordure +
+   halo + icône distincte pour chaque cas (jamais la couleur seule) : un coup critique reste
+   repérable même en cas de daltonisme (RGAA/WCAG). */
+.dice-roll.dnd-critical-hit {
+  border: 2px solid #8a6d1f;
+  border-radius: 4px;
+  box-shadow: 0 0 8px 1px rgba(184, 134, 11, 0.55);
+  background: linear-gradient(rgba(255, 215, 0, 0.14), rgba(255, 215, 0, 0.03));
+}
+
+.dice-roll.dnd-critical-fumble {
+  border: 2px solid #ba1a1a;
+  border-radius: 4px;
+  box-shadow: 0 0 8px 1px rgba(186, 26, 26, 0.45);
+  background: linear-gradient(rgba(186, 26, 26, 0.14), rgba(186, 26, 26, 0.03));
+}
+
+.dnd-critical-icon {
+  margin-right: 0.35rem;
+}
+
+.dice-roll.dnd-critical-hit .dnd-critical-icon {
+  color: #8a6d1f;
+}
+
+.dice-roll.dnd-critical-fumble .dnd-critical-icon {
+  color: #ba1a1a;
 }

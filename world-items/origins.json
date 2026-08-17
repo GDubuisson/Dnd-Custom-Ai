@@ -85,14 +85,14 @@
     }
   },
   {
-    "name": "Ashar",
+    "name": "Azhar",
     "type": "origin",
-    "img": "systems/dnd-custom-ai/assets/icons/origins/Ashar.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Azhar.webp",
     "system": {
-      "demonym": "Asharite",
-      "language": "Asharite",
+      "demonym": "Azharite",
+      "language": "Azharite",
       "traits": "Sagesse, connaissance, réflexion, patience",
-      "description": "<p>Vastes étendues désertiques parcourues de routes caravanières et parsemées de bibliothèques savantes. Les Asharites valorisent la connaissance ancienne et la réflexion patiente avant l'action.</p>",
+      "description": "<p>Vastes étendues désertiques parcourues de routes caravanières et parsemées de bibliothèques savantes. Les Azharites valorisent la connaissance ancienne et la réflexion patiente avant l'action.</p>",
       "abilityBonuses": { "int": 2, "wis": 1 },
       "skillAdvantages": ["history", "arcana"],
       "specialTrait": {

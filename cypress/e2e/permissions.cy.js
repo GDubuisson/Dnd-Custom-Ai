@@ -96,6 +96,66 @@ describe("Permissions — champs verrouillés MJ, session Joueur", () => {
       return updateActor(win, actor, { "system.attributes.level": 1 }, { dndCustomLevelUp: true });
     });
   });
+
+  // Retour de test (bug majeur, sécurité) : un Joueur pouvait s'appliquer lui-même des dégâts
+  // en tapant une valeur dans le champ PV de l'en-tête (désormais `disabled` côté Joueur, cf.
+  // character-sheet.hbs) — filet de sécurité côté données ici (preUpdateActor, dnd-custom-ai.js),
+  // au cas où l'update viendrait d'ailleurs qu'un vrai clic (macro, console).
+  it("un Joueur ne peut pas BAISSER ses propres PV via un update direct (T-PERM-005)", () => {
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      const hpBefore = actor.system.attributes.hp.value;
+
+      return updateActor(win, actor, { "system.attributes.hp.value": Math.max(0, hpBefore - 5) }).then(() => {
+        expect(
+          win.game.actors.get(sharedActorId).system.attributes.hp.value,
+          "aucune baisse de PV directe ne doit passer"
+        ).to.equal(hpBefore);
+      });
+    });
+  });
+
+  it("un Joueur peut toujours AUGMENTER ses propres PV — non-régression, ex. soin (T-PERM-006)", () => {
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      const hpBefore = Math.max(1, actor.system.attributes.hp.value - 1);
+
+      return updateActor(win, actor, { "system.attributes.hp.value": hpBefore }).then(() =>
+        updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.hp.value": hpBefore + 1 }).then(() => {
+          expect(
+            win.game.actors.get(sharedActorId).system.attributes.hp.value,
+            "une hausse de PV directe doit rester autorisée (soin, repos...)"
+          ).to.equal(hpBefore + 1);
+        })
+      );
+    });
+
+    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
+    });
+  });
+
+  it("l'exception dndCustomDamageApply laisse passer une baisse de PV — mécanisme du bouton 'Appliquer les dégâts' (T-PERM-007)", () => {
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      const hpBefore = actor.system.attributes.hp.value;
+
+      return updateActor(win, actor, { "system.attributes.hp.value": hpBefore - 3 }, { dndCustomDamageApply: true }).then(() => {
+        expect(
+          win.game.actors.get(sharedActorId).system.attributes.hp.value,
+          "une baisse marquée dndCustomDamageApply (dégât appliqué via un vrai jet) doit passer"
+        ).to.equal(hpBefore - 3);
+      });
+    });
+
+    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
+    });
+  });
 });
 
 describe("Permissions — accès à la fiche, session Joueur", () => {

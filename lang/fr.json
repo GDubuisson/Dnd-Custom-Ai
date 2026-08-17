@@ -14,7 +14,15 @@
       "XpReward": "Points d'expérience",
       "SpecialAbilities": "Capacités spéciales",
       "Particularity": "Particularité",
-      "LootEmpty": "Aucun objet à récupérer"
+      "LootEmpty": "Aucun objet à récupérer",
+      "AttackTitle": "Attaque",
+      "AttackDefaultName": "Attaque",
+      "AttackName": "Nom",
+      "AttackAbility": "Caractéristique",
+      "AttackBonus": "Bonus au jet",
+      "AttackDamageDice": "Dé(s) de dégâts",
+      "AttackDamageBonus": "Bonus de dégâts",
+      "AttackDamageType": "Type de dégâts"
     },
     "CreatureTypes": {
       "aberration": "Aberration",
@@ -143,10 +151,12 @@
       "SavingThrow": "Jet de sauvegarde de {ability}",
       "SkillCheck": "Test de {skill}",
       "ToolCheck": "{tool} — Test de {skill}",
+      "OriginTraitBonusPrompt": "Utiliser le trait \"{trait}\" pour ajouter son bonus à ce jet ?",
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
       "SpellAttack": "Attaque avec {spell}",
       "SpellDamage": "Dégâts de {spell}",
+      "SpellHeal": "Soin de {spell}",
       "DeathSave": "Jet de sauvegarde de la mort",
       "Advantage": "Avantage",
       "Disadvantage": "Désavantage",
@@ -172,6 +182,8 @@
       "ApplyDamage": "Appliquer {amount} dégâts à la cible",
       "DamageAlreadyApplied": "Dégâts déjà appliqués",
       "ApplyDamageNotAuthor": "Seul l'auteur du jet (ou le MJ) peut appliquer ces dégâts",
+      "ApplyHeal": "Appliquer {amount} PV de soin à la cible",
+      "HealAlreadyApplied": "Soin déjà appliqué",
       "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
@@ -184,6 +196,8 @@
       "LevelUp": "{name} passe au niveau {level} !",
       "UseFeature": "{name} utilise {feature} ({remaining}/{max} restantes).",
       "UseResourceTechnique": "{name} utilise {resource} : {technique} ({remaining}/{max} restants).",
+      "UseConditionalFeature": "{name} utilise {feature}.",
+      "RageEnded": "La Rage de {name} prend fin (durée écoulée).",
       "NoChargesLeft": "Plus aucune utilisation restante pour {feature}.",
       "ReactionUnavailable": "Réaction déjà utilisée ce round-ci ({name}).",
       "ClassContentGranted": "{name} reçoit : {names}.",
@@ -262,6 +276,7 @@
       "NoSpells": "Aucun sort enregistré",
       "ConcentratingOn": "Concentré sur :",
       "DropConcentration": "Rompre la concentration",
+      "RequiresStateTooltip": "Nécessite : {state}",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute." },
         "bard": { "Title": "Inspiration bardique", "Tagline": "Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société." },
@@ -364,7 +379,8 @@
       "restrained": "Entravé",
       "stunned": "Étourdi",
       "unconscious": "Inconscient",
-      "dead": "Mort"
+      "dead": "Mort",
+      "raging": "En Rage"
     },
     "Journal": {
       "Biography": "Biographie",
@@ -445,6 +461,8 @@
       },
       "Fields": {
         "GmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier cette Capacité. Utilisez le bouton dédié de l'onglet Capacités pour dépenser une charge.",
+        "EquipmentGmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier cet objet (contenu de règles). Utilisez les cases Quantité/Équipé de l'onglet Inventaire pour le gérer.",
+        "CompendiumGmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier ce contenu de compendium.",
         "Price": "Prix",
         "Weight": "Poids",
         "Quantity": "Quantité",
@@ -521,9 +539,11 @@
         "SpellDetails": "Détails (temps d'incantation, portée, durée)",
         "Concentration": "Concentration",
         "Ritual": "Rituel",
-        "Prepared": "Préparé",
         "SpellClasses": "Classes",
         "SpellAttack": "Jet d'attaque",
+        "SpellHeal": "Soin (facultatif)",
+        "SpellHealHelp": "Si renseigné, lance ce dé + le modificateur de caractéristique d'incantation au moment du lancer, et propose un bouton \"Appliquer le soin\" sur la carte de chat.",
+        "HealDice": "Dé de soin",
         "SpellLight": "Lumière émise (facultatif, ex. sort Lumière)",
         "LanguageCategory": "Catégorie"
       }

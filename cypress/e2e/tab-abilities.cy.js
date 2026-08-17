@@ -1,7 +1,8 @@
 // Implémente la section 6 (T-ABIL-001 à T-ABIL-020) de tests/E2E_TEST_PLAN.md — onglet
 // Capacités/Sorts (tab-abilities.hbs + partials par classe). T-ABIL-021 (régénération de la
 // réaction en début de tour) est marqué "Quench" seul dans le plan : implémenté dans
-// tests/quench/quench-tests.js, pas ici.
+// tests/quench/quench-tests.js, pas ici. T-ABIL-022/023 (langues connues) et T-ABIL-024 (sort de
+// soin) sont hors plan initial, ajoutés depuis sur des retours de test réels.
 //
 // Écrit à l'origine pour contourner un bug de locale sur grantClassContent (corrigé depuis, cf.
 // tests/README.md > "Bug connu — CORRIGÉ", T-STATS-012 dans tab-stats.cy.js) — le contournement
@@ -87,8 +88,9 @@ function grantCompendiumItem(win, actorId, packName, itemName) {
 let fighterId; // Second souffle, Imposition des mains, Attaque d'opportunité (+ Sentinelle, T-ABIL-009)
 let moineId; // Ki (réserve) + Rafale de coups (technique consommant la réserve)
 let wizardId; // Trait de feu, Projectile magique, Bouclier, Contresort, Bénédiction, Invisibilité,
-// Lumière, Parler aux animaux + Incantation rituelle (Druide)
+// Lumière, Parler aux animaux, Mot de guérison + Incantation rituelle (Druide)
 let noClassId; // Origine posée, Classe vide (T-ABIL-002) — créé directement, sans passer par l'assistant
+let barbareId; // Capacité conditionnée à un état actif (system.requiresState, T-ABIL-025)
 
 before(() => {
   cy.loginAsPlayer();
@@ -130,7 +132,8 @@ before(() => {
           "Bénédiction",
           "Invisibilité",
           "Lumière",
-          "Parler aux animaux"
+          "Parler aux animaux",
+          "Mot de guérison"
         ].map((name) => grantCompendiumItem(win, id, "sorts", name))
       ).then(() => grantCompendiumItem(win, id, "capacites", "Incantation rituelle (Druide)"))
     );
@@ -141,6 +144,33 @@ before(() => {
   });
 
   cy.window().then((win) => win.game.actors.get(wizardId)?.sheet?.close());
+  cy.createReadyCharacter({ name: "Tab Abilities Barbarian", origin: "altenmark", classKey: "barbarian", skills: ["athletics", "survival"] }).then(
+    (id) => {
+      barbareId = id;
+      createdActorIds.push(id);
+      // Créée directement (pas via grantCompendiumItem comme les autres Capacités ci-dessus) :
+      // isole le mécanisme générique requiresState/featureDisabled (retour de test, lot 3 point
+      // 5) du contenu réel du compendium "capacites", dont l'octroi via grantClassContent est
+      // déjà couvert ailleurs (tests/unit/class-content.test.js) — ce scénario teste le grisage
+      // conditionnel lui-même, pas l'octroi de Frénésie en particulier.
+      cy.window().then((win) =>
+        win.game.actors.get(id).createEmbeddedDocuments(
+          "Item",
+          win.JSON.parse(
+            win.JSON.stringify([
+              {
+                name: "Frénésie",
+                type: "feature",
+                system: { class: "barbarian", subclass: "berserker", requiresRoll: false, requiresState: "raging", uses: { max: 0 } }
+              }
+            ])
+          )
+        )
+      );
+    }
+  );
+
+  cy.window().then((win) => win.game.actors.get(barbareId)?.sheet?.close());
   cy.window()
     .then((win) =>
       win.Actor.create(
@@ -577,11 +607,84 @@ describe("Onglet Capacités/Sorts", () => {
     goToTab("abilities");
 
     withItemId(wizardId, "Lumière", (itemId) => {
+      resetMessageBaseline();
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
         const token = win.canvas.scene.tokens.get(tokenId);
         expect(token.light.bright, "lumière appliquée au token").to.be.greaterThan(0);
       });
+      // Retour de test : un double message ("Allume Lumière" + "Lance Lumière") était posté
+      // pour un seul lancer — un seul message attendu désormais (#onCastSpell, actor-sheet.js).
+      cy.window().should((win) => {
+        expect(win.game.messages.size, "un seul nouveau message de chat pour ce lancer").to.equal(knownMessageCount + 1);
+      });
+    });
+  });
+
+  // Retour de test (lot 3) : "Mot de guérison"/"Soin des blessures" ne lançaient aucun dé et ne
+  // soignaient rien (system.heal.dice absent du schéma) — vérifie le vrai jet (dé + modificateur
+  // de caractéristique d'incantation) et le bouton "Appliquer le soin" affiché sur son message.
+  it("sort de soin lance le dé de soin et le bouton 'Appliquer le soin' restaure des PV (T-ABIL-024)", () => {
+    let tokenId;
+    cy.loginAsGM();
+    cy.window()
+      .then((win) => win.game.actors.get(wizardId).getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 350, y: 350 }))))
+      .then((tokenDoc) =>
+        cy.window().then((win) =>
+          win.canvas.scene.createEmbeddedDocuments("Token", [win.JSON.parse(win.JSON.stringify(tokenDoc.toObject()))]).then((tokens) => {
+            tokenId = tokens[0].id;
+            createdSceneItemIds.push(tokenId);
+          })
+        )
+      );
+
+    cy.loginAsPlayer();
+    let hpBefore;
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(wizardId);
+      hpBefore = Math.max(1, actor.system.attributes.hp.max - 5);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": hpBefore })), {
+        dndCustomDamageApply: true
+      });
+    });
+
+    cy.openActorSheet(wizardId);
+    goToTab("abilities");
+
+    withItemId(wizardId, "Mot de guérison", (itemId) => {
+      resetMessageBaseline();
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
+      lastMessage().then((message) => {
+        // Mot de guérison : 1d4 + modificateur d'Intelligence (Magicien) — le modificateur EST
+        // ajouté pour un soin, contrairement aux dégâts d'un sort (cf. rollHeal, rolls.js).
+        expect(message.formula).to.match(/^1d4[+-]\d+$/);
+        expect(Number.isFinite(message.total), "un vrai total de soin doit être calculé").to.be.true;
+      });
+
+      cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
+
+      // Ferme la fiche personnage (recouvre la moitié droite de l'écran) et ouvre l'onglet Chat
+      // de la barre latérale (repliée par défaut après un cy.loginAsPlayer(), même pattern que
+      // #sidebar-tabs [data-tab="combat"] dans combat-tracker.cy.js) avant d'interagir avec le
+      // message posté — sans ça, Cypress refuse le clic ("center of this element is hidden from
+      // view") même si l'élément existe bien dans le DOM.
+      cy.window().then((win) => win.game.actors.get(wizardId).sheet.close());
+      cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+      cy.get(".chat-message").last().find("button.dnd-apply-heal-btn").click();
+
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(wizardId);
+        const healAmount = win.game.messages.contents.at(-1).rolls?.[0]?.total ?? 0;
+        expect(actor.system.attributes.hp.value, "PV restaurés du montant du jet, plafonnés au max").to.equal(
+          Math.min(hpBefore + healAmount, actor.system.attributes.hp.max)
+        );
+      });
+    });
+
+    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(wizardId);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
     });
   });
 
@@ -634,6 +737,56 @@ describe("Onglet Capacités/Sorts", () => {
     sheetRoot().find('button[data-action="toggleReaction"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(wizardId).system.combat.reactionAvailable).to.be.true;
+    });
+  });
+
+  // Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
+  // dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doit être grisée par
+  // défaut et se dégriser automatiquement dès que l'état correspondant est actif — la bascule de
+  // l'état (onglet Statistiques, mécanisme déjà existant) est le SEUL contrôle actionné par le
+  // joueur, pas de bouton séparé pour la Capacité elle-même.
+  it("Capacité conditionnée à un état actif — grisée par défaut, dégrisée à la bascule de l'état (T-ABIL-025)", () => {
+    cy.openActorSheet(barbareId);
+    goToTab("abilities");
+
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("be.disabled");
+    });
+
+    goToTab("stats");
+    sheetRoot().find(".conditions-dropdown summary").click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(barbareId).statuses.has("raging"), "état 'raging' actif après bascule").to.be.true;
+    });
+
+    goToTab("abilities");
+    resetMessageBaseline();
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("not.be.disabled").click();
+    });
+
+    cy.window()
+      .its("game.i18n")
+      .then((i18n) => i18n.format("DND_CUSTOM.Chat.UseConditionalFeature", { name: "Tab Abilities Barbarian", feature: "Frénésie" }))
+      .then((expectedContent) => {
+        cy.window().should((win) => {
+          expect(win.game.messages.size, "un message annonçant l'utilisation doit être posté").to.be.greaterThan(knownMessageCount);
+          expect(win.game.messages.contents.at(-1).content).to.equal(expectedContent);
+        });
+      });
+
+    // Rebascule l'état "En Rage" à faux : ne fausse pas un futur run réutilisant ce personnage.
+    goToTab("stats");
+    sheetRoot().find(".conditions-dropdown summary").click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(barbareId).statuses.has("raging")).to.be.false;
+    });
+
+    goToTab("abilities");
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("be.disabled");
     });
   });
 });

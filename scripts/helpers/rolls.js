@@ -67,7 +67,22 @@ export async function rollCheck({
     }
   }
 
-  await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label });
+  // Retour de test : sur un échec/coup critique, ne pas afficher le modificateur dans le
+  // résultat — seul le dé naturel compte pour la règle (déjà vrai plus haut, `hit`
+  // forcé indépendamment du total), le message de chat doit refléter ça visuellement plutôt que
+  // d'afficher un total (dé + modificateur) qui n'a plus d'incidence sur le résultat.
+  // `Roll.fromTerms` reconstruit un jet à partir du seul premier terme déjà évalué (le(s) d20,
+  // `roll.terms[0]`) SANS relancer les dés — même résultat physique, juste sans le(s) terme(s)
+  // de modificateur affiché(s).
+  const messageRoll = isCriticalHit || isCriticalFumble ? Roll.fromTerms([roll.terms[0]]) : roll;
+  // Retour de test (lot 3, point 8) : au-delà du libellé texte ci-dessus, un coup/échec
+  // critique doit aussi se voir sur la carte de jet elle-même — ces deux flags sont repérés par
+  // le hook renderChatMessageHTML (dnd-custom-ai.js) pour poser une bordure/halo + icône dédiés
+  // sur `.dice-roll`, jamais la couleur seule (accessibilité).
+  const flags = { "dnd-custom-ai": {} };
+  if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
+  if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
+  await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label, flags });
   return { roll, isCriticalHit, isCriticalFumble };
 }
 
@@ -88,10 +103,30 @@ export async function rollDamage({ actor, dice, formula, flavor, critical = fals
   if (critical) roll.alter(2, 0);
   await roll.evaluate();
   const label = critical ? `${flavor} (${game.i18n.localize("DND_CUSTOM.Roll.CriticalDamage")})` : flavor;
+  // criticalHit ici aussi (même flag que rollCheck ci-dessus) : le jet de dégâts doublé profite
+  // du même effet visuel que le jet d'attaque qui l'a déclenché (retour de test, lot 3 point 8).
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: { "dnd-custom-ai": { damageRoll: true } }
+    flags: { "dnd-custom-ai": { damageRoll: true, ...(critical ? { criticalHit: true } : {}) } }
+  });
+  return roll;
+}
+
+/** Jet de soin d'un sort (ex. Mot de guérison, Soin des blessures) : dé(s) + modificateur signé.
+ *  Contrairement à `rollDamage` ci-dessus, un soin de sort SRD 5e ajoute bien le modificateur de
+ *  caractéristique d'incantation (l'appelant passe `formatModifier(spellAbilityMod)` en
+ *  `formula`, cf. #onCastSpell dans actor-sheet.js) — pas de variante critique, aucune règle SRD
+ *  ne double les dés d'un soin. Marqué par un flag (`flags["dnd-custom-ai"].healRoll`) repéré
+ *  par le hook `renderChatMessageHTML` (cf. dnd-custom-ai.js) pour ajouter un bouton "Appliquer
+ *  le soin" sur sa carte de chat, même mécanique que `damageRoll` mais en PV positifs. */
+export async function rollHeal({ actor, dice, formula, flavor }) {
+  const roll = new Roll(`${dice}${formula}`);
+  await roll.evaluate();
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor,
+    flags: { "dnd-custom-ai": { healRoll: true } }
   });
   return roll;
 }
