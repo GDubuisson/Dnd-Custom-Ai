@@ -90,6 +90,7 @@ let moineId; // Ki (réserve) + Rafale de coups (technique consommant la réserv
 let wizardId; // Trait de feu, Projectile magique, Bouclier, Contresort, Bénédiction, Invisibilité,
 // Lumière, Parler aux animaux, Mot de guérison + Incantation rituelle (Druide)
 let noClassId; // Origine posée, Classe vide (T-ABIL-002) — créé directement, sans passer par l'assistant
+let barbareId; // Capacité conditionnée à un état actif (system.requiresState, T-ABIL-025)
 
 before(() => {
   cy.loginAsPlayer();
@@ -143,6 +144,33 @@ before(() => {
   });
 
   cy.window().then((win) => win.game.actors.get(wizardId)?.sheet?.close());
+  cy.createReadyCharacter({ name: "Tab Abilities Barbarian", origin: "altenmark", classKey: "barbarian", skills: ["athletics", "survival"] }).then(
+    (id) => {
+      barbareId = id;
+      createdActorIds.push(id);
+      // Créée directement (pas via grantCompendiumItem comme les autres Capacités ci-dessus) :
+      // isole le mécanisme générique requiresState/featureDisabled (retour de test, lot 3 point
+      // 5) du contenu réel du compendium "capacites", dont l'octroi via grantClassContent est
+      // déjà couvert ailleurs (tests/unit/class-content.test.js) — ce scénario teste le grisage
+      // conditionnel lui-même, pas l'octroi de Frénésie en particulier.
+      cy.window().then((win) =>
+        win.game.actors.get(id).createEmbeddedDocuments(
+          "Item",
+          win.JSON.parse(
+            win.JSON.stringify([
+              {
+                name: "Frénésie",
+                type: "feature",
+                system: { class: "barbarian", subclass: "berserker", requiresRoll: false, requiresState: "raging", uses: { max: 0 } }
+              }
+            ])
+          )
+        )
+      );
+    }
+  );
+
+  cy.window().then((win) => win.game.actors.get(barbareId)?.sheet?.close());
   cy.window()
     .then((win) =>
       win.Actor.create(
@@ -709,6 +737,56 @@ describe("Onglet Capacités/Sorts", () => {
     sheetRoot().find('button[data-action="toggleReaction"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(wizardId).system.combat.reactionAvailable).to.be.true;
+    });
+  });
+
+  // Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
+  // dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doit être grisée par
+  // défaut et se dégriser automatiquement dès que l'état correspondant est actif — la bascule de
+  // l'état (onglet Statistiques, mécanisme déjà existant) est le SEUL contrôle actionné par le
+  // joueur, pas de bouton séparé pour la Capacité elle-même.
+  it("Capacité conditionnée à un état actif — grisée par défaut, dégrisée à la bascule de l'état (T-ABIL-025)", () => {
+    cy.openActorSheet(barbareId);
+    goToTab("abilities");
+
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("be.disabled");
+    });
+
+    goToTab("stats");
+    sheetRoot().find(".conditions-dropdown summary").click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(barbareId).statuses.has("raging"), "état 'raging' actif après bascule").to.be.true;
+    });
+
+    goToTab("abilities");
+    resetMessageBaseline();
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("not.be.disabled").click();
+    });
+
+    cy.window()
+      .its("game.i18n")
+      .then((i18n) => i18n.format("DND_CUSTOM.Chat.UseConditionalFeature", { name: "Tab Abilities Barbarian", feature: "Frénésie" }))
+      .then((expectedContent) => {
+        cy.window().should((win) => {
+          expect(win.game.messages.size, "un message annonçant l'utilisation doit être posté").to.be.greaterThan(knownMessageCount);
+          expect(win.game.messages.contents.at(-1).content).to.equal(expectedContent);
+        });
+      });
+
+    // Rebascule l'état "En Rage" à faux : ne fausse pas un futur run réutilisant ce personnage.
+    goToTab("stats");
+    sheetRoot().find(".conditions-dropdown summary").click();
+    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(barbareId).statuses.has("raging")).to.be.false;
+    });
+
+    goToTab("abilities");
+    withItemId(barbareId, "Frénésie", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="useConditionalFeature"]`).should("be.disabled");
     });
   });
 });

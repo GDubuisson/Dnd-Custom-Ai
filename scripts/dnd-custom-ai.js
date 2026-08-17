@@ -42,31 +42,14 @@ const SYSTEM_ID = "dnd-custom-ai";
 // PNJ ciblé pour l'application de dégâts, notamment).
 const SOCKET_EVENT = `system.${SYSTEM_ID}`;
 
-// Les 14 états SRD 5e (hors Exhaustion, qui a des niveaux 0-6 et vit sur
-// system.attributes.exhaustion plutôt qu'en ActiveEffect on/off, cf. character-data.js).
-// Remplace la liste générique de Foundry (CONFIG.statusEffects) : icônes réutilisées du
-// cœur Foundry quand elles correspondent, libellés propres au système pour coller au
-// vocabulaire SRD 5e exact plutôt qu'aux libellés génériques de Foundry.
-const DND_CUSTOM_CONDITIONS = [
-  { id: "blinded", name: "DND_CUSTOM.Conditions.blinded", img: "icons/svg/blind.svg" },
-  { id: "charmed", name: "DND_CUSTOM.Conditions.charmed", img: "icons/svg/aura.svg" },
-  { id: "deafened", name: "DND_CUSTOM.Conditions.deafened", img: "icons/svg/deaf.svg" },
-  { id: "frightened", name: "DND_CUSTOM.Conditions.frightened", img: "icons/svg/terror.svg" },
-  { id: "grappled", name: "DND_CUSTOM.Conditions.grappled", img: "icons/svg/net.svg" },
-  { id: "incapacitated", name: "DND_CUSTOM.Conditions.incapacitated", img: "icons/svg/daze.svg" },
-  { id: "invisible", name: "DND_CUSTOM.Conditions.invisible", img: "icons/svg/invisible.svg" },
-  { id: "paralyzed", name: "DND_CUSTOM.Conditions.paralyzed", img: "icons/svg/paralysis.svg" },
-  { id: "petrified", name: "DND_CUSTOM.Conditions.petrified", img: "icons/svg/statue.svg" },
-  { id: "poisoned", name: "DND_CUSTOM.Conditions.poisoned", img: "icons/svg/poison.svg" },
-  { id: "prone", name: "DND_CUSTOM.Conditions.prone", img: "icons/svg/falling.svg" },
-  { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
-  { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
-  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" },
-  // Pas un état SRD 5e classique (pas d'avantage/désavantage associé) mais nécessaire pour
-  // marquer visuellement un personnage mort sur son token (cf. hook updateActor > mort par
-  // échec de jets de sauvegarde, plus bas dans ce fichier).
-  { id: "dead", name: "DND_CUSTOM.Conditions.dead", img: "icons/svg/skull.svg" }
-];
+// Durée de la Rage, SRD 5e (jusqu'à 1 minute = 10 rounds) : décomptée automatiquement round par
+// round UNIQUEMENT si un combat Foundry est déjà démarré au moment où l'état "En Rage" (cf.
+// DND_CUSTOM.conditions, config.js) est activé — cf. hooks createActiveEffect/updateCombat plus
+// bas. Hors combat, la Rage reste manuelle (bascule/désactive l'état à la main), comme avant.
+// Ne modélise QUE cette limite de durée, pas la condition de fin anticipée SRD ("un tour sans
+// attaque ni dégât subi") : ce système ne verrouille pas l'économie d'action du tour lui-même
+// (cf. commentaire sur system.combat, character-data.js), fidèle à ce parti pris existant.
+const RAGE_DURATION_ROUNDS = 10;
 
 Hooks.once("init", async () => {
   console.log(`${SYSTEM_ID} | Initialisation du système`);
@@ -100,7 +83,7 @@ Hooks.once("init", async () => {
   // Actor#toggleStatusEffect) : le vider puis le repeupler par push() plutôt que de
   // l'écraser par une simple affectation, sous peine de perdre cet accès par id.
   CONFIG.statusEffects.length = 0;
-  for (const condition of DND_CUSTOM_CONDITIONS) CONFIG.statusEffects.push(condition);
+  for (const condition of DND_CUSTOM.conditions) CONFIG.statusEffects.push(condition);
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomActorSheet, {
     types: ["character"],
@@ -632,8 +615,70 @@ Hooks.on("updateCombat", async (combat, changes) => {
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const actor = combat.combatant?.actor;
-  if (actor?.type !== "character" || actor.system.combat.reactionAvailable) return;
-  await actor.update({ "system.combat.reactionAvailable": true });
+  if (actor?.type === "character" && !actor.system.combat.reactionAvailable) {
+    await actor.update({ "system.combat.reactionAvailable": true });
+  }
+
+  // Décompte de la durée de Rage (cf. RAGE_DURATION_ROUNDS ci-dessus), round par round, pour
+  // tout Combattant de CE combat en Rage avec un suivi actif (rageRoundsRemaining > 0, posé par
+  // le hook createActiveEffect plus bas). `rageLastRound` (plutôt que `combat.previous?.round`,
+  // abandonné : Foundry redéclenche "updateCombat" avec `round` dans les changements PLUSIEURS
+  // FOIS lors du démarrage d'un combat, sans que sa valeur n'ait réellement progressé entre deux
+  // de ces déclenchements — `combat.previous` s'est révélé peu fiable pour distinguer une
+  // vraie avancée d'un redéclenchement sans effet, constaté en pratique lors des tests E2E)
+  // rend le décompte idempotent : seul un `combat.round` strictement supérieur au dernier round
+  // traité pour CET Actor fait avancer le compteur, quel que soit le nombre de déclenchements.
+  if (!("round" in changes)) return;
+  for (const combatant of combat.combatants) {
+    const ragingActor = combatant.actor;
+    if (ragingActor?.type !== "character" || !ragingActor.statuses.has("raging")) continue;
+    const remaining = ragingActor.system.combat.rageRoundsRemaining;
+    if (!remaining) continue;
+    const elapsedRounds = combat.round - ragingActor.system.combat.rageLastRound;
+    if (elapsedRounds <= 0) continue;
+
+    if (remaining <= elapsedRounds) {
+      await ragingActor.toggleStatusEffect("raging", { active: false });
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: ragingActor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.RageEnded", { name: ragingActor.name })
+      });
+    } else {
+      await ragingActor.update({
+        "system.combat.rageRoundsRemaining": remaining - elapsedRounds,
+        "system.combat.rageLastRound": combat.round
+      });
+    }
+  }
+});
+
+// Amorce le décompte de durée de Rage (cf. RAGE_DURATION_ROUNDS) dès que l'état "raging" est
+// activé (Actor#toggleStatusEffect crée une ActiveEffect portant ce statut) ET qu'un combat est
+// déjà démarré (`game.combat.round` > 0, cf. `Combat#round` reste à 0 avant "Démarrer le combat").
+// Hors combat : rageRoundsRemaining reste à 0 (valeur par défaut du schéma), aucun suivi — la
+// Rage reste alors purement manuelle, comme avant cette fonctionnalité.
+Hooks.on("createActiveEffect", async (effect) => {
+  const actor = effect.parent;
+  if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  if (!game.combat?.round) return;
+
+  await actor.update({
+    "system.combat.rageRoundsRemaining": RAGE_DURATION_ROUNDS,
+    "system.combat.rageLastRound": game.combat.round
+  });
+});
+
+// Symétrique de la création ci-dessus : remet le compteur à zéro quand "raging" est retiré
+// (bascule manuelle du joueur, ou fin automatique par le hook updateCombat ci-dessus) — pur
+// nettoyage, `rageRoundsRemaining`/`rageLastRound` n'ont de sens que tant que l'état est actif.
+Hooks.on("deleteActiveEffect", async (effect) => {
+  const actor = effect.parent;
+  if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  if (!actor.system.combat.rageRoundsRemaining) return;
+
+  await actor.update({ "system.combat.rageRoundsRemaining": 0, "system.combat.rageLastRound": 0 });
 });
 
 // Filet de sécurité : ne laisse pas un personnage "réaction bloquée" une fois le combat terminé

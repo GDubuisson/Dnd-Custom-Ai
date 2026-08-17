@@ -2480,6 +2480,20 @@
   border-color: var(--dca-outline-variant);
 }
 
+/* Capacité nécessitant un état actif sur l'Actor (ex. Frénésie qui nécessite d'être En Rage,
+   cf. FeatureData#requiresState, item-data.js) : même traitement visuel que la réserve à
+   charges partagées ci-dessus, grisée tant que l'état n'est pas actif (retour de test, lot 3
+   point 5 "Capacités à ressource"). */
+.dnd-custom-ai .conditional-feature-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .conditional-feature-btn:disabled:hover {
+  border-color: var(--dca-outline-variant);
+}
+
 .dnd-custom-ai .not-proficient-tag {
   display: inline-block;
   margin-left: 0.3rem;

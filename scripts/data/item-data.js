@@ -181,6 +181,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité utilisable seulement quand un état particulier (cf. DND_CUSTOM.conditions,
+      // config.js) est actif sur l'Actor — ex. Frénésie (Barbare Berserker), qui nécessite
+      // d'être En Rage. Retour de test (lot 3, point 5) : grisée par défaut sur l'onglet
+      // Capacités, dégrisée automatiquement dès que l'état correspondant devient actif (cf.
+      // actor-sheet.js > featureDisabled, handlebars-helpers.js) — pas de contrôle manuel
+      // séparé à faire par le joueur, la bascule de l'état (onglet Statistiques) suffit. Vide =
+      // pas de restriction (comportement inchangé pour l'immense majorité des Capacités).
+      requiresState: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+      }),
       source: new StringField({ required: false, blank: true, initial: "" }),
       // Utilisations limitées (ex. Rage, Second souffle) : `max` à 0 = pas de suivi (capacité
       // toujours disponible, comportement précédent). `value` restaure à `max` au repos

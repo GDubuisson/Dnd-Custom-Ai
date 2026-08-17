@@ -108,6 +108,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollFeature: DndCustomActorSheet.#onRollFeature,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
+      useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -339,6 +340,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
+    // Set natif (Actor#statuses), pas une donnée sérialisée : utilisé par le helper Handlebars
+    // featureDisabled (cf. handlebars-helpers.js) pour griser une Capacité tant que l'état
+    // requis par system.requiresState (ex. "raging") n'est pas actif sur l'Actor.
+    context.activeStatuses = this.actor.statuses;
     // Le don Sentinelle modifie le déclencheur affiché d'Attaque d'opportunité si le personnage
     // possède les deux (cf. opportunityAttackTrigger, rules.js) — dérivé ici, jamais écrit sur
     // l'Item lui-même : reste juste automatiquement si Sentinelle est ajoutée/retirée.
@@ -859,6 +864,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         resource: resource.name,
         remaining,
         max: resource.system.uses.max
+      })
+    });
+  }
+
+  /** Utilisation d'une Capacité gratuite mais conditionnée à un état actif sur l'Actor
+   *  (`system.requiresState`, ex. Frénésie qui nécessite d'être En Rage, cf. DND_CUSTOM.conditions
+   *  dans config.js) : pas de charge à décompter (contrairement à #onUseFeatureCharge), juste une
+   *  annonce dans le chat — le bouton est déjà grisé côté template (tab-abilities.hbs >
+   *  featureDisabled) tant que l'état n'est pas actif, revérifié ici au cas où plusieurs clients
+   *  cliqueraient en même temps ou que l'état ait changé entre le render et le clic. */
+  static async #onUseConditionalFeature(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.requiresState) return;
+    if (!this.actor.statuses.has(item.system.requiresState)) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseConditionalFeature", {
+        name: this.actor.name,
+        feature: item.name
       })
     });
   }

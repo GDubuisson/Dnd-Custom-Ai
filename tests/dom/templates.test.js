@@ -391,6 +391,61 @@ describe("tab-abilities.hbs — technique consommant la réserve d'une autre Cap
   });
 });
 
+// Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
+// dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage, cf. system.requiresState
+// dans item-data.js) doit être grisée par défaut et se dégriser automatiquement dès que l'état
+// correspondant est actif sur l'Actor — pas de contrôle manuel séparé à faire par le joueur.
+describe("tab-abilities.hbs — Capacité nécessitant un état actif (system.requiresState)", () => {
+  function render(activeStatuses) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        conditions: [{ id: "raging", label: "En Rage" }],
+        activeStatuses,
+        features: [
+          { id: "frenzy", name: "Frénésie", system: { source: "", uses: { max: 0 }, requiresRoll: false, costsResource: "", requiresState: "raging" } }
+        ],
+        featureResourceState: {}
+      })
+    );
+  }
+
+  test("bouton grisé par défaut, état requis absent d'activeStatuses", () => {
+    const doc = render(new Set());
+    const button = doc.querySelector('[data-action="useConditionalFeature"]');
+    assert.ok(button, "bouton de Capacité conditionnelle introuvable");
+    assert.ok(button.hasAttribute("disabled"), "devrait être grisé sans l'état requis actif");
+    assert.match(button.getAttribute("title"), /En Rage/, "le tooltip doit nommer l'état requis");
+  });
+
+  test("bouton dégrisé automatiquement dès que l'état requis est actif", () => {
+    const doc = render(new Set(["raging"]));
+    const button = doc.querySelector('[data-action="useConditionalFeature"]');
+    assert.equal(button.hasAttribute("disabled"), false);
+  });
+
+  test("une Capacité sans requiresState n'affiche jamais ce bouton", () => {
+    const doc = parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        conditions: [],
+        activeStatuses: new Set(),
+        features: [{ id: "f1", name: "Instinct sauvage", system: { source: "", uses: { max: 0 }, requiresRoll: false, costsResource: "" } }],
+        featureResourceState: {}
+      })
+    );
+    assert.equal(doc.querySelector('[data-action="useConditionalFeature"]'), null);
+  });
+});
+
 describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#activation)", () => {
   function render(reactionAvailable) {
     return parse(

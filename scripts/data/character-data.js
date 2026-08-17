@@ -124,7 +124,19 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js). Pas de suivi
       // pour l'action/l'action bonus — hors scope, le système ne verrouille pas le tour lui-même.
       combat: new SchemaField({
-        reactionAvailable: new BooleanField({ required: true, initial: true })
+        reactionAvailable: new BooleanField({ required: true, initial: true }),
+        // Rounds restants de Rage (SRD 5e : jusqu'à 10 rounds/1 minute), cf. RAGE_DURATION_ROUNDS
+        // et hooks createActiveEffect/updateCombat, dnd-custom-ai.js — 0 = pas de suivi en cours
+        // (Rage inactive, ou activée hors combat). Ne modélise QUE la limite de durée, pas la fin
+        // anticipée SRD ("un tour sans attaque ni dégât subi"), même parti pris que reactionAvailable
+        // ci-dessus.
+        rageRoundsRemaining: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        // Dernier round de Combat effectivement traité par le décompte de Rage (cf. updateCombat,
+        // dnd-custom-ai.js) : rend le décompte idempotent, indépendant du nombre de fois où
+        // Foundry redéclenche "updateCombat" avec `round` dans les changements SANS que sa valeur
+        // n'ait réellement progressé (ex. plusieurs mises à jour internes lors du démarrage d'un
+        // combat) — seul un round strictement supérieur à cette valeur fait avancer le décompte.
+        rageLastRound: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })

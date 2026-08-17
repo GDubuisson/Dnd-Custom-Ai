@@ -172,6 +172,41 @@ DND_CUSTOM.spellcastingAbility = {
   wizard: "int"
 };
 
+/** États SRD 5e (14) + "En Rage" (extension propre à ce système, cf. DND_CUSTOM_CONDITIONS
+ *  historique) : remplace CONFIG.statusEffects (cf. dnd-custom-ai.js > hook init). Icônes du
+ *  cœur Foundry réutilisées quand elles correspondent ; icône de Capacité propre au système pour
+ *  "raging", faute d'équivalent SRD 5e générique dans les icônes fournies par Foundry. Exportée
+ *  ici (pas seulement locale à dnd-custom-ai.js) pour que FeatureData#requiresState (item-data.js)
+ *  puisse contraindre ses valeurs possibles aux mêmes identifiants — cf. `choices` plus bas.
+ *  "raging" pilote le grisage des Capacités qui l'exigent (ex. Frénésie, Barbare Berserker,
+ *  retour de test lot 3 point 5 "Capacités à ressource") : grisées tant que l'état n'est pas
+ *  actif sur l'Actor, dégrisées automatiquement à sa bascule (cf. actor-sheet.js > featureDisabled,
+ *  handlebars-helpers.js) — pas de contrôle manuel séparé à faire par le joueur. */
+DND_CUSTOM.conditions = [
+  { id: "blinded", name: "DND_CUSTOM.Conditions.blinded", img: "icons/svg/blind.svg" },
+  { id: "charmed", name: "DND_CUSTOM.Conditions.charmed", img: "icons/svg/aura.svg" },
+  { id: "deafened", name: "DND_CUSTOM.Conditions.deafened", img: "icons/svg/deaf.svg" },
+  { id: "frightened", name: "DND_CUSTOM.Conditions.frightened", img: "icons/svg/terror.svg" },
+  { id: "grappled", name: "DND_CUSTOM.Conditions.grappled", img: "icons/svg/net.svg" },
+  { id: "incapacitated", name: "DND_CUSTOM.Conditions.incapacitated", img: "icons/svg/daze.svg" },
+  { id: "invisible", name: "DND_CUSTOM.Conditions.invisible", img: "icons/svg/invisible.svg" },
+  { id: "paralyzed", name: "DND_CUSTOM.Conditions.paralyzed", img: "icons/svg/paralysis.svg" },
+  { id: "petrified", name: "DND_CUSTOM.Conditions.petrified", img: "icons/svg/statue.svg" },
+  { id: "poisoned", name: "DND_CUSTOM.Conditions.poisoned", img: "icons/svg/poison.svg" },
+  { id: "prone", name: "DND_CUSTOM.Conditions.prone", img: "icons/svg/falling.svg" },
+  { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
+  { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
+  { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" },
+  // Pas un état SRD 5e classique (pas d'avantage/désavantage associé) mais nécessaire pour
+  // marquer visuellement un personnage mort sur son token (cf. hook updateActor > mort par
+  // échec de jets de sauvegarde, dnd-custom-ai.js).
+  { id: "dead", name: "DND_CUSTOM.Conditions.dead", img: "icons/svg/skull.svg" },
+  // Homebrew (pas un état SRD 5e à part entière, mais nécessaire comme bascule visible pour
+  // piloter le grisage des Capacités liées à la Rage, cf. commentaire ci-dessus) : réutilise
+  // l'icône déjà existante de la Capacité "Rage" plutôt qu'une icône générique du cœur Foundry.
+  { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" }
+];
+
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé
  *  pour le select des fiches de Capacité/Sort et le libellé du badge "Réaction" sur l'onglet
  *  Capacités/Sorts. Seule "reaction" déclenche un suivi (system.combat.reactionAvailable). */

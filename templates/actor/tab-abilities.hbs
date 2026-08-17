@@ -75,12 +75,16 @@
           <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
           {{/if}}
           {{#if this.system.requiresRoll}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (reactionBlocked this ../reactionAvailable)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
           </button>
           {{else if this.system.uses.max}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (reactionBlocked this ../reactionAvailable)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
             <i class="fa-solid fa-minus"></i>
+          </button>
+          {{else if this.system.requiresState}}
+          <button type="button" class="roll-btn feature-roll-btn conditional-feature-btn" data-action="useConditionalFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Abilities.RequiresStateTooltip' state=(conditionLabel ../conditions this.system.requiresState)}}">
+            <i class="fa-solid fa-bolt"></i> {{this.name}}
           </button>
           {{/if}}
           {{#with (lookup ../featureResourceState this.id)}}

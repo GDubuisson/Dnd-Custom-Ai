@@ -222,6 +222,27 @@ describe("world-items/features.json et spells.json — activation valide si rens
   }
 });
 
+// Retour de test (lot 3, point 5 "Capacités à ressource") : les Capacités qui ne fonctionnent
+// que dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doivent référencer
+// un état réel (cf. DND_CUSTOM.conditions, config.js) pour que le grisage automatique
+// (featureDisabled, handlebars-helpers.js) fonctionne — une faute de frappe silencieuse
+// laisserait le bouton en permanence grisé (id introuvable dans activeStatuses) sans jamais
+// lever d'erreur ailleurs.
+describe("world-items/features.json — requiresState référence un état réel (FeatureData)", () => {
+  const CONDITION_IDS = new Set(DND_CUSTOM.conditions.map((condition) => condition.id));
+  for (const feature of WORLD_FEATURES) {
+    if (!feature.system.requiresState) continue;
+    test(`${feature.name} : requiresState "${feature.system.requiresState}" référence un état réel`, () => {
+      assert.ok(CONDITION_IDS.has(feature.system.requiresState), `état invalide sur "${feature.name}"`);
+    });
+  }
+
+  test("Frénésie référence bien l'état \"raging\" (régression)", () => {
+    const frenzy = WORLD_FEATURES.find((feature) => feature.name === "Frénésie");
+    assert.equal(frenzy?.system.requiresState, "raging");
+  });
+});
+
 describe("world-items/*.json — objets physiques (armes/armures/objets/outils)", () => {
   const collections = { weapons: WORLD_WEAPONS, armors: WORLD_ARMORS, gear: WORLD_GEAR, tools: WORLD_TOOLS };
   for (const [label, entries] of Object.entries(collections)) {
