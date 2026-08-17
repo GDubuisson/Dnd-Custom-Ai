@@ -107,6 +107,7 @@
       "details": "1 action, Contact, Instantanée",
       "concentration": false,
       "ritual": false,
+      "heal": { "dice": "1d8" },
       "description": "Une créature que vous touchez récupère 1d8 + votre modificateur de caractéristique d'incantation points de vie. Ce sort n'a aucun effet sur les morts-vivants ni les créatures artificielles. Lancé avec un emplacement de niveau supérieur, le soin augmente de 1d8 par niveau d'emplacement au-delà du premier."
     }
   },
@@ -120,6 +121,7 @@
       "details": "1 action bonus, 18 m, Instantanée",
       "concentration": false,
       "ritual": false,
+      "heal": { "dice": "1d4" },
       "description": "Une créature de votre choix que vous voyez à portée récupère 1d4 + votre modificateur de caractéristique d'incantation points de vie. Ce sort n'a aucun effet sur les morts-vivants ni les créatures artificielles."
     }
   },
@@ -514,6 +516,7 @@
       "details": "1 action, 18 m, Instantanée",
       "concentration": false,
       "ritual": false,
+      "heal": { "dice": "3d8" },
       "description": "Une vague d'énergie curative balaie une zone de votre choix à portée. Choisissez jusqu'à six créatures dans un rayon de 9 m autour d'un point à portée : chacune récupère 3d8 + votre modificateur de caractéristique d'incantation points de vie. Ce sort n'a aucun effet sur les morts-vivants ni les créatures artificielles."
     }
   },

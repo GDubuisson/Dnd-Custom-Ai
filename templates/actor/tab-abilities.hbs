@@ -111,12 +111,6 @@
             {{#if (isReactionItem this.item)}}
             <span class="reaction-badge" title="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
             {{/if}}
-            {{#if this.item.system.level}}
-            <label class="spell-prepared">
-              <input type="checkbox" data-item-prepared {{#if this.item.system.prepared}}checked{{/if}}>
-              {{localize "DND_CUSTOM.Item.Fields.Prepared"}}
-            </label>
-            {{/if}}
             <button type="button" class="roll-btn" data-action="castSpell" {{#if (reactionBlocked this.item ../../reactionAvailable)}}disabled{{/if}} {{#if this.item.system.attack}}title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Abilities.Cast"}}</button>
             {{#if this.item.system.attack}}
             <button type="button" class="roll-btn" data-action="rollSpellDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}"><i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}}</button>

@@ -1788,14 +1788,11 @@
   letter-spacing: 0.03em;
 }
 
-.dnd-custom-ai .spell-prepared {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
+/* Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared, purement
+   informatif, jamais utilisé par aucune règle) — les boutons d'action restent poussés à droite
+   de la ligne (avant, `.spell-prepared` portait ce `margin-left: auto`). */
+.dnd-custom-ai .spells-list li [data-action="castSpell"] {
   margin-left: auto;
-  font-family: var(--dca-font-label);
-  font-size: 0.68rem;
-  color: var(--dca-muted-text);
 }
 
 /* ---------- Journal ---------- */
@@ -2375,6 +2372,23 @@
 }
 
 .dnd-apply-damage-btn:hover {
+  filter: brightness(1.1);
+}
+
+.dnd-apply-heal-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--dca-outline, #7a5a35);
+  border-radius: 0.3rem;
+  background: var(--dca-secondary, #2e7d32);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dnd-apply-heal-btn:hover {
   filter: brightness(1.1);
 }
 

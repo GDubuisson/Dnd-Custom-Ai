@@ -22,7 +22,7 @@ import {
   opportunityAttackTrigger
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
-import { rollCheck, rollDamage } from "../helpers/rolls.js";
+import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
@@ -1085,6 +1085,25 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         criticalRules: true
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+      return;
+    }
+
+    // Sort de soin (ex. Mot de guérison, Soin des blessures, cf. SpellData#heal dans
+    // item-data.js) : lance le dé de soin + modificateur de caractéristique d'incantation
+    // immédiatement (contrairement aux dégâts d'un sort d'attaque, un soin n'a pas besoin de
+    // confirmation de touche) — retour de test, ces sorts ne lançaient jusqu'ici aucun dé et ne
+    // soignaient rien. Le bouton "Appliquer le soin" affiché sur ce message (dnd-custom-ai.js)
+    // applique le total aux cibles actuellement ciblées, même mécanique que les dégâts.
+    if (item.system.heal?.dice) {
+      const system = this.actor.system;
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      await rollHeal({
+        actor: this.actor,
+        dice: item.system.heal.dice,
+        formula: formatModifier(spellAbilityMod),
+        flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
+      });
       return;
     }
 

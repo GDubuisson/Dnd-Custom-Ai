@@ -123,7 +123,7 @@ describe("scripts/data/spell-slots.json", () => {
 });
 
 describe("world-items/spells.json — cohérence avec le schéma simplifié (SpellData)", () => {
-  const OBSOLETE_FIELDS = ["school", "components", "castingTime", "range", "duration"];
+  const OBSOLETE_FIELDS = ["school", "components", "castingTime", "range", "duration", "prepared"];
   for (const spell of WORLD_SPELLS) {
     test(`${spell.name} : pas de champ obsolète (école/composantes/temps/portée/durée séparés)`, () => {
       for (const field of OBSOLETE_FIELDS) {
@@ -142,6 +142,35 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
       }
     });
   }
+});
+
+// Retour de test (lot 3) : "Mot de guérison" et "Soin des blessures" décrivaient un soin en dés
+// dans leur texte mais ne lançaient réellement aucun dé (system.heal.dice absent du schéma à
+// l'époque) — la consigne du testeur ("vérifier plus largement TOUS les sorts censés lancer des
+// dés") va au-delà de ces deux sorts nommés : la deuxième vérification ci-dessous détecte tout
+// sort dont la description mentionne un soin en PV sans dé de soin réellement configuré, pas
+// seulement les deux noms cités.
+describe("world-items/spells.json — sorts de soin (system.heal)", () => {
+  const HEAL_DESCRIPTION_PATTERN = /récupère.*points? de vie/i;
+
+  test("les 3 sorts de soin connus ont bien un dé de soin configuré", () => {
+    const healers = { "Soin des blessures": "1d8", "Mot de guérison": "1d4", "Soins de groupe": "3d8" };
+    for (const [name, expectedDice] of Object.entries(healers)) {
+      const spell = WORLD_SPELLS.find((entry) => entry.name === name);
+      assert.ok(spell, `sort "${name}" introuvable`);
+      assert.equal(spell.system.heal?.dice, expectedDice, `"${name}" : dé de soin attendu "${expectedDice}"`);
+    }
+  });
+
+  test("aucun sort dont la description décrit un soin en PV ne reste sans dé de soin configuré", () => {
+    for (const spell of WORLD_SPELLS) {
+      if (!HEAL_DESCRIPTION_PATTERN.test(spell.system.description)) continue;
+      assert.ok(
+        spell.system.heal?.dice,
+        `"${spell.name}" décrit un soin en PV dans sa description mais n'a pas de system.heal.dice configuré`
+      );
+    }
+  });
 });
 
 describe("world-items/features.json — cohérence (FeatureData)", () => {

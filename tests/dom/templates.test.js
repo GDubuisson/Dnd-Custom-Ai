@@ -313,7 +313,7 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
                 item: {
                   id: "s1",
                   name: "Projectile magique",
-                  system: { details: "1 action, 36 m, Instantanée", concentration: false, ritual: false, level: 1, prepared: false }
+                  system: { details: "1 action, 36 m, Instantanée", concentration: false, ritual: false, level: 1 }
                 }
               }
             ]
@@ -346,6 +346,14 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
   test("aucune trace de l'ancien système d'emplacements par niveau dans le HTML rendu", () => {
     const doc = render({ value: 2, max: 4 });
     assert.equal(doc.body.innerHTML.includes("system.spells.slots"), false);
+  });
+
+  // Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared) — purement
+  // informatif, jamais utilisé par aucune règle, source de confusion pour les testeurs.
+  test("aucune case 'Préparé' (concept retiré, cf. system.prepared)", () => {
+    const doc = render({ value: 2, max: 4 });
+    assert.equal(doc.querySelector("[data-item-prepared]"), null, "case Préparé encore présente");
+    assert.equal(doc.querySelector(".spell-prepared"), null, "libellé Préparé encore présent");
   });
 });
 
@@ -403,7 +411,7 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
             level: 1,
             label: "Sorts de niveau 1",
             spells: [
-              { item: { id: "s1", name: "Bouclier", system: { details: "1 réaction", concentration: false, ritual: false, level: 1, prepared: false, activation: "reaction" } } }
+              { item: { id: "s1", name: "Bouclier", system: { details: "1 réaction", concentration: false, ritual: false, level: 1, activation: "reaction" } } }
             ]
           }
         ]
@@ -507,7 +515,6 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
       details: "1 action, 45 m, Instantanée",
       concentration: false,
       ritual: false,
-      prepared: false,
       description: "<p>Explosion de flammes.</p>"
     }
   };
@@ -520,9 +527,9 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
     assert.ok(doc.querySelector('input[name="system.details"]'));
   });
 
-  test("aucun champ obsolète (école, composantes, temps/portée/durée séparés)", () => {
+  test("aucun champ obsolète (école, composantes, temps/portée/durée séparés, préparation)", () => {
     const html = doc.body.innerHTML;
-    for (const removed of ["system.school", "system.castingTime", "system.range", "system.components", "system.duration"]) {
+    for (const removed of ["system.school", "system.castingTime", "system.range", "system.components", "system.duration", "system.prepared"]) {
       assert.equal(html.includes(`name="${removed}`), false, `champ obsolète encore présent : ${removed}`);
     }
   });
@@ -535,6 +542,39 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
   test("champ Déclencheur absent quand le sort n'est pas une réaction", () => {
     assert.equal(doc.querySelector('input[name="system.reactionTrigger"]'), null);
   });
+
+  // Retour de test (lot 3) : "Mot de guérison"/"Soin des blessures" ne soignaient rien et ne
+  // lançaient aucun dé — system.heal.dice (cf. SpellData, item-data.js) permet désormais de
+  // configurer un dé de soin sur n'importe quel sort, toujours visible (pas de case à cocher
+  // séparée, contrairement à system.attack/damage).
+  test("champ Dé de soin (system.heal.dice) toujours présent", () => {
+    const healInput = doc.querySelector('input[name="system.heal.dice"]');
+    assert.ok(healInput, "champ Dé de soin introuvable");
+  });
+});
+
+describe("item/spell-sheet.hbs — sort de soin (system.heal)", () => {
+  const doc = parse(
+    renderTemplate("item/spell-sheet.hbs", {
+      item: { img: "spell.webp", name: "Mot de guérison" },
+      isGM: true,
+      classOptions: [{ key: "bard", label: "Barde", checked: true }],
+      system: {
+        classes: new Set(["bard"]),
+        level: 1,
+        details: "1 action bonus, 18 m, Instantanée",
+        concentration: false,
+        ritual: false,
+        heal: { dice: "1d4" },
+        description: ""
+      }
+    })
+  );
+
+  test("le dé de soin configuré est bien affiché dans le champ", () => {
+    const healInput = doc.querySelector('input[name="system.heal.dice"]');
+    assert.equal(healInput.getAttribute("value"), "1d4");
+  });
 });
 
 describe("item/spell-sheet.hbs — sort de type Réaction", () => {
@@ -544,7 +584,7 @@ describe("item/spell-sheet.hbs — sort de type Réaction", () => {
       config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action", reaction: "DND_CUSTOM.Item.ActivationTypes.reaction" } },
       classOptions: [{ key: "wizard", label: "Magicien", checked: true }],
       system: {
-        classes: new Set(["wizard"]), level: 1, details: "1 réaction", concentration: false, ritual: false, prepared: false,
+        classes: new Set(["wizard"]), level: 1, details: "1 réaction", concentration: false, ritual: false,
         activation: "reaction", reactionTrigger: "Vous êtes touché par une attaque", description: ""
       },
       isReaction: true

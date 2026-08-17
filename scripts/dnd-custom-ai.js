@@ -736,6 +736,54 @@ async function applyDamageToTargets(amount, sourceActorId) {
   }
 }
 
+// Ajoute un bouton "Appliquer le soin" sur toute carte de chat de jet de soin de sort (cf.
+// rollHeal dans rolls.js) : applique le total du jet aux tokens actuellement ciblés par le
+// client qui clique (game.user.targets) — même mécanique que "Appliquer les dégâts" ci-dessus
+// (auteur/MJ uniquement, marqué "déjà appliqué" après un premier clic), en PV positifs plutôt
+// que négatifs. Pas de blocage PvP (soigner un autre Joueur est toujours légitime) ni
+// d'absorption de PV temporaires (SRD 5e : les PV temporaires n'interagissent qu'avec les
+// dégâts, jamais avec les soins).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "healRoll")) return;
+  const amount = message.rolls?.[0]?.total;
+  if (!Number.isFinite(amount)) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-apply-heal-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyHeal", { amount });
+
+  if (message.getFlag(SYSTEM_ID, "healApplied")) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.HealAlreadyApplied");
+  } else if (message.author?.id !== game.user.id && !game.user.isGM) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.ApplyDamageNotAuthor");
+  } else {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await applyHealToTargets(amount);
+      await message.setFlag(SYSTEM_ID, "healApplied", true);
+    });
+  }
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+async function applyHealToTargets(amount) {
+  const targets = Array.from(game.user.targets);
+  if (!targets.length) {
+    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+    return;
+  }
+
+  for (const token of targets) {
+    const actor = token.actor;
+    const hp = actor?.system.attributes?.hp;
+    if (!hp) continue;
+    await requestActorUpdate(actor, { "system.attributes.hp.value": Math.min(hp.value + amount, hp.max) });
+  }
+}
+
 /** Jet de sauvegarde de Constitution pour maintenir la concentration, SRD 5e : DD = 10 ou
  *  la moitié des dégâts subis (arrondi à l'inférieur), le plus élevé des deux. Échec = perte
  *  immédiate de la concentration en cours. Automatique (pas de bouton) : la DD ne dépend que

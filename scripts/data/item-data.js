@@ -257,9 +257,6 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       concentration: new BooleanField({ required: true, initial: false }),
       ritual: new BooleanField({ required: true, initial: false }),
-      // Sort préparé (Clerc/Druide/Magicien/Paladin) — purement informatif pour les classes à
-      // sorts "connus" (Barde/Ensorceleur/Occultiste), où tout sort connu est disponible.
-      prepared: new BooleanField({ required: true, initial: false }),
       // Sort nécessitant un jet d'attaque (ex. Trait de feu), sur le même principe que les
       // armes (cf. WeaponData ci-dessus) : le bouton "Lancer" propose alors un jet d'attaque
       // (1d20 + spellAttackBonus, rules.js) puis un jet de dégâts, au lieu de se contenter de
@@ -271,6 +268,18 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       damage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({ required: false, blank: true, initial: "" })
+      }),
+      // Sort de soin (ex. Mot de guérison, Soin des blessures) : retour de test, ces sorts
+      // décrivaient un soin en dés dans leur description mais ne lançaient réellement aucun dé
+      // ni n'appliquaient de PV — `#onCastSpell` (actor-sheet.js) lance ce dé + le modificateur
+      // de caractéristique d'incantation (SRD 5e, contrairement aux dégâts d'un sort qui n'ajoutent
+      // pas ce modificateur, cf. `attack`/`damage` ci-dessus) via `rollHeal` (rolls.js), puis
+      // affiche un bouton "Appliquer le soin" (dnd-custom-ai.js) sur les cibles ciblées — même
+      // mécanique que `damage`/`attack`, en PV positifs. Un sort peut cumuler `attack` (jet
+      // d'attaque + dégâts) OU `heal` (soin automatique, sans jet d'attaque), jamais les deux en
+      // SRD 5e.
+      heal: new SchemaField({
+        dice: new StringField({ required: false, blank: true, initial: "" })
       }),
       // Sort émettant de la lumière (ex. Lumière) : mêmes unités que GearData#use.light
       // (`dim` = rayon SUPPLÉMENTAIRE au-delà de `bright`, formulation SRD) — allume le(s)

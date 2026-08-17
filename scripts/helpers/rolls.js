@@ -103,3 +103,21 @@ export async function rollDamage({ actor, dice, formula, flavor, critical = fals
   });
   return roll;
 }
+
+/** Jet de soin d'un sort (ex. Mot de guérison, Soin des blessures) : dé(s) + modificateur signé.
+ *  Contrairement à `rollDamage` ci-dessus, un soin de sort SRD 5e ajoute bien le modificateur de
+ *  caractéristique d'incantation (l'appelant passe `formatModifier(spellAbilityMod)` en
+ *  `formula`, cf. #onCastSpell dans actor-sheet.js) — pas de variante critique, aucune règle SRD
+ *  ne double les dés d'un soin. Marqué par un flag (`flags["dnd-custom-ai"].healRoll`) repéré
+ *  par le hook `renderChatMessageHTML` (cf. dnd-custom-ai.js) pour ajouter un bouton "Appliquer
+ *  le soin" sur sa carte de chat, même mécanique que `damageRoll` mais en PV positifs. */
+export async function rollHeal({ actor, dice, formula, flavor }) {
+  const roll = new Roll(`${dice}${formula}`);
+  await roll.evaluate();
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor,
+    flags: { "dnd-custom-ai": { healRoll: true } }
+  });
+  return roll;
+}
