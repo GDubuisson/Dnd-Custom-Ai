@@ -158,4 +158,80 @@ describe("Fiche PNJ, session MJ", () => {
       expect(actor.prototypeToken.bar1.attribute).to.equal("attributes.hp");
     });
   });
+
+  // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
+  // profil d'attaque simplifié (NpcData#attack, npc-data.js), configuré ici par le MJ (Force,
+  // bonus +2, dégâts 1d6+1 tranchant), vérifie le jet d'attaque (1d20 + mod Force + bonus) et de
+  // dégâts (dé + mod Force + bonus), même mécanique que #onRollWeaponAttack/#onRollWeaponDamage
+  // côté fiche personnage (rollCheck/rollDamage, rolls.js).
+  it("jet d'attaque et de dégâts du profil simplifié, dégâts doublés sur coup critique (T-NPC-007)", () => {
+    cy.window().then((win) =>
+      win.game.actors.get(npcActorId).update(
+        win.JSON.parse(
+          win.JSON.stringify({
+            "system.attack": { name: "Griffe", ability: "str", bonus: 2, damage: { dice: "1d6", bonus: 1, type: "slashing" } }
+          })
+        )
+      )
+    );
+    openSheet(npcActorId);
+
+    cy.window().then((win) => {
+      const strMod = win.game.actors.get(npcActorId).system.abilities.str.mod;
+      const expectedBonus = strMod + 2;
+      const before = win.game.messages.size;
+
+      sheetRoot().find('button[data-action="rollAttack"]').click();
+
+      cy.window().should((win2) => {
+        expect(win2.game.messages.size, "un nouveau message de jet doit être posté").to.be.greaterThan(before);
+        const message = win2.game.messages.contents.at(-1);
+        expect((message.rolls[0]?.formula ?? "").replace(/\s+/g, "")).to.equal(
+          `1d20${expectedBonus >= 0 ? "+" : ""}${expectedBonus}`
+        );
+        expect(message.flavor).to.include("Griffe");
+      });
+    });
+
+    cy.window().then((win) => {
+      const strMod = win.game.actors.get(npcActorId).system.abilities.str.mod;
+      const expectedBonus = strMod + 1;
+      const before = win.game.messages.size;
+
+      sheetRoot().find('button[data-action="rollAttackDamage"]').should("exist").click();
+
+      cy.window().should((win2) => {
+        expect(win2.game.messages.size).to.be.greaterThan(before);
+        const message = win2.game.messages.contents.at(-1);
+        expect((message.rolls[0]?.formula ?? "").replace(/\s+/g, "")).to.equal(
+          `1d6${expectedBonus >= 0 ? "+" : ""}${expectedBonus}`
+        );
+      });
+    });
+
+    // Coup critique posé directement (plutôt que d'attendre un 20 naturel aléatoire) : vérifie
+    // seulement le branchement du flag transitoire sur l'Actor (cf. #onRollAttack/
+    // #onRollAttackDamage, npc-sheet.js) — le doublement des dés lui-même (Roll#alter) est déjà
+    // couvert ailleurs (combat-criticals.cy.js) pour la mécanique partagée rollDamage.
+    cy.window().then((win) => win.game.actors.get(npcActorId).setFlag("dnd-custom-ai", "pendingAttackCritical", true));
+    cy.window().then((win) => {
+      const before = win.game.messages.size;
+      sheetRoot().find('button[data-action="rollAttackDamage"]').click();
+      cy.window().should((win2) => {
+        expect(win2.game.messages.size).to.be.greaterThan(before);
+        const message = win2.game.messages.contents.at(-1);
+        expect(message.rolls[0]?.formula ?? "", "dé doublé sur coup critique (2d6)").to.match(/^2d6/);
+        expect(win2.game.actors.get(npcActorId).getFlag("dnd-custom-ai", "pendingAttackCritical"), "flag consommé après usage").to.be.undefined;
+      });
+    });
+
+    // Remet le profil d'attaque à vide pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) =>
+      win.game.actors.get(npcActorId).update(
+        win.JSON.parse(
+          win.JSON.stringify({ "system.attack": { name: "", ability: "str", bonus: 0, damage: { dice: "", bonus: 0, type: "" } } })
+        )
+      )
+    );
+  });
 });

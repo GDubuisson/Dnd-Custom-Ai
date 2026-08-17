@@ -53,6 +53,29 @@ export class NpcData extends foundry.abstract.TypeDataModel {
       // hook preUpdateActor dans dnd-custom-ai.js) quand le MJ change l'indice de dangerosité,
       // reste ensuite librement modifiable à la main.
       xpReward: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+      // Profil d'attaque simplifié (retour de test — un PNJ ne pouvait pas attaquer du tout) :
+      // UN seul profil par PNJ, sur le modèle des stat-blocks SRD 5e ("Bite. Melee Weapon
+      // Attack: +4 to hit... Hit: 1d6+2 piercing damage") — pas un système d'armes/inventaire
+      // complet comme CharacterData/WeaponData, cohérent avec le reste de NpcData (tout est déjà
+      // un bonus direct saisi par le MJ, jamais dérivé). `ability` : au choix du MJ (Force ou
+      // Dextérité), pilote à la fois le bonus d'attaque ET de dégâts (SRD 5e, même caractéristique
+      // pour les deux). `bonus`/`damage.bonus` : bonus fixes SUPPLÉMENTAIRES au-delà du
+      // modificateur de caractéristique (ex. bonus de maîtrise déjà inclus dans un bloc SRD).
+      attack: new SchemaField({
+        name: new StringField({ required: false, blank: true, initial: "" }),
+        ability: new StringField({ required: true, initial: "str", choices: ["str", "dex"] }),
+        bonus: new NumberField({ required: true, integer: true, initial: 0 }),
+        damage: new SchemaField({
+          dice: new StringField({ required: false, blank: true, initial: "" }),
+          bonus: new NumberField({ required: true, integer: true, initial: 0 }),
+          type: new StringField({
+            required: false,
+            blank: true,
+            initial: "",
+            choices: Object.keys(DND_CUSTOM.damageTypes)
+          })
+        })
+      }),
       specialAbilities: new HTMLField({ required: false, blank: true, initial: "" }),
       particularity: new HTMLField({ required: false, blank: true, initial: "" })
     };

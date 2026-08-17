@@ -618,6 +618,44 @@
   white-space: nowrap;
 }
 
+/* Profil d'attaque simplifié (fiche PNJ, cf. NpcData#attack, npc-data.js — retour de test :
+   un PNJ ne pouvait pas attaquer). Réutilise .equipment-roll-btn/.equipment-roll-row (déjà
+   stylées pour les boutons Attaque/Dégâts de l'onglet Équipement, fiche personnage) pour les
+   deux boutons de jet ci-dessous, seuls les champs de configuration (nom/caractéristique/bonus)
+   sont propres à ce panneau. */
+.dnd-custom-ai .npc-attack-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.6rem 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.dnd-custom-ai .npc-attack-name-field {
+  grid-column: span 2;
+}
+
+.dnd-custom-ai .npc-attack-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dca-muted-text);
+}
+
+.dnd-custom-ai .npc-attack-fields input,
+.dnd-custom-ai .npc-attack-fields select {
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.3rem;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface-variant);
+  font-family: var(--dca-font-label);
+  font-size: 0.85rem;
+  padding: 0.2rem 0.35rem;
+}
+
 /* ---------- Caractéristiques + Compétences (fiche personnage) ---------- */
 
 .dnd-custom-ai .stats-columns {

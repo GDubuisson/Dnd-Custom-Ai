@@ -14,7 +14,15 @@
       "XpReward": "Points d'expérience",
       "SpecialAbilities": "Capacités spéciales",
       "Particularity": "Particularité",
-      "LootEmpty": "Aucun objet à récupérer"
+      "LootEmpty": "Aucun objet à récupérer",
+      "AttackTitle": "Attaque",
+      "AttackDefaultName": "Attaque",
+      "AttackName": "Nom",
+      "AttackAbility": "Caractéristique",
+      "AttackBonus": "Bonus au jet",
+      "AttackDamageDice": "Dé(s) de dégâts",
+      "AttackDamageBonus": "Bonus de dégâts",
+      "AttackDamageType": "Type de dégâts"
     },
     "CreatureTypes": {
       "aberration": "Aberration",

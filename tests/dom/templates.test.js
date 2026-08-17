@@ -241,6 +241,65 @@ describe("tab-stats.hbs", () => {
   });
 });
 
+// Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
+// profil d'attaque simplifié (NpcData#attack, npc-data.js), un seul par PNJ sur le modèle des
+// stat-blocks SRD 5e, au lieu d'un système d'armes/inventaire complet.
+describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
+  function render(attackOverrides = {}) {
+    return parse(
+      renderTemplate("actor/npc-tab-stats.hbs", {
+        tab: {},
+        conditions: [],
+        activeConditions: [],
+        abilities: [
+          { key: "str", label: "DND_CUSTOM.Abilities.str", mod: 3, modLabel: "+3" },
+          { key: "dex", label: "DND_CUSTOM.Abilities.dex", mod: 1, modLabel: "+1" }
+        ],
+        attack: {
+          name: "",
+          defaultName: "Attaque",
+          abilityOptions: [
+            { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
+            { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
+          ],
+          bonus: 0,
+          attackBonusLabel: "+3",
+          damageDice: "",
+          damageBonus: 0,
+          damageTypeOptions: [{ key: "", label: "", selected: true }],
+          damageLabel: "",
+          ...attackOverrides
+        }
+      })
+    );
+  }
+
+  test("le bouton Attaque est toujours affiché, avec le bonus total déjà calculé", () => {
+    const doc = render();
+    const button = doc.querySelector('[data-action="rollAttack"]');
+    assert.ok(button, "bouton d'attaque introuvable");
+    assert.match(button.textContent, /\+3/);
+  });
+
+  test("le bouton Dégâts n'apparaît que si un dé de dégâts est configuré", () => {
+    assert.equal(render().querySelector('[data-action="rollAttackDamage"]'), null);
+    const doc = render({ damageDice: "1d6", damageLabel: "1d6+3" });
+    const button = doc.querySelector('[data-action="rollAttackDamage"]');
+    assert.ok(button, "bouton de dégâts introuvable une fois le dé configuré");
+    assert.match(button.textContent, /1d6\+3/);
+  });
+
+  test("les champs de configuration sont bien reliés à system.attack.*", () => {
+    const doc = render();
+    assert.ok(doc.querySelector('input[name="system.attack.name"]'));
+    assert.ok(doc.querySelector('select[name="system.attack.ability"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.bonus"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.damage.dice"]'));
+    assert.ok(doc.querySelector('input[name="system.attack.damage.bonus"]'));
+    assert.ok(doc.querySelector('select[name="system.attack.damage.type"]'));
+  });
+});
+
 describe("tab-equipment.hbs", () => {
   const context = {
     tab: {},

@@ -14,7 +14,15 @@
       "XpReward": "Experience points",
       "SpecialAbilities": "Special abilities",
       "Particularity": "Particularity",
-      "LootEmpty": "No loot to recover"
+      "LootEmpty": "No loot to recover",
+      "AttackTitle": "Attack",
+      "AttackDefaultName": "Attack",
+      "AttackName": "Name",
+      "AttackAbility": "Ability",
+      "AttackBonus": "Attack bonus",
+      "AttackDamageDice": "Damage dice",
+      "AttackDamageBonus": "Damage bonus",
+      "AttackDamageType": "Damage type"
     },
     "CreatureTypes": {
       "aberration": "Aberration",
