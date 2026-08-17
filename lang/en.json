@@ -143,6 +143,7 @@
       "SavingThrow": "{ability} saving throw",
       "SkillCheck": "{skill} check",
       "ToolCheck": "{tool} — {skill} check",
+      "OriginTraitBonusPrompt": "Use the \"{trait}\" trait to add its bonus to this roll?",
       "WeaponAttack": "Attack with {weapon}",
       "WeaponDamage": "{weapon} damage",
       "SpellAttack": "Attack with {spell}",

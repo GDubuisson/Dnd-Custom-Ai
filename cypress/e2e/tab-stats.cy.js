@@ -78,7 +78,8 @@ function lastMessageRoll() {
       return {
         formula: (message.rolls[0]?.formula ?? "").replace(/\s+/g, ""),
         total: message.rolls[0]?.total,
-        content: message.content
+        content: message.content,
+        flavor: message.flavor
       };
     });
 }
@@ -238,6 +239,63 @@ describe("Onglet Statistiques — jets de dés", () => {
 
     // Remet l'Exhaustion à zéro pour ne pas fausser les tests suivants de cette spec.
     cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 0 }));
+  });
+
+  // Retour de test (lot 3) : "Art de la Parole" (Lucentia) ne faisait rien au clic sur
+  // Perspicacité — vérifie le vrai mécanisme (boîte de dialogue DialogV2.confirm, optionnel,
+  // jamais automatique contrairement à l'avantage d'Origine de T-STATS-005 ci-dessus) plutôt que
+  // juste la donnée `conditionalBonus`. Un "Non" ne doit RIEN changer au jet normal ; un "Oui"
+  // ajoute le modificateur de Charisme et le nomme dans le libellé du jet.
+  it("jet de compétence — bonus conditionnel de trait d'Origine, optionnel via boîte de dialogue (T-STATS-023)", () => {
+    let lucentiaActorId;
+    cy.window().then((win) => win.game.actors.get(sharedActorId).sheet.close());
+    cy.createReadyCharacter({
+      name: "Tab Stats Lucentia",
+      origin: "lucentia", // Art de la Parole : bonus de Charisme optionnel sur Perspicacité
+      classKey: "rogue",
+      skills: ["deception", "performance", "stealth", "acrobatics"] // Perspicacité (insight) reste non maîtrisée
+    }).then((id) => {
+      lucentiaActorId = id;
+      createdActorIds.push(id);
+      cy.openActorSheet(id);
+      resetMessageBaseline();
+
+      cy.window().then((win) => {
+        const bonus = win.game.dndCustomAi.origins.lucentia.specialTrait.conditionalBonus;
+        expect(bonus, "prérequis : conditionalBonus configuré sur Lucentia").to.deep.equal({
+          skill: "insight",
+          ability: "cha"
+        });
+      });
+
+      // "Non" : le jet reste le jet de compétence normal, aucune trace du trait.
+      sheetRoot().find('button[data-action="rollSkill"][data-key="insight"]').click();
+      cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Art de la Parole");
+      cy.get('dialog.application.dialog[open] button[data-action="no"]').click();
+      // Attend la fermeture COMPLÈTE (retrait du DOM, pas juste la perte de l'attribut `open`)
+      // avant de rouvrir la même boîte de dialogue plus bas — sinon le prochain `cy.get([open])`
+      // matche parfois encore l'ancienne instance en cours de fermeture (2 éléments), Cypress
+      // refusant alors le clic ("can only be called on a single element").
+      cy.get("dialog.application.dialog", { timeout: 10000 }).should("not.exist");
+      let baseFormula;
+      lastMessageRoll().then((roll) => {
+        expect(roll.flavor, "pas de mention du trait si refusé").to.not.include("Art de la Parole");
+        baseFormula = roll.formula;
+      });
+
+      // "Oui" : le modificateur de Charisme s'ajoute au jet normal, trait nommé dans le libellé.
+      sheetRoot().find('button[data-action="rollSkill"][data-key="insight"]').click();
+      cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Art de la Parole");
+      cy.get('dialog.application.dialog[open] button[data-action="yes"]').click();
+      cy.window().then((win) => {
+        const chaMod = abilityModifier(win.game.actors.get(lucentiaActorId).system.abilities.cha.total);
+        const baseMod = Number(baseFormula.replace("1d20", "") || 0);
+        lastMessageRoll().then((roll) => {
+          expect(roll.formula, "modificateur de Charisme ajouté au jet normal").to.equal(`1d20${formatModifier(baseMod + chaMod)}`);
+          expect(roll.flavor, "trait nommé dans le libellé si accepté").to.include("Art de la Parole");
+        });
+      });
+    });
   });
 });
 

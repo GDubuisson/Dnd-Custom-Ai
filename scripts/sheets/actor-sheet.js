@@ -29,7 +29,7 @@ import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 
-const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -906,26 +906,48 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Jet de compétence (1d20 + modificateur). L'avantage d'Origine (cf.
    *  CharacterData#prepareDerivedData) et le désavantage d'armure (Discrétion) sont appliqués
    *  automatiquement en plus du Maj/Ctrl-clic manuel — plusieurs avantages ne cumulent jamais
-   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck). */
+   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck).
+   *
+   *  Bonus conditionnel de trait spécial d'Origine (ex. Art de la Parole/Lucentia sur
+   *  Perspicacité, Sagesse Ancienne/Azhar sur Perception, cf. `specialTrait.conditionalBonus`
+   *  dans scripts/data/origins.json) : retour de test, ce bonus ne doit PAS s'appliquer
+   *  automatiquement (contrairement à l'avantage d'Origine ci-dessus, qui lui reste automatique)
+   *  — proposé comme un choix au moment du jet via une boîte de dialogue, le joueur décidant
+   *  d'utiliser ou non son trait pour CE jet précis. */
   static async #onRollSkill(event, target) {
     const key = target.dataset.key;
     const system = this.actor.system;
+    const advantageKey = event.shiftKey;
+    const disadvantageKey = event.ctrlKey;
     const profBonus = proficiencyBonus(system.attributes.level);
     const jackOfAllTrades = hasFeature(this.actor.items.contents, "Aptitudes multiples");
-    const mod = skillModifier(system, key, profBonus, jackOfAllTrades);
+    let mod = skillModifier(system, key, profBonus, jackOfAllTrades);
     const originAdvantage = Boolean(
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
     const cond = conditionRollEffects(this.actor, "check");
+
+    let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
+    const specialTrait = game.dndCustomAi?.origins?.[system.origin]?.specialTrait;
+    if (specialTrait?.conditionalBonus?.skill === key) {
+      const useTrait = await DialogV2.confirm({
+        window: { title: specialTrait.name },
+        content: `<p>${game.i18n.format("DND_CUSTOM.Roll.OriginTraitBonusPrompt", { trait: specialTrait.name })}</p>`,
+        rejectClose: false
+      });
+      if (useTrait) {
+        mod += abilityModifier(system.abilities[specialTrait.conditionalBonus.ability].total);
+        flavor += ` (${specialTrait.name})`;
+      }
+    }
+
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod),
-      flavor: game.i18n.format("DND_CUSTOM.Roll.SkillCheck", {
-        skill: game.i18n.localize(DND_CUSTOM.skills[key])
-      }),
-      advantage: event.shiftKey || originAdvantage || cond.advantage,
-      disadvantage: event.ctrlKey || armorDisadvantage || cond.disadvantage
+      flavor,
+      advantage: advantageKey || originAdvantage || cond.advantage,
+      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
     });
   }
 

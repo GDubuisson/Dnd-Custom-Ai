@@ -9,7 +9,7 @@ images_test/
 
 # Tests E2E "au réel" (Docker/Cypress/Quench, cf. tests/README.md)
 .env
-data/
+/data/
 .quench-module/
 cypress/videos/
 cypress/screenshots/

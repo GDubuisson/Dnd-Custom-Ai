@@ -143,6 +143,7 @@
       "SavingThrow": "Jet de sauvegarde de {ability}",
       "SkillCheck": "Test de {skill}",
       "ToolCheck": "{tool} — Test de {skill}",
+      "OriginTraitBonusPrompt": "Utiliser le trait \"{trait}\" pour ajouter son bonus à ce jet ?",
       "WeaponAttack": "Attaque avec {weapon}",
       "WeaponDamage": "Dégâts de {weapon}",
       "SpellAttack": "Attaque avec {spell}",

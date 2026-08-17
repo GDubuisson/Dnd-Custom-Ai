@@ -89,6 +89,18 @@ describe("scripts/data/origins.json", () => {
       assert.ok(origin.specialTrait?.name?.length > 0);
       assert.ok(origin.specialTrait?.description?.length > 0);
     });
+    // Retour de test (lot 3) : "Art de la Parole"/"Sagesse Ancienne" décrivaient un bonus de
+    // compétence dans leur texte mais rien ne l'appliquait — conditionalBonus (facultatif,
+    // cf. #onRollSkill, actor-sheet.js) référence une compétence + caractéristique réelles
+    // quand un trait accorde ce genre de bonus optionnel (proposé au joueur au moment du jet,
+    // jamais automatique).
+    if (origin.specialTrait?.conditionalBonus) {
+      test(`${key} : conditionalBonus référence une compétence/caractéristique valides`, () => {
+        const { skill, ability } = origin.specialTrait.conditionalBonus;
+        assert.ok(SKILL_KEYS.includes(skill), `compétence invalide : ${skill}`);
+        assert.ok(ABILITY_KEYS.includes(ability), `caractéristique invalide : ${ability}`);
+      });
+    }
   }
 });
 

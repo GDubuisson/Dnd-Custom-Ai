@@ -32,7 +32,8 @@
     "skillAdvantages": ["deception", "performance"],
     "specialTrait": {
       "name": "Art de la Parole",
-      "description": "Le personnage peut ajouter son modificateur de Charisme à un jet de Perspicacité pour sentir si son interlocuteur est convaincu ou lui ment."
+      "description": "Le personnage peut ajouter son modificateur de Charisme à un jet de Perspicacité pour sentir si son interlocuteur est convaincu ou lui ment.",
+      "conditionalBonus": { "skill": "insight", "ability": "cha" }
     }
   },
   "ravenmoor": {
@@ -68,7 +69,8 @@
     "skillAdvantages": ["history", "arcana"],
     "specialTrait": {
       "name": "Sagesse Ancienne",
-      "description": "Ajoute son bonus d'intelligence à un jet de Perception pour repérer un phénomène ou un objet de nature magique."
+      "description": "Ajoute son bonus d'intelligence à un jet de Perception pour repérer un phénomène ou un objet de nature magique.",
+      "conditionalBonus": { "skill": "perception", "ability": "int" }
     }
   }
 }
