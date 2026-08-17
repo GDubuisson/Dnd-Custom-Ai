@@ -55,18 +55,27 @@ describe("Intégration Combat Tracker", () => {
     cy.loginAsGM();
   });
 
-  it("le jet d'Initiative depuis la fiche fait apparaître le Combattant dans le tracker (T-COMBAT-001)", () => {
+  // Retour de test (2026-08-16) : le bouton de jet d'Initiative de la fiche personnage a été
+  // retiré (`#onRollInitiative`, actor-sheet.js) — décision explicite pour ne garder qu'un seul
+  // point d'entrée (le Combat Tracker natif de Foundry). Ce scénario passe donc par l'ajout
+  // natif d'un Combattant (ce que fait le tracker en coulisses quand le MJ clique "Ajouter au
+  // combat" sur un token) plutôt que par la fiche.
+  it("un Combattant ajouté au combat apparaît dans le tracker (T-COMBAT-001)", () => {
     const actorId = createdActorIds[0];
 
     cy.window().then((win) => {
-      if (win.game.combat) return null;
-      return win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then(
-        (combat) => createdCombatIds.push(combat.id)
+      const ensureCombat = win.game.combat
+        ? Promise.resolve(win.game.combat)
+        : win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then(
+            (combat) => {
+              createdCombatIds.push(combat.id);
+              return combat;
+            }
+          );
+      return ensureCombat.then((combat) =>
+        combat.createEmbeddedDocuments("Combatant", win.JSON.parse(win.JSON.stringify([{ actorId, initiative: 12 }])))
       );
     });
-
-    openSheet(actorId);
-    sheetRoot().find('button[data-action="rollInitiative"]').click();
 
     cy.window({ timeout: 10000 }).should((win) => {
       const combatant = win.game.combat?.combatants.find((c) => c.actor?.id === actorId);

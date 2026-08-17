@@ -43,7 +43,7 @@ describe("character-sheet.hbs (en-tête)", () => {
     assert.doesNotMatch(speedLabel.textContent, /\b30\b/);
   });
 
-  test("aucun bouton Initiative dans l'en-tête (retiré, redondant avec l'onglet Statistiques)", () => {
+  test("aucun bouton Initiative dans l'en-tête (jamais eu — retiré aussi de l'onglet Statistiques depuis, cf. tab-stats.hbs)", () => {
     assert.equal(doc.querySelector('[data-action="rollInitiative"]'), null);
   });
 
@@ -169,8 +169,19 @@ describe("tab-stats.hbs", () => {
     assert.ok(labels.some((text) => text.startsWith("Sauv")), `pas de libellé Sauv. dans ${JSON.stringify(labels)}`);
   });
 
-  test("la case à cocher de maîtrise de sauvegarde est bien reliée au bon champ", () => {
+  test("la case à cocher de maîtrise de sauvegarde est bien reliée au bon champ (MJ)", () => {
     assert.ok(doc.querySelector('input[name="system.saves.str.proficient"]'));
+  });
+
+  test("côté Joueur : pas de case à cocher (lecture seule), juste un indicateur visuel si maîtrisée", () => {
+    // Retour de test : la case à cocher restait affichée pour un Joueur alors qu'elle était
+    // toujours désactivée (la maîtrise ne dépend que de la classe, non éditable par lui) —
+    // remplacée par un simple libellé, sans input du tout.
+    const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
+    assert.equal(playerDoc.querySelector('input[name="system.saves.str.proficient"]'), null);
+    const label = [...playerDoc.querySelectorAll(".ability-side-label")].find((el) => el.textContent.trim().startsWith("Sauv"));
+    assert.ok(label, "libellé Sauv. introuvable côté Joueur");
+    assert.ok(label.classList.contains("proficient"), "indicateur de maîtrise manquant (Force maîtrisée dans ce fixture)");
   });
 
   test("Aptitudes multiples : une pastille apparaît sur une compétence non maîtrisée qui en bénéficie", () => {

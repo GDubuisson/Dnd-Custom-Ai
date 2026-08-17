@@ -577,10 +577,16 @@ describe("Onglet Capacités/Sorts", () => {
     goToTab("abilities");
 
     withItemId(wizardId, "Lumière", (itemId) => {
+      resetMessageBaseline();
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
         const token = win.canvas.scene.tokens.get(tokenId);
         expect(token.light.bright, "lumière appliquée au token").to.be.greaterThan(0);
+      });
+      // Retour de test : un double message ("Allume Lumière" + "Lance Lumière") était posté
+      // pour un seul lancer — un seul message attendu désormais (#onCastSpell, actor-sheet.js).
+      cy.window().should((win) => {
+        expect(win.game.messages.size, "un seul nouveau message de chat pour ce lancer").to.equal(knownMessageCount + 1);
       });
     });
   });

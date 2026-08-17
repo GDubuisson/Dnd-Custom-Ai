@@ -430,26 +430,30 @@ describe("Onglet Statistiques — repos", () => {
 });
 
 describe("Onglet Statistiques — Initiative", () => {
-  it("jet d'Initiative crée un Combattant sur le combat en cours (T-STATS-014)", () => {
-    cy.loginAsGM();
-    cy.window().then((win) => {
-      if (win.game.combat) return null; // combat déjà en cours (run précédent interrompu) : on le réutilise.
-      return win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then(
-        (combat) => {
-          createdCombatIds.push(combat.id);
-        }
-      );
-    });
-
+  // Retour de test (2026-08-16) : le bouton de jet d'Initiative de la fiche a été retiré
+  // (`#onRollInitiative`, actor-sheet.js) — décision explicite de l'utilisateur pour éviter deux
+  // façons différentes de lancer l'Initiative (fiche + Combat Tracker natif de Foundry, seul
+  // point d'entrée désormais). Le modificateur reste affiché, en lecture seule. L'intégration
+  // "un Combattant apparaît dans le tracker" reste couverte par combat-tracker.cy.js >
+  // T-COMBAT-001/003, via le tracker natif plutôt que ce bouton disparu.
+  beforeEach(() => {
     cy.loginAsPlayer();
-    cy.openActorSheet(sharedActorId);
-    sheetRoot().find('button[data-action="rollInitiative"]').click();
+  });
 
-    cy.window({ timeout: 10000 }).should((win) => {
-      const combatant = win.game.combat?.combatants.find((c) => c.actor?.id === sharedActorId);
-      expect(combatant, "un Combattant doit exister pour ce personnage").to.exist;
-      expect(combatant.initiative, "le Combat Tracker doit afficher un résultat").to.be.a("number");
+  it("le modificateur d'Initiative est affiché en lecture seule, plus de bouton de jet (T-STATS-014)", () => {
+    cy.openActorSheet(sharedActorId);
+
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      const dexMod = abilityModifier(actor.system.abilities.dex.total);
+      sheetRoot()
+        .find(".derived-stats span")
+        .first()
+        .invoke("text")
+        .should("include", formatModifier(dexMod));
     });
+
+    sheetRoot().find('button[data-action="rollInitiative"]').should("not.exist");
   });
 });
 

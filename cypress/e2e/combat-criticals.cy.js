@@ -187,6 +187,9 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
           lastMessageRoll().then((roll) => {
             expect(roll.flavor, "touché malgré une CA de 999").to.include(hit);
             expect(roll.flavor, "libellé Coup critique affiché").to.include(crit);
+            // Retour de test : le modificateur ne doit plus apparaître dans le résultat affiché
+            // sur un critique — juste le d20 naturel (cf. rollCheck > messageRoll, rolls.js).
+            expect(roll.formula, "aucun modificateur affiché sur un coup critique").to.equal("1d20");
           });
         });
 
@@ -220,6 +223,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
           lastMessageRoll().then((roll) => {
             expect(roll.flavor, "raté malgré une CA de 1").to.include(miss);
             expect(roll.flavor, "libellé Échec critique affiché").to.include(fumble);
+            expect(roll.formula, "aucun modificateur affiché sur un échec critique").to.equal("1d20");
           });
         });
     });
@@ -284,6 +288,7 @@ describe("Critiques en combat — jet d'attaque de sort", () => {
           .then((crit) => {
             lastMessageRoll().then((roll) => {
               expect(roll.flavor, "libellé Coup critique affiché").to.include(crit);
+              expect(roll.formula, "aucun modificateur affiché sur un coup critique").to.equal("1d20");
             });
           });
 
@@ -314,6 +319,7 @@ describe("Critiques en combat — jet de sauvegarde", () => {
       .then((fumble) => {
         lastMessageRoll().then((roll) => {
           expect(roll.flavor, "libellé Échec critique affiché sur une sauvegarde en combat").to.include(fumble);
+          expect(roll.formula, "aucun modificateur affiché sur un échec critique").to.equal("1d20");
         });
       });
   });

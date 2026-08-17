@@ -767,6 +767,13 @@
   height: 0.7rem;
 }
 
+/* Indicateur de maîtrise de sauvegarde côté Joueur (lecture seule, cf. tab-stats.hbs) : la
+   maîtrise elle-même reste éditable uniquement par le MJ (case à cocher, ci-dessus). */
+.dnd-custom-ai .ability-side-label.proficient {
+  color: var(--dca-secondary);
+  font-weight: 700;
+}
+
 .dnd-custom-ai .ability-side .ability-mod {
   font-family: var(--dca-font-headline);
   font-weight: 600;
@@ -781,6 +788,18 @@
   font-weight: 600;
   text-align: center;
   color: var(--dca-on-surface-variant);
+}
+
+/* Retour de test : les icônes de dé de "MOD." et "SAUV." (même carte de caractéristique)
+   s'affichaient à des tailles visiblement différentes. Cause : `.roll-btn i` (règle générale,
+   partagée par tous les boutons de jet du système) fixe la taille de l'icône en `em`, relative
+   au `font-size` du bouton qui la contient — `.ability-mod` (0.9rem) et `.save-mod` (0.7rem) ont
+   des tailles de texte volontairement différentes (hiérarchie visuelle test/sauvegarde), donc
+   leurs icônes héritées l'étaient aussi. Taille fixe en `rem` ici, scopée à cette seule paire de
+   boutons : n'affecte aucun autre bouton de jet du système. */
+.dnd-custom-ai .ability-side .ability-mod i,
+.dnd-custom-ai .ability-side .save-mod i {
+  font-size: 0.75rem;
 }
 
 /* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : indice visuel de clic au repos
@@ -953,9 +972,17 @@
   overflow-y: auto;
 }
 
+/* Retour de test : la liste apparaissait décalée vers le centre plutôt que collée à gauche.
+   Cause : `.condition-checkbox-row` est un `<button>` — le CSS core de Foundry pose
+   `justify-content: center` sur les boutons par défaut (pensé pour ses propres boutons-icônes
+   carrés), jamais écrasé ici puisque cette règle ne fixait que `display`/`align-items`, pas
+   `justify-content`. `flex-start` explicite règle l'alignement quel que soit l'ordre de
+   chargement des feuilles de style. */
 .dnd-custom-ai .condition-checkbox-row {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  width: 100%;
   gap: 0.5rem;
   padding: 0.35rem 0.6rem;
   border: none;
@@ -1852,14 +1879,21 @@
   font-size: 0.72rem;
 }
 
-/* Retour de test : la dernière pastille de langue (la plus à droite) s'affichait avec une
-   police plus grosse que les autres. `font-size` n'était fixé nulle part sur `.item-name-link`
-   lui-même (hérité de `.language-chip` ci-dessus) : `!important` neutralise toute règle plus
-   spécifique qui viendrait le réaffecter pour cet élément précis, même principe que
-   `nav.tabs .item` plus haut dans ce fichier (conflit avec le CSS par défaut de Foundry). */
+/* Retour de test : la dernière pastille de langue (la plus à droite/en bas) semblait "plus
+   grosse" que les autres. Root cause exacte fournie par le testeur (2026-08-16) : le CSS core
+   de Foundry (`foundry2.css`) pose `margin-bottom: 0.25rem` sur TOUT `<li>`, sauf
+   `:last-child` (`margin-bottom: 0`) — chaque `.language-chip` est justement un `<li>`
+   (`.languages-list`), donc la dernière pastille d'une ligne recevait un peu moins de marge que
+   ses voisines, perçu comme une différence de taille plutôt que de marge. `!important`
+   neutralise cette règle core quelle que soit la position dans la liste (`:last-child` ou non) —
+   la tentative précédente ciblait `font-size` sur `.item-name-link`, une fausse piste qui
+   n'adressait pas la vraie cause. */
+.dnd-custom-ai .language-chip {
+  margin-bottom: 0 !important;
+}
+
 .dnd-custom-ai .language-chip .item-name-link {
   color: var(--dca-on-surface);
-  font-size: inherit !important;
   text-decoration: none;
   cursor: pointer;
 }
@@ -2338,6 +2372,18 @@
 }
 
 /* ---------- Assistant de création de personnage ---------- */
+
+/* Retour de test : fond noir (thème Foundry par défaut), en rupture avec le reste du système.
+   `.sheet.actor`/`.sheet.item` ont chacun leur propre règle de fond parchemin (cf. plus haut
+   dans ce fichier) mais l'assistant, avec ses propres classes CSS (`character-wizard`, ni
+   `actor` ni `item`), n'était couvert par aucune des deux — jamais de fond de thème appliqué du
+   tout, juste le fond sombre par défaut d'ApplicationV2. */
+.dnd-custom-ai.sheet.character-wizard {
+  height: 100%;
+  font-family: var(--dca-font-body);
+  color: var(--dca-on-surface);
+  background-color: var(--dca-surface);
+}
 
 .dnd-custom-ai .wizard-body {
   max-height: 70vh;

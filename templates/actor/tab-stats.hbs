@@ -61,10 +61,20 @@
               <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
             </div>
             <div class="ability-side-item">
+              {{#if ../isGM}}
               <label class="ability-side-label" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
-                <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+                <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}}>
               </label>
+              {{else}}
+              {{! Retour de test : la case à cocher était toujours désactivée pour un Joueur (lecture
+                  seule, la maîtrise de sauvegarde découle uniquement de la classe) — affichée comme
+                  interactive alors qu'elle ne servait à rien pour lui. Simple indicateur visuel côté
+                  Joueur (classe .proficient posée sur le libellé), l'édition reste réservée au MJ. }}
+              <span class="ability-side-label {{#if this.save.proficient}}proficient{{/if}}" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+                {{localize "DND_CUSTOM.Actor.SaveShort"}}
+              </span>
+              {{/if}}
               <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.save.mod}}</button>
             </div>
           </div>
@@ -102,7 +112,7 @@
       </div>
 
       <div class="derived-stats">
-        <button type="button" data-action="rollInitiative" title="{{localize 'DND_CUSTOM.Roll.InitiativeTooltip'}}">{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</button>
+        <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
         <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
       </div>
     </div>

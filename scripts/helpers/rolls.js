@@ -67,7 +67,15 @@ export async function rollCheck({
     }
   }
 
-  await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label });
+  // Retour de test : sur un échec/coup critique, ne pas afficher le modificateur dans le
+  // résultat — seul le dé naturel compte pour la règle (déjà vrai plus haut, `hit`
+  // forcé indépendamment du total), le message de chat doit refléter ça visuellement plutôt que
+  // d'afficher un total (dé + modificateur) qui n'a plus d'incidence sur le résultat.
+  // `Roll.fromTerms` reconstruit un jet à partir du seul premier terme déjà évalué (le(s) d20,
+  // `roll.terms[0]`) SANS relancer les dés — même résultat physique, juste sans le(s) terme(s)
+  // de modificateur affiché(s).
+  const messageRoll = isCriticalHit || isCriticalFumble ? Roll.fromTerms([roll.terms[0]]) : roll;
+  await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label });
   return { roll, isCriticalHit, isCriticalFumble };
 }
 

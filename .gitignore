@@ -5,6 +5,7 @@ dist/
 .idea/**
 .claude/*
 ClaudeFiles/*
+images_test/
 
 # Tests E2E "au réel" (Docker/Cypress/Quench, cf. tests/README.md)
 .env

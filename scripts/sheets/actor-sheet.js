@@ -99,7 +99,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       castSpell: DndCustomActorSheet.#onCastSpell,
       rollSpellDamage: DndCustomActorSheet.#onRollSpellDamage,
       dropConcentration: DndCustomActorSheet.#onDropConcentration,
-      rollInitiative: DndCustomActorSheet.#onRollInitiative,
       levelUp: DndCustomActorSheet.#onLevelUp,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
@@ -711,13 +710,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     ui.notifications.warn(game.i18n.format(missingKey, { name: displayName }));
   }
 
-  /** Jet d'Initiative : délègue entièrement à Actor#rollInitiative (natif Foundry), qui crée
-   *  le Combattant si besoin (sur la scène active) et met à jour le Combat Tracker — pas de
-   *  logique maison, on branche juste la formule système (cf. system.json > "initiative"). */
-  static async #onRollInitiative() {
-    await this.actor.rollInitiative({ createCombatants: true });
-  }
-
   /** Jet de sauvegarde de la mort, SRD 5e : 1d20 sans modificateur. Naturel 20 = régénère
    *  1 PV — le hook updateActor (dnd-custom-ai.js) détecte alors le retour au-dessus de 0 PV
    *  et réinitialise l'état (retire Inconscient, remet les compteurs à zéro), pas besoin de
@@ -1058,8 +1050,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
     // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
     // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
-    if (item.system.light?.bright || item.system.light?.dim) {
+    // `#setTokensLight` poste déjà son propre message "allume {sort}" : retour de test, un
+    // second message générique "lance {sort}" (plus bas) s'ajoutait en double pour la même
+    // action — sauté ici (sauf sort d'attaque, qui poste son propre jet de toute façon).
+    const hasLight = Boolean(item.system.light?.bright || item.system.light?.dim);
+    if (hasLight) {
       await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
+      if (!item.system.attack) return;
     }
 
     if (item.system.attack) {
