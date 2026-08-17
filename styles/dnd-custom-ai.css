@@ -2555,3 +2555,37 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ---------- Effet visuel sur les coups/échecs critiques (cf. rollCheck > criticalRules,
+   rolls.js ; hook renderChatMessageHTML, dnd-custom-ai.js) ---------- */
+/* Pas scopé .dnd-custom-ai (même raison que le Journal ci-dessus) : les cartes de jet de dés
+   vivent dans le journal de chat (barre latérale Foundry), jamais imbriquées dans une fiche du
+   système — les variables --dca-* (définies dans le bloc .dnd-custom-ai) n'y sont pas
+   accessibles, d'où des couleurs en dur ci-dessous plutôt que des jetons partagés. Bordure +
+   halo + icône distincte pour chaque cas (jamais la couleur seule) : un coup critique reste
+   repérable même en cas de daltonisme (RGAA/WCAG). */
+.dice-roll.dnd-critical-hit {
+  border: 2px solid #8a6d1f;
+  border-radius: 4px;
+  box-shadow: 0 0 8px 1px rgba(184, 134, 11, 0.55);
+  background: linear-gradient(rgba(255, 215, 0, 0.14), rgba(255, 215, 0, 0.03));
+}
+
+.dice-roll.dnd-critical-fumble {
+  border: 2px solid #ba1a1a;
+  border-radius: 4px;
+  box-shadow: 0 0 8px 1px rgba(186, 26, 26, 0.45);
+  background: linear-gradient(rgba(186, 26, 26, 0.14), rgba(186, 26, 26, 0.03));
+}
+
+.dnd-critical-icon {
+  margin-right: 0.35rem;
+}
+
+.dice-roll.dnd-critical-hit .dnd-critical-icon {
+  color: #8a6d1f;
+}
+
+.dice-roll.dnd-critical-fumble .dnd-critical-icon {
+  color: #ba1a1a;
+}

@@ -814,6 +814,28 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Effet visuel sur les coups/échecs critiques (cf. flags criticalHit/criticalFumble posés par
+// rollCheck/rollDamage, rolls.js) : retour de test (lot 3, point 8) — le libellé texte déjà
+// présent dans le flavor ("Coup critique !"/"Échec critique !") ne suffisait pas, ajoute une
+// bordure/halo + icône sur la carte de jet (`.dice-roll`) elle-même. Styles définis dans
+// dnd-custom-ai.css HORS du bloc `.dnd-custom-ai` (les messages de chat vivent dans la barre
+// latérale, jamais imbriqués dans la fiche de personnage/PNJ) : jamais la couleur seule pour
+// distinguer les deux cas (icône différente), conformément aux règles RGAA/WCAG.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  const isCriticalHit = message.getFlag(SYSTEM_ID, "criticalHit");
+  const isCriticalFumble = message.getFlag(SYSTEM_ID, "criticalFumble");
+  if (!isCriticalHit && !isCriticalFumble) return;
+
+  const diceRoll = html.querySelector(".dice-roll");
+  if (!diceRoll) return;
+  diceRoll.classList.add(isCriticalHit ? "dnd-critical-hit" : "dnd-critical-fumble");
+
+  const icon = document.createElement("i");
+  icon.className = isCriticalHit ? "fa-solid fa-burst dnd-critical-icon" : "fa-solid fa-skull-crossbones dnd-critical-icon";
+  icon.setAttribute("aria-hidden", "true");
+  html.querySelector(".dice-total")?.prepend(icon);
+});
+
 async function applyHealToTargets(amount) {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {

@@ -75,7 +75,14 @@ export async function rollCheck({
   // `roll.terms[0]`) SANS relancer les dés — même résultat physique, juste sans le(s) terme(s)
   // de modificateur affiché(s).
   const messageRoll = isCriticalHit || isCriticalFumble ? Roll.fromTerms([roll.terms[0]]) : roll;
-  await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label });
+  // Retour de test (lot 3, point 8) : au-delà du libellé texte ci-dessus, un coup/échec
+  // critique doit aussi se voir sur la carte de jet elle-même — ces deux flags sont repérés par
+  // le hook renderChatMessageHTML (dnd-custom-ai.js) pour poser une bordure/halo + icône dédiés
+  // sur `.dice-roll`, jamais la couleur seule (accessibilité).
+  const flags = { "dnd-custom-ai": {} };
+  if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
+  if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
+  await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label, flags });
   return { roll, isCriticalHit, isCriticalFumble };
 }
 
@@ -96,10 +103,12 @@ export async function rollDamage({ actor, dice, formula, flavor, critical = fals
   if (critical) roll.alter(2, 0);
   await roll.evaluate();
   const label = critical ? `${flavor} (${game.i18n.localize("DND_CUSTOM.Roll.CriticalDamage")})` : flavor;
+  // criticalHit ici aussi (même flag que rollCheck ci-dessus) : le jet de dégâts doublé profite
+  // du même effet visuel que le jet d'attaque qui l'a déclenché (retour de test, lot 3 point 8).
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: { "dnd-custom-ai": { damageRoll: true } }
+    flags: { "dnd-custom-ai": { damageRoll: true, ...(critical ? { criticalHit: true } : {}) } }
   });
   return roll;
 }
