@@ -320,7 +320,12 @@ describe("Onglet Inventaire", () => {
   it("utiliser un objet de soin — PV + (base + bonus de compétence), plafonné au max (T-INV-006)", () => {
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": 1 })));
+      // dndCustomDamageApply : contourne le filet anti-self-dégâts de preUpdateActor
+      // (dnd-custom-ai.js) — simulation de dégâts déjà subis pour tester l'objet de soin, pas
+      // une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": 1 })), {
+        dndCustomDamageApply: true
+      });
     });
 
     withItemId(sharedActorId, "Trousse de soins", (itemId) => {

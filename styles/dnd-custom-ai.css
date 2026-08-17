@@ -1102,6 +1102,13 @@
   border-left: 3px solid transparent;
   font-size: 0.78rem;
   transition: background 0.15s ease;
+  /* Retour de test (lot 3) : la compétence la plus en bas à droite (dernier `<li>` du DOM)
+     tranchait visuellement des autres — même mécanisme que `.language-chip` plus bas dans ce
+     fichier : le CSS core de Foundry pose `margin-bottom: 0.25rem` sur TOUT `<li>` sauf
+     `:last-child`, ce qui grandit la ligne de grille de tous les autres `.skill` (via leur
+     marge) sauf celui-ci, en 2 colonnes -> décalage visible pour la toute dernière carte.
+     `!important` neutralise cette règle core quelle que soit la position dans la liste. */
+  margin-bottom: 0 !important;
 }
 
 .dnd-custom-ai .skills-list .skill:nth-child(odd) {

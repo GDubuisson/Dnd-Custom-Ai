@@ -35,8 +35,8 @@ function sheetRoot() {
 
 // Même piège que dans wizard.cy.js/support/e2e.js (objet littéral Cypress-realm rejeté par
 // Foundry) pour actor.update() cette fois, pas seulement Actor.create().
-function updateActor(win, actor, data) {
-  return actor.update(win.JSON.parse(win.JSON.stringify(data)));
+function updateActor(win, actor, data, options = {}) {
+  return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
 
 before(() => {
@@ -89,7 +89,11 @@ describe("Fiche personnage — en-tête et navigation, session Joueur", () => {
       const actor = win.game.actors.get(sharedActorId);
       const max = actor.system.attributes.hp.max;
       const half = Math.floor(max / 2);
-      return updateActor(win, actor, { "system.attributes.hp.value": half }).then(() => {
+      // dndCustomDamageApply : filet de sécurité anti-self-dégâts de preUpdateActor
+      // (dnd-custom-ai.js) bloque toute BAISSE directe de hp.value en session Joueur sans ce
+      // marqueur (cf. permissions.cy.js T-PERM-005/007) — légitime ici, simulation de dégâts
+      // déjà subis pour tester l'affichage, pas une vraie tentative de self-dégâts.
+      return updateActor(win, actor, { "system.attributes.hp.value": half }, { dndCustomDamageApply: true }).then(() => {
         const expectedPercent = Math.round((half / max) * 100);
         sheetRoot().find(".hp-bar-fill").invoke("attr", "style").should("include", `width: ${expectedPercent}%`);
       });
@@ -107,7 +111,7 @@ describe("Fiche personnage — en-tête et navigation, session Joueur", () => {
 
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return updateActor(win, actor, { "system.attributes.hp.value": 0 });
+      return updateActor(win, actor, { "system.attributes.hp.value": 0 }, { dndCustomDamageApply: true });
     });
     sheetRoot().find(".hp-bar-fill").invoke("attr", "style").should("include", "width: 0%");
 

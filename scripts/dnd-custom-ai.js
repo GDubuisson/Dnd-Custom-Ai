@@ -261,15 +261,18 @@ Hooks.once("ready", () => {
  *  propriétaire (cas courant : dégâts appliqués à un monstre ciblé, cf.
  *  applyDamageToTargets plus bas), sans quoi Actor#update lève une erreur de permission
  *  ("User lacks permission...") côté joueur au lieu d'échouer silencieusement comme espéré. */
-async function requestActorUpdate(actor, updates) {
+async function requestActorUpdate(actor, updates, options = {}) {
   if (actor.isOwner) {
-    await actor.update(updates);
+    await actor.update(updates, options);
     return;
   }
   if (!game.users.activeGM) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
     return;
   }
+  // `options` (ex. dndCustomDamageApply, cf. preUpdateActor plus bas) n'a de sens que pour un
+  // update local direct : relayé au MJ actif, c'est SON client qui appelle doc.update(), déjà
+  // hors du filtre non-MJ de preUpdateActor (`game.users.get(userId)?.isGM`) — rien à transmettre.
   game.socket.emit(SOCKET_EVENT, { uuid: actor.uuid, updates });
 }
 
@@ -319,6 +322,21 @@ Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
   // cet update (preUpdateActor), donc sûr à vérifier ici plutôt qu'une option dédiée.
   if (actor.system.subclass) delete sys.subclass;
   if (sys.attributes) delete sys.attributes.level;
+  // Retour de test (bug majeur, sécurité) : un Joueur pouvait s'appliquer lui-même des dégâts
+  // en tapant directement une valeur dans le champ PV de l'en-tête (déjà `disabled` côté
+  // template pour lui désormais, cf. character-sheet.hbs) — filet de sécurité côté données ici,
+  // au cas où l'update viendrait d'ailleurs qu'un vrai clic (macro, console). Seule une BAISSE
+  // est bloquée : la guérison (repos, objet de soin, jet de sauvegarde de la mort réussi...)
+  // reste un update légitime venant directement du client Joueur, jamais marqué par une option
+  // dédiée contrairement à dndCustomWizard/dndCustomLevelUp ci-dessus. `dndCustomDamageApply`
+  // (posé par applyDamageToTargets ci-dessous) est la seule exception à cette baisse bloquée :
+  // dégâts appliqués via un vrai jet de dés posté en chat, bouton cliqué explicitement — couvre
+  // le cas légitime d'un Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...).
+  // `dndCustomHpClamp` : deuxième exception légitime, cf. hook updateActor plus bas (correctif
+  // PV > max après une hausse d'Exhaustion, PAS un dégât).
+  if (sys.attributes?.hp?.value !== undefined && !options.dndCustomDamageApply && !options.dndCustomHpClamp) {
+    if (sys.attributes.hp.value < actor.system.attributes.hp.value) delete sys.attributes.hp.value;
+  }
   if (sys.abilities) {
     for (const key of Object.keys(sys.abilities)) delete sys.abilities[key].value;
   }
@@ -566,7 +584,11 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
     if (uses && uses.value > uses.max) updates["system.spells.uses.value"] = uses.max;
   }
 
-  if (Object.keys(updates).length) await actor.update(updates);
+  // `dndCustomHpClamp` : ce correctif peut faire BAISSER system.attributes.hp.value (ex. un
+  // Joueur augmente lui-même son Exhaustion, cf. exhaustionIncrease/tab-stats.hbs, ce qui réduit
+  // son PV max sous ses PV actuels) — à distinguer explicitement d'un vrai dégât pour ne pas se
+  // faire bloquer par le filet de sécurité anti-self-dégâts de preUpdateActor ci-dessus.
+  if (Object.keys(updates).length) await actor.update(updates, { dndCustomHpClamp: true });
 });
 
 // Mort d'un PNJ, SRD 5e simplifié (contrairement à un personnage : pas d'agonie ni de jet de
@@ -701,7 +723,13 @@ async function applyDamageToTargets(amount, sourceActorId) {
     }
     if (remaining > 0) updates["system.attributes.hp.value"] = Math.max(0, hp.value - remaining);
 
-    if (Object.keys(updates).length) await requestActorUpdate(actor, updates);
+    // dndCustomDamageApply : seul flux autorisé à faire BAISSER system.attributes.hp.value
+    // depuis un client non-MJ (cf. preUpdateActor plus bas) — un jet de dégâts réel a déjà dû
+    // être posté en chat et un bouton cliqué explicitement, ce qui couvre le cas légitime d'un
+    // Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...), tout en fermant le
+    // vrai trou de sécurité signalé par un testeur : taper une valeur arbitraire directement
+    // dans le champ PV de l'en-tête (character-sheet.hbs, désormais `disabled` côté Joueur).
+    if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
     if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
       await checkConcentration(actor, amount);
     }

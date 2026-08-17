@@ -1,13 +1,17 @@
 <div class="item-sheet-root">
 <header class="item-sheet-header">
   <img src="{{item.img}}" alt="{{item.name}}">
-  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.class'}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.class'}}" {{#unless isGM}}disabled{{/unless}}>
 </header>
 
 <div class="item-sheet-body">
+  {{#unless isGM}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.CompendiumGmOnlyNotice"}}</p>
+  {{/unless}}
+
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.ClassKey"}}</label>
-    <select name="system.classKey">
+    <select name="system.classKey" {{#unless isGM}}disabled{{/unless}}>
       <option value=""></option>
       {{selectOptions config.classes selected=system.classKey localize=true}}
     </select>
@@ -17,7 +21,7 @@
   {{#if isSubclass}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.SubclassKey"}}</label>
-    <select name="system.subclassKey">
+    <select name="system.subclassKey" {{#unless isGM}}disabled{{/unless}}>
       <option value=""></option>
       {{selectOptions subclassKeyOptions selected=system.subclassKey localize=true}}
     </select>
@@ -28,7 +32,7 @@
     <legend>{{localize "DND_CUSTOM.Item.Fields.ClassSavingThrows"}}</legend>
     {{#each savingThrowOptions}}
     <label class="checkbox-row">
-      <input type="checkbox" name="system.savingThrows" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      <input type="checkbox" name="system.savingThrows" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
       {{localize this.label}}
     </label>
     {{/each}}
@@ -36,14 +40,14 @@
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.ClassSkillChoiceCount"}}</label>
-    <input type="number" name="system.skillChoiceCount" value="{{system.skillChoiceCount}}" min="0">
+    <input type="number" name="system.skillChoiceCount" value="{{system.skillChoiceCount}}" min="0" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.ClassWeaponProficiencies"}}</legend>
     {{#each weaponProficiencyOptions}}
     <label class="checkbox-row">
-      <input type="checkbox" name="system.weaponProficiencies" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      <input type="checkbox" name="system.weaponProficiencies" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
       {{localize this.label}}
     </label>
     {{/each}}
@@ -51,7 +55,7 @@
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+    <prose-mirror name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
   </div>
 </div>
 </div>

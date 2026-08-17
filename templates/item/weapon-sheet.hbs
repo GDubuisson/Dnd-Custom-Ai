@@ -1,19 +1,23 @@
 <div class="item-sheet-root">
 <header class="item-sheet-header">
   <img src="{{item.img}}" alt="{{item.name}}">
-  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.weapon'}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.weapon'}}" {{#unless isGM}}disabled{{/unless}}>
 </header>
 
 <div class="item-sheet-body">
+  {{#unless isGM}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}</p>
+  {{/unless}}
+
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.WeaponType"}}</label>
-    <select name="system.weaponType">{{selectOptions config.weaponTypes selected=system.weaponType localize=true}}</select>
+    <select name="system.weaponType" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.weaponTypes selected=system.weaponType localize=true}}</select>
   </div>
 
   {{#if showSlotSelect}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Slot"}}</label>
-    <select name="system.slot">{{selectOptions slotOptions selected=system.slot localize=true}}</select>
+    <select name="system.slot" {{#unless isGM}}disabled{{/unless}}>{{selectOptions slotOptions selected=system.slot localize=true}}</select>
   </div>
   {{#if offHandRequiresLightNote}}
   <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.OffHandRequiresLightNote"}}</p>
@@ -25,10 +29,10 @@
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Price"}}</legend>
     <div class="price-row">
-      <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.price.pp" value="{{system.price.pp}}" min="0"></label>
-      <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.price.po" value="{{system.price.po}}" min="0"></label>
-      <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.price.pa" value="{{system.price.pa}}" min="0"></label>
-      <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.price.pc" value="{{system.price.pc}}" min="0"></label>
+      <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.price.pp" value="{{system.price.pp}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+      <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.price.po" value="{{system.price.po}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+      <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.price.pa" value="{{system.price.pa}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+      <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.price.pc" value="{{system.price.pc}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
     </div>
   </fieldset>
 
@@ -36,11 +40,11 @@
     <legend>{{localize "DND_CUSTOM.Item.Fields.Damage"}}</legend>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageDice"}}</label>
-      <input type="text" name="system.damage.dice" value="{{system.damage.dice}}" placeholder="1d6">
+      <input type="text" name="system.damage.dice" value="{{system.damage.dice}}" placeholder="1d6" {{#unless isGM}}disabled{{/unless}}>
     </div>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageType"}}</label>
-      <select name="system.damage.type">
+      <select name="system.damage.type" {{#unless isGM}}disabled{{/unless}}>
         <option value=""></option>
         {{selectOptions config.damageTypes selected=system.damage.type localize=true}}
       </select>
@@ -48,24 +52,24 @@
     {{#if system.properties.versatile}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageVersatile"}}</label>
-      <input type="text" name="system.damageVersatile.dice" value="{{system.damageVersatile.dice}}" placeholder="1d8">
+      <input type="text" name="system.damageVersatile.dice" value="{{system.damageVersatile.dice}}" placeholder="1d8" {{#unless isGM}}disabled{{/unless}}>
     </div>
     {{/if}}
   </fieldset>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Weight"}}</label>
-    <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.01">
+    <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.01" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Quantity"}}</label>
-    <input type="number" name="system.quantity" value="{{system.quantity}}" min="0">
+    <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Equipped"}}</label>
-    <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}>
+    <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <fieldset class="form-group">
@@ -73,44 +77,44 @@
 
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.Handedness"}}</label>
-      <select name="system.properties.handedness">{{selectOptions config.weaponHandedness selected=system.properties.handedness localize=true}}</select>
+      <select name="system.properties.handedness" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.weaponHandedness selected=system.properties.handedness localize=true}}</select>
     </div>
 
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.versatile" {{#if system.properties.versatile}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Versatile"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.finesse" {{#if system.properties.finesse}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Finesse"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.light" {{#if system.properties.light}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Light"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.thrown" {{#if system.properties.thrown}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Thrown"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.heavy" {{#if system.properties.heavy}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Heavy"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.reach" {{#if system.properties.reach}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Reach"}}</label>
-    <label class="checkbox-row"><input type="checkbox" name="system.properties.reload" {{#if system.properties.reload}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Reload"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.versatile" {{#if system.properties.versatile}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Versatile"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.finesse" {{#if system.properties.finesse}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Finesse"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.light" {{#if system.properties.light}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Light"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.thrown" {{#if system.properties.thrown}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Thrown"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.heavy" {{#if system.properties.heavy}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Heavy"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.reach" {{#if system.properties.reach}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Reach"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.properties.reload" {{#if system.properties.reload}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Reload"}}</label>
 
     {{#if showReloadValue}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.ReloadValue"}}</label>
-      <input type="number" name="system.properties.reloadValue" value="{{system.properties.reloadValue}}" min="0">
+      <input type="number" name="system.properties.reloadValue" value="{{system.properties.reloadValue}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
     {{/if}}
 
     {{#if showRange}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.RangeNormal"}}</label>
-      <input type="number" name="system.properties.range.normal" value="{{system.properties.range.normal}}" min="0">
+      <input type="number" name="system.properties.range.normal" value="{{system.properties.range.normal}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.RangeLong"}}</label>
-      <input type="number" name="system.properties.range.long" value="{{system.properties.range.long}}" min="0">
+      <input type="number" name="system.properties.range.long" value="{{system.properties.range.long}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
     {{/if}}
 
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.Special"}}</label>
-      <input type="text" name="system.properties.special" value="{{system.properties.special}}">
+      <input type="text" name="system.properties.special" value="{{system.properties.special}}" {{#unless isGM}}disabled{{/unless}}>
     </div>
   </fieldset>
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+    <prose-mirror name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
   </div>
 </div>
 </div>

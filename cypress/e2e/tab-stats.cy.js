@@ -38,8 +38,8 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
-function updateActor(win, actor, data) {
-  return actor.update(win.JSON.parse(win.JSON.stringify(data)));
+function updateActor(win, actor, data, options = {}) {
+  return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
 
 // Lit le dernier message de chat posté (le jet qui vient d'être déclenché) : `rolls[0]` porte la
@@ -277,7 +277,10 @@ describe("Onglet Statistiques — repos", () => {
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       const max = actor.system.attributes.hp.max;
-      return updateActor(win, actor, { "system.attributes.hp.value": 1 });
+      // dndCustomDamageApply : contourne le filet anti-self-dégâts de preUpdateActor
+      // (dnd-custom-ai.js) — simulation de dégâts déjà subis pour préparer le scénario de Repos,
+      // pas une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      return updateActor(win, actor, { "system.attributes.hp.value": 1 }, { dndCustomDamageApply: true });
     });
 
     lastMessageCount().then((before) => {
@@ -343,10 +346,15 @@ describe("Onglet Statistiques — repos", () => {
         const actor = win.game.actors.get(casterId);
         expect(actor.system.spells.uses.max, "prérequis : magicien niveau 1 a des emplacements de sorts").to.be
           .greaterThan(0);
-        return updateActor(win, actor, {
-          "system.attributes.hp.value": 1,
-          "system.spells.uses.value": 0
-        });
+        // dndCustomDamageApply : simulation de dégâts déjà subis pour tester un Repos long
+        // depuis un PV partiel (pas juste un no-op à pleine santé) — pas une vraie tentative de
+        // self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+        return updateActor(
+          win,
+          actor,
+          { "system.attributes.hp.value": 1, "system.spells.uses.value": 0 },
+          { dndCustomDamageApply: true }
+        );
       });
 
       lastMessageCount().then((before) => {
@@ -399,10 +407,14 @@ describe("Onglet Statistiques — repos", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return updateActor(win, actor, {
-        "system.attributes.hp.value": 1,
-        "system.attributes.death.failures": 3
-      });
+      // dndCustomDamageApply : simulation de dégâts déjà subis pour préparer le scénario "mort",
+      // pas une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      return updateActor(
+        win,
+        actor,
+        { "system.attributes.hp.value": 1, "system.attributes.death.failures": 3 },
+        { dndCustomDamageApply: true }
+      );
     });
 
     lastMessageCount().then((before) => {
@@ -540,7 +552,11 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
       const actor = win.game.actors.get(dyingActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
     });
-    cy.window().then((win) => updateActor(win, win.game.actors.get(dyingActorId), { "system.attributes.hp.value": 0 }));
+    // dndCustomDamageApply : simulation de dégâts déjà subis pour préparer l'état d'Agonie, pas
+    // une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+    cy.window().then((win) =>
+      updateActor(win, win.game.actors.get(dyingActorId), { "system.attributes.hp.value": 0 }, { dndCustomDamageApply: true })
+    );
     cy.window().should((win) => {
       const death = win.game.actors.get(dyingActorId).system.attributes.death;
       expect(death.successes).to.equal(0);
@@ -563,7 +579,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
     });
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
-      return updateActor(win, actor, { "system.attributes.hp.value": 0 });
+      return updateActor(win, actor, { "system.attributes.hp.value": 0 }, { dndCustomDamageApply: true });
     });
 
     cy.get(".death-panel").should("be.visible");
@@ -658,30 +674,34 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
     });
   });
 
-  it("trois réussites — stabilisé, plus aucun jet proposé (T-STATS-021)", () => {
+  // Retour de test (lot 3) : la 3e réussite (stabilisation) doit désormais retirer les états
+  // d'agonie/inconscience et remettre 1 PV automatiquement (auparavant : compteur à 3, mais le
+  // personnage restait à 0 PV et Inconscient indéfiniment). Le panneau Agonie tout entier
+  // disparaît donc dès la stabilisation (`dying.active` = `hp.value === 0`, character-sheet.hbs)
+  // — même comportement observable qu'un nat 20 (cf. T-STATS-019), juste déclenché par un chemin
+  // différent (3e réussite plutôt qu'un jet unique à 20). Le libellé "Stabilisé"
+  // (`.death-status`/`dying.stabilized`) reste dans le template pour un futur cas où
+  // `death.successes` serait à 3 sans PV restaurés (ex. ajustement manuel MJ hors de ce flux),
+  // mais n'est plus atteignable via ce bouton — rien à couvrir ici pour cette raison.
+  it("trois réussites — stabilisé : retire Inconscient et remet 1 PV (T-STATS-021)", () => {
     setDyingState(2, 0); // déjà deux réussites
     cy.forceD20(15); // une réussite simple suffit à atteindre 3
     cy.get('button[data-action="rollDeathSave"]').click();
 
     cy.window().should((win) => {
-      expect(win.game.actors.get(dyingActorId).system.attributes.death.successes).to.equal(3);
+      const actor = win.game.actors.get(dyingActorId);
+      expect(actor.system.attributes.hp.value, "1 PV remis automatiquement à la stabilisation").to.equal(1);
+      expect(actor.system.attributes.death.successes, "compteurs réinitialisés (hook updateActor)").to.equal(0);
+      expect(actor.system.attributes.death.failures).to.equal(0);
+      expect(actor.statuses.has("unconscious"), "Inconscient retiré à la stabilisation").to.be.false;
     });
 
-    cy.window()
-      .its("game.i18n")
-      .then((i18n) => i18n.localize("DND_CUSTOM.Actor.Stabilized"))
-      .then((stabilizedLabel) => {
-        cy.get(".death-status").should("contain.text", stabilizedLabel);
-      });
-    cy.get('button[data-action="rollDeathSave"]').should("not.exist");
+    cy.get(".death-panel").should("not.exist");
 
     // Remet une santé normale pour les tests suivants.
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
-      return updateActor(win, actor, {
-        "system.attributes.hp.value": actor.system.attributes.hp.max,
-        "system.attributes.death.successes": 0
-      });
+      return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
     });
   });
 

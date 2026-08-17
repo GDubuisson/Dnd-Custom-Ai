@@ -63,7 +63,10 @@ accent pour éviter tout souci d'encodage dans les chemins), et câblés dans
 ## Origines (`world-items/origins.json`) — fait ✅
 
 Les 6 blasons fournis ont été renommés (casse/orthographe alignées sur les noms exacts des
-Origines, ex. `Azhar.webp` → `Ashar.webp`) et câblés depuis `assets/icons/origins/`.
+Origines) et câblés depuis `assets/icons/origins/`. Retour de test (lot 3) : l'Origine
+"Ashar" était en fait une coquille pour "Azhar" — nom, gentilé, langue et fichier d'icône
+corrigés (`Azhar.webp`, la clé interne `ashar` dans `scripts/data/origins.json` reste
+inchangée, jamais affichée telle quelle).
 
 ## Récapitulatif de ce qui est déjà fait (aucune action requise)
 

@@ -445,6 +445,8 @@
       },
       "Fields": {
         "GmOnlyNotice": "Locked sheet: only the GM can edit this Feature. Use the dedicated button on the Features tab to spend a charge.",
+        "EquipmentGmOnlyNotice": "Locked sheet: only the GM can edit this item (rules content). Use the Quantity/Equipped fields on the Inventory tab to manage it.",
+        "CompendiumGmOnlyNotice": "Locked sheet: only the GM can edit this compendium content.",
         "Price": "Price",
         "Weight": "Weight",
         "Quantity": "Quantity",

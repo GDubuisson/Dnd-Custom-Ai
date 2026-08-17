@@ -1,15 +1,19 @@
 <div class="item-sheet-root">
 <header class="item-sheet-header">
   <img src="{{item.img}}" alt="{{item.name}}">
-  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.spell'}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.spell'}}" {{#unless isGM}}disabled{{/unless}}>
 </header>
 
 <div class="item-sheet-body">
+  {{#unless isGM}}
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.CompendiumGmOnlyNotice"}}</p>
+  {{/unless}}
+
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.SpellClasses"}}</legend>
     {{#each classOptions}}
     <label class="checkbox-row">
-      <input type="checkbox" name="system.classes" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+      <input type="checkbox" name="system.classes" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
       {{this.label}}
     </label>
     {{/each}}
@@ -17,44 +21,47 @@
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.SpellLevel"}}</label>
-    <input type="number" name="system.level" value="{{system.level}}" min="0" max="9">
+    <input type="number" name="system.level" value="{{system.level}}" min="0" max="9" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.SpellDetails"}}</label>
-    <input type="text" name="system.details" value="{{system.details}}" placeholder="1 action, 18 m, Instantanée">
+    <input type="text" name="system.details" value="{{system.details}}" placeholder="1 action, 18 m, Instantanée" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Activation"}}</label>
-    <select name="system.activation">{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
+    <select name="system.activation" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
   </div>
 
   {{#if isReaction}}
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
-    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}">
+    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}" {{#unless isGM}}disabled{{/unless}}>
   </div>
   <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
   {{/if}}
 
-  <label class="checkbox-row"><input type="checkbox" name="system.concentration" {{#if system.concentration}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Concentration"}}</label>
-  <label class="checkbox-row"><input type="checkbox" name="system.ritual" {{#if system.ritual}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Ritual"}}</label>
+  <label class="checkbox-row"><input type="checkbox" name="system.concentration" {{#if system.concentration}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Concentration"}}</label>
+  <label class="checkbox-row"><input type="checkbox" name="system.ritual" {{#if system.ritual}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Ritual"}}</label>
   {{#if system.level}}
-  <label class="checkbox-row"><input type="checkbox" name="system.prepared" {{#if system.prepared}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Prepared"}}</label>
+  {{! system.prepared se bascule au quotidien depuis l'onglet Capacités (data-item-prepared,
+      tab-abilities.hbs), pas ici — verrouillé comme le reste de cette fiche pour un Joueur,
+      sans rien retirer à ce vrai flux de préparation quotidienne. }}
+  <label class="checkbox-row"><input type="checkbox" name="system.prepared" {{#if system.prepared}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Prepared"}}</label>
   {{/if}}
-  <label class="checkbox-row"><input type="checkbox" name="system.attack" {{#if system.attack}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.SpellAttack"}}</label>
+  <label class="checkbox-row"><input type="checkbox" name="system.attack" {{#if system.attack}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.SpellAttack"}}</label>
 
   {{#if system.attack}}
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Damage"}}</legend>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageDice"}}</label>
-      <input type="text" name="system.damage.dice" value="{{system.damage.dice}}" placeholder="1d10">
+      <input type="text" name="system.damage.dice" value="{{system.damage.dice}}" placeholder="1d10" {{#unless isGM}}disabled{{/unless}}>
     </div>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageType"}}</label>
-      <select name="system.damage.type">
+      <select name="system.damage.type" {{#unless isGM}}disabled{{/unless}}>
         <option value=""></option>
         {{selectOptions config.damageTypes selected=system.damage.type localize=true}}
       </select>
@@ -66,17 +73,17 @@
     <legend>{{localize "DND_CUSTOM.Item.Fields.SpellLight"}}</legend>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.LightBright"}}</label>
-      <input type="number" name="system.light.bright" value="{{system.light.bright}}" min="0" step="0.5">
+      <input type="number" name="system.light.bright" value="{{system.light.bright}}" min="0" step="0.5" {{#unless isGM}}disabled{{/unless}}>
     </div>
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.LightDim"}}</label>
-      <input type="number" name="system.light.dim" value="{{system.light.dim}}" min="0" step="0.5">
+      <input type="number" name="system.light.dim" value="{{system.light.dim}}" min="0" step="0.5" {{#unless isGM}}disabled{{/unless}}>
     </div>
   </fieldset>
 
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+    <prose-mirror name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
   </div>
 </div>
 </div>

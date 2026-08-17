@@ -60,8 +60,8 @@
     }
   },
   "ashar": {
-    "label": "Ashar",
-    "language": "Asharite",
+    "label": "Azhar",
+    "language": "Azharite",
     "inspiration": "Arabie",
     "traits": "Sagesse, connaissance, réflexion, patience",
     "abilityBonuses": { "int": 2, "wis": 1 },

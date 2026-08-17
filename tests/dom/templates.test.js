@@ -103,6 +103,57 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
     assert.ok(doc.querySelector(".level-up-badge"), "badge niveau disponible introuvable");
     assert.ok(doc.querySelector('[data-action="levelUp"]'), "bouton de montée de niveau introuvable côté joueur");
   });
+
+  test("Retour de test (sécurité) : le champ PV actuels est verrouillé côté Joueur, pas de self-dégâts en tapant une valeur", () => {
+    const hpInput = doc.querySelector('input[name="system.attributes.hp.value"]');
+    assert.ok(hpInput, "champ PV actuels introuvable");
+    assert.ok(hpInput.disabled, "le champ PV actuels devrait être désactivé pour un Joueur");
+  });
+});
+
+describe("character-sheet.hbs (en-tête) — sous-classe", () => {
+  function render({ isGM, subclassLabel }) {
+    return parse(
+      renderTemplate("actor/character-sheet.hbs", {
+        actor: { img: "img.webp", name: "Aldric" },
+        system: { xp: 0, attributes: { level: 3, hp: { value: 18, max: 24, temp: 0 }, ac: { value: 15 }, speed: 30 } },
+        isGM,
+        levelUpAvailable: false,
+        classLabel: "Guerrier",
+        originLabel: "Altenmark",
+        hpPercent: 75,
+        dying: { active: false },
+        showCreationWizardButton: false,
+        subclassAvailable: true,
+        subclassLabel,
+        subclassOptions: [{ key: "champion", label: "Champion", selected: subclassLabel === "Champion" }]
+      })
+    );
+  }
+
+  // Retour de test (lot 3) : une fois choisie, la sous-classe s'affichait côté Joueur comme une
+  // liste déroulante désactivée (visuellement trompeuse, a l'air cliquable) plutôt qu'un champ
+  // classique — la liste déroulante reste réservée au MJ (correction possible à tout moment).
+  test("sous-classe déjà choisie, côté Joueur : champ texte, pas de <select>", () => {
+    const doc = render({ isGM: false, subclassLabel: "Champion" });
+    assert.equal(doc.querySelector('select[name="system.subclass"]'), null, "aucun <select> ne devrait être rendu côté Joueur");
+    const label = [...doc.querySelectorAll(".fixed-field-value")].find((el) => el.textContent.trim() === "Champion");
+    assert.ok(label, "champ texte 'Champion' introuvable côté Joueur");
+  });
+
+  test("sous-classe déjà choisie, côté MJ : <select> toujours utilisable pour corriger", () => {
+    const doc = render({ isGM: true, subclassLabel: "Champion" });
+    const select = doc.querySelector('select[name="system.subclass"]');
+    assert.ok(select, "le <select> devrait rester disponible côté MJ");
+    assert.ok(!select.disabled, "le <select> ne devrait pas être désactivé côté MJ");
+  });
+
+  test("sous-classe pas encore choisie, côté Joueur : <select> fonctionnel (secours du choix normal, cf. T-LVL-008)", () => {
+    const doc = render({ isGM: false, subclassLabel: "" });
+    const select = doc.querySelector('select[name="system.subclass"]');
+    assert.ok(select, "le <select> devrait être disponible pour faire le choix initial");
+    assert.ok(!select.disabled, "le <select> ne devrait pas être désactivé avant tout choix");
+  });
 });
 
 describe("character-sheet.hbs (en-tête) — indicateur de réaction", () => {
@@ -629,5 +680,49 @@ describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences
     assert.ok(select, "select classKey introuvable");
     assert.ok(select.querySelector('option[value="fighter"][selected]'), "option 'fighter' devrait être sélectionnée");
     assert.equal(doc.querySelector('select[name="system.subclassKey"]'), null);
+  });
+});
+
+// Retour de test (lot 3) : les zones de texte (ProseMirror) des fiches d'Item de compendium
+// restaient pleinement éditables (barre d'outils complète) même pour un Joueur sans droit
+// d'édition réel — verrouillées au même niveau que item/feature-sheet.hbs (déjà correct avant ce
+// lot). Un seul template représentatif ici (Origine, cf. images_test/img_4.png) plutôt qu'une
+// couverture exhaustive des 6 fiches concernées (armor/gear/tool/language/class/spell partagent
+// le même pattern `{{#unless isGM}}disabled{{/unless}}`, déjà vérifié visuellement).
+describe("item/origin-sheet.hbs — verrouillage MJ/Joueur", () => {
+  function render(isGM) {
+    return parse(
+      renderTemplate("item/origin-sheet.hbs", {
+        item: { img: "o.webp", name: "Azhar" },
+        isGM,
+        system: {
+          demonym: "Azharite",
+          language: "Azharite",
+          traits: "Sagesse",
+          description: "<p>Désert.</p>",
+          abilityBonuses: { int: 2, wis: 1 },
+          specialTrait: { name: "Sagesse Ancienne", description: "<p>Bonus.</p>" }
+        },
+        abilityBonusFields: [{ key: "int", label: "DND_CUSTOM.Abilities.int", value: 2 }],
+        skillAdvantageOptions: [{ key: "history", label: "DND_CUSTOM.Skills.history", checked: true }],
+        checkedSkillAdvantages: [{ key: "history", label: "DND_CUSTOM.Skills.history", checked: true }]
+      })
+    );
+  }
+
+  test("côté Joueur : tous les champs et la zone de description sont désactivés, note affichée", () => {
+    const doc = render(false);
+    assert.ok(doc.querySelector(".field-note"), "note MJ-uniquement introuvable");
+    for (const el of doc.querySelectorAll("input, select, prose-mirror")) {
+      assert.ok(el.hasAttribute("disabled"), `${el.tagName}[name="${el.getAttribute("name")}"] devrait être désactivé côté Joueur`);
+    }
+  });
+
+  test("côté MJ : rien n'est désactivé, pas de note", () => {
+    const doc = render(true);
+    assert.equal(doc.querySelectorAll(".field-note").length, 0, "aucune note MJ-uniquement attendue côté MJ");
+    for (const el of doc.querySelectorAll("input, select, prose-mirror")) {
+      assert.ok(!el.hasAttribute("disabled"), `${el.tagName}[name="${el.getAttribute("name")}"] ne devrait pas être désactivé côté MJ`);
+    }
   });
 });

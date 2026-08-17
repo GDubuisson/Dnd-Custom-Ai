@@ -54,12 +54,12 @@
     }
   },
   {
-    "name": "Asharite",
+    "name": "Azharite",
     "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/origins/Ashar.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/origins/Azhar.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Ashar. Octroyée automatiquement à la création si le personnage est originaire d'Ashar."
+      "description": "Langue parlée en Azhar. Octroyée automatiquement à la création si le personnage est originaire d'Azhar."
     }
   },
   {

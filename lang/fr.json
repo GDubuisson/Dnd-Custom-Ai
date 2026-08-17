@@ -445,6 +445,8 @@
       },
       "Fields": {
         "GmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier cette Capacité. Utilisez le bouton dédié de l'onglet Capacités pour dépenser une charge.",
+        "EquipmentGmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier cet objet (contenu de règles). Utilisez les cases Quantité/Équipé de l'onglet Inventaire pour le gérer.",
+        "CompendiumGmOnlyNotice": "Fiche verrouillée : seul le MJ peut modifier ce contenu de compendium.",
         "Price": "Prix",
         "Weight": "Poids",
         "Quantity": "Quantité",

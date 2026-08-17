@@ -730,7 +730,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       await actor.update({ "system.attributes.death.failures": failures });
       if (failures >= 3) await declareDeath(actor);
     } else if (total >= 10) {
-      await actor.update({ "system.attributes.death.successes": Math.min(3, death.successes + 1) });
+      const successes = Math.min(3, death.successes + 1);
+      const updates = { "system.attributes.death.successes": successes };
+      // Retour de test (lot 3) : troisième réussite = "stabilisé" — remet 1 PV dans la même
+      // update que la 3e réussite (pas un update séparé) pour que le hook updateActor
+      // (dnd-custom-ai.js, branche `newHp > 0 && oldHp === 0`) retire Inconscient et réinitialise
+      // les compteurs d'un seul coup, exactement comme un nat 20 (cf. branche `total === 20`
+      // ci-dessus) — même mécanisme, déclenché par un chemin différent.
+      if (successes >= 3) updates["system.attributes.hp.value"] = 1;
+      await actor.update(updates);
     } else {
       const failures = Math.min(3, death.failures + 1);
       await actor.update({ "system.attributes.death.failures": failures });

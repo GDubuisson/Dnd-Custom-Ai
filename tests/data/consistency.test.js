@@ -202,11 +202,24 @@ describe("world-items/*.json — objets physiques (armes/armures/objets/outils)"
 });
 
 describe("classStartingEquipment — les noms référencés existent dans world-items/weapons|armors.json", () => {
-  const weaponNames = new Set(WORLD_WEAPONS.map((entry) => entry.name));
+  const weaponsByName = new Map(WORLD_WEAPONS.map((entry) => [entry.name, entry]));
   const armorNames = new Set(WORLD_ARMORS.map((entry) => entry.name));
   for (const [classKey, kit] of Object.entries(DND_CUSTOM.classStartingEquipment)) {
     test(`${classKey} : arme "${kit.weapon}" existe`, () => {
-      assert.ok(weaponNames.has(kit.weapon), `arme "${kit.weapon}" introuvable dans world-items/weapons.json`);
+      assert.ok(weaponsByName.has(kit.weapon), `arme "${kit.weapon}" introuvable dans world-items/weapons.json`);
+    });
+    // Retour de test (lot 3) : l'arme de départ de 3 classes (Barde/Rapière, Druide/Cimeterre,
+    // Roublard/Rapière) était de type martial alors que ces 3 classes ne maîtrisent QUE les
+    // armes simples (cf. DND_CUSTOM.classWeaponProficiencies) — un Joueur démarrait avec une
+    // arme qu'il ne savait pas manier. Corrigé (Dague/Faucille, toutes deux `meleeSimple`), et
+    // gardé ici pour ne pas régresser sur une future arme de départ mal choisie.
+    test(`${classKey} : l'arme de départ "${kit.weapon}" est d'un type maîtrisé par la classe`, () => {
+      const weapon = weaponsByName.get(kit.weapon);
+      if (!weapon) return; // déjà signalé par le test précédent, évite un échec en cascade illisible
+      assert.ok(
+        DND_CUSTOM.classWeaponProficiencies[classKey].includes(weapon.system.weaponType),
+        `"${kit.weapon}" est de type "${weapon.system.weaponType}", absent des maîtrises de ${classKey} (${DND_CUSTOM.classWeaponProficiencies[classKey].join(", ")})`
+      );
     });
     if (kit.armor) {
       test(`${classKey} : armure "${kit.armor}" existe`, () => {

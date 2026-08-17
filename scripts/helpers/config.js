@@ -321,16 +321,21 @@ DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
  *  de personnage (character-creation-wizard.js). `armor: null` = classe sans armure de
  *  départ typique (Barbare/Moine/Ensorceleur/Magicien, comptent sur leur Dextérité ou une
  *  Défense sans armure). */
+// Retour de test (lot 3) : l'arme de départ doit toujours être d'un type que la classe maîtrise
+// réellement (cf. classWeaponProficiencies ci-dessus) — Barde/Druide/Roublard donnaient une arme
+// martiale (Rapière/Cimeterre) alors que ces 3 classes ne maîtrisent QUE les armes simples dans
+// ce système. Remplacées par Dague/Faucille (armes simples), cf. test dédié dans
+// tests/data/consistency.test.js pour empêcher toute régression future.
 DND_CUSTOM.classStartingEquipment = {
   barbarian: { weapon: "Grande hache", armor: null },
-  bard: { weapon: "Rapière", armor: "Cuir" },
+  bard: { weapon: "Dague", armor: "Cuir" },
   cleric: { weapon: "Masse d'armes", armor: "Écailles" },
-  druid: { weapon: "Cimeterre", armor: "Peau" },
+  druid: { weapon: "Faucille", armor: "Peau" },
   fighter: { weapon: "Épée longue", armor: "Cotte de mailles" },
   monk: { weapon: "Bâton", armor: null },
   paladin: { weapon: "Épée longue", armor: "Cotte de mailles" },
   ranger: { weapon: "Arc long", armor: "Cuir clouté" },
-  rogue: { weapon: "Rapière", armor: "Cuir" },
+  rogue: { weapon: "Dague", armor: "Cuir" },
   sorcerer: { weapon: "Dague", armor: null },
   warlock: { weapon: "Dague", armor: "Cuir" },
   wizard: { weapon: "Dague", armor: null }
