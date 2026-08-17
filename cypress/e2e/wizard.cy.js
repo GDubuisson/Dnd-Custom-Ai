@@ -361,6 +361,73 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get("input.actor-name").should("not.exist");
   });
 
+  // Retour de test (lot 3, point 10 "Assistant de création") : 4e signalement du même bug
+  // ("la fiche s'affiche derrière/devant l'assistant") malgré le correctif de T-WIZ-010 ci-dessus
+  // — réinvestigation complète plutôt que reconfirmation du correctif existant. Les 3 chemins
+  // possibles de rendu de la fiche (cf. grep `.sheet.render`/`new CharacterCreationWizard` dans
+  // scripts/) ont été retestés : création native (T-WIZ-010 ci-dessus, déjà couvert), soumission
+  // de l'assistant -> réouverture de la fiche (T-WIZ-020), et bouton "Assistant" depuis une fiche
+  // déjà ouverte (T-WIZ-021). Aucun chevauchement reproduit sur les trois — `DndCustomActorSheet
+  // #render` (actor-sheet.js) bloque bien à la source, et `ApplicationV2#close()` (cœur Foundry)
+  // attend réellement la fin de l'animation de fermeture (jusqu'à 1000ms) avant de retirer
+  // l'instance de `foundry.applications.instances`, donc avant que `render()` ne puisse s'y fier.
+  // Contrairement à T-WIZ-010 (2 points de contrôle discrets, limite documentée dans son propre
+  // commentaire), ces deux tests échantillonnent en continu (toutes les 50ms) sur toute la
+  // transition — capable de repérer un flash isolé qu'une vérification ponctuelle manquerait.
+  function pollNoOverlap(times = 30, intervalMs = 50) {
+    const overlaps = [];
+    for (let i = 0; i < times; i += 1) {
+      cy.wait(intervalMs);
+      cy.window().then((win) => {
+        const sheetInput = win.document.querySelector("input.actor-name");
+        const wizardForm = win.document.querySelector("form.character-wizard");
+        const sheetVisible = Boolean(sheetInput?.checkVisibility());
+        const wizardVisible = Boolean(wizardForm?.checkVisibility());
+        if (sheetVisible && wizardVisible) overlaps.push(i * intervalMs);
+      });
+    }
+    cy.then(() => {
+      expect(overlaps, `fiche et assistant visibles en même temps aux instants (ms) : ${overlaps.join(", ")}`).to.deep.equal([]);
+    });
+  }
+
+  it("soumission de l'assistant -> réouverture de la fiche : jamais de chevauchement, échantillonné en continu (T-WIZ-020)", () => {
+    cy.window().then((win) => win.Actor.create(toAutObject(win, { name: "Wizard T-WIZ-020", type: "character" }))).then((actor) => {
+      createdActorIds.push(actor.id);
+    });
+    getWizardForm().should("be.visible");
+    cy.get('select[name="origin"]').select("fleuraine");
+    cy.get('select[name="classKey"]').select("fighter");
+    cy.get('input[type="checkbox"][name="skills.athletics"]').check();
+    cy.get('input[type="checkbox"][name="skills.intimidation"]').check();
+    cy.get('form.character-wizard button[type="submit"]').click();
+
+    pollNoOverlap();
+    // La fiche doit bien finir par apparaître (pas juste "jamais de chevauchement" par absence
+    // totale de rendu) : preuve que le blocage ne s'est pas simplement mué en blocage permanent.
+    cy.get("input.actor-name", { timeout: 10000 }).should("be.visible");
+  });
+
+  it("bouton 'Assistant' depuis une fiche déjà ouverte : jamais de chevauchement, échantillonné en continu (T-WIZ-021)", () => {
+    let actorId;
+    createBlankCharacter("Wizard T-WIZ-021").then((id) => {
+      actorId = id;
+    });
+    getWizardForm().should("be.visible");
+    // Ferme l'assistant auto-ouvert sans soumettre (Actor vierge, sans classe/origine) : le
+    // bouton "Assistant" n'est visible sur la fiche que dans cet état (cf. showCreationWizardButton,
+    // actor-sheet.js).
+    cy.get("form.character-wizard .window-header [data-action=\"close\"]").click();
+    getWizardForm().should("not.exist");
+
+    cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+
+    cy.get('button[data-action="openCreationWizard"]').click();
+    pollNoOverlap();
+    getWizardForm().should("be.visible");
+  });
+
   it("rejette une soumission avec un nombre de compétences hors quota, sans mettre à jour l'Actor (T-WIZ-011)", () => {
     let actorId;
     createBlankCharacter("Wizard T-WIZ-011").then((id) => { actorId = id; });
