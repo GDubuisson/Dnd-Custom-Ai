@@ -13,4 +13,5 @@ images_test/
 .quench-module/
 cypress/videos/
 cypress/screenshots/
+cypress/a11y-violations.json
 .husky/_/

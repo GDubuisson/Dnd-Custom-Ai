@@ -22,7 +22,14 @@
   --dca-secondary-container: #e8c98a;
   --dca-on-secondary-container: #5c2c0d;
   --dca-secondary-fixed: #f0dfae;
-  --dca-secondary-fixed-dim: #c99a52;
+  /* Retour de test (lot 3, point 9 "Accessibilité") : #c99a52 (valeur d'origine) ne contrastait
+     qu'à 3.6:1 sur --dca-primary-container, sous le seuil RGAA/WCAG AA de 4.5:1 pour du texte
+     de cette taille (ex. en-têtes de tableau d'inventaire) — éclairci jusqu'à ~4.7:1 sur ce même
+     fond (audit réel via axe-core, cf. cypress/e2e/accessibility.cy.js), tout en restant plus
+     sourd que --dca-secondary-fixed pour garder la hiérarchie visuelle libellé/valeur voulue.
+     Seul jeton touché par cet audit : les autres usages (texte sombre sur fond clair, ou fond
+     clair sous texte sombre) gagnent aussi en contraste avec cet éclaircissement, jamais l'inverse. */
+  --dca-secondary-fixed-dim: #d7b47f;
   --dca-tertiary: #b3401f;
   --dca-error: #ba1a1a;
 

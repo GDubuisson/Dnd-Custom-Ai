@@ -1,6 +1,9 @@
 // Support file Cypress, chargé automatiquement avant chaque spec e2e (cf. cypress.config.js >
 // e2e.supportFile).
 import "@testing-library/cypress/add-commands";
+// Enregistre cy.injectAxe()/cy.checkA11y() (axe-core) — cf. cypress/e2e/accessibility.cy.js,
+// lot 3 point 9 "Accessibilité" (RGAA/WCAG).
+import "cypress-axe";
 
 // Garde-fou obligatoire : à appeler dans CHAQUE spec juste après avoir confirmé `game.ready`
 // (avant toute assertion métier), sur le modèle de system-load.cy.js/quench.cy.js. Vérifie que
