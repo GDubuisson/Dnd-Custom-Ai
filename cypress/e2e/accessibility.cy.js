@@ -98,11 +98,26 @@ describe("Accessibilité — fiches d'Item (contraste texte/fond)", () => {
   function fetchWorldItem(name) {
     return cy.window().then((win) => win.game.items.find((candidate) => candidate.name === name));
   }
-  function fetchCompendiumItem(pack, name) {
+  // Retry (jusqu'à 10 x 500ms) plutôt qu'une seule lecture : cette spec est la première de la
+  // suite complète par ordre alphabétique (`npm run test:e2e:run`), donc la première à se
+  // connecter en MJ — l'auto-import des compendiums (hook "ready", content-import.js) est
+  // encore EN COURS à ce moment-là pour les paquets traités tard dans sa boucle séquentielle
+  // (features puis feats puis languages, cf. COMPENDIUM_FILES) : `getDocuments()` peut renvoyer
+  // un index incomplet si interrogé trop tôt (piège rencontré au premier run complet — "feature"
+  // et "language" échouaient, "origin"/"class"/"spell", traités plus tôt dans la boucle,
+  // passaient déjà). D'autres specs qui lisent aussi les compendiums (tab-abilities.cy.js,
+  // item-sheets.cy.js) n'ont jamais eu besoin de ce retry : elles tournent après cette spec dans
+  // l'ordre alphabétique, l'import a alors eu tout le temps de se terminer.
+  function fetchCompendiumItem(pack, name, attempt = 0) {
     return cy
       .window()
       .then((win) => win.game.packs.get(`dnd-custom-ai.${pack}`).getDocuments())
-      .then((docs) => docs.find((candidate) => candidate.name === name));
+      .then((docs) => {
+        const item = docs.find((candidate) => candidate.name === name);
+        if (item) return item;
+        expect(attempt, `Item '${name}' introuvable dans le compendium ${pack} après 10 tentatives`).to.be.lessThan(10);
+        return cy.wait(500).then(() => fetchCompendiumItem(pack, name, attempt + 1));
+      });
   }
 
   before(() => {
