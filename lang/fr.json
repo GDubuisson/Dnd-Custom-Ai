@@ -444,7 +444,11 @@
       "FeatConfirm": "Choisir",
       "AllFeatsOwned": "Ce personnage possède déjà tous les Dons du compendium.",
       "SubclassDialogTitle": "Choisir une sous-classe",
-      "SubclassConfirm": "Choisir"
+      "SubclassConfirm": "Choisir",
+      "Back": "Retour",
+      "PendingChoiceLabel": "Choix dû",
+      "PendingChoiceButton": "Résoudre",
+      "PendingChoiceTooltip": "Amélioration de caractéristiques ou Don encore dû(s) — fenêtre fermée sans choisir lors d'une montée de niveau précédente, cliquez pour reprendre."
     },
     "Conditions": {
       "Title": "États",

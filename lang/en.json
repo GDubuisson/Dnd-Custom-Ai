@@ -444,7 +444,11 @@
       "FeatConfirm": "Choose",
       "AllFeatsOwned": "This character already has every Feat from the compendium.",
       "SubclassDialogTitle": "Choose a Subclass",
-      "SubclassConfirm": "Choose"
+      "SubclassConfirm": "Choose",
+      "Back": "Back",
+      "PendingChoiceLabel": "Choice due",
+      "PendingChoiceButton": "Resolve",
+      "PendingChoiceTooltip": "Ability Score Improvement or Feat still due — dialog closed without choosing at a previous level-up, click to resume."
     },
     "Conditions": {
       "Title": "Conditions",

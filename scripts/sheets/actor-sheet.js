@@ -115,6 +115,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollSpellDamage: DndCustomActorSheet.#onRollSpellDamage,
       dropConcentration: DndCustomActorSheet.#onDropConcentration,
       levelUp: DndCustomActorSheet.#onLevelUp,
+      resolvePendingAsi: DndCustomActorSheet.#onResolvePendingAsi,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
       openSubclassSheet: DndCustomActorSheet.#onOpenSubclassSheet,
@@ -271,6 +272,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
+    // Choix Amélioration de caractéristiques/Don dû mais pas encore résolu (cf.
+    // #onResolvePendingAsi, character-data.js#pendingAsiChoices) : badge de rattrapage manuel
+    // dans l'en-tête tant que > 0.
+    context.pendingAsiChoices = system.attributes.pendingAsiChoices;
     // Affichage XP détaillé (total + seuil exact) réservé au MJ (cf. template : bloc entier
     // sous {{#if isGM}}) : seuil du prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel],
     // la table étant indexée niveau-1), absent au niveau 20 (déjà au maximum).
@@ -695,10 +700,36 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     // Amélioration de caractéristiques OU Don au choix, SRD 5e (règle optionnelle, cf.
     // commentaire de DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après
-    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js).
+    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js). Un choix dû
+    // mais pas encore résolu (fenêtre fermée sans choisir à une montée de niveau précédente,
+    // system.attributes.pendingAsiChoices > 0, cf. schéma character-data.js) est reproposé en
+    // plus de celui de ce niveau-ci, le cas échéant.
     if (DND_CUSTOM.abilityScoreImprovementLevels.includes(next)) {
-      await offerAbilityScoreOrFeatDialog(this.actor);
+      await this.actor.update({ "system.attributes.pendingAsiChoices": this.actor.system.attributes.pendingAsiChoices + 1 });
     }
+    await this.#resolvePendingAsiChoices();
+  }
+
+  /** Reproposé tant que system.attributes.pendingAsiChoices > 0 : un choix Amélioration/Don dû
+   *  reste dû (jamais perdu) jusqu'à ce qu'il soit réellement appliqué (cf.
+   *  offerAbilityScoreOrFeatDialog, level-up-choice.js, qui gère elle-même le va-et-vient entre
+   *  ses propres fenêtres). S'arrête dès qu'une fenêtre est fermée sans choisir, pour laisser la
+   *  main au joueur plutôt que de le forcer en boucle — le badge de l'en-tête (cf.
+   *  #onResolvePendingAsi) reste alors le rattrapage manuel. */
+  async #resolvePendingAsiChoices() {
+    while (this.actor.system.attributes.pendingAsiChoices > 0) {
+      const applied = await offerAbilityScoreOrFeatDialog(this.actor);
+      if (!applied) return;
+      await this.actor.update({ "system.attributes.pendingAsiChoices": this.actor.system.attributes.pendingAsiChoices - 1 });
+    }
+  }
+
+  /** Bouton de rattrapage manuel de l'en-tête (badge visible tant que system.attributes.
+   *  pendingAsiChoices > 0, character-sheet.hbs) : permet de résoudre un choix Amélioration/Don
+   *  dû sans attendre la prochaine montée de niveau (retour de test — fermer la fenêtre sans
+   *  choisir le perdait auparavant pour toujours, faute d'un tel rattrapage). */
+  static async #onResolvePendingAsi() {
+    await this.#resolvePendingAsiChoices();
   }
 
   /** Ouvre l'assistant de création de personnage pour cet Actor (cf.

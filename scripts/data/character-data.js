@@ -77,6 +77,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 }),
         level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+        // Choix "Amélioration de caractéristiques ou Don" dus mais pas encore résolus (SRD 5e,
+        // cf. DND_CUSTOM.abilityScoreImprovementLevels) : incrémenté à chaque niveau concerné
+        // atteint, décrémenté seulement quand un choix est réellement appliqué (Amélioration OU
+        // Don accepté) — jamais quand la fenêtre est fermée sans choisir (retour de test :
+        // fermer sans choisir faisait perdre le choix pour toujours). Tant que > 0, la fenêtre
+        // est reproposée à chaque montée de niveau suivante ET un bouton de rattrapage manuel
+        // reste affiché sur la fiche (cf. DndCustomActorSheet#onLevelUp/#onResolvePendingAsi).
+        pendingAsiChoices: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
         // Niveaux d'Exhaustion SRD 5e (0-6) : effets appliqués dans prepareDerivedData
         // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
         // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).

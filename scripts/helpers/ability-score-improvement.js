@@ -5,8 +5,14 @@ const { DialogV2 } = foundry.applications.api;
 
 /** Boîte de dialogue "Amélioration de caractéristiques", SRD 5e : +2 sur une seule
  *  caractéristique, ou +1 sur deux caractéristiques différentes (au choix du joueur),
- *  plafonné à 20 (maximum SRD sans objet magique). Ouverte automatiquement par
- *  DndCustomActorSheet#onLevelUp aux niveaux de DND_CUSTOM.abilityScoreImprovementLevels. */
+ *  plafonné à 20 (maximum SRD sans objet magique). Ouverte par offerAbilityScoreOrFeatDialog
+ *  (level-up-choice.js), qui gère la boucle de va-et-vient avec le choix Don et le décompte de
+ *  system.attributes.pendingAsiChoices.
+ *
+ *  Renvoie `"applied"` si l'amélioration a bien été appliquée, `"back"` si le joueur veut
+ *  revenir au choix Amélioration/Don (retour de test — aucun moyen de revenir en arrière
+ *  auparavant), ou `null` si la fenêtre a été fermée sans rien choisir (validation ratée
+ *  incluse : le choix reste dû, reproposé à la prochaine montée de niveau plutôt que perdu). */
 export async function openAbilityScoreImprovementDialog(actor) {
   const abilityOptions = ABILITY_KEYS.map(
     (key) =>
@@ -27,34 +33,41 @@ export async function openAbilityScoreImprovementDialog(actor) {
     </div>
   `;
 
-  await DialogV2.prompt({
+  return DialogV2.wait({
     window: { title: game.i18n.localize("DND_CUSTOM.Wizard.AsiTitle") },
     content,
-    ok: {
-      label: game.i18n.localize("DND_CUSTOM.Wizard.AsiApply"),
-      callback: async (event, button) => {
-        const form = button.form;
-        const ability1 = form.elements.ability1.value;
-        const ability2 = form.elements.ability2.value;
+    rejectClose: false,
+    buttons: [
+      {
+        action: "back",
+        label: game.i18n.localize("DND_CUSTOM.LevelUp.Back"),
+        callback: () => "back"
+      },
+      {
+        action: "ok",
+        label: game.i18n.localize("DND_CUSTOM.Wizard.AsiApply"),
+        default: true,
+        callback: async (event, button) => {
+          const form = button.form;
+          const ability1 = form.elements.ability1.value;
+          const ability2 = form.elements.ability2.value;
 
-        if (!ability1) {
-          ui.notifications.error(game.i18n.localize("DND_CUSTOM.Wizard.AsiInvalid"));
-          return;
-        }
-        if (ability2 && ability1 === ability2) {
-          ui.notifications.error(game.i18n.localize("DND_CUSTOM.Wizard.AsiInvalid"));
-          return;
-        }
+          if (!ability1 || (ability2 && ability1 === ability2)) {
+            ui.notifications.error(game.i18n.localize("DND_CUSTOM.Wizard.AsiInvalid"));
+            return null;
+          }
 
-        const updates = {};
-        if (ability2) {
-          updates[`system.abilities.${ability1}.value`] = Math.min(20, actor.system.abilities[ability1].value + 1);
-          updates[`system.abilities.${ability2}.value`] = Math.min(20, actor.system.abilities[ability2].value + 1);
-        } else {
-          updates[`system.abilities.${ability1}.value`] = Math.min(20, actor.system.abilities[ability1].value + 2);
+          const updates = {};
+          if (ability2) {
+            updates[`system.abilities.${ability1}.value`] = Math.min(20, actor.system.abilities[ability1].value + 1);
+            updates[`system.abilities.${ability2}.value`] = Math.min(20, actor.system.abilities[ability2].value + 1);
+          } else {
+            updates[`system.abilities.${ability1}.value`] = Math.min(20, actor.system.abilities[ability1].value + 2);
+          }
+          await actor.update(updates, { dndCustomWizard: true });
+          return "applied";
         }
-        await actor.update(updates, { dndCustomWizard: true });
       }
-    }
+    ]
   });
 }
