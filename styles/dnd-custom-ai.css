@@ -1371,13 +1371,6 @@
   color: var(--dca-muted-text);
 }
 
-.dnd-custom-ai .item-stats-inline {
-  font-family: var(--dca-font-label);
-  font-size: 0.72rem;
-  font-style: normal;
-  color: var(--dca-muted-text);
-}
-
 /* ---------- Inventaire ---------- */
 
 .dnd-custom-ai .inventory-table {
