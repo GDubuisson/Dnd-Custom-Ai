@@ -338,5 +338,25 @@
       "subclassKey": "evocation",
       "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École d'évocation forme des lanceurs de sorts destructeurs, capables d'épargner leurs alliés au cœur même de leurs explosions magiques.</p><ul><li>Niveau 2 : Sculpteur de sorts</li><li>Niveau 6 : Tour de magie renforcé</li></ul>"
     }
+  },
+  {
+    "name": "École de nécromancie",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-de-necromancie.webp",
+    "system": {
+      "classKey": "wizard",
+      "subclassKey": "necromancy",
+      "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École de nécromancie étudie les frontières entre la vie et la mort, infusant les sorts d'attaque d'une froideur mortelle.</p><ul><li>Niveau 2 : Étreinte glaciale de la tombe</li></ul>"
+    }
+  },
+  {
+    "name": "École d'illusion",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-dillusion.webp",
+    "system": {
+      "classKey": "wizard",
+      "subclassKey": "illusion",
+      "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École d'illusion façonne des tromperies sensorielles si abouties qu'elles se dérobent à toute analyse.</p><ul><li>Niveau 2 : Double illusoire</li></ul>"
+    }
   }
 ]

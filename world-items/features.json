@@ -1403,6 +1403,38 @@
     }
   },
   {
+    "name": "Étreinte glaciale de la tombe",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Etreinte-glaciale-de-la-tombe.png",
+    "system": {
+      "class": "wizard",
+      "subclass": "necromancy",
+      "level": 2,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long : quand vous infligez des dégâts à une créature avec un sort d'attaque, ajoutez 1d6 dégâts nécrotiques supplémentaires et regagnez des points de vie temporaires égaux aux dégâts nécrotiques infligés (simplifié : normalement selon le niveau de sort dépensé)."
+    }
+  },
+  {
+    "name": "Double illusoire",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Double-illusoire.png",
+    "system": {
+      "class": "wizard",
+      "subclass": "illusion",
+      "level": 2,
+      "activation": "reaction",
+      "reactionTrigger": "Vous êtes touché par une attaque",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Réaction, quand vous êtes touché par une attaque : créez l'illusion que vous vous êtes téléporté 1,50 m à côté, laissant l'attaque manquer sa cible. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant un emplacement de sort)."
+    }
+  },
+  {
     "name": "Attaque d'opportunité",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Attaque-dopportunite.png",
