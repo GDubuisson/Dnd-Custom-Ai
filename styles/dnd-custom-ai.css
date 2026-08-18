@@ -2265,9 +2265,13 @@
   padding: 0.25rem 0.5rem;
 }
 
+/* Retour de test (ANOMALIES_ACTIVES.md) : les zones "Description"/"Description du trait" (5
+   lignes environ à 6rem) restaient trop petites pour lire confortablement un texte un peu long
+   sans redimensionner manuellement à chaque fois — 10rem laisse voir nettement plus de lignes
+   par défaut (le `resize: vertical` existant reste disponible pour aller au-delà). */
 .dnd-custom-ai .item-sheet-body .form-row textarea {
   display: block;
-  min-height: 6rem;
+  min-height: 10rem;
   resize: vertical;
 }
 
@@ -2285,7 +2289,7 @@
 .dnd-custom-ai .item-sheet-body .form-row prose-mirror {
   display: flex;
   flex-direction: column;
-  min-height: 6rem;
+  min-height: 10rem;
   resize: vertical;
 }
 

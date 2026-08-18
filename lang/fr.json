@@ -186,6 +186,7 @@
       "ApplyHeal": "Appliquer {amount} PV de soin à la cible",
       "HealAlreadyApplied": "Soin déjà appliqué",
       "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
+      "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",

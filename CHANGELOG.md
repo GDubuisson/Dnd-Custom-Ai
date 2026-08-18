@@ -49,6 +49,14 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   sans défiler dans une fenêtre de fiche plus basse (visées à 830px de haut).
 
 ### Corrigé
+- **Sécurité** : un Joueur pouvait contourner le blocage PvP en se ciblant lui-même avant de
+  cliquer "Appliquer les dégâts" (même bouton, même bloc `applyDamageToTargets`). Seul le MJ
+  peut désormais s'appliquer des dégâts à soi-même (poison, chute, piège... à sa discrétion).
+- Zones "Description"/"Description du trait" des fiches d'Item : agrandies (6rem → 10rem de
+  hauteur par défaut) pour lire confortablement un texte un peu long sans redimensionner
+  manuellement à chaque fois.
+- Dernières mentions résiduelles de l'ancienne orthographe "Ashar" (glossaire en jeu,
+  documentation) corrigées en "Azhar" — les données de jeu elles-mêmes l'étaient déjà.
 - Cases de caractéristiques (grille 2 colonnes) : la case à cocher de maîtrise de sauvegarde
   (session MJ) chevauchait le reste de la case, faute de place ; cases élargies et zone
   MOD./SAUV. agrandie. Effet de bord corrigé au passage : la liste de Compétences, rétrécie

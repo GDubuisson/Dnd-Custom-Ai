@@ -193,3 +193,120 @@ describe("Permissions — accès à la fiche, session Joueur", () => {
     });
   });
 });
+
+// Retour de test (ANOMALIES_ACTIVES.md, "Sécurité/Combat") : un Joueur pouvait contourner le
+// blocage PvP en se ciblant lui-même avant de cliquer "Appliquer les dégâts" (mécanisme partagé
+// avec le blocage PvP, cf. applyDamageToTargets dans dnd-custom-ai.js) — seul le MJ peut
+// désormais s'appliquer des dégâts à soi-même (poison, chute, piège... à sa discrétion). Actor
+// dédié (magicien avec "Trait de feu", qui poste un jet de dégâts sans nécessiter d'arme
+// équipée) + un token sur la scène active pour pouvoir se cibler soi-même via game.user.targets.
+describe("Permissions — auto-dégâts (se cibler soi-même)", () => {
+  let mageId;
+  let tokenId;
+
+  before(() => {
+    cy.loginAsPlayer();
+    cy.createReadyCharacter({
+      name: "Permissions Self Damage Mage",
+      origin: "fleuraine",
+      classKey: "wizard",
+      skills: ["arcana", "history"]
+    }).then((id) => {
+      mageId = id;
+      createdActorIds.push(id);
+    });
+
+    cy.window().then((win) => {
+      const pack = win.game.packs.get("dnd-custom-ai.sorts");
+      return pack.getIndex().then(() => {
+        const entry = [...pack.index].find((candidate) => candidate.name === "Trait de feu");
+        expect(entry, "Item 'Trait de feu' introuvable dans le compendium sorts").to.exist;
+        return pack.getDocument(entry._id).then((doc) =>
+          win.game.actors.get(mageId).createEmbeddedDocuments("Item", [win.JSON.parse(win.JSON.stringify(doc.toObject()))])
+        );
+      });
+    });
+
+    cy.loginAsGM();
+    cy.window()
+      .then((win) => win.game.actors.get(mageId).getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 400, y: 400 }))))
+      .then((tokenDoc) =>
+        cy.window().then((win) =>
+          win.canvas.scene.createEmbeddedDocuments("Token", [win.JSON.parse(win.JSON.stringify(tokenDoc.toObject()))]).then((tokens) => {
+            tokenId = tokens[0].id;
+          })
+        )
+      );
+  });
+
+  after(() => {
+    cy.loginAsGM();
+    cy.window().then((win) => (tokenId ? win.canvas.scene.deleteEmbeddedDocuments("Token", [tokenId]) : null));
+  });
+
+  function rollFireBoltDamage() {
+    cy.openActorSheet(mageId);
+    cy.get('.application.character nav.tabs [data-tab="abilities"]').click();
+    cy.window().then((win) => {
+      const item = win.game.actors.get(mageId).items.find((candidate) => candidate.name === "Trait de feu");
+      expect(item, "Trait de feu introuvable sur l'Actor").to.exist;
+      cy.get(`.application.character li[data-item-id="${item.id}"] button[data-action="rollSpellDamage"]`).click();
+    });
+  }
+
+  // Cible le token (lui-même), ferme la fiche (elle recouvre le chat) et clique le bouton
+  // "Appliquer les dégâts" du DERNIER message de chat — même geste que tab-abilities.cy.js >
+  // T-ABIL-024 (soin), pour les dégâts.
+  function applyLastDamageMessage() {
+    cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
+    cy.window().then((win) => win.game.actors.get(mageId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-apply-damage-btn").click();
+  }
+
+  it("bloqué côté Joueur qui se cible lui-même (T-PERM-008)", () => {
+    cy.loginAsPlayer();
+    let hpBefore;
+    let warned = false;
+    cy.window().then((win) => {
+      hpBefore = win.game.actors.get(mageId).system.attributes.hp.value;
+      const original = win.ui.notifications.warn.bind(win.ui.notifications);
+      win.ui.notifications.warn = (message) => {
+        warned = true;
+        return original(message);
+      };
+    });
+
+    rollFireBoltDamage();
+    applyLastDamageMessage();
+
+    cy.window().should((win) => {
+      expect(warned, "avertissement SelfDamageBlocked attendu côté Joueur").to.be.true;
+      expect(win.game.actors.get(mageId).system.attributes.hp.value, "PV inchangés, auto-dégât bloqué").to.equal(hpBefore);
+    });
+  });
+
+  it("autorisé côté MJ qui se cible lui-même (T-PERM-009)", () => {
+    cy.loginAsGM();
+    let hpBefore;
+    cy.window().then((win) => {
+      hpBefore = win.game.actors.get(mageId).system.attributes.hp.value;
+    });
+
+    rollFireBoltDamage();
+    applyLastDamageMessage();
+
+    cy.window().should((win) => {
+      const amount = win.game.messages.contents.at(-1).rolls?.[0]?.total ?? 0;
+      expect(win.game.actors.get(mageId).system.attributes.hp.value, "PV baissés, auto-dégât autorisé au MJ").to.equal(
+        Math.max(0, hpBefore - amount)
+      );
+    });
+
+    // Remonte les PV au max : état propre pour un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(mageId);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
+    });
+  });
+});

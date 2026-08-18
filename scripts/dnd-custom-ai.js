@@ -747,12 +747,20 @@ async function applyDamageToTargets(amount, sourceActorId) {
     if (!hp) continue;
 
     // PvP bloqué (retour de test) : un personnage joueur ne peut pas infliger de dégâts à un
-    // autre personnage joueur (PNJ/monture non concernés, ni un personnage qui s'inflige des
-    // dégâts à lui-même — poison, chute...).
+    // autre personnage joueur (PNJ/monture non concernés).
     if (sourceActor?.type === "character" && actor.type === "character" && actor.id !== sourceActor.id) {
       ui.notifications.warn(
         game.i18n.format("DND_CUSTOM.Chat.PvpBlocked", { attacker: sourceActor.name, target: actor.name })
       );
+      continue;
+    }
+
+    // Auto-dégâts (retour de test, ANOMALIES_ACTIVES.md) : un Joueur ne peut plus s'appliquer de
+    // dégâts à lui-même en se ciblant lui-même — seul le MJ le peut désormais (poison, chute,
+    // piège... déclenchés à sa discrétion), même bouton "Appliquer les dégâts" pour les deux,
+    // seule la permission de cliquer change selon qui est connecté.
+    if (sourceActor?.type === "character" && actor.type === "character" && actor.id === sourceActor.id && !game.user.isGM) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.SelfDamageBlocked", { name: actor.name }));
       continue;
     }
 
@@ -768,10 +776,11 @@ async function applyDamageToTargets(amount, sourceActorId) {
 
     // dndCustomDamageApply : seul flux autorisé à faire BAISSER system.attributes.hp.value
     // depuis un client non-MJ (cf. preUpdateActor plus bas) — un jet de dégâts réel a déjà dû
-    // être posté en chat et un bouton cliqué explicitement, ce qui couvre le cas légitime d'un
-    // Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...), tout en fermant le
-    // vrai trou de sécurité signalé par un testeur : taper une valeur arbitraire directement
-    // dans le champ PV de l'en-tête (character-sheet.hbs, désormais `disabled` côté Joueur).
+    // être posté en chat et un bouton cliqué explicitement (ex. dégâts d'un PNJ contre le
+    // personnage du Joueur, source non "character" donc jamais concernée par le blocage PvP/
+    // auto-dégâts ci-dessus), tout en fermant le vrai trou de sécurité signalé par un testeur :
+    // taper une valeur arbitraire directement dans le champ PV de l'en-tête (character-sheet.hbs,
+    // désormais `disabled` côté Joueur).
     if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
     if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
       await checkConcentration(actor, amount);

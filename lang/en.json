@@ -186,6 +186,7 @@
       "ApplyHeal": "Apply {amount} HP of healing to target",
       "HealAlreadyApplied": "Healing already applied",
       "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
+      "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
