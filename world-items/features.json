@@ -1072,6 +1072,36 @@
     }
   },
   {
+    "name": "Voile des anciens",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Voile-des-anciens.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "ancients",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus, 1 minute : vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts. 1 utilisation par repos court ou long."
+    }
+  },
+  {
+    "name": "Traque implacable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Traque-implacable.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "vengeance",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Action bonus : désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle. 1 utilisation par repos long (simplifié : normalement lié à Sens divin, sans limite d'usage propre)."
+    }
+  },
+  {
     "name": "Proie du chasseur",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",

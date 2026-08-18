@@ -190,6 +190,26 @@
     }
   },
   {
+    "name": "Serment des Anciens",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-des-Anciens.webp",
+    "system": {
+      "classKey": "paladin",
+      "subclassKey": "ancients",
+      "description": "<p>Sous-classe de Paladin (niveau 3, SRD 5e). Le Serment des Anciens puise dans la lumière ancienne de la nature, vouée à préserver la beauté et la vie contre les ténèbres.</p><ul><li>Niveau 3 : Voile des anciens</li></ul>"
+    }
+  },
+  {
+    "name": "Serment de Vengeance",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-de-Vengeance.webp",
+    "system": {
+      "classKey": "paladin",
+      "subclassKey": "vengeance",
+      "description": "<p>Sous-classe de Paladin (niveau 3, SRD 5e). Ce Paladin a fait vœu de traquer et punir sans relâche ceux qui ont commis un mal terrible.</p><ul><li>Niveau 3 : Traque implacable</li></ul>"
+    }
+  },
+  {
     "name": "Chasseur",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chasseur.webp",
