@@ -6,7 +6,8 @@ prêtes à dupliquer/adapter pour peupler vos rencontres, sans passer par un com
 librement table par table).
 
 **Univers réaliste, sans créature magique** : ce monde n'a ni monstres ni races fantastiques
-(cf. `ClaudeFiles/PROJECT.md`, système d'Origines = cultures humaines réelles). `adversaries.json`
+(cf. `ClaudeFiles/CONCEPTION_FONCTIONNELLE.md`, système d'Origines = cultures humaines réelles).
+`adversaries.json`
 ne contient donc que des humains (brigands, gardes, nobles...) et des bêtes du monde réel (loup,
 ours, serpent...) — pas de gobelin, mort-vivant, dragon ou créature enchantée.
 

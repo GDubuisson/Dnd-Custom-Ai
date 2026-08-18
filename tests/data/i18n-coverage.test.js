@@ -9,6 +9,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { LOCALES } from "../support/i18n.js";
+import { DND_CUSTOM } from "../../scripts/helpers/config.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..", "..");
@@ -65,6 +66,28 @@ describe("Couverture i18n — toute clé DND_CUSTOM.* référencée dans le code
         if (!(key in LOCALES.fr)) missing.push(`${key} (absente de lang/fr.json)`);
       }
       assert.deepEqual(missing, [], `Clé(s) i18n manquante(s) dans ${relative} :\n  - ${missing.join("\n  - ")}`);
+    });
+  }
+});
+
+// Ce bloc n'a plus rien à scanner dans le describe ci-dessus depuis que
+// scripts/sheets/actor-sheet.js construit la clé DND_CUSTOM.Abilities.ClassFlavor.<classe>.Title/
+// Tagline dynamiquement (template string interpolée, cf. context.classFlavorTitle) : KEY_PATTERN
+// exige un littéral complet entre guillemets, donc ne peut plus la détecter — exactement le même
+// cas que Classes.*/Skills.*/Abilities.* ci-dessous. Test dédié pour ne pas perdre la couverture
+// que ce fichier avait avant la fusion des 12 partials templates/actor/abilities/*.hbs en un seul
+// class-flavor.hbs (chacune posait littéralement sa propre clé, détectée par KEY_PATTERN).
+describe("Couverture i18n — DND_CUSTOM.Abilities.ClassFlavor.<classe> (clé construite dynamiquement)", () => {
+  for (const classKey of Object.keys(DND_CUSTOM.classes)) {
+    test(`${classKey} : Title/Tagline présents dans les 2 langues, icône déclarée`, () => {
+      const missing = [];
+      for (const suffix of ["Title", "Tagline"]) {
+        const key = `DND_CUSTOM.Abilities.ClassFlavor.${classKey}.${suffix}`;
+        if (!(key in LOCALES.en)) missing.push(`${key} (absente de lang/en.json)`);
+        if (!(key in LOCALES.fr)) missing.push(`${key} (absente de lang/fr.json)`);
+      }
+      assert.deepEqual(missing, [], `Clé(s) i18n manquante(s) pour ${classKey} :\n  - ${missing.join("\n  - ")}`);
+      assert.ok(DND_CUSTOM.classFlavorIcon[classKey], `Icône manquante pour ${classKey} (DND_CUSTOM.classFlavorIcon)`);
     });
   }
 });

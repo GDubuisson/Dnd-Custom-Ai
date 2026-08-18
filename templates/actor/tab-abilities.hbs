@@ -1,4 +1,39 @@
 <section class="tab abilities {{tab.cssClass}}" data-group="primary" data-tab="abilities">
+  {{! Réorganisé pour regrouper les infos "fiche" (DD/bonus, langues, trait d'Origine) avant
+      l'identité de classe et la liste Capacités/Sorts elle-même — cf. images_test/img_7.png. }}
+  <div class="abilities-top-row">
+    {{#if isSpellcaster}}
+    <div class="spellcasting-stats">
+      <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
+      <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
+    </div>
+    {{/if}}
+
+    <div class="journal-block languages-block">
+      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
+      <ul class="languages-list">
+        {{#each languages}}
+        <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" title="{{htmlSnippet this.system.description}}">
+          <a class="item-name-link" data-action="viewItem">{{this.name}}</a>
+          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </li>
+        {{else}}
+        <li class="empty-slot">{{localize "DND_CUSTOM.Journal.NoLanguages"}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+
+  {{#if originTrait}}
+  <div class="origin-trait-panel">
+    <strong>{{originTrait.name}}</strong>
+    <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
+    <p>{{originTrait.description}}</p>
+  </div>
+  {{/if}}
+
   <h2 class="tab-title">
     <i class="fa-solid fa-book-sparkles"></i>
     {{#if isSpellcaster}}
@@ -11,11 +46,6 @@
   {{#if classTabPartial}}{{> (lookup this "classTabPartial") }}{{/if}}
 
   {{#if isSpellcaster}}
-  <div class="spellcasting-stats">
-    <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
-    <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
-  </div>
-
   {{#if spellUses.max}}
   <div class="spell-slots-row">
     <label class="spell-slot-chip" title="{{localize 'DND_CUSTOM.Abilities.SpellUsesTooltip'}}">
@@ -33,31 +63,6 @@
     <button type="button" data-action="dropConcentration">{{localize "DND_CUSTOM.Abilities.DropConcentration"}}</button>
   </div>
   {{/if}}
-  {{/if}}
-
-  <div class="journal-block languages-block">
-    <h3 class="section-subtitle">{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
-    <ul class="languages-list">
-      {{#each languages}}
-      <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" title="{{htmlSnippet this.system.description}}">
-        <a class="item-name-link" data-action="viewItem">{{this.name}}</a>
-        <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </li>
-      {{else}}
-      <li class="empty-slot">{{localize "DND_CUSTOM.Journal.NoLanguages"}}</li>
-      {{/each}}
-    </ul>
-    <p class="drop-hint">{{localize "DND_CUSTOM.Journal.LanguagesDropHint"}}</p>
-  </div>
-
-  {{#if originTrait}}
-  <div class="origin-trait-panel">
-    <strong>{{originTrait.name}}</strong>
-    <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
-    <p>{{originTrait.description}}</p>
-  </div>
   {{/if}}
 
   <div class="abilities-tab-columns">

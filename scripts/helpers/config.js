@@ -49,6 +49,24 @@ DND_CUSTOM.classes = {
 /** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
 DND_CUSTOM.spellcastingClasses = ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"];
 
+/** Icône FontAwesome (classe `fa-solid`) de l'en-tête d'ambiance de classe affiché en haut de
+ *  l'onglet Capacités/Sorts (cf. templates/actor/abilities/class-flavor.hbs, context.classFlavorIcon
+ *  dans actor-sheet.js). Purement décoratif, une entrée par classe jouable. */
+DND_CUSTOM.classFlavorIcon = {
+  barbarian: "fa-fire",
+  bard: "fa-music",
+  cleric: "fa-sun",
+  druid: "fa-paw",
+  fighter: "fa-shield-halved",
+  monk: "fa-hand-fist",
+  paladin: "fa-cross",
+  ranger: "fa-crosshairs",
+  rogue: "fa-mask",
+  sorcerer: "fa-wand-magic-sparkles",
+  warlock: "fa-skull",
+  wizard: "fa-hat-wizard"
+};
+
 /** Sous-classes SRD 5e disponibles par classe (clé classe -> clé sous-classe -> clé de
  *  localisation), une par classe pour l'instant (première option SRD listée pour chacune) —
  *  d'autres pourront s'ajouter au même niveau d'imbrication sans changement de structure.

@@ -5,105 +5,128 @@
     <input type="text" class="actor-name" name="name" value="{{actor.name}}"
            placeholder="{{localize 'DND_CUSTOM.Actor.Name'}}">
 
-    <div class="header-row">
-      <label>{{localize "DND_CUSTOM.Actor.Level"}}
-        <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
-      </label>
-      <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
-        <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>
-      </span>
-      {{#if levelUpAvailable}}
-      <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
-        <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
-        <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
-      </span>
-      {{/if}}
-      {{#if isGM}}
-      <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
-        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
-        <span class="fixed-field-value">
-          {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
-        </span>
+    {{! 3 groupes colonne (progression/classe/origine), chacun 2 lignes empilées — cf.
+        images_test/img_6.png. `.header-stats` (flex-wrap) reflue les colonnes sur plusieurs
+        lignes plutôt que de les comprimer : jamais de chevauchement, quelle que soit la largeur
+        de la fenêtre (cf. min-width posé sur la fiche elle-même, dnd-custom-ai.css). }}
+    <div class="header-stats">
+      <div class="header-stat-col header-stat-col-progression">
+        <div class="header-row">
+          <label>{{localize "DND_CUSTOM.Actor.Level"}}
+            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
+          </label>
+          <div class="xp-field">
+            {{#if isGM}}
+            <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
+              <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
+              <span class="fixed-field-value">
+                {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
+              </span>
+            </div>
+            {{/if}}
+            <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
+              <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>
+            </span>
+          </div>
+        </div>
+        <div class="header-row">
+          <label class="hp-field" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">{{localize "DND_CUSTOM.Actor.HP"}}
+            <span class="hp-values">
+              <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}" {{#unless isGM}}disabled{{/unless}}>
+              / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
+              <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
+            </span>
+            <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
+          </label>
+        </div>
       </div>
-      {{/if}}
-      <div class="fixed-field">
-        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
-        {{#if classLabel}}
-        <button type="button" class="fixed-field-value roll-btn" data-action="openClassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{classLabel}}</button>
-        {{else}}
-        <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
-        {{/if}}
-      </div>
-      {{#if subclassAvailable}}
-      <div class="fixed-field">
-        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
-        {{#if subclassLabel}}
-          {{#if isGM}}
-          {{! Retour de test (lot 3) : la liste déroulante reste réservée au MJ une fois la
-              sous-classe déjà choisie (correction possible à tout moment), cf. le champ texte
-              simple ci-dessous côté Joueur. }}
-          <select name="system.subclass">
-            <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
-            {{#each subclassOptions}}
-            <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
-            {{/each}}
-          </select>
-          {{else}}
-          {{! Côté Joueur, une fois choisie : champ classique (texte), pas une liste déroulante
-              désactivée qui reste visuellement trompeuse (a l'air cliquable) — même pattern que
-              le champ Classe ci-dessus. }}
-          <span class="fixed-field-value">{{subclassLabel}}</span>
-          {{/if}}
-          <button type="button" class="roll-btn" data-action="openSubclassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
-            <i class="fa-solid fa-book"></i>
-          </button>
-        {{else}}
-        {{! Pas encore choisie : liste déroulante fonctionnelle pour tout propriétaire (MJ ou
-            Joueur) — secours du choix normalement fait via la boîte de dialogue de montée de
-            niveau, cf. #onLevelUp/actor-sheet.js et T-LVL-008. }}
-        <select name="system.subclass">
-          <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
-          {{#each subclassOptions}}
-          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
-          {{/each}}
-        </select>
-        {{/if}}
-      </div>
-      {{else if subclassLevelHint}}
-      <div class="fixed-field">
-        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
-        <span class="fixed-field-value empty">{{subclassLevelHint}}</span>
-      </div>
-      {{/if}}
-      <div class="fixed-field">
-        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
-        {{#if originLabel}}
-        <button type="button" class="fixed-field-value roll-btn" data-action="openOriginSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{originLabel}}</button>
-        {{else}}
-        <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoOrigin"}}</span>
-        {{/if}}
-      </div>
-    </div>
 
-    <div class="header-row">
-      <label class="hp-field" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">{{localize "DND_CUSTOM.Actor.HP"}}
-        <span class="hp-values">
-          <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}" {{#unless isGM}}disabled{{/unless}}>
-          / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
-          <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
-        </span>
-        <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
-      </label>
-      <label title="{{localize 'DND_CUSTOM.Actor.ACTooltip'}}">{{localize "DND_CUSTOM.Actor.AC"}}
-        <span class="computed-value">{{system.attributes.ac.value}}</span>
-      </label>
-      <label title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">{{localize "DND_CUSTOM.Actor.Speed"}}
-        <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
-      </label>
-      <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
-              title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
-        <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}
-      </button>
+      <div class="header-stat-col header-stat-col-class">
+        <div class="header-row">
+          <div class="fixed-field">
+            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
+            {{#if classLabel}}
+            <button type="button" class="fixed-field-value roll-btn" data-action="openClassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{classLabel}}</button>
+            {{else}}
+            <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
+            {{/if}}
+          </div>
+          {{#if subclassAvailable}}
+          <div class="fixed-field">
+            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+            {{#if subclassLabel}}
+              {{#if isGM}}
+              {{! Retour de test (lot 3) : la liste déroulante reste réservée au MJ une fois la
+                  sous-classe déjà choisie (correction possible à tout moment), cf. le champ texte
+                  simple ci-dessous côté Joueur. }}
+              <select name="system.subclass">
+                <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
+                {{#each subclassOptions}}
+                <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+                {{/each}}
+              </select>
+              {{else}}
+              {{! Côté Joueur, une fois choisie : champ classique (texte), pas une liste déroulante
+                  désactivée qui reste visuellement trompeuse (a l'air cliquable) — même pattern que
+                  le champ Classe ci-dessus. }}
+              <span class="fixed-field-value">{{subclassLabel}}</span>
+              {{/if}}
+              <button type="button" class="roll-btn" data-action="openSubclassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
+                <i class="fa-solid fa-book"></i>
+              </button>
+            {{else}}
+            {{! Pas encore choisie : liste déroulante fonctionnelle pour tout propriétaire (MJ ou
+                Joueur) — secours du choix normalement fait via la boîte de dialogue de montée de
+                niveau, cf. #onLevelUp/actor-sheet.js et T-LVL-008. }}
+            <select name="system.subclass">
+              <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
+              {{#each subclassOptions}}
+              <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+              {{/each}}
+            </select>
+            {{/if}}
+          </div>
+          {{else if subclassLevelHint}}
+          <div class="fixed-field">
+            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+            <span class="fixed-field-value empty">{{subclassLevelHint}}</span>
+          </div>
+          {{/if}}
+        </div>
+        <div class="header-row">
+          <label title="{{localize 'DND_CUSTOM.Actor.ACTooltip'}}">{{localize "DND_CUSTOM.Actor.AC"}}
+            <span class="computed-value">{{system.attributes.ac.value}}</span>
+          </label>
+          <label title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">{{localize "DND_CUSTOM.Actor.Speed"}}
+            <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="header-stat-col header-stat-col-origin">
+        <div class="header-row">
+          <div class="fixed-field">
+            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
+            {{#if originLabel}}
+            <button type="button" class="fixed-field-value roll-btn" data-action="openOriginSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{originLabel}}</button>
+            {{else}}
+            <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoOrigin"}}</span>
+            {{/if}}
+          </div>
+        </div>
+        <div class="header-row">
+          {{#if levelUpAvailable}}
+          <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
+            <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
+            <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
+          </span>
+          {{/if}}
+          <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
+                  title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
+            <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}
+          </button>
+        </div>
+      </div>
     </div>
 
     {{#if activeConditions.length}}

@@ -20,6 +20,30 @@ auto à la CA de la cible, XP plein pour chaque participant), barre d'XP et éta
 visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mirror>` à la
 place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
 
+### Modifié
+- Refactor de simplification (aucun changement de comportement) : suppression d'une règle CSS
+  jamais utilisée, et fusion des 12 partials d'ambiance de classe de l'onglet Capacités/Sorts
+  (`templates/actor/abilities/*.hbs`) en un seul, l'icône/le titre/l'accroche de chaque classe
+  étant désormais résolus depuis `scripts/helpers/config.js`/`actor-sheet.js` plutôt que codés
+  en dur dans 12 fichiers quasi identiques.
+- En-tête d'ambiance de classe (`class-flavor.hbs`) redessiné dans l'esprit "cire à cacheter" du
+  thème "Auberge et Grand Chemin" : icône dans un médaillon de cire, teinté par classe (rouille
+  pour le Barbare, mousse pour le Druide, arcane pour le Magicien, etc.), sur un bandeau
+  parcheminé — toujours le même partial unique, seule la couleur du sceau varie désormais par
+  classe (`data-class`, cf. `context.classFlavorKey`).
+- En-tête principal de la fiche personnage : réorganisé en 3 groupes de statistiques (Niveau/XP
+  + Points de vie, Classe/Sous-classe + CA/Vitesse, Origine + Réaction), chacun sur 2 lignes
+  empilées, qui reflouent proprement sur plusieurs lignes selon la largeur de la fenêtre plutôt
+  que de se chevaucher ; XP (MJ) déplacé au-dessus de la barre de progression plutôt qu'à côté.
+  Largeur minimale ajoutée à la fiche (640px de plancher, aucune largeur n'était imposée
+  auparavant ; toujours aucun maximum) pour garantir que cette mise en page reste lisible en
+  toute circonstance.
+- Onglet Capacités/Sorts : réorganisé (DD de sauvegarde/bonus d'attaque et langues connues sur
+  la même ligne, trait d'Origine puis identité de classe avant la liste elle-même, "Sorts par
+  repos" en séparateur centré) ; phrase d'indication de glisser-déposer sous les langues
+  retirée (redondante avec le glisser-déposer lui-même) ; langues classées par ordre d'ajout,
+  Commune toujours en tête, plutôt que par ordre alphabétique.
+
 ### Corrigé
 - Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de
   Classe — ce système n'expose jamais ce concept au joueur (PV max calculés automatiquement,

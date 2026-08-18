@@ -5,7 +5,7 @@ qu'un document y est ajouté depuis l'interface (glisser un Item de type `subcla
 monde vers ce compendium, ou "Créer un objet" directement dedans).
 
 Chaque sous-classe est un Item de type `subclass`, édité via la même fiche que Classe
-(`templates/item/class-sheet.hbs`, nom + description libre) — cf. `ClaudeFiles/ITEMS.md`.
+(`templates/item/class-sheet.hbs`, nom + description libre) — cf. `ClaudeFiles/CONCEPTION_FONCTIONNELLE.md`.
 Comme pour Classe, la donnée mécanique réelle (niveau d'obtention, Capacités octroyées) ne vit
 pas sur cet Item mais dans `DND_CUSTOM.subclasses`/`DND_CUSTOM.subclassLevel`
 (`scripts/helpers/config.js`).

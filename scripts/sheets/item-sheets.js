@@ -8,7 +8,7 @@ const { ItemSheetV2 } = foundry.applications.sheets;
 const SYSTEM_ID = "dnd-custom-ai";
 
 /** Base commune aux 8 fiches d'Item du système : un template Handlebars dédié par type
- *  (cf. ClaudeFiles/ITEMS.md), contexte partagé (item/system/config) préparé ici. */
+ *  (cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md), contexte partagé (item/system/config) préparé ici. */
 class DndCustomItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "item"],

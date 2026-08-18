@@ -1,6 +1,6 @@
 // Test E2E "au réel" : vérifie que le système dnd-custom-ai se charge correctement dans une
-// vraie instance Foundry VTT (lancée via docker-compose.yml, cf. ClaudeFiles/testing/
-// SETUP_TESTING.md). Complète tests/ (unitaire/data/dom/visuel, isolé de Foundry) sans le
+// vraie instance Foundry VTT (lancée via docker-compose.yml, cf. tests/README.md). Complète
+// tests/ (unitaire/data/dom/visuel, isolé de Foundry) sans le
 // remplacer : c'est la seule couche qui touche le vrai client Foundry.
 //
 // Prérequis manuel avant de lancer ce test : un monde nommé "Test World" (cf.

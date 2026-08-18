@@ -10,7 +10,7 @@ const SYSTEM_ID = "dnd-custom-ai";
 // packs/dons, packs/langues, cf. system.json > packs), qui
 // reste vide sinon — Foundry ne compile ces packs qu'à partir de documents ajoutés depuis
 // l'interface, et ce système n'a pas d'étape de build pour les préremplir autrement (cf.
-// PROJECT.md > pas de build). Les compendiums n'ont pas cette notion de dossier ici (pas
+// ClaudeFiles/CONCEPTION_TECHNIQUE.md > pas de build). Les compendiums n'ont pas cette notion de dossier ici (pas
 // demandé, et une seule catégorie par compendium de toute façon).
 const WORLD_ITEM_FILES = [
   {

@@ -211,13 +211,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
     // En-tête spécialisé de l'onglet Capacités/Sorts (habillage seulement — titre/icône/
-    // accroche propres à la classe, cf. templates/actor/abilities/*.hbs) : partial Handlebars
-    // résolue dynamiquement via {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs.
-    // Préchargée/enregistrée au hook "init" (cf. dnd-custom-ai.js > loadTemplates). Repli sur
-    // "default" tant qu'aucune classe valide n'est choisie (ex. assistant de création en cours).
-    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/${
-      DND_CUSTOM.classes[system.class] ? system.class : "default"
-    }.hbs`;
+    // accroche propres à la classe) : partial Handlebars unique
+    // (templates/actor/abilities/class-flavor.hbs), résolue via
+    // {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs, préchargée/enregistrée au
+    // hook "init" (cf. dnd-custom-ai.js > loadTemplates). Le partial n'affiche rien tant que
+    // classFlavorTitle n'est pas posé (aucune classe valide choisie, ex. assistant de création
+    // en cours).
+    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`;
+    if (DND_CUSTOM.classes[system.class]) {
+      context.classFlavorKey = system.class;
+      context.classFlavorIcon = DND_CUSTOM.classFlavorIcon[system.class];
+      context.classFlavorTitle = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Title`);
+      context.classFlavorTagline = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Tagline`);
+    }
 
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
@@ -382,10 +388,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     }
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
-    // ajoutées à la main (glisser depuis le compendium Langues).
+    // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
+    // l'ordre d'ajout (pas alphabétique), Commune forcée en tête quel que soit cet ordre — clé
+    // stable `system.category === "common"` comparée, jamais le nom localisé (cf. convention
+    // "clés stables" du projet). `items` reflète déjà l'ordre d'ajout (EmbeddedCollection en
+    // ordre de création) ; `Array#sort` est stable depuis ES2019 (V8/Electron), donc cette seule
+    // comparaison ne réordonne QUE Commune, laissant les autres langues dans leur ordre d'origine.
     context.languages = items
       .filter((item) => item.type === "language")
-      .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
+      .sort((a, b) => (a.system.category === "common" ? -1 : b.system.category === "common" ? 1 : 0));
     // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; pool unique de
     // charges (système simplifié, cf. CharacterData#prepareDerivedData et rules.js >
     // spellUsesForClass) plutôt qu'un emplacement par niveau.

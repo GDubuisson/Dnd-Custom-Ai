@@ -1,6 +1,6 @@
 /** Enregistre les helpers Handlebars du système. Poids toujours stockés en kg (cf.
- *  ClaudeFiles/ITEMS.md > convention d'unités) ; affichage en grammes en dessous de 0,1 kg,
- *  purement cosmétique côté template. */
+ *  ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item) ; affichage en grammes en dessous de
+ *  0,1 kg, purement cosmétique côté template. */
 export function registerHandlebarsHelpers() {
   Handlebars.registerHelper("formatWeight", (kg) => {
     // Arrondi à 2 décimales avant affichage : la somme flottante (quantité x poids sur

@@ -1,5 +1,5 @@
 // Configuration Cypress pour les tests E2E "au réel" contre une instance Foundry VTT lancée
-// via Docker (cf. docker-compose.yml + ClaudeFiles/testing/SETUP_TESTING.md). Complète la
+// via Docker (cf. docker-compose.yml + tests/README.md). Complète la
 // suite tests/ (unitaire/data/dom/visuel, cf. tests/README.md) sans la remplacer : ici on
 // teste le vrai client Foundry, pas des fixtures isolées.
 // `package.json` déclare "type": "module" (cf. tests/run.js) : ce fichier doit rester en

@@ -1,8 +1,11 @@
 # CLAUDE.md
 
-Ce projet est documenté en détail dans `PROJECT.md` dans le dossier 'ClaudeFiles/'.
-**Lis systématiquement ce fichier avant toute intervention** : il définit le scope,
-les bornes techniques, le mapping des Origines, et les conventions de code du projet.
+Ce projet est documenté en détail dans `ClaudeFiles/CONCEPTION_TECHNIQUE.md` (architecture,
+stack, conventions de code, pièges connus) et `ClaudeFiles/CONCEPTION_FONCTIONNELLE.md` (scope,
+mapping des Origines, spécification de la feuille de personnage, contenu de classes).
+**Lire systématiquement ces deux fichiers avant toute intervention.** Les anomalies connues et
+non encore corrigées sont recensées dans `ClaudeFiles/ANOMALIES_ACTIVES.md` — à consulter avant
+de traiter un nouveau retour testeur (peut déjà être un point connu).
 
 ## Rappels critiques
 - Respecter absolument l'API Foundry VTT v14 (https://foundryvtt.com/api/)

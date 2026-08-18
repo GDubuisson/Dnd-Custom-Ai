@@ -825,18 +825,19 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
     goToTab("abilities");
   });
 
-  it("liste Commune + la langue d'Origine, triées alphabétiquement (T-ABIL-022)", () => {
+  it("liste Commune en premier, puis la langue d'Origine (T-ABIL-022)", () => {
     sheetRoot()
       .find(".languages-list .language-chip .item-name-link")
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
-        // Origine "fleuraine" -> langue "Fleurain" ; "Commune" < "Fleurain" quelle que soit la
-        // locale active du monde de test (E avant F), cf. tab-journal.cy.js d'origine.
+        // Retour de test : ordre d'ajout (pas alphabétique), Commune forcée en tête quel que
+        // soit cet ordre (cf. actor-sheet.js > context.languages). Origine "fleuraine" -> langue
+        // "Fleurain".
         expect(names).to.deep.equal(["Commune", "Fleurain"]);
       });
   });
 
-  it("glisser un Item langue depuis le compendium Langues l'ajoute à la liste (T-ABIL-023)", () => {
+  it("glisser un Item langue depuis le compendium Langues l'ajoute à la liste, à la fin (T-ABIL-023)", () => {
     let sourceUuid;
 
     cy.window()
@@ -856,7 +857,11 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       .find(".languages-list .language-chip .item-name-link")
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
-        expect(names).to.include("Argot des rues");
+        // Ajoutée en dernier dans la liste (ordre d'ajout, cf. T-ABIL-022) : "Argot des rues"
+        // sortirait AVANT "Commune"/"Fleurain" sous un tri alphabétique (A < C < F) — la
+        // retrouver en dernière position prouve que le tri est bien par ordre d'ajout, pas
+        // alphabétique.
+        expect(names).to.deep.equal(["Commune", "Fleurain", "Argot des rues"]);
       });
 
     cy.window().then((win) => {

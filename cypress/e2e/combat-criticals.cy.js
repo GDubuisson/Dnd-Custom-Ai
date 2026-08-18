@@ -1,6 +1,6 @@
 // Coups et échecs critiques sur 1/20 naturel (retour de test explicite, 2026-08-16, cf.
-// ClaudeFiles/PLAN_CRITIQUES.md) — UNIQUEMENT pendant un combat actif (`rollCheck` >
-// `criticalRules`, scripts/helpers/rolls.js), sur les jets d'attaque (arme/sort) et de
+// ClaudeFiles/CONCEPTION_TECHNIQUE.md section "Jets de dés") — UNIQUEMENT pendant un combat
+// actif (`rollCheck` > `criticalRules`, scripts/helpers/rolls.js), sur les jets d'attaque (arme/sort) et de
 // sauvegarde. Pas de section dédiée dans tests/E2E_TEST_PLAN.md au moment de l'écriture (plan
 // déjà "chantier terminé" avant ce retour) — IDs T-CRIT-001 et suivants, à ajouter au plan si
 // une future relecture globale a lieu.

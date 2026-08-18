@@ -65,6 +65,16 @@
   box-shadow: inset 0 0 70px rgba(43, 32, 17, 0.22);
 }
 
+/* Largeur plancher de la fiche de personnage (pas de plafond : librement agrandissable) — sous
+   ce seuil, l'en-tête (3 groupes de statistiques, cf. .header-stats plus bas) n'aurait plus la
+   place de reflouer sans tronquer son contenu. Foundry lit `computedStyle.minWidth` de cet
+   élément lui-même pour borner le redimensionnement (ApplicationV2#_onResizeMouseMove), donc ce
+   seul `min-width` suffit à empêcher physiquement de descendre en dessous, sans dépendre du CSS
+   interne de l'en-tête pour éviter un chevauchement. */
+.dnd-custom-ai.sheet.actor.character {
+  min-width: 640px;
+}
+
 /* En-tête et barre d'onglets restent fixes ; seul le contenu de l'onglet actif défile. */
 .dnd-custom-ai .sheet-header,
 .dnd-custom-ai nav.tabs,
@@ -144,11 +154,42 @@
   opacity: 0.75;
 }
 
+/* 3 groupes de statistiques (progression, classe, origine), cf. images_test/img_6.png et
+   character-sheet.hbs > .header-stat-col. `flex-wrap` reflue les groupes entiers sur une
+   nouvelle ligne en dessous d'une certaine largeur plutôt que de comprimer leur contenu :
+   jamais de chevauchement, quelle que soit la largeur de fenêtre au-dessus du plancher
+   min-width posé sur .dnd-custom-ai.sheet.actor.character. */
+.dnd-custom-ai .header-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.6rem 1.75rem;
+  width: 100%;
+}
+
+.dnd-custom-ai .header-stat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1 1 170px;
+  min-width: 150px;
+}
+
+/* Colonne Origine/Réaction : contenu plus court, n'a pas besoin de s'étirer autant que les deux
+   premières colonnes (progression/classe) quand la fiche s'élargit. */
+.dnd-custom-ai .header-stat-col-origin {
+  flex: 0 1 170px;
+}
+
 .dnd-custom-ai .header-row {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   width: 100%;
+}
+
+.dnd-custom-ai .header-stat-col .header-row {
+  gap: 0.6rem;
 }
 
 .dnd-custom-ai .header-row label {
@@ -332,13 +373,27 @@
   background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
 }
 
+/* Regroupe le libellé/chiffres MJ (.xp-gm-field, si MJ) au-dessus de la barre de XP plutôt que
+   côte à côte — retour de test, cf. images_test. */
+.dnd-custom-ai .xp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1 1 0;
+  min-width: 6rem;
+}
+
+.dnd-custom-ai .xp-field .xp-gm-field {
+  gap: 0;
+}
+
 /* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
    révèle que la progression relative vers le niveau suivant, jamais un chiffre — le total et
    les seuils exacts restent réservés au bloc MJ (.xp-gm-field). */
 .dnd-custom-ai .xp-bar {
   display: inline-flex;
   align-items: center;
-  width: 6rem;
+  width: 100%;
 }
 
 .dnd-custom-ai .xp-bar-track {
@@ -912,8 +967,29 @@
   margin: 0;
 }
 
-.dnd-custom-ai .spellcasting-stats {
+/* DD de sauvegarde/bonus d'attaque (gauche) et langues connues (droite) sur la même ligne, cf.
+   images_test/img_7.png — `.spellcasting-stats` est absent pour une classe non lanceuse de
+   sorts, auquel cas `.languages-block` reste seul sur la ligne (flex-start naturel, pas besoin
+   de cas particulier). `flex-wrap` fait passer les langues sous les DD/bonus dès que la fiche
+   est trop étroite pour les deux côte à côte, sans jamais les chevaucher. */
+.dnd-custom-ai .abilities-top-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem 1.5rem;
   margin: 0 0 0.9rem;
+}
+
+.dnd-custom-ai .abilities-top-row .spellcasting-stats {
+  margin: 0;
+  flex: 0 1 auto;
+}
+
+.dnd-custom-ai .abilities-top-row .languages-block {
+  margin: 0;
+  flex: 1 1 260px;
+  min-width: 220px;
 }
 
 .dnd-custom-ai .derived-stats span,
@@ -1371,13 +1447,6 @@
   color: var(--dca-muted-text);
 }
 
-.dnd-custom-ai .item-stats-inline {
-  font-family: var(--dca-font-label);
-  font-size: 0.72rem;
-  font-style: normal;
-  color: var(--dca-muted-text);
-}
-
 /* ---------- Inventaire ---------- */
 
 .dnd-custom-ai .inventory-table {
@@ -1646,38 +1715,90 @@
 }
 
 /* En-tête d'identité de classe, en haut de l'onglet Capacités/Sorts (cf.
-   templates/actor/abilities/<classe>.hbs) : icône + titre thématique + phrase d'ambiance. */
+   templates/actor/abilities/class-flavor.hbs, partial unique pour les 12 classes) : sceau de
+   cire + titre thématique + phrase d'ambiance, sur un bandeau parcheminé assorti au thème
+   "Auberge et Grand Chemin". Le `data-class` (context.classFlavorKey, actor-sheet.js) ne sert
+   qu'à teinter le sceau ci-dessous — aucune autre différence de structure entre classes. */
 .dnd-custom-ai .class-flavor-header {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.85rem;
   margin: 0 0 0.9rem;
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.3rem;
-  background: var(--dca-surface-container);
-  border-left: 3px solid var(--dca-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.35rem;
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.12) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.75), rgba(221, 201, 148, 0.75)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 200px 200px;
+  border: 1px solid var(--dca-outline-variant);
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 3px rgba(43, 32, 17, 0.2);
 }
 
-.dnd-custom-ai .class-flavor-header i {
-  font-size: 1.3rem;
-  color: var(--dca-primary);
+/* Médaillon "cire à cacheter" : --seal-color par défaut sur --dca-primary, redéfini par classe
+   juste en dessous. Relief simulé sans image (dégradé + ombres internes) pour rester cohérent
+   avec le reste du thème (aucun asset supplémentaire). */
+.dnd-custom-ai .class-flavor-seal {
+  --seal-color: var(--dca-primary);
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background-color: var(--seal-color);
+  background-image: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.4), transparent 60%);
+  box-shadow:
+    inset 0 -3px 4px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(43, 32, 17, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
+
+.dnd-custom-ai .class-flavor-seal i {
+  font-size: 1.1rem;
+  color: var(--dca-secondary-fixed);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Teintes de cire par classe — purement décoratives (archétype de la classe : feu, nature,
+   arcane, ombre...), volontairement désaturées pour rester dans la palette bois/parchemin du
+   thème plutôt que de jurer avec elle. Couverture vérifiée par tests/data/i18n-coverage.test.js
+   (une entrée DND_CUSTOM.classFlavorIcon par classe jouable) : ajouter une règle ici pour toute
+   nouvelle classe ajoutée à ce map. */
+.dnd-custom-ai .class-flavor-header[data-class="barbarian"] .class-flavor-seal { --seal-color: #9c3b1e; }
+.dnd-custom-ai .class-flavor-header[data-class="bard"] .class-flavor-seal { --seal-color: #7d4a86; }
+.dnd-custom-ai .class-flavor-header[data-class="cleric"] .class-flavor-seal { --seal-color: #b8862c; }
+.dnd-custom-ai .class-flavor-header[data-class="druid"] .class-flavor-seal { --seal-color: #4f6b39; }
+.dnd-custom-ai .class-flavor-header[data-class="fighter"] .class-flavor-seal { --seal-color: #55606e; }
+.dnd-custom-ai .class-flavor-header[data-class="monk"] .class-flavor-seal { --seal-color: #a3752e; }
+.dnd-custom-ai .class-flavor-header[data-class="paladin"] .class-flavor-seal { --seal-color: #c2a23a; }
+.dnd-custom-ai .class-flavor-header[data-class="ranger"] .class-flavor-seal { --seal-color: #2f6b52; }
+.dnd-custom-ai .class-flavor-header[data-class="rogue"] .class-flavor-seal { --seal-color: #3d3a45; }
+.dnd-custom-ai .class-flavor-header[data-class="sorcerer"] .class-flavor-seal { --seal-color: #8f2f5e; }
+.dnd-custom-ai .class-flavor-header[data-class="warlock"] .class-flavor-seal { --seal-color: #4a2f6b; }
+.dnd-custom-ai .class-flavor-header[data-class="wizard"] .class-flavor-seal { --seal-color: #2f4f70; }
 
 .dnd-custom-ai .class-flavor-text {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
+  min-width: 0;
 }
 
 .dnd-custom-ai .class-flavor-title {
   font-family: var(--dca-font-headline);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--dca-primary);
 }
 
 .dnd-custom-ai .class-flavor-tagline {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-style: italic;
+  line-height: 1.35;
   color: var(--dca-on-surface-variant);
 }
 
@@ -1713,11 +1834,26 @@
 
 /* ---------- Sorts ---------- */
 
+/* Séparateur centré entre l'en-tête de classe et la liste Capacités/Sorts, cf.
+   images_test/img_7.png — un seul chip ("Sorts par repos") pour l'instant, mais le sélecteur
+   reste un flex row générique (::before/::after) pour rester correct si un jour plusieurs
+   chips s'y ajoutent. */
 .dnd-custom-ai .spell-slots-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.6rem;
   margin: 0 0 0.9rem;
+}
+
+.dnd-custom-ai .spell-slots-row::before,
+.dnd-custom-ai .spell-slots-row::after {
+  content: "";
+  flex: 1 1 2rem;
+  min-width: 1.5rem;
+  height: 1px;
+  background: var(--dca-outline-variant);
 }
 
 .dnd-custom-ai .spell-slot-chip {
@@ -1993,8 +2129,9 @@
 }
 
 /* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,
-   moyen de transport) : une fiche Handlebars dédiée par type (cf. ClaudeFiles/ITEMS.md),
-   mais un habillage commun simple et cohérent avec le thème "Auberge et Grand Chemin". ---------- */
+   moyen de transport) : une fiche Handlebars dédiée par type (cf.
+   ClaudeFiles/CONCEPTION_FONCTIONNELLE.md), mais un habillage commun simple et cohérent avec
+   le thème "Auberge et Grand Chemin". ---------- */
 
 .dnd-custom-ai.sheet.item {
   display: flex;

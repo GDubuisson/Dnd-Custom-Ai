@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 import { renderTemplate } from "../support/handlebars-env.js";
 import { DND_CUSTOM } from "../../scripts/helpers/config.js";
+import { LOCALES } from "../support/i18n.js";
 
 function parse(html) {
   return new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
@@ -575,8 +576,10 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
   });
 });
 
-describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/*.hbs)", () => {
-  function render(classTabPartial) {
+describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/class-flavor.hbs)", () => {
+  const CLASS_FLAVOR_PARTIAL = "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs";
+
+  function render(extra = {}) {
     return parse(
       renderTemplate("actor/tab-abilities.hbs", {
         tab: {},
@@ -584,31 +587,44 @@ describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/acto
         concentratingOn: "",
         originTrait: null,
         features: [],
-        classTabPartial
+        ...extra
       })
     );
   }
 
-  test("chacune des 12 classes a sa propre partial, résolue sans erreur Handlebars", () => {
+  test("chacune des 12 classes affiche son icône/titre/accroche propres, résolus sans erreur Handlebars", () => {
     for (const key of [
       "barbarian", "bard", "cleric", "druid", "fighter", "monk",
       "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"
     ]) {
-      const doc = render(`systems/dnd-custom-ai/templates/actor/abilities/${key}.hbs`);
+      // Reproduit exactement ce que pose actor-sheet.js pour une classe valide (cf.
+      // context.classFlavorIcon/Title/Tagline) plutôt que de dupliquer les valeurs attendues à
+      // la main : une régression sur la map DND_CUSTOM.classFlavorIcon ou sur les clés i18n se
+      // reflète alors identiquement des deux côtés (le calcul, pas juste sa non-vacuité).
+      const doc = render({
+        classTabPartial: CLASS_FLAVOR_PARTIAL,
+        classFlavorIcon: DND_CUSTOM.classFlavorIcon[key],
+        classFlavorTitle: LOCALES.fr[`DND_CUSTOM.Abilities.ClassFlavor.${key}.Title`],
+        classFlavorTagline: LOCALES.fr[`DND_CUSTOM.Abilities.ClassFlavor.${key}.Tagline`]
+      });
       const header = doc.querySelector(".class-flavor-header");
       assert.ok(header, `en-tête de classe manquant pour ${key}`);
+      assert.ok(
+        header.querySelector("i").classList.contains(DND_CUSTOM.classFlavorIcon[key]),
+        `icône incorrecte pour ${key}`
+      );
       assert.ok(header.querySelector(".class-flavor-title").textContent.trim(), `titre vide pour ${key}`);
       assert.ok(header.querySelector(".class-flavor-tagline").textContent.trim(), `accroche vide pour ${key}`);
     }
   });
 
-  test("partial 'default' (pas de classe assignée) : pas d'en-tête de classe, pas d'erreur", () => {
-    const doc = render("systems/dnd-custom-ai/templates/actor/abilities/default.hbs");
+  test("classe invalide/absente (classFlavorTitle non posé, cf. actor-sheet.js) : pas d'en-tête, pas d'erreur", () => {
+    const doc = render({ classTabPartial: CLASS_FLAVOR_PARTIAL });
     assert.equal(doc.querySelector(".class-flavor-header"), null);
   });
 
   test("classTabPartial absent du contexte (anciens appelants) : rendu inchangé, pas d'erreur", () => {
-    const doc = render(undefined);
+    const doc = render();
     assert.equal(doc.querySelector(".class-flavor-header"), null);
   });
 });
