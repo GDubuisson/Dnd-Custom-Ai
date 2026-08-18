@@ -728,12 +728,16 @@
 
 /* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
    les 6 cases ne tenaient plus toutes à l'écran sans défiler dès qu'une fenêtre de fiche assez
-   basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne. */
+   basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne.
+   Largeur de colonne relevée à 176px (retour de test suivant, cf. images_test/img.png) : à
+   150px, le bloc MOD./SAUV. de chaque case (cf. .ability-side plus bas) n'avait plus assez de
+   place pour la case à cocher de maîtrise de sauvegarde (session MJ) sans se chevaucher avec le
+   reste de la case. */
 .dnd-custom-ai .abilities-column {
   display: grid;
-  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  grid-template-columns: repeat(2, minmax(176px, 1fr));
   gap: 0.4rem;
-  flex: 0 0 320px;
+  flex: 0 0 368px;
 }
 
 .dnd-custom-ai .skills-column {
@@ -844,7 +848,7 @@
   gap: 0.2rem;
   padding-left: 0.4rem;
   border-left: 1px solid var(--dca-outline-variant);
-  min-width: 2.9rem;
+  min-width: 3.6rem;
 }
 
 .dnd-custom-ai .ability-side-item {
@@ -857,6 +861,8 @@
 .dnd-custom-ai .ability-side-label {
   display: inline-flex;
   align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   gap: 0.15rem;
   font-family: var(--dca-font-label);
   font-size: 0.55rem;
@@ -1232,10 +1238,18 @@
   overflow: hidden;
 }
 
+/* `flex-wrap: wrap` (retour de test) : sans lui, une compétence avec un badge en plus (avantage
+   d'Origine, désavantage d'armure) débordait de son `<li>` sur la colonne voisine de la grille
+   2 colonnes dès que celle-ci se resserrait un peu (ex. après l'élargissement de
+   .abilities-column ci-dessus) — le bouton de jet devenait alors invisible/inaccessible
+   ("covered by/hidden by an <li>"). Le libellé garde son ellipsis (`.skills-list .skill label`,
+   plus bas) : c'est seulement le badge + bouton qui passent à la ligne suivante si besoin,
+   jamais la case voisine qui se fait recouvrir. */
 .dnd-custom-ai .skills-list .skill {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem 0.35rem;
   min-width: 0;
   padding: 0.4rem 0.6rem;
   background: var(--dca-surface-lowest);

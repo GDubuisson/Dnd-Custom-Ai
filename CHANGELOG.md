@@ -49,6 +49,12 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   sans défiler dans une fenêtre de fiche plus basse (visées à 830px de haut).
 
 ### Corrigé
+- Cases de caractéristiques (grille 2 colonnes) : la case à cocher de maîtrise de sauvegarde
+  (session MJ) chevauchait le reste de la case, faute de place ; cases élargies et zone
+  MOD./SAUV. agrandie. Effet de bord corrigé au passage : la liste de Compétences, rétrécie
+  d'autant, ne laissait plus certaines lignes à badge (avantage d'Origine, désavantage
+  d'armure) tenir sans déborder sur la colonne voisine — ces lignes passent désormais à la
+  ligne plutôt que de recouvrir la case suivante.
 - Jauge d'XP : libellé "XP" désormais visible en permanence côté Joueur (auparavant seulement
   une infobulle au survol, aucun texte affiché).
 - Liste déroulante des états (onglet Statistiques) : cocher un état ne l'applique plus
