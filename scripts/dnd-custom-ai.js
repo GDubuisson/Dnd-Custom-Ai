@@ -24,6 +24,7 @@ import { ensurePlayerGuideJournal } from "./helpers/player-guide-journal.js";
 import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
+import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
@@ -139,7 +140,8 @@ Hooks.once("init", async () => {
     origins: await loadOrigins(),
     spellSlotTables: await loadSpellSlotTables(),
     openAwardXpDialog,
-    importSystemContent
+    importSystemContent,
+    resyncControlledToken
   };
 });
 
@@ -157,6 +159,7 @@ Hooks.once("ready", async () => {
   await ensureGmGuideJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
+  await ensureTokenResyncMacro();
   await importSystemContent({ notifyIfEmpty: false });
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();

@@ -136,7 +136,20 @@
     },
     "Macros": {
       "ImportContent": "Import system content",
-      "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details)."
+      "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details).",
+      "ResyncToken": "Resync a token"
+    },
+    "TokenSync": {
+      "GmOnly": "GM only.",
+      "SelectOneToken": "Select exactly one token on the canvas before running this macro.",
+      "NotACharacter": "This token isn't a player character — nothing to link.",
+      "AlreadyLinked": "{name} is already linked to its sheet.",
+      "NoMasterActor": "Source sheet not found for this token.",
+      "Linked": "{name} is now linked to its sheet.",
+      "ChooseHpTitle": "Keep the token's HP or the sheet's?",
+      "ChooseHpConfirm": "Link",
+      "KeepTokenHp": "Keep the token's HP ({value}/{max})",
+      "KeepSheetHp": "Keep the sheet's HP ({value}/{max})"
     },
     "Folders": {
       "Weapons": "Weapons",
@@ -221,6 +234,8 @@
       "Empty": "No item equipped",
       "OccupiedTwoHanded": "Occupied by the two-handed weapon",
       "SlotOccupied": "Slot already occupied by {item}. Unequip it first.",
+      "ChooseSlotTitle": "Choose the slot",
+      "ChooseSlotConfirm": "Equip",
       "OffHandRequiresLight": "Only a Light weapon can be equipped in the Off hand.",
       "ACBonus": "AC Bonus",
       "TwoHandedShort": "two-handed",

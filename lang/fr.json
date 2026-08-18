@@ -136,7 +136,20 @@
     },
     "Macros": {
       "ImportContent": "Importer le contenu du système",
-      "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail)."
+      "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail).",
+      "ResyncToken": "Resynchroniser un token"
+    },
+    "TokenSync": {
+      "GmOnly": "Réservé au MJ.",
+      "SelectOneToken": "Sélectionnez un seul token sur le canvas avant de lancer cette macro.",
+      "NotACharacter": "Ce token n'est pas un personnage joueur — rien à relier.",
+      "AlreadyLinked": "{name} est déjà relié à sa fiche.",
+      "NoMasterActor": "Fiche d'origine introuvable pour ce token.",
+      "Linked": "{name} est maintenant relié à sa fiche.",
+      "ChooseHpTitle": "PV du token ou de la fiche ?",
+      "ChooseHpConfirm": "Relier",
+      "KeepTokenHp": "Garder les PV du token ({value}/{max})",
+      "KeepSheetHp": "Garder les PV de la fiche ({value}/{max})"
     },
     "Folders": {
       "Weapons": "Armes",
@@ -221,6 +234,8 @@
       "Empty": "Aucun objet équipé",
       "OccupiedTwoHanded": "Occupée par l'arme à deux mains",
       "SlotOccupied": "Emplacement déjà occupé par {item}. Déséquipez-le d'abord.",
+      "ChooseSlotTitle": "Choisir l'emplacement",
+      "ChooseSlotConfirm": "Équiper",
       "OffHandRequiresLight": "Seule une arme Légère peut être équipée en Main secondaire.",
       "ACBonus": "Bonus CA",
       "TwoHandedShort": "deux mains",

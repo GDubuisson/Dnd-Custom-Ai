@@ -106,6 +106,11 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   les données), rendant "Arme sacrée" (Serment de Dévotion) inutilisable faute de réserve à
   consommer — Clerc/Paladin ont maintenant chacun la leur ("Canalisation divine (Clerc)"/
   "(Paladin)", même principe déjà en place pour "Incantation rituelle").
+- Effet de bord d'un correctif de sécurité précédent (verrouillage du champ d'emplacement des
+  armes/armures réservé au MJ sur la fiche d'Item) : un Joueur ne pouvait plus choisir la main
+  (principale/secondaire) d'une arme à une main Légère au moment de l'équiper. Nouvelle fenêtre
+  de choix proposée au moment de cocher "Équipé" (uniquement quand plusieurs emplacements sont
+  possibles), sans reverrouiller le champ MJ.
 
 ### Ajouté
 - 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
@@ -186,6 +191,11 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
 - Compendium Classe : champs structurés (jets de sauvegarde maîtrisés, compétences à choisir à
   la création, catégories d'armes maîtrisées), sortis de la description en prose libre —
   informatif uniquement, `config.js` reste la source utilisée par les calculs de la fiche.
+- Macro monde MJ "Resynchroniser un token" (`scripts/helpers/token-sync.js`) : relie à sa fiche
+  un token de personnage joueur resté non lié (`actorLink: false`) — cas résiduel d'un token
+  posé sur une scène avant le correctif de liaison automatique et déjà désynchronisé à ce
+  moment-là, que la migration automatique laisse volontairement de côté par sécurité. Demande au
+  MJ lequel des deux PV garder (token ou fiche) si les deux divergent avant de relier.
 
 ## [0.15.0] - 2026-08-10
 

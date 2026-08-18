@@ -281,6 +281,23 @@ DND_CUSTOM.weaponHandedness = {
   twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
 };
 
+/** Emplacements d'équipement possibles pour une Arme/une Armure (system.slot, cf. item-data.js
+ *  et equipmentSlots() dans rules.js) — clés stables partagées par la fiche d'Item (select
+ *  system.slot, réservé au MJ, cf. item-sheets.js) ET la fenêtre de choix d'emplacement
+ *  présentée au Joueur au moment d'équiper depuis l'onglet Inventaire (cf.
+ *  inventory-drag-drop.js > #offerEquipSlotDialog) — même jeu d'options des deux côtés, une
+ *  seule source de vérité. */
+DND_CUSTOM.weaponSlotOptions = {
+  mainHand: "DND_CUSTOM.Equipment.MainHand",
+  offHand: "DND_CUSTOM.Equipment.OffHand"
+};
+
+DND_CUSTOM.armorSlotOptions = {
+  armor: "DND_CUSTOM.Equipment.Armor",
+  offHand: "DND_CUSTOM.Equipment.OffHand",
+  accessory: "DND_CUSTOM.Equipment.Accessories"
+};
+
 /** Catégories de Langue (cf. scripts/data/item-data.js > LanguageData) : "common" (la Commune,
  *  connue de tous), "origin" (langue propre à une des 6 Origines), "special" (langue secrète/
  *  de métier). Commune et langue d'Origine octroyées automatiquement à la création du

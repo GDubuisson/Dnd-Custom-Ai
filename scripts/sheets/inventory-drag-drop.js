@@ -1,4 +1,7 @@
-import { carryingCapacity, carryingCapacityBonus, carriedWeight } from "../helpers/rules.js";
+import { carryingCapacity, carryingCapacityBonus, carriedWeight, isOffHandEligible } from "../helpers/rules.js";
+import { DND_CUSTOM } from "../helpers/config.js";
+
+const { DialogV2 } = foundry.applications.api;
 
 // Objets physiques (quantité empilable) + Capacités/Sorts/Langues (ni quantité ni doublon
 // voulu, cf. _onDropItem ci-dessous) : ces derniers étaient absents de cette liste jusqu'ici,
@@ -39,6 +42,21 @@ function wouldExceedCarryingCapacity(item, actor, addedQuantity = null) {
   const items = actor.items.contents;
   const capacity = carryingCapacity(actor.system.abilities.str.total, "kg") + carryingCapacityBonus(items);
   return carriedWeight(items) + addedWeight > capacity;
+}
+
+/** Emplacements légaux pour équiper `item` — reprend la logique de `slotOptions` sur la fiche
+ *  d'Item elle-même (item-sheets.js, réservée au MJ) pour la fenêtre de choix présentée au
+ *  Joueur au moment de cocher "Équipé" depuis l'onglet Inventaire. Anomalie testeur précise :
+ *  "je ne peux plus choisir l'emplacement d'une ARME (main principale vs secondaire)" — ne
+ *  concerne QUE les armes à une main Légères (seul cas réellement ambigu, cf. isOffHandEligible
+ *  dans rules.js), jamais les armures (armure/bouclier/accessoire sont des objets distincts en
+ *  pratique, leur `system.slot` déjà fixé par le contenu n'a jamais posé ce problème) ni une
+ *  arme à deux mains (occupe toujours les deux mains sans choix possible, cf. equipmentSlots
+ *  dans rules.js). Renvoie un objet vide (aucune fenêtre à afficher) dans tous les autres cas. */
+function equipSlotOptionsFor(item) {
+  if (item.type !== "weapon") return {};
+  if (item.system.properties?.handedness === "twoHanded") return {};
+  return isOffHandEligible(item.system) ? DND_CUSTOM.weaponSlotOptions : {};
 }
 
 /** Mixin ApplicationV2 : glisser-déposer d'objet entre deux fiches ouvertes (personnage ↔
@@ -108,8 +126,66 @@ export function InventoryDragDropMixin(Base) {
         }
         await item.update({ "system.quantity": newQuantity });
       } else if (target.matches("[data-item-equipped]")) {
-        await item.update({ "system.equipped": target.checked });
+        if (!target.checked) {
+          await item.update({ "system.equipped": false });
+          return;
+        }
+
+        // Retour de test : le champ Emplacement (system.slot) est verrouillé au MJ sur la fiche
+        // d'Item elle-même (contenu de règles) — un Joueur n'a donc plus aucun moyen de choisir
+        // main principale vs secondaire pour une arme à une main, ni le type d'emplacement d'une
+        // armure. Fenêtre de choix ici quand plusieurs emplacements sont légaux pour cet objet ;
+        // équipe directement sans fenêtre s'il n'y en a qu'un seul (ou aucun, ex. Objet/Outil).
+        const slotOptions = equipSlotOptionsFor(item);
+        const optionKeys = Object.keys(slotOptions);
+        const updates = { "system.equipped": true };
+
+        if (optionKeys.length > 1) {
+          const chosenSlot = await this.#offerEquipSlotDialog(item, slotOptions);
+          if (!chosenSlot) {
+            target.checked = false; // fenêtre annulée/fermée : rien à équiper.
+            return;
+          }
+          updates["system.slot"] = chosenSlot;
+        } else if (optionKeys.length === 1) {
+          updates["system.slot"] = optionKeys[0];
+        }
+
+        await item.update(updates);
+        // Un conflit d'emplacement (cf. hook preUpdateItem, dnd-custom-ai.js) annule l'update
+        // sans re-render de la fiche : la case resterait cochée à l'écran alors que rien n'a
+        // changé côté données — resynchronise sur l'état réel de l'Item dans tous les cas.
+        target.checked = item.system.equipped;
       }
+    }
+
+    /** Petite fenêtre à choix unique (radio) parmi `slotOptions` (clé stable -> clé de
+     *  localisation, cf. DND_CUSTOM.weaponSlotOptions/armorSlotOptions dans config.js), pré-
+     *  sélectionnant l'emplacement déjà enregistré sur `item` s'il fait partie des choix
+     *  légaux, sinon le premier. Renvoie la clé choisie, ou `null`/`undefined` si la fenêtre est
+     *  fermée sans validation (même contrat que DialogV2.prompt). Même mécanique que
+     *  offerSubclassChoiceDialog (helpers/subclass-choice.js). */
+    async #offerEquipSlotDialog(item, slotOptions) {
+      const keys = Object.keys(slotOptions);
+      const defaultKey = keys.includes(item.system.slot) ? item.system.slot : keys[0];
+      const rows = keys
+        .map(
+          (key) => `
+        <label class="checkbox-row">
+          <input type="radio" name="equipSlot" value="${key}" ${key === defaultKey ? "checked" : ""}>
+          ${game.i18n.localize(slotOptions[key])}
+        </label>`
+        )
+        .join("");
+
+      return DialogV2.prompt({
+        window: { title: game.i18n.localize("DND_CUSTOM.Equipment.ChooseSlotTitle") },
+        content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+        ok: {
+          label: game.i18n.localize("DND_CUSTOM.Equipment.ChooseSlotConfirm"),
+          callback: (event, button) => button.form.elements.equipSlot?.value
+        }
+      });
     }
 
     /** @override
