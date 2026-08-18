@@ -361,7 +361,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           // Désavantage imposé par l'armure équipée (SRD 5e) : ne concerne que la Discrétion
           // (cf. CharacterData#prepareDerivedData > this.stealthDisadvantage).
           armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
-          ability: skill.ability,
+          // Retour de test : affichait la clé technique brute ("str", "dex"...) au lieu du nom
+          // localisé de la caractéristique — même convention que context.abilities ci-dessus.
+          ability: game.i18n.localize(DND_CUSTOM.abilities[skill.ability]),
           proficient: skill.proficient,
           jackOfAllTrades: jackOfAllTrades && !skill.proficient,
           mod,
