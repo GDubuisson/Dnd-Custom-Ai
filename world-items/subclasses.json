@@ -40,6 +40,26 @@
     }
   },
   {
+    "name": "Collège des Lames",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-des-Lames.webp",
+    "system": {
+      "classKey": "bard",
+      "subclassKey": "swords",
+      "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Ce Barde manie la lame en duelliste virevoltant, mêlant escrime et magie en un même mouvement fluide.</p><ul><li>Niveau 3 : Manœuvre de lame dansante</li></ul>"
+    }
+  },
+  {
+    "name": "Collège de la Vaillance",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-de-la-Vaillance.webp",
+    "system": {
+      "classKey": "bard",
+      "subclassKey": "valour",
+      "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Ce Barde chante au cœur de la mêlée, portant lui-même l'armure et le combat au premier rang tout en inspirant ses compagnons d'armes.</p><ul><li>Niveau 3 : Inspiration vaillante</li></ul>"
+    }
+  },
+  {
     "name": "Domaine de la Vie",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Vie.webp",

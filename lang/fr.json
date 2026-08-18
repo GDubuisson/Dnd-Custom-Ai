@@ -68,16 +68,36 @@
         "wildheart": "Voie du Cœur sauvage",
         "wildMagic": "Voie de la Magie sauvage"
       },
-      "bard": { "lore": "Collège du Savoir" },
-      "cleric": { "life": "Domaine de la Vie" },
-      "druid": { "land": "Cercle de la Terre" },
+      "bard": {
+        "lore": "Collège du Savoir",
+        "swords": "Collège des Lames",
+        "valour": "Collège de la Vaillance"
+      },
+      "cleric": {
+        "life": "Domaine de la Vie",
+        "light": "Domaine de la Lumière",
+        "trickery": "Domaine de la Ruse"
+      },
+      "druid": {
+        "land": "Cercle de la Terre",
+        "moon": "Cercle de la Lune",
+        "spores": "Cercle des Spores"
+      },
       "fighter": {
         "champion": "Champion",
         "battleMaster": "Maître de guerre",
         "eldritchKnight": "Chevalier occulte"
       },
-      "monk": { "openHand": "Voie de la Main Ouverte" },
-      "paladin": { "devotion": "Serment de Dévotion" },
+      "monk": {
+        "openHand": "Voie de la Main Ouverte",
+        "shadow": "Voie de l'Ombre",
+        "fourElements": "Voie des Quatre Éléments"
+      },
+      "paladin": {
+        "devotion": "Serment de Dévotion",
+        "ancients": "Serment des Anciens",
+        "vengeance": "Serment de Vengeance"
+      },
       "ranger": {
         "hunter": "Chasseur",
         "beastmaster": "Maître des bêtes",
@@ -93,8 +113,16 @@
         "wildSorcery": "Magie sauvage",
         "stormSorcery": "Sorcellerie des tempêtes"
       },
-      "warlock": { "fiend": "Le Fiélon" },
-      "wizard": { "evocation": "École d'évocation" }
+      "warlock": {
+        "fiend": "Le Fiélon",
+        "greatOldOne": "Le Grand Ancien",
+        "archfey": "L'Archifée"
+      },
+      "wizard": {
+        "evocation": "École d'évocation",
+        "necromancy": "École de nécromancie",
+        "illusion": "École d'illusion"
+      }
     },
     "TotemSpirits": {
       "bear": "Ours",
@@ -440,7 +468,9 @@
       "unconscious": "Inconscient",
       "dead": "Mort",
       "raging": "En Rage",
-      "surprised": "Surpris"
+      "surprised": "Surpris",
+      "wildShape": "En Forme sauvage",
+      "hunted": "Traqué"
     },
     "Journal": {
       "Biography": "Biographie",

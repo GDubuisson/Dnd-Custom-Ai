@@ -68,16 +68,36 @@
         "wildheart": "Path of the Wild Heart",
         "wildMagic": "Path of Wild Magic"
       },
-      "bard": { "lore": "College of Lore" },
-      "cleric": { "life": "Life Domain" },
-      "druid": { "land": "Circle of the Land" },
+      "bard": {
+        "lore": "College of Lore",
+        "swords": "College of Swords",
+        "valour": "College of Valour"
+      },
+      "cleric": {
+        "life": "Life Domain",
+        "light": "Light Domain",
+        "trickery": "Trickery Domain"
+      },
+      "druid": {
+        "land": "Circle of the Land",
+        "moon": "Circle of the Moon",
+        "spores": "Circle of Spores"
+      },
       "fighter": {
         "champion": "Champion",
         "battleMaster": "Battle Master",
         "eldritchKnight": "Eldritch Knight"
       },
-      "monk": { "openHand": "Way of the Open Hand" },
-      "paladin": { "devotion": "Oath of Devotion" },
+      "monk": {
+        "openHand": "Way of the Open Hand",
+        "shadow": "Way of Shadow",
+        "fourElements": "Way of the Four Elements"
+      },
+      "paladin": {
+        "devotion": "Oath of Devotion",
+        "ancients": "Oath of the Ancients",
+        "vengeance": "Oath of Vengeance"
+      },
       "ranger": {
         "hunter": "Hunter",
         "beastmaster": "Beast Master",
@@ -93,8 +113,16 @@
         "wildSorcery": "Wild Magic",
         "stormSorcery": "Storm Sorcery"
       },
-      "warlock": { "fiend": "The Fiend" },
-      "wizard": { "evocation": "School of Evocation" }
+      "warlock": {
+        "fiend": "The Fiend",
+        "greatOldOne": "The Great Old One",
+        "archfey": "The Archfey"
+      },
+      "wizard": {
+        "evocation": "School of Evocation",
+        "necromancy": "School of Necromancy",
+        "illusion": "School of Illusion"
+      }
     },
     "TotemSpirits": {
       "bear": "Bear",
@@ -440,7 +468,9 @@
       "unconscious": "Unconscious",
       "dead": "Dead",
       "raging": "Raging",
-      "surprised": "Surprised"
+      "surprised": "Surprised",
+      "wildShape": "Wild Shape",
+      "hunted": "Hunted"
     },
     "Journal": {
       "Biography": "Biography",

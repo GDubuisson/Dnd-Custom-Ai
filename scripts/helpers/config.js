@@ -79,16 +79,36 @@ DND_CUSTOM.subclasses = {
     wildheart: "DND_CUSTOM.Subclasses.barbarian.wildheart",
     wildMagic: "DND_CUSTOM.Subclasses.barbarian.wildMagic"
   },
-  bard: { lore: "DND_CUSTOM.Subclasses.bard.lore" },
-  cleric: { life: "DND_CUSTOM.Subclasses.cleric.life" },
-  druid: { land: "DND_CUSTOM.Subclasses.druid.land" },
+  bard: {
+    lore: "DND_CUSTOM.Subclasses.bard.lore",
+    swords: "DND_CUSTOM.Subclasses.bard.swords",
+    valour: "DND_CUSTOM.Subclasses.bard.valour"
+  },
+  cleric: {
+    life: "DND_CUSTOM.Subclasses.cleric.life",
+    light: "DND_CUSTOM.Subclasses.cleric.light",
+    trickery: "DND_CUSTOM.Subclasses.cleric.trickery"
+  },
+  druid: {
+    land: "DND_CUSTOM.Subclasses.druid.land",
+    moon: "DND_CUSTOM.Subclasses.druid.moon",
+    spores: "DND_CUSTOM.Subclasses.druid.spores"
+  },
   fighter: {
     champion: "DND_CUSTOM.Subclasses.fighter.champion",
     battleMaster: "DND_CUSTOM.Subclasses.fighter.battleMaster",
     eldritchKnight: "DND_CUSTOM.Subclasses.fighter.eldritchKnight"
   },
-  monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
-  paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
+  monk: {
+    openHand: "DND_CUSTOM.Subclasses.monk.openHand",
+    shadow: "DND_CUSTOM.Subclasses.monk.shadow",
+    fourElements: "DND_CUSTOM.Subclasses.monk.fourElements"
+  },
+  paladin: {
+    devotion: "DND_CUSTOM.Subclasses.paladin.devotion",
+    ancients: "DND_CUSTOM.Subclasses.paladin.ancients",
+    vengeance: "DND_CUSTOM.Subclasses.paladin.vengeance"
+  },
   ranger: {
     hunter: "DND_CUSTOM.Subclasses.ranger.hunter",
     beastmaster: "DND_CUSTOM.Subclasses.ranger.beastmaster",
@@ -104,8 +124,16 @@ DND_CUSTOM.subclasses = {
     wildSorcery: "DND_CUSTOM.Subclasses.sorcerer.wildSorcery",
     stormSorcery: "DND_CUSTOM.Subclasses.sorcerer.stormSorcery"
   },
-  warlock: { fiend: "DND_CUSTOM.Subclasses.warlock.fiend" },
-  wizard: { evocation: "DND_CUSTOM.Subclasses.wizard.evocation" }
+  warlock: {
+    fiend: "DND_CUSTOM.Subclasses.warlock.fiend",
+    greatOldOne: "DND_CUSTOM.Subclasses.warlock.greatOldOne",
+    archfey: "DND_CUSTOM.Subclasses.warlock.archfey"
+  },
+  wizard: {
+    evocation: "DND_CUSTOM.Subclasses.wizard.evocation",
+    necromancy: "DND_CUSTOM.Subclasses.wizard.necromancy",
+    illusion: "DND_CUSTOM.Subclasses.wizard.illusion"
+  }
 };
 
 /** Niveau SRD 5e auquel chaque classe choisit sa sous-classe (Domaine divin/Origine
@@ -267,7 +295,16 @@ DND_CUSTOM.conditions = [
   // besoin comme bascule manuelle pour piloter le critique automatique d'Assassin (Roublard,
   // cf. world-items/features.json > "Assassinat" et rollCheck > forceCriticalHit, rolls.js) —
   // le MJ la pose sur la cible au moment où elle est effectivement prise par surprise.
-  { id: "surprised", name: "DND_CUSTOM.Conditions.surprised", img: "icons/svg/eye.svg" }
+  { id: "surprised", name: "DND_CUSTOM.Conditions.surprised", img: "icons/svg/eye.svg" },
+  // Homebrew (comme "raging" ci-dessus) : bascule manuelle pilotant les Capacités de Cercle de
+  // la Lune/Cercle des Spores (Druide) qui exigent d'être en Forme sauvage, cf.
+  // world-items/features.json > "Forme sauvage de combat"/"Nuée de Symbiote".
+  { id: "wildShape", name: "DND_CUSTOM.Conditions.wildShape", img: "systems/dnd-custom-ai/assets/icons/features/Forme-sauvage.png" },
+  // Homebrew (comme "surprised" ci-dessus) : bascule manuelle posée sur la cible d'un Paladin du
+  // Serment de Vengeance (désavantage aux attaques de quiconque n'est pas le Paladin contre
+  // elle), à poser/lever manuellement par le MJ, cf. world-items/features.json > "Traque
+  // implacable".
+  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé

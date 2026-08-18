@@ -56,7 +56,7 @@ Athlète (`Athlete.png`), Doué (`Doue.png`), Sentinelle (`Sentinelle.png`), Ale
 (`Magie-dinitie.png`), Résilient (`Resilient.png`), Guérisseur (`Guerisseur.png`), Combat monté
 (`Combat-monte.png`)
 
-## Sous-classes (`world-items/subclasses.json`) — 0 / 22 ⚠️
+## Sous-classes (`world-items/subclasses.json`) — 0 / 36 ⚠️
 
 Aucune icône fournie pour ce fichier, dossier `assets/icons/subclasses/` inexistant. Dépose une
 image nommée comme indiqué (idéalement un blason dans le même esprit que les 12 badges de
@@ -64,23 +64,30 @@ Classe déjà fournis, cf. section Classes ci-dessous) :
 
 Voie du Berserker (`Voie-du-Berserker.webp`), Voie du Cœur sauvage
 (`Voie-du-Coeur-sauvage.webp`), Voie de la Magie sauvage (`Voie-de-la-Magie-sauvage.webp`,
-Barbare), Collège du Savoir (`College-du-Savoir.webp`), Domaine de la Vie
-(`Domaine-de-la-Vie.webp`), Cercle de la Terre (`Cercle-de-la-Terre.webp`), Champion
-(`Champion.webp`), Voie de la Main Ouverte (`Voie-de-la-Main-Ouverte.webp`), Serment de
-Dévotion (`Serment-de-Devotion.webp`), Chasseur (`Chasseur.webp`), Voleur (`Voleur.webp`),
-Lignage draconique (`Lignage-draconique.webp`), Le Fiélon (`Le-Fielon.webp`), École
-d'évocation (`Ecole-devocation.webp`), Bretteur (`Bretteur.webp`, Roublard), Assassin
-(`Assassin.webp`, Roublard), Maître des bêtes (`Maitre-des-betes.webp`, Rôdeur), Traqueur des
-ténèbres (`Traqueur-des-tenebres.webp`, Rôdeur), Maître de guerre (`Maitre-de-guerre.webp`,
-Guerrier), Chevalier occulte (`Chevalier-occulte.webp`, Guerrier), Magie sauvage
-(`Magie-sauvage.webp`, Ensorceleur), Sorcellerie des tempêtes (`Sorcellerie-des-tempetes.webp`,
-Ensorceleur)
+Barbare), Collège du Savoir (`College-du-Savoir.webp`), Collège des Lames
+(`College-des-Lames.webp`, Barde), Collège de la Vaillance (`College-de-la-Vaillance.webp`,
+Barde), Domaine de la Vie (`Domaine-de-la-Vie.webp`), Domaine de la Lumière
+(`Domaine-de-la-Lumiere.webp`, Clerc), Domaine de la Ruse (`Domaine-de-la-Ruse.webp`, Clerc),
+Cercle de la Terre (`Cercle-de-la-Terre.webp`), Cercle de la Lune (`Cercle-de-la-Lune.webp`,
+Druide), Cercle des Spores (`Cercle-des-Spores.webp`, Druide), Champion (`Champion.webp`), Voie
+de la Main Ouverte (`Voie-de-la-Main-Ouverte.webp`), Voie de l'Ombre (`Voie-de-lOmbre.webp`,
+Moine), Voie des Quatre Éléments (`Voie-des-Quatre-Elements.webp`, Moine), Serment de Dévotion
+(`Serment-de-Devotion.webp`), Serment des Anciens (`Serment-des-Anciens.webp`, Paladin), Serment
+de Vengeance (`Serment-de-Vengeance.webp`, Paladin), Chasseur (`Chasseur.webp`), Voleur
+(`Voleur.webp`), Lignage draconique (`Lignage-draconique.webp`), Le Fiélon (`Le-Fielon.webp`),
+Le Grand Ancien (`Le-Grand-Ancien.webp`, Occultiste), L'Archifée (`LArchifee.webp`, Occultiste),
+École d'évocation (`Ecole-devocation.webp`), École de nécromancie (`Ecole-de-necromancie.webp`,
+Magicien), École d'illusion (`Ecole-dillusion.webp`, Magicien), Bretteur (`Bretteur.webp`,
+Roublard), Assassin (`Assassin.webp`, Roublard), Maître des bêtes (`Maitre-des-betes.webp`,
+Rôdeur), Traqueur des ténèbres (`Traqueur-des-tenebres.webp`, Rôdeur), Maître de guerre
+(`Maitre-de-guerre.webp`, Guerrier), Chevalier occulte (`Chevalier-occulte.webp`, Guerrier),
+Magie sauvage (`Magie-sauvage.webp`, Ensorceleur), Sorcellerie des tempêtes
+(`Sorcellerie-des-tempetes.webp`, Ensorceleur)
 
-Nouvelles sous-classes en cours d'ajout (chantier "plusieurs sous-classes par classe", inspiration
-BG3) : 2 de plus par classe au fil des lots — les icônes correspondantes viendront s'ajouter ici
-à mesure (Barbare, Roublard, Rôdeur, Guerrier et Ensorceleur faits, reste 7 classes).
+Chantier "plusieurs sous-classes par classe" (inspiration BG3) terminé le 2026-08-19 : les 12
+classes ont désormais chacune 3 sous-classes (36 au total), toutes en attente d'icône.
 
-## Capacités (`world-items/features.json`) — 25 / 89, 64 en attente ⚠️
+## Capacités (`world-items/features.json`) — 25 / 103, 78 en attente ⚠️
 
 **Corrigé le 2026-08-19** : cette section était périmée (annonçait 24/24 alors que
 `features.json` a grossi depuis — un lot de Capacités supplémentaires par classe a été ajouté
@@ -96,7 +103,7 @@ arcanique, Ennemi juré, Explorateur-né, Attaque sournoise, Métamagie, Invocat
 Action rusée (`Action-rusee.png`, source : wiki Baldur's Gate 3 — asset sous droit d'auteur
 Larian/WotC, **pas** libre de droit, même avertissement que pour les icônes de Sorts).
 
-**En attente (64)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
+**En attente (78)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
 ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source libre de droit) :
 
 - **Sans classe** : Attaque d'opportunité (`Attaque-dopportunite.png`)
@@ -109,12 +116,16 @@ ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source l
   (`Volonte-indomptable-de-la-sauvagerie.png`, Voie de la Magie sauvage)
 - **Barde** : Chant de repos (`Chant-de-repos.png`), Source d'inspiration
   (`Source-dinspiration.png`), Contre-chant (`Contre-chant.png`), Mots cinglants
-  (`Mots-cinglants.png`), Sorts supplémentaires (`Sorts-supplementaires.png`)
+  (`Mots-cinglants.png`), Sorts supplémentaires (`Sorts-supplementaires.png`), Manœuvre de lame
+  dansante (`Manoeuvre-de-lame-dansante.png`, Collège des Lames), Inspiration vaillante
+  (`Inspiration-vaillante.png`, Collège de la Vaillance)
 - **Clerc** : Destruction des morts-vivants (`Destruction-des-morts-vivants.png`), Disciple de
   la vie (`Disciple-de-la-vie.png`), Canalisation divine : Préserver la vie
-  (`Preserver-la-vie.png`)
+  (`Preserver-la-vie.png`), Flamme protectrice (`Flamme-protectrice.png`, Domaine de la
+  Lumière), Duplicata de ruse (`Duplicata-de-ruse.png`, Domaine de la Ruse)
 - **Druide** : Sorts de cercle (`Sorts-de-cercle.png`), Récupération naturelle
-  (`Recuperation-naturelle.png`)
+  (`Recuperation-naturelle.png`), Forme sauvage de combat (`Forme-sauvage-de-combat.png`,
+  Cercle de la Lune), Nuée de Symbiote (`Nuee-de-Symbiote.png`, Cercle des Spores)
 - **Guerrier** : Attaque supplémentaire (Guerrier) (`Attaque-supplementaire-Guerrier.png`),
   Indomptable (`Indomptable.png`), Critique amélioré (`Critique-ameliore.png`), Athlète accompli
   (`Athlete-accompli.png`), Dés de manœuvre (`Des-de-manoeuvre.png`, Maître de guerre),
@@ -125,10 +136,14 @@ ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source l
   (`Deviation-de-projectiles.png`), Chute amortie (`Chute-amortie.png`), Attaque supplémentaire
   (Moine) (`Attaque-supplementaire-Moine.png`), Frappe étourdissante
   (`Frappe-etourdissante.png`), Coups empreints de Ki (`Coups-empreints-de-ki.png`), Technique
-  de la Main Ouverte (`Technique-de-la-Main-Ouverte.png`), Corps parfait (`Corps-parfait.png`)
+  de la Main Ouverte (`Technique-de-la-Main-Ouverte.png`), Corps parfait (`Corps-parfait.png`),
+  Pas dans l'ombre (`Pas-dans-lombre.png`, Voie de l'Ombre), Disciplines élémentaires
+  (`Disciplines-elementaires.png`, Voie des Quatre Éléments)
 - **Paladin** : Attaque supplémentaire (Paladin) (`Attaque-supplementaire-Paladin.png`), Aura de
   protection (`Aura-de-protection.png`), Canalisation divine : Arme sacrée
-  (`Arme-sacree.png`), Aura de dévotion (`Aura-de-devotion.png`)
+  (`Arme-sacree.png`), Aura de dévotion (`Aura-de-devotion.png`), Voile des anciens
+  (`Voile-des-anciens.png`, Serment des Anciens), Traque implacable
+  (`Traque-implacable.png`, Serment de Vengeance)
 - **Rôdeur** : Attaque supplémentaire (Rôdeur) (`Attaque-supplementaire-Rodeur.png`),
   Déplacement facilité (`Deplacement-facilite.png`), Proie du chasseur
   (`Proie-du-chasseur.png`), Tactiques défensives (`Tactiques-defensives.png`), Compagnon
@@ -144,9 +159,12 @@ ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source l
   (`Vol-tempetueux.png`, Sorcellerie des tempêtes), Affinité de la tempête
   (`Affinite-de-la-tempete.png`, Sorcellerie des tempêtes)
 - **Occultiste** : Bienfait du Fiélon (`Bienfait-du-Fielon.png`), Chance du Fiélon
-  (`Chance-du-Fielon.png`)
+  (`Chance-du-Fielon.png`), Effroi psychique (`Effroi-psychique.png`, Le Grand Ancien), Pas
+  féerique (`Pas-feerique.png`, L'Archifée)
 - **Magicien** : Sculpteur de sorts (`Sculpteur-de-sorts.png`), Tour de magie renforcé
-  (`Tour-de-magie-renforce.png`)
+  (`Tour-de-magie-renforce.png`), Étreinte glaciale de la tombe
+  (`Etreinte-glaciale-de-la-tombe.png`, École de nécromancie), Double illusoire
+  (`Double-illusoire.png`, École d'illusion)
 
 ("Druidique" a été retirée de cette liste : ce n'est pas une capacité mais une Langue,
 déplacée vers `world-items/languages.json` — cf. section Langues ci-dessous.)
@@ -185,7 +203,7 @@ inchangée, jamais affichée telle quelle).
 
 ## Ce qui reste réellement à faire
 
-- **Capacités** : 25 / 89 (64 en attente, cf. section dédiée ci-dessus)
+- **Capacités** : 25 / 103 (78 en attente, cf. section dédiée ci-dessus)
 - **Sorts** : 16 / 42 (26 en attente, cf. section dédiée ci-dessus)
 - **Dons** : 0 / 10 (aucune icône fournie, cf. section dédiée ci-dessus)
-- **Sous-classes** : 0 / 22 (aucune icône fournie, cf. section dédiée ci-dessus)
+- **Sous-classes** : 0 / 36 (aucune icône fournie, cf. section dédiée ci-dessus)

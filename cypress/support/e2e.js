@@ -36,6 +36,23 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
 // Même séquence que system-load.cy.js/quench.cy.js, factorisée ici pour être réutilisable par
 // toute nouvelle spec (cf. wizard.cy.js > T-WIZ-013 et son nettoyage final, seul scénario de la
 // section 1 dont le comportement dépend explicitement du rôle MJ).
+// Ferme les notifications "permanentes" que Foundry peut poster à la connexion (ex. "You are
+// using an older version of the Foundry Virtual Tabletop Electron client..." — avertissement
+// générique du cœur Foundry sur la version du client détecté, sans rapport avec ce système ni
+// avec la garde-fou de version ci-dessus). Apparu le 2026-08-19 sans changement de code
+// applicatif de notre côté : ces notifications sont en position fixe en haut à gauche
+// (`#notifications`) et recouvrent `input.actor-name`, faisant échouer `cy.openActorSheet` sur
+// TOUTE spec (pas seulement les nouvelles) avec "expected <input.actor-name> to be visible".
+// Suppression DOM directe (pas de clic sur un bouton de fermeture, dont le sélecteur exact varie
+// selon la version du cœur Foundry) : robuste et suffisant, ces notifications ne reviennent pas
+// spontanément pendant la durée d'un test.
+Cypress.Commands.add("dismissPermanentNotifications", () => {
+  cy.get("body").then(($body) => {
+    const notifications = $body.find("#notifications li.permanent");
+    if (notifications.length) cy.wrap(notifications).invoke("remove");
+  });
+});
+
 Cypress.Commands.add("loginAsGM", () => {
   cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
   cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
@@ -48,6 +65,7 @@ Cypress.Commands.add("loginAsGM", () => {
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
   cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
   cy.assertSystemVersionMatches();
+  cy.dismissPermanentNotifications();
 });
 
 Cypress.Commands.add("loginAsPlayer", () => {
@@ -63,6 +81,7 @@ Cypress.Commands.add("loginAsPlayer", () => {
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
   cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
   cy.assertSystemVersionMatches();
+  cy.dismissPermanentNotifications();
 
   // Foundry ouvre automatiquement la fenêtre "User Configuration" pour un Joueur qui n'a pas
   // encore de personnage assigné (`game.user.character` vide) — comportement du cœur Foundry,

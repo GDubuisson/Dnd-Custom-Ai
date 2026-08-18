@@ -776,6 +776,35 @@
     }
   },
   {
+    "name": "Manœuvre de lame dansante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Manoeuvre-de-lame-dansante.png",
+    "system": {
+      "class": "bard",
+      "subclass": "swords",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
+      "description": "Sur une attaque au corps à corps réussie : ajoutez 1d6 de dégâts supplémentaires et déplacez-vous jusqu'à 1,50 m sans provoquer d'attaque d'opportunité, sans dépenser de mouvement. 2 utilisations par repos court ou long."
+    }
+  },
+  {
+    "name": "Inspiration vaillante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Inspiration-vaillante.png",
+    "system": {
+      "class": "bard",
+      "subclass": "valour",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Un dé d'Inspiration bardique (cf. Capacité Inspiration bardique) peut désormais aussi être ajouté à un jet d'attaque ou à la Classe d'Armure d'un allié qui le porte, en plus des usages habituels. Vous combattez également avec une arme de guerre et une armure intermédiaire sans pénalité, contrairement aux autres Bardes."
+    }
+  },
+  {
     "name": "Disciple de la vie",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Disciple-de-la-vie.png",
