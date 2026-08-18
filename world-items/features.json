@@ -1345,6 +1345,36 @@
     }
   },
   {
+    "name": "Effroi psychique",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Effroi-psychique.png",
+    "system": {
+      "class": "warlock",
+      "subclass": "greatOldOne",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir manuellement l'état \"Effrayé\" (cf. onglet États) jusqu'à la fin de votre prochain tour. 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
+    }
+  },
+  {
+    "name": "Pas féerique",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-feerique.png",
+    "system": {
+      "class": "warlock",
+      "subclass": "archfey",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus : téléportez-vous jusqu'à 9 m vers un espace libre que vous pouvez voir. 1 utilisation par repos court ou long."
+    }
+  },
+  {
     "name": "Sculpteur de sorts",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Sculpteur-de-sorts.png",

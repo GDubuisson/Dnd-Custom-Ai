@@ -310,6 +310,26 @@
     }
   },
   {
+    "name": "Le Grand Ancien",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Grand-Ancien.webp",
+    "system": {
+      "classKey": "warlock",
+      "subclassKey": "greatOldOne",
+      "description": "<p>Sous-classe d'Occultiste (niveau 1, SRD 5e). Ce patron, entité incompréhensible venue d'ailleurs, communique par télépathie et confère à son pacte le pouvoir de semer l'effroi psychique.</p><ul><li>Niveau 1 : Effroi psychique</li></ul>"
+    }
+  },
+  {
+    "name": "L'Archifée",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/LArchifee.webp",
+    "system": {
+      "classKey": "warlock",
+      "subclassKey": "archfey",
+      "description": "<p>Sous-classe d'Occultiste (niveau 1, SRD 5e). Ce patron féerique, puissant seigneur ou dame du Royaume féerique, offre à son pacte grâce et vivacité empruntées à la nature enchantée.</p><ul><li>Niveau 1 : Pas féerique</li></ul>"
+    }
+  },
+  {
     "name": "École d'évocation",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-devocation.webp",
