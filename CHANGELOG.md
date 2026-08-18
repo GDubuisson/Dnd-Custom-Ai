@@ -10,6 +10,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
 modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 
+Chantier "plusieurs sous-classes par classe" (inspiration Baldur's Gate 3, demandé par le
+testeur) : les 12 classes passent d'une à trois sous-classes chacune (36 au total, 12 SRD 5e
+d'origine + 24 nouvelles), chacune apportant une mécanique active distincte plutôt que du
+flavor pur (RollTable de Surtenance sauvage, compagnon animal invocable, choix d'esprit totem,
+incantation mineure toujours prête, critique automatique conditionnel, réserve de Ki
+réutilisée, état à activer/poser manuellement...).
+
+Traitement d'un nouveau lot de retours testeurs (montée de niveau, affichage) : voir les
+sections Corrigé et Ajouté ci-dessous.
+
 Traitement complet de `ClaudeFiles/FIRST_FEEDBACK.md` (première vague de retours testeurs,
 ~28 points) : PV/pool de sorts plafonnés au max, montée de niveau et choix de sous-classe
 accessibles aux joueurs (pas seulement au MJ), token toujours lié au personnage joueur,
@@ -47,6 +57,13 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   Liste d'état/Épuisement (au lieu d'être sous la liste de Compétences) ; les 6 cases de
   caractéristiques passent d'une pile verticale à une grille 2 colonnes x 3 lignes, pour tenir
   sans défiler dans une fenêtre de fiche plus basse (visées à 830px de haut).
+- Onglet Capacités/Sorts : lire la description d'une Capacité ou d'un Sort ne demande plus
+  d'ouvrir sa fiche complète (fenêtre séparée) — un simple survol du nom suffit désormais
+  (infobulle), même convention déjà utilisée pour les langues connues.
+- Journal "Guide du MJ" (page "Simplifications assumées") : l'affirmation périmée "pas de choix
+  de sous-classe modélisé" remplacée par une description exacte distinguant les 12 sous-classes
+  SRD d'origine (majoritairement génériques) des 24 nouvelles (mécanique active propre), plus une
+  puce récapitulative dans "Ce que la fiche automatise déjà".
 
 ### Corrigé
 - **Sécurité** : un Joueur pouvait contourner le blocage PvP en se ciblant lui-même avant de
@@ -111,8 +128,39 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   (principale/secondaire) d'une arme à une main Légère au moment de l'équiper. Nouvelle fenêtre
   de choix proposée au moment de cocher "Équipé" (uniquement quand plusieurs emplacements sont
   possibles), sans reverrouiller le champ MJ.
+- Fermer la fenêtre de choix Amélioration de caractéristiques/Don sans rien choisir perdait ce
+  choix pour toujours (aucune re-proposition, aucun rattrapage possible), contrairement au choix
+  de sous-classe. Le choix reste désormais dû (`system.attributes.pendingAsiChoices`), reproposé
+  à chaque montée de niveau suivante, avec un badge de rattrapage manuel dans l'en-tête de la
+  fiche pour le résoudre sans attendre.
+- Aucun moyen de revenir en arrière dans la fenêtre de choix Amélioration de caractéristiques/
+  Don une fois entré dans le formulaire Amélioration ou la liste des Dons — bouton "Retour"
+  ajouté aux deux.
+- Modificateur de compétence (onglet Statistiques) affiché en anglais (clé technique brute
+  "str"/"dex"...) au lieu du nom localisé de la caractéristique.
+- Taille de police des valeurs de monnaie (onglet Inventaire) trop petite (jamais fixée
+  explicitement, retombait sur la taille par défaut du navigateur).
+- Bouton de jet d'une Capacité affichant la formule Foundry brute ("1d10 + @attributes.level")
+  au lieu d'un texte lisible (Second souffle, Attaque sournoise, Récupération arcanique, Corps
+  parfait, Bienfait du Fiélon).
+- `scripts/data/origins.json` : champ `inspiration` (pays réels : France, Germanie, Italie,
+  Angleterre, Espagne, Arabie) orphelin depuis le retrait de la colonne correspondante du
+  Journal "Comparatif des Origines", plus référencé nulle part — supprimé.
 
 ### Ajouté
+- 24 sous-classes supplémentaires (`world-items/subclasses.json`, 2 par classe, inspirées de
+  Baldur's Gate 3) : Voie du Cœur sauvage/Voie de la Magie sauvage (Barbare), Collège des
+  Lames/Collège de la Vaillance (Barde), Domaine de la Lumière/Domaine de la Ruse (Clerc),
+  Cercle de la Lune/Cercle des Spores (Druide), Maître de guerre/Chevalier occulte (Guerrier),
+  Voie de l'Ombre/Voie des Quatre Éléments (Moine), Serment des Anciens/Serment de Vengeance
+  (Paladin), Maître des bêtes/Traqueur des ténèbres (Rôdeur), Bretteur/Assassin (Roublard),
+  Magie sauvage/Sorcellerie des tempêtes (Ensorceleur), Le Grand Ancien/L'Archifée
+  (Occultiste), École de nécromancie/École d'illusion (Magicien) — chacune avec 1 ou 2
+  Capacités signature apportant un mécanisme actif propre : réserve de Ki réutilisée, état à
+  activer/poser manuellement (nouveaux états homebrew "En Forme sauvage"/"Traqué"), choix
+  ponctuel verrouillé (esprit totem), compagnon animal invocable, incantation mineure toujours
+  prête sans emplacement dédié, critique automatique contre une cible "Surprise", table de
+  surtenance sauvage (RollTable Foundry native, tirage auto posté en chat au déclenchement).
 - 26 sorts SRD 5e supplémentaires (`world-items/spells.json`, niveaux 0-2 puis 4-5),
   rééquilibrant la variété entre classes (Paladin/Druide/Clerc/Barde/Occultiste étaient
   nettement moins dotés que Magicien/Ensorceleur) et prolongeant la progression au-delà du
