@@ -100,6 +100,26 @@
     }
   },
   {
+    "name": "Cercle de la Lune",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Lune.webp",
+    "system": {
+      "classKey": "druid",
+      "subclassKey": "moon",
+      "description": "<p>Sous-classe de Druide (niveau 2, SRD 5e). Le Cercle de la Lune est le plus orienté combat des cercles druidiques : sa Forme sauvage devient une véritable arme de guerre.</p><ul><li>Niveau 2 : Forme sauvage de combat</li></ul>"
+    }
+  },
+  {
+    "name": "Cercle des Spores",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-des-Spores.webp",
+    "system": {
+      "classKey": "druid",
+      "subclassKey": "spores",
+      "description": "<p>Sous-classe de Druide (niveau 2, inspirée de Baldur's Gate 3). Ce Druide a fait alliance avec un champignon symbiotique qui infuse son corps de spores nécrotiques.</p><ul><li>Niveau 2 : Nuée de Symbiote</li></ul>"
+    }
+  },
+  {
     "name": "Champion",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Champion.webp",

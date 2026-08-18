@@ -895,6 +895,36 @@
     }
   },
   {
+    "name": "Forme sauvage de combat",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Forme-sauvage-de-combat.png",
+    "system": {
+      "class": "druid",
+      "subclass": "moon",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "requiresState": "wildShape",
+      "source": "",
+      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation, et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
+    }
+  },
+  {
+    "name": "Nuée de Symbiote",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Nuee-de-Symbiote.png",
+    "system": {
+      "class": "druid",
+      "subclass": "spores",
+      "level": 2,
+      "requiresRoll": true,
+      "rollFormula": "1d4",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus, 1 minute : vos attaques de corps à corps et vos attaques de Forme sauvage infligent 1d4 dégâts nécrotiques supplémentaires. 1 utilisation par repos court ou long (simplifié : normalement alimentée par la même réserve que Forme sauvage)."
+    }
+  },
+  {
     "name": "Critique amélioré",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Critique-ameliore.png",
