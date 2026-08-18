@@ -862,6 +862,37 @@
     }
   },
   {
+    "name": "Dés de manœuvre",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Des-de-manoeuvre.png",
+    "system": {
+      "class": "fighter",
+      "subclass": "battleMaster",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d8",
+      "source": "",
+      "uses": { "max": 4, "value": 4, "recharge": "shortRest" },
+      "offersManeuverChoice": true,
+      "description": "Bouton qui propose un choix de manœuvre (Attaque précise, Repousser ou Feinte) puis lance 1d8 avec cet effet, en plus d'une attaque déjà portée ce tour. 4 charges, récupérées à un repos court ou long."
+    }
+  },
+  {
+    "name": "Incantation mineure",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Incantation-mineure.png",
+    "system": {
+      "class": "fighter",
+      "subclass": "eldritchKnight",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "grantsSpells": ["Bouclier", "Prestidigitation", "Lumière"],
+      "description": "Octroie 3 Sorts de Magicien toujours prêts, sans emplacement dédié à gérer : Bouclier, Prestidigitation, Lumière — visibles et lançables directement depuis l'onglet Sorts."
+    }
+  },
+  {
     "name": "Technique de la Main Ouverte",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Technique-de-la-Main-Ouverte.png",

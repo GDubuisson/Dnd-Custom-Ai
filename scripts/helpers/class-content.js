@@ -71,25 +71,34 @@ export async function grantClassContent(actor, classKey, level) {
   // recalculée ici pour éviter de dupliquer la logique de la table SRD.
   const maxSpellLevel = actor.system.spells?.maxLevel ?? 0;
 
-  // Capacités et Sorts recherchés en parallèle (deux lectures de compendium indépendantes,
-  // cf. findClassContentCandidates) plutôt que l'une après l'autre : évite de doubler
-  // l'attente perçue par le joueur/MJ à la création ou à la montée de niveau.
-  const [features, spells] = await Promise.all([
-    findClassContentCandidates(
-      "feature",
-      "capacites",
-      (system) =>
-        // Une Capacité universelle (ex. Attaque d'opportunité, system.universal) est éligible
-        // pour toute classe, `system.class` restant vide dans ce cas — sinon, elle doit
-        // correspondre exactement à la clé de classe du personnage (comparaison de CLÉS, jamais
-        // de libellés localisés — cf. le bug historique documenté dans tests/README.md).
-        (system.universal || system.class === classKey) &&
-        (system.level ?? 1) <= level &&
-        // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
-        // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
-        // choisie par le personnage (cf. subclassKey ci-dessus).
-        (!system.subclass || system.subclass === subclassKey)
-    ),
+  // Capacités d'abord (les Sorts "bonus" ci-dessous dépendent de celles retenues, cf.
+  // grantsSpells) : cf. findClassContentCandidates.
+  const features = await findClassContentCandidates(
+    "feature",
+    "capacites",
+    (system) =>
+      // Une Capacité universelle (ex. Attaque d'opportunité, system.universal) est éligible
+      // pour toute classe, `system.class` restant vide dans ce cas — sinon, elle doit
+      // correspondre exactement à la clé de classe du personnage (comparaison de CLÉS, jamais
+      // de libellés localisés — cf. le bug historique documenté dans tests/README.md).
+      (system.universal || system.class === classKey) &&
+      (system.level ?? 1) <= level &&
+      // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
+      // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
+      // choisie par le personnage (cf. subclassKey ci-dessus).
+      (!system.subclass || system.subclass === subclassKey)
+  );
+
+  // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.
+  // FeatureData#grantsSpells, item-data.js) : une sous-classe de classe NON lanceuse peut fixer
+  // une petite liste de Sorts toujours octroyés avec elle, indépendamment de
+  // DND_CUSTOM.spellcastingClasses/maxSpellLevel (pas de gestion d'emplacements dédiée, "toujours
+  // prêts" comme le reste des Sorts de ce système simplifié). Noms de Sorts (texte libre, même
+  // convention que costsResource) plutôt que des clés : ce sont des Sorts nommément désignés par
+  // la sous-classe, pas un filtre par classe/niveau générique.
+  const bonusSpellNames = new Set(features.flatMap((feature) => [...(feature.system.grantsSpells ?? [])]));
+
+  const [spells, bonusSpells] = await Promise.all([
     isSpellcaster
       ? findClassContentCandidates(
           "spell",
@@ -97,10 +106,15 @@ export async function grantClassContent(actor, classKey, level) {
           (system) =>
             system.classes?.has?.(classKey) && (system.level === 0 || system.level <= maxSpellLevel)
         )
+      : [],
+    bonusSpellNames.size
+      ? findClassContentCandidates("spell", "sorts", () => true).then((candidates) =>
+          candidates.filter((item) => bonusSpellNames.has(item.name))
+        )
       : []
   ]);
 
-  const toGrant = [...features, ...spells].filter((item) => !ownedNames.has(item.name));
+  const toGrant = [...features, ...spells, ...bonusSpells].filter((item) => !ownedNames.has(item.name));
 
   if (toGrant.length) {
     await actor.createEmbeddedDocuments("Item", toGrant.map((item) => item.toObject()));

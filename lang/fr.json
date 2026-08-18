@@ -71,7 +71,11 @@
       "bard": { "lore": "Collège du Savoir" },
       "cleric": { "life": "Domaine de la Vie" },
       "druid": { "land": "Cercle de la Terre" },
-      "fighter": { "champion": "Champion" },
+      "fighter": {
+        "champion": "Champion",
+        "battleMaster": "Maître de guerre",
+        "eldritchKnight": "Chevalier occulte"
+      },
       "monk": { "openHand": "Voie de la Main Ouverte" },
       "paladin": { "devotion": "Serment de Dévotion" },
       "ranger": {
@@ -98,6 +102,11 @@
     },
     "Companion": {
       "Name": "Loup (compagnon de {owner})"
+    },
+    "Maneuvers": {
+      "precise": "Attaque précise (+1d8 aux dégâts)",
+      "push": "Repousser (la cible recule de 4,50 m si elle échoue à un jet de Force)",
+      "feint": "Feinte (avantage à la prochaine attaque contre cette cible ce tour)"
     },
     "Actor": {
       "Name": "Nom du personnage",

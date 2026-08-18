@@ -226,7 +226,20 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // #onSummonCompanion, actor-sheet.js/helpers/companion.js) une seule fois (flag
       // `beastCompanionCreated` posé sur l'Actor à la création, jamais recréé ensuite même si
       // le compagnon est supprimé). `false` pour l'immense majorité des Capacités.
-      summonsCompanion: new BooleanField({ required: true, initial: false })
+      summonsCompanion: new BooleanField({ required: true, initial: false }),
+      // Incantation mineure de sous-classe (ex. "Incantation mineure", Chevalier occulte,
+      // Guerrier) : liste de NOMS de Sorts (texte libre, comme costsResource ci-dessus — ce sont
+      // des Sorts nommément désignés par la sous-classe, pas un filtre par classe/niveau)
+      // octroyés automatiquement avec cette Capacité, même si la classe n'est pas dans
+      // DND_CUSTOM.spellcastingClasses (cf. grantClassContent, helpers/class-content.js). Vide
+      // pour l'immense majorité des Capacités.
+      grantsSpells: new SetField(new StringField({ blank: false }), { required: true, initial: [] }),
+      // Capacité qui propose un choix de manœuvre À CHAQUE utilisation (ex. "Dés de manœuvre",
+      // Maître de guerre, Guerrier) : contrairement à grantsChoice (choix ponctuel et définitif
+      // une seule fois), ce choix est reposé à chaque charge dépensée — cf. #onUseManeuver,
+      // actor-sheet.js, et DND_CUSTOM.maneuvers, config.js. `false` pour l'immense majorité des
+      // Capacités.
+      offersManeuverChoice: new BooleanField({ required: true, initial: false })
     };
   }
 }

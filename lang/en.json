@@ -71,7 +71,11 @@
       "bard": { "lore": "College of Lore" },
       "cleric": { "life": "Life Domain" },
       "druid": { "land": "Circle of the Land" },
-      "fighter": { "champion": "Champion" },
+      "fighter": {
+        "champion": "Champion",
+        "battleMaster": "Battle Master",
+        "eldritchKnight": "Eldritch Knight"
+      },
       "monk": { "openHand": "Way of the Open Hand" },
       "paladin": { "devotion": "Oath of Devotion" },
       "ranger": {
@@ -98,6 +102,11 @@
     },
     "Companion": {
       "Name": "Wolf ({owner}'s companion)"
+    },
+    "Maneuvers": {
+      "precise": "Precision Attack (+1d8 damage)",
+      "push": "Pushing Attack (target pushed 15 ft. if it fails a Strength save)",
+      "feint": "Feinting Attack (advantage on your next attack against that target this turn)"
     },
     "Actor": {
       "Name": "Character name",

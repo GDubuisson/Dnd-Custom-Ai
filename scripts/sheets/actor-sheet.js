@@ -125,6 +125,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
+      useManeuver: DndCustomActorSheet.#onUseManeuver,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -452,6 +453,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
         .map((spell) => ({ item: spell }))
     })).filter((group) => group.spells.length);
+    // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
+    // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
+    // moins un Sort octroyé — sinon ses 3 Sorts fixes n'apparaîtraient jamais sur sa fiche.
+    context.hasAnySpells = context.isSpellcaster || spells.length > 0;
     context.spellUses = system.spells.uses;
     context.concentratingOn = system.spells.concentratingOn;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
@@ -988,6 +993,47 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await requestBeastCompanion(this.actor);
   }
 
+  /** Dépense une charge de "Dés de manœuvre" (Maître de guerre, Guerrier) : contrairement à
+   *  #onChooseFeatureOption (choix ponctuel et définitif), ce choix de manœuvre est reproposé à
+   *  CHAQUE charge dépensée (cf. FeatureData#offersManeuverChoice, DND_CUSTOM.maneuvers,
+   *  config.js) — même mécanique de dialogue que #offerEquipSlotDialog
+   *  (sheets/inventory-drag-drop.js), juste rejouée à chaque utilisation plutôt qu'une fois. */
+  static async #onUseManeuver(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersManeuverChoice) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    const options = DND_CUSTOM.maneuvers;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="maneuver" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+    const chosenKey = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.maneuver?.value
+      }
+    });
+    if (!chosenKey) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
+    await roll.evaluate();
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `${item.name} — ${game.i18n.localize(options[chosenKey])} (${remaining}/${item.system.uses.max})`
+    });
+  }
+
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
    *  désavantage (cf. tooltip des boutons de jet). */
   static async #onRollAbility(event, target) {
@@ -1184,7 +1230,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // cf. simplification des Capacités de classe).
     const castsAsFreeRitual =
       item.system.ritual && RITUAL_CASTING_FEATURES.some((name) => hasFeature(this.actor.items.contents, name));
-    if (item.system.level > 0 && !castsAsFreeRitual) {
+    // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.
+    // FeatureData#grantsSpells) : ces Sorts sont "toujours prêts", jamais décomptés du pool —
+    // sans quoi ils resteraient inutilisables pour une classe non lanceuse (pool à 0/0, cf.
+    // rules.js > spellUsesForClass). Cherche parmi les Capacités possédées plutôt que sur le
+    // Sort lui-même : c'est la Capacité qui déclare la liste, jamais le Sort.
+    const castsAsFreeSubclassSpell = this.actor.items.some(
+      (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
+    );
+    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
       const uses = this.actor.system.spells.uses;
       if (uses.value <= 0) {
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));

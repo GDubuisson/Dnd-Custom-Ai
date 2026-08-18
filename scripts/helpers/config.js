@@ -82,7 +82,11 @@ DND_CUSTOM.subclasses = {
   bard: { lore: "DND_CUSTOM.Subclasses.bard.lore" },
   cleric: { life: "DND_CUSTOM.Subclasses.cleric.life" },
   druid: { land: "DND_CUSTOM.Subclasses.druid.land" },
-  fighter: { champion: "DND_CUSTOM.Subclasses.fighter.champion" },
+  fighter: {
+    champion: "DND_CUSTOM.Subclasses.fighter.champion",
+    battleMaster: "DND_CUSTOM.Subclasses.fighter.battleMaster",
+    eldritchKnight: "DND_CUSTOM.Subclasses.fighter.eldritchKnight"
+  },
   monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
   paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
   ranger: {
@@ -127,6 +131,15 @@ DND_CUSTOM.totemSpirits = {
   bear: "DND_CUSTOM.TotemSpirits.bear",
   eagle: "DND_CUSTOM.TotemSpirits.eagle",
   wolf: "DND_CUSTOM.TotemSpirits.wolf"
+};
+
+/** Manœuvres disponibles pour "Dés de manœuvre" (Maître de guerre, Guerrier) — reproposées à
+ *  chaque charge dépensée (cf. FeatureData#offersManeuverChoice, #onUseManeuver dans
+ *  actor-sheet.js), contrairement au choix ponctuel de DND_CUSTOM.totemSpirits ci-dessus. */
+DND_CUSTOM.maneuvers = {
+  precise: "DND_CUSTOM.Maneuvers.precise",
+  push: "DND_CUSTOM.Maneuvers.push",
+  feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */

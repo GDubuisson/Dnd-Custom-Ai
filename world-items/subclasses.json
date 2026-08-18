@@ -70,6 +70,26 @@
     }
   },
   {
+    "name": "Maître de guerre",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-de-guerre.webp",
+    "system": {
+      "classKey": "fighter",
+      "subclassKey": "battleMaster",
+      "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Ce Guerrier étudie l'art du combat sous toutes ses formes, employant des manœuvres tactiques précises plutôt que la seule force brute.</p><ul><li>Niveau 3 : Dés de manœuvre (4 charges, choix d'une manœuvre à chaque utilisation)</li></ul>"
+    }
+  },
+  {
+    "name": "Chevalier occulte",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chevalier-occulte.webp",
+    "system": {
+      "classKey": "fighter",
+      "subclassKey": "eldritchKnight",
+      "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Ce Guerrier complète sa maîtrise martiale par une incantation mineure de Magicien, apprise pour renforcer son combat.</p><ul><li>Niveau 3 : Incantation mineure (Bouclier, Prestidigitation, Lumière — toujours prêts)</li></ul>"
+    }
+  },
+  {
     "name": "Voie de la Main Ouverte",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Main-Ouverte.webp",
