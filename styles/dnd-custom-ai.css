@@ -65,6 +65,16 @@
   box-shadow: inset 0 0 70px rgba(43, 32, 17, 0.22);
 }
 
+/* Largeur plancher de la fiche de personnage (pas de plafond : librement agrandissable) — sous
+   ce seuil, l'en-tête (3 groupes de statistiques, cf. .header-stats plus bas) n'aurait plus la
+   place de reflouer sans tronquer son contenu. Foundry lit `computedStyle.minWidth` de cet
+   élément lui-même pour borner le redimensionnement (ApplicationV2#_onResizeMouseMove), donc ce
+   seul `min-width` suffit à empêcher physiquement de descendre en dessous, sans dépendre du CSS
+   interne de l'en-tête pour éviter un chevauchement. */
+.dnd-custom-ai.sheet.actor.character {
+  min-width: 640px;
+}
+
 /* En-tête et barre d'onglets restent fixes ; seul le contenu de l'onglet actif défile. */
 .dnd-custom-ai .sheet-header,
 .dnd-custom-ai nav.tabs,
@@ -144,11 +154,42 @@
   opacity: 0.75;
 }
 
+/* 3 groupes de statistiques (progression, classe, origine), cf. images_test/img_6.png et
+   character-sheet.hbs > .header-stat-col. `flex-wrap` reflue les groupes entiers sur une
+   nouvelle ligne en dessous d'une certaine largeur plutôt que de comprimer leur contenu :
+   jamais de chevauchement, quelle que soit la largeur de fenêtre au-dessus du plancher
+   min-width posé sur .dnd-custom-ai.sheet.actor.character. */
+.dnd-custom-ai .header-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.6rem 1.75rem;
+  width: 100%;
+}
+
+.dnd-custom-ai .header-stat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1 1 170px;
+  min-width: 150px;
+}
+
+/* Colonne Origine/Réaction : contenu plus court, n'a pas besoin de s'étirer autant que les deux
+   premières colonnes (progression/classe) quand la fiche s'élargit. */
+.dnd-custom-ai .header-stat-col-origin {
+  flex: 0 1 170px;
+}
+
 .dnd-custom-ai .header-row {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   width: 100%;
+}
+
+.dnd-custom-ai .header-stat-col .header-row {
+  gap: 0.6rem;
 }
 
 .dnd-custom-ai .header-row label {
@@ -332,13 +373,27 @@
   background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
 }
 
+/* Regroupe le libellé/chiffres MJ (.xp-gm-field, si MJ) au-dessus de la barre de XP plutôt que
+   côte à côte — retour de test, cf. images_test. */
+.dnd-custom-ai .xp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1 1 0;
+  min-width: 6rem;
+}
+
+.dnd-custom-ai .xp-field .xp-gm-field {
+  gap: 0;
+}
+
 /* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
    révèle que la progression relative vers le niveau suivant, jamais un chiffre — le total et
    les seuils exacts restent réservés au bloc MJ (.xp-gm-field). */
 .dnd-custom-ai .xp-bar {
   display: inline-flex;
   align-items: center;
-  width: 6rem;
+  width: 100%;
 }
 
 .dnd-custom-ai .xp-bar-track {
@@ -912,8 +967,29 @@
   margin: 0;
 }
 
-.dnd-custom-ai .spellcasting-stats {
+/* DD de sauvegarde/bonus d'attaque (gauche) et langues connues (droite) sur la même ligne, cf.
+   images_test/img_7.png — `.spellcasting-stats` est absent pour une classe non lanceuse de
+   sorts, auquel cas `.languages-block` reste seul sur la ligne (flex-start naturel, pas besoin
+   de cas particulier). `flex-wrap` fait passer les langues sous les DD/bonus dès que la fiche
+   est trop étroite pour les deux côte à côte, sans jamais les chevaucher. */
+.dnd-custom-ai .abilities-top-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem 1.5rem;
   margin: 0 0 0.9rem;
+}
+
+.dnd-custom-ai .abilities-top-row .spellcasting-stats {
+  margin: 0;
+  flex: 0 1 auto;
+}
+
+.dnd-custom-ai .abilities-top-row .languages-block {
+  margin: 0;
+  flex: 1 1 260px;
+  min-width: 220px;
 }
 
 .dnd-custom-ai .derived-stats span,
@@ -1758,11 +1834,26 @@
 
 /* ---------- Sorts ---------- */
 
+/* Séparateur centré entre l'en-tête de classe et la liste Capacités/Sorts, cf.
+   images_test/img_7.png — un seul chip ("Sorts par repos") pour l'instant, mais le sélecteur
+   reste un flex row générique (::before/::after) pour rester correct si un jour plusieurs
+   chips s'y ajoutent. */
 .dnd-custom-ai .spell-slots-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.6rem;
   margin: 0 0 0.9rem;
+}
+
+.dnd-custom-ai .spell-slots-row::before,
+.dnd-custom-ai .spell-slots-row::after {
+  content: "";
+  flex: 1 1 2rem;
+  min-width: 1.5rem;
+  height: 1px;
+  background: var(--dca-outline-variant);
 }
 
 .dnd-custom-ai .spell-slot-chip {

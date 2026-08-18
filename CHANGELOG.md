@@ -31,6 +31,18 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   pour le Barbare, mousse pour le Druide, arcane pour le Magicien, etc.), sur un bandeau
   parcheminé — toujours le même partial unique, seule la couleur du sceau varie désormais par
   classe (`data-class`, cf. `context.classFlavorKey`).
+- En-tête principal de la fiche personnage : réorganisé en 3 groupes de statistiques (Niveau/XP
+  + Points de vie, Classe/Sous-classe + CA/Vitesse, Origine + Réaction), chacun sur 2 lignes
+  empilées, qui reflouent proprement sur plusieurs lignes selon la largeur de la fenêtre plutôt
+  que de se chevaucher ; XP (MJ) déplacé au-dessus de la barre de progression plutôt qu'à côté.
+  Largeur minimale ajoutée à la fiche (640px de plancher, aucune largeur n'était imposée
+  auparavant ; toujours aucun maximum) pour garantir que cette mise en page reste lisible en
+  toute circonstance.
+- Onglet Capacités/Sorts : réorganisé (DD de sauvegarde/bonus d'attaque et langues connues sur
+  la même ligne, trait d'Origine puis identité de classe avant la liste elle-même, "Sorts par
+  repos" en séparateur centré) ; phrase d'indication de glisser-déposer sous les langues
+  retirée (redondante avec le glisser-déposer lui-même) ; langues classées par ordre d'ajout,
+  Commune toujours en tête, plutôt que par ordre alphabétique.
 
 ### Corrigé
 - Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de

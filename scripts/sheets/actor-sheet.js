@@ -388,10 +388,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     }
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
-    // ajoutées à la main (glisser depuis le compendium Langues).
+    // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
+    // l'ordre d'ajout (pas alphabétique), Commune forcée en tête quel que soit cet ordre — clé
+    // stable `system.category === "common"` comparée, jamais le nom localisé (cf. convention
+    // "clés stables" du projet). `items` reflète déjà l'ordre d'ajout (EmbeddedCollection en
+    // ordre de création) ; `Array#sort` est stable depuis ES2019 (V8/Electron), donc cette seule
+    // comparaison ne réordonne QUE Commune, laissant les autres langues dans leur ordre d'origine.
     context.languages = items
       .filter((item) => item.type === "language")
-      .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
+      .sort((a, b) => (a.system.category === "common" ? -1 : b.system.category === "common" ? 1 : 0));
     // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; pool unique de
     // charges (système simplifié, cf. CharacterData#prepareDerivedData et rules.js >
     // spellUsesForClass) plutôt qu'un emplacement par niveau.
