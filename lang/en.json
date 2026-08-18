@@ -107,6 +107,7 @@
       "JackOfAllTradesTooltip": "Half proficiency bonus added thanks to the Jack of All Trades feature",
       "CarryCapacity": "Carry Capacity",
       "LevelUpAvailable": "Level up available",
+      "XpLabel": "XP",
       "XpGmLabel": "XP (GM)",
       "XpGmTooltip": "Character's total experience, visible to the GM only — never shown to players",
       "XpMaxLevel": "max level",

@@ -107,6 +107,7 @@
       "JackOfAllTradesTooltip": "Moitié du bonus de maîtrise ajoutée grâce à la Capacité Aptitudes multiples",
       "CarryCapacity": "Capacité de charge",
       "LevelUpAvailable": "Niveau supérieur disponible",
+      "XpLabel": "XP",
       "XpGmLabel": "XP (MJ)",
       "XpGmTooltip": "Total d'expérience du personnage, visible du MJ uniquement — jamais affiché aux joueurs",
       "XpMaxLevel": "niveau maximum",

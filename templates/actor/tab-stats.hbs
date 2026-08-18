@@ -15,7 +15,7 @@
         </summary>
         <div class="conditions-checklist">
           {{#each conditions}}
-          <button type="button" class="condition-checkbox-row {{#if this.active}}active{{/if}}" data-action="toggleCondition" data-key="{{this.id}}">
+          <button type="button" class="condition-checkbox-row {{#if this.active}}active{{/if}}" data-action="toggleConditionSelection" data-key="{{this.id}}">
             <i class="fa-solid {{#if this.active}}fa-square-check{{else}}fa-square{{/if}}"></i>
             <img src="{{this.img}}" alt="">
             <span>{{this.label}}</span>
@@ -31,6 +31,16 @@
           <span class="ability-value">{{system.attributes.exhaustion}}</span>
           <button type="button" class="ability-btn" data-action="exhaustionIncrease" aria-label="+">+</button>
         </div>
+      </div>
+
+      {{! Bonus de maîtrise/Initiative/Perception passive : sur la même ligne que Liste d'état/
+          Épuisement plutôt que sous la liste de Compétences, cf. retour de test. }}
+      <div class="proficiency-bonus" title="{{localize 'DND_CUSTOM.Actor.ProficiencyBonusTooltip'}}">
+        {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
+      </div>
+      <div class="derived-stats">
+        <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
+        <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
       </div>
     </div>
   </div>
@@ -106,15 +116,6 @@
         </li>
         {{/each}}
       </ul>
-
-      <div class="proficiency-bonus" title="{{localize 'DND_CUSTOM.Actor.ProficiencyBonusTooltip'}}">
-        {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
-      </div>
-
-      <div class="derived-stats">
-        <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
-        <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
-      </div>
     </div>
   </div>
 </section>

@@ -754,8 +754,11 @@ describe("Onglet Capacités/Sorts", () => {
     });
 
     goToTab("stats");
+    // Retour de test (cf. tab-stats.cy.js > T-STATS-015) : cocher un état ne l'applique plus
+    // qu'à la fermeture de la liste déroulante.
     sheetRoot().find(".conditions-dropdown summary").click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="raging"]').click();
+    sheetRoot().find(".conditions-dropdown summary").click(); // ferme -> applique
     cy.window().should((win) => {
       expect(win.game.actors.get(barbareId).statuses.has("raging"), "état 'raging' actif après bascule").to.be.true;
     });
@@ -779,7 +782,8 @@ describe("Onglet Capacités/Sorts", () => {
     // Rebascule l'état "En Rage" à faux : ne fausse pas un futur run réutilisant ce personnage.
     goToTab("stats");
     sheetRoot().find(".conditions-dropdown summary").click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="raging"]').click();
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="raging"]').click();
+    sheetRoot().find(".conditions-dropdown summary").click(); // ferme -> applique le retrait
     cy.window().should((win) => {
       expect(win.game.actors.get(barbareId).statuses.has("raging")).to.be.false;
     });
