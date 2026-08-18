@@ -834,6 +834,38 @@
     }
   },
   {
+    "name": "Flamme protectrice",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Flamme-protectrice.png",
+    "system": {
+      "class": "cleric",
+      "subclass": "light",
+      "level": 1,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature à 9 m de vous que vous voyez subit des dégâts",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc, et la source des dégâts (si vivante) subit un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
+    }
+  },
+  {
+    "name": "Duplicata de ruse",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Duplicata-de-ruse.png",
+    "system": {
+      "class": "cleric",
+      "subclass": "trickery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus : créez une image illusoire de vous-même dans un espace libre à 9 m, qui dure 1 minute. Vous pouvez voir et entendre à travers elle, et la déplacer de 9 m en action bonus ; toute créature qui tente de vous localiser à vue doit réussir un test d'Intelligence contre votre DD de sorts sous peine de cibler l'image par erreur. 1 utilisation par repos court ou long."
+    }
+  },
+  {
     "name": "Sorts de cercle",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Sorts-de-cercle.png",

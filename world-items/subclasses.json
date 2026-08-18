@@ -70,6 +70,26 @@
     }
   },
   {
+    "name": "Domaine de la Lumière",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Lumiere.webp",
+    "system": {
+      "classKey": "cleric",
+      "subclassKey": "light",
+      "description": "<p>Sous-classe de Clerc (niveau 1, SRD 5e). Le Domaine de la Lumière canalise l'énergie radieuse pour repousser les ténèbres et protéger ses alliés d'un éclat aveuglant.</p><ul><li>Niveau 1 : Flamme protectrice</li></ul>"
+    }
+  },
+  {
+    "name": "Domaine de la Ruse",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Ruse.webp",
+    "system": {
+      "classKey": "cleric",
+      "subclassKey": "trickery",
+      "description": "<p>Sous-classe de Clerc (niveau 1, SRD 5e). Le Domaine de la Ruse enseigne la duperie et le mensonge au service d'un dieu farceur, préférant la manipulation à l'affrontement direct.</p><ul><li>Niveau 1 : Duplicata de ruse</li></ul>"
+    }
+  },
+  {
     "name": "Cercle de la Terre",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Terre.webp",
