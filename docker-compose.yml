@@ -1,5 +1,5 @@
 # Instance Foundry VTT isolée pour les tests "au réel" (E2E Cypress + intégration Quench),
-# cf. ClaudeFiles/testing/SETUP_TESTING.md et tests/README.md. N'affecte jamais le système
+# cf. tests/README.md. N'affecte jamais le système
 # livré : image officielle felddy/foundryvtt, ne monte que les chemins réellement publiés par
 # .github/workflows/release.yml (system.json, scripts, styles, templates, lang, assets, packs,
 # world-items), pas tout le repo (évite de polluer le conteneur avec node_modules/.git/

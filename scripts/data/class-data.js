@@ -5,7 +5,7 @@ const { HTMLField, SetField, StringField, NumberField } = foundry.data.fields;
 /** Type d'Item "class" : une des classes D&D 5e (SRD). Destiné au compendium "Classes"
  *  (system.json > packs), rempli à la main par le MJ. Description narrative + faits mécaniques
  *  de référence (sauvegardes maîtrisées, compétences à choisir, maîtrises d'armes) — cf.
- *  ClaudeFiles/ITEMS.md. Volontairement **informatif uniquement** : la fiche de personnage
+ *  ClaudeFiles/CONCEPTION_FONCTIONNELLE.md. Volontairement **informatif uniquement** : la fiche de personnage
  *  continue de lire CONFIG.DND_CUSTOM.classSavingThrows / .classSkillChoices /
  *  .classWeaponProficiencies / .classHitDice / .spellcastingClasses (scripts/helpers/config.js),
  *  seule source utilisée par les calculs (même statut que l'Item Origine aujourd'hui, mi-migré

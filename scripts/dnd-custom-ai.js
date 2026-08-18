@@ -112,7 +112,7 @@ Hooks.once("init", async () => {
     label: "DND_CUSTOM.SheetLabels.Vehicle"
   });
 
-  // Une fiche Handlebars dédiée par type d'Item (cf. ClaudeFiles/ITEMS.md).
+  // Une fiche Handlebars dédiée par type d'Item (cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md).
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, WeaponItemSheet, { types: ["weapon"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, ArmorItemSheet, { types: ["armor"], makeDefault: true });
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, GearItemSheet, { types: ["gear"], makeDefault: true });

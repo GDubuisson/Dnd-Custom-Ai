@@ -1993,8 +1993,9 @@
 }
 
 /* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,
-   moyen de transport) : une fiche Handlebars dédiée par type (cf. ClaudeFiles/ITEMS.md),
-   mais un habillage commun simple et cohérent avec le thème "Auberge et Grand Chemin". ---------- */
+   moyen de transport) : une fiche Handlebars dédiée par type (cf.
+   ClaudeFiles/CONCEPTION_FONCTIONNELLE.md), mais un habillage commun simple et cohérent avec
+   le thème "Auberge et Grand Chemin". ---------- */
 
 .dnd-custom-ai.sheet.item {
   display: flex;

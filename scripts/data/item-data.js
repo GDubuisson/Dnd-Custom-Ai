@@ -11,7 +11,7 @@ const ALL_SUBCLASS_KEYS = Object.values(DND_CUSTOM.subclasses).flatMap((bySubcla
 
 /** Champs communs aux armes/armures : objets physiques qui peuvent être équipés dans un
  *  emplacement de la fiche de personnage (cf. onglet "Équipement"). Poids toujours en kg
- *  (cf. ClaudeFiles/ITEMS.md > convention d'unités). */
+ *  (cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item). */
 function physicalItemSchema() {
   return {
     weight: new NumberField({ required: true, min: 0, initial: 0 }),

@@ -5,7 +5,7 @@ qu'un document y est ajouté depuis l'interface (glisser un Item de type `spell`
 monde vers ce compendium, ou "Créer un objet" directement dedans).
 
 Chaque sort est un Item de type `spell`, édité via sa fiche dédiée
-(`templates/item/spell-sheet.hbs`) — cf. `ClaudeFiles/ITEMS.md` pour le détail des champs.
+(`templates/item/spell-sheet.hbs`) — cf. `ClaudeFiles/CONCEPTION_FONCTIONNELLE.md` pour le détail des champs.
 
 Les 15 sorts SRD 5e pré-écrits dans `world-items/spells.json` (5 tours de magie, niveaux 1 à
 3 — sélection non exhaustive, cf. `world-items/README.md`) y sont importés **automatiquement

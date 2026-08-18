@@ -5,7 +5,7 @@ qu'un document y est ajouté depuis l'interface (glisser un Item de type `featur
 monde vers ce compendium, ou "Créer un objet" directement dedans).
 
 Chaque capacité de classe est un Item de type `feature`, édité via sa fiche dédiée
-(`templates/item/feature-sheet.hbs`) — cf. `ClaudeFiles/ITEMS.md` pour le détail des champs
+(`templates/item/feature-sheet.hbs`) — cf. `ClaudeFiles/CONCEPTION_FONCTIONNELLE.md` pour le détail des champs
 (`system.class`, `system.requiresRoll`, `system.rollFormula`, `system.uses.*`).
 
 Les 24 capacités SRD 5e pré-écrites dans `world-items/features.json` (2 par classe, niveaux 1

@@ -4,7 +4,7 @@ Suite de tests pour le système `dnd-custom-ai`. Usage développement uniquement
 `node_modules/` et `tests/` ne sont jamais inclus dans l'archive livrée (cf.
 `.github/workflows/release.yml`, qui ne zippe que `system.json scripts styles templates lang
 assets packs`) — le système reste 100% vanilla JS chargé directement par Foundry, sans étape de
-build (cf. `ClaudeFiles/PROJECT.md`).
+build (cf. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`).
 
 ## Installation (une fois)
 
@@ -60,8 +60,7 @@ npm run test:all      # les deux
 
 Couche complémentaire qui comble la limite ci-dessus : lance une vraie instance Foundry VTT
 dans Docker et teste le vrai client (E2E via Cypress) et le vrai pipeline Document/DataModel
-(intégration via Quench), plutôt que des fixtures isolées. Détail de la démarche d'origine :
-`ClaudeFiles/testing/SETUP_TESTING.md` (gitignored, non versionné).
+(intégration via Quench), plutôt que des fixtures isolées.
 
 ### Prérequis (manuels, non automatisables depuis une session Claude Code)
 

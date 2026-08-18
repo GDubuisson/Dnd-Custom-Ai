@@ -1,7 +1,7 @@
 name: Foundry VTT System Tests
 
 # Tests E2E "au réel" (vrai client Foundry, cf. docker-compose.yml et
-# ClaudeFiles/testing/SETUP_TESTING.md) — complète .github/workflows/release.yml, ne le
+# tests/README.md) — complète .github/workflows/release.yml, ne le
 # remplace pas. Nécessite 3 secrets de dépôt (Settings > Secrets and variables > Actions) :
 # FOUNDRY_USERNAME, FOUNDRY_PASSWORD, FOUNDRY_LICENSE_KEY (licence Foundry VTT valide) — le
 # job échouera tant qu'ils ne sont pas renseignés, ce fichier ne les configure pas lui-même.
