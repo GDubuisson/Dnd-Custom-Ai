@@ -533,26 +533,45 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
     cy.openActorSheet(sharedActorId);
   });
 
-  it("bascule un état : l'ActiveEffect est créée puis retirée (T-STATS-015)", () => {
-    // La liste des états est repliée par défaut (`<details>`, retour de test — cf.
-    // styles/dnd-custom-ai.css > .conditions-dropdown) : un re-render complet de la fiche suit
-    // chaque bascule (donnée modifiée), qui régénère le HTML et referme le `<details>` — il faut
-    // donc le rouvrir avant chaque clic, pas seulement le premier.
+  it("plusieurs états cochés pendant que la liste reste ouverte, appliqués en un seul geste à sa fermeture (T-STATS-015)", () => {
+    // Retour de test : cocher un état ne referme plus la liste ni ne met à jour l'Actor
+    // immédiatement (cf. actor-sheet.js > #onToggleConditionSelection, bascule purement
+    // visuelle) — seule la fermeture de la liste déroulante applique la sélection
+    // (#applyPendingConditions), en un seul geste pour tous les états cochés pendant qu'elle
+    // était ouverte. Deux états cochés dans la même ouverture ci-dessous prouvent le
+    // multi-sélection (rien n'est appliqué tant qu'elle reste ouverte).
     sheetRoot().find(".conditions-dropdown summary").click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="poisoned"]').click();
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').click();
+    sheetRoot().find(".conditions-dropdown").should("have.attr", "open");
     cy.window().should((win) => {
-      expect(win.game.actors.get(sharedActorId).statuses.has("poisoned")).to.be.true;
+      expect(win.game.actors.get(sharedActorId).statuses.has("poisoned"), "pas encore appliqué, liste toujours ouverte").to.be
+        .false;
+    });
+
+    sheetRoot().find(".conditions-dropdown summary").click(); // ferme -> applique les 2 d'un coup
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      expect(actor.statuses.has("poisoned"), "poisoned appliqué à la fermeture").to.be.true;
+      expect(actor.statuses.has("prone"), "prone appliqué à la fermeture (multi-sélection)").to.be.true;
+    });
+
+    sheetRoot().find(".conditions-dropdown summary").click(); // rouvre
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="poisoned"]').should("have.class", "active");
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').should("have.class", "active");
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="poisoned"]').click();
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').click();
+    sheetRoot().find(".conditions-dropdown summary").click(); // ferme -> retire les 2 d'un coup
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      expect(actor.statuses.has("poisoned")).to.be.false;
+      expect(actor.statuses.has("prone")).to.be.false;
     });
 
     sheetRoot().find(".conditions-dropdown summary").click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("have.class", "active");
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
-    cy.window().should((win) => {
-      expect(win.game.actors.get(sharedActorId).statuses.has("poisoned")).to.be.false;
-    });
-
-    sheetRoot().find(".conditions-dropdown summary").click();
-    sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').should("not.have.class", "active");
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="poisoned"]').should("not.have.class", "active");
+    sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').should("not.have.class", "active");
   });
 
   it("Exhaustion +/- reste bornée entre 0 et 6 (T-STATS-016)", () => {

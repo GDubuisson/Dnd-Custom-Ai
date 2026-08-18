@@ -23,6 +23,11 @@
                 {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
               </span>
             </div>
+            {{else}}
+            {{! Retour de test : côté Joueur, la jauge n'avait qu'une infobulle, aucun libellé
+                visible en permanence — même position/style que le bloc MJ ci-dessus, sans les
+                chiffres exacts (réservés au MJ, cf. XpBarTooltip/XpGmTooltip). }}
+            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpLabel"}}</span>
             {{/if}}
             <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
               <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>

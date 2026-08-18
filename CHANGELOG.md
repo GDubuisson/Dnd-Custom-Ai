@@ -43,8 +43,18 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   repos" en séparateur centré) ; phrase d'indication de glisser-déposer sous les langues
   retirée (redondante avec le glisser-déposer lui-même) ; langues classées par ordre d'ajout,
   Commune toujours en tête, plutôt que par ordre alphabétique.
+- Onglet Statistiques : Bonus de maîtrise, Initiative et Perception passive rejoignent la ligne
+  Liste d'état/Épuisement (au lieu d'être sous la liste de Compétences) ; les 6 cases de
+  caractéristiques passent d'une pile verticale à une grille 2 colonnes x 3 lignes, pour tenir
+  sans défiler dans une fenêtre de fiche plus basse (visées à 830px de haut).
 
 ### Corrigé
+- Jauge d'XP : libellé "XP" désormais visible en permanence côté Joueur (auparavant seulement
+  une infobulle au survol, aucun texte affiché).
+- Liste déroulante des états (onglet Statistiques) : cocher un état ne l'applique plus
+  immédiatement à l'Actor (donc ne referme plus la liste à chaque clic) — la sélection n'est
+  appliquée qu'à la fermeture de la liste, en un seul geste pour tous les états changés pendant
+  qu'elle était ouverte, ce qui permet d'en cocher plusieurs d'affilée.
 - Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de
   Classe — ce système n'expose jamais ce concept au joueur (PV max calculés automatiquement,
   repos/soins fixes ou via dés génériques).

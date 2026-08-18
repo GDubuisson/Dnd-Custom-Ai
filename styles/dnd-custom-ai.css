@@ -565,8 +565,8 @@
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  margin: 0 0 0.9rem;
-  padding-bottom: 0.35rem;
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.3rem;
   font-family: var(--dca-font-headline);
   font-size: 1.3rem;
   font-weight: 600;
@@ -726,11 +726,14 @@
   gap: 1rem;
 }
 
+/* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
+   les 6 cases ne tenaient plus toutes à l'écran sans défiler dès qu'une fenêtre de fiche assez
+   basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne. */
 .dnd-custom-ai .abilities-column {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
   gap: 0.4rem;
-  flex: 0 0 180px;
+  flex: 0 0 320px;
 }
 
 .dnd-custom-ai .skills-column {
@@ -948,8 +951,8 @@
 .dnd-custom-ai .proficiency-bonus {
   display: inline-flex;
   align-items: center;
-  margin: 1rem 0 0.5rem;
-  padding: 0.3rem 0.7rem;
+  margin: 0;
+  padding: 0.3rem 0.6rem;
   border-radius: 999px;
   background: var(--dca-secondary-container);
   color: var(--dca-on-secondary-container);
@@ -1018,22 +1021,39 @@
 }
 
 .dnd-custom-ai .conditions-panel {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .dnd-custom-ai .conditions-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: flex-start;
+}
+
+/* Un peu plus compact que .derived-stats/.spellcasting-stats de l'onglet Capacités/Sorts (pas
+   touché, cf. sa propre mise au point) : aide les 5 éléments de cette ligne (états, épuisement,
+   bonus de maîtrise, initiative, perception passive) à tenir sur une seule ligne à une largeur
+   de fiche courante plutôt que de retomber à 2 lignes. */
+.dnd-custom-ai .conditions-row .derived-stats {
+  gap: 0.4rem;
+}
+
+.dnd-custom-ai .conditions-row .derived-stats span {
+  padding: 0.3rem 0.6rem;
 }
 
 /* Retour de test : la version précédente (grille de pastilles cliquables, une par état, toutes
    visibles en permanence) jugée peu claire — remplacée par une vraie liste déroulante (élément
    natif `<details>`, pas de JS requis) : repliée par défaut sur un résumé des états actifs
-   uniquement, dépliée sur une liste à cocher complète. Même mécanique de bascule qu'avant
-   (`data-action="toggleCondition"` sur un `<button>`, cf. actor-sheet.js/npc-sheet.js) — seule
-   l'habillage change, l'icône case à cocher (fa-square/fa-square-check) remplace la pastille. */
+   uniquement, dépliée sur une liste à cocher complète. Icône case à cocher (fa-square/
+   fa-square-check) à la place de la pastille. Côté fiche personnage (actor-sheet.js), cocher un
+   état ne fait plus qu'une bascule visuelle locale (`data-action="toggleConditionSelection"`) :
+   la sélection n'est appliquée à l'Actor qu'à la fermeture de la liste (retour de test — un
+   `actor.update()` par clic re-render-ait toute la fiche et refermait le `<details>`,
+   empêchant de cocher plusieurs états d'affilée sans le rouvrir à chaque fois). La fiche PNJ
+   (npc-sheet.js) garde encore l'ancien mécanisme immédiat (`data-action="toggleCondition"`),
+   son usage typique ne cumulant pas plusieurs états à la fois. */
 .dnd-custom-ai .conditions-dropdown {
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.4rem;
@@ -1180,8 +1200,8 @@
 .dnd-custom-ai .exhaustion-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.7rem;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 999px;
   border: 1px solid var(--dca-outline-variant);
   background: var(--dca-surface-lowest);

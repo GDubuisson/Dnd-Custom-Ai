@@ -93,7 +93,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollSkill: DndCustomActorSheet.#onRollSkill,
       rollWeaponAttack: DndCustomActorSheet.#onRollWeaponAttack,
       rollWeaponDamage: DndCustomActorSheet.#onRollWeaponDamage,
-      toggleCondition: DndCustomActorSheet.#onToggleCondition,
+      toggleConditionSelection: DndCustomActorSheet.#onToggleConditionSelection,
       exhaustionIncrease: DndCustomActorSheet.#onExhaustionIncrease,
       exhaustionDecrease: DndCustomActorSheet.#onExhaustionDecrease,
       castSpell: DndCustomActorSheet.#onCastSpell,
@@ -160,6 +160,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     );
     if (wizardOpen) return Promise.resolve(this);
     return super.render(...args);
+  }
+
+  /** @override
+   *  Rebranche la persistance des états (cf. #onToggleConditionSelection/
+   *  #applyPendingConditions) après chaque rendu — un nouveau `<details class="conditions-
+   *  dropdown">` est recréé à chaque fois (partial Handlebars), donc pas de garde anti-doublon
+   *  nécessaire ici : l'ancien nœud et son listener disparaissent avec lui. */
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this.#attachConditionsListeners();
   }
 
   /** @override
@@ -1324,10 +1334,44 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Bascule un état (cf. CONFIG.statusEffects) : Actor#toggleStatusEffect crée/retire
-   *  l'ActiveEffect correspondante (méthode native Foundry). */
-  static async #onToggleCondition(event, target) {
-    await this.actor.toggleStatusEffect(target.dataset.key);
+  /** Bascule purement visuelle (classe `.active` + icône case à cocher) de la sélection en
+   *  attente d'un état dans la liste déroulante — ne touche jamais l'Actor. Retour de test :
+   *  l'ancienne version appelait `actor.toggleStatusEffect` (donc un `actor.update()`) à chaque
+   *  clic, déclenchant un re-render complet qui régénère le `<details>` et le referme,
+   *  empêchant de cocher plusieurs états d'affilée sans rouvrir la liste à chaque fois. L'Actor
+   *  n'est désormais mis à jour qu'à la fermeture de la liste, en un seul geste pour tous les
+   *  états changés (cf. #applyPendingConditions, branché par #attachConditionsListeners). */
+  static #onToggleConditionSelection(event, target) {
+    const nowActive = target.classList.toggle("active");
+    const icon = target.querySelector("i");
+    icon.classList.toggle("fa-square", !nowActive);
+    icon.classList.toggle("fa-square-check", nowActive);
+  }
+
+  /** Branche la persistance des états sur la fermeture de la liste déroulante (évènement natif
+   *  `toggle` d'un `<details>`, déclenché à l'ouverture ET à la fermeture — seule la fermeture
+   *  nous intéresse ici, repérée par `details.open` déjà repassé à `false`). */
+  #attachConditionsListeners() {
+    const details = this.element.querySelector(".conditions-dropdown");
+    if (!details) return;
+    details.addEventListener("toggle", () => {
+      if (details.open) return;
+      this.#applyPendingConditions(details);
+    });
+  }
+
+  /** Compare la sélection en attente (classe `.active` posée par #onToggleConditionSelection)
+   *  à l'état réel de l'Actor, et ne touche (via `Actor#toggleStatusEffect`, qui crée/retire
+   *  l'ActiveEffect correspondante) que les états qui ont effectivement changé — jamais un
+   *  Promise.all sur plusieurs bascules simultanées : des créations/suppressions concurrentes
+   *  de documents embarqués sur le même Actor pourraient se marcher dessus. */
+  async #applyPendingConditions(details) {
+    const rows = [...details.querySelectorAll(".condition-checkbox-row")];
+    const current = this.actor.statuses;
+    const changed = rows.filter((row) => row.classList.contains("active") !== current.has(row.dataset.key));
+    for (const row of changed) {
+      await this.actor.toggleStatusEffect(row.dataset.key);
+    }
   }
 
   static async #onExhaustionIncrease() {
