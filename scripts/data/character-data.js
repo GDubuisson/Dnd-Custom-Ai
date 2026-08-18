@@ -136,7 +136,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // Foundry redéclenche "updateCombat" avec `round` dans les changements SANS que sa valeur
         // n'ait réellement progressé (ex. plusieurs mises à jour internes lors du démarrage d'un
         // combat) — seul un round strictement supérieur à cette valeur fait avancer le décompte.
-        rageLastRound: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+        rageLastRound: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        // Choix ponctuel et définitif de l'esprit totem (Voie du Cœur sauvage, Barbare — cf.
+        // FeatureData#grantsChoice = "totemSpirit", "Aspect de la bête" dans features.json) :
+        // vide tant que non choisi (bouton "Choisir" affiché, #onChooseFeatureOption,
+        // actor-sheet.js), jamais réinitialisé une fois posé.
+        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })

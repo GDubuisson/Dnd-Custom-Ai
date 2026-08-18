@@ -74,7 +74,11 @@ DND_CUSTOM.classFlavorIcon = {
  *  pour l'octroi automatique des Capacités liées (system.subclass sur FeatureData, libellé
  *  localisé exact, même convention que system.class). */
 DND_CUSTOM.subclasses = {
-  barbarian: { berserker: "DND_CUSTOM.Subclasses.barbarian.berserker" },
+  barbarian: {
+    berserker: "DND_CUSTOM.Subclasses.barbarian.berserker",
+    wildheart: "DND_CUSTOM.Subclasses.barbarian.wildheart",
+    wildMagic: "DND_CUSTOM.Subclasses.barbarian.wildMagic"
+  },
   bard: { lore: "DND_CUSTOM.Subclasses.bard.lore" },
   cleric: { life: "DND_CUSTOM.Subclasses.cleric.life" },
   druid: { land: "DND_CUSTOM.Subclasses.druid.land" },
@@ -105,6 +109,16 @@ DND_CUSTOM.subclassLevel = {
   sorcerer: 1,
   warlock: 1,
   wizard: 2
+};
+
+/** Esprits totems disponibles pour "Aspect de la bête" (Voie du Cœur sauvage, Barbare) — choix
+ *  ponctuel et définitif proposé une fois la Capacité octroyée (cf. FeatureData#grantsChoice,
+ *  CharacterData#combat.totemSpirit, #onChooseFeatureOption dans actor-sheet.js). Clé stable ->
+ *  clé de localisation, même convention que DND_CUSTOM.subclasses ci-dessus. */
+DND_CUSTOM.totemSpirits = {
+  bear: "DND_CUSTOM.TotemSpirits.bear",
+  eagle: "DND_CUSTOM.TotemSpirits.eagle",
+  wolf: "DND_CUSTOM.TotemSpirits.wolf"
 };
 
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */

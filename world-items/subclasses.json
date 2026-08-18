@@ -10,6 +10,26 @@
     }
   },
   {
+    "name": "Voie du Cœur sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-du-Coeur-sauvage.webp",
+    "system": {
+      "classKey": "barbarian",
+      "subclassKey": "wildheart",
+      "description": "<p>Sous-classe de Barbare (niveau 3, inspirée de Baldur's Gate 3). Ce Barbare puise sa rage dans un esprit animal choisi une fois pour toutes : Ours (robustesse), Aigle (célérité et vivacité) ou Loup (coordination de meute).</p><ul><li>Niveau 3 : Aspect de la bête (choix définitif de l'esprit totem)</li><li>Niveau 6 : Instincts du totem</li></ul>"
+    }
+  },
+  {
+    "name": "Voie de la Magie sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Magie-sauvage.webp",
+    "system": {
+      "classKey": "barbarian",
+      "subclassKey": "wildMagic",
+      "description": "<p>Sous-classe de Barbare (niveau 3, inspirée de Baldur's Gate 3). La rage de ce Barbare est teintée d'une magie chaotique incontrôlée : chaque entrée en Rage déclenche une Surtenance sauvage imprévisible, tirée au hasard.</p><ul><li>Niveau 3 : Surtenance sauvage (tirage automatique à chaque Rage)</li><li>Niveau 6 : Volonté indomptable de la sauvagerie</li></ul>"
+    }
+  },
+  {
     "name": "Collège du Savoir",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-du-Savoir.webp",

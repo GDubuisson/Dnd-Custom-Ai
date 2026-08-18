@@ -109,6 +109,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
+      chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -396,6 +397,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         max: resource.system.uses.max
       };
     }
+    // Choix ponctuel proposé par une Capacité (`system.grantsChoice`, ex. "Aspect de la bête") :
+    // bouton "Choisir" affiché (tab-abilities.hbs) tant que le champ ciblé
+    // (`system.combat.<grantsChoice>`) est encore vide, par id de Capacité (même convention
+    // lookup-par-id que featureResourceState ci-dessus).
+    context.featureChoiceMade = {};
+    for (const feature of context.features) {
+      const fieldKey = feature.system.grantsChoice;
+      if (fieldKey) context.featureChoiceMade[feature.id] = !!this.actor.system.combat[fieldKey];
+    }
+
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
     // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
@@ -908,6 +919,43 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         feature: item.name
       })
     });
+  }
+
+  /** Choix ponctuel et définitif proposé par une Capacité (`FeatureData#grantsChoice`, ex.
+   *  "Aspect de la bête", Voie du Cœur sauvage/Barbare) : petite fenêtre à choix unique (radio),
+   *  même mécanique que offerSubclassChoiceDialog (helpers/subclass-choice.js)/
+   *  #offerEquipSlotDialog (sheets/inventory-drag-drop.js). Le champ ciblé
+   *  (`system.combat.<grantsChoice>`) et les options possibles viennent respectivement de
+   *  `grantsChoice` lui-même et de DND_CUSTOM.totemSpirits (seule table de choix existante
+   *  pour l'instant, cf. config.js) — n'affiche rien si le choix est déjà fait (bouton déjà
+   *  masqué côté template de toute façon, revérifié ici par sécurité). */
+  static async #onChooseFeatureOption(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    const fieldKey = item?.system.grantsChoice;
+    if (!fieldKey || this.actor.system.combat[fieldKey]) return;
+
+    const options = DND_CUSTOM.totemSpirits;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="chosenOption" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+
+    const chosenKey = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.chosenOption?.value
+      }
+    });
+    if (!chosenKey) return;
+
+    await this.actor.update({ [`system.combat.${fieldKey}`]: chosenKey });
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =

@@ -63,7 +63,11 @@
       "wizard": "Wizard"
     },
     "Subclasses": {
-      "barbarian": { "berserker": "Path of the Berserker" },
+      "barbarian": {
+        "berserker": "Path of the Berserker",
+        "wildheart": "Path of the Wild Heart",
+        "wildMagic": "Path of Wild Magic"
+      },
       "bard": { "lore": "College of Lore" },
       "cleric": { "life": "Life Domain" },
       "druid": { "land": "Circle of the Land" },
@@ -75,6 +79,14 @@
       "sorcerer": { "draconic": "Draconic Bloodline" },
       "warlock": { "fiend": "The Fiend" },
       "wizard": { "evocation": "School of Evocation" }
+    },
+    "TotemSpirits": {
+      "bear": "Bear",
+      "eagle": "Eagle",
+      "wolf": "Wolf"
+    },
+    "WildMagic": {
+      "BarbarianTableName": "Wild Surge (Barbarian)"
     },
     "Actor": {
       "Name": "Character name",
@@ -294,6 +306,8 @@
       "ConcentratingOn": "Concentrating on:",
       "DropConcentration": "Drop concentration",
       "RequiresStateTooltip": "Requires: {state}",
+      "ChooseOptionConfirm": "Choose",
+      "ChooseOptionTooltip": "One-time, permanent choice",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
         "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },

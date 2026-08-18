@@ -687,6 +687,65 @@
     }
   },
   {
+    "name": "Aspect de la bête",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Aspect-de-la-bete.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildheart",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "grantsChoice": "totemSpirit",
+      "description": "Choix ponctuel et définitif d'un esprit totem (bouton \"Choisir\") : Ours (robustesse, résistance accrue en Rage), Aigle (célérité, difficile à rattraper en Rage) ou Loup (coordination, avantage aux alliés proches d'une cible que vous avez touchée). Le choix flavore aussi \"Instincts du totem\" (niveau 6)."
+    }
+  },
+  {
+    "name": "Instincts du totem",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Instincts-du-totem.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildheart",
+      "level": 6,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Une fois par repos court ou long, en Rage : jet de 1d6 de bonus (dégâts, résistance à un test, ou effet narratif) dont l'interprétation exacte dépend de l'esprit totem choisi (Aspect de la bête) — au MJ de trancher l'application précise selon Ours/Aigle/Loup."
+    }
+  },
+  {
+    "name": "Surtenance sauvage",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Surtenance-sauvage.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildMagic",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous entrez en Rage, un effet de Surtenance sauvage aléatoire se déclenche automatiquement et est annoncé dans le chat (tirage sur la table \"Surtenance sauvage (Barbare)\") — imprévisible, parfois utile, parfois anodin."
+    }
+  },
+  {
+    "name": "Volonté indomptable de la sauvagerie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Volonte-indomptable-de-la-sauvagerie.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildMagic",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long, juste après un tirage de Surtenance sauvage dont l'effet vous déplaît : dépensez cette charge pour l'ignorer et n'en subir aucun effet."
+    }
+  },
+  {
     "name": "Mots cinglants",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Mots-cinglants.png",

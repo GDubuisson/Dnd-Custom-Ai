@@ -63,7 +63,11 @@
       "wizard": "Magicien"
     },
     "Subclasses": {
-      "barbarian": { "berserker": "Voie du Berserker" },
+      "barbarian": {
+        "berserker": "Voie du Berserker",
+        "wildheart": "Voie du Cœur sauvage",
+        "wildMagic": "Voie de la Magie sauvage"
+      },
       "bard": { "lore": "Collège du Savoir" },
       "cleric": { "life": "Domaine de la Vie" },
       "druid": { "land": "Cercle de la Terre" },
@@ -75,6 +79,14 @@
       "sorcerer": { "draconic": "Lignage draconique" },
       "warlock": { "fiend": "Le Fiélon" },
       "wizard": { "evocation": "École d'évocation" }
+    },
+    "TotemSpirits": {
+      "bear": "Ours",
+      "eagle": "Aigle",
+      "wolf": "Loup"
+    },
+    "WildMagic": {
+      "BarbarianTableName": "Surtenance sauvage (Barbare)"
     },
     "Actor": {
       "Name": "Nom du personnage",
@@ -294,6 +306,8 @@
       "ConcentratingOn": "Concentré sur :",
       "DropConcentration": "Rompre la concentration",
       "RequiresStateTooltip": "Nécessite : {state}",
+      "ChooseOptionConfirm": "Choisir",
+      "ChooseOptionTooltip": "Choix ponctuel et définitif",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute." },
         "bard": { "Title": "Inspiration bardique", "Tagline": "Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société." },

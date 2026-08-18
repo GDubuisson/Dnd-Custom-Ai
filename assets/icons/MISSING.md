@@ -56,20 +56,26 @@ Athlète (`Athlete.png`), Doué (`Doue.png`), Sentinelle (`Sentinelle.png`), Ale
 (`Magie-dinitie.png`), Résilient (`Resilient.png`), Guérisseur (`Guerisseur.png`), Combat monté
 (`Combat-monte.png`)
 
-## Sous-classes (`world-items/subclasses.json`) — 0 / 12 ⚠️
+## Sous-classes (`world-items/subclasses.json`) — 0 / 14 ⚠️
 
 Aucune icône fournie pour ce fichier, dossier `assets/icons/subclasses/` inexistant. Dépose une
 image nommée comme indiqué (idéalement un blason dans le même esprit que les 12 badges de
 Classe déjà fournis, cf. section Classes ci-dessous) :
 
-Voie du Berserker (`Voie-du-Berserker.webp`), Collège du Savoir (`College-du-Savoir.webp`),
-Domaine de la Vie (`Domaine-de-la-Vie.webp`), Cercle de la Terre (`Cercle-de-la-Terre.webp`),
-Champion (`Champion.webp`), Voie de la Main Ouverte (`Voie-de-la-Main-Ouverte.webp`), Serment de
+Voie du Berserker (`Voie-du-Berserker.webp`), Voie du Cœur sauvage
+(`Voie-du-Coeur-sauvage.webp`), Voie de la Magie sauvage (`Voie-de-la-Magie-sauvage.webp`,
+Barbare), Collège du Savoir (`College-du-Savoir.webp`), Domaine de la Vie
+(`Domaine-de-la-Vie.webp`), Cercle de la Terre (`Cercle-de-la-Terre.webp`), Champion
+(`Champion.webp`), Voie de la Main Ouverte (`Voie-de-la-Main-Ouverte.webp`), Serment de
 Dévotion (`Serment-de-Devotion.webp`), Chasseur (`Chasseur.webp`), Voleur (`Voleur.webp`),
 Lignage draconique (`Lignage-draconique.webp`), Le Fiélon (`Le-Fielon.webp`), École
 d'évocation (`Ecole-devocation.webp`)
 
-## Capacités (`world-items/features.json`) — 25 / 74, 49 en attente ⚠️
+Nouvelles sous-classes en cours d'ajout (chantier "plusieurs sous-classes par classe", inspiration
+BG3) : 2 de plus par classe au fil des lots — les icônes correspondantes viendront s'ajouter ici
+à mesure, pas seulement les 2 du Barbare listées ci-dessus.
+
+## Capacités (`world-items/features.json`) — 25 / 78, 53 en attente ⚠️
 
 **Corrigé le 2026-08-19** : cette section était périmée (annonçait 24/24 alors que
 `features.json` a grossi depuis — un lot de Capacités supplémentaires par classe a été ajouté
@@ -85,14 +91,17 @@ arcanique, Ennemi juré, Explorateur-né, Attaque sournoise, Métamagie, Invocat
 Action rusée (`Action-rusee.png`, source : wiki Baldur's Gate 3 — asset sous droit d'auteur
 Larian/WotC, **pas** libre de droit, même avertissement que pour les icônes de Sorts).
 
-**En attente (49)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
+**En attente (53)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
 ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source libre de droit) :
 
 - **Sans classe** : Attaque d'opportunité (`Attaque-dopportunite.png`)
 - **Barbare** : Attaque supplémentaire (Barbare) (`Attaque-supplementaire-Barbare.png`),
   Vitesse accrue (`Vitesse-accrue.png`), Instinct sauvage (`Instinct-sauvage.png`), Critique
   brutal (`Critique-brutal.png`), Frénésie (`Frenesie.png`), Rage sans esprit
-  (`Rage-sans-esprit.png`)
+  (`Rage-sans-esprit.png`), Aspect de la bête (`Aspect-de-la-bete.png`, Voie du Cœur sauvage),
+  Instincts du totem (`Instincts-du-totem.png`, Voie du Cœur sauvage), Surtenance sauvage
+  (`Surtenance-sauvage.png`, Voie de la Magie sauvage), Volonté indomptable de la sauvagerie
+  (`Volonte-indomptable-de-la-sauvagerie.png`, Voie de la Magie sauvage)
 - **Barde** : Chant de repos (`Chant-de-repos.png`), Source d'inspiration
   (`Source-dinspiration.png`), Contre-chant (`Contre-chant.png`), Mots cinglants
   (`Mots-cinglants.png`), Sorts supplémentaires (`Sorts-supplementaires.png`)
@@ -163,7 +172,7 @@ inchangée, jamais affichée telle quelle).
 
 ## Ce qui reste réellement à faire
 
-- **Capacités** : 25 / 74 (49 en attente, cf. section dédiée ci-dessus)
+- **Capacités** : 25 / 78 (53 en attente, cf. section dédiée ci-dessus)
 - **Sorts** : 16 / 42 (26 en attente, cf. section dédiée ci-dessus)
 - **Dons** : 0 / 10 (aucune icône fournie, cf. section dédiée ci-dessus)
-- **Sous-classes** : 0 / 12 (aucune icône fournie, cf. section dédiée ci-dessus)
+- **Sous-classes** : 0 / 14 (aucune icône fournie, cf. section dédiée ci-dessus)

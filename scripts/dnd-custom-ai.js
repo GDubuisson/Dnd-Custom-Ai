@@ -25,6 +25,7 @@ import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
+import { ensureWildSurgeTable, rollWildSurge } from "./helpers/wild-magic-tables.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
@@ -161,6 +162,7 @@ Hooks.once("ready", async () => {
   await ensureContentImportMacro();
   await ensureTokenResyncMacro();
   await importSystemContent({ notifyIfEmpty: false });
+  await ensureWildSurgeTable("barbarian");
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();
 });
@@ -662,6 +664,12 @@ Hooks.on("createActiveEffect", async (effect) => {
   const actor = effect.parent;
   if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
   if (game.users.activeGM?.id !== game.user.id) return;
+
+  // Voie de la Magie sauvage (Barbare, cf. world-items/subclasses.json > "wildMagic") :
+  // Surtenance sauvage tirée à CHAQUE activation de Rage, combat ou pas — contrairement au
+  // décompte de durée ci-dessous, volontairement pas conditionné à game.combat.round.
+  if (actor.system.subclass === "wildMagic") await rollWildSurge(actor, "barbarian");
+
   if (!game.combat?.round) return;
 
   await actor.update({

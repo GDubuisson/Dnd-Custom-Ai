@@ -212,7 +212,15 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
       // exact de cette Capacité réservoir sur l'Actor (même convention texte libre que
       // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
-      costsResource: new StringField({ required: false, blank: true, initial: "" })
+      costsResource: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité qui propose un choix ponctuel et définitif au joueur (ex. "Aspect de la bête",
+      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem) : clé du champ correspondant
+      // sous `CharacterData#combat` où le choix est persisté une fois fait (ex. "totemSpirit"
+      // -> `system.combat.totemSpirit`) — vide pour l'immense majorité des Capacités, qui n'ont
+      // pas ce genre de choix. Bouton "Choisir" affiché (onglet Capacités/Sorts, cf.
+      // #onChooseFeatureOption, actor-sheet.js) tant que le champ visé est encore vide,
+      // disparaît une fois le choix fait (verrouillé, même logique que le choix de sous-classe).
+      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] })
     };
   }
 }

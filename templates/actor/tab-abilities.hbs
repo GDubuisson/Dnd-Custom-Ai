@@ -91,6 +91,12 @@
           <button type="button" class="roll-btn feature-roll-btn conditional-feature-btn" data-action="useConditionalFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Abilities.RequiresStateTooltip' state=(conditionLabel ../conditions this.system.requiresState)}}">
             <i class="fa-solid fa-bolt"></i> {{this.name}}
           </button>
+          {{else if this.system.grantsChoice}}
+            {{#unless (lookup ../featureChoiceMade this.id)}}
+            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseFeatureOption" title="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
+              <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
+            </button>
+            {{/unless}}
           {{/if}}
           {{#with (lookup ../featureResourceState this.id)}}
           <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
