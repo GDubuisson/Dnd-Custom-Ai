@@ -1122,6 +1122,49 @@
     }
   },
   {
+    "name": "Surtenance sauvage (Ensorceleur)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Surtenance-sauvage-ensorceleur.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "wildSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous dépensez un emplacement de sort, un effet de Surtenance sauvage aléatoire se déclenche automatiquement et est annoncé dans le chat (tirage sur la table \"Surtenance sauvage (Ensorceleur)\") — imprévisible, parfois utile, parfois anodin."
+    }
+  },
+  {
+    "name": "Vol tempétueux",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Vol-tempetueux.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "stormSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long : gagnez une vitesse de vol égale à votre vitesse de déplacement pendant 10 minutes."
+    }
+  },
+  {
+    "name": "Affinité de la tempête",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Affinite-de-la-tempete.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "stormSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Résistance passive aux dégâts de foudre et de tonnerre — jamais de jet à faire, réduisez simplement de moitié tout dégât de ce type que vous subissez."
+    }
+  },
+  {
     "name": "Bienfait du Fiélon",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Bienfait-du-Fielon.png",

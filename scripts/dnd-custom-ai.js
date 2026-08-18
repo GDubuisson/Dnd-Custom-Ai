@@ -164,6 +164,7 @@ Hooks.once("ready", async () => {
   await ensureTokenResyncMacro();
   await importSystemContent({ notifyIfEmpty: false });
   await ensureWildSurgeTable("barbarian");
+  await ensureWildSurgeTable("sorcerer");
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();
 });

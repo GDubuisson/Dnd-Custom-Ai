@@ -29,6 +29,7 @@ import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
+import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -1245,6 +1246,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         return;
       }
       await this.actor.update({ "system.spells.uses.value": uses.value - 1 });
+
+      // Voie de la Magie sauvage (Ensorceleur, cf. world-items/subclasses.json > "wildSorcery") :
+      // Surtenance sauvage tirée à chaque emplacement de sort réellement dépensé — même
+      // primitive (P1) que la Voie de la Magie sauvage du Barbare, table de tirage distincte
+      // (rollWildSurge indexe par classe, pas par sous-classe : "wildMagic"/Barbare et
+      // "wildSorcery"/Ensorceleur ne se confondent jamais).
+      if (this.actor.system.subclass === "wildSorcery") await rollWildSurge(this.actor, "sorcerer");
     }
 
     // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en

@@ -15,6 +15,23 @@ const SURGE_TABLES = {
       "Une douleur fantôme vous parcourt : perdez 1d4 PV temporaires en plus de ceux de la Rage (jamais en dessous de 0).",
       "Rien ne se passe... cette fois."
     ]
+  },
+  sorcerer: {
+    nameKey: "DND_CUSTOM.WildMagic.SorcererTableName",
+    entries: [
+      "Pendant 1 minute, vous êtes entouré de papillons spectraux inoffensifs qui suivent chacun de vos mouvements.",
+      "Vous pouvez voir à travers les 3 prochains mètres de matière solide devant vous pendant 1 round, comme si elle était transparente.",
+      "Un vent violent et localisé souffle autour de vous pendant 1 round, sans direction précise (purement narratif).",
+      "Votre peau prend la couleur d'un arc-en-ciel pendant 1 heure.",
+      "Vous vous téléportez à 3 m dans une direction aléatoire (au MJ de trancher où, en évitant tout danger évident).",
+      "Le prochain sort que vous lancez dans la minute qui suit produit un puissant parfum de lavande en plus de son effet habituel.",
+      "Une pluie de flammes froides et inoffensives tombe sur vous et les créatures à 1,50 m pendant 1 round — spectaculaire, sans dégât.",
+      "Vous flottez à 30 cm au-dessus du sol pendant 1 minute.",
+      "Le prochain jet de dégâts que vous infligez avec un sort est maximisé.",
+      "Vous gagnez temporairement 1d4 PV temporaires, immédiatement.",
+      "Un souvenir aléatoire et sans importance vous revient avec une clarté saisissante — pas d'effet mécanique.",
+      "Rien ne se passe... cette fois."
+    ]
   }
 };
 

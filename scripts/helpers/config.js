@@ -99,7 +99,11 @@ DND_CUSTOM.subclasses = {
     swashbuckler: "DND_CUSTOM.Subclasses.rogue.swashbuckler",
     assassin: "DND_CUSTOM.Subclasses.rogue.assassin"
   },
-  sorcerer: { draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic" },
+  sorcerer: {
+    draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic",
+    wildSorcery: "DND_CUSTOM.Subclasses.sorcerer.wildSorcery",
+    stormSorcery: "DND_CUSTOM.Subclasses.sorcerer.stormSorcery"
+  },
   warlock: { fiend: "DND_CUSTOM.Subclasses.warlock.fiend" },
   wizard: { evocation: "DND_CUSTOM.Subclasses.wizard.evocation" }
 };

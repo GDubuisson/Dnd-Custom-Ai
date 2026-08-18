@@ -180,6 +180,26 @@
     }
   },
   {
+    "name": "Magie sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Magie-sauvage.webp",
+    "system": {
+      "classKey": "sorcerer",
+      "subclassKey": "wildSorcery",
+      "description": "<p>Sous-classe d'Ensorceleur (niveau 1, SRD 5e). La magie de cet Ensorceleur est instable, née du chaos brut — chaque emplacement de sort dépensé risque de déclencher une Surtenance sauvage imprévisible.</p><ul><li>Niveau 1 : Surtenance sauvage (tirage automatique à chaque emplacement de sort dépensé)</li></ul>"
+    }
+  },
+  {
+    "name": "Sorcellerie des tempêtes",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Sorcellerie-des-tempetes.webp",
+    "system": {
+      "classKey": "sorcerer",
+      "subclassKey": "stormSorcery",
+      "description": "<p>Sous-classe d'Ensorceleur (niveau 1, inspirée de Baldur's Gate 3). La magie de cet Ensorceleur trouve sa source dans les éléments de la tempête, lui offrant une affinité avec le vent et la foudre.</p><ul><li>Niveau 1 : Vol tempétueux, Affinité de la tempête</li></ul>"
+    }
+  },
+  {
     "name": "Le Fiélon",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Fielon.webp",

@@ -88,7 +88,11 @@
         "swashbuckler": "Swashbuckler",
         "assassin": "Assassin"
       },
-      "sorcerer": { "draconic": "Draconic Bloodline" },
+      "sorcerer": {
+        "draconic": "Draconic Bloodline",
+        "wildSorcery": "Wild Magic",
+        "stormSorcery": "Storm Sorcery"
+      },
       "warlock": { "fiend": "The Fiend" },
       "wizard": { "evocation": "School of Evocation" }
     },
@@ -98,7 +102,8 @@
       "wolf": "Wolf"
     },
     "WildMagic": {
-      "BarbarianTableName": "Wild Surge (Barbarian)"
+      "BarbarianTableName": "Wild Surge (Barbarian)",
+      "SorcererTableName": "Wild Surge (Sorcerer)"
     },
     "Companion": {
       "Name": "Wolf ({owner}'s companion)"
