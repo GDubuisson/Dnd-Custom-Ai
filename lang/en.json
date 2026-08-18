@@ -74,7 +74,11 @@
       "fighter": { "champion": "Champion" },
       "monk": { "openHand": "Way of the Open Hand" },
       "paladin": { "devotion": "Oath of Devotion" },
-      "ranger": { "hunter": "Hunter" },
+      "ranger": {
+        "hunter": "Hunter",
+        "beastmaster": "Beast Master",
+        "gloomStalker": "Gloom Stalker"
+      },
       "rogue": {
         "thief": "Thief",
         "swashbuckler": "Swashbuckler",
@@ -91,6 +95,9 @@
     },
     "WildMagic": {
       "BarbarianTableName": "Wild Surge (Barbarian)"
+    },
+    "Companion": {
+      "Name": "Wolf ({owner}'s companion)"
     },
     "Actor": {
       "Name": "Character name",
@@ -218,6 +225,7 @@
       "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
+      "CompanionSummoned": "{owner} summons their beast companion: {companion} (the GM will place it on the scene).",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
       "XpAwarded": "{amount} XP awarded to each: {names}.",
@@ -312,6 +320,8 @@
       "RequiresStateTooltip": "Requires: {state}",
       "ChooseOptionConfirm": "Choose",
       "ChooseOptionTooltip": "One-time, permanent choice",
+      "SummonCompanionConfirm": "Summon companion",
+      "SummonCompanionTooltip": "Creates the beast companion (one time only)",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
         "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },

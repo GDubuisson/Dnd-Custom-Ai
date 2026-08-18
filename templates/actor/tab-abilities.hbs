@@ -97,6 +97,12 @@
               <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
             </button>
             {{/unless}}
+          {{else if this.system.summonsCompanion}}
+            {{#unless ../companionAlreadySummoned}}
+            <button type="button" class="roll-btn feature-roll-btn" data-action="summonCompanion" title="{{localize 'DND_CUSTOM.Abilities.SummonCompanionTooltip'}}">
+              <i class="fa-solid fa-paw"></i> {{localize "DND_CUSTOM.Abilities.SummonCompanionConfirm"}}
+            </button>
+            {{/unless}}
           {{/if}}
           {{#with (lookup ../featureResourceState this.id)}}
           <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">

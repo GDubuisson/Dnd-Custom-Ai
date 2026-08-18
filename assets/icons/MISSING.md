@@ -56,7 +56,7 @@ Athlète (`Athlete.png`), Doué (`Doue.png`), Sentinelle (`Sentinelle.png`), Ale
 (`Magie-dinitie.png`), Résilient (`Resilient.png`), Guérisseur (`Guerisseur.png`), Combat monté
 (`Combat-monte.png`)
 
-## Sous-classes (`world-items/subclasses.json`) — 0 / 16 ⚠️
+## Sous-classes (`world-items/subclasses.json`) — 0 / 18 ⚠️
 
 Aucune icône fournie pour ce fichier, dossier `assets/icons/subclasses/` inexistant. Dépose une
 image nommée comme indiqué (idéalement un blason dans le même esprit que les 12 badges de
@@ -70,13 +70,14 @@ Barbare), Collège du Savoir (`College-du-Savoir.webp`), Domaine de la Vie
 Dévotion (`Serment-de-Devotion.webp`), Chasseur (`Chasseur.webp`), Voleur (`Voleur.webp`),
 Lignage draconique (`Lignage-draconique.webp`), Le Fiélon (`Le-Fielon.webp`), École
 d'évocation (`Ecole-devocation.webp`), Bretteur (`Bretteur.webp`, Roublard), Assassin
-(`Assassin.webp`, Roublard)
+(`Assassin.webp`, Roublard), Maître des bêtes (`Maitre-des-betes.webp`, Rôdeur), Traqueur des
+ténèbres (`Traqueur-des-tenebres.webp`, Rôdeur)
 
 Nouvelles sous-classes en cours d'ajout (chantier "plusieurs sous-classes par classe", inspiration
 BG3) : 2 de plus par classe au fil des lots — les icônes correspondantes viendront s'ajouter ici
-à mesure (Barbare et Roublard faits, reste 10 classes).
+à mesure (Barbare, Roublard et Rôdeur faits, reste 9 classes).
 
-## Capacités (`world-items/features.json`) — 25 / 82, 57 en attente ⚠️
+## Capacités (`world-items/features.json`) — 25 / 84, 59 en attente ⚠️
 
 **Corrigé le 2026-08-19** : cette section était périmée (annonçait 24/24 alors que
 `features.json` a grossi depuis — un lot de Capacités supplémentaires par classe a été ajouté
@@ -92,7 +93,7 @@ arcanique, Ennemi juré, Explorateur-né, Attaque sournoise, Métamagie, Invocat
 Action rusée (`Action-rusee.png`, source : wiki Baldur's Gate 3 — asset sous droit d'auteur
 Larian/WotC, **pas** libre de droit, même avertissement que pour les icônes de Sorts).
 
-**En attente (57)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
+**En attente (59)** — dépose une image dans `assets/icons/features/` nommée comme indiqué, PNG
 ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source libre de droit) :
 
 - **Sans classe** : Attaque d'opportunité (`Attaque-dopportunite.png`)
@@ -126,7 +127,9 @@ ou WEBP carré, fond transparent si possible (`game-icons.net` pour une source l
   (`Arme-sacree.png`), Aura de dévotion (`Aura-de-devotion.png`)
 - **Rôdeur** : Attaque supplémentaire (Rôdeur) (`Attaque-supplementaire-Rodeur.png`),
   Déplacement facilité (`Deplacement-facilite.png`), Proie du chasseur
-  (`Proie-du-chasseur.png`), Tactiques défensives (`Tactiques-defensives.png`)
+  (`Proie-du-chasseur.png`), Tactiques défensives (`Tactiques-defensives.png`), Compagnon
+  animal (`Compagnon-animal.png`, Maître des bêtes), Embuscade des ténèbres
+  (`Embuscade-des-tenebres.png`, Traqueur des ténèbres)
 - **Roublard** : Esquive instinctive (`Esquive-instinctive.png`), Évasion (`Evasion.png`),
   Doigts agiles (`Doigts-agiles.png`), Escalade experte (`Escalade-experte.png`), Panache
   (`Panache.png`, Bretteur), Jeu de jambes (`Jeu-de-jambes.png`, Bretteur), Assassinat
@@ -175,7 +178,7 @@ inchangée, jamais affichée telle quelle).
 
 ## Ce qui reste réellement à faire
 
-- **Capacités** : 25 / 82 (57 en attente, cf. section dédiée ci-dessus)
+- **Capacités** : 25 / 84 (59 en attente, cf. section dédiée ci-dessus)
 - **Sorts** : 16 / 42 (26 en attente, cf. section dédiée ci-dessus)
 - **Dons** : 0 / 10 (aucune icône fournie, cf. section dédiée ci-dessus)
-- **Sous-classes** : 0 / 16 (aucune icône fournie, cf. section dédiée ci-dessus)
+- **Sous-classes** : 0 / 18 (aucune icône fournie, cf. section dédiée ci-dessus)

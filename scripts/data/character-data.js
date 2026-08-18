@@ -205,8 +205,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
     // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
-    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json).
-    this.attributes.initiativeMod = dexMod;
+    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json). Traqueur des
+    // ténèbres (sous-classe Rôdeur, "Embuscade des ténèbres") : +2 supplémentaire, appliqué
+    // automatiquement dès la sous-classe choisie (disponible seulement à partir du niveau
+    // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
+    this.attributes.initiativeMod = dexMod + (this.subclass === "gloomStalker" ? 2 : 0);
 
     // Pool de sorts par repos (cf. schéma ci-dessus) : `value` n'est jamais touché ici, seul
     // `max` est recalculé à chaque préparation. `maxLevel` (plus haut niveau de sort

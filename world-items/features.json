@@ -948,6 +948,35 @@
     }
   },
   {
+    "name": "Compagnon animal",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Compagnon-animal.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "beastmaster",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "summonsCompanion": true,
+      "description": "Bouton \"Invoquer le compagnon\" : crée un Loup (profil simple, 11 PV, CA 13) lié à vous — le MJ le place ensuite sur la scène comme n'importe quel PNJ. Une seule fois."
+    }
+  },
+  {
+    "name": "Embuscade des ténèbres",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Embuscade-des-tenebres.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "gloomStalker",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "+2 à l'Initiative (appliqué automatiquement) et vision dans le noir étendue à 18 m (60 m si vous en disposiez déjà) — vous voyez, entendez et sentez mieux la présence de créatures cachées dans les 3 premiers rounds d'un combat."
+    }
+  },
+  {
     "name": "Doigts agiles",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Doigts-agiles.png",

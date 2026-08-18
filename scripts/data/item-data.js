@@ -220,7 +220,13 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // pas ce genre de choix. Bouton "Choisir" affiché (onglet Capacités/Sorts, cf.
       // #onChooseFeatureOption, actor-sheet.js) tant que le champ visé est encore vide,
       // disparaît une fois le choix fait (verrouillé, même logique que le choix de sous-classe).
-      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] })
+      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] }),
+      // Capacité qui invoque un compagnon animal (ex. "Compagnon animal", Maître des bêtes,
+      // Rôdeur) : bouton "Invoquer le compagnon" affiché (onglet Capacités/Sorts, cf.
+      // #onSummonCompanion, actor-sheet.js/helpers/companion.js) une seule fois (flag
+      // `beastCompanionCreated` posé sur l'Actor à la création, jamais recréé ensuite même si
+      // le compagnon est supprimé). `false` pour l'immense majorité des Capacités.
+      summonsCompanion: new BooleanField({ required: true, initial: false })
     };
   }
 }

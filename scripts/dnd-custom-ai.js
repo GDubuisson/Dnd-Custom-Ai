@@ -26,6 +26,7 @@ import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
 import { ensureWildSurgeTable, rollWildSurge } from "./helpers/wild-magic-tables.js";
+import { ensureBeastCompanionRequestListener } from "./helpers/companion.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
@@ -240,6 +241,7 @@ Hooks.once("ready", () => {
     const doc = await fromUuid(uuid);
     if (doc) await doc.update(updates);
   });
+  ensureBeastCompanionRequestListener();
 });
 
 /** Applique `updates` à `actor` : directement si le client a la permission, sinon relayée au MJ

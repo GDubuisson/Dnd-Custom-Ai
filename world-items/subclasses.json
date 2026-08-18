@@ -100,6 +100,26 @@
     }
   },
   {
+    "name": "Maître des bêtes",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-des-betes.webp",
+    "system": {
+      "classKey": "ranger",
+      "subclassKey": "beastmaster",
+      "description": "<p>Sous-classe de Rôdeur (niveau 3, SRD 5e). Ce Rôdeur combat aux côtés d'un compagnon animal qu'il a lui-même dressé, formant avec lui une équipe soudée.</p><ul><li>Niveau 3 : Compagnon animal (invocation)</li></ul>"
+    }
+  },
+  {
+    "name": "Traqueur des ténèbres",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Traqueur-des-tenebres.webp",
+    "system": {
+      "classKey": "ranger",
+      "subclassKey": "gloomStalker",
+      "description": "<p>Sous-classe de Rôdeur (niveau 3, inspirée de Baldur's Gate 3). Ce Rôdeur s'est entraîné à l'embuscade dans l'obscurité la plus totale, frappant le premier avant que l'ennemi n'ait pu réagir.</p><ul><li>Niveau 3 : Embuscade des ténèbres (+2 Initiative, vision dans le noir étendue)</li></ul>"
+    }
+  },
+  {
     "name": "Voleur",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voleur.webp",

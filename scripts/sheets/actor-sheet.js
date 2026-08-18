@@ -28,6 +28,7 @@ import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
+import { requestBeastCompanion } from "../helpers/companion.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -123,6 +124,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
+      summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -419,6 +421,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const fieldKey = feature.system.grantsChoice;
       if (fieldKey) context.featureChoiceMade[feature.id] = !!this.actor.system.combat[fieldKey];
     }
+
+    // Compagnon animal (Maître des bêtes, Rôdeur) : bouton "Invoquer" masqué une fois déjà
+    // invoqué (cf. #onSummonCompanion ci-dessus/helpers/companion.js).
+    context.companionAlreadySummoned = !!this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated");
 
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
@@ -969,6 +975,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     if (!chosenKey) return;
 
     await this.actor.update({ [`system.combat.${fieldKey}`]: chosenKey });
+  }
+
+  /** Invoque le compagnon animal d'une Capacité `system.summonsCompanion` (ex. "Compagnon
+   *  animal", Maître des bêtes/Rôdeur) : une seule fois par personnage (flag
+   *  `beastCompanionCreated`, cf. helpers/companion.js), jamais recréé ensuite. */
+  static async #onSummonCompanion(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.summonsCompanion) return;
+    if (this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated")) return;
+
+    await requestBeastCompanion(this.actor);
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =

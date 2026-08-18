@@ -85,7 +85,11 @@ DND_CUSTOM.subclasses = {
   fighter: { champion: "DND_CUSTOM.Subclasses.fighter.champion" },
   monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
   paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
-  ranger: { hunter: "DND_CUSTOM.Subclasses.ranger.hunter" },
+  ranger: {
+    hunter: "DND_CUSTOM.Subclasses.ranger.hunter",
+    beastmaster: "DND_CUSTOM.Subclasses.ranger.beastmaster",
+    gloomStalker: "DND_CUSTOM.Subclasses.ranger.gloomStalker"
+  },
   rogue: {
     thief: "DND_CUSTOM.Subclasses.rogue.thief",
     swashbuckler: "DND_CUSTOM.Subclasses.rogue.swashbuckler",

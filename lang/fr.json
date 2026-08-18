@@ -74,7 +74,11 @@
       "fighter": { "champion": "Champion" },
       "monk": { "openHand": "Voie de la Main Ouverte" },
       "paladin": { "devotion": "Serment de Dévotion" },
-      "ranger": { "hunter": "Chasseur" },
+      "ranger": {
+        "hunter": "Chasseur",
+        "beastmaster": "Maître des bêtes",
+        "gloomStalker": "Traqueur des ténèbres"
+      },
       "rogue": {
         "thief": "Voleur",
         "swashbuckler": "Bretteur",
@@ -91,6 +95,9 @@
     },
     "WildMagic": {
       "BarbarianTableName": "Surtenance sauvage (Barbare)"
+    },
+    "Companion": {
+      "Name": "Loup (compagnon de {owner})"
     },
     "Actor": {
       "Name": "Nom du personnage",
@@ -218,6 +225,7 @@
       "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
+      "CompanionSummoned": "{owner} invoque son compagnon animal : {companion} (le MJ le place sur la scène).",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
       "XpAmount": "Montant d'XP",
       "XpAwarded": "{amount} XP attribués à chacun : {names}.",
@@ -312,6 +320,8 @@
       "RequiresStateTooltip": "Nécessite : {state}",
       "ChooseOptionConfirm": "Choisir",
       "ChooseOptionTooltip": "Choix ponctuel et définitif",
+      "SummonCompanionConfirm": "Invoquer le compagnon",
+      "SummonCompanionTooltip": "Crée le compagnon animal (une seule fois)",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute." },
         "bard": { "Title": "Inspiration bardique", "Tagline": "Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société." },
