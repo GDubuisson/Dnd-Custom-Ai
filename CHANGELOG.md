@@ -20,6 +20,13 @@ auto à la CA de la cible, XP plein pour chaque participant), barre d'XP et éta
 visibles en en-tête, descriptions HTML enfin rendues (éditeur riche `<prose-mirror>` à la
 place de simples `<textarea>`), dés de vie et références D&D5e retirés du contenu joueur.
 
+### Modifié
+- Refactor de simplification (aucun changement de comportement) : suppression d'une règle CSS
+  jamais utilisée, et fusion des 12 partials d'ambiance de classe de l'onglet Capacités/Sorts
+  (`templates/actor/abilities/*.hbs`) en un seul, l'icône/le titre/l'accroche de chaque classe
+  étant désormais résolus depuis `scripts/helpers/config.js`/`actor-sheet.js` plutôt que codés
+  en dur dans 12 fichiers quasi identiques.
+
 ### Corrigé
 - Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de
   Classe — ce système n'expose jamais ce concept au joueur (PV max calculés automatiquement,
