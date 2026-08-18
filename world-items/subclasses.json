@@ -150,6 +150,26 @@
     }
   },
   {
+    "name": "Voie de l'Ombre",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-lOmbre.webp",
+    "system": {
+      "classKey": "monk",
+      "subclassKey": "shadow",
+      "description": "<p>Sous-classe de Moine (niveau 3, SRD 5e). Cette tradition monastique enseigne des techniques furtives puisées dans l'obscurité, dépensant du Ki pour se déplacer comme une ombre.</p><ul><li>Niveau 3 : Pas dans l'ombre</li></ul>"
+    }
+  },
+  {
+    "name": "Voie des Quatre Éléments",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-des-Quatre-Elements.webp",
+    "system": {
+      "classKey": "monk",
+      "subclassKey": "fourElements",
+      "description": "<p>Sous-classe de Moine (niveau 3, SRD 5e). Ce Moine canalise son Ki en disciplines élémentaires, façonnant le feu, l'eau, la terre et l'air en armes de combat.</p><ul><li>Niveau 3 : Disciplines élémentaires</li></ul>"
+    }
+  },
+  {
     "name": "Voie de la Main Ouverte",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Main-Ouverte.webp",

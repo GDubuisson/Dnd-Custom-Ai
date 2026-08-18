@@ -1013,6 +1013,36 @@
     }
   },
   {
+    "name": "Pas dans l'ombre",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-dans-lombre.png",
+    "system": {
+      "class": "monk",
+      "subclass": "shadow",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Action bonus, dans une zone de pénombre ou d'obscurité : téléportez-vous jusqu'à 18 m vers un autre espace en pénombre ou obscurité que vous pouvez voir. Coûte 1 point de Ki (cf. Capacité Ki)."
+    }
+  },
+  {
+    "name": "Disciplines élémentaires",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Disciplines-elementaires.png",
+    "system": {
+      "class": "monk",
+      "subclass": "fourElements",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts (jet de sauvegarde à mi-dégâts selon la discipline, à lancer manuellement)."
+    }
+  },
+  {
     "name": "Canalisation divine : Arme sacrée",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Arme-sacree.png",
