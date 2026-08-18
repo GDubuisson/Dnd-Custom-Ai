@@ -110,6 +110,26 @@
     }
   },
   {
+    "name": "Bretteur",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Bretteur.webp",
+    "system": {
+      "classKey": "rogue",
+      "subclassKey": "swashbuckler",
+      "description": "<p>Sous-classe de Roublard (niveau 3, inspirée de Baldur's Gate 3). Duelliste flamboyant qui frappe puis se dérobe avant que l'adversaire n'ait pu réagir, aussi à l'aise l'épée à la main qu'au cœur d'une foule.</p><ul><li>Niveau 3 : Panache</li><li>Niveau 9 : Jeu de jambes</li></ul>"
+    }
+  },
+  {
+    "name": "Assassin",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Assassin.webp",
+    "system": {
+      "classKey": "rogue",
+      "subclassKey": "assassin",
+      "description": "<p>Sous-classe de Roublard (niveau 3, inspirée de Baldur's Gate 3). Spécialiste de l'embuscade et du coup fatal porté avant que la cible n'ait pu réagir.</p><ul><li>Niveau 3 : Assassinat (critique automatique contre une cible Surprise)</li><li>Niveau 9 : Infiltration</li></ul>"
+    }
+  },
+  {
     "name": "Lignage draconique",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Lignage-draconique.webp",

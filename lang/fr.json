@@ -75,7 +75,11 @@
       "monk": { "openHand": "Voie de la Main Ouverte" },
       "paladin": { "devotion": "Serment de Dévotion" },
       "ranger": { "hunter": "Chasseur" },
-      "rogue": { "thief": "Voleur" },
+      "rogue": {
+        "thief": "Voleur",
+        "swashbuckler": "Bretteur",
+        "assassin": "Assassin"
+      },
       "sorcerer": { "draconic": "Lignage draconique" },
       "warlock": { "fiend": "Le Fiélon" },
       "wizard": { "evocation": "École d'évocation" }
@@ -411,7 +415,8 @@
       "stunned": "Étourdi",
       "unconscious": "Inconscient",
       "dead": "Mort",
-      "raging": "En Rage"
+      "raging": "En Rage",
+      "surprised": "Surpris"
     },
     "Journal": {
       "Biography": "Biographie",

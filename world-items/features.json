@@ -976,6 +976,63 @@
     }
   },
   {
+    "name": "Panache",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Panache.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "swashbuckler",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d4",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Une fois par repos court ou long : jet de 1d4 de bonus, ajouté à un test de Persuasion/Intimidation contre un adversaire fraîchement engagé au corps à corps, ou pour vous dégager de lui sans provoquer d'attaque d'opportunité (au MJ de trancher l'application précise selon la situation)."
+    }
+  },
+  {
+    "name": "Jeu de jambes",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Jeu-de-jambes.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "swashbuckler",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous touchez une créature avec une attaque au corps à corps lors de votre tour, cette créature ne peut plus faire d'attaque d'opportunité contre vous jusqu'à la fin de ce tour."
+    }
+  },
+  {
+    "name": "Assassinat",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Assassinat.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "assassin",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Tout jet d'attaque contre une créature marquée de l'état \"Surpris\" (posé par le MJ, onglet Statistiques) est automatiquement un coup critique, sans avoir besoin d'un 20 naturel — appliqué automatiquement au moment du jet."
+    }
+  },
+  {
+    "name": "Infiltration",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Infiltration.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "assassin",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Avantage automatique à tous les tests de Discrétion — appliqué sans avoir besoin de le déclarer."
+    }
+  },
+  {
     "name": "Résilience draconique",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Resilience-draconique.png",

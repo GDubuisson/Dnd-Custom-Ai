@@ -26,7 +26,15 @@ function isActorInCombat(actor) {
  *  échec critique rate automatiquement (même CA très basse). Pour une sauvegarde, ce système ne
  *  compare déjà aucun jet à une CD (le MJ juge à l'œil) : seul le libellé de chat est ajouté,
  *  au MJ d'appliquer la règle. Retourne `isCriticalHit` pour que l'appelant puisse doubler les
- *  dés du jet de dégâts suivant (cf. rollDamage ci-dessous). */
+ *  dés du jet de dégâts suivant (cf. rollDamage ci-dessous).
+ *
+ *  `forceCriticalHit` (jets d'attaque uniquement) : coup critique automatique indépendamment du
+ *  dé naturel obtenu — ex. Assassin (Roublard, cf. world-items/features.json > "Assassinat")
+ *  contre une cible marquée "Surprise" (DND_CUSTOM.conditions dans config.js). Toujours soumis à
+ *  la même garde `isActorInCombat` que `criticalRules` : pas de critique automatique hors
+ *  combat. N'annule jamais un échec critique naturel (1 naturel reste un échec critique même si
+ *  `forceCriticalHit` est vrai — l'un ou l'autre, jamais les deux en même temps en pratique
+ *  puisque `forceCriticalHit` dépend d'un état de la cible, pas du dé). */
 export async function rollCheck({
   actor,
   formula,
@@ -34,7 +42,8 @@ export async function rollCheck({
   advantage = false,
   disadvantage = false,
   compareToTargetAc = false,
-  criticalRules = false
+  criticalRules = false,
+  forceCriticalHit = false
 }) {
   const useAdvantage = advantage && !disadvantage;
   const useDisadvantage = disadvantage && !advantage;
@@ -49,10 +58,12 @@ export async function rollCheck({
 
   let isCriticalHit = false;
   let isCriticalFumble = false;
-  if (criticalRules && isActorInCombat(actor)) {
+  if ((criticalRules || forceCriticalHit) && isActorInCombat(actor)) {
     const naturalFace = roll.dice[0]?.results.find((result) => result.active)?.result;
-    isCriticalHit = naturalFace === 20;
+    // Un 1 naturel reste toujours un échec critique en premier, avant même de considérer
+    // forceCriticalHit : un jet raté au dé ne devient jamais un coup critique automatique.
     isCriticalFumble = naturalFace === 1;
+    isCriticalHit = !isCriticalFumble && (naturalFace === 20 || forceCriticalHit);
     if (isCriticalHit) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalHit")})`;
     else if (isCriticalFumble) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalFumble")})`;
   }

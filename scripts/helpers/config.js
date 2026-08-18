@@ -86,7 +86,11 @@ DND_CUSTOM.subclasses = {
   monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
   paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
   ranger: { hunter: "DND_CUSTOM.Subclasses.ranger.hunter" },
-  rogue: { thief: "DND_CUSTOM.Subclasses.rogue.thief" },
+  rogue: {
+    thief: "DND_CUSTOM.Subclasses.rogue.thief",
+    swashbuckler: "DND_CUSTOM.Subclasses.rogue.swashbuckler",
+    assassin: "DND_CUSTOM.Subclasses.rogue.assassin"
+  },
   sorcerer: { draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic" },
   warlock: { fiend: "DND_CUSTOM.Subclasses.warlock.fiend" },
   wizard: { evocation: "DND_CUSTOM.Subclasses.wizard.evocation" }
@@ -236,7 +240,13 @@ DND_CUSTOM.conditions = [
   // Homebrew (pas un état SRD 5e à part entière, mais nécessaire comme bascule visible pour
   // piloter le grisage des Capacités liées à la Rage, cf. commentaire ci-dessus) : réutilise
   // l'icône déjà existante de la Capacité "Rage" plutôt qu'une icône générique du cœur Foundry.
-  { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" }
+  { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" },
+  // Homebrew (comme "raging" ci-dessus) : la Surprise n'est pas un état SRD 5e à proprement
+  // parler (une règle de début de combat, pas une condition durable), mais ce système en a
+  // besoin comme bascule manuelle pour piloter le critique automatique d'Assassin (Roublard,
+  // cf. world-items/features.json > "Assassinat" et rollCheck > forceCriticalHit, rolls.js) —
+  // le MJ la pose sur la cible au moment où elle est effectivement prise par surprise.
+  { id: "surprised", name: "DND_CUSTOM.Conditions.surprised", img: "icons/svg/eye.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé

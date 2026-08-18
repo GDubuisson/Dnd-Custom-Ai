@@ -42,6 +42,19 @@ const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
 // #onCastSpell) : une par classe qui l'a en SRD 5e et pour laquelle elle est modélisée ici.
 const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
 
+/** Critique automatique de la Capacité "Assassinat" (sous-classe Assassin, Roublard — cf.
+ *  world-items/subclasses.json > "assassin") : vrai si `actor` possède cette sous-classe ET
+ *  qu'au moins une des cibles actuellement ciblées (`game.user.targets`) porte l'état "Surpris"
+ *  (posé manuellement par le MJ, DND_CUSTOM.conditions dans config.js). Lit une donnée de cible
+ *  pour affecter le jet de l'attaquant, comme `compareToTargetAc` (rolls.js) le fait déjà pour
+ *  chaque jet d'attaque — pas une automatisation tactique générale (flanking/couverture, hors
+ *  scope, cf. le commentaire de conditionRollEffects ci-dessous), juste la lecture d'un état
+ *  explicitement posé à la main pour CETTE Capacité précise. */
+function hasAssassinAutoCritical(actor) {
+  if (actor.system.subclass !== "assassin") return false;
+  return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
+}
+
 /** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
  *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
  *  automatisées (pas d'effets dépendant d'une cible/de la position, hors du scope "combat
@@ -1021,6 +1034,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
+    // Infiltration (sous-classe Assassin, Roublard, niveau 9) : avantage automatique aux tests
+    // de Discrétion — propre au personnage qui jette (Capacité qu'il possède), pas une lecture
+    // d'état de cible, donc dans le même esprit que l'avantage d'Origine ci-dessus. Vérifie la
+    // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
+    // sous-classe choisie : le niveau 9 doit être atteint.
+    const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
     const cond = conditionRollEffects(this.actor, "check");
 
     let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
@@ -1041,7 +1060,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       formula: formatModifier(mod),
       flavor,
-      advantage: advantageKey || originAdvantage || cond.advantage,
+      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || cond.advantage,
       disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
     });
   }
@@ -1070,7 +1089,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
       compareToTargetAc: true,
-      criticalRules: true
+      criticalRules: true,
+      forceCriticalHit: hasAssassinAutoCritical(this.actor)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
   }
@@ -1199,7 +1219,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         advantage: event.shiftKey || cond.advantage,
         disadvantage: event.ctrlKey || cond.disadvantage,
         compareToTargetAc: true,
-        criticalRules: true
+        criticalRules: true,
+        forceCriticalHit: hasAssassinAutoCritical(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
       return;
