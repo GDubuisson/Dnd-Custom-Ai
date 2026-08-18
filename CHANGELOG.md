@@ -26,6 +26,11 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   (`templates/actor/abilities/*.hbs`) en un seul, l'icône/le titre/l'accroche de chaque classe
   étant désormais résolus depuis `scripts/helpers/config.js`/`actor-sheet.js` plutôt que codés
   en dur dans 12 fichiers quasi identiques.
+- En-tête d'ambiance de classe (`class-flavor.hbs`) redessiné dans l'esprit "cire à cacheter" du
+  thème "Auberge et Grand Chemin" : icône dans un médaillon de cire, teinté par classe (rouille
+  pour le Barbare, mousse pour le Druide, arcane pour le Magicien, etc.), sur un bandeau
+  parcheminé — toujours le même partial unique, seule la couleur du sceau varie désormais par
+  classe (`data-class`, cf. `context.classFlavorKey`).
 
 ### Corrigé
 - Assistant de création de personnage : ne montre plus "Dé de vie : dX" sous le sélecteur de

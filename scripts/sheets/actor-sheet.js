@@ -219,6 +219,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // en cours).
     context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`;
     if (DND_CUSTOM.classes[system.class]) {
+      context.classFlavorKey = system.class;
       context.classFlavorIcon = DND_CUSTOM.classFlavorIcon[system.class];
       context.classFlavorTitle = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Title`);
       context.classFlavorTagline = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Tagline`);

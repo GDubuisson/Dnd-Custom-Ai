@@ -1639,38 +1639,90 @@
 }
 
 /* En-tête d'identité de classe, en haut de l'onglet Capacités/Sorts (cf.
-   templates/actor/abilities/<classe>.hbs) : icône + titre thématique + phrase d'ambiance. */
+   templates/actor/abilities/class-flavor.hbs, partial unique pour les 12 classes) : sceau de
+   cire + titre thématique + phrase d'ambiance, sur un bandeau parcheminé assorti au thème
+   "Auberge et Grand Chemin". Le `data-class` (context.classFlavorKey, actor-sheet.js) ne sert
+   qu'à teinter le sceau ci-dessous — aucune autre différence de structure entre classes. */
 .dnd-custom-ai .class-flavor-header {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.85rem;
   margin: 0 0 0.9rem;
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.3rem;
-  background: var(--dca-surface-container);
-  border-left: 3px solid var(--dca-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.35rem;
+  background-color: var(--dca-surface-container);
+  background-image:
+    linear-gradient(165deg, transparent, rgba(122, 90, 53, 0.12) 65%),
+    linear-gradient(rgba(221, 201, 148, 0.75), rgba(221, 201, 148, 0.75)),
+    var(--dca-texture-parchment);
+  background-size: auto, 100% 100%, 200px 200px;
+  border: 1px solid var(--dca-outline-variant);
+  box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 3px rgba(43, 32, 17, 0.2);
 }
 
-.dnd-custom-ai .class-flavor-header i {
-  font-size: 1.3rem;
-  color: var(--dca-primary);
+/* Médaillon "cire à cacheter" : --seal-color par défaut sur --dca-primary, redéfini par classe
+   juste en dessous. Relief simulé sans image (dégradé + ombres internes) pour rester cohérent
+   avec le reste du thème (aucun asset supplémentaire). */
+.dnd-custom-ai .class-flavor-seal {
+  --seal-color: var(--dca-primary);
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background-color: var(--seal-color);
+  background-image: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.4), transparent 60%);
+  box-shadow:
+    inset 0 -3px 4px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(43, 32, 17, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
+
+.dnd-custom-ai .class-flavor-seal i {
+  font-size: 1.1rem;
+  color: var(--dca-secondary-fixed);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Teintes de cire par classe — purement décoratives (archétype de la classe : feu, nature,
+   arcane, ombre...), volontairement désaturées pour rester dans la palette bois/parchemin du
+   thème plutôt que de jurer avec elle. Couverture vérifiée par tests/data/i18n-coverage.test.js
+   (une entrée DND_CUSTOM.classFlavorIcon par classe jouable) : ajouter une règle ici pour toute
+   nouvelle classe ajoutée à ce map. */
+.dnd-custom-ai .class-flavor-header[data-class="barbarian"] .class-flavor-seal { --seal-color: #9c3b1e; }
+.dnd-custom-ai .class-flavor-header[data-class="bard"] .class-flavor-seal { --seal-color: #7d4a86; }
+.dnd-custom-ai .class-flavor-header[data-class="cleric"] .class-flavor-seal { --seal-color: #b8862c; }
+.dnd-custom-ai .class-flavor-header[data-class="druid"] .class-flavor-seal { --seal-color: #4f6b39; }
+.dnd-custom-ai .class-flavor-header[data-class="fighter"] .class-flavor-seal { --seal-color: #55606e; }
+.dnd-custom-ai .class-flavor-header[data-class="monk"] .class-flavor-seal { --seal-color: #a3752e; }
+.dnd-custom-ai .class-flavor-header[data-class="paladin"] .class-flavor-seal { --seal-color: #c2a23a; }
+.dnd-custom-ai .class-flavor-header[data-class="ranger"] .class-flavor-seal { --seal-color: #2f6b52; }
+.dnd-custom-ai .class-flavor-header[data-class="rogue"] .class-flavor-seal { --seal-color: #3d3a45; }
+.dnd-custom-ai .class-flavor-header[data-class="sorcerer"] .class-flavor-seal { --seal-color: #8f2f5e; }
+.dnd-custom-ai .class-flavor-header[data-class="warlock"] .class-flavor-seal { --seal-color: #4a2f6b; }
+.dnd-custom-ai .class-flavor-header[data-class="wizard"] .class-flavor-seal { --seal-color: #2f4f70; }
 
 .dnd-custom-ai .class-flavor-text {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
+  min-width: 0;
 }
 
 .dnd-custom-ai .class-flavor-title {
   font-family: var(--dca-font-headline);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--dca-primary);
 }
 
 .dnd-custom-ai .class-flavor-tagline {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-style: italic;
+  line-height: 1.35;
   color: var(--dca-on-surface-variant);
 }
 
