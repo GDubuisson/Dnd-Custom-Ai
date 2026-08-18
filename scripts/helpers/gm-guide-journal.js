@@ -34,6 +34,13 @@ function buildOverviewPage() {
       s'il est glissé sur la fiche, en modifie automatiquement le déclencheur affiché (fonctionne
       même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m) — recalculé
       à chaque affichage, rien à retoucher si tu ajoutes/retires le don.</li>
+      <li>Mécaniques des 24 sous-classes supplémentaires (inspirées de Baldur's Gate 3, cf.
+      compendium "Sous-classes") : bouton dédié selon la Capacité — tirage automatique de
+      Surtenance sauvage posté en chat (Barbare/Ensorceleur), compagnon animal invocable (Maître
+      des bêtes), choix d'esprit totem verrouillé (Voie du Cœur sauvage), critique automatique de
+      l'Assassinat contre une cible portant l'état "Surpris", incantation mineure toujours prête
+      sans emplacement dédié (Chevalier occulte)... Détail complet des mécaniques dans
+      <code>world-items/README.md</code>.</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle
@@ -79,8 +86,13 @@ function buildSimplificationsPage() {
       avec le niveau dans ce système (simplifié par rapport au SRD 5e).</li>
       <li><strong>Forme sauvage (Druide)</strong> : pas de fiche de créature séparée ni de
       deuxième réserve de PV suivie automatiquement — à adjuger ensemble à la table.</li>
-      <li><strong>Domaines divins / Sous-classes / Voies / Cercles</strong> : pas de choix de
-      sous-classe modélisé (Canalisation divine, Forme sauvage etc. restent génériques).</li>
+      <li><strong>Domaines divins / Sous-classes / Voies / Cercles</strong> : les 12 sous-classes
+      SRD 5e d'origine (une par classe) restent majoritairement génériques (Canalisation divine,
+      Forme sauvage etc. non automatisées en détail) — à l'inverse, les 24 sous-classes
+      supplémentaires (inspirées de Baldur's Gate 3, cf. compendium "Sous-classes") apportent
+      chacune un bouton dédié sur la fiche avec un mécanisme actif propre (jet à charges limitées,
+      réserve de Ki, état à activer ou à poser manuellement, tirage automatique de Surtenance
+      sauvage...).</li>
       <li><strong>Réaction</strong> : le système suit uniquement l'économie d'action (1 par
       round, régénérée au bon moment) — il ne détecte jamais automatiquement le déclencheur d'une
       Capacité/d'un Sort "Réaction" (ex. "une créature quitte votre portée") : à toi de valider

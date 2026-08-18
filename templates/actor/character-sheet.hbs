@@ -126,6 +126,16 @@
             <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
           </span>
           {{/if}}
+          {{! Retour de test : fermer la fenêtre Amélioration de caractéristiques/Don sans
+              choisir faisait perdre le choix pour toujours — ce badge reste affiché tant que le
+              choix est dû (system.attributes.pendingAsiChoices > 0), rattrapage manuel possible
+              à tout moment sans attendre la prochaine montée de niveau. }}
+          {{#if pendingAsiChoices}}
+          <span class="level-up-badge" title="{{localize 'DND_CUSTOM.LevelUp.PendingChoiceTooltip'}}">
+            <i class="fa-solid fa-star"></i> {{localize "DND_CUSTOM.LevelUp.PendingChoiceLabel"}} ({{pendingAsiChoices}})
+            <button type="button" data-action="resolvePendingAsi">{{localize "DND_CUSTOM.LevelUp.PendingChoiceButton"}}</button>
+          </span>
+          {{/if}}
           <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
                   title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
             <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}

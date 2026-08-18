@@ -10,8 +10,9 @@ Comme pour Classe, la donnée mécanique réelle (niveau d'obtention, Capacités
 pas sur cet Item mais dans `DND_CUSTOM.subclasses`/`DND_CUSTOM.subclassLevel`
 (`scripts/helpers/config.js`).
 
-Les 12 sous-classes SRD 5e pré-écrites dans `world-items/subclasses.json` (une par classe) y
-sont importées **automatiquement au chargement du monde** (hook `ready`, cf.
+Les 36 sous-classes pré-écrites dans `world-items/subclasses.json` (3 par classe — 1 SRD 5e
+d'origine + 2 supplémentaires inspirées de Baldur's Gate 3) y sont importées **automatiquement
+au chargement du monde** (hook `ready`, cf.
 `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans doublon (comparaison
 par nom) et sans action du MJ. La Macro monde "Importer le contenu du système" reste
 disponible en secours pour rejouer l'import à la demande.

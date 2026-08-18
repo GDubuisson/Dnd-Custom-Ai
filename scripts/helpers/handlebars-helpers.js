@@ -19,6 +19,18 @@ export function registerHandlebarsHelpers() {
   // inchangé, pour rester vérifiable contre le SRD.
   Handlebars.registerHelper("formatSpeed", (feet) => `${Math.round((Number(feet) || 0) * 0.3)} m`);
 
+  // Retour de test : le bouton de jet d'une Capacité (ex. Second souffle, Bienfait du Fiélon)
+  // affichait la formule Foundry brute ("1d10 + @attributes.level"), illisible pour un joueur —
+  // affichage seulement, la formule réelle passée à `new Roll()` (actor-sheet.js) reste
+  // inchangée. `@attributes.level` est la seule référence de roll-data utilisée dans
+  // world-items/features.json à ce jour (cf. tests/data/consistency.test.js). `levelLabel` est
+  // résolu côté template via `{{localize "DND_CUSTOM.Actor.Level"}}` (pas `game.i18n` ici
+  // directement : ce fichier reste testable sans mock du global `game`, cf. tests/support/
+  // handlebars-env.js qui ne fournit que le helper `localize`).
+  Handlebars.registerHelper("displayRollFormula", (formula, levelLabel) =>
+    String(formula ?? "").replace(/@attributes\.level/g, String(levelLabel ?? "").toLowerCase())
+  );
+
   // Économie d'action de combat (cf. FeatureData/SpellData#activation, item-data.js) : une
   // Capacité/un Sort "Réaction" affiche un badge dédié sur l'onglet Capacités/Sorts et voit son
   // bouton d'utilisation grisé une fois la réaction consommée ce round-ci (cf. context.reactionAvailable).

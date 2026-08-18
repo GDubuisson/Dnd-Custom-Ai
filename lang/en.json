@@ -63,18 +63,83 @@
       "wizard": "Wizard"
     },
     "Subclasses": {
-      "barbarian": { "berserker": "Path of the Berserker" },
-      "bard": { "lore": "College of Lore" },
-      "cleric": { "life": "Life Domain" },
-      "druid": { "land": "Circle of the Land" },
-      "fighter": { "champion": "Champion" },
-      "monk": { "openHand": "Way of the Open Hand" },
-      "paladin": { "devotion": "Oath of Devotion" },
-      "ranger": { "hunter": "Hunter" },
-      "rogue": { "thief": "Thief" },
-      "sorcerer": { "draconic": "Draconic Bloodline" },
-      "warlock": { "fiend": "The Fiend" },
-      "wizard": { "evocation": "School of Evocation" }
+      "barbarian": {
+        "berserker": "Path of the Berserker",
+        "wildheart": "Path of the Wild Heart",
+        "wildMagic": "Path of Wild Magic"
+      },
+      "bard": {
+        "lore": "College of Lore",
+        "swords": "College of Swords",
+        "valour": "College of Valour"
+      },
+      "cleric": {
+        "life": "Life Domain",
+        "light": "Light Domain",
+        "trickery": "Trickery Domain"
+      },
+      "druid": {
+        "land": "Circle of the Land",
+        "moon": "Circle of the Moon",
+        "spores": "Circle of Spores"
+      },
+      "fighter": {
+        "champion": "Champion",
+        "battleMaster": "Battle Master",
+        "eldritchKnight": "Eldritch Knight"
+      },
+      "monk": {
+        "openHand": "Way of the Open Hand",
+        "shadow": "Way of Shadow",
+        "fourElements": "Way of the Four Elements"
+      },
+      "paladin": {
+        "devotion": "Oath of Devotion",
+        "ancients": "Oath of the Ancients",
+        "vengeance": "Oath of Vengeance"
+      },
+      "ranger": {
+        "hunter": "Hunter",
+        "beastmaster": "Beast Master",
+        "gloomStalker": "Gloom Stalker"
+      },
+      "rogue": {
+        "thief": "Thief",
+        "swashbuckler": "Swashbuckler",
+        "assassin": "Assassin"
+      },
+      "sorcerer": {
+        "draconic": "Draconic Bloodline",
+        "wildSorcery": "Wild Magic",
+        "stormSorcery": "Storm Sorcery"
+      },
+      "warlock": {
+        "fiend": "The Fiend",
+        "greatOldOne": "The Great Old One",
+        "archfey": "The Archfey"
+      },
+      "wizard": {
+        "evocation": "School of Evocation",
+        "necromancy": "School of Necromancy",
+        "illusion": "School of Illusion"
+      }
+    },
+    "TotemSpirits": {
+      "bear": "Bear",
+      "eagle": "Eagle",
+      "wolf": "Wolf"
+    },
+    "WildMagic": {
+      "BarbarianTableName": "Wild Surge (Barbarian)",
+      "SorcererTableName": "Wild Surge (Sorcerer)"
+    },
+    "Companion": {
+      "Name": "Wolf ({owner}'s companion)"
+    },
+    "Maneuvers": {
+      "precise": "Precision Attack (+1d8 damage)",
+      "push": "Pushing Attack (target pushed 15 ft. if it fails a Strength save)",
+      "feint": "Feinting Attack (advantage on your next attack against that target this turn)"
     },
     "Actor": {
       "Name": "Character name",
@@ -136,7 +201,20 @@
     },
     "Macros": {
       "ImportContent": "Import system content",
-      "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details)."
+      "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details).",
+      "ResyncToken": "Resync a token"
+    },
+    "TokenSync": {
+      "GmOnly": "GM only.",
+      "SelectOneToken": "Select exactly one token on the canvas before running this macro.",
+      "NotACharacter": "This token isn't a player character — nothing to link.",
+      "AlreadyLinked": "{name} is already linked to its sheet.",
+      "NoMasterActor": "Source sheet not found for this token.",
+      "Linked": "{name} is now linked to its sheet.",
+      "ChooseHpTitle": "Keep the token's HP or the sheet's?",
+      "ChooseHpConfirm": "Link",
+      "KeepTokenHp": "Keep the token's HP ({value}/{max})",
+      "KeepSheetHp": "Keep the sheet's HP ({value}/{max})"
     },
     "Folders": {
       "Weapons": "Weapons",
@@ -186,8 +264,10 @@
       "ApplyHeal": "Apply {amount} HP of healing to target",
       "HealAlreadyApplied": "Healing already applied",
       "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
+      "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
+      "CompanionSummoned": "{owner} summons their beast companion: {companion} (the GM will place it on the scene).",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
       "XpAwarded": "{amount} XP awarded to each: {names}.",
@@ -220,6 +300,8 @@
       "Empty": "No item equipped",
       "OccupiedTwoHanded": "Occupied by the two-handed weapon",
       "SlotOccupied": "Slot already occupied by {item}. Unequip it first.",
+      "ChooseSlotTitle": "Choose the slot",
+      "ChooseSlotConfirm": "Equip",
       "OffHandRequiresLight": "Only a Light weapon can be equipped in the Off hand.",
       "ACBonus": "AC Bonus",
       "TwoHandedShort": "two-handed",
@@ -278,6 +360,10 @@
       "ConcentratingOn": "Concentrating on:",
       "DropConcentration": "Drop concentration",
       "RequiresStateTooltip": "Requires: {state}",
+      "ChooseOptionConfirm": "Choose",
+      "ChooseOptionTooltip": "One-time, permanent choice",
+      "SummonCompanionConfirm": "Summon companion",
+      "SummonCompanionTooltip": "Creates the beast companion (one time only)",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "A primal warrior who channels an inner rage in battle, able to shrug off terrible blows and strike with raw force." },
         "bard": { "Title": "Bardic Inspiration", "Tagline": "An artist and adventurer whose magic draws on inspiration, music and words; versatile in combat as in society." },
@@ -358,7 +444,11 @@
       "FeatConfirm": "Choose",
       "AllFeatsOwned": "This character already has every Feat from the compendium.",
       "SubclassDialogTitle": "Choose a Subclass",
-      "SubclassConfirm": "Choose"
+      "SubclassConfirm": "Choose",
+      "Back": "Back",
+      "PendingChoiceLabel": "Choice due",
+      "PendingChoiceButton": "Resolve",
+      "PendingChoiceTooltip": "Ability Score Improvement or Feat still due — dialog closed without choosing at a previous level-up, click to resume."
     },
     "Conditions": {
       "Title": "Conditions",
@@ -381,7 +471,10 @@
       "stunned": "Stunned",
       "unconscious": "Unconscious",
       "dead": "Dead",
-      "raging": "Raging"
+      "raging": "Raging",
+      "surprised": "Surprised",
+      "wildShape": "Wild Shape",
+      "hunted": "Hunted"
     },
     "Journal": {
       "Biography": "Biography",

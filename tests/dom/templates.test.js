@@ -359,6 +359,7 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
       renderTemplate("actor/tab-abilities.hbs", {
         tab: {},
         isSpellcaster: true,
+        hasAnySpells: true,
         spellcasting: { dc: 14, attackBonusLabel: "+6" },
         spellUses,
         concentratingOn: "",
@@ -512,6 +513,7 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
       renderTemplate("actor/tab-abilities.hbs", {
         tab: {},
         isSpellcaster: true,
+        hasAnySpells: true,
         spellcasting: { dc: 14, attackBonusLabel: "+6" },
         spellUses: { value: 0, max: 0 },
         concentratingOn: "",

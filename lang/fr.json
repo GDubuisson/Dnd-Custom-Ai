@@ -63,18 +63,83 @@
       "wizard": "Magicien"
     },
     "Subclasses": {
-      "barbarian": { "berserker": "Voie du Berserker" },
-      "bard": { "lore": "Collège du Savoir" },
-      "cleric": { "life": "Domaine de la Vie" },
-      "druid": { "land": "Cercle de la Terre" },
-      "fighter": { "champion": "Champion" },
-      "monk": { "openHand": "Voie de la Main Ouverte" },
-      "paladin": { "devotion": "Serment de Dévotion" },
-      "ranger": { "hunter": "Chasseur" },
-      "rogue": { "thief": "Voleur" },
-      "sorcerer": { "draconic": "Lignage draconique" },
-      "warlock": { "fiend": "Le Fiélon" },
-      "wizard": { "evocation": "École d'évocation" }
+      "barbarian": {
+        "berserker": "Voie du Berserker",
+        "wildheart": "Voie du Cœur sauvage",
+        "wildMagic": "Voie de la Magie sauvage"
+      },
+      "bard": {
+        "lore": "Collège du Savoir",
+        "swords": "Collège des Lames",
+        "valour": "Collège de la Vaillance"
+      },
+      "cleric": {
+        "life": "Domaine de la Vie",
+        "light": "Domaine de la Lumière",
+        "trickery": "Domaine de la Ruse"
+      },
+      "druid": {
+        "land": "Cercle de la Terre",
+        "moon": "Cercle de la Lune",
+        "spores": "Cercle des Spores"
+      },
+      "fighter": {
+        "champion": "Champion",
+        "battleMaster": "Maître de guerre",
+        "eldritchKnight": "Chevalier occulte"
+      },
+      "monk": {
+        "openHand": "Voie de la Main Ouverte",
+        "shadow": "Voie de l'Ombre",
+        "fourElements": "Voie des Quatre Éléments"
+      },
+      "paladin": {
+        "devotion": "Serment de Dévotion",
+        "ancients": "Serment des Anciens",
+        "vengeance": "Serment de Vengeance"
+      },
+      "ranger": {
+        "hunter": "Chasseur",
+        "beastmaster": "Maître des bêtes",
+        "gloomStalker": "Traqueur des ténèbres"
+      },
+      "rogue": {
+        "thief": "Voleur",
+        "swashbuckler": "Bretteur",
+        "assassin": "Assassin"
+      },
+      "sorcerer": {
+        "draconic": "Lignage draconique",
+        "wildSorcery": "Magie sauvage",
+        "stormSorcery": "Sorcellerie des tempêtes"
+      },
+      "warlock": {
+        "fiend": "Le Fiélon",
+        "greatOldOne": "Le Grand Ancien",
+        "archfey": "L'Archifée"
+      },
+      "wizard": {
+        "evocation": "École d'évocation",
+        "necromancy": "École de nécromancie",
+        "illusion": "École d'illusion"
+      }
+    },
+    "TotemSpirits": {
+      "bear": "Ours",
+      "eagle": "Aigle",
+      "wolf": "Loup"
+    },
+    "WildMagic": {
+      "BarbarianTableName": "Surtenance sauvage (Barbare)",
+      "SorcererTableName": "Surtenance sauvage (Ensorceleur)"
+    },
+    "Companion": {
+      "Name": "Loup (compagnon de {owner})"
+    },
+    "Maneuvers": {
+      "precise": "Attaque précise (+1d8 aux dégâts)",
+      "push": "Repousser (la cible recule de 4,50 m si elle échoue à un jet de Force)",
+      "feint": "Feinte (avantage à la prochaine attaque contre cette cible ce tour)"
     },
     "Actor": {
       "Name": "Nom du personnage",
@@ -136,7 +201,20 @@
     },
     "Macros": {
       "ImportContent": "Importer le contenu du système",
-      "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail)."
+      "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail).",
+      "ResyncToken": "Resynchroniser un token"
+    },
+    "TokenSync": {
+      "GmOnly": "Réservé au MJ.",
+      "SelectOneToken": "Sélectionnez un seul token sur le canvas avant de lancer cette macro.",
+      "NotACharacter": "Ce token n'est pas un personnage joueur — rien à relier.",
+      "AlreadyLinked": "{name} est déjà relié à sa fiche.",
+      "NoMasterActor": "Fiche d'origine introuvable pour ce token.",
+      "Linked": "{name} est maintenant relié à sa fiche.",
+      "ChooseHpTitle": "PV du token ou de la fiche ?",
+      "ChooseHpConfirm": "Relier",
+      "KeepTokenHp": "Garder les PV du token ({value}/{max})",
+      "KeepSheetHp": "Garder les PV de la fiche ({value}/{max})"
     },
     "Folders": {
       "Weapons": "Armes",
@@ -186,8 +264,10 @@
       "ApplyHeal": "Appliquer {amount} PV de soin à la cible",
       "HealAlreadyApplied": "Soin déjà appliqué",
       "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
+      "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
+      "CompanionSummoned": "{owner} invoque son compagnon animal : {companion} (le MJ le place sur la scène).",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
       "XpAmount": "Montant d'XP",
       "XpAwarded": "{amount} XP attribués à chacun : {names}.",
@@ -220,6 +300,8 @@
       "Empty": "Aucun objet équipé",
       "OccupiedTwoHanded": "Occupée par l'arme à deux mains",
       "SlotOccupied": "Emplacement déjà occupé par {item}. Déséquipez-le d'abord.",
+      "ChooseSlotTitle": "Choisir l'emplacement",
+      "ChooseSlotConfirm": "Équiper",
       "OffHandRequiresLight": "Seule une arme Légère peut être équipée en Main secondaire.",
       "ACBonus": "Bonus CA",
       "TwoHandedShort": "deux mains",
@@ -278,6 +360,10 @@
       "ConcentratingOn": "Concentré sur :",
       "DropConcentration": "Rompre la concentration",
       "RequiresStateTooltip": "Nécessite : {state}",
+      "ChooseOptionConfirm": "Choisir",
+      "ChooseOptionTooltip": "Choix ponctuel et définitif",
+      "SummonCompanionConfirm": "Invoquer le compagnon",
+      "SummonCompanionTooltip": "Crée le compagnon animal (une seule fois)",
       "ClassFlavor": {
         "barbarian": { "Title": "Rage", "Tagline": "Guerrier primitif qui canalise une rage intérieure au combat, capable d'encaisser des coups terribles et de frapper avec une force brute." },
         "bard": { "Title": "Inspiration bardique", "Tagline": "Artiste et aventurier dont la magie puise dans l'inspiration, la musique et la parole ; polyvalent en combat comme en société." },
@@ -358,7 +444,11 @@
       "FeatConfirm": "Choisir",
       "AllFeatsOwned": "Ce personnage possède déjà tous les Dons du compendium.",
       "SubclassDialogTitle": "Choisir une sous-classe",
-      "SubclassConfirm": "Choisir"
+      "SubclassConfirm": "Choisir",
+      "Back": "Retour",
+      "PendingChoiceLabel": "Choix dû",
+      "PendingChoiceButton": "Résoudre",
+      "PendingChoiceTooltip": "Amélioration de caractéristiques ou Don encore dû(s) — fenêtre fermée sans choisir lors d'une montée de niveau précédente, cliquez pour reprendre."
     },
     "Conditions": {
       "Title": "États",
@@ -381,7 +471,10 @@
       "stunned": "Étourdi",
       "unconscious": "Inconscient",
       "dead": "Mort",
-      "raging": "En Rage"
+      "raging": "En Rage",
+      "surprised": "Surpris",
+      "wildShape": "En Forme sauvage",
+      "hunted": "Traqué"
     },
     "Journal": {
       "Biography": "Biographie",

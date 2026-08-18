@@ -28,6 +28,8 @@ import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
+import { requestBeastCompanion } from "../helpers/companion.js";
+import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -41,6 +43,19 @@ const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
 // Capacités (world-items/features.json) conférant l'incantation rituelle gratuite (cf.
 // #onCastSpell) : une par classe qui l'a en SRD 5e et pour laquelle elle est modélisée ici.
 const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
+
+/** Critique automatique de la Capacité "Assassinat" (sous-classe Assassin, Roublard — cf.
+ *  world-items/subclasses.json > "assassin") : vrai si `actor` possède cette sous-classe ET
+ *  qu'au moins une des cibles actuellement ciblées (`game.user.targets`) porte l'état "Surpris"
+ *  (posé manuellement par le MJ, DND_CUSTOM.conditions dans config.js). Lit une donnée de cible
+ *  pour affecter le jet de l'attaquant, comme `compareToTargetAc` (rolls.js) le fait déjà pour
+ *  chaque jet d'attaque — pas une automatisation tactique générale (flanking/couverture, hors
+ *  scope, cf. le commentaire de conditionRollEffects ci-dessous), juste la lecture d'un état
+ *  explicitement posé à la main pour CETTE Capacité précise. */
+function hasAssassinAutoCritical(actor) {
+  if (actor.system.subclass !== "assassin") return false;
+  return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
+}
 
 /** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
  *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
@@ -100,6 +115,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollSpellDamage: DndCustomActorSheet.#onRollSpellDamage,
       dropConcentration: DndCustomActorSheet.#onDropConcentration,
       levelUp: DndCustomActorSheet.#onLevelUp,
+      resolvePendingAsi: DndCustomActorSheet.#onResolvePendingAsi,
       openCreationWizard: DndCustomActorSheet.#onOpenCreationWizard,
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
       openSubclassSheet: DndCustomActorSheet.#onOpenSubclassSheet,
@@ -109,6 +125,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
+      chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
+      summonCompanion: DndCustomActorSheet.#onSummonCompanion,
+      useManeuver: DndCustomActorSheet.#onUseManeuver,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
     }
   };
@@ -253,6 +272,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
+    // Choix Amélioration de caractéristiques/Don dû mais pas encore résolu (cf.
+    // #onResolvePendingAsi, character-data.js#pendingAsiChoices) : badge de rattrapage manuel
+    // dans l'en-tête tant que > 0.
+    context.pendingAsiChoices = system.attributes.pendingAsiChoices;
     // Affichage XP détaillé (total + seuil exact) réservé au MJ (cf. template : bloc entier
     // sous {{#if isGM}}) : seuil du prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel],
     // la table étant indexée niveau-1), absent au niveau 20 (déjà au maximum).
@@ -343,7 +366,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           // Désavantage imposé par l'armure équipée (SRD 5e) : ne concerne que la Discrétion
           // (cf. CharacterData#prepareDerivedData > this.stealthDisadvantage).
           armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
-          ability: skill.ability,
+          // Retour de test : affichait la clé technique brute ("str", "dex"...) au lieu du nom
+          // localisé de la caractéristique — même convention que context.abilities ci-dessus.
+          ability: game.i18n.localize(DND_CUSTOM.abilities[skill.ability]),
           proficient: skill.proficient,
           jackOfAllTrades: jackOfAllTrades && !skill.proficient,
           mod,
@@ -396,6 +421,20 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         max: resource.system.uses.max
       };
     }
+    // Choix ponctuel proposé par une Capacité (`system.grantsChoice`, ex. "Aspect de la bête") :
+    // bouton "Choisir" affiché (tab-abilities.hbs) tant que le champ ciblé
+    // (`system.combat.<grantsChoice>`) est encore vide, par id de Capacité (même convention
+    // lookup-par-id que featureResourceState ci-dessus).
+    context.featureChoiceMade = {};
+    for (const feature of context.features) {
+      const fieldKey = feature.system.grantsChoice;
+      if (fieldKey) context.featureChoiceMade[feature.id] = !!this.actor.system.combat[fieldKey];
+    }
+
+    // Compagnon animal (Maître des bêtes, Rôdeur) : bouton "Invoquer" masqué une fois déjà
+    // invoqué (cf. #onSummonCompanion ci-dessus/helpers/companion.js).
+    context.companionAlreadySummoned = !!this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated");
+
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
     // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
@@ -422,6 +461,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
         .map((spell) => ({ item: spell }))
     })).filter((group) => group.spells.length);
+    // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
+    // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
+    // moins un Sort octroyé — sinon ses 3 Sorts fixes n'apparaîtraient jamais sur sa fiche.
+    context.hasAnySpells = context.isSpellcaster || spells.length > 0;
     context.spellUses = system.spells.uses;
     context.concentratingOn = system.spells.concentratingOn;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
@@ -657,10 +700,36 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     // Amélioration de caractéristiques OU Don au choix, SRD 5e (règle optionnelle, cf.
     // commentaire de DND_CUSTOM.abilityScoreImprovementLevels) : proposée juste après
-    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js).
+    // l'incrément de niveau (cf. offerAbilityScoreOrFeatDialog, level-up-choice.js). Un choix dû
+    // mais pas encore résolu (fenêtre fermée sans choisir à une montée de niveau précédente,
+    // system.attributes.pendingAsiChoices > 0, cf. schéma character-data.js) est reproposé en
+    // plus de celui de ce niveau-ci, le cas échéant.
     if (DND_CUSTOM.abilityScoreImprovementLevels.includes(next)) {
-      await offerAbilityScoreOrFeatDialog(this.actor);
+      await this.actor.update({ "system.attributes.pendingAsiChoices": this.actor.system.attributes.pendingAsiChoices + 1 });
     }
+    await this.#resolvePendingAsiChoices();
+  }
+
+  /** Reproposé tant que system.attributes.pendingAsiChoices > 0 : un choix Amélioration/Don dû
+   *  reste dû (jamais perdu) jusqu'à ce qu'il soit réellement appliqué (cf.
+   *  offerAbilityScoreOrFeatDialog, level-up-choice.js, qui gère elle-même le va-et-vient entre
+   *  ses propres fenêtres). S'arrête dès qu'une fenêtre est fermée sans choisir, pour laisser la
+   *  main au joueur plutôt que de le forcer en boucle — le badge de l'en-tête (cf.
+   *  #onResolvePendingAsi) reste alors le rattrapage manuel. */
+  async #resolvePendingAsiChoices() {
+    while (this.actor.system.attributes.pendingAsiChoices > 0) {
+      const applied = await offerAbilityScoreOrFeatDialog(this.actor);
+      if (!applied) return;
+      await this.actor.update({ "system.attributes.pendingAsiChoices": this.actor.system.attributes.pendingAsiChoices - 1 });
+    }
+  }
+
+  /** Bouton de rattrapage manuel de l'en-tête (badge visible tant que system.attributes.
+   *  pendingAsiChoices > 0, character-sheet.hbs) : permet de résoudre un choix Amélioration/Don
+   *  dû sans attendre la prochaine montée de niveau (retour de test — fermer la fenêtre sans
+   *  choisir le perdait auparavant pour toujours, faute d'un tel rattrapage). */
+  static async #onResolvePendingAsi() {
+    await this.#resolvePendingAsiChoices();
   }
 
   /** Ouvre l'assistant de création de personnage pour cet Actor (cf.
@@ -910,6 +979,95 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
+  /** Choix ponctuel et définitif proposé par une Capacité (`FeatureData#grantsChoice`, ex.
+   *  "Aspect de la bête", Voie du Cœur sauvage/Barbare) : petite fenêtre à choix unique (radio),
+   *  même mécanique que offerSubclassChoiceDialog (helpers/subclass-choice.js)/
+   *  #offerEquipSlotDialog (sheets/inventory-drag-drop.js). Le champ ciblé
+   *  (`system.combat.<grantsChoice>`) et les options possibles viennent respectivement de
+   *  `grantsChoice` lui-même et de DND_CUSTOM.totemSpirits (seule table de choix existante
+   *  pour l'instant, cf. config.js) — n'affiche rien si le choix est déjà fait (bouton déjà
+   *  masqué côté template de toute façon, revérifié ici par sécurité). */
+  static async #onChooseFeatureOption(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    const fieldKey = item?.system.grantsChoice;
+    if (!fieldKey || this.actor.system.combat[fieldKey]) return;
+
+    const options = DND_CUSTOM.totemSpirits;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="chosenOption" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+
+    const chosenKey = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.chosenOption?.value
+      }
+    });
+    if (!chosenKey) return;
+
+    await this.actor.update({ [`system.combat.${fieldKey}`]: chosenKey });
+  }
+
+  /** Invoque le compagnon animal d'une Capacité `system.summonsCompanion` (ex. "Compagnon
+   *  animal", Maître des bêtes/Rôdeur) : une seule fois par personnage (flag
+   *  `beastCompanionCreated`, cf. helpers/companion.js), jamais recréé ensuite. */
+  static async #onSummonCompanion(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.summonsCompanion) return;
+    if (this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated")) return;
+
+    await requestBeastCompanion(this.actor);
+  }
+
+  /** Dépense une charge de "Dés de manœuvre" (Maître de guerre, Guerrier) : contrairement à
+   *  #onChooseFeatureOption (choix ponctuel et définitif), ce choix de manœuvre est reproposé à
+   *  CHAQUE charge dépensée (cf. FeatureData#offersManeuverChoice, DND_CUSTOM.maneuvers,
+   *  config.js) — même mécanique de dialogue que #offerEquipSlotDialog
+   *  (sheets/inventory-drag-drop.js), juste rejouée à chaque utilisation plutôt qu'une fois. */
+  static async #onUseManeuver(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersManeuverChoice) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    const options = DND_CUSTOM.maneuvers;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="maneuver" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+    const chosenKey = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.maneuver?.value
+      }
+    });
+    if (!chosenKey) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
+    await roll.evaluate();
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `${item.name} — ${game.i18n.localize(options[chosenKey])} (${remaining}/${item.system.uses.max})`
+    });
+  }
+
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
    *  désavantage (cf. tooltip des boutons de jet). */
   static async #onRollAbility(event, target) {
@@ -973,6 +1131,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
+    // Infiltration (sous-classe Assassin, Roublard, niveau 9) : avantage automatique aux tests
+    // de Discrétion — propre au personnage qui jette (Capacité qu'il possède), pas une lecture
+    // d'état de cible, donc dans le même esprit que l'avantage d'Origine ci-dessus. Vérifie la
+    // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
+    // sous-classe choisie : le niveau 9 doit être atteint.
+    const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
     const cond = conditionRollEffects(this.actor, "check");
 
     let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
@@ -993,7 +1157,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       formula: formatModifier(mod),
       flavor,
-      advantage: advantageKey || originAdvantage || cond.advantage,
+      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || cond.advantage,
       disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
     });
   }
@@ -1022,7 +1186,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
       compareToTargetAc: true,
-      criticalRules: true
+      criticalRules: true,
+      forceCriticalHit: hasAssassinAutoCritical(this.actor)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
   }
@@ -1099,13 +1264,28 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // cf. simplification des Capacités de classe).
     const castsAsFreeRitual =
       item.system.ritual && RITUAL_CASTING_FEATURES.some((name) => hasFeature(this.actor.items.contents, name));
-    if (item.system.level > 0 && !castsAsFreeRitual) {
+    // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.
+    // FeatureData#grantsSpells) : ces Sorts sont "toujours prêts", jamais décomptés du pool —
+    // sans quoi ils resteraient inutilisables pour une classe non lanceuse (pool à 0/0, cf.
+    // rules.js > spellUsesForClass). Cherche parmi les Capacités possédées plutôt que sur le
+    // Sort lui-même : c'est la Capacité qui déclare la liste, jamais le Sort.
+    const castsAsFreeSubclassSpell = this.actor.items.some(
+      (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
+    );
+    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
       const uses = this.actor.system.spells.uses;
       if (uses.value <= 0) {
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
         return;
       }
       await this.actor.update({ "system.spells.uses.value": uses.value - 1 });
+
+      // Voie de la Magie sauvage (Ensorceleur, cf. world-items/subclasses.json > "wildSorcery") :
+      // Surtenance sauvage tirée à chaque emplacement de sort réellement dépensé — même
+      // primitive (P1) que la Voie de la Magie sauvage du Barbare, table de tirage distincte
+      // (rollWildSurge indexe par classe, pas par sous-classe : "wildMagic"/Barbare et
+      // "wildSorcery"/Ensorceleur ne se confondent jamais).
+      if (this.actor.system.subclass === "wildSorcery") await rollWildSurge(this.actor, "sorcerer");
     }
 
     // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
@@ -1151,7 +1331,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         advantage: event.shiftKey || cond.advantage,
         disadvantage: event.ctrlKey || cond.disadvantage,
         compareToTargetAc: true,
-        criticalRules: true
+        criticalRules: true,
+        forceCriticalHit: hasAssassinAutoCritical(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
       return;

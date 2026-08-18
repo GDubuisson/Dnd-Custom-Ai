@@ -53,17 +53,6 @@ class DndCustomItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   }
 }
 
-const WEAPON_SLOT_OPTIONS = {
-  mainHand: "DND_CUSTOM.Equipment.MainHand",
-  offHand: "DND_CUSTOM.Equipment.OffHand"
-};
-
-const ARMOR_SLOT_OPTIONS = {
-  armor: "DND_CUSTOM.Equipment.Armor",
-  offHand: "DND_CUSTOM.Equipment.OffHand",
-  accessory: "DND_CUSTOM.Equipment.Accessories"
-};
-
 const GEAR_USE_TYPE_OPTIONS = {
   none: "DND_CUSTOM.Item.GearUseTypes.none",
   light: "DND_CUSTOM.Item.GearUseTypes.light",
@@ -87,8 +76,8 @@ export class WeaponItemSheet extends DndCustomItemSheet {
     // rules.js, SRD 5e combat à deux armes) : évite de configurer un emplacement que le hook
     // d'équipement (dnd-custom-ai.js) refuserait de toute façon au moment d'équiper.
     context.slotOptions = isOffHandEligible(context.system)
-      ? WEAPON_SLOT_OPTIONS
-      : { mainHand: WEAPON_SLOT_OPTIONS.mainHand };
+      ? DND_CUSTOM.weaponSlotOptions
+      : { mainHand: DND_CUSTOM.weaponSlotOptions.mainHand };
     // Une arme à deux mains occupe toujours Main principale + Main secondaire (cf.
     // equipmentSlots dans rules.js) : le champ Emplacement n'a alors pas de sens.
     context.showSlotSelect = properties.handedness !== "twoHanded";
@@ -107,7 +96,7 @@ export class ArmorItemSheet extends DndCustomItemSheet {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.slotOptions = ARMOR_SLOT_OPTIONS;
+    context.slotOptions = DND_CUSTOM.armorSlotOptions;
     return context;
   }
 }

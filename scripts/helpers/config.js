@@ -74,18 +74,66 @@ DND_CUSTOM.classFlavorIcon = {
  *  pour l'octroi automatique des Capacités liées (system.subclass sur FeatureData, libellé
  *  localisé exact, même convention que system.class). */
 DND_CUSTOM.subclasses = {
-  barbarian: { berserker: "DND_CUSTOM.Subclasses.barbarian.berserker" },
-  bard: { lore: "DND_CUSTOM.Subclasses.bard.lore" },
-  cleric: { life: "DND_CUSTOM.Subclasses.cleric.life" },
-  druid: { land: "DND_CUSTOM.Subclasses.druid.land" },
-  fighter: { champion: "DND_CUSTOM.Subclasses.fighter.champion" },
-  monk: { openHand: "DND_CUSTOM.Subclasses.monk.openHand" },
-  paladin: { devotion: "DND_CUSTOM.Subclasses.paladin.devotion" },
-  ranger: { hunter: "DND_CUSTOM.Subclasses.ranger.hunter" },
-  rogue: { thief: "DND_CUSTOM.Subclasses.rogue.thief" },
-  sorcerer: { draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic" },
-  warlock: { fiend: "DND_CUSTOM.Subclasses.warlock.fiend" },
-  wizard: { evocation: "DND_CUSTOM.Subclasses.wizard.evocation" }
+  barbarian: {
+    berserker: "DND_CUSTOM.Subclasses.barbarian.berserker",
+    wildheart: "DND_CUSTOM.Subclasses.barbarian.wildheart",
+    wildMagic: "DND_CUSTOM.Subclasses.barbarian.wildMagic"
+  },
+  bard: {
+    lore: "DND_CUSTOM.Subclasses.bard.lore",
+    swords: "DND_CUSTOM.Subclasses.bard.swords",
+    valour: "DND_CUSTOM.Subclasses.bard.valour"
+  },
+  cleric: {
+    life: "DND_CUSTOM.Subclasses.cleric.life",
+    light: "DND_CUSTOM.Subclasses.cleric.light",
+    trickery: "DND_CUSTOM.Subclasses.cleric.trickery"
+  },
+  druid: {
+    land: "DND_CUSTOM.Subclasses.druid.land",
+    moon: "DND_CUSTOM.Subclasses.druid.moon",
+    spores: "DND_CUSTOM.Subclasses.druid.spores"
+  },
+  fighter: {
+    champion: "DND_CUSTOM.Subclasses.fighter.champion",
+    battleMaster: "DND_CUSTOM.Subclasses.fighter.battleMaster",
+    eldritchKnight: "DND_CUSTOM.Subclasses.fighter.eldritchKnight"
+  },
+  monk: {
+    openHand: "DND_CUSTOM.Subclasses.monk.openHand",
+    shadow: "DND_CUSTOM.Subclasses.monk.shadow",
+    fourElements: "DND_CUSTOM.Subclasses.monk.fourElements"
+  },
+  paladin: {
+    devotion: "DND_CUSTOM.Subclasses.paladin.devotion",
+    ancients: "DND_CUSTOM.Subclasses.paladin.ancients",
+    vengeance: "DND_CUSTOM.Subclasses.paladin.vengeance"
+  },
+  ranger: {
+    hunter: "DND_CUSTOM.Subclasses.ranger.hunter",
+    beastmaster: "DND_CUSTOM.Subclasses.ranger.beastmaster",
+    gloomStalker: "DND_CUSTOM.Subclasses.ranger.gloomStalker"
+  },
+  rogue: {
+    thief: "DND_CUSTOM.Subclasses.rogue.thief",
+    swashbuckler: "DND_CUSTOM.Subclasses.rogue.swashbuckler",
+    assassin: "DND_CUSTOM.Subclasses.rogue.assassin"
+  },
+  sorcerer: {
+    draconic: "DND_CUSTOM.Subclasses.sorcerer.draconic",
+    wildSorcery: "DND_CUSTOM.Subclasses.sorcerer.wildSorcery",
+    stormSorcery: "DND_CUSTOM.Subclasses.sorcerer.stormSorcery"
+  },
+  warlock: {
+    fiend: "DND_CUSTOM.Subclasses.warlock.fiend",
+    greatOldOne: "DND_CUSTOM.Subclasses.warlock.greatOldOne",
+    archfey: "DND_CUSTOM.Subclasses.warlock.archfey"
+  },
+  wizard: {
+    evocation: "DND_CUSTOM.Subclasses.wizard.evocation",
+    necromancy: "DND_CUSTOM.Subclasses.wizard.necromancy",
+    illusion: "DND_CUSTOM.Subclasses.wizard.illusion"
+  }
 };
 
 /** Niveau SRD 5e auquel chaque classe choisit sa sous-classe (Domaine divin/Origine
@@ -105,6 +153,25 @@ DND_CUSTOM.subclassLevel = {
   sorcerer: 1,
   warlock: 1,
   wizard: 2
+};
+
+/** Esprits totems disponibles pour "Aspect de la bête" (Voie du Cœur sauvage, Barbare) — choix
+ *  ponctuel et définitif proposé une fois la Capacité octroyée (cf. FeatureData#grantsChoice,
+ *  CharacterData#combat.totemSpirit, #onChooseFeatureOption dans actor-sheet.js). Clé stable ->
+ *  clé de localisation, même convention que DND_CUSTOM.subclasses ci-dessus. */
+DND_CUSTOM.totemSpirits = {
+  bear: "DND_CUSTOM.TotemSpirits.bear",
+  eagle: "DND_CUSTOM.TotemSpirits.eagle",
+  wolf: "DND_CUSTOM.TotemSpirits.wolf"
+};
+
+/** Manœuvres disponibles pour "Dés de manœuvre" (Maître de guerre, Guerrier) — reproposées à
+ *  chaque charge dépensée (cf. FeatureData#offersManeuverChoice, #onUseManeuver dans
+ *  actor-sheet.js), contrairement au choix ponctuel de DND_CUSTOM.totemSpirits ci-dessus. */
+DND_CUSTOM.maneuvers = {
+  precise: "DND_CUSTOM.Maneuvers.precise",
+  push: "DND_CUSTOM.Maneuvers.push",
+  feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
@@ -222,7 +289,22 @@ DND_CUSTOM.conditions = [
   // Homebrew (pas un état SRD 5e à part entière, mais nécessaire comme bascule visible pour
   // piloter le grisage des Capacités liées à la Rage, cf. commentaire ci-dessus) : réutilise
   // l'icône déjà existante de la Capacité "Rage" plutôt qu'une icône générique du cœur Foundry.
-  { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" }
+  { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" },
+  // Homebrew (comme "raging" ci-dessus) : la Surprise n'est pas un état SRD 5e à proprement
+  // parler (une règle de début de combat, pas une condition durable), mais ce système en a
+  // besoin comme bascule manuelle pour piloter le critique automatique d'Assassin (Roublard,
+  // cf. world-items/features.json > "Assassinat" et rollCheck > forceCriticalHit, rolls.js) —
+  // le MJ la pose sur la cible au moment où elle est effectivement prise par surprise.
+  { id: "surprised", name: "DND_CUSTOM.Conditions.surprised", img: "icons/svg/eye.svg" },
+  // Homebrew (comme "raging" ci-dessus) : bascule manuelle pilotant les Capacités de Cercle de
+  // la Lune/Cercle des Spores (Druide) qui exigent d'être en Forme sauvage, cf.
+  // world-items/features.json > "Forme sauvage de combat"/"Nuée de Symbiote".
+  { id: "wildShape", name: "DND_CUSTOM.Conditions.wildShape", img: "systems/dnd-custom-ai/assets/icons/features/Forme-sauvage.png" },
+  // Homebrew (comme "surprised" ci-dessus) : bascule manuelle posée sur la cible d'un Paladin du
+  // Serment de Vengeance (désavantage aux attaques de quiconque n'est pas le Paladin contre
+  // elle), à poser/lever manuellement par le MJ, cf. world-items/features.json > "Traque
+  // implacable".
+  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé
@@ -279,6 +361,23 @@ DND_CUSTOM.damageTypes = {
 DND_CUSTOM.weaponHandedness = {
   oneHanded: "DND_CUSTOM.Item.WeaponHandedness.oneHanded",
   twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
+};
+
+/** Emplacements d'équipement possibles pour une Arme/une Armure (system.slot, cf. item-data.js
+ *  et equipmentSlots() dans rules.js) — clés stables partagées par la fiche d'Item (select
+ *  system.slot, réservé au MJ, cf. item-sheets.js) ET la fenêtre de choix d'emplacement
+ *  présentée au Joueur au moment d'équiper depuis l'onglet Inventaire (cf.
+ *  inventory-drag-drop.js > #offerEquipSlotDialog) — même jeu d'options des deux côtés, une
+ *  seule source de vérité. */
+DND_CUSTOM.weaponSlotOptions = {
+  mainHand: "DND_CUSTOM.Equipment.MainHand",
+  offHand: "DND_CUSTOM.Equipment.OffHand"
+};
+
+DND_CUSTOM.armorSlotOptions = {
+  armor: "DND_CUSTOM.Equipment.Armor",
+  offHand: "DND_CUSTOM.Equipment.OffHand",
+  accessory: "DND_CUSTOM.Equipment.Accessories"
 };
 
 /** Catégories de Langue (cf. scripts/data/item-data.js > LanguageData) : "common" (la Commune,

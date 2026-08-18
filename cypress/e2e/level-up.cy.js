@@ -350,7 +350,7 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
     return cy.then(() => dedicatedActorId);
   }
 
-  it("propose le choix AMC/Don au niveau requis, pas ailleurs (T-LVL-009, T-LVL-010)", () => {
+  it("propose le choix AMC/Don au niveau requis, pas ailleurs une fois résolu (T-LVL-009, T-LVL-010)", () => {
     cy.loginAsPlayer();
     createLevel3Fighter("LevelUp ASI Threshold").then((dedicatedActorId) => {
       // Niveau 3 -> 4 : niveau ASI (DND_CUSTOM.abilityScoreImprovementLevels) -> la boîte de
@@ -364,13 +364,77 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
         .then((title) => {
           cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title);
         });
-      cy.get('dialog.application.dialog button[data-action="close"]').click();
+      // Résolu (pas juste fermée sans choisir, cf. T-LVL-013 pour ce cas précis) : sinon le
+      // choix reste dû et se reproposerait à la montée de niveau suivante (comportement
+      // volontaire depuis le retour de test sur la perte de choix, cf. T-LVL-013).
+      cy.get('dialog.application.dialog button[data-action="asi"]').click();
+      cy.get('dialog.application.dialog select[name="ability1"]').select("str");
+      cy.get('dialog.application.dialog button[data-action="ok"]').click();
 
-      // Niveau 4 -> 5 : pas un niveau ASI -> aucune boîte proposée (T-LVL-010).
+      // Niveau 4 -> 5 : pas un niveau ASI et rien n'est plus dû -> aucune boîte proposée (T-LVL-010).
       cy.then(() => openSheet(dedicatedActorId));
       sheetRoot().find('button[data-action="levelUp"]').click();
       cy.wait(1000);
       cy.get("dialog.application.dialog").should("not.exist");
+    });
+  });
+
+  it("choix AMC/Don fermé sans choisir : reste dû, reproposé à la montée suivante, rattrapable via le badge (T-LVL-013)", () => {
+    cy.loginAsPlayer();
+    createLevel3Fighter("LevelUp ASI Pending").then((dedicatedActorId) => {
+      // Niveau 3 -> 4 : ferme la boîte de choix SANS rien choisir.
+      openSheet(dedicatedActorId);
+      sheetRoot().find('button[data-action="levelUp"]').click();
+      cy.get('dialog.application.dialog .window-title', { timeout: 10000 }).should("exist");
+      cy.get('dialog.application.dialog button[data-action="close"]').click();
+      cy.get("dialog.application.dialog").should("not.exist");
+
+      cy.window().should((win) => {
+        expect(win.game.actors.get(dedicatedActorId).system.attributes.pendingAsiChoices, "choix resté dû").to.equal(1);
+      });
+
+      // Badge de rattrapage manuel visible sur la fiche, même sans re-monter de niveau (pas de
+      // nouveau render forcé : la fiche se met déjà à jour toute seule après l'update ci-dessus).
+      sheetRoot().find('button[data-action="resolvePendingAsi"]').should("exist");
+
+      // Niveau 4 -> 5 : pas un niveau ASI, mais le choix niveau 4 reste dû -> reproposé quand même.
+      sheetRoot().find('button[data-action="levelUp"]').click();
+      cy.get('dialog.application.dialog .window-title', { timeout: 10000 }).should("have.length", 1);
+
+      cy.get('dialog.application.dialog button[data-action="asi"]').click();
+      cy.get('dialog.application.dialog select[name="ability1"]').select("dex");
+      cy.get('dialog.application.dialog button[data-action="ok"]').click();
+      cy.get("dialog.application.dialog").should("not.exist");
+
+      cy.window().should((win) => {
+        expect(win.game.actors.get(dedicatedActorId).system.attributes.pendingAsiChoices, "choix résolu").to.equal(0);
+      });
+    });
+  });
+
+  it("bouton 'Retour' du choix AMC/Don : ramène au choix Amélioration/Don sans rien perdre (T-LVL-014)", () => {
+    cy.loginAsPlayer();
+    createLevel3Fighter("LevelUp ASI Back").then((dedicatedActorId) => {
+      openSheet(dedicatedActorId);
+      sheetRoot().find('button[data-action="levelUp"]').click();
+      cy.get('dialog.application.dialog button[data-action="feat"]', { timeout: 10000 }).click();
+
+      cy.get('dialog.application.dialog button[data-action="back"]', { timeout: 10000 }).click();
+      cy.window()
+        .its("game.i18n")
+        .then((i18n) => i18n.localize("DND_CUSTOM.LevelUp.ChoiceTitle"))
+        .then((title) => {
+          cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("have.length", 1).and("contain.text", title);
+        });
+
+      cy.get('dialog.application.dialog button[data-action="asi"]').click();
+      cy.get('dialog.application.dialog select[name="ability1"]', { timeout: 10000 }).select("con");
+      cy.get('dialog.application.dialog button[data-action="ok"]').click();
+      cy.get("dialog.application.dialog").should("not.exist");
+
+      cy.window().should((win) => {
+        expect(win.game.actors.get(dedicatedActorId).system.attributes.pendingAsiChoices, "choix résolu, rien perdu via le retour").to.equal(0);
+      });
     });
   });
 

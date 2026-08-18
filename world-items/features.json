@@ -687,6 +687,65 @@
     }
   },
   {
+    "name": "Aspect de la bête",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Aspect-de-la-bete.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildheart",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "grantsChoice": "totemSpirit",
+      "description": "Choix ponctuel et définitif d'un esprit totem (bouton \"Choisir\") : Ours (robustesse, résistance accrue en Rage), Aigle (célérité, difficile à rattraper en Rage) ou Loup (coordination, avantage aux alliés proches d'une cible que vous avez touchée). Le choix flavore aussi \"Instincts du totem\" (niveau 6)."
+    }
+  },
+  {
+    "name": "Instincts du totem",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Instincts-du-totem.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildheart",
+      "level": 6,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Une fois par repos court ou long, en Rage : jet de 1d6 de bonus (dégâts, résistance à un test, ou effet narratif) dont l'interprétation exacte dépend de l'esprit totem choisi (Aspect de la bête) — au MJ de trancher l'application précise selon Ours/Aigle/Loup."
+    }
+  },
+  {
+    "name": "Surtenance sauvage",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Surtenance-sauvage.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildMagic",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous entrez en Rage, un effet de Surtenance sauvage aléatoire se déclenche automatiquement et est annoncé dans le chat (tirage sur la table \"Surtenance sauvage (Barbare)\") — imprévisible, parfois utile, parfois anodin."
+    }
+  },
+  {
+    "name": "Volonté indomptable de la sauvagerie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Volonte-indomptable-de-la-sauvagerie.png",
+    "system": {
+      "class": "barbarian",
+      "subclass": "wildMagic",
+      "level": 6,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long, juste après un tirage de Surtenance sauvage dont l'effet vous déplaît : dépensez cette charge pour l'ignorer et n'en subir aucun effet."
+    }
+  },
+  {
     "name": "Mots cinglants",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Mots-cinglants.png",
@@ -714,6 +773,35 @@
       "rollFormula": "",
       "source": "",
       "description": "Vous apprenez deux sorts au choix dans la liste de n'importe quelle classe (avec l'accord du MJ pour les ajouter à votre pool de Sorts) : ils comptent comme des sorts de Barde pour vous, mais ne comptent pas dans le nombre de sorts de Barde que vous connaissez."
+    }
+  },
+  {
+    "name": "Manœuvre de lame dansante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Manoeuvre-de-lame-dansante.png",
+    "system": {
+      "class": "bard",
+      "subclass": "swords",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
+      "description": "Sur une attaque au corps à corps réussie : ajoutez 1d6 de dégâts supplémentaires et déplacez-vous jusqu'à 1,50 m sans provoquer d'attaque d'opportunité, sans dépenser de mouvement. 2 utilisations par repos court ou long."
+    }
+  },
+  {
+    "name": "Inspiration vaillante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Inspiration-vaillante.png",
+    "system": {
+      "class": "bard",
+      "subclass": "valour",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Un dé d'Inspiration bardique (cf. Capacité Inspiration bardique) peut désormais aussi être ajouté à un jet d'attaque ou à la Classe d'Armure d'un allié qui le porte, en plus des usages habituels. Vous combattez également avec une arme de guerre et une armure intermédiaire sans pénalité, contrairement aux autres Bardes."
     }
   },
   {
@@ -746,6 +834,38 @@
     }
   },
   {
+    "name": "Flamme protectrice",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Flamme-protectrice.png",
+    "system": {
+      "class": "cleric",
+      "subclass": "light",
+      "level": 1,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature à 9 m de vous que vous voyez subit des dégâts",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc, et la source des dégâts (si vivante) subit un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
+    }
+  },
+  {
+    "name": "Duplicata de ruse",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Duplicata-de-ruse.png",
+    "system": {
+      "class": "cleric",
+      "subclass": "trickery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus : créez une image illusoire de vous-même dans un espace libre à 9 m, qui dure 1 minute. Vous pouvez voir et entendre à travers elle, et la déplacer de 9 m en action bonus ; toute créature qui tente de vous localiser à vue doit réussir un test d'Intelligence contre votre DD de sorts sous peine de cibler l'image par erreur. 1 utilisation par repos court ou long."
+    }
+  },
+  {
     "name": "Sorts de cercle",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Sorts-de-cercle.png",
@@ -775,6 +895,36 @@
     }
   },
   {
+    "name": "Forme sauvage de combat",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Forme-sauvage-de-combat.png",
+    "system": {
+      "class": "druid",
+      "subclass": "moon",
+      "level": 2,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "requiresState": "wildShape",
+      "source": "",
+      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation, et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
+    }
+  },
+  {
+    "name": "Nuée de Symbiote",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Nuee-de-Symbiote.png",
+    "system": {
+      "class": "druid",
+      "subclass": "spores",
+      "level": 2,
+      "requiresRoll": true,
+      "rollFormula": "1d4",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus, 1 minute : vos attaques de corps à corps et vos attaques de Forme sauvage infligent 1d4 dégâts nécrotiques supplémentaires. 1 utilisation par repos court ou long (simplifié : normalement alimentée par la même réserve que Forme sauvage)."
+    }
+  },
+  {
     "name": "Critique amélioré",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Critique-ameliore.png",
@@ -800,6 +950,37 @@
       "rollFormula": "",
       "source": "",
       "description": "Vous ajoutez la moitié de votre bonus de maîtrise (arrondi à l'inférieur) à tout test de Force, Dextérité ou Constitution pour lequel vous n'êtes pas déjà maîtrisé. De plus, se relever ne vous coûte qu'1,50 m de mouvement, grimper ne vous coûte pas de mouvement supplémentaire, et vos distances de saut en longueur/en hauteur augmentent d'1,50 m (course d'élan non requise pour en bénéficier)."
+    }
+  },
+  {
+    "name": "Dés de manœuvre",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Des-de-manoeuvre.png",
+    "system": {
+      "class": "fighter",
+      "subclass": "battleMaster",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d8",
+      "source": "",
+      "uses": { "max": 4, "value": 4, "recharge": "shortRest" },
+      "offersManeuverChoice": true,
+      "description": "Bouton qui propose un choix de manœuvre (Attaque précise, Repousser ou Feinte) puis lance 1d8 avec cet effet, en plus d'une attaque déjà portée ce tour. 4 charges, récupérées à un repos court ou long."
+    }
+  },
+  {
+    "name": "Incantation mineure",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Incantation-mineure.png",
+    "system": {
+      "class": "fighter",
+      "subclass": "eldritchKnight",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "grantsSpells": ["Bouclier", "Prestidigitation", "Lumière"],
+      "description": "Octroie 3 Sorts de Magicien toujours prêts, sans emplacement dédié à gérer : Bouclier, Prestidigitation, Lumière — visibles et lançables directement depuis l'onglet Sorts."
     }
   },
   {
@@ -832,6 +1013,36 @@
     }
   },
   {
+    "name": "Pas dans l'ombre",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-dans-lombre.png",
+    "system": {
+      "class": "monk",
+      "subclass": "shadow",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Action bonus, dans une zone de pénombre ou d'obscurité : téléportez-vous jusqu'à 18 m vers un autre espace en pénombre ou obscurité que vous pouvez voir. Coûte 1 point de Ki (cf. Capacité Ki)."
+    }
+  },
+  {
+    "name": "Disciplines élémentaires",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Disciplines-elementaires.png",
+    "system": {
+      "class": "monk",
+      "subclass": "fourElements",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Ki",
+      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts (jet de sauvegarde à mi-dégâts selon la discipline, à lancer manuellement)."
+    }
+  },
+  {
     "name": "Canalisation divine : Arme sacrée",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Arme-sacree.png",
@@ -858,6 +1069,36 @@
       "rollFormula": "",
       "source": "",
       "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient."
+    }
+  },
+  {
+    "name": "Voile des anciens",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Voile-des-anciens.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "ancients",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus, 1 minute : vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts. 1 utilisation par repos court ou long."
+    }
+  },
+  {
+    "name": "Traque implacable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Traque-implacable.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "vengeance",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Action bonus : désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle. 1 utilisation par repos long (simplifié : normalement lié à Sens divin, sans limite d'usage propre)."
     }
   },
   {
@@ -889,6 +1130,35 @@
     }
   },
   {
+    "name": "Compagnon animal",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Compagnon-animal.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "beastmaster",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "summonsCompanion": true,
+      "description": "Bouton \"Invoquer le compagnon\" : crée un Loup (profil simple, 11 PV, CA 13) lié à vous — le MJ le place ensuite sur la scène comme n'importe quel PNJ. Une seule fois."
+    }
+  },
+  {
+    "name": "Embuscade des ténèbres",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Embuscade-des-tenebres.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "gloomStalker",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "+2 à l'Initiative (appliqué automatiquement) et vision dans le noir étendue à 18 m (60 m si vous en disposiez déjà) — vous voyez, entendez et sentez mieux la présence de créatures cachées dans les 3 premiers rounds d'un combat."
+    }
+  },
+  {
     "name": "Doigts agiles",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Doigts-agiles.png",
@@ -914,6 +1184,63 @@
       "rollFormula": "",
       "source": "",
       "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale."
+    }
+  },
+  {
+    "name": "Panache",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Panache.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "swashbuckler",
+      "level": 3,
+      "requiresRoll": true,
+      "rollFormula": "1d4",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Une fois par repos court ou long : jet de 1d4 de bonus, ajouté à un test de Persuasion/Intimidation contre un adversaire fraîchement engagé au corps à corps, ou pour vous dégager de lui sans provoquer d'attaque d'opportunité (au MJ de trancher l'application précise selon la situation)."
+    }
+  },
+  {
+    "name": "Jeu de jambes",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Jeu-de-jambes.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "swashbuckler",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous touchez une créature avec une attaque au corps à corps lors de votre tour, cette créature ne peut plus faire d'attaque d'opportunité contre vous jusqu'à la fin de ce tour."
+    }
+  },
+  {
+    "name": "Assassinat",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Assassinat.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "assassin",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Tout jet d'attaque contre une créature marquée de l'état \"Surpris\" (posé par le MJ, onglet Statistiques) est automatiquement un coup critique, sans avoir besoin d'un 20 naturel — appliqué automatiquement au moment du jet."
+    }
+  },
+  {
+    "name": "Infiltration",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Infiltration.png",
+    "system": {
+      "class": "rogue",
+      "subclass": "assassin",
+      "level": 9,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Avantage automatique à tous les tests de Discrétion — appliqué sans avoir besoin de le déclarer."
     }
   },
   {
@@ -946,6 +1273,49 @@
     }
   },
   {
+    "name": "Surtenance sauvage (Ensorceleur)",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Surtenance-sauvage-ensorceleur.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "wildSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Chaque fois que vous dépensez un emplacement de sort, un effet de Surtenance sauvage aléatoire se déclenche automatiquement et est annoncé dans le chat (tirage sur la table \"Surtenance sauvage (Ensorceleur)\") — imprévisible, parfois utile, parfois anodin."
+    }
+  },
+  {
+    "name": "Vol tempétueux",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Vol-tempetueux.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "stormSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long : gagnez une vitesse de vol égale à votre vitesse de déplacement pendant 10 minutes."
+    }
+  },
+  {
+    "name": "Affinité de la tempête",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Affinite-de-la-tempete.png",
+    "system": {
+      "class": "sorcerer",
+      "subclass": "stormSorcery",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Résistance passive aux dégâts de foudre et de tonnerre — jamais de jet à faire, réduisez simplement de moitié tout dégât de ce type que vous subissez."
+    }
+  },
+  {
     "name": "Bienfait du Fiélon",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Bienfait-du-Fielon.png",
@@ -975,6 +1345,36 @@
     }
   },
   {
+    "name": "Effroi psychique",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Effroi-psychique.png",
+    "system": {
+      "class": "warlock",
+      "subclass": "greatOldOne",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir manuellement l'état \"Effrayé\" (cf. onglet États) jusqu'à la fin de votre prochain tour. 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
+    }
+  },
+  {
+    "name": "Pas féerique",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-feerique.png",
+    "system": {
+      "class": "warlock",
+      "subclass": "archfey",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
+      "description": "Action bonus : téléportez-vous jusqu'à 9 m vers un espace libre que vous pouvez voir. 1 utilisation par repos court ou long."
+    }
+  },
+  {
     "name": "Sculpteur de sorts",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Sculpteur-de-sorts.png",
@@ -1000,6 +1400,38 @@
       "rollFormula": "",
       "source": "",
       "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
+    }
+  },
+  {
+    "name": "Étreinte glaciale de la tombe",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Etreinte-glaciale-de-la-tombe.png",
+    "system": {
+      "class": "wizard",
+      "subclass": "necromancy",
+      "level": 2,
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Une fois par repos long : quand vous infligez des dégâts à une créature avec un sort d'attaque, ajoutez 1d6 dégâts nécrotiques supplémentaires et regagnez des points de vie temporaires égaux aux dégâts nécrotiques infligés (simplifié : normalement selon le niveau de sort dépensé)."
+    }
+  },
+  {
+    "name": "Double illusoire",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Double-illusoire.png",
+    "system": {
+      "class": "wizard",
+      "subclass": "illusion",
+      "level": 2,
+      "activation": "reaction",
+      "reactionTrigger": "Vous êtes touché par une attaque",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
+      "description": "Réaction, quand vous êtes touché par une attaque : créez l'illusion que vous vous êtes téléporté 1,50 m à côté, laissant l'attaque manquer sa cible. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant un emplacement de sort)."
     }
   },
   {

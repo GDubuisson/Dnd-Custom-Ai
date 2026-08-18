@@ -79,13 +79,22 @@ before(() => {
       const actor = win.game.actors.get(id);
       const greataxe = win.game.items.getName("Grande hache");
       const shield = win.game.items.getName("Bouclier");
+      const dagger = win.game.items.getName("Dague");
       expect(greataxe, "prérequis : Item du monde 'Grande hache' importé").to.exist;
       expect(shield, "prérequis : Item du monde 'Bouclier' importé").to.exist;
+      expect(dagger, "prérequis : Item du monde 'Dague' importé").to.exist;
 
       return actor
         .createEmbeddedDocuments("Item", [
           win.JSON.parse(win.JSON.stringify(greataxe.toObject())),
           win.JSON.parse(win.JSON.stringify(shield.toObject())),
+          // Arme à une main Légère (seul cas déclenchant la fenêtre de choix d'emplacement, cf.
+          // T-EQUIP-006/007), désarmée au départ.
+          (() => {
+            const data = win.JSON.parse(win.JSON.stringify(dagger.toObject()));
+            data.system.equipped = false;
+            return data;
+          })(),
           // Emplacement "accessory" : aucun Item livré avec le système ne l'utilise (armures =
           // "armor"/"offHand" seulement, cf. commentaire d'en-tête) — fixture minimale dédiée.
           win.JSON.parse(
@@ -210,6 +219,63 @@ describe("Onglet Équipement", () => {
         .should("contain.text", "+1"); // baseAC: 1 sur la fixture, cf. before()
 
       setEquipped(ringId, false);
+    });
+  });
+
+  // Retour de test (ANOMALIES_ACTIVES.md, "Équipement/Inventaire") : le champ Emplacement
+  // (system.slot) est verrouillé au MJ sur la fiche d'Item elle-même (contenu de règles), donc
+  // un Joueur ne pouvait plus du tout choisir main principale vs secondaire pour une arme à une
+  // main Légère. Fenêtre de choix (DialogV2) désormais présentée au moment de cocher "Équipé"
+  // dans l'Inventaire — structure DOM capturée en conditions réelles, même convention que
+  // level-up.cy.js (dialog.application.dialog, input radio + button[data-action="ok"/"close"]).
+  it("arme à une main Légère — fenêtre de choix d'emplacement, Main secondaire choisie (T-EQUIP-006)", () => {
+    withItemId(sharedActorId, "Épée longue", (longswordId) => setEquipped(longswordId, false));
+    withItemId(sharedActorId, "Bouclier", (shieldId) => setEquipped(shieldId, false));
+
+    withItemId(sharedActorId, "Dague", (daggerId) => {
+      goToTab("inventory");
+      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true });
+
+      cy.window()
+        .its("game.i18n")
+        .then((i18n) => i18n.localize("DND_CUSTOM.Equipment.ChooseSlotTitle"))
+        .then((title) => {
+          cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title);
+        });
+
+      cy.get('dialog.application.dialog input[type="radio"][name="equipSlot"][value="offHand"]').check();
+      cy.get('dialog.application.dialog button[data-action="ok"]').click();
+
+      cy.window().should((win) => {
+        const item = win.game.actors.get(sharedActorId).items.get(daggerId);
+        expect(item.system.equipped, "équipée après confirmation de la fenêtre").to.be.true;
+        expect(item.system.slot, "emplacement choisi dans la fenêtre appliqué").to.equal("offHand");
+      });
+
+      goToTab("equipment");
+      equipmentSlotEl(OFF_HAND).find(`.equipped-item-line[data-item-id="${daggerId}"]`).should("exist");
+
+      setEquipped(daggerId, false);
+    });
+  });
+
+  it("fenêtre de choix d'emplacement annulée — l'arme reste non équipée (T-EQUIP-007)", () => {
+    withItemId(sharedActorId, "Dague", (daggerId) => {
+      goToTab("inventory");
+      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true });
+
+      cy.get("dialog.application.dialog", { timeout: 10000 }).should("exist");
+      cy.get('dialog.application.dialog button[data-action="close"]').click();
+
+      cy.window().should((win) => {
+        expect(
+          win.game.actors.get(sharedActorId).items.get(daggerId).system.equipped,
+          "toujours non équipée après annulation de la fenêtre"
+        ).to.be.false;
+      });
+      // La case s'était cochée visuellement au clic (avant l'ouverture de la fenêtre) : doit
+      // revenir décochée pour refléter l'état réel une fois la fenêtre fermée sans validation.
+      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).should("not.be.checked");
     });
   });
 });

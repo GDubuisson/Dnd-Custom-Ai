@@ -10,6 +10,26 @@
     }
   },
   {
+    "name": "Voie du Cœur sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-du-Coeur-sauvage.webp",
+    "system": {
+      "classKey": "barbarian",
+      "subclassKey": "wildheart",
+      "description": "<p>Sous-classe de Barbare (niveau 3, inspirée de Baldur's Gate 3). Ce Barbare puise sa rage dans un esprit animal choisi une fois pour toutes : Ours (robustesse), Aigle (célérité et vivacité) ou Loup (coordination de meute).</p><ul><li>Niveau 3 : Aspect de la bête (choix définitif de l'esprit totem)</li><li>Niveau 6 : Instincts du totem</li></ul>"
+    }
+  },
+  {
+    "name": "Voie de la Magie sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Magie-sauvage.webp",
+    "system": {
+      "classKey": "barbarian",
+      "subclassKey": "wildMagic",
+      "description": "<p>Sous-classe de Barbare (niveau 3, inspirée de Baldur's Gate 3). La rage de ce Barbare est teintée d'une magie chaotique incontrôlée : chaque entrée en Rage déclenche une Surtenance sauvage imprévisible, tirée au hasard.</p><ul><li>Niveau 3 : Surtenance sauvage (tirage automatique à chaque Rage)</li><li>Niveau 6 : Volonté indomptable de la sauvagerie</li></ul>"
+    }
+  },
+  {
     "name": "Collège du Savoir",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-du-Savoir.webp",
@@ -17,6 +37,26 @@
       "classKey": "bard",
       "subclassKey": "lore",
       "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Le Barde du Savoir collectionne les connaissances et les talents glanés partout, aussi à l'aise pour déstabiliser un adversaire en plein combat que pour briller dans n'importe quel domaine d'expertise.</p><ul><li>Niveau 3 : Compétences supplémentaires, Mots cinglants</li><li>Niveau 6 : Sorts supplémentaires</li></ul>"
+    }
+  },
+  {
+    "name": "Collège des Lames",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-des-Lames.webp",
+    "system": {
+      "classKey": "bard",
+      "subclassKey": "swords",
+      "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Ce Barde manie la lame en duelliste virevoltant, mêlant escrime et magie en un même mouvement fluide.</p><ul><li>Niveau 3 : Manœuvre de lame dansante</li></ul>"
+    }
+  },
+  {
+    "name": "Collège de la Vaillance",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-de-la-Vaillance.webp",
+    "system": {
+      "classKey": "bard",
+      "subclassKey": "valour",
+      "description": "<p>Sous-classe de Barde (niveau 3, SRD 5e). Ce Barde chante au cœur de la mêlée, portant lui-même l'armure et le combat au premier rang tout en inspirant ses compagnons d'armes.</p><ul><li>Niveau 3 : Inspiration vaillante</li></ul>"
     }
   },
   {
@@ -30,6 +70,26 @@
     }
   },
   {
+    "name": "Domaine de la Lumière",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Lumiere.webp",
+    "system": {
+      "classKey": "cleric",
+      "subclassKey": "light",
+      "description": "<p>Sous-classe de Clerc (niveau 1, SRD 5e). Le Domaine de la Lumière canalise l'énergie radieuse pour repousser les ténèbres et protéger ses alliés d'un éclat aveuglant.</p><ul><li>Niveau 1 : Flamme protectrice</li></ul>"
+    }
+  },
+  {
+    "name": "Domaine de la Ruse",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Ruse.webp",
+    "system": {
+      "classKey": "cleric",
+      "subclassKey": "trickery",
+      "description": "<p>Sous-classe de Clerc (niveau 1, SRD 5e). Le Domaine de la Ruse enseigne la duperie et le mensonge au service d'un dieu farceur, préférant la manipulation à l'affrontement direct.</p><ul><li>Niveau 1 : Duplicata de ruse</li></ul>"
+    }
+  },
+  {
     "name": "Cercle de la Terre",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Terre.webp",
@@ -40,6 +100,26 @@
     }
   },
   {
+    "name": "Cercle de la Lune",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Lune.webp",
+    "system": {
+      "classKey": "druid",
+      "subclassKey": "moon",
+      "description": "<p>Sous-classe de Druide (niveau 2, SRD 5e). Le Cercle de la Lune est le plus orienté combat des cercles druidiques : sa Forme sauvage devient une véritable arme de guerre.</p><ul><li>Niveau 2 : Forme sauvage de combat</li></ul>"
+    }
+  },
+  {
+    "name": "Cercle des Spores",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-des-Spores.webp",
+    "system": {
+      "classKey": "druid",
+      "subclassKey": "spores",
+      "description": "<p>Sous-classe de Druide (niveau 2, inspirée de Baldur's Gate 3). Ce Druide a fait alliance avec un champignon symbiotique qui infuse son corps de spores nécrotiques.</p><ul><li>Niveau 2 : Nuée de Symbiote</li></ul>"
+    }
+  },
+  {
     "name": "Champion",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Champion.webp",
@@ -47,6 +127,46 @@
       "classKey": "fighter",
       "subclassKey": "champion",
       "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Archétype le plus simple et le plus direct : une prouesse martiale brute, portée par une capacité accrue à porter des coups critiques.</p><ul><li>Niveau 3 : Critique amélioré</li><li>Niveau 7 : Athlète accompli</li></ul>"
+    }
+  },
+  {
+    "name": "Maître de guerre",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-de-guerre.webp",
+    "system": {
+      "classKey": "fighter",
+      "subclassKey": "battleMaster",
+      "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Ce Guerrier étudie l'art du combat sous toutes ses formes, employant des manœuvres tactiques précises plutôt que la seule force brute.</p><ul><li>Niveau 3 : Dés de manœuvre (4 charges, choix d'une manœuvre à chaque utilisation)</li></ul>"
+    }
+  },
+  {
+    "name": "Chevalier occulte",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chevalier-occulte.webp",
+    "system": {
+      "classKey": "fighter",
+      "subclassKey": "eldritchKnight",
+      "description": "<p>Sous-classe de Guerrier (niveau 3, SRD 5e). Ce Guerrier complète sa maîtrise martiale par une incantation mineure de Magicien, apprise pour renforcer son combat.</p><ul><li>Niveau 3 : Incantation mineure (Bouclier, Prestidigitation, Lumière — toujours prêts)</li></ul>"
+    }
+  },
+  {
+    "name": "Voie de l'Ombre",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-lOmbre.webp",
+    "system": {
+      "classKey": "monk",
+      "subclassKey": "shadow",
+      "description": "<p>Sous-classe de Moine (niveau 3, SRD 5e). Cette tradition monastique enseigne des techniques furtives puisées dans l'obscurité, dépensant du Ki pour se déplacer comme une ombre.</p><ul><li>Niveau 3 : Pas dans l'ombre</li></ul>"
+    }
+  },
+  {
+    "name": "Voie des Quatre Éléments",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-des-Quatre-Elements.webp",
+    "system": {
+      "classKey": "monk",
+      "subclassKey": "fourElements",
+      "description": "<p>Sous-classe de Moine (niveau 3, SRD 5e). Ce Moine canalise son Ki en disciplines élémentaires, façonnant le feu, l'eau, la terre et l'air en armes de combat.</p><ul><li>Niveau 3 : Disciplines élémentaires</li></ul>"
     }
   },
   {
@@ -70,6 +190,26 @@
     }
   },
   {
+    "name": "Serment des Anciens",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-des-Anciens.webp",
+    "system": {
+      "classKey": "paladin",
+      "subclassKey": "ancients",
+      "description": "<p>Sous-classe de Paladin (niveau 3, SRD 5e). Le Serment des Anciens puise dans la lumière ancienne de la nature, vouée à préserver la beauté et la vie contre les ténèbres.</p><ul><li>Niveau 3 : Voile des anciens</li></ul>"
+    }
+  },
+  {
+    "name": "Serment de Vengeance",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-de-Vengeance.webp",
+    "system": {
+      "classKey": "paladin",
+      "subclassKey": "vengeance",
+      "description": "<p>Sous-classe de Paladin (niveau 3, SRD 5e). Ce Paladin a fait vœu de traquer et punir sans relâche ceux qui ont commis un mal terrible.</p><ul><li>Niveau 3 : Traque implacable</li></ul>"
+    }
+  },
+  {
     "name": "Chasseur",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chasseur.webp",
@@ -77,6 +217,26 @@
       "classKey": "ranger",
       "subclassKey": "hunter",
       "description": "<p>Sous-classe de Rôdeur (niveau 3, SRD 5e). Le Chasseur perfectionne des techniques de combat spécialisées contre les menaces qu'il traque, des adversaires isolés les plus puissants aux hordes les plus nombreuses.</p><ul><li>Niveau 3 : Proie du chasseur</li><li>Niveau 7 : Tactiques défensives</li></ul>"
+    }
+  },
+  {
+    "name": "Maître des bêtes",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-des-betes.webp",
+    "system": {
+      "classKey": "ranger",
+      "subclassKey": "beastmaster",
+      "description": "<p>Sous-classe de Rôdeur (niveau 3, SRD 5e). Ce Rôdeur combat aux côtés d'un compagnon animal qu'il a lui-même dressé, formant avec lui une équipe soudée.</p><ul><li>Niveau 3 : Compagnon animal (invocation)</li></ul>"
+    }
+  },
+  {
+    "name": "Traqueur des ténèbres",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Traqueur-des-tenebres.webp",
+    "system": {
+      "classKey": "ranger",
+      "subclassKey": "gloomStalker",
+      "description": "<p>Sous-classe de Rôdeur (niveau 3, inspirée de Baldur's Gate 3). Ce Rôdeur s'est entraîné à l'embuscade dans l'obscurité la plus totale, frappant le premier avant que l'ennemi n'ait pu réagir.</p><ul><li>Niveau 3 : Embuscade des ténèbres (+2 Initiative, vision dans le noir étendue)</li></ul>"
     }
   },
   {
@@ -90,6 +250,26 @@
     }
   },
   {
+    "name": "Bretteur",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Bretteur.webp",
+    "system": {
+      "classKey": "rogue",
+      "subclassKey": "swashbuckler",
+      "description": "<p>Sous-classe de Roublard (niveau 3, inspirée de Baldur's Gate 3). Duelliste flamboyant qui frappe puis se dérobe avant que l'adversaire n'ait pu réagir, aussi à l'aise l'épée à la main qu'au cœur d'une foule.</p><ul><li>Niveau 3 : Panache</li><li>Niveau 9 : Jeu de jambes</li></ul>"
+    }
+  },
+  {
+    "name": "Assassin",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Assassin.webp",
+    "system": {
+      "classKey": "rogue",
+      "subclassKey": "assassin",
+      "description": "<p>Sous-classe de Roublard (niveau 3, inspirée de Baldur's Gate 3). Spécialiste de l'embuscade et du coup fatal porté avant que la cible n'ait pu réagir.</p><ul><li>Niveau 3 : Assassinat (critique automatique contre une cible Surprise)</li><li>Niveau 9 : Infiltration</li></ul>"
+    }
+  },
+  {
     "name": "Lignage draconique",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Lignage-draconique.webp",
@@ -97,6 +277,26 @@
       "classKey": "sorcerer",
       "subclassKey": "draconic",
       "description": "<p>Sous-classe d'Ensorceleur (niveau 1, SRD 5e). La magie de cet Ensorceleur trouve sa source dans le sang d'un dragon ancestral, dont il tire une résistance à un type de dégâts et une vigueur accrue.</p><ul><li>Niveau 1 : Ascendant draconique, Résilience draconique</li><li>Niveau 6 : Affinité élémentaire</li></ul>"
+    }
+  },
+  {
+    "name": "Magie sauvage",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Magie-sauvage.webp",
+    "system": {
+      "classKey": "sorcerer",
+      "subclassKey": "wildSorcery",
+      "description": "<p>Sous-classe d'Ensorceleur (niveau 1, SRD 5e). La magie de cet Ensorceleur est instable, née du chaos brut — chaque emplacement de sort dépensé risque de déclencher une Surtenance sauvage imprévisible.</p><ul><li>Niveau 1 : Surtenance sauvage (tirage automatique à chaque emplacement de sort dépensé)</li></ul>"
+    }
+  },
+  {
+    "name": "Sorcellerie des tempêtes",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Sorcellerie-des-tempetes.webp",
+    "system": {
+      "classKey": "sorcerer",
+      "subclassKey": "stormSorcery",
+      "description": "<p>Sous-classe d'Ensorceleur (niveau 1, inspirée de Baldur's Gate 3). La magie de cet Ensorceleur trouve sa source dans les éléments de la tempête, lui offrant une affinité avec le vent et la foudre.</p><ul><li>Niveau 1 : Vol tempétueux, Affinité de la tempête</li></ul>"
     }
   },
   {
@@ -110,6 +310,26 @@
     }
   },
   {
+    "name": "Le Grand Ancien",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Grand-Ancien.webp",
+    "system": {
+      "classKey": "warlock",
+      "subclassKey": "greatOldOne",
+      "description": "<p>Sous-classe d'Occultiste (niveau 1, SRD 5e). Ce patron, entité incompréhensible venue d'ailleurs, communique par télépathie et confère à son pacte le pouvoir de semer l'effroi psychique.</p><ul><li>Niveau 1 : Effroi psychique</li></ul>"
+    }
+  },
+  {
+    "name": "L'Archifée",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/LArchifee.webp",
+    "system": {
+      "classKey": "warlock",
+      "subclassKey": "archfey",
+      "description": "<p>Sous-classe d'Occultiste (niveau 1, SRD 5e). Ce patron féerique, puissant seigneur ou dame du Royaume féerique, offre à son pacte grâce et vivacité empruntées à la nature enchantée.</p><ul><li>Niveau 1 : Pas féerique</li></ul>"
+    }
+  },
+  {
     "name": "École d'évocation",
     "type": "subclass",
     "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-devocation.webp",
@@ -117,6 +337,26 @@
       "classKey": "wizard",
       "subclassKey": "evocation",
       "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École d'évocation forme des lanceurs de sorts destructeurs, capables d'épargner leurs alliés au cœur même de leurs explosions magiques.</p><ul><li>Niveau 2 : Sculpteur de sorts</li><li>Niveau 6 : Tour de magie renforcé</li></ul>"
+    }
+  },
+  {
+    "name": "École de nécromancie",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-de-necromancie.webp",
+    "system": {
+      "classKey": "wizard",
+      "subclassKey": "necromancy",
+      "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École de nécromancie étudie les frontières entre la vie et la mort, infusant les sorts d'attaque d'une froideur mortelle.</p><ul><li>Niveau 2 : Étreinte glaciale de la tombe</li></ul>"
+    }
+  },
+  {
+    "name": "École d'illusion",
+    "type": "subclass",
+    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-dillusion.webp",
+    "system": {
+      "classKey": "wizard",
+      "subclassKey": "illusion",
+      "description": "<p>Sous-classe de Magicien (niveau 2, SRD 5e). L'École d'illusion façonne des tromperies sensorielles si abouties qu'elles se dérobent à toute analyse.</p><ul><li>Niveau 2 : Double illusoire</li></ul>"
     }
   }
 ]

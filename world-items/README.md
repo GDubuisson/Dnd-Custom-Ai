@@ -26,10 +26,10 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `gear.json` | 15 objets d'aventurier courants | `gear` | Items du monde |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
-| `features.json` | 69 capacités de classe SRD 5e (classe de base niveaux 1 à 9, + 24 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
+| `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
 | `feats.json` | 10 dons PHB (règle optionnelle, `class`/`subclass` vides — jamais auto-octroyés) | `feature` | Compendium "Dons" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
-| `subclasses.json` | Une sous-classe SRD 5e par classe (12), avec description | `subclass` | Compendium "Sous-classes" |
+| `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -78,8 +78,8 @@ l'emplacement de sort au moment de lancer (cf. bouton "Lancer" de l'onglet Sorts
 ## Note sur les capacités de classe
 
 `features.json` couvre les capacités de classe de base (hors sous-classe) des niveaux 1 à 9
-selon les classes, plus deux capacités par sous-classe SRD modélisée (cf. "Note sur les
-sous-classes" plus bas) — pas la progression complète des 12 classes jusqu'au niveau 20. Le
+selon les classes, plus 1 ou 2 capacités par sous-classe (cf. "Note sur les sous-classes" plus
+bas) — pas la progression complète des 12 classes jusqu'au niveau 20. Le
 champ `class` contient la CLÉ stable de la classe (ex. `"barbarian"`, cf. `DND_CUSTOM.classes`,
 `scripts/helpers/config.js`) — jamais un libellé localisé/traduit, pour que la comparaison
 (`grantClassContent`) reste correcte quelle que soit la langue active du monde ; `subclass`
@@ -97,15 +97,54 @@ disponible).
 
 ## Note sur les sous-classes
 
-Une sous-classe SRD 5e par classe (`subclasses.json`, 12 entrées), avec ses 2 premières
-Capacités liées (`features.json`, `system.subclass` renseigné) : Voie du Berserker (Barbare),
-Collège du Savoir (Barde), Domaine de la Vie (Clerc), Cercle de la Terre (Druide), Champion
-(Guerrier), Voie de la Main Ouverte (Moine), Serment de Dévotion (Paladin), Chasseur (Rôdeur),
-Voleur (Roublard), Lignage draconique (Ensorceleur), Le Fiélon (Occultiste), École
-d'évocation (Magicien). Sélectionnable sur la fiche de personnage une fois le niveau
-d'obtention SRD atteint (`DND_CUSTOM.subclassLevel`, `scripts/helpers/config.js`) ; les
-Capacités liées sont octroyées automatiquement dès la sélection, comme les Capacités de
-classe (cf. `helpers/class-content.js`).
+3 sous-classes par classe (`subclasses.json`, 36 entrées), chacune avec 1 ou 2 Capacités liées
+(`features.json`, `system.subclass` renseigné) — 1 sous-classe SRD 5e d'origine par classe, plus
+2 sous-classes supplémentaires inspirées de Baldur's Gate 3, ajoutées lors du chantier
+"plusieurs sous-classes par classe" (2026-08-19) :
+
+| Classe | SRD 5e d'origine | + 2 sous-classes ajoutées |
+|---|---|---|
+| Barbare | Voie du Berserker | Voie du Cœur sauvage, Voie de la Magie sauvage |
+| Barde | Collège du Savoir | Collège des Lames, Collège de la Vaillance |
+| Clerc | Domaine de la Vie | Domaine de la Lumière, Domaine de la Ruse |
+| Druide | Cercle de la Terre | Cercle de la Lune, Cercle des Spores |
+| Guerrier | Champion | Maître de guerre, Chevalier occulte |
+| Moine | Voie de la Main Ouverte | Voie de l'Ombre, Voie des Quatre Éléments |
+| Paladin | Serment de Dévotion | Serment des Anciens, Serment de Vengeance |
+| Rôdeur | Chasseur | Maître des bêtes, Traqueur des ténèbres |
+| Roublard | Voleur | Bretteur, Assassin |
+| Ensorceleur | Lignage draconique | Magie sauvage, Sorcellerie des tempêtes |
+| Occultiste | Le Fiélon | Le Grand Ancien, L'Archifée |
+| Magicien | École d'évocation | École de nécromancie, École d'illusion |
+
+Sélectionnable sur la fiche de personnage une fois le niveau d'obtention SRD atteint
+(`DND_CUSTOM.subclassLevel`, `scripts/helpers/config.js`) ; les Capacités liées sont octroyées
+automatiquement dès la sélection, comme les Capacités de classe (cf. `helpers/class-content.js`).
+
+Contrairement aux 12 sous-classes SRD 5e d'origine (largement génériques — cf. "Simplifications
+assumées" du Journal "Guide du MJ"), les 24 sous-classes ajoutées apportent chacune un mécanisme
+actif propre sur `FeatureData`, au-delà du `requiresRoll`/`uses.max` déjà utilisés par les
+Capacités de classe de base :
+
+- `requiresState` : bouton activable seulement si l'Actor porte l'état indiqué (`DND_CUSTOM.
+  conditions`, ex. Frénésie nécessite "raging", Forme sauvage de combat nécessite "wildShape").
+- `costsResource` : la Capacité consomme la réserve d'usages d'une AUTRE Capacité présente sur
+  l'Actor, trouvée par son nom exact (ex. Pas dans l'ombre/Disciplines élémentaires consomment
+  la réserve de "Ki").
+- `grantsChoice` : bouton "Choisir" proposant un choix ponctuel et définitif (DialogV2), stocké
+  sur `system.combat.<champ>` (ex. Aspect de la bête → esprit totem Ours/Aigle/Loup).
+- `offersManeuverChoice` : variante de `requiresRoll` qui propose d'abord un choix (DialogV2)
+  avant de lancer la formule (ex. Dés de manœuvre → Attaque précise/Repousser/Feinte).
+- `summonsCompanion` : bouton "Invoquer" qui crée un Actor `npc` prédéfini lié au personnage,
+  une seule fois (ex. Compagnon animal, Maître des bêtes).
+- `grantsSpells` : liste de noms de Sorts toujours prêts sans emplacement dédié, même pour une
+  classe non lanceuse (ex. Incantation mineure, Chevalier occulte).
+- Table de surtenance sauvage (RollTable Foundry native, cf. `scripts/helpers/
+  wild-magic-tables.js`) : tirage automatique posté en chat au déclenchement (Rage pour le
+  Barbare, emplacement de sort dépensé pour l'Ensorceleur).
+- Critique automatique conditionnel (`forceCriticalHit`, cf. `rollCheck` dans `scripts/helpers/
+  rolls.js`) : un jet d'attaque contre une cible portant l'état "surprised" devient
+  systématiquement critique (Assassinat, Assassin).
 
 ## Note sur les dons
 

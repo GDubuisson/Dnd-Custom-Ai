@@ -71,7 +71,10 @@
       <ul class="features-list">
         {{#each features}}
         <li data-item-id="{{this.id}}">
-          <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}"><strong>{{this.name}}</strong></a>
+          {{! Retour de test : ouvrir la fiche complète de l'Item juste pour lire sa description
+              était trop lourd (fenêtre séparée) — un simple survol suffit désormais, cf. même
+              convention déjà utilisée pour les langues ci-dessus (htmlSnippet). }}
+          <strong class="item-name-tooltip" title="{{htmlSnippet this.system.description}}">{{this.name}}</strong>
           {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
           {{#if (isReactionItem this)}}
           <span class="reaction-badge" title="{{this.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
@@ -79,9 +82,13 @@
           {{#if this.system.uses.max}}
           <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
           {{/if}}
-          {{#if this.system.requiresRoll}}
+          {{#if this.system.offersManeuverChoice}}
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula (localize "DND_CUSTOM.Actor.Level")}}
+          </button>
+          {{else if this.system.requiresRoll}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
-            <i class="fa-solid fa-dice-d20"></i> {{this.system.rollFormula}}
+            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula (localize "DND_CUSTOM.Actor.Level")}}
           </button>
           {{else if this.system.uses.max}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
@@ -91,6 +98,18 @@
           <button type="button" class="roll-btn feature-roll-btn conditional-feature-btn" data-action="useConditionalFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Abilities.RequiresStateTooltip' state=(conditionLabel ../conditions this.system.requiresState)}}">
             <i class="fa-solid fa-bolt"></i> {{this.name}}
           </button>
+          {{else if this.system.grantsChoice}}
+            {{#unless (lookup ../featureChoiceMade this.id)}}
+            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseFeatureOption" title="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
+              <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
+            </button>
+            {{/unless}}
+          {{else if this.system.summonsCompanion}}
+            {{#unless ../companionAlreadySummoned}}
+            <button type="button" class="roll-btn feature-roll-btn" data-action="summonCompanion" title="{{localize 'DND_CUSTOM.Abilities.SummonCompanionTooltip'}}">
+              <i class="fa-solid fa-paw"></i> {{localize "DND_CUSTOM.Abilities.SummonCompanionConfirm"}}
+            </button>
+            {{/unless}}
           {{/if}}
           {{#with (lookup ../featureResourceState this.id)}}
           <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
@@ -104,7 +123,7 @@
       </ul>
     </div>
 
-    {{#if isSpellcaster}}
+    {{#if hasAnySpells}}
     <div class="spells-column">
       <h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
       {{#each spellsByLevel}}
@@ -113,7 +132,7 @@
         <ul class="spells-list">
           {{#each this.spells}}
           <li data-item-id="{{this.item.id}}">
-            <a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.item.name}}</a>
+            <strong class="item-name-tooltip" title="{{htmlSnippet this.item.system.description}}">{{this.item.name}}</strong>
             {{#if this.item.system.details}}<span class="spell-details">({{this.item.system.details}})</span>{{/if}}
             {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
             {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}

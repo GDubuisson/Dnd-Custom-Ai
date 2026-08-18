@@ -212,7 +212,34 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
       // exact de cette Capacité réservoir sur l'Actor (même convention texte libre que
       // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
-      costsResource: new StringField({ required: false, blank: true, initial: "" })
+      costsResource: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité qui propose un choix ponctuel et définitif au joueur (ex. "Aspect de la bête",
+      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem) : clé du champ correspondant
+      // sous `CharacterData#combat` où le choix est persisté une fois fait (ex. "totemSpirit"
+      // -> `system.combat.totemSpirit`) — vide pour l'immense majorité des Capacités, qui n'ont
+      // pas ce genre de choix. Bouton "Choisir" affiché (onglet Capacités/Sorts, cf.
+      // #onChooseFeatureOption, actor-sheet.js) tant que le champ visé est encore vide,
+      // disparaît une fois le choix fait (verrouillé, même logique que le choix de sous-classe).
+      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] }),
+      // Capacité qui invoque un compagnon animal (ex. "Compagnon animal", Maître des bêtes,
+      // Rôdeur) : bouton "Invoquer le compagnon" affiché (onglet Capacités/Sorts, cf.
+      // #onSummonCompanion, actor-sheet.js/helpers/companion.js) une seule fois (flag
+      // `beastCompanionCreated` posé sur l'Actor à la création, jamais recréé ensuite même si
+      // le compagnon est supprimé). `false` pour l'immense majorité des Capacités.
+      summonsCompanion: new BooleanField({ required: true, initial: false }),
+      // Incantation mineure de sous-classe (ex. "Incantation mineure", Chevalier occulte,
+      // Guerrier) : liste de NOMS de Sorts (texte libre, comme costsResource ci-dessus — ce sont
+      // des Sorts nommément désignés par la sous-classe, pas un filtre par classe/niveau)
+      // octroyés automatiquement avec cette Capacité, même si la classe n'est pas dans
+      // DND_CUSTOM.spellcastingClasses (cf. grantClassContent, helpers/class-content.js). Vide
+      // pour l'immense majorité des Capacités.
+      grantsSpells: new SetField(new StringField({ blank: false }), { required: true, initial: [] }),
+      // Capacité qui propose un choix de manœuvre À CHAQUE utilisation (ex. "Dés de manœuvre",
+      // Maître de guerre, Guerrier) : contrairement à grantsChoice (choix ponctuel et définitif
+      // une seule fois), ce choix est reposé à chaque charge dépensée — cf. #onUseManeuver,
+      // actor-sheet.js, et DND_CUSTOM.maneuvers, config.js. `false` pour l'immense majorité des
+      // Capacités.
+      offersManeuverChoice: new BooleanField({ required: true, initial: false })
     };
   }
 }

@@ -77,6 +77,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 30 }),
         level: new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+        // Choix "Amélioration de caractéristiques ou Don" dus mais pas encore résolus (SRD 5e,
+        // cf. DND_CUSTOM.abilityScoreImprovementLevels) : incrémenté à chaque niveau concerné
+        // atteint, décrémenté seulement quand un choix est réellement appliqué (Amélioration OU
+        // Don accepté) — jamais quand la fenêtre est fermée sans choisir (retour de test :
+        // fermer sans choisir faisait perdre le choix pour toujours). Tant que > 0, la fenêtre
+        // est reproposée à chaque montée de niveau suivante ET un bouton de rattrapage manuel
+        // reste affiché sur la fiche (cf. DndCustomActorSheet#onLevelUp/#onResolvePendingAsi).
+        pendingAsiChoices: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
         // Niveaux d'Exhaustion SRD 5e (0-6) : effets appliqués dans prepareDerivedData
         // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
         // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
@@ -136,7 +144,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // Foundry redéclenche "updateCombat" avec `round` dans les changements SANS que sa valeur
         // n'ait réellement progressé (ex. plusieurs mises à jour internes lors du démarrage d'un
         // combat) — seul un round strictement supérieur à cette valeur fait avancer le décompte.
-        rageLastRound: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+        rageLastRound: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        // Choix ponctuel et définitif de l'esprit totem (Voie du Cœur sauvage, Barbare — cf.
+        // FeatureData#grantsChoice = "totemSpirit", "Aspect de la bête" dans features.json) :
+        // vide tant que non choisi (bouton "Choisir" affiché, #onChooseFeatureOption,
+        // actor-sheet.js), jamais réinitialisé une fois posé.
+        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
@@ -200,8 +213,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
     // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
-    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json).
-    this.attributes.initiativeMod = dexMod;
+    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json). Traqueur des
+    // ténèbres (sous-classe Rôdeur, "Embuscade des ténèbres") : +2 supplémentaire, appliqué
+    // automatiquement dès la sous-classe choisie (disponible seulement à partir du niveau
+    // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
+    this.attributes.initiativeMod = dexMod + (this.subclass === "gloomStalker" ? 2 : 0);
 
     // Pool de sorts par repos (cf. schéma ci-dessus) : `value` n'est jamais touché ici, seul
     // `max` est recalculé à chaque préparation. `maxLevel` (plus haut niveau de sort

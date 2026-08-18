@@ -24,6 +24,9 @@ import { ensurePlayerGuideJournal } from "./helpers/player-guide-journal.js";
 import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
+import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
+import { ensureWildSurgeTable, rollWildSurge } from "./helpers/wild-magic-tables.js";
+import { ensureBeastCompanionRequestListener } from "./helpers/companion.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
@@ -139,7 +142,8 @@ Hooks.once("init", async () => {
     origins: await loadOrigins(),
     spellSlotTables: await loadSpellSlotTables(),
     openAwardXpDialog,
-    importSystemContent
+    importSystemContent,
+    resyncControlledToken
   };
 });
 
@@ -157,7 +161,10 @@ Hooks.once("ready", async () => {
   await ensureGmGuideJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
+  await ensureTokenResyncMacro();
   await importSystemContent({ notifyIfEmpty: false });
+  await ensureWildSurgeTable("barbarian");
+  await ensureWildSurgeTable("sorcerer");
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();
 });
@@ -235,6 +242,7 @@ Hooks.once("ready", () => {
     const doc = await fromUuid(uuid);
     if (doc) await doc.update(updates);
   });
+  ensureBeastCompanionRequestListener();
 });
 
 /** Applique `updates` à `actor` : directement si le client a la permission, sinon relayée au MJ
@@ -659,6 +667,12 @@ Hooks.on("createActiveEffect", async (effect) => {
   const actor = effect.parent;
   if (actor?.type !== "character" || !effect.statuses?.has("raging")) return;
   if (game.users.activeGM?.id !== game.user.id) return;
+
+  // Voie de la Magie sauvage (Barbare, cf. world-items/subclasses.json > "wildMagic") :
+  // Surtenance sauvage tirée à CHAQUE activation de Rage, combat ou pas — contrairement au
+  // décompte de durée ci-dessous, volontairement pas conditionné à game.combat.round.
+  if (actor.system.subclass === "wildMagic") await rollWildSurge(actor, "barbarian");
+
   if (!game.combat?.round) return;
 
   await actor.update({
@@ -747,12 +761,20 @@ async function applyDamageToTargets(amount, sourceActorId) {
     if (!hp) continue;
 
     // PvP bloqué (retour de test) : un personnage joueur ne peut pas infliger de dégâts à un
-    // autre personnage joueur (PNJ/monture non concernés, ni un personnage qui s'inflige des
-    // dégâts à lui-même — poison, chute...).
+    // autre personnage joueur (PNJ/monture non concernés).
     if (sourceActor?.type === "character" && actor.type === "character" && actor.id !== sourceActor.id) {
       ui.notifications.warn(
         game.i18n.format("DND_CUSTOM.Chat.PvpBlocked", { attacker: sourceActor.name, target: actor.name })
       );
+      continue;
+    }
+
+    // Auto-dégâts (retour de test, ANOMALIES_ACTIVES.md) : un Joueur ne peut plus s'appliquer de
+    // dégâts à lui-même en se ciblant lui-même — seul le MJ le peut désormais (poison, chute,
+    // piège... déclenchés à sa discrétion), même bouton "Appliquer les dégâts" pour les deux,
+    // seule la permission de cliquer change selon qui est connecté.
+    if (sourceActor?.type === "character" && actor.type === "character" && actor.id === sourceActor.id && !game.user.isGM) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.SelfDamageBlocked", { name: actor.name }));
       continue;
     }
 
@@ -768,10 +790,11 @@ async function applyDamageToTargets(amount, sourceActorId) {
 
     // dndCustomDamageApply : seul flux autorisé à faire BAISSER system.attributes.hp.value
     // depuis un client non-MJ (cf. preUpdateActor plus bas) — un jet de dégâts réel a déjà dû
-    // être posté en chat et un bouton cliqué explicitement, ce qui couvre le cas légitime d'un
-    // Joueur qui s'inflige lui-même des dégâts narratifs (poison, chute...), tout en fermant le
-    // vrai trou de sécurité signalé par un testeur : taper une valeur arbitraire directement
-    // dans le champ PV de l'en-tête (character-sheet.hbs, désormais `disabled` côté Joueur).
+    // être posté en chat et un bouton cliqué explicitement (ex. dégâts d'un PNJ contre le
+    // personnage du Joueur, source non "character" donc jamais concernée par le blocage PvP/
+    // auto-dégâts ci-dessus), tout en fermant le vrai trou de sécurité signalé par un testeur :
+    // taper une valeur arbitraire directement dans le champ PV de l'en-tête (character-sheet.hbs,
+    // désormais `disabled` côté Joueur).
     if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
     if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
       await checkConcentration(actor, amount);
