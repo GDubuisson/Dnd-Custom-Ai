@@ -137,7 +137,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 
 | ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
 |---|---|---|---|---|---|
-| T-ABIL-001 | En-tête spécifique par classe | P2 | E2E | Ouvrir l'onglet pour 2-3 classes différentes | Le partial `templates/actor/abilities/<classe>.hbs` propre à chaque classe s'affiche (titre/icône/accroche) |
+| T-ABIL-001 | En-tête spécifique par classe | P2 | E2E | Ouvrir l'onglet pour 2-3 classes différentes | Le partial unique `templates/actor/abilities/class-flavor.hbs` affiche le titre/icône/accroche propres à la classe (`context.classFlavorIcon`/`Title`/`Tagline`, actor-sheet.js) |
 | T-ABIL-002 | Repli sur le partial "default" | P2 | E2E | Ouvrir l'onglet sur un Actor sans classe (en cours d'assistant, si accessible) | Partial "default" utilisé, pas d'erreur |
 | T-ABIL-003 | Jet libre d'une capacité (avec formule) | P1 | E2E+Quench | Capacité `requiresRoll` avec `rollFormula` (ex. Second souffle), cliquer | Formule évaluée avec les données de l'Actor (résolution des `@...`), résultat en chat |
 | T-ABIL-004 | Consommation de charge sur une capacité limitée | P1 | E2E+Quench | Capacité à charges, l'utiliser | `uses.value` décrémenté, affiché dans le message de chat |

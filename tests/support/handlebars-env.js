@@ -43,18 +43,14 @@ Handlebars.registerHelper("selectOptions", function (choices, options) {
 const { registerHandlebarsHelpers } = await import("../../scripts/helpers/handlebars-helpers.js");
 registerHandlebarsHelpers();
 
-// En-têtes d'onglet Capacités/Sorts spécialisés par classe (cf. scripts/dnd-custom-ai.js >
-// loadTemplates au hook "init") : mêmes clés de partial (chemin système complet) que
+// En-tête d'onglet Capacités/Sorts spécialisé par classe (cf. scripts/dnd-custom-ai.js >
+// loadTemplates au hook "init") : même clé de partial (chemin système complet) que
 // context.classTabPartial (actor-sheet.js), pour que {{> (lookup this "classTabPartial")}}
 // se résolve à l'identique en test et en jeu.
-const { DND_CUSTOM } = await import("../../scripts/helpers/config.js");
-for (const key of [...Object.keys(DND_CUSTOM.classes), "default"]) {
-  const partialPath = path.join(ROOT, "templates", "actor", "abilities", `${key}.hbs`);
-  Handlebars.registerPartial(
-    `systems/dnd-custom-ai/templates/actor/abilities/${key}.hbs`,
-    readFileSync(partialPath, "utf8")
-  );
-}
+Handlebars.registerPartial(
+  "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs",
+  readFileSync(path.join(ROOT, "templates", "actor", "abilities", "class-flavor.hbs"), "utf8")
+);
 
 /** Compile et rend un template .hbs du système (chemin relatif à `templates/`) avec `context`. */
 export function renderTemplate(relativePath, context) {

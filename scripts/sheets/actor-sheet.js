@@ -211,13 +211,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
     // En-tête spécialisé de l'onglet Capacités/Sorts (habillage seulement — titre/icône/
-    // accroche propres à la classe, cf. templates/actor/abilities/*.hbs) : partial Handlebars
-    // résolue dynamiquement via {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs.
-    // Préchargée/enregistrée au hook "init" (cf. dnd-custom-ai.js > loadTemplates). Repli sur
-    // "default" tant qu'aucune classe valide n'est choisie (ex. assistant de création en cours).
-    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/${
-      DND_CUSTOM.classes[system.class] ? system.class : "default"
-    }.hbs`;
+    // accroche propres à la classe) : partial Handlebars unique
+    // (templates/actor/abilities/class-flavor.hbs), résolue via
+    // {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs, préchargée/enregistrée au
+    // hook "init" (cf. dnd-custom-ai.js > loadTemplates). Le partial n'affiche rien tant que
+    // classFlavorTitle n'est pas posé (aucune classe valide choisie, ex. assistant de création
+    // en cours).
+    context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`;
+    if (DND_CUSTOM.classes[system.class]) {
+      context.classFlavorIcon = DND_CUSTOM.classFlavorIcon[system.class];
+      context.classFlavorTitle = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Title`);
+      context.classFlavorTagline = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Tagline`);
+    }
 
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
