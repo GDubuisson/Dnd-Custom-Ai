@@ -353,15 +353,16 @@ describe("tab-inventory.hbs", () => {
   });
 });
 
-describe("tab-abilities.hbs — pool de sorts simplifié", () => {
-  function render(spellUses) {
+describe("tab-abilities.hbs — emplacements de sorts par niveau (1-9)", () => {
+  function render(spellSlots, isPactMagic = false) {
     return parse(
       renderTemplate("actor/tab-abilities.hbs", {
         tab: {},
         isSpellcaster: true,
         hasAnySpells: true,
         spellcasting: { dc: 14, attackBonusLabel: "+6" },
-        spellUses,
+        spellSlots,
+        isPactMagic,
         concentratingOn: "",
         originTrait: null,
         features: [],
@@ -384,35 +385,46 @@ describe("tab-abilities.hbs — pool de sorts simplifié", () => {
     );
   }
 
-  test("une seule pastille 'Sorts par repos' (pas d'emplacement par niveau)", () => {
-    const doc = render({ value: 2, max: 4 });
+  test("une pastille par palier accessible (max > 0), nommée par son niveau", () => {
+    const doc = render([
+      { level: 1, value: 2, max: 4 },
+      { level: 2, value: 1, max: 2 }
+    ]);
     const chips = doc.querySelectorAll(".spell-slot-chip");
-    assert.equal(chips.length, 1, `attendu 1 pastille, trouvé ${chips.length}`);
-    const input = chips[0].querySelector("input");
-    assert.equal(input.getAttribute("name"), "system.spells.uses.value");
-    assert.equal(input.getAttribute("max"), "4");
+    assert.equal(chips.length, 2, `attendu 2 pastilles, trouvé ${chips.length}`);
+    const firstInput = chips[0].querySelector("input");
+    assert.equal(firstInput.getAttribute("name"), "system.spells.slots.1.value");
+    assert.equal(firstInput.getAttribute("max"), "4");
+    const secondInput = chips[1].querySelector("input");
+    assert.equal(secondInput.getAttribute("name"), "system.spells.slots.2.value");
+    assert.equal(secondInput.getAttribute("max"), "2");
   });
 
-  test("aucune pastille affichée quand le personnage n'a pas de sorts par repos (max=0)", () => {
-    const doc = render({ value: 0, max: 0 });
+  test("aucune pastille affichée quand le personnage n'a aucun palier accessible", () => {
+    const doc = render([]);
     assert.equal(doc.querySelectorAll(".spell-slot-chip").length, 0);
   });
 
-  test("le détail du sort (temps/portée/durée fusionnés) est affiché entre parenthèses", () => {
-    const doc = render({ value: 2, max: 4 });
-    const details = doc.querySelector(".spell-details");
-    assert.equal(details.textContent.trim(), "(1 action, 36 m, Instantanée)");
+  test("badge 'Magie de Pacte' affiché quand isPactMagic est vrai (Occultiste)", () => {
+    const doc = render([{ level: 2, value: 1, max: 2 }], true);
+    assert.ok(doc.querySelector(".pact-magic-badge"), "badge Magie de Pacte introuvable");
   });
 
-  test("aucune trace de l'ancien système d'emplacements par niveau dans le HTML rendu", () => {
-    const doc = render({ value: 2, max: 4 });
-    assert.equal(doc.body.innerHTML.includes("system.spells.slots"), false);
+  test("pas de badge 'Magie de Pacte' pour un lanceur classique", () => {
+    const doc = render([{ level: 1, value: 2, max: 4 }], false);
+    assert.equal(doc.querySelector(".pact-magic-badge"), null);
+  });
+
+  test("le détail du sort (temps/portée/durée fusionnés) est affiché entre parenthèses", () => {
+    const doc = render([{ level: 1, value: 2, max: 4 }]);
+    const details = doc.querySelector(".spell-details");
+    assert.equal(details.textContent.trim(), "(1 action, 36 m, Instantanée)");
   });
 
   // Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared) — purement
   // informatif, jamais utilisé par aucune règle, source de confusion pour les testeurs.
   test("aucune case 'Préparé' (concept retiré, cf. system.prepared)", () => {
-    const doc = render({ value: 2, max: 4 });
+    const doc = render([{ level: 1, value: 2, max: 4 }]);
     assert.equal(doc.querySelector("[data-item-prepared]"), null, "case Préparé encore présente");
     assert.equal(doc.querySelector(".spell-prepared"), null, "libellé Préparé encore présent");
   });

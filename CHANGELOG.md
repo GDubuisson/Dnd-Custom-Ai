@@ -7,6 +7,14 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
+vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du
+sort est épuisé) et cas particulier Magie de Pacte (Occultiste, un seul palier actif, rechargé
+aussi au repos court) — voir le détail dans les sections Ajouté/Modifié ci-dessous. **Point
+d'attention testeurs** : au premier chargement après mise à jour, les charges de sorts des
+personnages existants repartent à 0 (nouveau schéma de données) — un repos long les restaure à
+leur bon maximum.
+
 Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
 modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 
@@ -148,6 +156,14 @@ place de simples `<textarea>`), dés de vie et références D&D5e retirés du co
   Journal "Comparatif des Origines", plus référencé nulle part — supprimé.
 
 ### Ajouté
+- Vrais emplacements de sorts par niveau (1 à 9, SRD 5e) à la place du pool unique "Sorts par
+  repos" (`system.spells.slots`, `scripts/data/character-data.js`) : un jeton par palier
+  réellement accessible sur l'onglet Sorts, décompté au lancer selon le niveau du sort. Si
+  l'emplacement du niveau exact d'un sort est épuisé mais qu'un palier supérieur a des charges,
+  une fenêtre de choix (`scripts/helpers/spell-slot-choice.js`) propose de surclasser plutôt que
+  de bloquer le lancer. L'Occultiste (Magie de Pacte) reste un cas particulier SRD (un seul
+  palier actif, qui monte avec le niveau, rechargé au repos court ET long), signalé par un badge
+  dédié sur l'onglet.
 - 24 sous-classes supplémentaires (`world-items/subclasses.json`, 2 par classe, inspirées de
   Baldur's Gate 3) : Voie du Cœur sauvage/Voie de la Magie sauvage (Barbare), Collège des
   Lames/Collège de la Vaillance (Barde), Domaine de la Lumière/Domaine de la Ruse (Clerc),

@@ -309,7 +309,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "longRest" },
-      "description": "Réserve de points de sorcellerie (2, simplifié : ne progresse pas avec le niveau dans ce système), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (pool de Sorts par repos unique, cf. onglet Capacités). Récupérée après un repos long."
+      "description": "Réserve de points de sorcellerie (2, simplifié : ne progresse pas avec le niveau dans ce système), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (cf. onglet Sorts). Récupérée après un repos long."
     }
   },
   {
@@ -335,7 +335,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Votre pool de Sorts par repos (cf. onglet Capacités) se recharge après un repos court OU long, contrairement aux autres lanceurs de sorts qui doivent attendre un repos long — c'est la seule classe lanceuse avec cette particularité."
+      "description": "Vos emplacements de sorts (badge \"Magie de Pacte\", onglet Sorts) se rechargent après un repos court OU long, contrairement aux autres lanceurs de sorts qui doivent attendre un repos long — c'est la seule classe lanceuse avec cette particularité."
     }
   },
   {
@@ -375,7 +375,7 @@
       "rollFormula": "ceil(@attributes.level/2)",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des charges de votre pool de Sorts par repos (cf. onglet Capacités). Le bouton calcule le nombre de charges récupérées selon votre niveau — ajoutez-les manuellement à votre pool de sorts."
+      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas le résultat affiché (aucun emplacement de niveau 6 ou plus). Le bouton calcule ce total selon votre niveau — répartissez-le vous-même entre les paliers de votre choix."
     }
   },
   {
@@ -891,7 +891,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des charges de votre pool de Sorts par repos (cf. onglet Capacités), jusqu'à un total équivalent à la moitié de votre niveau de Druide (arrondi à l'inférieur) — ajoutez-les manuellement à votre pool de sorts."
+      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas la moitié de votre niveau de Druide (arrondi à l'inférieur, aucun emplacement de niveau 6 ou plus) — répartissez-le vous-même entre les paliers de votre choix."
     }
   },
   {

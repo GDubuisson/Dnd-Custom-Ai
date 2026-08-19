@@ -178,24 +178,39 @@ describe("CharacterData#prepareDerivedData — dérivés non persistés", () => 
   });
 });
 
-describe("CharacterData#prepareDerivedData — pool de sorts (système simplifié)", () => {
-  test("classe non lanceuse : uses.max = 0, maxLevel = 0", () => {
+describe("CharacterData#prepareDerivedData — emplacements de sorts par niveau (1-9)", () => {
+  test("classe non lanceuse : tous les paliers à 0, maxLevel = 0, isPactMagic = false", () => {
     const fixture = buildCharacterFixture({ class: "fighter", attributes: { level: 5 } });
     prepare(fixture);
-    assert.equal(fixture.spells.uses.max, 0);
+    for (let level = 1; level <= 9; level++) assert.equal(fixture.spells.slots[level].max, 0);
     assert.equal(fixture.spells.maxLevel, 0);
+    assert.equal(fixture.spells.isPactMagic, false);
   });
-  test("magicien niveau 5 : max/maxLevel dérivés de fullCaster[5]", () => {
+  test("magicien niveau 5 : chaque palier dérivé de fullCaster[5], maxLevel = 3", () => {
     const row = SPELL_SLOT_TABLES.fullCaster["5"];
-    const expectedMax = row.reduce((a, b) => a + b, 0);
     const fixture = buildCharacterFixture({ class: "wizard", attributes: { level: 5 } });
     prepare(fixture);
-    assert.equal(fixture.spells.uses.max, expectedMax);
+    row.forEach((count, index) => assert.equal(fixture.spells.slots[index + 1].max, count));
     assert.equal(fixture.spells.maxLevel, 3);
+    assert.equal(fixture.spells.isPactMagic, false);
+  });
+  test("occultiste niveau 3 : un seul palier peuplé (Magie de Pacte), isPactMagic = true", () => {
+    const pact = SPELL_SLOT_TABLES.warlockPact["3"];
+    const fixture = buildCharacterFixture({ class: "warlock", attributes: { level: 3 } });
+    prepare(fixture);
+    for (let level = 1; level <= 9; level++) {
+      assert.equal(fixture.spells.slots[level].max, level === pact.level ? pact.slots : 0);
+    }
+    assert.equal(fixture.spells.maxLevel, pact.level);
+    assert.equal(fixture.spells.isPactMagic, true);
   });
   test("`value` (charges restantes) n'est jamais touché par prepareDerivedData", () => {
-    const fixture = buildCharacterFixture({ class: "wizard", attributes: { level: 5 }, spells: { uses: { value: 1, max: 0 } } });
+    const fixture = buildCharacterFixture({
+      class: "wizard",
+      attributes: { level: 5 },
+      spells: { slots: { 1: { value: 1, max: 0 } } }
+    });
     prepare(fixture);
-    assert.equal(fixture.spells.uses.value, 1);
+    assert.equal(fixture.spells.slots[1].value, 1);
   });
 });

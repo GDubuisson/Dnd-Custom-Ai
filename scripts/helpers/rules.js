@@ -129,42 +129,51 @@ export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) 
   return proficiencyBonusValue + spellcastingAbilityMod;
 }
 
-/** Sorts par repos (système simplifié) selon la classe et le niveau, dérivé de la table SRD 5e
- *  complète (cf. scripts/data/spell-slots.json, chargée une fois au démarrage dans
- *  game.dndCustomAi.spellSlotTables) : plutôt que de suivre un emplacement par niveau de sort
- *  (1 à 9, avec surclassement possible), ce système utilise un pool unique — `max` = nombre
- *  total d'emplacements toutes catégories confondues à ce niveau (somme de la ligne SRD
- *  correspondante, donc toujours vérifiable contre la table officielle), `maxSpellLevel` = plus
- *  haut niveau de sort accessible (dernier palier non nul de cette même ligne), utilisé pour
- *  limiter les Sorts octroyés automatiquement à la classe/au niveau (cf.
- *  helpers/class-content.js). Un sort lancé (quel que soit son propre niveau, hors tours de
- *  magie) consomme 1 charge de ce pool (cf. DndCustomActorSheet#onCastSpell) : perd la nuance
- *  du surclassement et le choix "quel palier dépenser" du SRD strict, gagné en simplicité de
- *  suivi à table — simplification assumée, comme DND_CUSTOM.classStartingEquipment. Toutes les
- *  classes lanceuses utilisent la table "pleine" sauf le Paladin (demi-lanceur) et l'Occultiste
- *  (Magie de Pacte : emplacements limités, un seul palier actif à la fois, quel que soit le
- *  niveau du sort lancé). Renvoie `{ max: 0, maxSpellLevel: 0 }` pour une classe non lanceuse. */
-export function spellUsesForClass(className, level, tables) {
+/** Paliers de sorts SRD 5e (1 à 9, hors tours de magie qui restent gratuits/illimités). Partagé
+ *  entre le DataModel (CharacterData#spells.slots), rules.js et les tests. */
+export const SPELL_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+/** Emplacements de sorts vides (tous paliers à 0), forme de base renvoyée par
+ *  spellSlotsForClass ci-dessous pour une classe non lanceuse/niveau sans table. */
+export function emptySpellSlots() {
+  return Object.fromEntries(SPELL_LEVELS.map((level) => [level, 0]));
+}
+
+/** Emplacements de sorts par niveau (1 à 9), SRD 5e, dérivés de la table complète
+ *  (cf. scripts/data/spell-slots.json, chargée une fois au démarrage dans
+ *  game.dndCustomAi.spellSlotTables) : `slots[n]` = nombre d'emplacements du palier n à ce
+ *  niveau de personnage, `maxSpellLevel` = plus haut palier accessible (dernier non nul),
+ *  utilisé pour limiter les Sorts octroyés automatiquement à la classe/au niveau (cf.
+ *  helpers/class-content.js). Toutes les classes lanceuses utilisent la table "pleine" sauf le
+ *  Paladin (demi-lanceur, `halfCaster`) et l'Occultiste (Magie de Pacte, `warlockPact`) :
+ *  emplacements limités, un seul palier actif à la fois (celui de `pact.level`), qui monte avec
+ *  le niveau — `isPactMagic` signale ce cas particulier (récupéré au repos court ET long,
+ *  contrairement aux autres classes, cf. DndCustomActorSheet#onRestShort). Renvoie des
+ *  emplacements tous à 0 (`isPactMagic: false`) pour une classe non lanceuse ou sans table. */
+export function spellSlotsForClass(className, level, tables) {
   if (!tables || !DND_CUSTOM.spellcastingClasses.includes(className)) {
-    return { max: 0, maxSpellLevel: 0 };
+    return { slots: emptySpellSlots(), maxSpellLevel: 0, isPactMagic: false };
   }
 
   if (className === "warlock") {
     const pact = tables.warlockPact[level];
-    return pact ? { max: pact.slots, maxSpellLevel: pact.level } : { max: 0, maxSpellLevel: 0 };
+    const slots = emptySpellSlots();
+    if (pact) slots[pact.level] = pact.slots;
+    return { slots, maxSpellLevel: pact?.level ?? 0, isPactMagic: true };
   }
 
   const table = className === "paladin" ? tables.halfCaster : tables.fullCaster;
   const row = table?.[level];
-  if (!row) return { max: 0, maxSpellLevel: 0 };
-
-  let max = 0;
+  const slots = emptySpellSlots();
   let maxSpellLevel = 0;
-  row.forEach((count, index) => {
-    max += count;
-    if (count > 0) maxSpellLevel = index + 1;
-  });
-  return { max, maxSpellLevel };
+  if (row) {
+    row.forEach((count, index) => {
+      const spellLevel = index + 1;
+      slots[spellLevel] = count;
+      if (count > 0) maxSpellLevel = spellLevel;
+    });
+  }
+  return { slots, maxSpellLevel, isPactMagic: false };
 }
 
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis

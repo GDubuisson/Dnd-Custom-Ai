@@ -1872,9 +1872,9 @@
 /* ---------- Sorts ---------- */
 
 /* Séparateur centré entre l'en-tête de classe et la liste Capacités/Sorts, cf.
-   images_test/img_7.png — un seul chip ("Sorts par repos") pour l'instant, mais le sélecteur
-   reste un flex row générique (::before/::after) pour rester correct si un jour plusieurs
-   chips s'y ajoutent. */
+   images_test/img_7.png — un chip par palier d'emplacement de sort accessible (1 à 9), le
+   flex row générique (::before/::after, flex-wrap) absorbe le nombre variable de chips selon
+   la classe/le niveau du personnage. */
 .dnd-custom-ai .spell-slots-row {
   display: flex;
   align-items: center;
@@ -1915,6 +1915,20 @@
   color: var(--dca-on-surface);
   font-family: var(--dca-font-body);
   padding: 0.1rem 0.2rem;
+}
+
+/* Badge "Magie de Pacte" (Occultiste, cf. tab-abilities.hbs) : distingue visuellement ce pool
+   d'un jeu d'emplacements classique (un seul palier actif, récupéré au repos court ET long) —
+   bordure dédiée en plus du texte, jamais la couleur seule (accessibilité). */
+.dnd-custom-ai .pact-magic-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border: 1px dashed var(--dca-outline-variant);
+  border-radius: 999px;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
 }
 
 .dnd-custom-ai .concentration-banner {

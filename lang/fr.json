@@ -353,8 +353,10 @@
       "SpellAttackBonus": "Bonus d'attaque",
       "Cantrips": "Tours de magie",
       "SpellLevelLabel": "Sorts de niveau {level}",
-      "SpellUsesLabel": "Sorts par repos",
-      "SpellUsesTooltip": "Système simplifié : 1 charge par sort lancé (hors tours de magie, gratuits), quel que soit le niveau du sort. Se recharge intégralement au repos long.",
+      "SpellSlotLevelShort": "Niv. {level}",
+      "SpellSlotsTooltip": "Emplacements de sorts par niveau (SRD 5e) : chaque sort (hors tour de magie, gratuit) dépense un emplacement de son niveau, ou d'un niveau supérieur si le vôtre est épuisé (surclassement). Se rechargent intégralement au repos long.",
+      "PactMagicLabel": "Magie de Pacte",
+      "PactMagicTooltip": "Magie de Pacte (Occultiste) : un seul palier actif, qui monte avec le niveau. Contrairement aux autres lanceurs, ces emplacements se rechargent aussi au repos court.",
       "Cast": "Lancer",
       "NoSpells": "Aucun sort enregistré",
       "ConcentratingOn": "Concentré sur :",
@@ -400,7 +402,11 @@
       "survival": "Survie"
     },
     "Spells": {
-      "NoSlotAvailable": "Aucun emplacement de sort disponible à ce niveau."
+      "NoSlotAvailable": "Aucun emplacement de sort disponible à ce niveau.",
+      "UpcastDialogTitle": "Surclasser le sort",
+      "UpcastDialogPrompt": "Aucun emplacement de niveau {level} disponible pour {spell}. Choisissez un emplacement de niveau supérieur à dépenser à la place :",
+      "UpcastLevelOption": "Niveau {level} ({remaining}/{max} disponibles)",
+      "UpcastConfirm": "Lancer"
     },
     "Wizard": {
       "Title": "Assistant de création de personnage",

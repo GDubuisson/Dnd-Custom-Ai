@@ -51,11 +51,14 @@ describe("Sous-classes d'Ensorceleur — Magie sauvage / Sorcellerie des tempêt
             win.JSON.stringify({
               "system.attributes.level": 3,
               "system.subclass": "wildSorcery",
-              // Valeur explicite plutôt que de dépendre du pool hérité de la création (niveau
-              // 1) : #onLevelUp topperait normalement le pool, bypassé ici comme pour les
-              // autres tests de sous-classe (dndCustomWizard), donc `value` resterait sinon à
-              // sa valeur de niveau 1 — pas forcément > 0 selon le moment du test.
-              "system.spells.uses.value": 5
+              // Valeurs explicites plutôt que de dépendre des emplacements hérités de la
+              // création (niveau 1) : #onLevelUp les topperait normalement, bypassé ici comme
+              // pour les autres tests de sous-classe (dndCustomWizard), donc `value` resterait
+              // sinon à sa valeur de niveau 1 — pas forcément > 0 selon le moment du test. Les
+              // deux paliers accessibles à un Ensorceleur niveau 3 (fullCaster[3] = [4,2,...])
+              // sont remplis, `leveledSpell` pouvant être de niveau 1 ou 2 (cf. plus bas).
+              "system.spells.slots.1.value": 4,
+              "system.spells.slots.2.value": 2
             })
           ),
           { dndCustomWizard: true }

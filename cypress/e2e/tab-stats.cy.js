@@ -376,15 +376,23 @@ describe("Onglet Statistiques — repos", () => {
 
       cy.window().then((win) => {
         const actor = win.game.actors.get(warlockId);
-        expect(actor.system.spells.uses.max, "prérequis : Occultiste niveau 1 a des emplacements de sorts").to.be
-          .greaterThan(0);
-        return updateActor(win, actor, { "system.spells.uses.value": 0 });
+        const slots = actor.system.spells.slots;
+        expect(
+          Object.values(slots).some((slot) => slot.max > 0),
+          "prérequis : Occultiste niveau 1 a des emplacements de sorts (Magie de Pacte)"
+        ).to.be.true;
+        const emptyAllSlots = Object.fromEntries(
+          Object.keys(slots).map((level) => [`system.spells.slots.${level}.value`, 0])
+        );
+        return updateActor(win, actor, emptyAllSlots);
       });
 
       sheetRoot().find('button[data-action="restShort"]').click();
       cy.window().then((win) => {
-        const actor = win.game.actors.get(warlockId);
-        expect(actor.system.spells.uses.value).to.equal(actor.system.spells.uses.max);
+        const slots = win.game.actors.get(warlockId).system.spells.slots;
+        for (const level of Object.keys(slots)) {
+          expect(slots[level].value, `palier ${level} restauré à son max`).to.equal(slots[level].max);
+        }
       });
     });
   });
@@ -402,15 +410,21 @@ describe("Onglet Statistiques — repos", () => {
 
       cy.window().then((win) => {
         const actor = win.game.actors.get(casterId);
-        expect(actor.system.spells.uses.max, "prérequis : magicien niveau 1 a des emplacements de sorts").to.be
-          .greaterThan(0);
+        const slots = actor.system.spells.slots;
+        expect(
+          Object.values(slots).some((slot) => slot.max > 0),
+          "prérequis : magicien niveau 1 a des emplacements de sorts"
+        ).to.be.true;
+        const emptyAllSlots = Object.fromEntries(
+          Object.keys(slots).map((level) => [`system.spells.slots.${level}.value`, 0])
+        );
         // dndCustomDamageApply : simulation de dégâts déjà subis pour tester un Repos long
         // depuis un PV partiel (pas juste un no-op à pleine santé) — pas une vraie tentative de
         // self-dégâts (cf. permissions.cy.js T-PERM-005/007).
         return updateActor(
           win,
           actor,
-          { "system.attributes.hp.value": 1, "system.spells.uses.value": 0 },
+          { "system.attributes.hp.value": 1, ...emptyAllSlots },
           { dndCustomDamageApply: true }
         );
       });
@@ -421,7 +435,10 @@ describe("Onglet Statistiques — repos", () => {
         cy.window().should((win) => {
           const actor = win.game.actors.get(casterId);
           expect(actor.system.attributes.hp.value).to.equal(actor.system.attributes.hp.max);
-          expect(actor.system.spells.uses.value).to.equal(actor.system.spells.uses.max);
+          const slots = actor.system.spells.slots;
+          for (const level of Object.keys(slots)) {
+            expect(slots[level].value, `palier ${level} restauré à son max`).to.equal(slots[level].max);
+          }
           expect(win.game.messages.size, "message de chat posté").to.equal(before + 1);
         });
       });
