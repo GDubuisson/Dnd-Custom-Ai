@@ -353,8 +353,10 @@
       "SpellAttackBonus": "Spell attack bonus",
       "Cantrips": "Cantrips",
       "SpellLevelLabel": "Level {level} spells",
-      "SpellUsesLabel": "Spells per rest",
-      "SpellUsesTooltip": "Simplified system: 1 charge per spell cast (cantrips are free), regardless of the spell's level. Fully restored on a long rest.",
+      "SpellSlotLevelShort": "Lvl. {level}",
+      "SpellSlotsTooltip": "Spell slots by level (5e SRD): each spell (cantrips are free) spends a slot of its own level, or a higher one if yours is used up (upcasting). Fully restored on a long rest.",
+      "PactMagicLabel": "Pact Magic",
+      "PactMagicTooltip": "Pact Magic (Warlock): a single active slot level, which increases with character level. Unlike other casters, these slots also recover on a short rest.",
       "Cast": "Cast",
       "NoSpells": "No spell recorded",
       "ConcentratingOn": "Concentrating on:",
@@ -400,7 +402,11 @@
       "survival": "Survival"
     },
     "Spells": {
-      "NoSlotAvailable": "No spell slot available at this level."
+      "NoSlotAvailable": "No spell slot available at this level.",
+      "UpcastDialogTitle": "Upcast the spell",
+      "UpcastDialogPrompt": "No level {level} slot available for {spell}. Choose a higher-level slot to spend instead:",
+      "UpcastLevelOption": "Level {level} ({remaining}/{max} available)",
+      "UpcastConfirm": "Cast"
     },
     "Wizard": {
       "Title": "Character Creation Wizard",

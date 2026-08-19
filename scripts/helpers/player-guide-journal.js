@@ -81,16 +81,27 @@ function buildRulesPage(glossary) {
 function buildSpellsPage(glossary) {
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   return `
-    <p><strong>Ce système simplifie volontairement la gestion des sorts</strong> pour rester
-    facile à suivre à table : pas d'emplacements de sorts par niveau (1 à 9) à gérer
-    séparément.</p>
-    <h2>Le pool "${abbr("Sorts par repos")}"</h2>
-    <p>Chaque lanceur de sorts dispose d'un unique compteur "Sorts par repos", visible en haut de
-    l'onglet Capacités. Lancer un sort de niveau 1 ou plus coûte toujours 1 charge de ce pool,
-    quel que soit le niveau réel du sort — un sort de niveau 3 ne coûte pas plus cher qu'un sort
-    de niveau 1. Ce pool se recharge intégralement à chaque repos long.</p>
+    <p>Ce système suit les ${abbr("Emplacement de sort", "emplacements de sorts par niveau")}
+    du D&D classique (1 à 9), affichés en haut de l'onglet Sorts. Reste simplifié : accès à toute
+    la liste de sorts de la classe plutôt que les tables "sorts connus" propres à chaque classe
+    (cf. "Sorts connus" plus bas).</p>
+    <h2>${abbr("Emplacement de sort", "Emplacements de sorts")}</h2>
+    <p>Un jeton par palier accessible (Niv. 1, Niv. 2...), chacun avec ses charges
+    disponibles/max. Lancer un sort de niveau 1 ou plus dépense un emplacement de son propre
+    niveau — un clic suffit, comme avant. Tous les emplacements se rechargent intégralement à
+    chaque repos long.</p>
     <p>Les ${abbr("Tour de magie", "tours de magie")} (niveau 0) restent à part : ils peuvent être
-    lancés librement, sans jamais consommer de charge.</p>
+    lancés librement, sans jamais consommer d'emplacement.</p>
+    <h2>${abbr("Surclassement")}</h2>
+    <p>Si l'emplacement du niveau exact du sort est épuisé mais qu'un palier supérieur a encore
+    des charges, une fenêtre propose de le dépenser à la place (le sort produit le même effet,
+    seul le coût en emplacement change) — rien n'est décompté sans confirmation, et le bouton
+    "Lancer" reste bloqué si vraiment aucun palier utilisable n'est disponible.</p>
+    <h2>Magie de Pacte (Occultiste)</h2>
+    <p>L'Occultiste suit une règle à part (SRD 5e) : un seul palier d'emplacement actif à la
+    fois, dont le niveau augmente avec le sien, identifié par un badge "Magie de Pacte" sur
+    l'onglet Sorts. Contrairement aux autres lanceurs, ces emplacements se rechargent aussi bien
+    au repos court qu'au repos long.</p>
     <h2>DD de sauvegarde et bonus d'attaque des sorts</h2>
     <p>Affichés en haut de l'onglet Capacités pour toute classe lanceuse : DD = 8 + bonus de
     maîtrise + modificateur de la caractéristique d'incantation ; bonus d'attaque = bonus de
@@ -101,7 +112,7 @@ function buildSpellsPage(glossary) {
     Constitution pour ne pas le perdre.</p>
     <h2>${abbr("Rituel", "Sorts Rituel")}</h2>
     <p>Un Clerc ou un Druide possédant la Capacité "Incantation rituelle" de sa classe peut lancer
-    l'un de ses sorts marqué Rituel sans dépenser de charge — automatique, rien à cocher.</p>
+    l'un de ses sorts marqué Rituel sans dépenser d'emplacement — automatique, rien à cocher.</p>
     <h2>Sorts connus</h2>
     <p>Un personnage a accès à tout sort/tour de magie octroyé automatiquement par sa classe à la
     création et à chaque montée de niveau (visible dans l'onglet Capacités). D'autres sorts

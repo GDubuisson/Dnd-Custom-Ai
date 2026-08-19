@@ -14,7 +14,8 @@ import {
   passivePerception,
   spellSaveDC,
   spellAttackBonus,
-  spellUsesForClass,
+  spellSlotsForClass,
+  SPELL_LEVELS,
   maxHitPoints,
   armorClass,
   armorContribution,
@@ -165,39 +166,66 @@ describe("spellSaveDC / spellAttackBonus", () => {
   test("bonus d'attaque = maîtrise + mod", () => assert.equal(spellAttackBonus(3, 4), 7));
 });
 
-describe("spellUsesForClass (pool simplifié, dérivé de spell-slots.json)", () => {
-  test("classe non lanceuse -> 0/0 à tout niveau", () => {
-    assert.deepEqual(spellUsesForClass("fighter", 5, SPELL_SLOT_TABLES), { max: 0, maxSpellLevel: 0 });
+function emptySlots() {
+  return Object.fromEntries(SPELL_LEVELS.map((level) => [level, 0]));
+}
+
+function rowToSlots(row) {
+  const slots = emptySlots();
+  row.forEach((count, index) => { slots[index + 1] = count; });
+  return slots;
+}
+
+describe("spellSlotsForClass (emplacements par niveau 1-9, dérivés de spell-slots.json)", () => {
+  test("classe non lanceuse -> tous paliers à 0", () => {
+    assert.deepEqual(spellSlotsForClass("fighter", 5, SPELL_SLOT_TABLES), {
+      slots: emptySlots(),
+      maxSpellLevel: 0,
+      isPactMagic: false
+    });
   });
-  test("pas de table (tables undefined) -> 0/0", () => {
-    assert.deepEqual(spellUsesForClass("wizard", 5, undefined), { max: 0, maxSpellLevel: 0 });
+  test("pas de table (tables undefined) -> tous paliers à 0", () => {
+    assert.deepEqual(spellSlotsForClass("wizard", 5, undefined), {
+      slots: emptySlots(),
+      maxSpellLevel: 0,
+      isPactMagic: false
+    });
   });
-  test("magicien niveau 1 : somme de la ligne fullCaster[1] = 2, plus haut niveau = 1", () => {
+  test("magicien niveau 1 : slots = fullCaster[1] élément par élément, plus haut niveau = 1", () => {
     const row = SPELL_SLOT_TABLES.fullCaster["1"];
-    const expectedMax = row.reduce((a, b) => a + b, 0);
-    assert.deepEqual(spellUsesForClass("wizard", 1, SPELL_SLOT_TABLES), { max: expectedMax, maxSpellLevel: 1 });
+    const result = spellSlotsForClass("wizard", 1, SPELL_SLOT_TABLES);
+    assert.deepEqual(result.slots, rowToSlots(row));
+    assert.equal(result.maxSpellLevel, 1);
+    assert.equal(result.isPactMagic, false);
   });
-  test("magicien niveau 20 : total = somme de fullCaster[20], plus haut niveau = dernier index non nul", () => {
+  test("magicien niveau 20 : slots = fullCaster[20], plus haut niveau = dernier index non nul", () => {
     const row = SPELL_SLOT_TABLES.fullCaster["20"];
-    const expectedMax = row.reduce((a, b) => a + b, 0);
     let expectedLevel = 0;
     row.forEach((count, index) => { if (count > 0) expectedLevel = index + 1; });
-    assert.deepEqual(spellUsesForClass("wizard", 20, SPELL_SLOT_TABLES), { max: expectedMax, maxSpellLevel: expectedLevel });
+    const result = spellSlotsForClass("wizard", 20, SPELL_SLOT_TABLES);
+    assert.deepEqual(result.slots, rowToSlots(row));
+    assert.equal(result.maxSpellLevel, expectedLevel);
   });
-  test("paladin (demi-lanceur) niveau 1 : table halfCaster tout à zéro -> 0/0", () => {
-    assert.deepEqual(spellUsesForClass("paladin", 1, SPELL_SLOT_TABLES), { max: 0, maxSpellLevel: 0 });
+  test("paladin (demi-lanceur) niveau 1 : table halfCaster tout à zéro -> tous paliers à 0", () => {
+    assert.deepEqual(spellSlotsForClass("paladin", 1, SPELL_SLOT_TABLES), {
+      slots: emptySlots(),
+      maxSpellLevel: 0,
+      isPactMagic: false
+    });
   });
-  test("paladin niveau 5 : dérivé de halfCaster[5]", () => {
+  test("paladin niveau 5 : slots = halfCaster[5]", () => {
     const row = SPELL_SLOT_TABLES.halfCaster["5"];
-    const expectedMax = row.reduce((a, b) => a + b, 0);
-    assert.deepEqual(spellUsesForClass("paladin", 5, SPELL_SLOT_TABLES).max, expectedMax);
+    assert.deepEqual(spellSlotsForClass("paladin", 5, SPELL_SLOT_TABLES).slots, rowToSlots(row));
   });
-  test("occultiste (Magie de Pacte) : max/niveau = directement la ligne warlockPact", () => {
+  test("occultiste (Magie de Pacte) : un seul palier peuplé (pact.level -> pact.slots), isPactMagic true", () => {
     for (const level of [1, 3, 11, 20]) {
       const pact = SPELL_SLOT_TABLES.warlockPact[String(level)];
-      assert.deepEqual(spellUsesForClass("warlock", level, SPELL_SLOT_TABLES), {
-        max: pact.slots,
-        maxSpellLevel: pact.level
+      const expectedSlots = emptySlots();
+      expectedSlots[pact.level] = pact.slots;
+      assert.deepEqual(spellSlotsForClass("warlock", level, SPELL_SLOT_TABLES), {
+        slots: expectedSlots,
+        maxSpellLevel: pact.level,
+        isPactMagic: true
       });
     }
   });

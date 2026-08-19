@@ -19,7 +19,8 @@ import {
   weaponAttackDamage,
   hasFeature,
   canUseReaction,
-  opportunityAttackTrigger
+  opportunityAttackTrigger,
+  SPELL_LEVELS
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
@@ -27,6 +28,7 @@ import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
+import { chooseSpellSlotLevel } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
@@ -446,9 +448,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.languages = items
       .filter((item) => item.type === "language")
       .sort((a, b) => (a.system.category === "common" ? -1 : b.system.category === "common" ? 1 : 0));
-    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; pool unique de
-    // charges (système simplifié, cf. CharacterData#prepareDerivedData et rules.js >
-    // spellUsesForClass) plutôt qu'un emplacement par niveau.
+    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; emplacements par
+    // niveau (1-9), cf. CharacterData#prepareDerivedData et rules.js > spellSlotsForClass.
     const spells = items.filter((item) => item.type === "spell");
     context.spellsByLevel = Array.from({ length: 10 }, (_, level) => ({
       level,
@@ -465,7 +466,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
     // moins un Sort octroyé — sinon ses 3 Sorts fixes n'apparaîtraient jamais sur sa fiche.
     context.hasAnySpells = context.isSpellcaster || spells.length > 0;
-    context.spellUses = system.spells.uses;
+    // Emplacements de sorts par niveau (système réel, cf. CharacterData#prepareDerivedData et
+    // rules.js > spellSlotsForClass) : un chip par palier réellement accessible (max > 0), trié
+    // du plus bas au plus haut. isPactMagic (Occultiste, Magie de Pacte) pilote le badge dédié
+    // sur l'onglet (tab-abilities.hbs) rappelant la récupération au repos court.
+    context.spellSlots = SPELL_LEVELS.map((level) => ({
+      level,
+      value: system.spells.slots[level].value,
+      max: system.spells.slots[level].max
+    })).filter((slot) => slot.max > 0);
+    context.isPactMagic = Boolean(system.spells.isPactMagic);
     context.concentratingOn = system.spells.concentratingOn;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
     // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
@@ -597,8 +607,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
-   *  dépasser le max. Restaure aussi le pool de sorts de l'Occultiste (Magie de Pacte, SRD 5e :
-   *  seule classe qui récupère ses emplacements au repos court). */
+   *  dépasser le max. Restaure aussi les emplacements de sorts de l'Occultiste (Magie de Pacte,
+   *  SRD 5e : seule classe qui récupère ses emplacements au repos court). */
   static async #onRestShort() {
     if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
@@ -612,7 +622,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Repos long : soigne intégralement et restaure tout le pool de sorts (SRD 5e). */
+  /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */
   static async #onRestLong() {
     if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
@@ -628,7 +638,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   #spellSlotResetUpdates() {
-    return { "system.spells.uses.value": this.actor.system.spells.uses.max };
+    const slots = this.actor.system.spells.slots;
+    return Object.fromEntries(
+      SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max])
+    );
   }
 
   /** Restaure au maximum les charges des Capacités à utilisations limitées (system.uses.max
@@ -1243,9 +1256,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Lance un sort de l'onglet Sorts : décompte 1 charge du pool de sorts (système simplifié,
-   *  cf. rules.js > spellUsesForClass — plus d'emplacement par niveau ni de surclassement),
-   *  sans effet pour un tour de magie (niveau 0). Un sort marqué "jet d'attaque"
+  /** Lance un sort de l'onglet Sorts : décompte 1 charge d'un emplacement de sort (système réel
+   *  par palier 1-9, cf. rules.js > spellSlotsForClass et helpers/spell-slot-choice.js pour le
+   *  surclassement), sans effet pour un tour de magie (niveau 0). Un sort marqué "jet d'attaque"
    *  (`system.attack`, cf. SpellData dans item-data.js) fait un jet d'attaque de sort (1d20 +
    *  spellAttackBonus, comme #onRollWeaponAttack pour une arme) au lieu de simplement poster la
    *  description ; le jet de dégâts associé reste un bouton séparé (#onRollSpellDamage,
@@ -1265,20 +1278,24 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const castsAsFreeRitual =
       item.system.ritual && RITUAL_CASTING_FEATURES.some((name) => hasFeature(this.actor.items.contents, name));
     // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.
-    // FeatureData#grantsSpells) : ces Sorts sont "toujours prêts", jamais décomptés du pool —
-    // sans quoi ils resteraient inutilisables pour une classe non lanceuse (pool à 0/0, cf.
-    // rules.js > spellUsesForClass). Cherche parmi les Capacités possédées plutôt que sur le
-    // Sort lui-même : c'est la Capacité qui déclare la liste, jamais le Sort.
+    // FeatureData#grantsSpells) : ces Sorts sont "toujours prêts", jamais décomptés d'un
+    // emplacement — sans quoi ils resteraient inutilisables pour une classe non lanceuse (tous
+    // paliers à 0/0, cf. rules.js > spellSlotsForClass). Cherche parmi les Capacités possédées
+    // plutôt que sur le Sort lui-même : c'est la Capacité qui déclare la liste, jamais le Sort.
     const castsAsFreeSubclassSpell = this.actor.items.some(
       (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
     );
     if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
-      const uses = this.actor.system.spells.uses;
-      if (uses.value <= 0) {
+      const slots = this.actor.system.spells.slots;
+      // Détermine quel palier dépenser (le sien si disponible, sinon propose un surclassement
+      // vers un palier supérieur disponible, cf. spell-slot-choice.js) : renvoie null si aucun
+      // palier utilisable (épuisé ou dialogue annulé par le joueur).
+      const chosenLevel = await chooseSpellSlotLevel(item.name, item.system.level, slots);
+      if (chosenLevel === null) {
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
         return;
       }
-      await this.actor.update({ "system.spells.uses.value": uses.value - 1 });
+      await this.actor.update({ [`system.spells.slots.${chosenLevel}.value`]: slots[chosenLevel].value - 1 });
 
       // Voie de la Magie sauvage (Ensorceleur, cf. world-items/subclasses.json > "wildSorcery") :
       // Surtenance sauvage tirée à chaque emplacement de sort réellement dépensé — même

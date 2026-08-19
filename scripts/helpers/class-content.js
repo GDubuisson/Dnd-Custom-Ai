@@ -67,7 +67,7 @@ export async function grantClassContent(actor, classKey, level) {
   const subclassKey = actor.system.subclass;
 
   // Plus haut niveau de sort accessible à la classe/au niveau du personnage : donnée dérivée
-  // exposée par CharacterData#prepareDerivedData (cf. rules.js > spellUsesForClass), pas
+  // exposée par CharacterData#prepareDerivedData (cf. rules.js > spellSlotsForClass), pas
   // recalculée ici pour éviter de dupliquer la logique de la table SRD.
   const maxSpellLevel = actor.system.spells?.maxLevel ?? 0;
 

@@ -7,7 +7,8 @@ import {
   classSpeedBonus,
   exhaustionSpeed,
   exhaustionMaxHp,
-  spellUsesForClass,
+  spellSlotsForClass,
+  SPELL_LEVELS,
   hasFeature
 } from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
@@ -111,16 +112,25 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         )
       ),
       currency: currencySchema(),
-      // Sorts par repos, système simplifié (cf. spellUsesForClass, rules.js) : un seul pool
-      // `uses` plutôt qu'un emplacement par niveau de sort (1-9) — `max` est entièrement dérivé
-      // (classe + niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value` (charges
-      // restantes) est la seule valeur persistée, décrémentée en lançant un sort (hors tour de
-      // magie) et restaurée à `max` au repos long (cf. actor-sheet.js).
+      // Emplacements de sorts par niveau (1-9), SRD 5e (cf. spellSlotsForClass, rules.js) : un
+      // SchemaField par palier plutôt qu'un pool unique — `max` de chaque palier est entièrement
+      // dérivé (classe + niveau, cf. prepareDerivedData) comme PV max/CA/Vitesse ; `value`
+      // (charges restantes du palier) est la seule valeur persistée, décrémentée en lançant un
+      // sort de ce palier (ou d'un palier inférieur surclassé, cf. actor-sheet.js
+      // #onCastSpell/chooseSpellSlotLevel) et restaurée à `max` au repos long (au repos court
+      // aussi pour l'Occultiste, Magie de Pacte).
       spells: new SchemaField({
-        uses: new SchemaField({
-          value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-          max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
-        }),
+        slots: new SchemaField(
+          Object.fromEntries(
+            SPELL_LEVELS.map((level) => [
+              String(level),
+              new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+              })
+            ])
+          )
+        ),
         // Nom (texte libre, pas une référence d'Item) du sort actuellement concentré, SRD 5e
         // "un seul sort à la fois" : lancer un nouveau sort à concentration remplace celui-ci
         // (cf. DndCustomActorSheet#onCastSpell) ; un échec de jet de sauvegarde de
@@ -219,14 +229,19 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
     this.attributes.initiativeMod = dexMod + (this.subclass === "gloomStalker" ? 2 : 0);
 
-    // Pool de sorts par repos (cf. schéma ci-dessus) : `value` n'est jamais touché ici, seul
-    // `max` est recalculé à chaque préparation. `maxLevel` (plus haut niveau de sort
-    // accessible) n'est pas persisté (même convention que stealthDisadvantage/initiativeMod
-    // ci-dessus) : exposé uniquement pour limiter les Sorts octroyés automatiquement à la
-    // classe/au niveau (cf. helpers/class-content.js).
-    const spellUses = spellUsesForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
-    this.spells.uses.max = spellUses.max;
-    this.spells.maxLevel = spellUses.maxSpellLevel;
+    // Emplacements de sorts par niveau (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
+    // seul `max` de chaque palier est recalculé à chaque préparation. `maxLevel` (plus haut
+    // niveau de sort accessible) et `isPactMagic` (Occultiste, Magie de Pacte) ne sont pas
+    // persistés (même convention que stealthDisadvantage/initiativeMod ci-dessus) : `maxLevel`
+    // sert à limiter les Sorts octroyés automatiquement à la classe/au niveau (cf.
+    // helpers/class-content.js), `isPactMagic` à distinguer l'affichage/la récupération au repos
+    // court (cf. actor-sheet.js).
+    const spellSlots = spellSlotsForClass(this.class, this.attributes.level, game.dndCustomAi?.spellSlotTables);
+    for (const level of SPELL_LEVELS) {
+      this.spells.slots[level].max = spellSlots.slots[level];
+    }
+    this.spells.maxLevel = spellSlots.maxSpellLevel;
+    this.spells.isPactMagic = spellSlots.isPactMagic;
   }
 }
 

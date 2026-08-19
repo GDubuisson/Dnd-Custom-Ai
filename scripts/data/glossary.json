@@ -61,19 +61,23 @@
   },
   {
     "term": "Sort",
-    "definition": "Effet magique lancé par une classe de lanceur de sorts. Consomme une charge du pool 'Sorts par repos' (sauf les tours de magie, niveau 0, illimités)."
+    "definition": "Effet magique lancé par une classe de lanceur de sorts. Consomme un Emplacement de sort de son niveau, ou d'un niveau supérieur en cas de Surclassement (sauf les tours de magie, niveau 0, illimités)."
   },
   {
     "term": "Tour de magie",
-    "definition": "Sort de niveau 0 : peut être lancé librement, sans jamais consommer de charge de sort."
+    "definition": "Sort de niveau 0 : peut être lancé librement, sans jamais consommer d'emplacement de sort."
   },
   {
-    "term": "Sorts par repos",
-    "definition": "Système simplifié de ce jeu : au lieu des emplacements de sorts par niveau (1 à 9) du D&D classique, un lanceur de sorts dispose d'un unique pool de charges par repos long. Chaque sort lancé (hors tour de magie) coûte 1 charge, quel que soit son niveau."
+    "term": "Emplacement de sort",
+    "definition": "Charge de sort d'un niveau donné (1 à 9, comme le D&D classique), affichée par palier en haut de l'onglet Sorts. Un sort dépense un emplacement de son propre niveau ; l'Occultiste (Magie de Pacte) n'a qu'un seul palier actif à la fois, qui monte avec son niveau et se recharge aussi au repos court."
+  },
+  {
+    "term": "Surclassement",
+    "definition": "Si l'emplacement du niveau exact d'un sort est épuisé mais qu'un emplacement de niveau supérieur est disponible, le lanceur peut choisir de le dépenser à la place pour lancer le sort quand même (fenêtre de choix dédiée)."
   },
   {
     "term": "Rituel",
-    "definition": "Un sort marqué Rituel peut être lancé sans dépenser de charge du pool de Sorts par repos, à condition de posséder la Capacité d'Incantation rituelle correspondant à sa classe (Clerc, Druide) — appliqué automatiquement par la fiche, rien à cocher."
+    "definition": "Un sort marqué Rituel peut être lancé sans dépenser d'Emplacement de sort, à condition de posséder la Capacité d'Incantation rituelle correspondant à sa classe (Clerc, Druide) — appliqué automatiquement par la fiche, rien à cocher."
   },
   {
     "term": "Langue",

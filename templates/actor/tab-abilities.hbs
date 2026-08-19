@@ -46,13 +46,18 @@
   {{#if classTabPartial}}{{> (lookup this "classTabPartial") }}{{/if}}
 
   {{#if isSpellcaster}}
-  {{#if spellUses.max}}
-  <div class="spell-slots-row">
-    <label class="spell-slot-chip" title="{{localize 'DND_CUSTOM.Abilities.SpellUsesTooltip'}}">
-      {{localize "DND_CUSTOM.Abilities.SpellUsesLabel"}}
-      <input type="number" name="system.spells.uses.value" value="{{spellUses.value}}" min="0" max="{{spellUses.max}}">
-      <span>/ {{spellUses.max}}</span>
+  {{#if spellSlots.length}}
+  <div class="spell-slots-row" title="{{#if isPactMagic}}{{localize 'DND_CUSTOM.Abilities.PactMagicTooltip'}}{{else}}{{localize 'DND_CUSTOM.Abilities.SpellSlotsTooltip'}}{{/if}}">
+    {{#each spellSlots}}
+    <label class="spell-slot-chip">
+      {{localize "DND_CUSTOM.Abilities.SpellSlotLevelShort" level=this.level}}
+      <input type="number" name="system.spells.slots.{{this.level}}.value" value="{{this.value}}" min="0" max="{{this.max}}">
+      <span>/ {{this.max}}</span>
     </label>
+    {{/each}}
+    {{#if isPactMagic}}
+    <span class="pact-magic-badge">{{localize "DND_CUSTOM.Abilities.PactMagicLabel"}}</span>
+    {{/if}}
   </div>
   {{/if}}
 

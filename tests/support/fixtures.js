@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { SPELL_LEVELS } from "../../scripts/helpers/rules.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(__dirname, "..", "..");
@@ -49,7 +50,7 @@ export function buildCharacterFixture(overrides = {}) {
       speed: 30
     },
     spells: {
-      uses: { value: 0, max: 0 },
+      slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: 0 }])),
       concentratingOn: ""
     },
     // `parent.items` simule `this.parent?.items` (l'Actor propriétaire) : liste d'objets
@@ -69,6 +70,14 @@ export function buildCharacterFixture(overrides = {}) {
   // qu'un `overrides.attributes.hp` partiel n'écrase pas les autres champs de `hp`.
   if (overrides.attributes?.hp) merged.attributes.hp = { ...base.attributes.hp, ...overrides.attributes.hp };
   if (overrides.attributes?.ac) merged.attributes.ac = { ...base.attributes.ac, ...overrides.attributes.ac };
+  // `spells.slots` est un objet par palier (1-9) : un `overrides.spells.slots` partiel (ex. un
+  // seul palier) ne doit écraser que les paliers fournis, jamais réinitialiser les 8 autres.
+  if (overrides.spells?.slots) {
+    merged.spells.slots = { ...base.spells.slots };
+    for (const [level, slot] of Object.entries(overrides.spells.slots)) {
+      merged.spells.slots[level] = { ...base.spells.slots[level], ...slot };
+    }
+  }
   return merged;
 }
 

@@ -131,9 +131,14 @@ describe("Sous-classes de Guerrier — Maître de guerre / Chevalier occulte", (
         for (const spellName of ["Bouclier", "Prestidigitation", "Lumière"]) {
           expect(actor.items.find((i) => i.name === spellName), `${spellName} octroyé`).to.exist;
         }
-        // Fighter n'est pas dans DND_CUSTOM.spellcastingClasses : le pool de sorts par repos
-        // reste à 0/0, la preuve que ces 3 sorts sont bien "toujours prêts" sans emplacement.
-        expect(actor.system.spells.uses.max, "pas de pool de sorts classique pour le Guerrier").to.equal(0);
+        // Fighter n'est pas dans DND_CUSTOM.spellcastingClasses : tous les paliers d'emplacement
+        // restent à 0/0, la preuve que ces 3 sorts sont bien "toujours prêts" sans emplacement.
+        for (let level = 1; level <= 9; level++) {
+          expect(
+            actor.system.spells.slots[level].max,
+            `pas d'emplacement de sort niveau ${level} pour le Guerrier`
+          ).to.equal(0);
+        }
       });
 
       cy.openActorSheet(actorId);

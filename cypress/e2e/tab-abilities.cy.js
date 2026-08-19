@@ -1,8 +1,10 @@
 // Implémente la section 6 (T-ABIL-001 à T-ABIL-020) de tests/E2E_TEST_PLAN.md — onglet
 // Capacités/Sorts (tab-abilities.hbs + partials par classe). T-ABIL-021 (régénération de la
 // réaction en début de tour) est marqué "Quench" seul dans le plan : implémenté dans
-// tests/quench/quench-tests.js, pas ici. T-ABIL-022/023 (langues connues) et T-ABIL-024 (sort de
-// soin) sont hors plan initial, ajoutés depuis sur des retours de test réels.
+// tests/quench/quench-tests.js, pas ici. T-ABIL-022/023 (langues connues), T-ABIL-024 (sort de
+// soin), T-ABIL-025 (capacité conditionnée à un état actif) et T-ABIL-026 (surclassement
+// d'emplacement de sort) sont hors plan initial, ajoutés depuis sur des retours de test réels/le
+// chantier des vrais emplacements de sorts par niveau.
 //
 // Écrit à l'origine pour contourner un bug de locale sur grantClassContent (corrigé depuis, cf.
 // tests/README.md > "Bug connu — CORRIGÉ", T-STATS-012 dans tab-stats.cy.js) — le contournement
@@ -85,6 +87,20 @@ function grantCompendiumItem(win, actorId, packName, itemName) {
   });
 }
 
+// Réserve confortable pour tester le décompte d'emplacement/la concentration sans dépendre de
+// l'historique d'un test précédent : remplit les paliers 1 à 3 (les seuls réellement utilisés par
+// les sorts de cette fixture, cf. Invisibilité niveau 2/Contresort niveau 3) à une valeur
+// volontairement haute, silencieusement plafonnée à son propre max par le correctif global
+// "emplacements de sorts ne dépassent jamais leur max" (dnd-custom-ai.js) — piège déjà rencontré
+// ici avec l'ancien pool unique (un "5" posé alors retombait à 2 avant même le clic).
+function fillWizardSlots(win) {
+  return updateActor(win, win.game.actors.get(wizardId), {
+    "system.spells.slots.1.value": 10,
+    "system.spells.slots.2.value": 10,
+    "system.spells.slots.3.value": 10
+  });
+}
+
 let fighterId; // Second souffle, Imposition des mains, Attaque d'opportunité (+ Sentinelle, T-ABIL-009)
 let moineId; // Ki (réserve) + Rafale de coups (technique consommant la réserve)
 let wizardId; // Trait de feu, Projectile magique, Bouclier, Contresort, Bénédiction, Invisibilité,
@@ -137,10 +153,19 @@ before(() => {
         ].map((name) => grantCompendiumItem(win, id, "sorts", name))
       ).then(() => grantCompendiumItem(win, id, "capacites", "Incantation rituelle (Druide)"))
     );
-    // Réserve de sorts confortable pour tester slots/concentration sans dépendre du niveau réel
-    // du personnage (le calcul SRD normal des emplacements par niveau n'est pas ce qui est testé
-    // ici, cf. tab-stats.cy.js pour la dérivation elle-même).
-    cy.window().then((win) => updateActor(win, win.game.actors.get(id), { "system.spells.uses.value": 10 }));
+    // Niveau 5 (mis à jour directement, hors assistant/#onLevelUp — option dndCustomWizard,
+    // même bypass que subclass-*.cy.js) : seul niveau garantissant un emplacement à CHAQUE
+    // palier réellement utilisé par les sorts de cette fixture (1 à 3, cf. Invisibilité niveau 2/
+    // Contresort niveau 3) — fullCaster[5] = [4,3,2,0,...]. Les sorts eux-mêmes restent octroyés
+    // directement (grantCompendiumItem, cf. en-tête du fichier), jamais via grantClassContent.
+    cy.window().then((win) =>
+      win.game.actors
+        .get(id)
+        .update(win.JSON.parse(win.JSON.stringify({ "system.attributes.level": 5 })), { dndCustomWizard: true })
+    );
+    // Réserve de sorts confortable pour tester slots/concentration sans dépendre de l'historique
+    // d'un test précédent (cf. fillWizardSlots ci-dessous).
+    cy.window().then((win) => fillWizardSlots(win));
   });
 
   cy.window().then((win) => win.game.actors.get(wizardId)?.sheet?.close());
@@ -398,32 +423,46 @@ describe("Onglet Capacités/Sorts", () => {
     });
   });
 
-  it("lancer un sort — décompte du pool d'emplacements (T-ABIL-010)", () => {
+  it("lancer un sort — décompte de l'emplacement de son propre niveau (T-ABIL-010)", () => {
     // Remplit au max plutôt qu'à une valeur arbitraire (5/10) : le hook global de correction
-    // "PV/sorts ne dépassent jamais leur max" (dnd-custom-ai.js) ramène silencieusement toute
-    // valeur au-delà de spells.uses.max (2 pour un magicien niveau 1) — piège rencontré au
-    // premier run réel, un "5" posé ici retombait à 2 avant même le clic.
+    // "emplacements de sorts ne dépassent jamais leur max" (dnd-custom-ai.js) ramène
+    // silencieusement toute valeur au-delà de spells.slots.1.max (4 pour ce magicien niveau 5)
+    // — piège rencontré au premier run réel, un "5" posé ici retombait à 2 avant même le clic.
     let maxSlots;
     cy.window().then((win) => {
       const actor = win.game.actors.get(wizardId);
-      maxSlots = actor.system.spells.uses.max;
-      return updateActor(win, actor, { "system.spells.uses.value": maxSlots });
+      maxSlots = actor.system.spells.slots[1].max;
+      return updateActor(win, actor, { "system.spells.slots.1.value": maxSlots });
     });
     cy.openActorSheet(wizardId);
     goToTab("abilities");
     resetMessageBaseline();
 
     withItemId(wizardId, "Projectile magique", (itemId) => {
+      // Prérequis : Projectile magique est de niveau 1, l'emplacement de son propre niveau est
+      // disponible -> décompte direct, aucune fenêtre de surclassement (cf. T-ABIL-011bis pour
+      // le cas surclassement).
+      cy.window().then((win) => {
+        expect(win.game.actors.get(wizardId).items.get(itemId).system.level, "prérequis : sort de niveau 1").to.equal(1);
+      });
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
-        expect(win.game.actors.get(wizardId).system.spells.uses.value).to.equal(maxSlots - 1);
+        expect(win.game.actors.get(wizardId).system.spells.slots[1].value).to.equal(maxSlots - 1);
         expect(win.game.messages.size).to.be.greaterThan(knownMessageCount);
       });
     });
+
+    cy.window().then((win) => fillWizardSlots(win));
   });
 
-  it("aucun emplacement disponible — avertissement, aucun décompte (T-ABIL-011)", () => {
-    cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 0 }));
+  it("aucun emplacement disponible, y compris au-dessus — avertissement, aucun décompte (T-ABIL-011)", () => {
+    cy.window().then((win) =>
+      updateActor(win, win.game.actors.get(wizardId), {
+        "system.spells.slots.1.value": 0,
+        "system.spells.slots.2.value": 0,
+        "system.spells.slots.3.value": 0
+      })
+    );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
 
@@ -441,43 +480,75 @@ describe("Onglet Capacités/Sorts", () => {
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
         expect(warned, "avertissement NoSlotAvailable attendu").to.be.true;
-        expect(win.game.actors.get(wizardId).system.spells.uses.value).to.equal(0);
+        expect(win.game.actors.get(wizardId).system.spells.slots[1].value).to.equal(0);
         expect(win.game.messages.size, "aucun jet/message posté").to.equal(knownMessageCount);
       });
     });
 
-    cy.window().then((win) => {
-      const actor = win.game.actors.get(wizardId);
-      return updateActor(win, actor, { "system.spells.uses.value": actor.system.spells.uses.max });
-    });
+    cy.window().then((win) => fillWizardSlots(win));
   });
 
-  it("tour de magie — aucun changement du pool d'emplacements (T-ABIL-012)", () => {
-    // Cf. commentaire de T-ABIL-010 : rempli au max, pas à une valeur arbitraire.
-    let maxSlots;
-    cy.window().then((win) => {
-      const actor = win.game.actors.get(wizardId);
-      maxSlots = actor.system.spells.uses.max;
-      return updateActor(win, actor, { "system.spells.uses.value": maxSlots });
-    });
+  it("surclassement — palier exact épuisé, palier supérieur dépensé après confirmation (T-ABIL-026)", () => {
+    // Projectile magique (niveau 1) : palier 1 épuisé, palier 2 disponible -> la fenêtre de
+    // choix doit s'ouvrir et proposer le palier 2 (cf. spell-slot-choice.js).
+    cy.window().then((win) =>
+      updateActor(win, win.game.actors.get(wizardId), {
+        "system.spells.slots.1.value": 0,
+        "system.spells.slots.2.value": 3
+      })
+    );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
     resetMessageBaseline();
 
+    withItemId(wizardId, "Projectile magique", (itemId) => {
+      cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
+      // Structure DOM DialogV2 (cf. level-up.cy.js en-tête pour le pattern de référence) :
+      // `dialog.application.dialog`, radio par palier proposé (name="slotLevel"), confirmation
+      // via button[data-action="ok"].
+      cy.window()
+        .its("game.i18n")
+        .then((i18n) => i18n.localize("DND_CUSTOM.Spells.UpcastDialogTitle"))
+        .then((title) => {
+          cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title);
+        });
+      cy.get('dialog.application.dialog input[type="radio"][name="slotLevel"][value="2"]').check();
+      cy.get('dialog.application.dialog button[data-action="ok"]').click();
+      cy.window().should((win) => {
+        const slots = win.game.actors.get(wizardId).system.spells.slots;
+        expect(slots[1].value, "le palier du sort lui-même reste intact").to.equal(0);
+        expect(slots[2].value, "le palier surclassé est décompté").to.equal(2);
+        expect(win.game.messages.size).to.be.greaterThan(knownMessageCount);
+      });
+    });
+
+    cy.window().then((win) => fillWizardSlots(win));
+  });
+
+  it("tour de magie — aucun changement des emplacements de sorts (T-ABIL-012)", () => {
+    cy.window().then((win) => fillWizardSlots(win));
+    cy.openActorSheet(wizardId);
+    goToTab("abilities");
+    resetMessageBaseline();
+
+    let before;
     withItemId(wizardId, "Trait de feu", (itemId) => {
       cy.window().then((win) => {
-        expect(win.game.actors.get(wizardId).items.get(itemId).system.level, "prérequis : tour de magie").to.equal(0);
+        const actor = win.game.actors.get(wizardId);
+        expect(actor.items.get(itemId).system.level, "prérequis : tour de magie").to.equal(0);
+        before = [1, 2, 3].map((level) => actor.system.spells.slots[level].value);
       });
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       lastMessage(); // attend que le jet d'attaque du tour de magie soit bien posté avant de vérifier
       cy.window().should((win) => {
-        expect(win.game.actors.get(wizardId).system.spells.uses.value).to.equal(maxSlots);
+        const actor = win.game.actors.get(wizardId);
+        expect([1, 2, 3].map((level) => actor.system.spells.slots[level].value)).to.deep.equal(before);
       });
     });
   });
 
   it("Incantation rituelle — lancé gratuitement même sans emplacement (T-ABIL-013)", () => {
-    cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 0 }));
+    cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.slots.1.value": 0 }));
     cy.openActorSheet(wizardId);
     goToTab("abilities");
     resetMessageBaseline();
@@ -492,19 +563,21 @@ describe("Onglet Capacités/Sorts", () => {
 
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
-        expect(win.game.actors.get(wizardId).system.spells.uses.value, "aucun emplacement dépensé").to.equal(0);
+        expect(win.game.actors.get(wizardId).system.spells.slots[1].value, "aucun emplacement dépensé").to.equal(0);
         expect(win.game.messages.size, "message de chat posté malgré l'absence d'emplacement").to.be.greaterThan(
           knownMessageCount
         );
       });
     });
 
-    cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 10 }));
+    cy.window().then((win) => fillWizardSlots(win));
   });
 
   it("concentration — un seul sort à la fois, le précédent est rompu (T-ABIL-014)", () => {
     cy.window().then((win) =>
-      updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 10, "system.spells.concentratingOn": "" })
+      fillWizardSlots(win).then(() =>
+        updateActor(win, win.game.actors.get(wizardId), { "system.spells.concentratingOn": "" })
+      )
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
@@ -553,7 +626,7 @@ describe("Onglet Capacités/Sorts", () => {
   });
 
   it("sort d'attaque — jet d'attaque puis bouton de dégâts distinct (T-ABIL-016)", () => {
-    cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 10 }));
+    // "Trait de feu" est un tour de magie (niveau 0) : aucun emplacement à préparer ici.
     cy.openActorSheet(wizardId);
     goToTab("abilities");
     resetMessageBaseline();
@@ -625,6 +698,10 @@ describe("Onglet Capacités/Sorts", () => {
   // soignaient rien (system.heal.dice absent du schéma) — vérifie le vrai jet (dé + modificateur
   // de caractéristique d'incantation) et le bouton "Appliquer le soin" affiché sur son message.
   it("sort de soin lance le dé de soin et le bouton 'Appliquer le soin' restaure des PV (T-ABIL-024)", () => {
+    // "Mot de guérison" est de niveau 1 : garantit un emplacement disponible indépendamment de
+    // l'historique des tests précédents (cf. fillWizardSlots).
+    cy.window().then((win) => fillWizardSlots(win));
+
     let tokenId;
     cy.loginAsGM();
     cy.window()
@@ -690,7 +767,9 @@ describe("Onglet Capacités/Sorts", () => {
 
   it("réaction déjà consommée bloque une autre Capacité/un autre Sort réaction (T-ABIL-019)", () => {
     cy.window().then((win) =>
-      updateActor(win, win.game.actors.get(wizardId), { "system.spells.uses.value": 10, "system.combat.reactionAvailable": true })
+      fillWizardSlots(win).then(() =>
+        updateActor(win, win.game.actors.get(wizardId), { "system.combat.reactionAvailable": true })
+      )
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
@@ -711,13 +790,16 @@ describe("Onglet Capacités/Sorts", () => {
       };
     });
 
+    // Contresort est un sort réaction de niveau 3 : bloqué par la réaction déjà consommée
+    // AVANT même la vérification d'emplacement (#consumeReaction s'exécute en premier dans
+    // #onCastSpell) — son propre palier (3) n'est donc jamais consulté ni décompté.
     withItemId(wizardId, "Contresort", (counterspellId) => {
       cy.window().then((win) => {
-        const before = win.game.actors.get(wizardId).system.spells.uses.value;
+        const before = win.game.actors.get(wizardId).system.spells.slots[3].value;
         cy.get(`li[data-item-id="${counterspellId}"] button[data-action="castSpell"]`).click({ force: true });
         cy.window().should((win2) => {
           expect(warned, "avertissement ReactionUnavailable attendu").to.be.true;
-          expect(win2.game.actors.get(wizardId).system.spells.uses.value, "aucune charge décomptée").to.equal(before);
+          expect(win2.game.actors.get(wizardId).system.spells.slots[3].value, "aucune charge décomptée").to.equal(before);
         });
       });
     });

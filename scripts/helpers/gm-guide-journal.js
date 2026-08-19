@@ -21,6 +21,11 @@ function buildOverviewPage() {
       en bénéficierait, et moitié du bonus de maîtrise appliquée au jet.</li>
       <li>Incantation rituelle (Clerc, Druide) : un sort marqué Rituel se lance sans dépenser de
       charge dès que le personnage a la Capacité correspondante.</li>
+      <li>Emplacements de sorts (1 à 9, SRD 5e) : calculés par classe et niveau, décomptés au
+      lancer, restaurés au repos long — sauf Magie de Pacte (Occultiste, un seul palier actif),
+      restaurée aussi au repos court. Si l'emplacement du niveau exact du sort est épuisé mais
+      qu'un palier supérieur est disponible, le joueur peut choisir de surclasser (fenêtre de
+      choix dédiée, aucune charge décomptée sans confirmation).</li>
       <li>Langues : Commune et langue d'Origine octroyées automatiquement à la création.</li>
       <li>Sorts/Capacités de classe : octroyés automatiquement à la création et à chaque montée
       de niveau (cf. page "Expérience et montée de niveau" ci-dessous).</li>
@@ -74,9 +79,6 @@ function buildSimplificationsPage() {
     <p>Ce système s'écarte volontairement du SRD 5e complet sur plusieurs points, pour rester
     simple à suivre en jeu :</p>
     <ul>
-      <li><strong>Sorts par repos</strong> : un unique pool de charges par repos long remplace les
-      emplacements de sorts par niveau (1 à 9). Chaque sort (hors tour de magie) coûte 1 charge,
-      quel que soit son niveau réel — pas de surclassement.</li>
       <li><strong>Sorts connus</strong> : un lanceur a accès à toute la liste de sorts de sa classe
       jusqu'à son niveau maximum accessible (octroyés automatiquement), plutôt que les tables
       "sorts connus" propres à chaque classe (Barde/Ensorceleur/Occultiste/Magicien).</li>

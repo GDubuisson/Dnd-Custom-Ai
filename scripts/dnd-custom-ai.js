@@ -35,7 +35,8 @@ import {
   isOffHandEligible,
   abilityModifier,
   proficiencyBonus,
-  formatModifier
+  formatModifier,
+  SPELL_LEVELS
 } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
 
@@ -556,10 +557,10 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
 // directe, mais aussi toute variation du max lui-même : caractéristique, niveau, Exhaustion,
 // création de personnage) : après chaque update, si le max déjà recalculé par
 // prepareDerivedData est désormais inférieur aux PV actuels, un update de correction les
-// ramène au max. Même principe pour le pool de sorts par repos (system.spells.uses) — retour
-// de test, les deux pouvaient dépasser leur max. Seul le client à l'origine du changement
-// corrige (garde userId), pour ne pas déclencher la même correction depuis chaque client
-// connecté.
+// ramène au max. Même principe pour chaque palier d'emplacement de sort (system.spells.slots) —
+// retour de test, les deux pouvaient dépasser leur max (ex. changement de classe qui réduit le
+// max d'un palier déjà entamé). Seul le client à l'origine du changement corrige (garde
+// userId), pour ne pas déclencher la même correction depuis chaque client connecté.
 Hooks.on("updateActor", async (actor, changes, options, userId) => {
   if (game.user.id !== userId) return;
   if (!["character", "npc", "mount"].includes(actor.type)) return;
@@ -569,8 +570,11 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
   if (hp && hp.value > hp.max) updates["system.attributes.hp.value"] = hp.max;
 
   if (actor.type === "character") {
-    const uses = actor.system.spells?.uses;
-    if (uses && uses.value > uses.max) updates["system.spells.uses.value"] = uses.max;
+    const slots = actor.system.spells?.slots;
+    for (const level of SPELL_LEVELS) {
+      const slot = slots?.[level];
+      if (slot && slot.value > slot.max) updates[`system.spells.slots.${level}.value`] = slot.max;
+    }
   }
 
   // `dndCustomHpClamp` : ce correctif peut faire BAISSER system.attributes.hp.value (ex. un

@@ -485,3 +485,45 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
     });
   });
 });
+
+describe("Montée de niveau — emplacements de sorts par niveau", () => {
+  it("recalcule les emplacements de sorts par niveau du personnage (T-LVL-015)", () => {
+    cy.loginAsPlayer();
+    let dedicatedActorId;
+    cy.window()
+      .then((win) => win.Actor.create(win.JSON.parse(win.JSON.stringify({ name: "LevelUp Wizard Slots", type: "character" }))))
+      .then((actor) => {
+        dedicatedActorId = actor.id;
+        createdActorIds.push(actor.id);
+        return cy.window().then((win) =>
+          updateActor(
+            win,
+            actor,
+            { "system.class": "wizard", "system.origin": "ashar", "system.attributes.level": 2, "system.xp": 999999 },
+            { dndCustomWizard: true }
+          )
+        );
+      });
+    cy.then(() => closeAutoWizard(dedicatedActorId));
+
+    cy.window().should((win) => {
+      // Prérequis : magicien niveau 2 (fullCaster[2] = [3,0,...], scripts/data/spell-slots.json)
+      // n'a encore aucun emplacement de niveau 2.
+      expect(
+        win.game.actors.get(dedicatedActorId).system.spells.slots[2].max,
+        "prérequis : pas encore d'emplacement de niveau 2"
+      ).to.equal(0);
+    });
+
+    cy.then(() => openSheet(dedicatedActorId));
+    sheetRoot().find('button[data-action="levelUp"]').click();
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(dedicatedActorId);
+      expect(actor.system.attributes.level, "niveau bien monté").to.equal(3);
+      // fullCaster[3] = [4,2,0,...] : le magicien niveau 3 gagne son premier emplacement de
+      // niveau 2.
+      expect(actor.system.spells.slots[2].max, "emplacement de niveau 2 gagné au niveau 3").to.equal(2);
+    });
+  });
+});

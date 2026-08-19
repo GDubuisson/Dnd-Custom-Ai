@@ -88,8 +88,8 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-STATS-007 | Aptitudes multiples (Barde) — demi-bonus sur compétence non maîtrisée | P2 | E2E+Quench | Personnage Barde avec la capacité "Aptitudes multiples", jeter une compétence non maîtrisée | Le modificateur inclut la moitié (arrondie à l'inférieur) du bonus de maîtrise |
 | T-STATS-008 | Boutons +/- caractéristique réservés au MJ | P1 | E2E | Ouvrir la fiche en Joueur | Les boutons +/- ne sont pas visibles/actifs ; en GM ils le sont et modifient `system.abilities.<key>.value` |
 | T-STATS-009 | Repos court — soin de moitié des PV max | P0 | E2E+Quench | PV actuels < max, cliquer Repos court | PV = min(actuel + floor(max/2), max), message de chat posté |
-| T-STATS-010 | Repos court — restaure les emplacements Occultiste | P1 | Quench | Personnage Occultiste avec emplacements de sorts utilisés, Repos court | `system.spells.uses.value` revient au max |
-| T-STATS-011 | Repos long — soin complet + sorts restaurés | P0 | E2E+Quench | PV et sorts partiellement dépensés, Repos long | PV = max, sorts = max, message de chat posté |
+| T-STATS-010 | Repos court — restaure les emplacements Occultiste | P1 | Quench | Personnage Occultiste avec emplacements de sorts utilisés, Repos court | Chaque palier de `system.spells.slots.<n>.value` revient à son max |
+| T-STATS-011 | Repos long — soin complet + sorts restaurés | P0 | E2E+Quench | PV et sorts partiellement dépensés, Repos long | PV = max, chaque palier d'emplacement = son max, message de chat posté |
 | T-STATS-012 | Repos — recharge des capacités à charges | P1 | Quench | Capacité avec `uses.recharge = "shortRest"` épuisée, Repos court puis Repos long | Rechargée après le repos court (et donc aussi après le long) |
 | T-STATS-013 | Repos bloqué si personnage mort | P0 | E2E | Personnage avec 3 échecs de mort (mort), cliquer Repos court/long | Aucun effet, pas d'update envoyé |
 | T-STATS-014 | Jet d'Initiative | P0 | E2E | Personnage sur une scène active avec un combat en cours, cliquer Initiative | Un Combattant est créé si absent, le Combat Tracker affiche le résultat |
@@ -146,10 +146,10 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-007 | Technique consommant la réserve d'une autre capacité | P1 | E2E+Quench | Capacité avec `costsResource` pointant vers une capacité réservoir (ex. Ki de Moine) | La réserve (pas la technique elle-même) est décrémentée |
 | T-ABIL-008 | Bouton grisé si réserve vide | P1 | E2E | Réserve à 0, ouvrir l'onglet | Le bouton de la technique liée est grisé/non cliquable |
 | T-ABIL-009 | Sentinelle modifie le déclencheur d'Attaque d'opportunité | P2 | E2E | Personnage avec les capacités "Sentinelle" et "Attaque d'opportunité" | Le déclencheur affiché change en conséquence (dérivé à l'affichage, rien d'écrit sur l'Item) |
-| T-ABIL-010 | Lancer un sort — décompte du pool | P0 | E2E+Quench | Sort de niveau > 0, cliquer Lancer | `spells.uses.value` décrémenté de 1, message de chat |
-| T-ABIL-011 | Aucun emplacement disponible | P0 | E2E | `spells.uses.value = 0`, tenter de lancer un sort de niveau > 0 | Avertissement `NoSlotAvailable`, aucun décompte |
-| T-ABIL-012 | Tour de magie — pas de décompte | P1 | E2E | Sort de niveau 0, cliquer Lancer | Aucun changement de `spells.uses.value` |
-| T-ABIL-013 | Incantation rituelle gratuite | P1 | E2E+Quench | Sort `ritual`, personnage avec la capacité "Incantation rituelle (Clerc/Druide)" | Lancé sans consommer de charge, même si niveau > 0 |
+| T-ABIL-010 | Lancer un sort — décompte de son propre palier | P0 | E2E+Quench | Emplacement du niveau exact du sort disponible, cliquer Lancer | `spells.slots.<niveau du sort>.value` décrémenté de 1, aucune fenêtre de choix, message de chat |
+| T-ABIL-011 | Aucun emplacement disponible (y compris au-dessus) | P0 | E2E | Tous les paliers `>= niveau du sort` à `value = 0`, tenter de lancer | Avertissement `NoSlotAvailable`, aucun décompte |
+| T-ABIL-012 | Tour de magie — pas de décompte | P1 | E2E | Sort de niveau 0, cliquer Lancer | Aucun changement des paliers d'emplacement |
+| T-ABIL-013 | Incantation rituelle gratuite | P1 | E2E+Quench | Sort `ritual`, personnage avec la capacité "Incantation rituelle (Clerc/Druide)" | Lancé sans consommer d'emplacement, même si niveau > 0 |
 | T-ABIL-014 | Concentration — un seul sort à la fois | P1 | E2E+Quench | Lancer un sort à concentration, puis un second sort à concentration | `concentratingOn` reflète le second, message de chat "concentration rompue" pour le premier |
 | T-ABIL-015 | Rompre la concentration manuellement | P1 | E2E | Cliquer le bouton dédié pendant une concentration active | `concentratingOn` vidé |
 | T-ABIL-016 | Sort d'attaque — jet d'attaque puis dégâts séparés | P1 | E2E | Sort avec `system.attack`, cliquer Lancer | Jet d'attaque posté (1d20 + bonus de sort, comparé à la CA ciblée) ; bouton de dégâts distinct apparaît ensuite |
@@ -160,6 +160,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-021 | Régénération de la réaction en début de tour | P1 | Quench | Simuler `updateCombat` faisant passer au tour du personnage | `combat.reactionAvailable` repasse à `true` (hook, à vérifier côté `dnd-custom-ai.js`) |
 | T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commune + langue d'origine listées, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
 | T-ABIL-023 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans la liste de l'onglet Capacités |
+| T-ABIL-026 | Surclassement — palier exact épuisé, palier supérieur disponible | P0 | E2E+Quench | `spells.slots.<niveau>.value = 0`, un palier supérieur > 0, cliquer Lancer | Fenêtre de choix ouverte ; en choisissant le palier proposé, c'est CE palier (pas celui du sort) qui est décompté |
 
 ---
 
@@ -192,6 +193,7 @@ deux champs de texte libre ci-dessous.
 | T-LVL-010 | Pas de proposition ASI/Don aux autres niveaux | P1 | E2E | Monter à un niveau hors de cette liste | Fenêtre non proposée |
 | T-LVL-011 | Choix "Amélioration de caractéristique" appliqué | P1 | E2E+Quench | Choisir l'option ASI dans la fenêtre | Les points sont répartis sur les caractéristiques choisies (vérifier les bornes/règles exactes du dialogue) |
 | T-LVL-012 | Choix "Don" appliqué | P1 | E2E+Quench | Choisir l'option Don | Le don choisi est ajouté comme Item à l'Actor |
+| T-LVL-015 | Emplacements de sorts recalculés à la montée de niveau | P1 | E2E+Quench | Magicien niveau 2 → 3 | `spells.slots.2.max` passe de 0 à 2 (fullCaster[3]) |
 
 ---
 
