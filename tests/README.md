@@ -257,13 +257,16 @@ npm run docker:down        # arrête l'instance
   (`quench-tests.js`, batches `dndCustomAi.actorCreation`, `dndCustomAi.wizard` et
   `dndCustomAi.combatReaction`) qui tournent
   dans le vrai pipeline Document/DataModel.
-- `.github/workflows/test.yml` — CI équivalente ; nécessite 3 secrets de dépôt
-  (`FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, `FOUNDRY_LICENSE_KEY`) non configurés par ce
-  fichier — le job échoue tant qu'ils ne sont pas ajoutés dans Settings > Secrets and
-  variables > Actions. Limite connue : `./data` repart vide à chaque run CI (pas de volume
-  persistant entre jobs), donc le test "charge le monde de test" de `system-load.cy.js`
-  échouera en CI tant qu'une étape de création/import automatique du monde n'est pas ajoutée
-  — non couvert par cette mise en place initiale.
+- `.github/workflows/test.yml` — CI GitHub Actions : `npm test` (unitaire/data/dom) uniquement,
+  volontairement. Un job Docker + Cypress contre un vrai client Foundry y a été tenté puis
+  retiré (2026-08-19) : `./data` repart vide à chaque run CI (pas de volume persistant entre
+  jobs), donc Foundry doit être retéléchargé et réinstallé en entier à chaque exécution (le
+  job échouait déjà par timeout sur ce seul point), et même en résolvant ça, aucun monde/
+  utilisateur de test n'est provisionné dans un environnement CI éphémère — un chantier de
+  bootstrap automatique (création de monde/utilisateurs via l'API HTTP Foundry, cache de
+  l'installation) serait nécessaire pour faire tourner cette couche en CI. Décision explicite :
+  garder la couche E2E "au réel" manuelle/locale uniquement (cf. section précédente) plutôt que
+  de maintenir un job systématiquement rouge.
 
 ### Limites connues de cette couche
 
