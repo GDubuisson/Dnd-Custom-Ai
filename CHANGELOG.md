@@ -15,6 +15,14 @@ d'attention testeurs** : au premier chargement après mise à jour, les charges 
 personnages existants repartent à 0 (nouveau schéma de données) — un repos long les restaure à
 leur bon maximum.
 
+CI GitHub Actions (`.github/workflows/test.yml`) simplifiée : ne fait plus tourner que la suite
+rapide `npm test` (unitaire/data/dom). Le job Docker + Cypress contre un vrai client Foundry a
+été retiré — `./data` repart vide à chaque run CI (pas de volume persistant), donc Foundry
+devait être retéléchargé et réinstallé en entier à chaque exécution (timeout systématique), et
+même en réglant ça, aucun monde/utilisateur de test n'est provisionné dans un environnement CI
+éphémère. La couche E2E "au réel" reste une couche manuelle/locale uniquement (cf.
+`tests/README.md`), plutôt que de maintenir un job systématiquement rouge.
+
 Chantier "contenu de classe" complet : sorts/capacités étoffés à tous les niveaux déjà
 modélisés, système de sous-classes (une par classe, SRD) et système de dons (optionnel).
 

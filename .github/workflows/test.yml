@@ -1,16 +1,15 @@
-name: Foundry VTT System Tests
+name: System Tests
 
-# Tests E2E "au réel" (vrai client Foundry, cf. docker-compose.yml et
-# tests/README.md) — complète .github/workflows/release.yml, ne le
-# remplace pas. Nécessite 3 secrets de dépôt (Settings > Secrets and variables > Actions) :
-# FOUNDRY_USERNAME, FOUNDRY_PASSWORD, FOUNDRY_LICENSE_KEY (licence Foundry VTT valide) — le
-# job échouera tant qu'ils ne sont pas renseignés, ce fichier ne les configure pas lui-même.
+# Suite unitaire/data/dom (cf. tests/README.md, `npm test`) — isolée de Foundry, rapide et
+# fiable en CI. Complète .github/workflows/release.yml, ne le remplace pas.
 #
-# Montages sous /data/Data/systems/dnd-custom-ai/... (PAS /home/foundry/data/...) : la vraie
-# racine de données de Foundry est /data (DATA_DIR de l'entrypoint felddy/foundryvtt), il ne
-# scanne jamais /home/foundry/data — même bug que celui découvert et corrigé dans
-# docker-compose.yml (cf. son commentaire), longtemps resté non reporté ici puisque ce fichier
-# n'est pas exercé localement.
+# Les tests E2E "au réel" (vrai client Foundry via Docker + Cypress, cf. docker-compose.yml)
+# restent volontairement une couche manuelle/locale uniquement : ils dépendent d'un monde de
+# test déjà provisionné (utilisateurs, licence Foundry acceptée) qui n'existe pas dans un
+# environnement CI éphémère, et retélécharger + réinstaller Foundry en entier à chaque run
+# dépasserait largement des délais raisonnables de CI. Décision explicite (2026-08-19) plutôt
+# que de maintenir un job systématiquement rouge — cf. tests/README.md pour lancer cette suite
+# en local.
 on:
   push:
   pull_request:
@@ -31,43 +30,5 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Récupérer le module Quench
-        run: npm run e2e:fetch-quench
-
-      - name: Launch FoundryVTT & Run Tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: >-
-            docker run -d
-            --name dnd-custom-ai-foundry-test
-            --env FOUNDRY_ADMIN_KEY=test-admin-key
-            --env FOUNDRY_USERNAME=${{ secrets.FOUNDRY_USERNAME }}
-            --env FOUNDRY_PASSWORD=${{ secrets.FOUNDRY_PASSWORD }}
-            --env FOUNDRY_LICENSE_KEY=${{ secrets.FOUNDRY_LICENSE_KEY }}
-            --publish 30001:30000/tcp
-            --volume ${{ github.workspace }}/data:/data
-            --volume ${{ github.workspace }}/system.json:/data/Data/systems/dnd-custom-ai/system.json
-            --volume ${{ github.workspace }}/scripts:/data/Data/systems/dnd-custom-ai/scripts
-            --volume ${{ github.workspace }}/styles:/data/Data/systems/dnd-custom-ai/styles
-            --volume ${{ github.workspace }}/templates:/data/Data/systems/dnd-custom-ai/templates
-            --volume ${{ github.workspace }}/lang:/data/Data/systems/dnd-custom-ai/lang
-            --volume ${{ github.workspace }}/assets:/data/Data/systems/dnd-custom-ai/assets
-            --volume ${{ github.workspace }}/packs:/data/Data/systems/dnd-custom-ai/packs
-            --volume ${{ github.workspace }}/world-items:/data/Data/systems/dnd-custom-ai/world-items
-            --volume ${{ github.workspace }}/.quench-module:/data/Data/modules/quench
-            --volume ${{ github.workspace }}/tests/quench:/data/Data/modules/dnd-custom-ai-quench-tests
-            felddy/foundryvtt:release
-          wait-on: "http://localhost:30001"
-          wait-on-timeout: 120
-          browser: chrome
-        env:
-          # Doit correspondre à FOUNDRY_ADMIN_KEY passé au conteneur ci-dessus et à
-          # Cypress.env("adminKey") dans cypress.config.js.
-          CYPRESS_adminKey: test-admin-key
-
-      - name: Upload Test Results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-videos
-          path: cypress/videos
+      - name: Run Tests
+        run: npm test
