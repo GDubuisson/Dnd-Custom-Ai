@@ -221,7 +221,7 @@
   {
     "name": "Moqueries cruelles",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Moqueries-cruelles.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Moqueries-cruelles.webp",
     "system": {
       "classes": ["bard"],
       "level": 0,
@@ -234,7 +234,7 @@
   {
     "name": "Avis divin",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Avis-divin.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Avis-divin.webp",
     "system": {
       "classes": ["cleric","druid"],
       "level": 0,
@@ -247,7 +247,7 @@
   {
     "name": "Thaumaturgie",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Thaumaturgie.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Thaumaturgie.webp",
     "system": {
       "classes": ["cleric"],
       "level": 0,
@@ -286,7 +286,7 @@
   {
     "name": "Illusion mineure",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Illusion-mineure.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Illusion-mineure.webp",
     "system": {
       "classes": ["bard","sorcerer","warlock","wizard"],
       "level": 0,
@@ -299,7 +299,7 @@
   {
     "name": "Ordre",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Ordre.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Ordre.webp",
     "system": {
       "classes": ["cleric","paladin"],
       "level": 1,
@@ -312,7 +312,7 @@
   {
     "name": "Sanctuaire",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Sanctuaire.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Sanctuaire.webp",
     "system": {
       "classes": ["cleric"],
       "level": 1,
@@ -325,7 +325,7 @@
   {
     "name": "Protection contre le mal et le bien",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Protection-contre-le-mal-et-le-bien.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Protection-contre-le-mal-et-le-bien.webp",
     "system": {
       "classes": ["cleric","warlock","paladin","wizard"],
       "level": 1,
@@ -338,7 +338,7 @@
   {
     "name": "Enchevêtrement",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Enchevetrement.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Enchevetrement.webp",
     "system": {
       "classes": ["druid"],
       "level": 1,
@@ -351,7 +351,7 @@
   {
     "name": "Malédiction du sorcier",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Malediction-du-sorcier.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Malediction-du-sorcier.webp",
     "system": {
       "classes": ["warlock"],
       "level": 1,
@@ -364,7 +364,7 @@
   {
     "name": "Charme-personne",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Charme-personne.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Charme-personne.webp",
     "system": {
       "classes": ["bard","sorcerer","warlock","wizard"],
       "level": 1,
@@ -377,7 +377,7 @@
   {
     "name": "Restauration inférieure",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Restauration-inferieure.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Restauration-inferieure.webp",
     "system": {
       "classes": ["cleric","druid","paladin"],
       "level": 2,
@@ -390,7 +390,7 @@
   {
     "name": "Peau d'écorce",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Peau-decorce.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Peau-decorce.webp",
     "system": {
       "classes": ["druid"],
       "level": 2,
@@ -403,7 +403,7 @@
   {
     "name": "Arme spirituelle",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Arme-spirituelle.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Arme-spirituelle.webp",
     "system": {
       "classes": ["cleric"],
       "level": 2,
@@ -431,7 +431,7 @@
   {
     "name": "Tempête de grêle",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Tempete-de-grele.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Tempete-de-grele.webp",
     "system": {
       "classes": ["druid","sorcerer","wizard"],
       "level": 4,
@@ -444,7 +444,7 @@
   {
     "name": "Mur de feu",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Mur-de-feu.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Mur-de-feu.webp",
     "system": {
       "classes": ["druid","sorcerer","warlock","wizard"],
       "level": 4,
@@ -457,7 +457,7 @@
   {
     "name": "Liberté de mouvement",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Liberte-de-mouvement.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Liberte-de-mouvement.webp",
     "system": {
       "classes": ["bard","cleric","druid"],
       "level": 4,
@@ -470,7 +470,7 @@
   {
     "name": "Invisibilité suprême",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Invisibilite-supreme.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Invisibilite-supreme.webp",
     "system": {
       "classes": ["bard","sorcerer","wizard"],
       "level": 4,
@@ -483,7 +483,7 @@
   {
     "name": "Bannissement",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Bannissement.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Bannissement.webp",
     "system": {
       "classes": ["cleric","sorcerer","warlock","wizard"],
       "level": 4,
@@ -509,7 +509,7 @@
   {
     "name": "Soins de groupe",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Soins-de-groupe.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Soins-de-groupe.webp",
     "system": {
       "classes": ["bard","cleric","druid"],
       "level": 5,
@@ -523,7 +523,7 @@
   {
     "name": "Immobilisation de monstre",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Immobilisation-de-monstre.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Immobilisation-de-monstre.webp",
     "system": {
       "classes": ["bard","sorcerer","warlock","wizard"],
       "level": 5,
@@ -536,7 +536,7 @@
   {
     "name": "Domination de personne",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Domination-de-personne.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Domination-de-personne.webp",
     "system": {
       "classes": ["bard","sorcerer","warlock","wizard"],
       "level": 5,
@@ -549,7 +549,7 @@
   {
     "name": "Porte dimensionnelle",
     "type": "spell",
-    "img": "systems/dnd-custom-ai/assets/icons/spells/Porte-dimensionnelle.png",
+    "img": "systems/dnd-custom-ai/assets/icons/spells/Porte-dimensionnelle.webp",
     "system": {
       "classes": ["bard","sorcerer","warlock","wizard"],
       "level": 4,

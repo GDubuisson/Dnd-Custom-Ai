@@ -179,7 +179,7 @@
   {
     "name": "Rafale de coups",
     "type": "feature",
-    "img": "icons/svg/sword.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Rafale-de-coups.png",
     "system": {
       "class": "monk",
       "level": 2,
@@ -193,7 +193,7 @@
   {
     "name": "Défense patiente",
     "type": "feature",
-    "img": "icons/svg/shield.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Defense-patiente.png",
     "system": {
       "class": "monk",
       "level": 2,
@@ -207,7 +207,7 @@
   {
     "name": "Pas du vent",
     "type": "feature",
-    "img": "icons/svg/wind.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-du-vent.png",
     "system": {
       "class": "monk",
       "level": 2,

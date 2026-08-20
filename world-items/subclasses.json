@@ -2,7 +2,7 @@
   {
     "name": "Voie du Berserker",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-du-Berserker.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-du-Berserker.png",
     "system": {
       "classKey": "barbarian",
       "subclassKey": "berserker",
@@ -12,7 +12,7 @@
   {
     "name": "Voie du Cœur sauvage",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-du-Coeur-sauvage.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-du-Coeur-sauvage.png",
     "system": {
       "classKey": "barbarian",
       "subclassKey": "wildheart",
@@ -22,7 +22,7 @@
   {
     "name": "Voie de la Magie sauvage",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Magie-sauvage.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-de-la-Magie-sauvage.png",
     "system": {
       "classKey": "barbarian",
       "subclassKey": "wildMagic",
@@ -32,7 +32,7 @@
   {
     "name": "Collège du Savoir",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-du-Savoir.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/College-du-Savoir.png",
     "system": {
       "classKey": "bard",
       "subclassKey": "lore",
@@ -42,7 +42,7 @@
   {
     "name": "Collège des Lames",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-des-Lames.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/College-des-Lames.png",
     "system": {
       "classKey": "bard",
       "subclassKey": "swords",
@@ -52,7 +52,7 @@
   {
     "name": "Collège de la Vaillance",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/College-de-la-Vaillance.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/College-de-la-Vaillance.png",
     "system": {
       "classKey": "bard",
       "subclassKey": "valour",
@@ -62,7 +62,7 @@
   {
     "name": "Domaine de la Vie",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Vie.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Domaine-de-la-Vie.png",
     "system": {
       "classKey": "cleric",
       "subclassKey": "life",
@@ -72,7 +72,7 @@
   {
     "name": "Domaine de la Lumière",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Lumiere.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Domaine-de-la-Lumiere.png",
     "system": {
       "classKey": "cleric",
       "subclassKey": "light",
@@ -82,7 +82,7 @@
   {
     "name": "Domaine de la Ruse",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Domaine-de-la-Ruse.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Domaine-de-la-Ruse.png",
     "system": {
       "classKey": "cleric",
       "subclassKey": "trickery",
@@ -92,7 +92,7 @@
   {
     "name": "Cercle de la Terre",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Terre.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Cercle-de-la-Terre.png",
     "system": {
       "classKey": "druid",
       "subclassKey": "land",
@@ -102,7 +102,7 @@
   {
     "name": "Cercle de la Lune",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-de-la-Lune.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Cercle-de-la-Lune.png",
     "system": {
       "classKey": "druid",
       "subclassKey": "moon",
@@ -112,7 +112,7 @@
   {
     "name": "Cercle des Spores",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Cercle-des-Spores.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Cercle-des-Spores.png",
     "system": {
       "classKey": "druid",
       "subclassKey": "spores",
@@ -122,7 +122,7 @@
   {
     "name": "Champion",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Champion.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Champion.png",
     "system": {
       "classKey": "fighter",
       "subclassKey": "champion",
@@ -132,7 +132,7 @@
   {
     "name": "Maître de guerre",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-de-guerre.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Maitre-de-guerre.png",
     "system": {
       "classKey": "fighter",
       "subclassKey": "battleMaster",
@@ -142,7 +142,7 @@
   {
     "name": "Chevalier occulte",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chevalier-occulte.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Chevalier-occulte.png",
     "system": {
       "classKey": "fighter",
       "subclassKey": "eldritchKnight",
@@ -152,7 +152,7 @@
   {
     "name": "Voie de l'Ombre",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-lOmbre.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-de-lOmbre.png",
     "system": {
       "classKey": "monk",
       "subclassKey": "shadow",
@@ -162,7 +162,7 @@
   {
     "name": "Voie des Quatre Éléments",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-des-Quatre-Elements.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-des-Quatre-Elements.png",
     "system": {
       "classKey": "monk",
       "subclassKey": "fourElements",
@@ -172,7 +172,7 @@
   {
     "name": "Voie de la Main Ouverte",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voie-de-la-Main-Ouverte.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voie-de-la-Main-Ouverte.png",
     "system": {
       "classKey": "monk",
       "subclassKey": "openHand",
@@ -182,7 +182,7 @@
   {
     "name": "Serment de Dévotion",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-de-Devotion.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Serment-de-Devotion.png",
     "system": {
       "classKey": "paladin",
       "subclassKey": "devotion",
@@ -192,7 +192,7 @@
   {
     "name": "Serment des Anciens",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-des-Anciens.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Serment-des-Anciens.png",
     "system": {
       "classKey": "paladin",
       "subclassKey": "ancients",
@@ -202,7 +202,7 @@
   {
     "name": "Serment de Vengeance",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Serment-de-Vengeance.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Serment-de-Vengeance.png",
     "system": {
       "classKey": "paladin",
       "subclassKey": "vengeance",
@@ -212,7 +212,7 @@
   {
     "name": "Chasseur",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Chasseur.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Chasseur.png",
     "system": {
       "classKey": "ranger",
       "subclassKey": "hunter",
@@ -222,7 +222,7 @@
   {
     "name": "Maître des bêtes",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Maitre-des-betes.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Maitre-des-betes.png",
     "system": {
       "classKey": "ranger",
       "subclassKey": "beastmaster",
@@ -232,7 +232,7 @@
   {
     "name": "Traqueur des ténèbres",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Traqueur-des-tenebres.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Traqueur-des-tenebres.png",
     "system": {
       "classKey": "ranger",
       "subclassKey": "gloomStalker",
@@ -242,7 +242,7 @@
   {
     "name": "Voleur",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Voleur.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Voleur.png",
     "system": {
       "classKey": "rogue",
       "subclassKey": "thief",
@@ -252,7 +252,7 @@
   {
     "name": "Bretteur",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Bretteur.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Bretteur.png",
     "system": {
       "classKey": "rogue",
       "subclassKey": "swashbuckler",
@@ -262,7 +262,7 @@
   {
     "name": "Assassin",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Assassin.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Assassin.png",
     "system": {
       "classKey": "rogue",
       "subclassKey": "assassin",
@@ -272,7 +272,7 @@
   {
     "name": "Lignage draconique",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Lignage-draconique.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Lignage-draconique.png",
     "system": {
       "classKey": "sorcerer",
       "subclassKey": "draconic",
@@ -282,7 +282,7 @@
   {
     "name": "Magie sauvage",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Magie-sauvage.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Magie-sauvage.png",
     "system": {
       "classKey": "sorcerer",
       "subclassKey": "wildSorcery",
@@ -292,7 +292,7 @@
   {
     "name": "Sorcellerie des tempêtes",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Sorcellerie-des-tempetes.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Sorcellerie-des-tempetes.png",
     "system": {
       "classKey": "sorcerer",
       "subclassKey": "stormSorcery",
@@ -302,7 +302,7 @@
   {
     "name": "Le Fiélon",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Fielon.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Le-Fielon.png",
     "system": {
       "classKey": "warlock",
       "subclassKey": "fiend",
@@ -312,7 +312,7 @@
   {
     "name": "Le Grand Ancien",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Le-Grand-Ancien.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Le-Grand-Ancien.png",
     "system": {
       "classKey": "warlock",
       "subclassKey": "greatOldOne",
@@ -322,7 +322,7 @@
   {
     "name": "L'Archifée",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/LArchifee.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/LArchifee.png",
     "system": {
       "classKey": "warlock",
       "subclassKey": "archfey",
@@ -332,7 +332,7 @@
   {
     "name": "École d'évocation",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-devocation.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Ecole-devocation.png",
     "system": {
       "classKey": "wizard",
       "subclassKey": "evocation",
@@ -342,7 +342,7 @@
   {
     "name": "École de nécromancie",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-de-necromancie.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Ecole-de-necromancie.png",
     "system": {
       "classKey": "wizard",
       "subclassKey": "necromancy",
@@ -352,7 +352,7 @@
   {
     "name": "École d'illusion",
     "type": "subclass",
-    "img": "systems/dnd-custom-ai/assets/icons/subclasses/Ecole-dillusion.webp",
+    "img": "systems/dnd-custom-ai/assets/icons/classes/sub-classes/Ecole-dillusion.png",
     "system": {
       "classKey": "wizard",
       "subclassKey": "illusion",
