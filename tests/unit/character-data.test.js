@@ -61,6 +61,59 @@ describe("CharacterData#prepareDerivedData — caractéristiques", () => {
       assert.equal(fixture.abilities.cha.total, 17); // 14 + 2 (origine) + 1 (don)
     });
   });
+
+  describe("Dons 'Athlète'/'Résilient' — choix de caractéristique posé sur le don lui-même", () => {
+    function abilityChoiceFeature(name, chosenAbility) {
+      return { type: "feature", name, system: { offersAbilityChoice: true, chosenAbility } };
+    }
+
+    test("Athlète, choix réglé -> +1 sur la caractéristique choisie", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "dex")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.dex.total, 15);
+    });
+
+    test("Athlète, choix PAS ENCORE réglé (chosenAbility vide) -> aucun bonus", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.dex.total, 14);
+    });
+
+    test("Résilient, choix réglé -> +1 ET maîtrise de sauvegarde correspondante", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { wis: { value: 12, total: 0 } },
+        items: [abilityChoiceFeature("Résilient", "wis")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.wis.total, 13);
+      assert.equal(fixture.saves.wis.proficient, true);
+    });
+
+    test("Résilient ne retire jamais une maîtrise déjà acquise par ailleurs sur une AUTRE caractéristique", () => {
+      const fixture = buildCharacterFixture({
+        saves: { str: { proficient: true } },
+        items: [abilityChoiceFeature("Résilient", "wis")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.saves.str.proficient, true);
+    });
+
+    test("les deux dons cumulés sur la MÊME caractéristique -> bonus additionnés (+2)", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { con: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "con"), abilityChoiceFeature("Résilient", "con")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.con.total, 16); // 14 + 1 (Athlète) + 1 (Résilient)
+      assert.equal(fixture.saves.con.proficient, true); // toujours accordée par Résilient
+    });
+  });
 });
 
 describe("CharacterData#prepareDerivedData — PV max", () => {

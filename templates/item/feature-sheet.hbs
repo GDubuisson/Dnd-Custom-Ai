@@ -73,6 +73,17 @@
     <input type="text" name="system.costsResource" value="{{system.costsResource}}" placeholder="Ki" {{#unless isGM}}disabled{{/unless}}>
   </div>
 
+  {{#if system.offersAbilityChoice}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.ChosenAbility"}}</label>
+    <select name="system.chosenAbility" {{#unless isGM}}disabled{{/unless}}>
+      <option value=""></option>
+      {{selectOptions config.abilities selected=system.chosenAbility localize=true}}
+    </select>
+  </div>
+  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ChosenAbilityHelp"}}</p>
+  {{/if}}
+
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Uses"}}</legend>
     <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UsesHelp"}}</p>

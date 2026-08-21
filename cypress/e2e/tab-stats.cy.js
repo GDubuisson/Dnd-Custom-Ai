@@ -657,6 +657,54 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       // undefined (NaN), piège découvert au premier run réel de ce test.
       .should((text) => expect(text).to.include(formatModifier(baseInitiative + 5)));
   });
+
+  it("Résilient : choix de caractéristique réglé via la fiche du don (MJ) -> bonus + maîtrise de sauvegarde appliqués", () => {
+    let baseWis;
+    let createdItems;
+    cy.loginAsGM();
+    // Un monde déjà chargé une fois conserve les anciennes données de compendium par nom
+    // (importSystemContent n'importe que les entrées ABSENTES, jamais une mise à jour d'une
+    // entrée existante, cf. ANOMALIES_ACTIVES.md) — l'entrée "Résilient" du compendium de test
+    // peut donc dater d'avant l'ajout de `offersAbilityChoice`. Resynchronise explicitement
+    // cette seule entrée avant de tester, plutôt que de dépendre d'un état de compendium
+    // implicite.
+    cy.window().then((win) => {
+      const pack = win.game.packs.get("dnd-custom-ai.dons");
+      return pack.getDocuments().then((docs) => {
+        const stale = docs.find((doc) => doc.name === "Résilient");
+        expect(stale, "prérequis : 'Résilient' existe dans le compendium dons").to.exist;
+        return win.Item.deleteDocuments([stale.id], { pack: "dnd-custom-ai.dons" });
+      }).then(() => win.game.dndCustomAi.importSystemContent());
+    });
+    cy.window().then((win) => {
+      baseWis = win.game.actors.get(featActorId).system.abilities.wis.total;
+      return grantFeat(win, featActorId, "Résilient").then((items) => {
+        createdItems = items;
+      });
+    });
+
+    // Le choix de caractéristique se règle sur la fiche du DON lui-même (system.chosenAbility,
+    // réservé au MJ, cf. feature-sheet.hbs), pas sur la fiche de l'Actor — un vrai select piloté,
+    // pas un update() direct, pour prouver que le sélecteur fonctionne de bout en bout.
+    cy.then(() => cy.window().then((win) => createdItems[0].sheet.render(true)));
+    cy.get(".application.sheet.item", { timeout: 10000 }).should("be.visible").and("contain.text", "Résilient");
+    cy.get('select[name="system.chosenAbility"]').select("wis");
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      expect(actor.system.abilities.wis.total, "bonus +1 appliqué").to.equal(baseWis + 1);
+      expect(actor.system.saves.wis.proficient, "maîtrise de sauvegarde accordée").to.be.true;
+    });
+
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find('button[data-action="rollAbility"][data-key="wis"]')
+      .closest(".ability-card")
+      .find(".ability-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseWis + 1));
+    sheetRoot().find('input[name="system.saves.wis.proficient"]').should("be.checked");
+  });
 });
 
 describe("Onglet Statistiques — états et Exhaustion", () => {

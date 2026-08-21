@@ -10,7 +10,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : +1 en Force ou en Dextérité (maximum 20). Se relever ne vous coûte plus que 1,50 m de mouvement. Grimper ne vous coûte pas de mouvement supplémentaire. Vous pouvez effectuer un saut en longueur ou en hauteur après ne vous être déplacé que de 1,50 m au lieu des 3 m habituels."
+      "offersAbilityChoice": true,
+      "description": "Don : +1 en Force ou en Dextérité (maximum 20, à choisir sur la fiche de ce don — le MJ y règle la caractéristique choisie, le bonus s'applique alors automatiquement). Se relever ne vous coûte plus que 1,50 m de mouvement. Grimper ne vous coûte pas de mouvement supplémentaire. Vous pouvez effectuer un saut en longueur ou en hauteur après ne vous être déplacé que de 1,50 m au lieu des 3 m habituels."
     }
   },
   {
@@ -109,7 +110,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : choisissez une caractéristique. +1 dans cette caractéristique (maximum 20), et vous devenez maîtrisé du jet de sauvegarde correspondant (à cocher manuellement sur l'onglet Statistiques)."
+      "offersAbilityChoice": true,
+      "description": "Don : choisissez une caractéristique (sur la fiche de ce don — le MJ y règle la caractéristique choisie). +1 dans cette caractéristique (maximum 20), et vous devenez maîtrisé du jet de sauvegarde correspondant, appliqués automatiquement une fois le choix réglé."
     }
   },
   {

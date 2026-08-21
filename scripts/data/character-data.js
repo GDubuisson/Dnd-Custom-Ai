@@ -177,9 +177,24 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // dès que le personnage possède le don, même principe que le bonus d'Origine ci-dessus (pas
     // de plafond à 20 modélisé, cohérent avec le bonus d'Origine qui n'en applique pas non plus).
     const gracefulChaBonus = hasFeature(items, "Doué") ? 1 : 0;
+    // Dons "Athlète"/"Résilient" (FeatureData#offersAbilityChoice/chosenAbility, réglés sur la
+    // fiche du don lui-même par le MJ, cf. feature-sheet.hbs) : +1 sur la caractéristique
+    // choisie, appliqué automatiquement dès que le choix est réglé. Un même personnage peut
+    // posséder les deux (choix indépendants, contrairement à `grantsChoice` qui est ponctuel par
+    // Actor) — `.filter()` + `.length` cumule correctement si, par exemple, les deux dons visent
+    // la même caractéristique.
+    const abilityChoiceFeats = items.filter(
+      (item) => item.type === "feature" && item.system?.offersAbilityChoice && item.system?.chosenAbility
+    );
     for (const key of ABILITY_KEYS) {
-      const featBonus = key === "cha" ? gracefulChaBonus : 0;
+      const featBonus = (key === "cha" ? gracefulChaBonus : 0) + abilityChoiceFeats.filter((item) => item.system.chosenAbility === key).length;
       this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0) + featBonus;
+    }
+    // Don "Résilient" seul (parmi les deux ci-dessus) accorde aussi la maîtrise du jet de
+    // sauvegarde de la caractéristique choisie (SRD 5e) — ne retire jamais une maîtrise déjà
+    // acquise par ailleurs (classe, MJ...), seulement `true` si le don la donne.
+    for (const item of abilityChoiceFeats) {
+      if (item.name === "Résilient") this.saves[item.system.chosenAbility].proficient = true;
     }
 
     const equippedArmor = items.find(

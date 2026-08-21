@@ -619,6 +619,8 @@
         "ReactionTriggerHelp": "Describes when to use this Reaction (e.g. \"When a creature you can see within 60 ft. is hit by an attack\").",
         "Source": "Source",
         "CostsResource": "Draws from pool (exact name of another Feature, e.g. Ki)",
+        "ChosenAbility": "Chosen ability",
+        "ChosenAbilityHelp": "Set by the GM once the player's choice is known — the bonus (and saving throw proficiency where applicable) then applies automatically on the character sheet.",
         "Uses": "Limited Uses",
         "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
         "UsesMax": "Maximum",

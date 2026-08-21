@@ -1,4 +1,4 @@
-import { SKILL_ABILITIES } from "./character-data.js";
+import { SKILL_ABILITIES, ABILITY_KEYS } from "./character-data.js";
 import { currencySchema } from "./shared-schema.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 
@@ -239,7 +239,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // une seule fois), ce choix est reposé à chaque charge dépensée — cf. #onUseManeuver,
       // actor-sheet.js, et DND_CUSTOM.maneuvers, config.js. `false` pour l'immense majorité des
       // Capacités.
-      offersManeuverChoice: new BooleanField({ required: true, initial: false })
+      offersManeuverChoice: new BooleanField({ required: true, initial: false }),
+      // Don qui laisse le joueur choisir UNE caractéristique à améliorer à l'octroi (ex.
+      // Athlète : Force ou Dextérité ; Résilient : n'importe laquelle, avec en plus la maîtrise
+      // du jet de sauvegarde correspondant) — `false` pour l'immense majorité des Capacités/
+      // Dons. Contrairement à `grantsChoice` (choix ponctuel posé sur l'ACTOR, une seule fois
+      // par personnage, ex. totemSpirit), ce choix est posé sur ce DON lui-même : un personnage
+      // pourrait posséder à la fois Athlète et Résilient, chacun avec son propre choix.
+      offersAbilityChoice: new BooleanField({ required: true, initial: false }),
+      // Caractéristique choisie (cf. offersAbilityChoice ci-dessus) — réglée sur la fiche de ce
+      // don lui-même (réservée au MJ comme le reste de cette fiche, cf. feature-sheet.hbs), lue
+      // par CharacterData#prepareDerivedData pour appliquer le bonus automatiquement. Vide tant
+      // que non choisi (aucun bonus appliqué).
+      chosenAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS })
     };
   }
 }

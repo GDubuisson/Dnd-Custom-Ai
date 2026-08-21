@@ -2,7 +2,7 @@
   "id": "dnd-custom-ai",
   "title": "D&D Custom - Origines",
   "description": "Système personnalisé pour Foundry VTT, basé sur D&D 5e : une race unique (Humain) dont les traits culturels et mécaniques varient selon un système d'Origines géographiques.",
-  "version": "0.42.8",
+  "version": "0.42.9",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
