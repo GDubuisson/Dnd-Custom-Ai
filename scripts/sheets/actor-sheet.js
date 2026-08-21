@@ -878,7 +878,14 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "1d10 + @attributes.level") : formule évaluée avec les données de l'Actor
    *  (Actor#getRollData, natif Foundry) pour résoudre les références `@...`. Consomme une
    *  charge si la capacité a des utilisations limitées (system.uses.max > 0), et annule le
-   *  jet si plus aucune charge n'est disponible. */
+   *  jet si plus aucune charge n'est disponible. `system.healsTarget` (ex. don Guérisseur) :
+   *  marque le message du même flag que les sorts de soin pour réutiliser le bouton "Appliquer
+   *  le soin" déjà existant (cf. FeatureData#healsTarget, item-data.js) — sans lui, un jet de
+   *  soin de Capacité/Don restait un simple nombre posté en chat, jamais réellement appliqué à
+   *  une cible (retour de test, ANOMALIES_ACTIVES.md). Ne modélise pas la restriction SRD "une
+   *  fois par créature et par repos" ni la branche "stabiliser une créature à 0 PV" du texte de
+   *  Guérisseur — laissées à l'arbitrage du MJ, comme d'autres clauses partiellement automatisées
+   *  ailleurs dans ce système (cf. Sentinelle/Alerte). */
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
@@ -890,7 +897,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
     await roll.evaluate();
     const flavor = remaining === undefined ? item.name : `${item.name} (${remaining}/${item.system.uses.max})`;
-    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor });
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor,
+      ...(item.system.healsTarget ? { flags: { "dnd-custom-ai": { healRoll: true } } } : {})
+    });
   }
 
   /** Utilisation d'une Capacité à charges limitées sans jet associé (ex. Imposition des

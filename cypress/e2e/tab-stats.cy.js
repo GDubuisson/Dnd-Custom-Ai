@@ -569,6 +569,23 @@ describe("Onglet Statistiques — Initiative", () => {
 describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-19)", () => {
   let featActorId;
 
+  // Un monde déjà chargé une fois conserve les anciennes données de compendium par nom
+  // (importSystemContent n'importe que les entrées ABSENTES, jamais une mise à jour d'une
+  // entrée existante, cf. ANOMALIES_ACTIVES.md) — resynchronise explicitement UNE entrée avant
+  // de tester un champ qui vient d'être ajouté à son schéma, plutôt que de dépendre d'un état de
+  // compendium implicite.
+  function resyncCompendiumEntry(win, packName, itemName) {
+    const pack = win.game.packs.get(`dnd-custom-ai.${packName}`);
+    return pack
+      .getDocuments()
+      .then((docs) => {
+        const stale = docs.find((doc) => doc.name === itemName);
+        expect(stale, `prérequis : '${itemName}' existe dans le compendium ${packName}`).to.exist;
+        return win.Item.deleteDocuments([stale.id], { pack: `dnd-custom-ai.${packName}` });
+      })
+      .then(() => win.game.dndCustomAi.importSystemContent());
+  }
+
   function grantFeat(win, actorId, featName) {
     const pack = win.game.packs.get("dnd-custom-ai.dons");
     return pack.getIndex().then(() => {
@@ -662,20 +679,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
     let baseWis;
     let createdItems;
     cy.loginAsGM();
-    // Un monde déjà chargé une fois conserve les anciennes données de compendium par nom
-    // (importSystemContent n'importe que les entrées ABSENTES, jamais une mise à jour d'une
-    // entrée existante, cf. ANOMALIES_ACTIVES.md) — l'entrée "Résilient" du compendium de test
-    // peut donc dater d'avant l'ajout de `offersAbilityChoice`. Resynchronise explicitement
-    // cette seule entrée avant de tester, plutôt que de dépendre d'un état de compendium
-    // implicite.
-    cy.window().then((win) => {
-      const pack = win.game.packs.get("dnd-custom-ai.dons");
-      return pack.getDocuments().then((docs) => {
-        const stale = docs.find((doc) => doc.name === "Résilient");
-        expect(stale, "prérequis : 'Résilient' existe dans le compendium dons").to.exist;
-        return win.Item.deleteDocuments([stale.id], { pack: "dnd-custom-ai.dons" });
-      }).then(() => win.game.dndCustomAi.importSystemContent());
-    });
+    cy.window().then((win) => resyncCompendiumEntry(win, "dons", "Résilient"));
     cy.window().then((win) => {
       baseWis = win.game.actors.get(featActorId).system.abilities.wis.total;
       return grantFeat(win, featActorId, "Résilient").then((items) => {
@@ -704,6 +708,67 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       .invoke("text")
       .should((text) => expect(Number(text)).to.equal(baseWis + 1));
     sheetRoot().find('input[name="system.saves.wis.proficient"]').should("be.checked");
+  });
+
+  it("Guérisseur : le jet réutilise le bouton 'Appliquer le soin' déjà existant pour les sorts de soin", () => {
+    let tokenId;
+    let hpBefore;
+    cy.loginAsGM();
+    cy.window().then((win) => resyncCompendiumEntry(win, "dons", "Guérisseur"));
+    cy.window().then((win) => {
+      hpBefore = Math.max(1, win.game.actors.get(featActorId).system.attributes.hp.max - 5);
+      return win.game.actors
+        .get(featActorId)
+        .getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 400, y: 400 })))
+        .then((tokenDoc) =>
+          win.canvas.scene.createEmbeddedDocuments("Token", [win.JSON.parse(win.JSON.stringify(tokenDoc.toObject()))])
+        )
+        .then((tokens) => {
+          tokenId = tokens[0].id;
+        });
+    });
+    cy.window().then((win) => grantFeat(win, featActorId, "Guérisseur"));
+    cy.window().then((win) =>
+      win.game.actors.get(featActorId).update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": hpBefore })), {
+        dndCustomDamageApply: true
+      })
+    );
+
+    cy.loginAsPlayer();
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot().find('nav.tabs [data-tab="abilities"]').click();
+    sheetRoot().find('section.tab[data-tab="abilities"]').should("have.class", "active");
+
+    cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
+
+    cy.window().then((win) => {
+      const item = win.game.actors.get(featActorId).items.find((candidate) => candidate.name === "Guérisseur");
+      expect(item, "prérequis : don Guérisseur bien octroyé").to.exist;
+      sheetRoot().find(`li[data-item-id="${item.id}"] button[data-action="rollFeature"]`).click();
+    });
+
+    // Ferme la fiche (recouvre la moitié droite) et ouvre l'onglet Chat avant d'interagir avec
+    // le message posté — même piège/même fix que T-ABIL-024 (tab-abilities.cy.js).
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-apply-heal-btn").should("be.visible").click();
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const healAmount = win.game.messages.contents.at(-1).rolls?.[0]?.total ?? 0;
+      expect(healAmount, "un vrai total de soin doit avoir été calculé").to.be.greaterThan(0);
+      expect(actor.system.attributes.hp.value, "PV restaurés du montant du jet, plafonnés au max").to.equal(
+        Math.min(hpBefore + healAmount, actor.system.attributes.hp.max)
+      );
+    });
+
+    // Nettoyage : remet les PV au max et supprime le token créé pour ce test.
+    cy.loginAsGM();
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
+    });
+    cy.window().then((win) => win.canvas.scene.deleteEmbeddedDocuments("Token", [tokenId]));
   });
 });
 

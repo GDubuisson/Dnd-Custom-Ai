@@ -181,6 +181,15 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) est un SOIN à
+      // appliquer à une cible (ex. don Guérisseur) plutôt qu'un simple jet informatif posté en
+      // chat sans suite (#onRollFeature, actor-sheet.js) : marque le message de chat du même
+      // flag `healRoll` que SpellData#heal (cf. rolls.js > rollHeal), ce qui affiche
+      // automatiquement le bouton "Appliquer le soin" déjà existant pour les sorts de soin
+      // (hook renderChatMessageHTML, dnd-custom-ai.js) — aucune nouvelle logique d'application
+      // à écrire, juste réutiliser le pipeline déjà en place. `false` pour l'immense majorité
+      // des Capacités/Dons.
+      healsTarget: new BooleanField({ required: true, initial: false }),
       // Capacité utilisable seulement quand un état particulier (cf. DND_CUSTOM.conditions,
       // config.js) est actif sur l'Actor — ex. Frénésie (Barbare Berserker), qui nécessite
       // d'être En Rage. Retour de test (lot 3, point 5) : grisée par défaut sur l'onglet
