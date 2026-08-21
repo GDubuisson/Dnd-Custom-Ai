@@ -59,7 +59,7 @@ Cypress.Commands.add("loginAsGM", () => {
 
   cy.visit("/", { timeout: 30000 });
   cy.url({ timeout: 15000 }).should("include", "/join");
-  cy.get('select[name="userid"]').select("Gamemaster");
+  cy.get('input[name="username"]').type("Gamemaster");
   cy.get('#join-game-form button[type="submit"]').click();
 
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
@@ -75,7 +75,7 @@ Cypress.Commands.add("loginAsPlayer", () => {
   cy.visit("/", { timeout: 30000 });
   cy.url({ timeout: 15000 }).should("include", "/join");
 
-  cy.get('select[name="userid"]').select(Cypress.env("testPlayerName"));
+  cy.get('input[name="username"]').type(Cypress.env("testPlayerName"));
   cy.get('#join-game-form button[type="submit"]').click();
 
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
