@@ -176,6 +176,17 @@ export function spellSlotsForClass(className, level, tables) {
   return { slots, maxSpellLevel, isPactMagic: false };
 }
 
+/** Objet d'update `system.spells.slots.<n>.value` -> max, un par palier (1-9), pour topper au
+ *  maximum les emplacements de sorts actuellement dérivés de `actor.system.spells.slots` (déjà
+ *  recalculés par CharacterData#prepareDerivedData au moment de l'appel). Partagé entre repos
+ *  court/long (DndCustomActorSheet#onRestShort/Long), montée de niveau (#onLevelUp) et création
+ *  de personnage (CharacterCreationWizard) : mêmes emplacements à remplir, seul le moment
+ *  d'appel change. */
+export function spellSlotFillUpdates(actor) {
+  const slots = actor.system.spells.slots;
+  return Object.fromEntries(SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max]));
+}
+
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
  *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
 export function maxHitPoints(hitDie, level, conMod) {

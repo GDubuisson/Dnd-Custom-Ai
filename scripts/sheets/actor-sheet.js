@@ -20,7 +20,8 @@ import {
   hasFeature,
   canUseReaction,
   opportunityAttackTrigger,
-  SPELL_LEVELS
+  SPELL_LEVELS,
+  spellSlotFillUpdates
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
@@ -638,10 +639,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   #spellSlotResetUpdates() {
-    const slots = this.actor.system.spells.slots;
-    return Object.fromEntries(
-      SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max])
-    );
+    return spellSlotFillUpdates(this.actor);
   }
 
   /** Restaure au maximum les charges des Capacités à utilisations limitées (system.uses.max
@@ -681,12 +679,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  reconnue par le hook preUpdateActor (dnd-custom-ai.js) pour laisser passer `level` sans
    *  ouvrir les autres champs verrouillés MJ (classe/origine/caractéristiques...). Rend aussi
    *  tous les PV au joueur (retour de test — jusqu'ici seul le max se recalculait, les PV
-   *  actuels restaient inchangés). */
+   *  actuels restaient inchangés) et topper les emplacements de sorts au nouveau max (même
+   *  logique que #spellSlotResetUpdates pour les boutons de repos — sans quoi un lanceur de
+   *  sorts fraîchement monté de niveau reste à `value: 0` jusqu'à son prochain repos long). */
   static async #onLevelUp() {
     const system = this.actor.system;
     const next = system.attributes.level + 1;
     await this.actor.update({ "system.attributes.level": next }, { dndCustomLevelUp: true });
-    await this.actor.update({ "system.attributes.hp.value": this.actor.system.attributes.hp.max });
+    await this.actor.update({
+      "system.attributes.hp.value": this.actor.system.attributes.hp.max,
+      ...spellSlotFillUpdates(this.actor)
+    });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })

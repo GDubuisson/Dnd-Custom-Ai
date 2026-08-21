@@ -312,6 +312,40 @@ describe("Assistant de création de personnage — session Joueur", () => {
     });
   });
 
+  it("remplit les emplacements de sorts au maximum pour une classe lanceuse à la création (anomalie 2026-08-19)", () => {
+    let actorId;
+    createBlankCharacter("Elowen l'Étincelante").then((id) => { actorId = id; });
+    getWizardForm().should("be.visible");
+
+    cy.get('input[name="name"]').clear();
+    cy.get('input[name="name"]').type("Elowen l'Étincelante");
+    cy.get('select[name="origin"]').select("ravenmoor");
+    cy.get('select[name="classKey"]').select("wizard");
+    cy.get('input[type="checkbox"][name="skills.arcana"]').check();
+    cy.get('input[type="checkbox"][name="skills.investigation"]').check();
+    cy.get('form.character-wizard button[type="submit"]').click();
+
+    cy.contains(".notification", "Elowen l'Étincelante", { timeout: 10000 }).should("exist");
+    getWizardForm().should("not.exist");
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(actorId);
+      expect(actor.system.class).to.equal("wizard");
+      // Magicien niveau 1 (fullCaster[1] = [2,0,...], scripts/data/spell-slots.json) : au moins
+      // un emplacement de niveau 1 disponible dès la création — prérequis du test lui-même.
+      expect(
+        actor.system.spells.slots[1].max,
+        "prérequis : magicien niveau 1 a des emplacements de niveau 1"
+      ).to.be.greaterThan(0);
+      // Le bug corrigé laissait `value` à 0 malgré un `max` > 0 tant qu'aucun repos long n'avait
+      // eu lieu (cf. ANOMALIES_ACTIVES.md, character-creation-wizard.js > spellSlotFillUpdates).
+      expect(
+        actor.system.spells.slots[1].value,
+        "emplacements remplis au max dès la création, pas laissés à 0"
+      ).to.equal(actor.system.spells.slots[1].max);
+    });
+  });
+
   it("rejette une soumission avec un tableau standard invalide, sans mettre à jour l'Actor (T-WIZ-009)", () => {
     let actorId;
     createBlankCharacter("Wizard T-WIZ-009").then((id) => { actorId = id; });

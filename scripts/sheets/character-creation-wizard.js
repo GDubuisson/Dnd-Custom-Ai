@@ -1,6 +1,7 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS, SKILL_ABILITIES } from "../data/character-data.js";
 import { grantClassContent, grantLanguages } from "../helpers/class-content.js";
+import { spellSlotFillUpdates } from "../helpers/rules.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ApplicationV2 } = foundry.applications.api;
@@ -297,10 +298,16 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     }
 
     await this.actor.update(updates, { dndCustomWizard: true });
-    // PV max recalculé par prepareDerivedData après le premier update ci-dessus : on le lit
-    // maintenant pour démarrer le personnage à pleine santé.
+    // PV max/emplacements de sorts recalculés par prepareDerivedData après le premier update
+    // ci-dessus : on les lit maintenant pour démarrer le personnage à pleine santé et, pour une
+    // classe lanceuse, avec tous ses emplacements de sorts disponibles (même logique que
+    // rules.js > spellSlotFillUpdates pour les boutons de repos/la montée de niveau — sans quoi
+    // un lanceur fraîchement créé reste à `value: 0` jusqu'à son premier repos long).
     await this.actor.update(
-      { "system.attributes.hp.value": this.actor.system.attributes.hp.max },
+      {
+        "system.attributes.hp.value": this.actor.system.attributes.hp.max,
+        ...spellSlotFillUpdates(this.actor)
+      },
       { dndCustomWizard: true }
     );
 

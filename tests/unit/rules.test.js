@@ -15,6 +15,7 @@ import {
   spellSaveDC,
   spellAttackBonus,
   spellSlotsForClass,
+  spellSlotFillUpdates,
   SPELL_LEVELS,
   maxHitPoints,
   armorClass,
@@ -228,6 +229,30 @@ describe("spellSlotsForClass (emplacements par niveau 1-9, dérivés de spell-sl
         isPactMagic: true
       });
     }
+  });
+});
+
+describe("spellSlotFillUpdates (topper tous les paliers au max, création/montée de niveau/repos)", () => {
+  test("un objet d'update par palier (1-9), value réglé sur le max courant de ce palier", () => {
+    const actor = {
+      system: {
+        spells: {
+          slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: level === 3 ? 2 : 0 }]))
+        }
+      }
+    };
+    const updates = spellSlotFillUpdates(actor);
+    for (const level of SPELL_LEVELS) {
+      assert.equal(updates[`system.spells.slots.${level}.value`], level === 3 ? 2 : 0);
+    }
+  });
+
+  test("classe non lanceuse (tous les max à 0) -> tous les paliers remis à 0, sans erreur", () => {
+    const actor = {
+      system: { spells: { slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: 0 }])) } }
+    };
+    const updates = spellSlotFillUpdates(actor);
+    assert.ok(SPELL_LEVELS.every((level) => updates[`system.spells.slots.${level}.value`] === 0));
   });
 });
 
