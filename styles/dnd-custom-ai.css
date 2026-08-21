@@ -2654,6 +2654,23 @@
   filter: brightness(1.1);
 }
 
+.dnd-spend-luck-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--dca-outline, #7a5a35);
+  border-radius: 0.3rem;
+  background: var(--dca-primary, #8a6d1f);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dnd-spend-luck-btn:hover {
+  filter: brightness(1.1);
+}
+
 /* ---------- Assistant de création de personnage ---------- */
 
 /* Retour de test : fond noir (thème Foundry par défaut), en rupture avec le reste du système.

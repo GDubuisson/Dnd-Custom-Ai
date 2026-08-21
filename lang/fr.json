@@ -263,6 +263,8 @@
       "ApplyDamageNotAuthor": "Seul l'auteur du jet (ou le MJ) peut appliquer ces dégâts",
       "ApplyHeal": "Appliquer {amount} PV de soin à la cible",
       "HealAlreadyApplied": "Soin déjà appliqué",
+      "SpendLuck": "Dépenser un point de Chance ({remaining} restant(s))",
+      "LuckyReroll": "{name} dépense un point de Chance — nouveau d20, meilleur des deux totaux retenu : {kept}",
       "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
       "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",

@@ -770,6 +770,54 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
     });
     cy.window().then((win) => win.canvas.scene.deleteEmbeddedDocuments("Token", [tokenId]));
   });
+
+  it("Chanceux : bouton 'Dépenser un point de Chance' sur un jet de d20, relance et garde le meilleur total", () => {
+    cy.window().then((win) => grantFeat(win, featActorId, "Chanceux"));
+
+    cy.openActorSheet(featActorId);
+    resetMessageBaseline();
+    sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click();
+    lastMessageRoll();
+
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-spend-luck-btn").should("be.visible").click();
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      expect(luckyFeat.system.uses.value, "1 charge consommée").to.equal(2);
+
+      const messages = win.game.messages.contents;
+      const reroll = messages.at(-1);
+      const original = messages.at(-2);
+      expect(reroll.flavor, "message de relance distinct posté").to.include(actor.name);
+      expect(original.getFlag("dnd-custom-ai", "luckApplied"), "jet d'origine marqué, une seule relance par jet").to.be.true;
+    });
+
+    // Plus aucune charge : le bouton ne doit plus apparaître du tout sur un nouveau jet (pas un
+    // bouton grisé permanent, cf. commentaire du hook dnd-custom-ai.js).
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      return luckyFeat.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
+    });
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+    resetMessageBaseline();
+    sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click();
+    lastMessageRoll();
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-spend-luck-btn").should("not.exist");
+
+    // Restaure les charges pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      return luckyFeat.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": luckyFeat.system.uses.max })));
+    });
+  });
 });
 
 describe("Onglet Statistiques — états et Exhaustion", () => {

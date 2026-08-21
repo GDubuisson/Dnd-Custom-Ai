@@ -82,7 +82,7 @@
       "rollFormula": "",
       "source": "PHB",
       "uses": { "max": 3, "value": 3, "recharge": "longRest" },
-      "description": "Don : vous disposez de 3 points de chance. Dépensez-en un pour lancer un d20 supplémentaire lors d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde que vous effectuez (ou juste avant de savoir si l'attaque d'une créature vous touche) et choisissez le résultat à utiliser parmi les deux d20. Un seul point de chance peut être dépensé par jet. Récupérés à l'issue d'un repos long."
+      "description": "Don : vous disposez de 3 points de chance. Un bouton \"Dépenser un point de Chance\" apparaît sur chacun de vos jets de test de caractéristique, de compétence, de sauvegarde ou d'attaque tant qu'il vous en reste — il relance un d20 et conserve automatiquement le meilleur des deux totaux. Un seul point de chance peut être dépensé par jet. Récupérés à l'issue d'un repos long."
     }
   },
   {

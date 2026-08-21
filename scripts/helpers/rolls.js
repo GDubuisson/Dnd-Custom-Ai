@@ -93,6 +93,16 @@ export async function rollCheck({
   const flags = { "dnd-custom-ai": {} };
   if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
   if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
+  // Don "Chanceux" (SRD 5e) : tout jet de d20 passant par rollCheck (test de caractéristique/
+  // compétence, sauvegarde, attaque) est un jet potentiellement "relançable" contre un point de
+  // chance — la formule exacte est reprise telle quelle pour la relance (même die 1d20/2d20kh1/
+  // 2d20kl1 si avantage/désavantage était déjà en jeu). Le hook renderChatMessageHTML
+  // (dnd-custom-ai.js) décide seul si un bouton doit apparaître (l'acteur possède le don ET il
+  // lui reste des charges) — rolls.js reste volontairement ignorant de ce don, aucun import de
+  // hasFeature ici, pour ne pas coupler un helper de jet générique à un don précis.
+  flags["dnd-custom-ai"].luckRoll = true;
+  flags["dnd-custom-ai"].luckFormula = `${die}${formula}`;
+  flags["dnd-custom-ai"].luckActorId = actor.id;
   await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label, flags });
   return { roll, isCriticalHit, isCriticalFumble };
 }

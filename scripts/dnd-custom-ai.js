@@ -839,6 +839,49 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Don "Chanceux" (SRD 5e, world-items/feats.json) : ajoute un bouton "Point de Chance" sur tout
+// jet de d20 posté via rollCheck (test de caractéristique/compétence, sauvegarde, attaque — cf.
+// flags luckRoll/luckFormula/luckActorId posés dans rolls.js) SI l'acteur qui a lancé possède le
+// don et lui reste au moins une charge (`system.uses.value` de l'Item "Chanceux") — jamais un
+// bouton grisé permanent sur chaque jet, contrairement à "Appliquer le soin"/"Appliquer les
+// dégâts" ci-dessus qui, eux, s'appliquent toujours : ici, pas de charge restante = pas de
+// bouton du tout, pour ne pas polluer le journal de jets d'un personnage n'ayant pas (ou plus)
+// le don. Relance la MÊME formule que le jet d'origine (die + modificateur, avantage/désavantage
+// compris) et garde le meilleur des deux totaux — la règle SRD laisse le joueur choisir lequel
+// des deux d20 utiliser, mais dépenser un point de chance n'a jamais d'intérêt à choisir le plus
+// bas : simplification sans perte réelle de choix. Poste un second message plutôt que de
+// modifier le premier (Foundry ne permet pas de rejouer proprement l'affichage d'un Roll déjà
+// résolu) et marque l'original `luckApplied` pour ne proposer qu'UNE relance par jet (SRD : "un
+// seul point de chance peut être dépensé par jet").
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "luckApplied")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const luckyFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chanceux");
+  if (!luckyFeat || luckyFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendLuck", { remaining: luckyFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    const originalTotal = message.rolls?.[0]?.total ?? -Infinity;
+    const kept = reroll.total > originalTotal ? reroll.total : originalTotal;
+    await reroll.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept })
+    });
+    await luckyFeat.update({ "system.uses.value": luckyFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "luckApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
 // Effet visuel sur les coups/échecs critiques (cf. flags criticalHit/criticalFumble posés par
 // rollCheck/rollDamage, rolls.js) : retour de test (lot 3, point 8) — le libellé texte déjà
 // présent dans le flavor ("Coup critique !"/"Échec critique !") ne suffisait pas, ajoute une
