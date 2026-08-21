@@ -590,6 +590,43 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
   });
 });
 
+describe("tab-abilities.hbs — libellé du bouton de jet d'une Capacité (displayRollFormula)", () => {
+  function render(rollFormula, level) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        system: { attributes: { level } },
+        features: [
+          { id: "f1", name: "Récupération arcanique", system: { source: "", uses: { max: 0 }, requiresRoll: true, rollFormula, costsResource: "" } }
+        ]
+      })
+    );
+  }
+
+  test("une fonction déterministe (ceil/floor/round/min/max) est évaluée, pas affichée en tant qu'appel brut", () => {
+    const doc = render("ceil(@attributes.level/2)", 5);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /\b3\b/, `attendu "3" (ceil(5/2)), obtenu "${button.textContent.trim()}"`);
+    assert.doesNotMatch(button.textContent, /ceil/, "l'appel de fonction brut ne devrait plus apparaître");
+  });
+
+  test("une fonction déterministe suivie d'une notation de dé reste lisible (ex. Attaque sournoise)", () => {
+    const doc = render("ceil(@attributes.level/2)d6", 7);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /4d6/, `attendu "4d6" (ceil(7/2)d6), obtenu "${button.textContent.trim()}"`);
+  });
+
+  test("un niveau numérique valide substitue un vrai nombre, pas un rappel textuel générique", () => {
+    const doc = render("1d10 + @attributes.level", 5);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /1d10 \+ 5/);
+  });
+});
+
 describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/class-flavor.hbs)", () => {
   const CLASS_FLAVOR_PARTIAL = "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs";
 

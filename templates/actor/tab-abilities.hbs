@@ -89,11 +89,11 @@
           {{/if}}
           {{#if this.system.offersManeuverChoice}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
-            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula (localize "DND_CUSTOM.Actor.Level")}}
+            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}
           </button>
           {{else if this.system.requiresRoll}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
-            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula (localize "DND_CUSTOM.Actor.Level")}}
+            <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}
           </button>
           {{else if this.system.uses.max}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
