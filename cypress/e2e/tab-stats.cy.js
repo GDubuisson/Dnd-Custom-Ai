@@ -130,6 +130,28 @@ describe("Onglet Statistiques — jets de dés", () => {
     });
   });
 
+  it("compétence : abréviation localisée de la caractéristique, pas le nom complet ni la clé technique (anomalie 2026-08-19)", () => {
+    // "Athlétisme"/"Athletics" (fixture skills: ["athletics", "intimidation"]) est liée à
+    // Force (str) — cf. DND_CUSTOM.skills, config.js.
+    let expectedShort, fullName, athleticsLabel;
+    cy.window().then((win) => {
+      expectedShort = win.game.i18n.localize("DND_CUSTOM.Abilities.Short.str");
+      fullName = win.game.i18n.localize("DND_CUSTOM.Abilities.str");
+      athleticsLabel = win.game.i18n.localize("DND_CUSTOM.Skills.athletics");
+    });
+    cy.then(() => {
+      sheetRoot()
+        .find(".skill")
+        .then(($skills) => {
+          const $skillRow = $skills.filter((_, li) => li.textContent.includes(athleticsLabel)).first();
+          const tag = $skillRow.find(".ability-tag").text().trim();
+          expect(tag, `attendu "(${expectedShort})", obtenu "${tag}"`).to.equal(`(${expectedShort})`);
+          expect(tag, "ne doit plus afficher le nom complet de la caractéristique").not.to.include(fullName);
+          expect(tag, "ne doit jamais afficher la clé technique brute").not.to.equal("(str)");
+        });
+    });
+  });
+
   it("jet de caractéristique avec avantage, Maj-clic (T-STATS-002)", () => {
     sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click({ shiftKey: true });
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("2d20kh1"));

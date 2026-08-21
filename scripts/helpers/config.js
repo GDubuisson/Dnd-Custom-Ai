@@ -9,6 +9,20 @@ DND_CUSTOM.abilities = {
   cha: "DND_CUSTOM.Abilities.cha"
 };
 
+/** Abréviation localisée (FR : FOR/DEX/CON/INT/SAG/CHA, EN : STR/DEX/CON/INT/WIS/CHA) — retour
+ *  de test : le nom complet de la caractéristique affiché à côté de chaque compétence
+ *  (context.skills, actor-sheet.js) prenait trop de place ; une vraie abréviation localisée,
+ *  différente d'une clé technique brute ("str"/"dex"...) qui avait causé le même retour de test
+ *  une première fois avant que le nom complet ne soit adopté. */
+DND_CUSTOM.abilitiesShort = {
+  str: "DND_CUSTOM.Abilities.Short.str",
+  dex: "DND_CUSTOM.Abilities.Short.dex",
+  con: "DND_CUSTOM.Abilities.Short.con",
+  int: "DND_CUSTOM.Abilities.Short.int",
+  wis: "DND_CUSTOM.Abilities.Short.wis",
+  cha: "DND_CUSTOM.Abilities.Short.cha"
+};
+
 DND_CUSTOM.skills = {
   acrobatics: "DND_CUSTOM.Skills.acrobatics",
   animalHandling: "DND_CUSTOM.Skills.animalHandling",

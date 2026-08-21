@@ -345,6 +345,14 @@
       "int": "Intelligence",
       "wis": "Sagesse",
       "cha": "Charisme",
+      "Short": {
+        "str": "FOR",
+        "dex": "DEX",
+        "con": "CON",
+        "int": "INT",
+        "wis": "SAG",
+        "cha": "CHA"
+      },
       "SpellsTitle": "Sorts",
       "FeaturesTitle": "Capacités",
       "SpellsAndFeaturesTitle": "Sorts et Capacités",

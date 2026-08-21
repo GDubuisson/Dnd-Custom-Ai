@@ -345,6 +345,14 @@
       "int": "Intelligence",
       "wis": "Wisdom",
       "cha": "Charisma",
+      "Short": {
+        "str": "STR",
+        "dex": "DEX",
+        "con": "CON",
+        "int": "INT",
+        "wis": "WIS",
+        "cha": "CHA"
+      },
       "SpellsTitle": "Spells",
       "FeaturesTitle": "Features",
       "SpellsAndFeaturesTitle": "Spells and Features",
