@@ -81,10 +81,9 @@ function buildRulesPage(glossary) {
 function buildSpellsPage(glossary) {
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   return `
-    <p>Ce système suit les ${abbr("Emplacement de sort", "emplacements de sorts par niveau")}
-    du D&D classique (1 à 9), affichés en haut de l'onglet Sorts. Reste simplifié : accès à toute
-    la liste de sorts de la classe plutôt que les tables "sorts connus" propres à chaque classe
-    (cf. "Sorts connus" plus bas).</p>
+    <p>Les ${abbr("Emplacement de sort", "emplacements de sorts par niveau")} (1 à 9) sont
+    affichés en haut de l'onglet Sorts. Un lanceur de sorts a accès à toute la liste de sorts de
+    sa classe (cf. "Sorts connus" plus bas).</p>
     <h2>${abbr("Emplacement de sort", "Emplacements de sorts")}</h2>
     <p>Un jeton par palier accessible (Niv. 1, Niv. 2...), chacun avec ses charges
     disponibles/max. Lancer un sort de niveau 1 ou plus dépense un emplacement de son propre
@@ -98,7 +97,7 @@ function buildSpellsPage(glossary) {
     seul le coût en emplacement change) — rien n'est décompté sans confirmation, et le bouton
     "Lancer" reste bloqué si vraiment aucun palier utilisable n'est disponible.</p>
     <h2>Magie de Pacte (Occultiste)</h2>
-    <p>L'Occultiste suit une règle à part (SRD 5e) : un seul palier d'emplacement actif à la
+    <p>L'Occultiste suit une règle à part : un seul palier d'emplacement actif à la
     fois, dont le niveau augmente avec le sien, identifié par un badge "Magie de Pacte" sur
     l'onglet Sorts. Contrairement aux autres lanceurs, ces emplacements se rechargent aussi bien
     au repos court qu'au repos long.</p>
@@ -139,10 +138,10 @@ async function buildClassesPage() {
     })
     .join("");
   return `<p>Les 12 classes suivantes sont disponibles dans ce système. Les points de vie
-    maximum sont calculés automatiquement à chaque niveau (pas de jet de Dé de vie dans ce
-    système) ; sauvegardes maîtrisées, compétences au choix et maîtrises d'armes ci-dessous sont
-    appliquées automatiquement par l'assistant de création de personnage. Le même détail est
-    aussi consultable classe par classe dans le compendium "Classes".</p>${sections}`;
+    maximum sont calculés automatiquement à chaque niveau ; sauvegardes maîtrisées, compétences
+    au choix et maîtrises d'armes ci-dessous sont appliquées automatiquement par l'assistant de
+    création de personnage. Le même détail est aussi consultable classe par classe dans le
+    compendium "Classes".</p>${sections}`;
 }
 
 async function buildOriginsPage(glossary) {
