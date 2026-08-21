@@ -14,6 +14,7 @@ import {
   passivePerception,
   spellSaveDC,
   spellAttackBonus,
+  targetSaveModifier,
   spellSlotsForClass,
   spellSlotFillUpdates,
   SPELL_LEVELS,
@@ -165,6 +166,29 @@ describe("passivePerception (10 + mod Sag + maîtrise si maîtrisé)", () => {
 describe("spellSaveDC / spellAttackBonus", () => {
   test("DD = 8 + maîtrise + mod", () => assert.equal(spellSaveDC(3, 4), 15));
   test("bonus d'attaque = maîtrise + mod", () => assert.equal(spellAttackBonus(3, 4), 7));
+});
+
+describe("targetSaveModifier (mod. de sauvegarde d'une CIBLE, sort/capacité à sauvegarde)", () => {
+  function targetSystem({ dexTotal = 10, proficient = false, level = 1 }) {
+    return {
+      abilities: { dex: { total: dexTotal } },
+      saves: { dex: { proficient } },
+      attributes: { level }
+    };
+  }
+
+  test("non maîtrisé -> seul le modificateur de caractéristique compte", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16 }), "dex"), 3);
+  });
+  test("maîtrisé -> modificateur + bonus de maîtrise (niveau 1 -> +2)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16, proficient: true, level: 1 }), "dex"), 5);
+  });
+  test("maîtrisé, niveau plus élevé -> bonus de maîtrise recalculé (niveau 9 -> +4)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16, proficient: true, level: 9 }), "dex"), 7);
+  });
+  test("modificateur négatif possible (caractéristique faible)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 6 }), "dex"), -2);
+  });
 });
 
 function emptySlots() {

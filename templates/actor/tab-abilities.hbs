@@ -145,7 +145,7 @@
             <span class="reaction-badge" title="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
             {{/if}}
             <button type="button" class="roll-btn" data-action="castSpell" {{#if (reactionBlocked this.item ../../reactionAvailable)}}disabled{{/if}} {{#if this.item.system.attack}}title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Abilities.Cast"}}</button>
-            {{#if this.item.system.attack}}
+            {{#if this.showDamageButton}}
             <button type="button" class="roll-btn" data-action="rollSpellDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}"><i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}}</button>
             {{/if}}
             <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">

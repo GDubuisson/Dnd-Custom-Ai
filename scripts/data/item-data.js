@@ -321,11 +321,28 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       // Sort nécessitant un jet d'attaque (ex. Trait de feu), sur le même principe que les
       // armes (cf. WeaponData ci-dessus) : le bouton "Lancer" propose alors un jet d'attaque
       // (1d20 + spellAttackBonus, rules.js) puis un jet de dégâts, au lieu de se contenter de
-      // décompter une charge et poster la description (cf. #onCastSpell, actor-sheet.js). Un
-      // sort à sauvegarde (jet de la cible, pas du lanceur) reste volontairement non modélisé
-      // ici — hors du scope "combat automatisé" assumé par ce système (cf. le commentaire sur
-      // originTrait dans actor-sheet.js).
+      // décompter une charge et poster la description (cf. #onCastSpell, actor-sheet.js).
       attack: new BooleanField({ required: true, initial: false }),
+      // Sort à jet de sauvegarde de la CIBLE (ex. Boule de feu), pas du lanceur — retour de
+      // test (ANOMALIES_ACTIVES.md, cadré explicitement avec l'utilisateur le 2026-08-21) :
+      // longtemps volontairement exclu comme "combat automatisé", mais le scope réellement
+      // exclu (CONCEPTION_FONCTIONNELLE.md) ne couvre que la grille tactique et la réaction en
+      // pop-in générique — une simple comparaison déterministe à une valeur statique (le DD) est
+      // déjà acceptée pour les jets d'attaque (cf. `attack`/compareToTargetAc, rollCheck dans
+      // rolls.js). `#onCastSpell` lance donc 1d20 + modificateur de sauvegarde POUR CHAQUE cible
+      // actuellement ciblée (rules.js > targetSaveModifier) et poste le résultat au nom de la
+      // cible — jamais une interruption du client de la cible, même niveau d'automatisation que
+      // l'attaque. `ability` vide = sort sans sauvegarde (comportement par défaut, l'immense
+      // majorité des sorts). `halfOnSave` : dégâts réduits de moitié en cas de réussite (ex.
+      // Boule de feu) plutôt qu'aucun effet (ex. Moqueries cruelles) — n'affecte que le texte du
+      // résultat affiché, l'application réelle des dégâts (moitié ou plein) reste manuelle via
+      // le bouton "Appliquer les dégâts" générique, comme pour une attaque qui touche/rate déjà
+      // aujourd'hui (ce bouton n'a jamais tenu compte du résultat Touche/Rate non plus). Mutuel-
+      // lement exclusif avec `attack`/`heal` ci-dessous en usage normal (jamais les deux en SRD).
+      save: new SchemaField({
+        ability: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+        halfOnSave: new BooleanField({ required: true, initial: false })
+      }),
       damage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({ required: false, blank: true, initial: "" })

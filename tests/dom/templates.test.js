@@ -758,6 +758,58 @@ describe("item/spell-sheet.hbs — sort de soin (system.heal)", () => {
   });
 });
 
+describe("item/spell-sheet.hbs — sort à sauvegarde de la cible (system.save)", () => {
+  function render(save, { attack = false, damage = { dice: "", type: "" } } = {}) {
+    return parse(
+      renderTemplate("item/spell-sheet.hbs", {
+        item: { img: "spell.webp", name: "Boule de feu" },
+        isGM: true,
+        config: { abilities: DND_CUSTOM.abilities, damageTypes: DND_CUSTOM.damageTypes },
+        classOptions: [{ key: "wizard", label: "Magicien", checked: true }],
+        showDamageFields: attack || Boolean(save.ability),
+        system: {
+          classes: new Set(["wizard"]),
+          level: 3,
+          details: "1 action, 45 m, Instantanée",
+          concentration: false,
+          ritual: false,
+          attack,
+          save,
+          damage,
+          heal: { dice: "" },
+          description: ""
+        }
+      })
+    );
+  }
+
+  test("aucune caractéristique choisie -> la case 'dégâts réduits de moitié' n'apparaît pas", () => {
+    const doc = render({ ability: "", halfOnSave: false });
+    assert.equal(doc.querySelector('select[name="system.save.ability"]').value, "");
+    assert.equal(doc.querySelector('input[name="system.save.halfOnSave"]'), null);
+  });
+
+  test("caractéristique choisie -> select pré-rempli et case 'dégâts réduits de moitié' visible", () => {
+    const doc = render({ ability: "dex", halfOnSave: true });
+    assert.equal(doc.querySelector('select[name="system.save.ability"]').value, "dex");
+    const halfCheckbox = doc.querySelector('input[name="system.save.halfOnSave"]');
+    assert.ok(halfCheckbox, "case à cocher HalfOnSave introuvable");
+    assert.ok(halfCheckbox.checked);
+  });
+
+  test("champ Dégâts visible pour un sort à sauvegarde même sans jet d'attaque", () => {
+    const doc = render({ ability: "dex", halfOnSave: true }, { attack: false, damage: { dice: "8d6", type: "fire" } });
+    const damageInput = doc.querySelector('input[name="system.damage.dice"]');
+    assert.ok(damageInput, "champ Dégâts absent pour un sort à sauvegarde");
+    assert.equal(damageInput.getAttribute("value"), "8d6");
+  });
+
+  test("champ Dégâts absent si ni attaque ni sauvegarde", () => {
+    const doc = render({ ability: "", halfOnSave: false }, { attack: false });
+    assert.equal(doc.querySelector('input[name="system.damage.dice"]'), null);
+  });
+});
+
 describe("item/spell-sheet.hbs — sort de type Réaction", () => {
   const doc = parse(
     renderTemplate("item/spell-sheet.hbs", {

@@ -124,6 +124,19 @@ export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
   return 8 + proficiencyBonusValue + spellcastingAbilityMod;
 }
 
+/** Modificateur de sauvegarde d'une CIBLE pour une caractéristique donnée (mod. + bonus de
+ *  maîtrise si la cible est maîtrisée de cette sauvegarde), SRD 5e — sert à l'auto-jet de
+ *  sauvegarde d'un sort à sauvegarde (cf. SpellData#save, item-data.js ; #onCastSpell,
+ *  actor-sheet.js), même niveau d'automatisation que compareToTargetAc pour un jet d'attaque :
+ *  une simple lecture des stats déjà exposées de la cible, jamais une interruption de son
+ *  client. `targetSystem` = `actor.system` de la cible (pas l'Actor entier), pour rester
+ *  testable sans mock complet d'un Document Foundry. */
+export function targetSaveModifier(targetSystem, ability) {
+  const mod = abilityModifier(targetSystem.abilities[ability].total);
+  const profBonus = targetSystem.saves[ability].proficient ? proficiencyBonus(targetSystem.attributes.level) : 0;
+  return mod + profBonus;
+}
+
 /** Bonus d'attaque des sorts, SRD 5e : bonus de maîtrise + mod de la caractéristique d'incantation. */
 export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) {
   return proficiencyBonusValue + spellcastingAbilityMod;

@@ -21,7 +21,8 @@ import {
   canUseReaction,
   opportunityAttackTrigger,
   SPELL_LEVELS,
-  spellSlotFillUpdates
+  spellSlotFillUpdates,
+  targetSaveModifier
 } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
@@ -473,7 +474,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       spells: spells
         .filter((spell) => spell.system.level === level)
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
-        .map((spell) => ({ item: spell }))
+        // showDamageButton : un sort à jet d'attaque OU à sauvegarde (cf. SpellData#save,
+        // item-data.js) OU qui touche automatiquement sans aucun jet (ex. Projectile magique,
+        // seul `damage.dice` renseigné) peut avoir des dégâts — même logique que SpellItemSheet
+        // (item-sheets.js), précalculée ici pour ne pas dupliquer un `{{#if}}` combiné dans le
+        // template (aucun helper Handlebars "or" dans ce système).
+        .map((spell) => ({
+          item: spell,
+          showDamageButton: spell.system.attack || Boolean(spell.system.save.ability) || Boolean(spell.system.damage.dice)
+        }))
     })).filter((group) => group.spells.length);
     // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
     // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
@@ -1378,6 +1387,51 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         forceCriticalHit: hasAssassinAutoCritical(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+      return;
+    }
+
+    // Sort à jet de sauvegarde de la cible (ex. Boule de feu, cf. SpellData#save dans
+    // item-data.js) : auto-jet POUR CHAQUE cible actuellement ciblée (1d20 + son propre
+    // modificateur de sauvegarde, rules.js > targetSaveModifier), comparé au DD du lanceur —
+    // même niveau d'automatisation que le jet d'attaque ci-dessus (compareToTargetAc), jamais
+    // une interruption du client de la cible. Le dé de dégâts éventuel (system.damage.dice) se
+    // lance séparément via le même bouton "Dégâts" que pour un sort d'attaque (#onRollSpellDamage
+    // ci-dessous, déjà indifférent à attack/save) ; son application (pleine ou moitié selon
+    // halfOnSave) reste manuelle via "Appliquer les dégâts", comme pour une attaque qui touche/
+    // rate déjà aujourd'hui.
+    if (item.system.save?.ability) {
+      const system = this.actor.system;
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
+      const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.save.ability]);
+      const targets = Array.from(game.user.targets);
+
+      if (!targets.length) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
+        });
+        return;
+      }
+
+      for (const token of targets) {
+        const targetActor = token.actor;
+        if (!targetActor?.system?.abilities) continue;
+        const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
+        const roll = new Roll(`1d20${formatModifier(mod)}`);
+        await roll.evaluate();
+        const success = roll.total >= dc;
+        const resultKey = success
+          ? item.system.save.halfOnSave
+            ? "DND_CUSTOM.Roll.SaveSuccessHalf"
+            : "DND_CUSTOM.Roll.SaveSuccess"
+          : "DND_CUSTOM.Roll.SaveFail";
+        await roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+          flavor: game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })
+        });
+      }
       return;
     }
 

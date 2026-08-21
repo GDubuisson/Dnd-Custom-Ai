@@ -46,7 +46,25 @@
   <label class="checkbox-row"><input type="checkbox" name="system.ritual" {{#if system.ritual}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Ritual"}}</label>
   <label class="checkbox-row"><input type="checkbox" name="system.attack" {{#if system.attack}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.SpellAttack"}}</label>
 
-  {{#if system.attack}}
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.SpellSave"}}</legend>
+    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.SpellSaveHelp"}}</p>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.SaveAbility"}}</label>
+      <select name="system.save.ability" {{#unless isGM}}disabled{{/unless}}>
+        <option value=""></option>
+        {{selectOptions config.abilities selected=system.save.ability localize=true}}
+      </select>
+    </div>
+    {{#if system.save.ability}}
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.save.halfOnSave" {{#if system.save.halfOnSave}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
+      {{localize "DND_CUSTOM.Item.Fields.HalfOnSave"}}
+    </label>
+    {{/if}}
+  </fieldset>
+
+  {{#if showDamageFields}}
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Damage"}}</legend>
     <div class="form-row">

@@ -1341,7 +1341,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Si le résultat d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde ne vous convient pas, vous pouvez ajouter 1d10 au résultat. 1 utilisation par repos long (simplifié : normalement par repos court ou long)."
+      "description": "Si le résultat d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde ne vous convient pas, un bouton \"Chance du Fiélon\" apparaît sur le message de ce jet : il ajoute automatiquement 1d10 au résultat. 1 utilisation par repos long (simplifié : normalement par repos court ou long)."
     }
   },
   {

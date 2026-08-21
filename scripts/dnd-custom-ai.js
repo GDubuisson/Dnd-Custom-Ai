@@ -882,6 +882,42 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Capacité "Chance du Fiélon" (sous-classe Occultiste, world-items/features.json) : même famille
+// que le don Chanceux ci-dessus (réutilise les mêmes flags luckRoll/luckActorId posés dans
+// rolls.js, indépendant du don lui-même) mais mécanique différente — SRD : "+1d10 au résultat"
+// plutôt qu'une relance complète. Poste un petit message de complément ("+1d10 = X, nouveau
+// total Y") plutôt que de modifier le message d'origine (même raison que Chanceux : Foundry ne
+// permet pas de rejouer proprement l'affichage d'un Roll déjà résolu). Flag dédié
+// (`fiendLuckApplied`, jamais `luckApplied`) : un personnage qui posséderait les deux (don ET
+// Capacité) pourrait en théorie cumuler les deux sur un même jet, chacun avec sa propre limite
+// d'usage — aucune règle SRD ne l'interdit explicitement.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "fiendLuckApplied")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const fiendLuckFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chance du Fiélon");
+  if (!fiendLuckFeat || fiendLuckFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendFiendLuck", { remaining: fiendLuckFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const bonus = new Roll("1d10");
+    await bonus.evaluate();
+    const originalTotal = message.rolls?.[0]?.total ?? 0;
+    await bonus.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total })
+    });
+    await fiendLuckFeat.update({ "system.uses.value": fiendLuckFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "fiendLuckApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
 // Effet visuel sur les coups/échecs critiques (cf. flags criticalHit/criticalFumble posés par
 // rollCheck/rollDamage, rolls.js) : retour de test (lot 3, point 8) — le libellé texte déjà
 // présent dans le flavor ("Coup critique !"/"Échec critique !") ne suffisait pas, ajoute une

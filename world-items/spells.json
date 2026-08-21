@@ -24,6 +24,8 @@
       "details": "1 action, 18 m, Instantanée",
       "concentration": false,
       "ritual": false,
+      "save": { "ability": "dex", "halfOnSave": false },
+      "damage": { "dice": "1d8", "type": "radiant" },
       "description": "Une lumière ardente s'abat sur une créature que vous voyez à portée. La cible doit réussir un jet de sauvegarde de Dextérité sous peine de subir 1d8 dégâts radiants. Elle ne bénéficie d'aucun couvert pour ce jet de sauvegarde."
     }
   },
@@ -79,7 +81,8 @@
       "details": "1 action, 36 m, Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Vous créez trois fléchettes de force magique luisante. Chacune touche automatiquement une créature de votre choix que vous voyez à portée, infligeant 1d4+1 dégâts de force. Les fléchettes frappent simultanément et peuvent être dirigées vers une seule ou plusieurs cibles."
+      "damage": { "dice": "1d4+1", "type": "force" },
+      "description": "Vous créez trois fléchettes de force magique luisante. Chacune touche automatiquement une créature de votre choix que vous voyez à portée (aucun jet requis, ni attaque ni sauvegarde), infligeant 1d4+1 dégâts de force. Les fléchettes frappent simultanément et peuvent être dirigées vers une seule ou plusieurs cibles — recliquez le bouton \"Dégâts\" 3 fois (une fois par fléchette)."
     }
   },
   {
@@ -161,7 +164,9 @@
       "details": "1 action, 36 m, Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Vous créez trois rayons de feu et les projetez vers des cibles à portée, une seule ou plusieurs. Effectuez un jet d'attaque à distance de sort séparé pour chaque rayon. En cas de réussite, la cible subit 2d6 dégâts de feu. Lancé avec un emplacement de niveau 3 ou plus, vous créez un rayon supplémentaire par niveau d'emplacement au-delà du deuxième."
+      "attack": true,
+      "damage": { "dice": "2d6", "type": "fire" },
+      "description": "Vous créez trois rayons de feu et les projetez vers des cibles à portée, une seule ou plusieurs. Effectuez un jet d'attaque à distance de sort séparé pour chaque rayon (bouton \"Lancer\" à recliquer pour chaque rayon). En cas de réussite, la cible subit 2d6 dégâts de feu. Lancé avec un emplacement de niveau 3 ou plus, vous créez un rayon supplémentaire par niveau d'emplacement au-delà du deuxième."
     }
   },
   {
@@ -187,6 +192,8 @@
       "details": "1 action, 45 m (rayon d'effet 6 m), Instantanée",
       "concentration": false,
       "ritual": false,
+      "save": { "ability": "dex", "halfOnSave": true },
+      "damage": { "dice": "8d6", "type": "fire" },
       "description": "Un trait éclatant part de votre doigt tendu vers un point choisi à portée puis explose en une gerbe de flammes. Chaque créature dans un rayon de 6 m autour de ce point doit réussir un jet de sauvegarde de Dextérité sous peine de subir 8d6 dégâts de feu (moitié en cas de réussite). Le feu contourne les angles et enflamme les objets inflammables non portés ni transportés dans la zone."
     }
   },
@@ -228,7 +235,9 @@
       "details": "1 action, 18 m, Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Vous lancez une insulte magiquement infusée à une créature que vous voyez à portée. Elle doit réussir un jet de sauvegarde de Sagesse sous peine de subir 1d4 dégâts psychiques et d'avoir un désavantage à la prochaine attaque qu'elle effectue avant votre prochain tour, distraite par vos moqueries."
+      "save": { "ability": "wis", "halfOnSave": false },
+      "damage": { "dice": "1d4", "type": "psychic" },
+      "description": "Vous lancez une insulte magiquement infusée à une créature que vous voyez à portée. Elle doit réussir un jet de sauvegarde de Sagesse sous peine de subir 1d4 dégâts psychiques et d'avoir un désavantage à la prochaine attaque qu'elle effectue avant votre prochain tour, distraite par vos moqueries (désavantage à appliquer manuellement, non modélisé)."
     }
   },
   {
@@ -438,7 +447,9 @@
       "details": "1 action, 90 m (rayon d'effet 6 m), Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Un fracas de grêlons s'abat dans un cylindre de 6 m de rayon sur 12 m de haut à portée. Chaque créature dans la zone doit réussir un jet de sauvegarde de Dextérité sous peine de subir 2d8 dégâts de froid et 4d6 dégâts contondants (moitié des dégâts en cas de réussite, et seulement de froid). Le terrain non couvert devient difficile jusqu'à la fin de votre prochain tour."
+      "save": { "ability": "dex", "halfOnSave": true },
+      "damage": { "dice": "2d8+4d6", "type": "" },
+      "description": "Un fracas de grêlons s'abat dans un cylindre de 6 m de rayon sur 12 m de haut à portée. Chaque créature dans la zone doit réussir un jet de sauvegarde de Dextérité sous peine de subir 2d8 dégâts de froid et 4d6 dégâts contondants (moitié des dégâts en cas de réussite, et seulement de froid). Le terrain non couvert devient difficile jusqu'à la fin de votre prochain tour. (Le bouton Dégâts lance les deux dés en un seul total 2d8+4d6 — ce système ne modélise pas deux types de dégâts distincts sur un même sort ; la nuance \"moitié = froid seul\" reste à l'appréciation du MJ.)"
     }
   },
   {
@@ -451,7 +462,9 @@
       "details": "1 action, 36 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
-      "description": "Vous créez un mur de feu opaque sur une surface à portée (droit ou en anneau, jusqu'à 18 m de long/6 m de rayon, 6 m de haut). À son apparition, chaque créature dans la zone doit réussir un jet de sauvegarde de Dextérité sous peine de subir 5d8 dégâts de feu (moitié en cas de réussite). Chaque tour, toute créature qui termine son tour à moins de 3 m d'une face choisie du mur subit 5d8 dégâts de feu (aucun jet de sauvegarde), l'autre face n'infligeant rien."
+      "save": { "ability": "dex", "halfOnSave": true },
+      "damage": { "dice": "5d8", "type": "fire" },
+      "description": "Vous créez un mur de feu opaque sur une surface à portée (droit ou en anneau, jusqu'à 18 m de long/6 m de rayon, 6 m de haut). À son apparition, chaque créature dans la zone doit réussir un jet de sauvegarde de Dextérité sous peine de subir 5d8 dégâts de feu (moitié en cas de réussite — jet et dégâts automatisés pour l'apparition du mur uniquement). Chaque tour, toute créature qui termine son tour à moins de 3 m d'une face choisie du mur subit 5d8 dégâts de feu supplémentaires (aucun jet de sauvegarde) — cet effet persistant à chaque tour reste hors modèle (bouton Dégâts à relancer manuellement), l'autre face n'infligeant rien."
     }
   },
   {
