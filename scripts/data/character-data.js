@@ -170,13 +170,18 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
    *  bouclier/accessoires équipés, constante de base) : jamais des valeurs saisies, ni
    *  par le joueur ni par le MJ. Recalculés à chaque préparation de l'Actor, donc toujours à jour. */
   prepareDerivedData() {
+    const items = this.parent?.items ?? [];
     const originData = game.dndCustomAi?.origins?.[this.origin];
     const originBonuses = originData?.abilityBonuses ?? {};
+    // Don "Doué" (SRD 5e, world-items/feats.json) : +1 Charisme fixe, appliqué automatiquement
+    // dès que le personnage possède le don, même principe que le bonus d'Origine ci-dessus (pas
+    // de plafond à 20 modélisé, cohérent avec le bonus d'Origine qui n'en applique pas non plus).
+    const gracefulChaBonus = hasFeature(items, "Doué") ? 1 : 0;
     for (const key of ABILITY_KEYS) {
-      this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0);
+      const featBonus = key === "cha" ? gracefulChaBonus : 0;
+      this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0) + featBonus;
     }
 
-    const items = this.parent?.items ?? [];
     const equippedArmor = items.find(
       (item) => item.type === "armor" && item.system.slot === "armor" && item.system.equipped
     );
@@ -189,8 +194,15 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     const hitDie = DND_CUSTOM.classHitDice[this.class] ?? 8;
     const conMod = abilityModifier(this.abilities.con.total);
+    // Don "Tenace" (SRD 5e) : +2 PV max par niveau, recalculé à chaque niveau (pas seulement au
+    // niveau d'acquisition — la formule "2×niveau" retombe exactement sur le texte SRD "+2 au
+    // niveau d'acquisition, +2 de plus à chaque niveau gagné ensuite" sans avoir à suivre à part
+    // le niveau où le don a été pris). Ajouté AVANT le halving d'Exhaustion (exhaustionMaxHp
+    // ci-dessous) : l'Exhaustion divise par deux le maximum de PV dans son ensemble, bonus de
+    // don inclus, pas seulement les PV de base.
+    const toughFeatBonus = hasFeature(items, "Tenace") ? 2 * this.attributes.level : 0;
     this.attributes.hp.max = exhaustionMaxHp(
-      maxHitPoints(hitDie, this.attributes.level, conMod),
+      maxHitPoints(hitDie, this.attributes.level, conMod) + toughFeatBonus,
       this.attributes.exhaustion
     );
 
@@ -227,7 +239,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // ténèbres (sous-classe Rôdeur, "Embuscade des ténèbres") : +2 supplémentaire, appliqué
     // automatiquement dès la sous-classe choisie (disponible seulement à partir du niveau
     // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
-    this.attributes.initiativeMod = dexMod + (this.subclass === "gloomStalker" ? 2 : 0);
+    // Don "Alerte" (SRD 5e) : +5 aux jets d'Initiative, appliqué automatiquement — les deux
+    // autres clauses du don (jamais surpris, pas d'avantage contre soi du fait d'être inaperçu)
+    // restent hors modèle (pas de suivi de "surprise"/visibilité dans ce système), à arbitrer.
+    this.attributes.initiativeMod =
+      dexMod + (this.subclass === "gloomStalker" ? 2 : 0) + (hasFeature(items, "Alerte") ? 5 : 0);
 
     // Emplacements de sorts par niveau (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
     // seul `max` de chaque palier est recalculé à chaque préparation. `maxLevel` (plus haut

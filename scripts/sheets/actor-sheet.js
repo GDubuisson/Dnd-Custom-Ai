@@ -314,7 +314,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     };
 
     const dexMod = abilityModifier(system.abilities.dex.total);
-    context.initiative = { mod: dexMod, modLabel: formatModifier(dexMod) };
+    // Bug retour de test (exposé par l'automatisation du don Alerte, ANOMALIES_ACTIVES.md
+    // 2026-08-19) : recalculait le mod. d'Initiative à partir du seul mod. de Dex, ignorant tout
+    // bonus dérivé (Traqueur des ténèbres +2, Alerte +5, cf. CharacterData#prepareDerivedData >
+    // attributes.initiativeMod, déjà la source de vérité utilisée par la formule d'Initiative du
+    // Combat Tracker natif dans system.json) — la fiche affichait donc un mod. différent de celui
+    // réellement utilisé au jet d'Initiative. Lit maintenant la même donnée dérivée.
+    context.initiative = {
+      mod: system.attributes.initiativeMod,
+      modLabel: formatModifier(system.attributes.initiativeMod)
+    };
 
     const wisMod = abilityModifier(system.abilities.wis.total);
     context.passivePerception = passivePerception(

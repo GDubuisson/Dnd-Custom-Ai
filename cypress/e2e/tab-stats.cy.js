@@ -566,6 +566,99 @@ describe("Onglet Statistiques — Initiative", () => {
   });
 });
 
+describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-19)", () => {
+  let featActorId;
+
+  function grantFeat(win, actorId, featName) {
+    const pack = win.game.packs.get("dnd-custom-ai.dons");
+    return pack.getIndex().then(() => {
+      const entry = [...pack.index].find((candidate) => candidate.name === featName);
+      expect(entry, `Don '${featName}' introuvable dans le compendium dons`).to.exist;
+      return pack
+        .getDocument(entry._id)
+        .then((doc) => win.game.actors.get(actorId).createEmbeddedDocuments("Item", [win.JSON.parse(win.JSON.stringify(doc.toObject()))]));
+    });
+  }
+
+  before(() => {
+    cy.loginAsPlayer();
+    cy.createReadyCharacter({
+      name: "Tab Stats Feats",
+      origin: "fleuraine",
+      classKey: "fighter",
+      skills: ["athletics", "intimidation"]
+    }).then((id) => {
+      featActorId = id;
+      createdActorIds.push(id);
+    });
+  });
+
+  beforeEach(() => {
+    cy.loginAsPlayer();
+  });
+
+  it("Doué : +1 Charisme visible sur la fiche, cumulé au-dessus de la valeur de base", () => {
+    let baseCha;
+    cy.window().then((win) => {
+      baseCha = win.game.actors.get(featActorId).system.abilities.cha.total;
+      return grantFeat(win, featActorId, "Doué");
+    });
+    // Vérifie d'abord que la donnée dérivée s'est bien stabilisée (retry) AVANT de rouvrir la
+    // fiche : rendre pendant que createEmbeddedDocuments est encore en cours de traitement peut
+    // capturer un instantané pas encore à jour, sans qu'un futur re-render ne le rafraîchisse
+    // (piège découvert au premier run réel de ce describe, sur le test Alerte ci-dessous).
+    cy.window().should((win) => {
+      expect(win.game.actors.get(featActorId).system.abilities.cha.total).to.equal(baseCha + 1);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find('button[data-action="rollAbility"][data-key="cha"]')
+      .closest(".ability-card")
+      .find(".ability-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseCha + 1));
+  });
+
+  it("Tenace : +2 PV max par niveau, visible dans l'en-tête de la fiche", () => {
+    let baseHpMax;
+    cy.window().then((win) => {
+      baseHpMax = win.game.actors.get(featActorId).system.attributes.hp.max;
+      return grantFeat(win, featActorId, "Tenace");
+    });
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      expect(actor.system.attributes.hp.max).to.equal(baseHpMax + 2 * actor.system.attributes.level);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find(".hp-max-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseHpMax + 2));
+  });
+
+  it("Alerte : +5 Initiative, visible sur l'onglet Statistiques", () => {
+    let baseInitiative;
+    cy.window().then((win) => {
+      baseInitiative = win.game.actors.get(featActorId).system.attributes.initiativeMod;
+      return grantFeat(win, featActorId, "Alerte");
+    });
+    cy.window().should((win) => {
+      expect(win.game.actors.get(featActorId).system.attributes.initiativeMod).to.equal(baseInitiative + 5);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find(".derived-stats span")
+      .first()
+      .invoke("text")
+      // Forme callback obligatoire ici (pas `.should("include", formatModifier(baseInitiative +
+      // 5))`) : `baseInitiative` n'est affecté que dans le cy.window().then() ci-dessus, qui
+      // s'exécute de façon asynchrone APRÈS que cette ligne a été mise en file par Cypress —
+      // un appel eager de formatModifier() à cet endroit verrait encore `baseInitiative`
+      // undefined (NaN), piège découvert au premier run réel de ce test.
+      .should((text) => expect(text).to.include(formatModifier(baseInitiative + 5)));
+  });
+});
+
 describe("Onglet Statistiques — états et Exhaustion", () => {
   beforeEach(() => {
     cy.loginAsPlayer();

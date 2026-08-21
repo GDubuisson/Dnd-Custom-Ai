@@ -35,6 +35,32 @@ describe("CharacterData#prepareDerivedData — caractéristiques", () => {
     prepare(fixture);
     assert.equal(fixture.abilities.str.total, 14);
   });
+
+  describe("Don 'Doué' — +1 Charisme fixe, appliqué automatiquement", () => {
+    test("avec le don -> +1 Charisme, autres caractéristiques inchangées", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { cha: { value: 14, total: 0 }, str: { value: 12, total: 0 } },
+        items: [{ type: "feature", name: "Doué" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 15);
+      assert.equal(fixture.abilities.str.total, 12);
+    });
+    test("sans le don -> aucun bonus", () => {
+      const fixture = buildCharacterFixture({ abilities: { cha: { value: 14, total: 0 } } });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 14);
+    });
+    test("cumulable avec le bonus d'Origine", () => {
+      const fixture = buildCharacterFixture({
+        origin: "lucentia", // cha +2 (cf. origins.json)
+        abilities: { cha: { value: 14, total: 0 } },
+        items: [{ type: "feature", name: "Doué" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 17); // 14 + 2 (origine) + 1 (don)
+    });
+  });
 });
 
 describe("CharacterData#prepareDerivedData — PV max", () => {
@@ -60,6 +86,49 @@ describe("CharacterData#prepareDerivedData — PV max", () => {
     });
     prepare(fixture);
     assert.equal(fixture.attributes.hp.max, 6); // floor(12/2)
+  });
+
+  describe("Don 'Tenace' — +2 PV max par niveau, appliqué automatiquement", () => {
+    test("avec le don, niveau 1 -> +2 PV max", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 14); // 12 (base) + 2×1 (Tenace)
+    });
+    test("avec le don, niveau 5 -> bonus recalculé à 2×niveau, pas figé au niveau d'acquisition", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 5 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      // maxHitPoints(10, 5, 2) = 10+2 + 4×(5+1+2) = 44 ; +2×5 (Tenace) = 54.
+      assert.equal(fixture.attributes.hp.max, 54);
+    });
+    test("sans le don -> aucun bonus, comportement inchangé", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1 },
+        abilities: { con: { value: 14, total: 14 } }
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 12);
+    });
+    test("exhaustion niveau 4+ : le bonus de Tenace est inclus dans le halving, pas ajouté après", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1, exhaustion: 4 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 7); // floor((12+2)/2)
+    });
   });
 });
 
@@ -175,6 +244,31 @@ describe("CharacterData#prepareDerivedData — dérivés non persistés", () => 
     const fixture = buildCharacterFixture({ abilities: { dex: { value: 18, total: 18 } } });
     prepare(fixture);
     assert.equal(fixture.attributes.initiativeMod, 4);
+  });
+
+  describe("Don 'Alerte' — +5 Initiative, appliqué automatiquement", () => {
+    test("avec le don -> mod Dex + 5", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 18, total: 18 } },
+        items: [{ type: "feature", name: "Alerte" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 9); // 4 (dex) + 5 (Alerte)
+    });
+    test("sans le don -> aucun bonus, comportement inchangé", () => {
+      const fixture = buildCharacterFixture({ abilities: { dex: { value: 18, total: 18 } } });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 4);
+    });
+    test("cumulable avec le bonus de sous-classe (Traqueur des ténèbres)", () => {
+      const fixture = buildCharacterFixture({
+        subclass: "gloomStalker",
+        abilities: { dex: { value: 18, total: 18 } },
+        items: [{ type: "feature", name: "Alerte" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 11); // 4 (dex) + 2 (sous-classe) + 5 (Alerte)
+    });
   });
 });
 

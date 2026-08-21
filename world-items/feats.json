@@ -66,7 +66,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : vos points de vie maximum augmentent de 2 points par niveau que vous possédez au moment de l'acquisition, puis de 2 points supplémentaires à chaque niveau gagné par la suite (à ajouter manuellement, ce système ne recalcule pas les PV max en fonction des Capacités possédées)."
+      "description": "Don : vos points de vie maximum augmentent de 2 points par niveau que vous possédez (recalculé automatiquement à chaque montée de niveau)."
     }
   },
   {
