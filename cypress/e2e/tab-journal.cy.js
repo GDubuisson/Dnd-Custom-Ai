@@ -17,6 +17,10 @@ function openSheet(actorId) {
   return cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 }
 
+function updateActor(win, actor, data, options = {}) {
+  return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
+}
+
 before(() => {
   cy.loginAsPlayer();
   cy.createReadyCharacter({
@@ -63,5 +67,31 @@ describe("Onglet Journal, session Joueur", () => {
     cy.window().should((win) => {
       expect(win.game.actors.get(sharedActorId).system.notes).to.include("Doit de l'argent au forgeron.");
     });
+  });
+
+  it("le champ Biographie grandit avec un texte long, sans défilement interne (anomalie 2026-08-19)", () => {
+    // 20 paragraphes : dépasse largement le plancher de 8rem (~128px) posé par
+    // .journal-block prose-mirror (styles/dnd-custom-ai.css) — avant le correctif (resize:
+    // vertical retiré), ce contenu défilait à l'intérieur du champ au lieu de s'afficher en
+    // entier.
+    const longText = Array.from(
+      { length: 20 },
+      (_, i) => `<p>Ligne ${i + 1} d'un texte volontairement long pour dépasser la hauteur minimale du champ.</p>`
+    ).join("");
+    cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.biography": longText }));
+    cy.then(() => openSheet(sharedActorId));
+    sheetRoot().find('nav.tabs [data-tab="journal"]').click();
+    sheetRoot().find('section.tab[data-tab="journal"]').should("have.class", "active");
+
+    sheetRoot()
+      .find('prose-mirror[name="system.biography"]')
+      .should(($el) => {
+        const el = $el[0];
+        expect(el.clientHeight, "doit grandir bien au-delà du plancher de 8rem (~128px)").to.be.greaterThan(300);
+        expect(
+          el.scrollHeight - el.clientHeight,
+          `aucun défilement interne attendu (scrollHeight ${el.scrollHeight} vs clientHeight ${el.clientHeight})`
+        ).to.be.at.most(2);
+      });
   });
 });

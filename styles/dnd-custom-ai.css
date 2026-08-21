@@ -2044,6 +2044,7 @@
   display: block;
   width: 100%;
   min-height: 8rem;
+  field-sizing: content;
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.3rem;
@@ -2051,20 +2052,15 @@
   color: var(--dca-on-surface);
   font-family: var(--dca-font-body);
   font-size: 0.85rem;
-  resize: vertical;
 }
 
 /* Bug retour de test ("aucun texte visible / impossible d'éditer" dans les zones de texte) :
    `min-height` seul sur `<prose-mirror>` ne se propage pas à sa zone éditable interne
    (`.editor-content.ProseMirror`, contenteditable). Un champ VIDE (aucun paragraphe -> aucune
    hauteur intrinsèque de contenu) donnait donc une zone éditable de 0px de haut, invisible et
-   non cliquable, malgré le cadre de 8rem bien affiché autour (measured en conditions réelles :
-   hauteur de la zone éditable persistante à 0px même après 3.5s et un `resize`, donc pas un
-   simple problème de timing d'initialisation). Un champ déjà rempli n'était jamais concerné, sa
-   propre hauteur de contenu masquant le bug — d'où sa découverte tardive. `display: flex` +
-   `flex: 1` sur la zone éditable contourne le calcul de `height: 100%` (qui ne tient jamais
-   compte d'un `min-height` sur son parent, seulement d'une `height` explicite) en laissant le
-   flex layout distribuer l'espace réellement disponible, quel que soit le contenu. */
+   non cliquable, malgré le cadre de 8rem bien affiché autour. `display: flex` + `flex: 1` sur la
+   zone éditable contourne le calcul de `height: 100%` en laissant le flex layout distribuer
+   l'espace réellement disponible, quel que soit le contenu. */
 .dnd-custom-ai .journal-block prose-mirror {
   display: flex;
   flex-direction: column;
@@ -2077,12 +2073,28 @@
   color: var(--dca-on-surface);
   font-family: var(--dca-font-body);
   font-size: 0.85rem;
-  resize: vertical;
 }
 
+/* Retour de test (ANOMALIES_ACTIVES.md) : un texte plus long que min-height défilait à
+   l'intérieur du champ au lieu de s'afficher en entier. Root cause identifiée en conditions
+   réelles (inspection des styles calculés, pas une supposition) : le CSS core de Foundry
+   (`foundry2.css`) pose `.editor-content { position: absolute; inset: 0; overflow: hidden auto }`
+   par défaut — une zone éditable TOUJOURS calée sur la taille de son parent positionné, quel que
+   soit son contenu, avec défilement interne dès dépassement. Foundry expose lui-même l'échappatoire
+   officielle à ce comportement : la classe `content-sized` sur `<prose-mirror>` (posée dans le
+   template, cf. tab-journal.hbs et consorts), qui repasse `.editor-content` en `position: unset`
+   (flux normal). Une fois hors positionnement absolu, notre propre `flex: 1 1 auto` (grandir tout
+   en gardant `auto` comme base = taille réelle du contenu, pas 0) fait grandir naturellement le
+   conteneur flex parent (`.journal-block prose-mirror`, `display: flex` sans hauteur explicite)
+   au-delà de `min-height` ; `overflow: visible` neutralise le `overflow-y: auto` du cœur Foundry
+   qui s'appliquerait sinon encore à cette zone. Le fix "champ vide -> 0px" ci-dessus reste
+   nécessaire et continue de fonctionner à l'identique (vérifié en conditions réelles : la zone
+   éditable garde une hauteur non nulle et cliquable même vide). Sans la classe `content-sized`
+   posée côté template, ces déclarations n'ont aucun effet (elles ciblent un élément qui reste
+   `position: absolute`) — les deux vont nécessairement de pair. */
 .dnd-custom-ai .journal-block prose-mirror .editor-content {
-  flex: 1;
-  min-height: 0;
+  flex: 1 1 auto;
+  overflow: visible;
 }
 
 .dnd-custom-ai .journal-block textarea:focus,
@@ -2285,11 +2297,14 @@
 /* Retour de test (ANOMALIES_ACTIVES.md) : les zones "Description"/"Description du trait" (5
    lignes environ à 6rem) restaient trop petites pour lire confortablement un texte un peu long
    sans redimensionner manuellement à chaque fois — 10rem laisse voir nettement plus de lignes
-   par défaut (le `resize: vertical` existant reste disponible pour aller au-delà). */
+   par défaut. `field-sizing: content` (remplace `resize: vertical`) fait grandir le champ avec
+   son contenu, sans plafond ni défilement interne ; `min-height` reste le plancher. Dégrade
+   proprement si non supporté (Firefox à ce jour) : comportement inchangé par rapport à avant ce
+   correctif. */
 .dnd-custom-ai .item-sheet-body .form-row textarea {
   display: block;
   min-height: 10rem;
-  resize: vertical;
+  field-sizing: content;
 }
 
 /* Retour de test : "texte invisible / impossible d'éditer" dans les zones de texte des Items de
@@ -2307,12 +2322,22 @@
   display: flex;
   flex-direction: column;
   min-height: 10rem;
-  resize: vertical;
 }
 
+/* Retour de test (ANOMALIES_ACTIVES.md) : même root cause et même correctif que
+   .journal-block prose-mirror .editor-content plus haut — le CSS core de Foundry pose
+   `.editor-content { position: absolute; inset: 0; overflow: hidden auto }`, une zone toujours
+   calée sur la taille de son parent avec défilement interne dès dépassement, quel que soit ce
+   qu'on pose ici tant que la classe `content-sized` de Foundry (posée dans le template sur
+   `<prose-mirror>`, cf. weapon-sheet.hbs et les autres fiches d'Item) n'a pas repassé cette zone
+   en `position: unset`. Une fois hors positionnement absolu, `flex: 1 1 auto` (grandir en gardant
+   `auto` comme base = taille réelle du contenu) fait grandir naturellement le conteneur flex
+   parent au-delà de min-height, et `overflow: visible` neutralise le `overflow-y: auto` du cœur
+   Foundry. Le fix "champ vide -> 0px" ci-dessus reste inchangé (vérifié : hauteur non nulle et
+   cliquable même vide). */
 .dnd-custom-ai .item-sheet-body .form-row prose-mirror .editor-content {
-  flex: 1;
-  min-height: 0;
+  flex: 1 1 auto;
+  overflow: visible;
 }
 
 /* Un Joueur n'a qu'un accès Observateur sur un Item de compendium (propriété du MJ) : le champ
