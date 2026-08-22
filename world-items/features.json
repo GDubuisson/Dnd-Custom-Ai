@@ -90,7 +90,10 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Domaine divin (ex. Repousser les morts-vivants) — à définir avec le MJ selon le Domaine choisi (non modélisé automatiquement dans ce système)."
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureType": "undead",
+      "description": "1 utilisation par repos court ou long : Repousser les morts-vivants — chaque mort-vivant actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Clerc), échec = Effrayé (bouton dédié ci-dessous, jet automatique). Votre Domaine divin peut aussi offrir une AUTRE option de Canalisation divine, propre à ce Domaine — à définir avec le MJ (non modélisée automatiquement dans ce système)."
     }
   },
   {

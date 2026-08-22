@@ -279,6 +279,7 @@
       "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",
       "SaveSpellNoTarget": "{spell} (DC {dc}, {ability} save) — no target selected, no automatic saving throw.",
+      "FeatureSaveWrongCreatureType": "{name} is not affected by {feature} (wrong creature type) — no roll, no effect.",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",
       "CompanionSummoned": "{owner} summons their beast companion: {companion} (the GM will place it on the scene).",
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",

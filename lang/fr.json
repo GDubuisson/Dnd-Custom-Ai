@@ -279,6 +279,7 @@
       "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
       "SaveSpellNoTarget": "{spell} (DD {dc}, sauvegarde de {ability}) — aucune cible sélectionnée, aucun jet de sauvegarde automatique.",
+      "FeatureSaveWrongCreatureType": "{name} n'est pas concerné(e) par {feature} (mauvais type de créature) — aucun jet, aucun effet.",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",
       "CompanionSummoned": "{owner} invoque son compagnon animal : {companion} (le MJ le place sur la scène).",
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",

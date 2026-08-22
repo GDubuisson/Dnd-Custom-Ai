@@ -127,6 +127,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
+      rollFeatureSave: DndCustomActorSheet.#onRollFeatureSave,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
@@ -986,6 +987,65 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         }
       }
     });
+  }
+
+  /** Capacité à jet de sauvegarde de CIBLE (ex. Canalisation divine "Repousser les
+   *  morts-vivants", Clerc — cf. FeatureData#savingThrow/appliesCondition/requiresCreatureType,
+   *  item-data.js) : même mécanisme que SpellData#save (#onCastSpell plus bas, rules.js >
+   *  targetSaveModifier) — le lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa
+   *  caractéristique d'incantation de classe) compte, comparé au jet propre de CHAQUE cible
+   *  actuellement ciblée. Une cible qui ne correspond pas au type de créature requis (ex. un PJ
+   *  face à Repousser les morts-vivants) ne subit même pas de jet — message informatif dédié.
+   *  Échec du jet : applique la condition configurée à la cible (`Actor#toggleStatusEffect`,
+   *  natif Foundry). */
+  static async #onRollFeatureSave(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.savingThrow) return;
+    if (!(await this.#consumeReaction(item))) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    const system = this.actor.system;
+    const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+    const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
+    const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.savingThrow]);
+    const targets = Array.from(game.user.targets);
+
+    if (!targets.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
+      });
+      return;
+    }
+
+    for (const token of targets) {
+      const targetActor = token.actor;
+      if (!targetActor?.system?.abilities) continue;
+
+      if (item.system.requiresCreatureType && targetActor.system.creatureType !== item.system.requiresCreatureType) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.FeatureSaveWrongCreatureType", { name: targetActor.name, feature: item.name })
+        });
+        continue;
+      }
+
+      const mod = targetSaveModifier(targetActor.system, item.system.savingThrow);
+      const roll = new Roll(`1d20${formatModifier(mod)}`);
+      await roll.evaluate();
+      const success = roll.total >= dc;
+      if (!success && item.system.appliesCondition) {
+        await targetActor.toggleStatusEffect(item.system.appliesCondition, { active: true });
+      }
+      const resultKey = success ? "DND_CUSTOM.Roll.SaveSuccess" : "DND_CUSTOM.Roll.SaveFail";
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        flavor: game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })
+      });
+    }
   }
 
   /** Utilisation d'une Capacité à charges limitées sans jet associé (ex. Imposition des

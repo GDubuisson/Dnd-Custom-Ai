@@ -199,6 +199,33 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // du bouton diffère pour rester clair en jeu. `false` pour l'immense majorité des
       // Capacités/Dons.
       reducesDamage: new BooleanField({ required: true, initial: false }),
+      // Capacité qui inflige un jet de sauvegarde à CHAQUE cible actuellement ciblée (ex.
+      // Canalisation divine "Repousser les morts-vivants", Clerc) — même mécanisme que
+      // SpellData#save (rules.js > targetSaveModifier), mais pour une Capacité au lieu d'un
+      // Sort : le lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa
+      // caractéristique d'incantation de classe) compte face au jet propre de chaque cible
+      // (#onRollFeatureSave, actor-sheet.js). Vide = pas de jet de sauvegarde, comportement
+      // `#onRollFeature` inchangé (l'immense majorité des Capacités).
+      savingThrow: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Condition (cf. DND_CUSTOM.conditions, config.js) appliquée à la cible en cas d'ÉCHEC du
+      // jet ci-dessus (ex. "frightened" pour Repousser les morts-vivants) — vide = aucun effet
+      // appliqué automatiquement, juste le résultat du jet posté en chat.
+      appliesCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+      }),
+      // Type de créature requis pour subir l'effet ci-dessus (ex. "undead" pour Repousser les
+      // morts-vivants — SRD 5e, seuls les morts-vivants sont affectés) : comparé à
+      // `NpcData#creatureType` de la cible, jamais présent sur un PJ (`CharacterData` n'a pas ce
+      // champ) donc jamais concerné. Vide = pas de restriction de type.
+      requiresCreatureType: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: Object.keys(DND_CUSTOM.creatureTypes)
+      }),
       // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
       // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
       // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables
