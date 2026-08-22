@@ -426,7 +426,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.featureResourceState = {};
     for (const feature of context.features) {
       const resourceName = feature.system.costsResource;
-      if (!resourceName) continue;
+      // Une technique à jet de sauvegarde (system.savingThrow, ex. les options de Canalisation
+      // divine du Paladin) affiche déjà son propre bouton dédié (#onRollFeatureSave, qui gère
+      // lui-même la consommation de costsResource) — pas ce bouton générique "useResourceTechnique"
+      // en plus, qui doublonnerait la consommation de charge.
+      if (!resourceName || feature.system.savingThrow) continue;
       const resource = context.features.find((candidate) => candidate.name === resourceName);
       if (!resource) continue;
       context.featureResourceState[feature.id] = {
@@ -990,20 +994,32 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Capacité à jet de sauvegarde de CIBLE (ex. Canalisation divine "Repousser les
-   *  morts-vivants", Clerc — cf. FeatureData#savingThrow/appliesCondition/requiresCreatureType,
-   *  item-data.js) : même mécanisme que SpellData#save (#onCastSpell plus bas, rules.js >
-   *  targetSaveModifier) — le lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa
-   *  caractéristique d'incantation de classe) compte, comparé au jet propre de CHAQUE cible
-   *  actuellement ciblée. Une cible qui ne correspond pas au type de créature requis (ex. un PJ
-   *  face à Repousser les morts-vivants) ne subit même pas de jet — message informatif dédié.
-   *  Échec du jet : applique la condition configurée à la cible (`Actor#toggleStatusEffect`,
-   *  natif Foundry). */
+   *  morts-vivants"/"Repousser les impies"/"Abjurer un ennemi" — cf.
+   *  FeatureData#savingThrow/appliesCondition/requiresCreatureTypes, item-data.js) : même
+   *  mécanisme que SpellData#save (#onCastSpell plus bas, rules.js > targetSaveModifier) — le
+   *  lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa caractéristique
+   *  d'incantation de classe) compte, comparé au jet propre de CHAQUE cible actuellement
+   *  ciblée. Une cible qui ne correspond à AUCUN type de créature requis (ensemble vide = pas de
+   *  restriction) ne subit même pas de jet — message informatif dédié. Échec du jet : applique
+   *  la condition configurée à la cible (`Actor#toggleStatusEffect`, natif Foundry).
+   *
+   *  `costsResource` (cf. item-data.js) : comme #onUseResourceTechnique, une option de
+   *  Canalisation divine peut consommer la réserve d'une AUTRE Capacité (ex. les 2 options de
+   *  chaque Serment de Paladin partagent la même réserve "Canalisation divine (Paladin)",
+   *  jamais leur propre charge) plutôt que sa propre `uses`. */
   static async #onRollFeatureSave(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.savingThrow) return;
     if (!(await this.#consumeReaction(item))) return;
 
-    const remaining = await this.#consumeFeatureCharge(item);
+    const chargeHolder = item.system.costsResource
+      ? this.actor.items.contents.find(
+          (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+        )
+      : item;
+    if (!chargeHolder) return;
+
+    const remaining = await this.#consumeFeatureCharge(chargeHolder);
     if (remaining === null) return;
 
     const system = this.actor.system;
@@ -1025,7 +1041,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const targetActor = token.actor;
       if (!targetActor?.system?.abilities) continue;
 
-      if (item.system.requiresCreatureType && targetActor.system.creatureType !== item.system.requiresCreatureType) {
+      if (item.system.requiresCreatureTypes.size && !item.system.requiresCreatureTypes.has(targetActor.system.creatureType)) {
         await ChatMessage.create({
           speaker: ChatMessage.getSpeaker({ actor: targetActor }),
           content: game.i18n.format("DND_CUSTOM.Chat.FeatureSaveWrongCreatureType", { name: targetActor.name, feature: item.name })

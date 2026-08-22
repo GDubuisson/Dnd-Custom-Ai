@@ -92,7 +92,7 @@
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
       "savingThrow": "wis",
       "appliesCondition": "frightened",
-      "requiresCreatureType": "undead",
+      "requiresCreatureTypes": ["undead"],
       "description": "1 utilisation par repos court ou long : Repousser les morts-vivants — chaque mort-vivant actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Clerc), échec = Effrayé (bouton dédié ci-dessous, jet automatique). Votre Domaine divin peut aussi offrir une AUTRE option de Canalisation divine, propre à ce Domaine — à définir avec le MJ (non modélisée automatiquement dans ce système)."
     }
   },
@@ -107,7 +107,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Serment sacré — à définir avec le MJ selon le Serment choisi (non modélisé automatiquement dans ce système)."
+      "description": "Réserve de 1 utilisation par repos court ou long, partagée entre les 2 options de Canalisation divine de votre Serment sacré (ci-dessous, sur l'onglet Capacités) : Devotion (Arme sacrée, Repousser les impies), Anciens (Voile des anciens, Repousser les infidèles) ou Vengeance (Traque implacable, Abjurer un ennemi)."
     }
   },
   {
@@ -1067,6 +1067,24 @@
     }
   },
   {
+    "name": "Canalisation divine : Repousser les impies",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "devotion",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureTypes": ["fiend", "undead"],
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, chaque fiélon ou mort-vivant actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique)."
+    }
+  },
+  {
     "name": "Aura de dévotion",
     "type": "feature",
     "img": "systems/dnd-custom-ai/assets/icons/features/Aura-de-devotion.png",
@@ -1091,8 +1109,26 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "Action bonus, 1 minute : vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts. 1 utilisation par repos court ou long."
+      "costsResource": "Canalisation divine (Paladin)",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, 1 minute, vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts."
+    }
+  },
+  {
+    "name": "Canalisation divine : Repousser les infidèles",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "ancients",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureTypes": ["fey", "fiend"],
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, chaque fée ou fiélon actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique)."
     }
   },
   {
@@ -1106,8 +1142,25 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Action bonus : désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle. 1 utilisation par repos long (simplifié : normalement lié à Sens divin, sans limite d'usage propre)."
+      "costsResource": "Canalisation divine (Paladin)",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle."
+    }
+  },
+  {
+    "name": "Canalisation divine : Abjurer un ennemi",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "vengeance",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, la créature actuellement ciblée effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique — aucune restriction de type de créature). Un fiélon ou mort-vivant qui échoue est en plus contraint de fuir (Renvoyé, SRD 5e) : nuance non modélisée, à l'arbitrage du MJ."
     }
   },
   {

@@ -216,15 +216,15 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         initial: "",
         choices: DND_CUSTOM.conditions.map((condition) => condition.id)
       }),
-      // Type de créature requis pour subir l'effet ci-dessus (ex. "undead" pour Repousser les
-      // morts-vivants — SRD 5e, seuls les morts-vivants sont affectés) : comparé à
-      // `NpcData#creatureType` de la cible, jamais présent sur un PJ (`CharacterData` n'a pas ce
-      // champ) donc jamais concerné. Vide = pas de restriction de type.
-      requiresCreatureType: new StringField({
-        required: false,
-        blank: true,
-        initial: "",
-        choices: Object.keys(DND_CUSTOM.creatureTypes)
+      // Types de créature requis pour subir l'effet ci-dessus (ex. {"undead"} pour Repousser les
+      // morts-vivants, {"fiend","undead"} pour Repousser les impies — SRD 5e, plusieurs
+      // Capacités de ce type visent 2 types à la fois) : comparé à `NpcData#creatureType` de la
+      // cible, jamais présent sur un PJ (`CharacterData` n'a pas ce champ) donc jamais concerné.
+      // Ensemble VIDE = pas de restriction de type (ex. Abjurer un ennemi, Paladin Vengeance,
+      // qui vise n'importe quelle créature).
+      requiresCreatureTypes: new SetField(new StringField({ choices: Object.keys(DND_CUSTOM.creatureTypes) }), {
+        required: true,
+        initial: []
       }),
       // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
       // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du

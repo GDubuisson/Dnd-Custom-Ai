@@ -4,7 +4,7 @@
 // universel à TOUS les Clercs (indépendant du Domaine choisi), contrairement à ce que laissait
 // entendre le texte précédent ("propre à votre Domaine divin").
 //
-// Modèle retenu (cf. FeatureData#savingThrow/appliesCondition/requiresCreatureType,
+// Modèle retenu (cf. FeatureData#savingThrow/appliesCondition/requiresCreatureTypes,
 // item-data.js ; #onRollFeatureSave, actor-sheet.js) : même mécanisme que le jet de sauvegarde
 // de cible des sorts (SpellData#save) mais pour une Capacité — le Clerc ne roule jamais
 // lui-même, seul le DD (spellSaveDC) compte face au jet de CHAQUE cible ciblée ; échec ET bon
@@ -37,7 +37,7 @@ function grantTurnUndead(win, actorId) {
         system: {
           savingThrow: "wis",
           appliesCondition: "frightened",
-          requiresCreatureType: "undead",
+          requiresCreatureTypes: ["undead"],
           uses: { max: 1, value: 1, recharge: "shortRest" }
         }
       })
