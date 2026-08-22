@@ -327,7 +327,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Dépensez des points de sorcellerie (cf. Sorcellerie innée) pour légèrement modifier un sort que vous lancez : le rendre silencieux ou sans geste, changer sa cible, réduire son temps d'incantation, etc. Simplifié : l'effet exact et son coût en points se décident avec le MJ, pas de liste d'options figées dans ce système."
+      "description": "Dépensez des points de sorcellerie (cf. Sorcellerie innée) pour légèrement modifier un sort que vous lancez. 2 des 8 options SRD sont automatisées sur un sort à sauvegarde : Maj-clic sur le bouton \"Lancer\" = Sort Prudent (une cible ciblée réussit automatiquement son jet), Ctrl-clic = Sort Élevé (une cible ciblée subit un désavantage à son jet) — 1 point dépensé à chaque fois, choix de la cible si plusieurs sont ciblées. Les 6 autres options (Sort Distant, Sort Prolongé, Sort Rapide, Sort Discret, Sort Amplifié, Sort Jumelé) restent à l'arbitrage du MJ, non modélisées dans ce système (portée/durée/composantes/économie d'action non trackées)."
     }
   },
   {

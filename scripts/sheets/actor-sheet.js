@@ -34,6 +34,7 @@ import { chooseSpellSlotLevel, chooseSpellSlotRecovery } from "../helpers/spell-
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
 import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
+import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -1615,11 +1616,31 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         return;
       }
 
+      // Sort Prudent/Sort Élevé (Métamagie, Ensorceleur, cf. helpers/metamagic.js) : Maj/Ctrl-clic
+      // sur "Lancer" propose de dépenser 1 point de sorcellerie pour faire réussir automatiquement
+      // (Prudent) ou désavantager (Élevé) le jet d'UNE cible ciblée — aucune touche maintenue,
+      // aucune Capacité "Métamagie" ou aucun point restant : `null` immédiat, comportement
+      // inchangé, jamais de fenêtre popup pour le cas courant.
+      const metamagic = await chooseMetamagicOption(this.actor, targets, {
+        careful: event.shiftKey,
+        heightened: event.ctrlKey
+      });
+
       for (const token of targets) {
         const targetActor = token.actor;
         if (!targetActor?.system?.abilities) continue;
+
+        if (metamagic?.targetActorId === targetActor.id && metamagic.option === "careful") {
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+            content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
+          });
+          continue;
+        }
+
         const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
-        const roll = new Roll(`1d20${formatModifier(mod)}`);
+        const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
+        const roll = new Roll(`${heightened ? "2d20kl1" : "1d20"}${formatModifier(mod)}`);
         await roll.evaluate();
         const success = roll.total >= dc;
         const resultKey = success
