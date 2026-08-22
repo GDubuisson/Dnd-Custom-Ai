@@ -235,6 +235,16 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
           choices: ["shortRest", "longRest"]
         })
       }),
+      // Réserve de charges (`uses` ci-dessus) dont le MAXIMUM progresse avec le niveau du
+      // personnage au lieu de rester fixe (ex. Ki du Moine, Sorcellerie innée de l'Ensorceleur —
+      // SRD 5e : dans les deux cas, `max` = niveau du personnage dans cette classe, à partir du
+      // niveau d'octroi de la Capacité). Restriction de conception levée le 2026-08-22 (ces deux
+      // réserves étaient figées à leur valeur d'octroi) : `uses.max` recalculé automatiquement
+      // dans #prepareDerivedData ci-dessous à chaque niveau, sans multiclassage modélisé
+      // (`attributes.level` = niveau dans l'unique classe du personnage, cf.
+      // CONCEPTION_FONCTIONNELLE.md). `false` pour l'immense majorité des Capacités/Dons, qui
+      // gardent un `uses.max` fixe.
+      scalesWithLevel: new BooleanField({ required: true, initial: false }),
       // Technique consommant 1 charge d'une AUTRE Capacité "réservoir" à charges partagées
       // (ex. les techniques de Moine — Rafale de coups, Défense patiente... — consomment
       // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
@@ -304,6 +314,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // jouée par le personnage (multiclassage non modélisé, cf. CONCEPTION_FONCTIONNELLE.md).
       chosenLevelOneSpell: new StringField({ required: false, blank: true, initial: "" })
     };
+  }
+
+  /** Réserve à progression (cf. scalesWithLevel ci-dessus) : `uses.max` recalculé au niveau
+   *  actuel du personnage propriétaire, jamais persisté (pure donnée dérivée, comme
+   *  CharacterData#abilities.<clé>.mod) — `value` (charges restantes) n'est jamais touché ici,
+   *  seul le plafond change. `this.parent` (TypeDataModel#parent) est l'ITEM lui-même, pas
+   *  l'Actor — piège rencontré en développant : `this.parent.actor` (Item#actor, natif Foundry)
+   *  est l'Actor propriétaire quand cet Item est embarqué sur une fiche, `null`/`undefined`
+   *  pour un Item encore dans un compendium/le monde (hors fiche : ne fait rien dans ce cas,
+   *  `uses.max` garde sa valeur JSON d'origine). */
+  prepareDerivedData() {
+    const level = this.parent?.actor?.system?.attributes?.level;
+    if (this.scalesWithLevel && level) this.uses.max = level;
   }
 }
 

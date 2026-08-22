@@ -653,6 +653,7 @@
         "Uses": "Limited Uses",
         "UsesHelp": "Leave Maximum at 0 for a feature that is always available (no tracking).",
         "UsesMax": "Maximum",
+        "UsesScalesWithLevel": "Maximum automatically computed from the character's level (currently {max}) — e.g. Ki, Innate Sorcery.",
         "UsesValue": "Remaining",
         "UsesRecharge": "Recharges on",
         "UseEffect": "Effect when used",

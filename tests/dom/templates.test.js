@@ -901,6 +901,38 @@ describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", 
   });
 });
 
+describe("item/feature-sheet.hbs — réserve à progression (system.scalesWithLevel, ex. Ki)", () => {
+  function render(scalesWithLevel) {
+    return parse(
+      renderTemplate("item/feature-sheet.hbs", {
+        item: { img: "f.webp", name: "Ki" },
+        isGM: true,
+        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action" }, classes: DND_CUSTOM.classes },
+        subclassOptions: {},
+        rechargeOptions: { shortRest: "DND_CUSTOM.Item.RechargeTypes.shortRest" },
+        system: {
+          class: "monk", subclass: "", level: 2, source: "", requiresRoll: false, costsResource: "",
+          uses: { max: 4, value: 2, recharge: "shortRest" }, description: "",
+          activation: "action", reactionTrigger: "", scalesWithLevel
+        },
+        isReaction: false
+      })
+    );
+  }
+
+  test("scalesWithLevel: true -> champ Maximum masqué, note affichée avec la valeur courante", () => {
+    const doc = render(true);
+    assert.equal(doc.querySelector('input[name="system.uses.max"]'), null, "le champ Maximum ne doit pas être éditable");
+    assert.ok(doc.querySelector('input[name="system.uses.value"]'), "le champ Valeur courante doit rester éditable");
+  });
+
+  test("scalesWithLevel: false -> champ Maximum éditable normalement (comportement inchangé)", () => {
+    const input = render(false).querySelector('input[name="system.uses.max"]');
+    assert.ok(input, "le champ Maximum devrait être visible");
+    assert.equal(input.getAttribute("value"), "4");
+  });
+});
+
 describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences, maîtrises)", () => {
   const doc = parse(
     renderTemplate("item/class-sheet.hbs", {

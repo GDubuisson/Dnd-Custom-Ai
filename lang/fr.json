@@ -653,6 +653,7 @@
         "Uses": "Utilisations limitées",
         "UsesHelp": "Laisser Maximum à 0 pour une capacité toujours disponible (pas de suivi).",
         "UsesMax": "Maximum",
+        "UsesScalesWithLevel": "Maximum calculé automatiquement selon le niveau du personnage (actuellement {max}) — ex. Ki, Sorcellerie innée.",
         "UsesValue": "Restantes",
         "UsesRecharge": "Récupération",
         "UseEffect": "Effet à l'utilisation",

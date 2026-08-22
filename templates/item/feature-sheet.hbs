@@ -87,10 +87,14 @@
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.Uses"}}</legend>
     <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UsesHelp"}}</p>
+    {{#if system.scalesWithLevel}}
+    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.UsesScalesWithLevel" max=system.uses.max}}</p>
+    {{else}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.UsesMax"}}</label>
       <input type="number" name="system.uses.max" value="{{system.uses.max}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
+    {{/if}}
     {{#if system.uses.max}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.UsesValue"}}</label>

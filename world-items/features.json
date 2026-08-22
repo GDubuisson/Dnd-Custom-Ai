@@ -173,7 +173,8 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
+      "scalesWithLevel": true,
+      "description": "Réserve de points de Ki (égale à votre niveau de Moine, SRD 5e), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
     }
   },
   {
@@ -309,7 +310,8 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "longRest" },
-      "description": "Réserve de points de sorcellerie (2, simplifié : ne progresse pas avec le niveau dans ce système), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (cf. onglet Sorts). Récupérée après un repos long."
+      "scalesWithLevel": true,
+      "description": "Réserve de points de sorcellerie (égale à votre niveau d'Ensorceleur, SRD 5e), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (cf. onglet Sorts). Récupérée après un repos long."
     }
   },
   {
