@@ -190,6 +190,16 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // à écrire, juste réutiliser le pipeline déjà en place. `false` pour l'immense majorité
       // des Capacités/Dons.
       healsTarget: new BooleanField({ required: true, initial: false }),
+      // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
+      // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
+      // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables
+      // (ex. "ceil(@attributes.level/2)"), consommé par #onRestShort (actor-sheet.js) qui ouvre
+      // une fenêtre de répartition entre paliers (cf. chooseSpellSlotRecovery,
+      // spell-slot-choice.js) plutôt que par un bouton de jet manuel séparé — retour de test,
+      // le texte SRD de ces deux Capacités ("une fois par jour, LORS D'UN REPOS COURT") n'était
+      // suivi par aucun code, le bouton précédent restait cliquable à tout moment. `false` pour
+      // l'immense majorité des Capacités.
+      recoversSpellSlots: new BooleanField({ required: true, initial: false }),
       // Capacité utilisable seulement quand un état particulier (cf. DND_CUSTOM.conditions,
       // config.js) est actif sur l'Actor — ex. Frénésie (Barbare Berserker), qui nécessite
       // d'être En Rage. Retour de test (lot 3, point 5) : grisée par défaut sur l'onglet

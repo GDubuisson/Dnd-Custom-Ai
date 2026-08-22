@@ -30,7 +30,7 @@ import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
-import { chooseSpellSlotLevel } from "../helpers/spell-slot-choice.js";
+import { chooseSpellSlotLevel, chooseSpellSlotRecovery } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
@@ -642,6 +642,50 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
     });
+    await this.#offerSpellSlotRecoveries();
+  }
+
+  /** Récupération arcanique/naturelle (cf. FeatureData#recoversSpellSlots, item-data.js) :
+   *  retour de test — le texte SRD de ces deux Capacités ("une fois par jour, LORS D'UN REPOS
+   *  COURT") n'était suivi par aucun code, le bouton de jet manuel restait cliquable à tout
+   *  moment. Déclenchée ici pour chaque Capacité de ce type encore chargée (uses.value > 0,
+   *  remis à zéro seulement au repos long, cf. #resetFeatureUses) : calcule le total de niveaux
+   *  récupérables (rollFormula) et ouvre une fenêtre de répartition entre paliers
+   *  (chooseSpellSlotRecovery, spell-slot-choice.js). La charge n'est consommée QUE si le
+   *  joueur confirme une répartition non vide — annuler la fenêtre ou n'avoir aucun emplacement
+   *  manquant à ce moment laisse la Capacité disponible pour un prochain repos court de la même
+   *  journée (léger écart au SRD strict "une seule fois par jour", jugé préférable à perdre
+   *  silencieusement l'occasion sans jet). */
+  async #offerSpellSlotRecoveries() {
+    const features = this.actor.items.contents.filter(
+      (item) => item.type === "feature" && item.system.recoversSpellSlots && item.system.uses.value > 0
+    );
+    for (const feature of features) {
+      const roll = new Roll(feature.system.rollFormula, this.actor.getRollData());
+      await roll.evaluate();
+      if (!roll.total) continue;
+
+      const distribution = await chooseSpellSlotRecovery(feature.name, roll.total, this.actor.system.spells.slots);
+      if (!distribution) continue;
+
+      const slotUpdates = {};
+      const parts = [];
+      for (const [level, amount] of Object.entries(distribution)) {
+        const slot = this.actor.system.spells.slots[level];
+        slotUpdates[`system.spells.slots.${level}.value`] = Math.min(slot.max, slot.value + amount);
+        parts.push(game.i18n.format("DND_CUSTOM.Spells.RecoveryLevelResult", { level, amount }));
+      }
+      await this.actor.update(slotUpdates);
+      await feature.update({ "system.uses.value": 0 });
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SpellSlotsRecovered", {
+          name: this.actor.name,
+          feature: feature.name,
+          list: parts.join(", ")
+        })
+      });
+    }
   }
 
   /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */

@@ -375,7 +375,8 @@
       "rollFormula": "ceil(@attributes.level/2)",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas le résultat affiché (aucun emplacement de niveau 6 ou plus). Le bouton calcule ce total selon votre niveau — répartissez-le vous-même entre les paliers de votre choix."
+      "recoversSpellSlots": true,
+      "description": "Une fois par jour, lors de votre premier repos court : récupérez automatiquement des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas le résultat affiché (aucun emplacement de niveau 6 ou plus) — une fenêtre s'ouvre au moment du repos court pour répartir ce total entre les paliers de votre choix."
     }
   },
   {
@@ -887,11 +888,12 @@
       "class": "druid",
       "subclass": "land",
       "level": 2,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "floor(@attributes.level/2)",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas la moitié de votre niveau de Druide (arrondi à l'inférieur, aucun emplacement de niveau 6 ou plus) — répartissez-le vous-même entre les paliers de votre choix."
+      "recoversSpellSlots": true,
+      "description": "Une fois par jour, lors de votre premier repos court : récupérez automatiquement des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas la moitié de votre niveau de Druide (arrondi à l'inférieur, aucun emplacement de niveau 6 ou plus) — une fenêtre s'ouvre au moment du repos court pour répartir ce total entre les paliers de votre choix."
     }
   },
   {

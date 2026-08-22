@@ -55,3 +55,78 @@ export async function chooseSpellSlotLevel(spellName, spellLevel, slots) {
 
   return chosenLevel ?? null;
 }
+
+/** Boîte de dialogue de répartition d'une récupération d'emplacements de sorts (ex.
+ *  Récupération arcanique/naturelle, cf. FeatureData#recoversSpellSlots, item-data.js) : le
+ *  joueur reçoit `total` NIVEAUX à répartir librement entre les paliers de son choix (SRD 5e :
+ *  jamais de palier 6 ou plus pour ces deux Capacités précises, plafond appliqué par l'appelant
+ *  via `maxLevel`).
+ *
+ *  Renvoie un objet `{ [niveau]: montant }` (montants > 0 uniquement) si le joueur confirme une
+ *  répartition valide, ou `null` si : aucun palier éligible n'a de charge manquante (rien à
+ *  proposer, l'appelant ne consomme alors pas la charge de la Capacité), le joueur annule, ou la
+ *  répartition saisie dépasse le total ou la capacité d'un palier (message d'erreur affiché,
+ *  même convention que openAbilityScoreImprovementDialog qui ferme plutôt que de rester ouvert
+ *  sur une saisie invalide).
+ *
+ * @param {string} featureName
+ * @param {number} total
+ * @param {object} slots `actor.system.spells.slots`
+ * @param {number} [maxLevel=5]
+ * @returns {Promise<Record<number, number>|null>}
+ */
+export async function chooseSpellSlotRecovery(featureName, total, slots, maxLevel = 5) {
+  const eligible = SPELL_LEVELS.filter(
+    (level) => level <= maxLevel && slots[level]?.max > 0 && slots[level].value < slots[level].max
+  );
+  if (!eligible.length) return null;
+
+  const rows = eligible
+    .map((level) => {
+      const cap = Math.min(total, slots[level].max - slots[level].value);
+      return `
+        <div class="form-row">
+          <label>${game.i18n.format("DND_CUSTOM.Spells.RecoveryLevelLabel", {
+            level,
+            remaining: slots[level].value,
+            max: slots[level].max
+          })}</label>
+          <input type="number" name="level${level}" value="0" min="0" max="${cap}">
+        </div>`;
+    })
+    .join("");
+
+  return DialogV2.wait({
+    window: { title: game.i18n.localize("DND_CUSTOM.Spells.RecoveryDialogTitle") },
+    content: `
+      <p>${game.i18n.format("DND_CUSTOM.Spells.RecoveryDialogPrompt", { feature: featureName, total })}</p>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+    rejectClose: false,
+    buttons: [
+      {
+        action: "ok",
+        label: game.i18n.localize("DND_CUSTOM.Spells.RecoveryConfirm"),
+        default: true,
+        callback: (event, button) => {
+          const distribution = {};
+          let spent = 0;
+          for (const level of eligible) {
+            const amount = Number(button.form.elements[`level${level}`]?.value) || 0;
+            const cap = Math.min(total, slots[level].max - slots[level].value);
+            if (amount < 0 || amount > cap) {
+              ui.notifications.error(game.i18n.localize("DND_CUSTOM.Spells.RecoveryInvalid"));
+              return null;
+            }
+            if (amount > 0) distribution[level] = amount;
+            spent += amount;
+          }
+          if (spent > total) {
+            ui.notifications.error(game.i18n.localize("DND_CUSTOM.Spells.RecoveryInvalid"));
+            return null;
+          }
+          return spent > 0 ? distribution : null;
+        }
+      }
+    ]
+  });
+}
