@@ -189,6 +189,11 @@ describe("targetSaveModifier (mod. de sauvegarde d'une CIBLE, sort/capacité à 
   test("modificateur négatif possible (caractéristique faible)", () => {
     assert.equal(targetSaveModifier(targetSystem({ dexTotal: 6 }), "dex"), -2);
   });
+
+  test("cible PNJ (NpcData, forme simplifiée sans .total ni saves) -> mod direct, pas de crash", () => {
+    const npcSystem = { abilities: { dex: { mod: 3 } } };
+    assert.equal(targetSaveModifier(npcSystem, "dex"), 3);
+  });
 });
 
 function emptySlots() {

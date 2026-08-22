@@ -130,9 +130,16 @@ export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
  *  actor-sheet.js), même niveau d'automatisation que compareToTargetAc pour un jet d'attaque :
  *  une simple lecture des stats déjà exposées de la cible, jamais une interruption de son
  *  client. `targetSystem` = `actor.system` de la cible (pas l'Actor entier), pour rester
- *  testable sans mock complet d'un Document Foundry. */
+ *  testable sans mock complet d'un Document Foundry.
+ *
+ *  PNJ (`NpcData`, forme volontairement simplifiée, cf. npc-data.js) : pas de score/maîtrise
+ *  séparée, `abilities[ability].mod` EST déjà le bonus de sauvegarde (même convention que le
+ *  bouton "Sauv" manuel de la fiche PNJ) — détecté par l'absence de `.total` sur l'entrée
+ *  d'`abilities` (forme `CharacterData`). */
 export function targetSaveModifier(targetSystem, ability) {
-  const mod = abilityModifier(targetSystem.abilities[ability].total);
+  const abilityData = targetSystem.abilities[ability];
+  if (!("total" in abilityData)) return abilityData.mod;
+  const mod = abilityModifier(abilityData.total);
   const profBonus = targetSystem.saves[ability].proficient ? proficiencyBonus(targetSystem.attributes.level) : 0;
   return mod + profBonus;
 }

@@ -193,4 +193,54 @@ describe("Sort à sauvegarde de la cible — auto-jet côté lanceur", () => {
         });
       });
   });
+
+  // Régression 2026-08-22 : NpcData (forme volontairement simplifiée, cf. npc-data.js) n'a NI
+  // `.total` sur ses abilities (juste `.mod`, déjà le bonus final) NI de champ `saves` du tout —
+  // targetSaveModifier (rules.js) plantait en TypeError sur ce cas, pourtant le plus courant en
+  // jeu (un sort à sauvegarde vise en général un monstre). Corrigé en détectant l'absence de
+  // `.total` pour retomber directement sur le mod. du PNJ, même convention que le bouton "Sauv"
+  // manuel de la fiche PNJ (npc-sheet.js).
+  it("cible PNJ (NpcData) : jette avec le mod. direct, sans planter (régression 2026-08-22)", () => {
+    let npcId;
+    let npcTokenId;
+
+    cy.window()
+      .then((win) =>
+        win.Actor.create(
+          win.JSON.parse(JSON.stringify({ name: "Save Target NPC", type: "npc", system: { abilities: { dex: { mod: 4 } } } }))
+        )
+      )
+      .then((actor) => {
+        npcId = actor.id;
+        createdActorIds.push(npcId);
+      });
+    cy.window()
+      .then((win) => win.game.actors.get(npcId).getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 500, y: 500 }))))
+      .then((tokenDoc) =>
+        cy.window().then((win) =>
+          win.canvas.scene.createEmbeddedDocuments("Token", [win.JSON.parse(win.JSON.stringify(tokenDoc.toObject()))]).then((tokens) => {
+            npcTokenId = tokens[0].id;
+            createdSceneItemIds.push(npcTokenId);
+          })
+        )
+      );
+    cy.window().then((win) => win.canvas.tokens.get(npcTokenId).setTarget(true, { releaseOthers: true }));
+
+    cy.forceD20(20);
+    cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+    cy.get(".application.character")
+      .find('nav.tabs [data-tab="abilities"]')
+      .click();
+    cy.get(".application.character")
+      .contains("li", "Test Fireball")
+      .find('button[data-action="castSpell"]')
+      .click();
+
+    cy.window().should((win) => {
+      const message = win.game.messages.contents.at(-1);
+      expect(message.speaker.actor, "message posté au nom du PNJ cible").to.equal(npcId);
+      expect(message.rolls[0].total, "20 naturel + mod. direct du PNJ (pas de .total/.saves à lire)").to.equal(24);
+    });
+  });
 });
