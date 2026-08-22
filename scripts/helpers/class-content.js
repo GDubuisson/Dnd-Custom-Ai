@@ -7,7 +7,7 @@ const SYSTEM_ID = "dnd-custom-ai";
  *  compendium `packName` (packs/capacites ou packs/sorts) une fois peuplé par l'import
  *  automatique (content-import.js) — dédoublonné par nom, l'exemplaire du monde prévalant s'il
  *  existe déjà (même logique que #grantStartingEquipment). */
-async function findClassContentCandidates(type, packName, predicate) {
+export async function findClassContentCandidates(type, packName, predicate) {
   const fromWorld = game.items.filter((item) => item.type === type && predicate(item.system));
 
   const pack = game.packs.get(`${SYSTEM_ID}.${packName}`);

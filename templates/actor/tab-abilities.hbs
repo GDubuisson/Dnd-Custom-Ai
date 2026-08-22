@@ -91,6 +91,15 @@
           {{! Aucun bouton : récupération automatique proposée au premier repos court de la
               journée (cf. #onRestShort, actor-sheet.js) — la puce "uses" ci-dessus suffit à
               indiquer la charge restante. }}
+          {{else if this.system.offersSpellChoice}}
+            {{#unless this.system.chosenLevelOneSpell}}
+            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseInitiateMagic" title="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
+              <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
+            </button>
+            {{/unless}}
+            {{! une fois choisi : aucun bouton, le sort de niveau 1 se lance depuis l'onglet
+                Sorts comme n'importe quel autre sort octroyé (cf. #onCastSpell) — la puce
+                "uses" ci-dessus indique la charge de cast gratuit restante. }}
           {{else if this.system.offersManeuverChoice}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}

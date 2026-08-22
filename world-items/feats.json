@@ -96,7 +96,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : choisissez une classe lanceuse de sorts (Barde, Clerc, Druide, Ensorceleur, Occultiste ou Magicien). Vous apprenez deux tours de magie de votre choix dans la liste de cette classe, plus un sort de niveau 1 de cette même liste (lançable une fois sans dépenser de charge, récupérée après un repos long ; au-delà, seulement si vous disposez d'un emplacement de sort de cette classe). À ajouter manuellement à votre pool de Sorts avec le MJ."
+      "offersSpellChoice": true,
+      "description": "Don : choisissez une classe lanceuse de sorts (Barde, Clerc, Druide, Ensorceleur, Occultiste ou Magicien) via le bouton \"Choisir\" ci-dessous. Vous apprenez deux tours de magie de votre choix dans la liste de cette classe, plus un sort de niveau 1 de cette même liste (lançable une fois sans dépenser de charge, récupérée après un repos long ; au-delà, seulement si vous disposez d'un emplacement de sort de cette classe)."
     }
   },
   {

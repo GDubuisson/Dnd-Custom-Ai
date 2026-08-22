@@ -2,7 +2,7 @@ import { SKILL_ABILITIES, ABILITY_KEYS } from "./character-data.js";
 import { currencySchema } from "./shared-schema.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField, ArrayField } = foundry.data.fields;
 
 /** Union de toutes les clés de sous-classe (ex. "champion"), toutes classes confondues — sert de
  *  contrainte `choices` pour FeatureData#subclass ci-dessous. Aplati une seule fois au chargement
@@ -270,7 +270,30 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // don lui-même (réservée au MJ comme le reste de cette fiche, cf. feature-sheet.hbs), lue
       // par CharacterData#prepareDerivedData pour appliquer le bonus automatiquement. Vide tant
       // que non choisi (aucun bonus appliqué).
-      chosenAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS })
+      chosenAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Don "Magie d'initié" (SRD 5e) : propose un choix en PLUSIEURS étapes (classe lanceuse,
+      // 2 tours de magie et 1 sort de niveau 1 de cette classe) plutôt qu'un simple bonus dérivé
+      // — cf. chooseInitiateMagicSpells (helpers/initiate-magic-choice.js) et
+      // #onChooseInitiateMagic (actor-sheet.js). Bouton "Choisir" affiché tant que
+      // `chosenLevelOneSpell` est vide (même convention que grantsChoice/offersAbilityChoice
+      // ci-dessus). `false` pour l'immense majorité des Capacités/Dons.
+      offersSpellChoice: new BooleanField({ required: true, initial: false }),
+      // Classe choisie (cf. offersSpellChoice) — clé stable (ex. "wizard"), vide tant que non
+      // choisie ; sert uniquement d'affichage/traçabilité, la liste réelle proposée au joueur
+      // (Barde/Clerc/Druide/Ensorceleur/Occultiste/Magicien, texte du don) est en dur dans
+      // initiate-magic-choice.js.
+      chosenSpellClass: new StringField({ required: false, blank: true, initial: "", choices: DND_CUSTOM.spellcastingClasses }),
+      // Les 2 tours de magie choisis (noms de Sorts, texte libre comme costsResource/
+      // grantsSpells ci-dessus) — vide tant que non choisis.
+      chosenCantrips: new ArrayField(new StringField({ blank: false }), { required: true, initial: [] }),
+      // Le sort de niveau 1 choisi : SRD 5e, lançable une fois GRATUITEMENT (sans dépenser
+      // d'emplacement) entre deux repos longs — réutilise directement `uses` ci-dessus (réglé à
+      // max:1/recharge:"longRest" au moment du choix) comme charge de ce cast gratuit, consommée
+      // par #onCastSpell (actor-sheet.js) qui reconnaît ce Sort par son nom exact. Au-delà de ce
+      // premier cast gratuit, le sort redevient un sort normal (décompte un emplacement du
+      // personnage comme n'importe quel autre) — approximation assumée pour une classe non
+      // jouée par le personnage (multiclassage non modélisé, cf. CONCEPTION_FONCTIONNELLE.md).
+      chosenLevelOneSpell: new StringField({ required: false, blank: true, initial: "" })
     };
   }
 }

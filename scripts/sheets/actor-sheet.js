@@ -33,6 +33,7 @@ import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { chooseSpellSlotLevel, chooseSpellSlotRecovery } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
+import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -130,6 +131,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
+      chooseInitiateMagic: DndCustomActorSheet.#onChooseInitiateMagic,
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       useManeuver: DndCustomActorSheet.#onUseManeuver,
       toggleReaction: DndCustomActorSheet.#onToggleReaction
@@ -1132,6 +1134,43 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ [`system.combat.${fieldKey}`]: chosenKey });
   }
 
+  /** Don "Magie d'initié" (`FeatureData#offersSpellChoice`, SRD 5e) : choix en 2 étapes (classe
+   *  lanceuse, puis 2 tours de magie + 1 sort de niveau 1 de cette classe, cf.
+   *  chooseInitiateMagicSpells, helpers/initiate-magic-choice.js) — contrairement à
+   *  #onChooseFeatureOption (un seul champ, une seule table), ce choix octroie de VRAIS Items
+   *  Sort sur la fiche plutôt qu'une simple valeur. Règle le `uses` du don lui-même
+   *  (max:1/recharge:"longRest") pour servir de charge au cast gratuit du sort de niveau 1,
+   *  consommée dans #onCastSpell ci-dessous. Ne fait rien si déjà choisi (bouton déjà masqué
+   *  côté template, revérifié ici par sécurité). */
+  static async #onChooseInitiateMagic(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersSpellChoice || item.system.chosenLevelOneSpell) return;
+
+    const choice = await chooseInitiateMagicSpells();
+    if (!choice) return;
+
+    await this.actor.createEmbeddedDocuments("Item", [
+      ...choice.cantripItems.map((spell) => spell.toObject()),
+      choice.levelOneSpellItem.toObject()
+    ]);
+    await item.update({
+      "system.chosenSpellClass": choice.classKey,
+      "system.chosenCantrips": choice.cantripItems.map((spell) => spell.name),
+      "system.chosenLevelOneSpell": choice.levelOneSpellItem.name,
+      "system.uses": { max: 1, value: 1, recharge: "longRest" }
+    });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.InitiateMagicGranted", {
+        name: this.actor.name,
+        class: game.i18n.localize(DND_CUSTOM.classes[choice.classKey]),
+        cantrip1: choice.cantripItems[0].name,
+        cantrip2: choice.cantripItems[1].name,
+        spell: choice.levelOneSpellItem.name
+      })
+    });
+  }
+
   /** Invoque le compagnon animal d'une Capacité `system.summonsCompanion` (ex. "Compagnon
    *  animal", Maître des bêtes/Rôdeur) : une seule fois par personnage (flag
    *  `beastCompanionCreated`, cf. helpers/companion.js), jamais recréé ensuite. */
@@ -1388,7 +1427,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const castsAsFreeSubclassSpell = this.actor.items.some(
       (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
     );
-    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
+    // Don "Magie d'initié" (cf. FeatureData#offersSpellChoice/chosenLevelOneSpell) : le sort de
+    // niveau 1 choisi se lance GRATUITEMENT une fois entre deux repos longs (SRD 5e), au-delà il
+    // redevient un sort normal (décompte un emplacement du personnage comme les autres, cf.
+    // commentaire de chosenLevelOneSpell dans item-data.js). Charge réutilisée directement sur
+    // le don lui-même (`uses`, réglé au moment du choix), consommée plus bas une fois le
+    // contournement confirmé.
+    const initiateFeature = this.actor.items.find(
+      (feature) => feature.type === "feature" && feature.system.chosenLevelOneSpell === item.name
+    );
+    const castsAsFreeInitiateSpell = Boolean(initiateFeature && initiateFeature.system.uses.value > 0);
+    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell && !castsAsFreeInitiateSpell) {
       const slots = this.actor.system.spells.slots;
       // Détermine quel palier dépenser (le sien si disponible, sinon propose un surclassement
       // vers un palier supérieur disponible, cf. spell-slot-choice.js) : renvoie null si aucun
@@ -1406,6 +1455,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // (rollWildSurge indexe par classe, pas par sous-classe : "wildMagic"/Barbare et
       // "wildSorcery"/Ensorceleur ne se confondent jamais).
       if (this.actor.system.subclass === "wildSorcery") await rollWildSurge(this.actor, "sorcerer");
+    } else if (castsAsFreeInitiateSpell) {
+      await initiateFeature.update({ "system.uses.value": 0 });
     }
 
     // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
