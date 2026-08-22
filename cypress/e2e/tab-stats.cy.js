@@ -486,15 +486,23 @@ describe("Onglet Statistiques — repos", () => {
       return secondWind.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
     });
 
+    // `.should()` (pas un simple `.then()`) : le clic ne fait que distribuer l'évènement DOM, le
+    // gestionnaire (#onRestShort, plusieurs `await` avant la fin) continue de tourner après —
+    // même piège/même fix que lastMessageRoll et T-STATS-009 (cf. leurs commentaires). Devenu
+    // sensible avec l'ajout de #offerSpellSlotRecoveries (anomalie récupération arcanique/
+    // naturelle, 2026-08-22), qui allonge légèrement la chaîne d'attente de #onRestShort.
     sheetRoot().find('button[data-action="restShort"]').click();
-    cy.window().then((win) => {
+    cy.window().should((win) => {
       const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       expect(secondWind.system.uses.value, "rechargée après un repos court").to.equal(secondWind.system.uses.max);
+    });
+    cy.window().then((win) => {
+      const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       return secondWind.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
     });
 
     sheetRoot().find('button[data-action="restLong"]').click();
-    cy.window().then((win) => {
+    cy.window().should((win) => {
       const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       expect(secondWind.system.uses.value, "rechargée après un repos long aussi").to.equal(secondWind.system.uses.max);
     });
@@ -534,6 +542,69 @@ describe("Onglet Statistiques — repos", () => {
         "system.attributes.hp.value": actor.system.attributes.hp.max,
         "system.attributes.death.failures": 0
       });
+    });
+  });
+
+  // Règle maison (absente du SRD, anomalie 2026-08-19 : "ne pas laisser abuser des repos
+  // courts") : à partir du 4e repos court depuis le dernier repos long (celui-ci inclus), CHAQUE
+  // repos court supplémentaire ajoute 1 point d'Épuisement (cf. CharacterData#attributes.
+  // shortRestCount, #onRestShort/#onRestLong dans actor-sheet.js). Préconditions posées
+  // explicitement (shortRestCount) plutôt que de dépendre du nombre de repos déjà déclenchés par
+  // les tests précédents de ce fichier.
+  it("Épuisement après le 4e repos court sans repos long (anomalie 2026-08-19)", () => {
+    cy.openActorSheet(sharedActorId);
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 0 });
+    });
+
+    lastMessageCount().then((before) => {
+      sheetRoot().find('button[data-action="restShort"]').click();
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        expect(actor.system.attributes.shortRestCount, "compteur incrémenté (4e repos court)").to.equal(4);
+        expect(actor.system.attributes.exhaustion, "1 point d'Épuisement gagné").to.equal(1);
+        expect(win.game.messages.size, "deux messages : repos + avertissement Épuisement").to.equal(before + 2);
+        expect(win.game.messages.contents.at(-1).content, "message cite le personnage").to.include(actor.name);
+      });
+    });
+
+    // 5e repos court (compteur déjà à 4) : chaque repos SUPPLÉMENTAIRE ajoute encore 1 point,
+    // pas seulement le 4e.
+    lastMessageCount().then((before) => {
+      sheetRoot().find('button[data-action="restShort"]').click();
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        expect(actor.system.attributes.shortRestCount, "5e repos court").to.equal(5);
+        expect(actor.system.attributes.exhaustion, "2e point d'Épuisement").to.equal(2);
+        expect(win.game.messages.size, "deux nouveaux messages encore").to.equal(before + 2);
+      });
+    });
+
+    // Plafond SRD (6) jamais dépassé même après de nombreux repos courts supplémentaires.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 6 });
+    });
+    sheetRoot().find('button[data-action="restShort"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(sharedActorId).system.attributes.exhaustion, "plafonné à 6").to.equal(6);
+    });
+
+    // Repos long : remet le compteur à zéro (seul le repos long le fait, pas le repos court).
+    sheetRoot().find('button[data-action="restLong"]').click();
+    cy.window().should((win) => {
+      expect(
+        win.game.actors.get(sharedActorId).system.attributes.shortRestCount,
+        "compteur remis à zéro par le repos long"
+      ).to.equal(0);
+    });
+
+    // Nettoyage : ne pas laisser ce personnage partagé à 6 points d'Épuisement pour les tests
+    // suivants (T-STATS-016 notamment, qui manipule aussi ce champ).
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.exhaustion": 0 });
     });
   });
 });

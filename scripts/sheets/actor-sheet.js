@@ -630,11 +630,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
    *  dépasser le max. Restaure aussi les emplacements de sorts de l'Occultiste (Magie de Pacte,
-   *  SRD 5e : seule classe qui récupère ses emplacements au repos court). */
+   *  SRD 5e : seule classe qui récupère ses emplacements au repos court).
+   *
+   *  Règle maison (absente du SRD, cf. CharacterData#attributes.shortRestCount) : à partir du
+   *  4e repos court depuis le dernier repos long (celui-ci inclus), CHAQUE repos court
+   *  supplémentaire ajoute 1 point d'Épuisement (plafonné à 6, SRD) — décourage l'abus répété de
+   *  repos courts plutôt qu'un unique repos long. Le soin de moitié des PV max ci-dessus reste
+   *  lui inchangé, quel que soit ce compteur. */
   static async #onRestShort() {
     if (this.#isDead()) return;
-    const hp = this.actor.system.attributes.hp;
-    const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
+    const attributes = this.actor.system.attributes;
+    const shortRestCount = attributes.shortRestCount + 1;
+    const gainsExhaustion = shortRestCount > 3;
+    const updates = {
+      "system.attributes.hp.value": Math.min(attributes.hp.value + Math.floor(attributes.hp.max / 2), attributes.hp.max),
+      "system.attributes.shortRestCount": shortRestCount,
+      ...(gainsExhaustion ? { "system.attributes.exhaustion": Math.min(6, attributes.exhaustion + 1) } : {})
+    };
     if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
     await this.actor.update(updates);
     await this.#resetFeatureUses(["shortRest"]);
@@ -642,6 +654,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
     });
+    if (gainsExhaustion) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.TooManyShortRests", { name: this.actor.name, count: shortRestCount })
+      });
+    }
     await this.#offerSpellSlotRecoveries();
   }
 
@@ -692,7 +710,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRestLong() {
     if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
-    const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
+    const updates = {
+      "system.attributes.hp.value": hp.max,
+      // Remet à zéro le compteur de repos courts de la règle maison "Épuisement après le 4e
+      // repos court" (cf. #onRestShort ci-dessus) — seul le repos long le réinitialise.
+      "system.attributes.shortRestCount": 0,
+      ...this.#spellSlotResetUpdates()
+    };
     await this.actor.update(updates);
     // Un repos long inclut les bénéfices d'un repos court (SRD 5e) : les deux types de
     // récupération de charges de Capacité sont donc restaurés ici.

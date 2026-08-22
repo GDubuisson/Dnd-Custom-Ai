@@ -90,6 +90,13 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
         // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
         exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 }),
+        // Règle maison (absente du SRD, demande explicite testeur — retour ANOMALIES_ACTIVES.md,
+        // "ne pas laisser abuser des repos courts") : nombre de repos courts pris depuis le
+        // dernier repos long. À partir du 4e (celui-ci inclus), chaque repos court supplémentaire
+        // ajoute 1 point d'Épuisement (cf. #onRestShort, actor-sheet.js) — le bénéfice normal du
+        // repos court (soin de moitié des PV max) reste lui inchangé, quel que soit ce compteur.
+        // Remis à zéro uniquement au repos long, jamais par le repos court lui-même.
+        shortRestCount: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
         // Jets de sauvegarde de la mort, SRD 5e : 3 réussites = stabilisé, 3 échecs = mort.
         // Remis à zéro automatiquement en tombant à 0 PV ou en repassant au-dessus (cf. hook
         // updateActor dans dnd-custom-ai.js).
