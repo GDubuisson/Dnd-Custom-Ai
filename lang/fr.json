@@ -269,6 +269,8 @@
       "ApplyDamageNotAuthor": "Seul l'auteur du jet (ou le MJ) peut appliquer ces dégâts",
       "ApplyHeal": "Appliquer {amount} PV de soin à la cible",
       "HealAlreadyApplied": "Soin déjà appliqué",
+      "ApplyDamageReduction": "Appliquer {amount} PV de réduction de dégâts à la cible",
+      "DamageReductionAlreadyApplied": "Réduction déjà appliquée",
       "SpendLuck": "Dépenser un point de Chance ({remaining} restant(s))",
       "LuckyReroll": "{name} dépense un point de Chance — nouveau d20, meilleur des deux totaux retenu : {kept}",
       "SpendFiendLuck": "Chance du Fiélon : +1d10 ({remaining} restant(s))",

@@ -839,6 +839,40 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Ajoute un bouton "Appliquer la réduction" sur toute carte de chat de jet de Capacité qui
+// réduit les dégâts subis (ex. Déviation de projectiles, Flamme protectrice — cf.
+// FeatureData#reducesDamage, item-data.js ; #onRollFeature, actor-sheet.js) : réutilise
+// directement applyHealToTargets (même effet mécanique qu'un soin, ajoute des PV à la cible
+// actuellement ciblée, plafonné au max) — seul le libellé du bouton diffère pour rester clair
+// en jeu, aucune nouvelle logique d'application. Fonctionne quel que soit l'ordre réel des
+// dégâts/de la réaction (le MJ peut cliquer avant ou après avoir appliqué les dégâts bruts, le
+// résultat net est le même).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "damageReduction")) return;
+  const amount = message.rolls?.[0]?.total;
+  if (!Number.isFinite(amount)) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-apply-heal-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyDamageReduction", { amount });
+
+  if (message.getFlag(SYSTEM_ID, "damageReductionApplied")) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.DamageReductionAlreadyApplied");
+  } else if (message.author?.id !== game.user.id && !game.user.isGM) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.ApplyDamageNotAuthor");
+  } else {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await applyHealToTargets(amount);
+      await message.setFlag(SYSTEM_ID, "damageReductionApplied", true);
+    });
+  }
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
 // Don "Chanceux" (SRD 5e, world-items/feats.json) : ajoute un bouton "Point de Chance" sur tout
 // jet de d20 posté via rollCheck (test de caractéristique/compétence, sauvegarde, attaque — cf.
 // flags luckRoll/luckFormula/luckActorId posés dans rolls.js) SI l'acteur qui a lancé possède le

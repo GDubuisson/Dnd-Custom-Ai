@@ -196,6 +196,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     for (const key of ABILITY_KEYS) {
       const featBonus = (key === "cha" ? gracefulChaBonus : 0) + abilityChoiceFeats.filter((item) => item.system.chosenAbility === key).length;
       this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0) + featBonus;
+      // Donnée dérivée non persistée (même convention que attributes.initiativeMod/speed
+      // ci-dessous) : expose le modificateur déjà calculable via abilityModifier(total) comme
+      // référence `@abilities.<clé>.mod` directement utilisable dans un rollFormula de Capacité
+      // (Actor#getRollData natif expose tout `system` déjà préparé) — ex. Déviation de
+      // projectiles (Moine), qui a besoin du mod. de Dextérité en plus du niveau.
+      this.abilities[key].mod = abilityModifier(this.abilities[key].total);
     }
     // Don "Résilient" seul (parmi les deux ci-dessus) accorde aussi la maîtrise du jet de
     // sauvegarde de la caractéristique choisie (SRD 5e) — ne retire jamais une maîtrise déjà

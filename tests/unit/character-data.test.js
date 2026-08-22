@@ -36,6 +36,16 @@ describe("CharacterData#prepareDerivedData — caractéristiques", () => {
     assert.equal(fixture.abilities.str.total, 14);
   });
 
+  test("mod dérivé (donnée non persistée, exposée pour rollFormula @abilities.<clé>.mod, ex. Déviation de projectiles)", () => {
+    const fixture = buildCharacterFixture({
+      origin: "altenmark", // str +2 (cf. origins.json)
+      abilities: { str: { value: 14, total: 0 }, dex: { value: 8, total: 0 } }
+    });
+    prepare(fixture);
+    assert.equal(fixture.abilities.str.mod, 3); // total 16 -> +3
+    assert.equal(fixture.abilities.dex.mod, -1); // total 8 -> -1
+  });
+
   describe("Don 'Doué' — +1 Charisme fixe, appliqué automatiquement", () => {
     test("avec le don -> +1 Charisme, autres caractéristiques inchangées", () => {
       const fixture = buildCharacterFixture({

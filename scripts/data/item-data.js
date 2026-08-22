@@ -190,6 +190,15 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // à écrire, juste réutiliser le pipeline déjà en place. `false` pour l'immense majorité
       // des Capacités/Dons.
       healsTarget: new BooleanField({ required: true, initial: false }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) RÉDUIT les dégâts
+      // subis par une cible plutôt que de simplement les infliger/soigner (ex. Déviation de
+      // projectiles, Flamme protectrice) : marque le message de chat d'un flag `damageReduction`
+      // dédié (hook renderChatMessageHTML, dnd-custom-ai.js), qui affiche un bouton "Appliquer
+      // la réduction" — réutilise directement `applyHealToTargets` (même effet mécanique qu'un
+      // soin : ajoute des PV à la cible actuellement ciblée, plafonné au max), seul le libellé
+      // du bouton diffère pour rester clair en jeu. `false` pour l'immense majorité des
+      // Capacités/Dons.
+      reducesDamage: new BooleanField({ required: true, initial: false }),
       // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
       // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
       // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables

@@ -269,6 +269,8 @@
       "ApplyDamageNotAuthor": "Only the roll's author (or the GM) can apply this damage",
       "ApplyHeal": "Apply {amount} HP of healing to target",
       "HealAlreadyApplied": "Healing already applied",
+      "ApplyDamageReduction": "Apply {amount} HP of damage reduction to target",
+      "DamageReductionAlreadyApplied": "Reduction already applied",
       "SpendLuck": "Spend a Luck point ({remaining} left)",
       "LuckyReroll": "{name} spends a Luck point — new d20, best of the two totals kept: {kept}",
       "SpendFiendLuck": "Fiendish Luck: +1d10 ({remaining} left)",

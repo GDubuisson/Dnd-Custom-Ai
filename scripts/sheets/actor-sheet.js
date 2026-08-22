@@ -979,7 +979,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor,
-      ...(item.system.healsTarget ? { flags: { "dnd-custom-ai": { healRoll: true } } } : {})
+      flags: {
+        "dnd-custom-ai": {
+          ...(item.system.healsTarget ? { healRoll: true } : {}),
+          ...(item.system.reducesDamage ? { damageReduction: true } : {})
+        }
+      }
     });
   }
 

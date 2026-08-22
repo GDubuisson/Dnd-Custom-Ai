@@ -519,10 +519,11 @@
       "level": 3,
       "activation": "reaction",
       "reactionTrigger": "Touché par une attaque à distance d'arme",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d10 + @abilities.dex.mod + @attributes.level",
+      "reducesDamage": true,
       "source": "",
-      "description": "Vous pouvez utiliser votre réaction pour dévier ou attraper un projectile qui vous touche avec une attaque à distance d'arme : les dégâts subis sont réduits de 1d10 + votre modificateur de Dextérité + votre niveau de Moine (calcul manuel). S'ils tombent à 0, vous attrapez le projectile si vous avez une main de libre."
+      "description": "Vous pouvez utiliser votre réaction pour dévier ou attraper un projectile qui vous touche avec une attaque à distance d'arme : les dégâts subis sont réduits de 1d10 + votre modificateur de Dextérité + votre niveau de Moine — bouton \"Appliquer la réduction\" affiché sur le jet, à cliquer sur la cible touchée. S'ils tombent à 0, vous attrapez le projectile si vous avez une main de libre (narratif, à l'arbitrage du MJ)."
     }
   },
   {
@@ -844,11 +845,12 @@
       "level": 1,
       "activation": "reaction",
       "reactionTrigger": "Une créature à 9 m de vous que vous voyez subit des dégâts",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d8 + @attributes.level",
+      "reducesDamage": true,
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc, et la source des dégâts (si vivante) subit un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
+      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc — bouton \"Appliquer la réduction\" affiché sur le jet, à cliquer sur la cible touchée. La source des dégâts (si vivante) subit en plus un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour (narratif, à l'arbitrage du MJ). 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
     }
   },
   {
