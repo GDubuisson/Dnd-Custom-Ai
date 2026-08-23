@@ -4,6 +4,8 @@ import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
 import { checkGiantKillerReminder } from "../helpers/giant-killer.js";
+import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
+import { PENDING_OPPORTUNITY_DISADVANTAGE_FLAG } from "../helpers/opportunity-attack.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -189,10 +191,20 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
    *
    *  `checkGiantKillerReminder` (helpers/giant-killer.js, chantier "8 sous-classes déjà à ≥1
    *  mécanique", 2026-08-23) : même principe, mais pour le Rôdeur LUI-MÊME quand il est touché
-   *  ou manqué par un PNJ hostile de taille Grande ou plus à 1,50 m. */
+   *  ou manqué par un PNJ hostile de taille Grande ou plus à 1,50 m.
+   *
+   *  `recordAttackOnTargets` (helpers/hunters-defense.js, même chantier) : enregistre ce PNJ
+   *  comme ayant attaqué CHAQUE cible ciblée qui est un personnage joueur — suivi générique SRD,
+   *  consulté par Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter).
+   *
+   *  `PENDING_OPPORTUNITY_DISADVANTAGE_FLAG` (helpers/opportunity-attack.js, même chantier) :
+   *  "Échappée de la horde" (Tactiques défensives) — désavantage consommé sur CE jet si un
+   *  Rôdeur avec ce choix vient de s'éloigner de ce PNJ précis, approximation assumée. */
   static async #onRollAttack(event) {
     const attack = this.actor.system.attack;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
+    const hasPendingOpportunityDisadvantage = Boolean(this.actor.getFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG));
+    if (hasPendingOpportunityDisadvantage) await this.actor.unsetFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG);
     const { isCriticalHit } = await rollCheck({
       actor: this.actor,
       formula: formatModifier(abilityMod + attack.bonus),
@@ -200,13 +212,14 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
         weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
       }),
       advantage: event.shiftKey,
-      disadvantage: event.ctrlKey,
+      disadvantage: event.ctrlKey || hasPendingOpportunityDisadvantage,
       compareToTargetAc: true,
       criticalRules: true
     });
     if (isCriticalHit) await this.actor.setFlag(SYSTEM_ID, "pendingAttackCritical", true);
     await checkSentinelReminder(this.actor);
     await checkGiantKillerReminder(this.actor);
+    await recordAttackOnTargets(this.actor);
   }
 
   /** Jet de dégâts du profil simplifié : dé(s) configuré(s) + modificateur de la même

@@ -13,7 +13,7 @@ import {
 } from "../helpers/rules.js";
 import { currencySchema } from "./shared-schema.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
 
 const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"];
 
@@ -205,14 +205,21 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         // Choix ponctuel et définitif d'un bonus passif parmi 3 (Tactiques défensives, Rôdeur
         // Hunter — cf. FeatureData#grantsChoice = "huntersDefense", DND_CUSTOM.huntersDefenses,
-        // config.js). Non appliqué automatiquement aux jets (cf. commentaire de la Capacité,
-        // features.json) : seul le choix lui-même est enregistré/affiché.
+        // config.js). "steadfast"/"multiattackDefense" appliqués automatiquement (cf.
+        // helpers/hunters-defense.js) ; "mobile" appliqué via un flag éphémère sur l'ennemi qui
+        // s'éloigne (cf. helpers/opportunity-attack.js).
         huntersDefense: new StringField({
           required: true,
           blank: true,
           initial: "",
           choices: ["mobile", "multiattackDefense", "steadfast"]
-        })
+        }),
+        // Ensemble des id d'Actor ayant fait un jet d'ATTAQUE (arme/sort) contre ce personnage
+        // depuis le début de SON round (Défense contre les attaques multiples, Tactiques
+        // défensives — cf. helpers/hunters-defense.js#recordAttackOnTargets/
+        // hasMultiattackDefenseAdvantage). Remis à zéro au début de son propre tour (hook
+        // updateCombat, dnd-custom-ai.js), même schéma que actionAvailable/reactionAvailable.
+        attackedByThisRound: new SetField(new StringField({ blank: false }), { required: true, initial: [] })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })

@@ -37,6 +37,7 @@ import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
+import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -1131,7 +1132,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       }
 
       const mod = targetSaveModifier(targetActor.system, item.system.savingThrow);
-      const roll = new Roll(`1d20${formatModifier(mod)}`);
+      // Tactiques défensives (Hunter, Rôdeur — chantier "8 sous-classes déjà à ≥1 mécanique",
+      // 2026-08-23) : avantage à la cible si "Volonté de fer" (contre Effrayé) ou "Défense contre
+      // les attaques multiples" (contre CET attaquant précis, déjà attaqué ce round) s'applique.
+      const hasDefenseAdvantage =
+        hasSteadfastAdvantage(targetActor, item.system.appliesCondition) ||
+        hasMultiattackDefenseAdvantage(targetActor, this.actor);
+      const roll = new Roll(`${hasDefenseAdvantage ? "2d20kh1" : "1d20"}${formatModifier(mod)}`);
       await roll.evaluate();
       const success = roll.total >= dc;
       if (!success && item.system.appliesCondition) {
@@ -1140,7 +1147,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const resultKey = success ? "DND_CUSTOM.Roll.SaveSuccess" : "DND_CUSTOM.Roll.SaveFail";
       await roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: targetActor }),
-        flavor: game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })
+        flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
+          hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
+        }`
       });
     }
   }
@@ -1673,6 +1682,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
     await noteActionEconomyUsage(this.actor, "action", { isWeaponAttack: true });
+    await recordAttackOnTargets(this.actor);
   }
 
   /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
@@ -1840,6 +1850,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         criticalThreshold: improvedCriticalThreshold(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+      await recordAttackOnTargets(this.actor);
       return;
     }
 
@@ -1903,7 +1914,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
         const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
         const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
-        const roll = new Roll(`${heightened ? "2d20kl1" : "1d20"}${formatModifier(mod)}`);
+        // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier
+        // "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : avantage si CE lanceur a déjà
+        // attaqué la cible ce round. Les Sorts n'ont pas d'`appliesCondition` (cf.
+        // hasSteadfastAdvantage) : "Volonté de fer" ne s'applique donc jamais ici. S'annule avec
+        // Sort Élevé (Métamagie) comme avantage/désavantage normalement (même logique que
+        // rollCheck, rolls.js).
+        const hasDefenseAdvantage = hasMultiattackDefenseAdvantage(targetActor, this.actor) && !heightened;
+        const useDisadvantage = heightened && !hasMultiattackDefenseAdvantage(targetActor, this.actor);
+        const die = hasDefenseAdvantage ? "2d20kh1" : useDisadvantage ? "2d20kl1" : "1d20";
+        const roll = new Roll(`${die}${formatModifier(mod)}`);
         await roll.evaluate();
         const success = roll.total >= dc;
         const resultKey = success
@@ -1913,7 +1933,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           : "DND_CUSTOM.Roll.SaveFail";
         await roll.toMessage({
           speaker: ChatMessage.getSpeaker({ actor: targetActor }),
-          flavor: game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })
+          flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
+            hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
+          }`
         });
       }
       return;

@@ -657,12 +657,12 @@ Hooks.on("updateActor", async (actor, changes, options) => {
   });
 });
 
-// Régénère la réaction, l'Action et l'Action bonus du personnage dont c'est désormais le tour,
-// SRD 5e ("vous récupérez votre réaction/action/action bonus au début de votre tour") — pas un
-// reset global par round, pour rester fidèle à la règle. Ne réagit qu'à un changement effectif de
-// tour/round (`turn`/`round` dans `changes`, pas une simple édition du Combat comme l'ajout d'un
-// Combattant), même garde MJ actif que la mort de PNJ ci-dessus pour n'agir qu'une fois même à
-// plusieurs MJ connectés.
+// Régénère la réaction, l'Action, l'Action bonus et la liste "déjà attaqué ce round" du
+// personnage dont c'est désormais le tour, SRD 5e ("vous récupérez votre réaction/action/action
+// bonus au début de votre tour") — pas un reset global par round, pour rester fidèle à la règle.
+// Ne réagit qu'à un changement effectif de tour/round (`turn`/`round` dans `changes`, pas une
+// simple édition du Combat comme l'ajout d'un Combattant), même garde MJ actif que la mort de
+// PNJ ci-dessus pour n'agir qu'une fois même à plusieurs MJ connectés.
 Hooks.on("updateCombat", async (combat, changes) => {
   if (!("turn" in changes) && !("round" in changes)) return;
   if (game.users.activeGM?.id !== game.user.id) return;
@@ -673,6 +673,10 @@ Hooks.on("updateCombat", async (combat, changes) => {
     if (!actor.system.combat.reactionAvailable) updates["system.combat.reactionAvailable"] = true;
     if (!actor.system.combat.actionAvailable) updates["system.combat.actionAvailable"] = true;
     if (!actor.system.combat.bonusActionAvailable) updates["system.combat.bonusActionAvailable"] = true;
+    // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier "8
+    // sous-classes déjà à ≥1 mécanique", 2026-08-23) : "déjà attaqué CE round" redevient vide au
+    // début du round suivant, même schéma que les 3 champs ci-dessus.
+    if (actor.system.combat.attackedByThisRound.size) updates["system.combat.attackedByThisRound"] = [];
     if (Object.keys(updates).length) await actor.update(updates);
   }
 
@@ -772,8 +776,8 @@ Hooks.on("deleteActiveEffect", async (effect) => {
 });
 
 // Filet de sécurité : ne laisse pas un personnage "réaction/action/action bonus bloquée" une fois
-// le combat terminé (ex. combat clos sans que ce soit revenu à son tour). Régénère les trois pour
-// tous les personnages ayant participé, même garde MJ actif que ci-dessus.
+// le combat terminé (ex. combat clos sans que ce soit revenu à son tour). Régénère les quatre
+// champs pour tous les personnages ayant participé, même garde MJ actif que ci-dessus.
 Hooks.on("deleteCombat", async (combat) => {
   if (game.users.activeGM?.id !== game.user.id) return;
 
@@ -785,6 +789,7 @@ Hooks.on("deleteCombat", async (combat) => {
       if (!actor.system.combat.reactionAvailable) update["system.combat.reactionAvailable"] = true;
       if (!actor.system.combat.actionAvailable) update["system.combat.actionAvailable"] = true;
       if (!actor.system.combat.bonusActionAvailable) update["system.combat.bonusActionAvailable"] = true;
+      if (actor.system.combat.attackedByThisRound.size) update["system.combat.attackedByThisRound"] = [];
       return update;
     })
     .filter((update) => Object.keys(update).length > 1);

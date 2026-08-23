@@ -1373,7 +1373,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez une option (bouton \"Choisir\") : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé). Choix enregistré et affiché sur la fiche, mais bonus PAS appliqué automatiquement aux jets : ce système ne distingue pas encore une attaque d'opportunité d'une attaque normale, ni ne suit quelles créatures vous ont déjà attaqué ce tour, ni ne tague un jet de sauvegarde par la condition qu'il résiste — reste à l'appréciation du MJ/joueur."
+      "description": "Choisissez une option (bouton \"Choisir\"), désormais automatisée : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage — pose un désavantage éphémère sur le prochain jet du PNJ dont vous quittez la portée, approximation : suppose que ce jet EST bien son attaque d'opportunité) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour — nouveau suivi \"attaqué ce round\", remis à zéro à votre tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé — Capacités uniquement, jamais un sort qui n'a pas ce champ dans ce système)."
     }
   },
   {
