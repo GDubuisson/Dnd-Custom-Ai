@@ -522,7 +522,9 @@
       "raging": "En Rage",
       "surprised": "Surpris",
       "wildShape": "En Forme sauvage",
-      "hunted": "Traqué"
+      "hunted": "Traqué",
+      "blessed": "Béni",
+      "guided": "Guidé"
     },
     "Journal": {
       "Biography": "Biographie",

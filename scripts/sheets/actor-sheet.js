@@ -63,20 +63,35 @@ function hasAssassinAutoCritical(actor) {
   return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
 }
 
-/** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
- *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
+/** Avantage/désavantage/bonus automatique selon les états actifs (cf. CONFIG.statusEffects) et
+ *  le niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
  *  automatisées (pas d'effets dépendant d'une cible/de la position, hors du scope "combat
  *  automatisé avancé" explicitement exclu de ce système, cf. PROJECT.md). `kind` : "check"
- *  (test de caractéristique/compétence), "save" (sauvegarde), "attack" (jet d'attaque). */
+ *  (test de caractéristique/compétence), "save" (sauvegarde), "attack" (jet d'attaque).
+ *
+ *  `bonus` (chantier "9 sorts/capacités à rider différé", 2026-08-23) : dé supplémentaire à
+ *  ajouter à la formule du jet, ex. "+1d4" — mécanisme des sorts Bénédiction/Avis divin (SRD
+ *  5e), qui accordent normalement "ajoutez 1d4 à un jet avant la fin du sort" plutôt qu'un
+ *  simple avantage/désavantage. Comme les autres conditions homebrew (raging/hunted...), aucune
+ *  durée/décompte de sort n'est suivi automatiquement : "blessed"/"guided" sont des bascules
+ *  manuelles (onglet États) posées/levées par le joueur/MJ, la seule automatisation étant
+ *  d'éviter d'oublier le +1d4 en jouant. "blessed" (Bénédiction) s'applique aux jets d'attaque
+ *  ET de sauvegarde (pas aux tests, SRD 5e) ; "guided" (Avis divin) aux tests de caractéristique/
+ *  compétence uniquement (SRD 5e : Avis divin ne cible qu'UN test, simplifié ici comme
+ *  "guided" reste actif tant que le joueur ne le lève pas lui-même, cohérent avec le reste des
+ *  bascules homebrew). Jets de sauvegarde contre la mort (#onRollDeathSave) volontairement
+ *  exclus : flux spécial à part (1d20 brut, sans passer par rollCheck/conditionRollEffects). */
 function conditionRollEffects(actor, kind, abilityKey) {
   const statuses = actor.statuses;
   const exhaustion = actor.system.attributes?.exhaustion ?? 0;
   let advantage = false;
   let disadvantage = false;
+  let bonus = "";
 
   if (kind === "check") {
     disadvantage =
       statuses.has("poisoned") || statuses.has("frightened") || exhaustion >= EXHAUSTION_CHECK_DISADVANTAGE_LEVEL;
+    if (statuses.has("guided")) bonus = "+1d4";
   } else if (kind === "attack") {
     disadvantage =
       statuses.has("poisoned") ||
@@ -86,11 +101,13 @@ function conditionRollEffects(actor, kind, abilityKey) {
       statuses.has("blinded") ||
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL;
     advantage = statuses.has("invisible");
+    if (statuses.has("blessed")) bonus = "+1d4";
   } else if (kind === "save") {
     disadvantage =
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL || (abilityKey === "dex" && statuses.has("restrained"));
+    if (statuses.has("blessed")) bonus = "+1d4";
   }
-  return { advantage, disadvantage };
+  return { advantage, disadvantage, bonus };
 }
 
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
@@ -988,7 +1005,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       flags: {
         "dnd-custom-ai": {
           ...(item.system.healsTarget ? { healRoll: true } : {}),
-          ...(item.system.reducesDamage ? { damageReduction: true } : {})
+          ...(item.system.reducesDamage ? { damageReduction: true } : {}),
+          ...(item.system.dealsDamage ? { damageRoll: true } : {})
         }
       }
     });
@@ -1024,9 +1042,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     if (remaining === null) return;
 
     const system = this.actor.system;
-    const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
-    const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
-    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
+    // saveDCAbility (item-data.js) : caractéristique explicite quand la Capacité n'appartient
+    // pas à une classe lanceuse (ex. Frappe étourdissante, Moine — DD basé sur la Sagesse, pas
+    // sur `spellcastingAbility[class]` qui n'a pas d'entrée "monk") — sinon, comportement
+    // inchangé (caractéristique d'incantation de la classe).
+    const dcAbility = item.system.saveDCAbility || DND_CUSTOM.spellcastingAbility[system.class];
+    const dcAbilityMod = dcAbility ? abilityModifier(system.abilities[dcAbility].total) : 0;
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), dcAbilityMod);
     const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.savingThrow]);
     const targets = Array.from(game.user.targets);
 
@@ -1313,7 +1335,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const cond = conditionRollEffects(this.actor, "check");
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod),
+      formula: formatModifier(mod) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
@@ -1335,7 +1357,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const cond = conditionRollEffects(this.actor, "save", key);
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod + profBonus),
+      formula: formatModifier(mod + profBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
@@ -1392,7 +1414,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod),
+      formula: formatModifier(mod) + cond.bonus,
       flavor,
       advantage: advantageKey || originAdvantage || assassinStealthAdvantage || cond.advantage,
       disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
@@ -1418,7 +1440,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const cond = conditionRollEffects(this.actor, "attack");
     const { isCriticalHit } = await rollCheck({
       actor: this.actor,
-      formula: formatModifier(atk.attackBonus),
+      formula: formatModifier(atk.attackBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
@@ -1579,7 +1601,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // commentaire) — flag posé sur CE sort précis, consommé par #onRollSpellDamage.
       const { isCriticalHit } = await rollCheck({
         actor: this.actor,
-        formula: formatModifier(attackBonus),
+        formula: formatModifier(attackBonus) + cond.bonus,
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
         advantage: event.shiftKey || cond.advantage,
         disadvantage: event.ctrlKey || cond.disadvantage,

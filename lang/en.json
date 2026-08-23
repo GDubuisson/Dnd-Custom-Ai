@@ -522,7 +522,9 @@
       "raging": "Raging",
       "surprised": "Surprised",
       "wildShape": "Wild Shape",
-      "hunted": "Hunted"
+      "hunted": "Hunted",
+      "blessed": "Blessed",
+      "guided": "Guided"
     },
     "Journal": {
       "Biography": "Biography",

@@ -199,6 +199,16 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // du bouton diffère pour rester clair en jeu. `false` pour l'immense majorité des
       // Capacités/Dons.
       reducesDamage: new BooleanField({ required: true, initial: false }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) INFLIGE des dégâts à
+      // une cible (ex. Disciplines élémentaires, Moine — chantier "9 sorts/capacités à rider
+      // différé", 2026-08-23) : marque le message de chat du même flag `damageRoll` que
+      // `rollDamage` (rolls.js), ce qui affiche le bouton générique "Appliquer les dégâts" déjà
+      // existant (hook renderChatMessageHTML, dnd-custom-ai.js) — même pipeline que les dégâts
+      // d'arme/de sort, aucune nouvelle logique d'application. Ne modélise pas un éventuel jet
+      // de sauvegarde à mi-dégâts (contrairement à SpellData#save/halfOnSave) : reste, comme le
+      // reste de ce champ, à l'arbitrage du MJ quand la Capacité l'exige. `false` pour l'immense
+      // majorité des Capacités/Dons.
+      dealsDamage: new BooleanField({ required: true, initial: false }),
       // Capacité qui inflige un jet de sauvegarde à CHAQUE cible actuellement ciblée (ex.
       // Canalisation divine "Repousser les morts-vivants", Clerc) — même mécanisme que
       // SpellData#save (rules.js > targetSaveModifier), mais pour une Capacité au lieu d'un
@@ -207,6 +217,13 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // (#onRollFeatureSave, actor-sheet.js). Vide = pas de jet de sauvegarde, comportement
       // `#onRollFeature` inchangé (l'immense majorité des Capacités).
       savingThrow: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Caractéristique du DD (cf. savingThrow ci-dessus) quand elle N'EST PAS celle
+      // d'incantation de la classe (`DND_CUSTOM.spellcastingAbility[class]`, config.js) — ex.
+      // Frappe étourdissante (Moine, SRD 5e : DD 8 + maîtrise + Sagesse, alors que le Moine n'a
+      // pas de caractéristique d'incantation du tout, absent de `spellcastingAbility`). Vide (cas
+      // par défaut, l'immense majorité des Capacités à sauvegarde) : `#onRollFeatureSave` retombe
+      // sur `spellcastingAbility[class]` comme avant (ex. Repousser les morts-vivants, Clerc).
+      saveDCAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
       // Condition (cf. DND_CUSTOM.conditions, config.js) appliquée à la cible en cas d'ÉCHEC du
       // jet ci-dessus (ex. "frightened" pour Repousser les morts-vivants) — vide = aucun effet
       // appliqué automatiquement, juste le résultat du jet posté en chat.

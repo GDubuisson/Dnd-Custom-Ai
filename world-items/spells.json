@@ -138,7 +138,7 @@
       "details": "1 action, 9 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
-      "description": "Vous bénissez jusqu'à trois créatures de votre choix à portée. Chaque fois qu'une cible effectue un jet d'attaque ou un jet de sauvegarde avant la fin du sort, elle peut ajouter 1d4 au résultat."
+      "description": "Vous bénissez jusqu'à trois créatures de votre choix à portée. Chaque fois qu'une cible effectue un jet d'attaque ou un jet de sauvegarde avant la fin du sort, elle peut ajouter 1d4 au résultat. Automatisé via l'état \"Béni\" (onglet États) : à poser manuellement sur chaque cible au moment du lancer (et à lever quand le sort prend fin) — tant qu'actif, le +1d4 est ajouté automatiquement à ses jets d'attaque et de sauvegarde."
     }
   },
   {
@@ -250,7 +250,7 @@
       "details": "1 action, Contact, Concentration, 1 minute",
       "concentration": true,
       "ritual": false,
-      "description": "Vous touchez une créature consentante. Une fois avant la fin du sort, elle peut lancer 1d4 et l'ajouter à un test de caractéristique de son choix."
+      "description": "Vous touchez une créature consentante. Une fois avant la fin du sort, elle peut lancer 1d4 et l'ajouter à un test de caractéristique de son choix. Automatisé via l'état \"Guidé\" (onglet États) : à poser manuellement sur la cible au moment du lancer, à lever après le premier test bénéficié (ou à la fin du sort) — tant qu'actif, le +1d4 est ajouté automatiquement à ses tests de caractéristique/compétence."
     }
   },
   {
@@ -367,7 +367,8 @@
       "details": "1 action bonus, 27 m, Concentration, jusqu'à 1 heure",
       "concentration": true,
       "ritual": false,
-      "description": "Vous maudissez une créature à portée. Jusqu'à la fin du sort, chaque fois que vous touchez la cible avec une attaque, elle subit 1d6 dégâts nécrotiques supplémentaires. Vous avez aussi un avantage à tout test réalisé avec la caractéristique de votre choix pour évaluer la cible. Si elle tombe à 0 point de vie avant la fin du sort, vous pouvez, à votre tour suivant, malédire une nouvelle créature en action bonus sans dépenser de charge supplémentaire."
+      "damage": { "dice": "1d6", "type": "necrotic" },
+      "description": "Vous maudissez une créature à portée. Jusqu'à la fin du sort, chaque fois que vous touchez la cible avec une attaque, elle subit 1d6 dégâts nécrotiques supplémentaires : bouton \"Jet de dégâts\" séparé de celui de l'arme/du sort utilisé pour toucher, à cliquer à chaque fois que vous touchez la cible maudite. Vous avez aussi un avantage à tout test réalisé avec la caractéristique de votre choix pour évaluer la cible (non automatisé). Si elle tombe à 0 point de vie avant la fin du sort, vous pouvez, à votre tour suivant, malédire une nouvelle créature en action bonus sans dépenser de charge supplémentaire."
     }
   },
   {
@@ -569,7 +570,8 @@
       "details": "1 action, 150 m, Instantanée",
       "concentration": false,
       "ritual": false,
-      "description": "Vous vous téléportez instantanément, avec jusqu'à un autre créature consentante à 1,50 m de vous, jusqu'à un endroit que vous avez visualisé et qui vous est familier ou clairement visible, à 150 m maximum. Si la destination est occupée ou insuffisante, vous et votre passager subissez chacun 4d6 dégâts de force et êtes déplacés au point inoccupé le plus proche."
+      "damage": { "dice": "4d6", "type": "force" },
+      "description": "Vous vous téléportez instantanément, avec jusqu'à un autre créature consentante à 1,50 m de vous, jusqu'à un endroit que vous avez visualisé et qui vous est familier ou clairement visible, à 150 m maximum. Si la destination est occupée ou insuffisante, vous et votre passager subissez chacun 4d6 dégâts de force et êtes déplacés au point inoccupé le plus proche : bouton \"Jet de dégâts\" disponible pour ce cas précis (à ne cliquer que si la destination était effectivement occupée/insuffisante)."
     }
   }
 ]

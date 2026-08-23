@@ -318,7 +318,19 @@ DND_CUSTOM.conditions = [
   // Serment de Vengeance (désavantage aux attaques de quiconque n'est pas le Paladin contre
   // elle), à poser/lever manuellement par le MJ, cf. world-items/features.json > "Traque
   // implacable".
-  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" }
+  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" },
+  // Homebrew (comme "raging"/"hunted" ci-dessus) : bascule manuelle posée par le lanceur sur une
+  // cible de Bénédiction (Clerc/Paladin) — tant qu'active, +1d4 automatique aux jets d'attaque et
+  // de sauvegarde de cette cible (cf. conditionRollEffects, actor-sheet.js). Comme les autres
+  // conditions homebrew, aucune durée ni décompte de sort n'est suivi : à lever manuellement
+  // quand le sort prend fin.
+  { id: "blessed", name: "DND_CUSTOM.Conditions.blessed", img: "icons/svg/angel.svg" },
+  // Homebrew (comme "blessed" ci-dessus) : bascule manuelle posée par le lanceur d'Avis divin
+  // (Clerc) — tant qu'active, +1d4 automatique aux tests de caractéristique/compétence de la
+  // cible. SRD 5e : normalement une seule utilisation avant la fin du sort ; simplifié comme le
+  // reste des conditions homebrew (pas de décompte automatique, à lever manuellement après usage
+  // ou fin du sort).
+  { id: "guided", name: "DND_CUSTOM.Conditions.guided", img: "icons/svg/light.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé

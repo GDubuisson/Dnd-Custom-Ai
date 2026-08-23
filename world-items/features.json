@@ -557,10 +557,11 @@
     "system": {
       "class": "bard",
       "level": 2,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "healsTarget": true,
       "source": "",
-      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas)."
+      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas). Bouton de jet ci-dessous : à cliquer une fois par allié qui se repose (ciblé), applique directement le soin."
     }
   },
   {
@@ -682,7 +683,10 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Ki",
-      "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour."
+      "savingThrow": "con",
+      "saveDCAbility": "wis",
+      "appliesCondition": "stunned",
+      "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour. Bouton de jet de sauvegarde ci-dessous, à utiliser sur la cible touchée (ciblée) juste après l'avoir frappée."
     }
   },
   {
@@ -1158,11 +1162,12 @@
       "class": "monk",
       "subclass": "fourElements",
       "level": 3,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "4d6",
+      "dealsDamage": true,
       "source": "",
       "costsResource": "Ki",
-      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts (jet de sauvegarde à mi-dégâts selon la discipline, à lancer manuellement)."
+      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts. Deux boutons séparés ci-dessous : le bouton de jet (dé) inflige les 4d6 dégâts (avec bouton \"Appliquer les dégâts\") ; le bouton \"Ki\" décompte 1 point de Ki par clic — cliquez-le 2 fois (ou plus) pour refléter le coût réel. Jet de sauvegarde à mi-dégâts selon la discipline choisie non automatisé (à gérer manuellement avec le MJ : appliquer la moitié du résultat en cas de réussite)."
     }
   },
   {
@@ -1288,7 +1293,55 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez une option avec le MJ : Pourfendeur de colosses (une fois par tour, +1d8 dégâts supplémentaires à une créature déjà blessée) ; Tueur de géants (réaction, attaque contre une créature de taille Grande ou plus qui vous touche ou vous manque à 1,50 m) ; Briseur de horde (une fois par tour, attaquez une seconde créature à 1,50 m de votre cible d'origine)."
+      "description": "Choisissez UNE option, permanente (SRD 5e) : Pourfendeur de colosses, Tueur de géants ou Briseur de horde — chacune est une Capacité séparée à glisser sur la fiche depuis le compendium une fois choisie (jamais octroyées automatiquement, comme les Invocations occultes de l'Occultiste)."
+    }
+  },
+  {
+    "name": "Pourfendeur de colosses",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "requiresRoll": true,
+      "rollFormula": "1d8",
+      "dealsDamage": true,
+      "source": "",
+      "description": "Option de Proie du chasseur (Colossus Slayer, SRD 5e). Une fois par tour, infligez 1d8 dégâts supplémentaires à une créature déjà blessée (moins de son maximum de points de vie) que vous touchez avec une attaque. Bouton de jet ci-dessous, avec bouton \"Appliquer les dégâts\" — à cliquer une seule fois par tour, sur votre jugement."
+    }
+  },
+  {
+    "name": "Tueur de géants",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature de taille Grande ou plus à 1,50 m vous touche ou vous manque avec une attaque",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Proie du chasseur (Giant Killer, SRD 5e). En réaction, attaquez une créature de taille Grande ou plus à 1,50 m de vous qui vient de vous toucher ou manquer avec une attaque au corps à corps. Utilisez le bouton d'attaque de votre arme, comme d'habitude."
+    }
+  },
+  {
+    "name": "Briseur de horde",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Proie du chasseur (Horde Breaker, SRD 5e). Une fois par tour, quand vous touchez une créature avec une attaque, vous pouvez attaquer une seconde créature différente à 1,50 m de la première, si elle est à portée. Utilisez le bouton d'attaque de votre arme une seconde fois, comme d'habitude."
     }
   },
   {
@@ -1532,7 +1585,9 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir manuellement l'état \"Effrayé\" (cf. onglet États) jusqu'à la fin de votre prochain tour. 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir l'état \"Effrayé\" jusqu'à la fin de votre prochain tour (bouton de jet de sauvegarde ci-dessous, à utiliser sur la cible ciblée). 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
     }
   },
   {
