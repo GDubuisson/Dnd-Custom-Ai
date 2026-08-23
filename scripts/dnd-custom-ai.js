@@ -66,6 +66,12 @@ Hooks.once("init", async () => {
   // Montures vivantes : même modèle de données que "npc" (bloc de stats de créature), cf.
   // scripts/sheets/npc-sheet.js — seul le type d'Actor et le libellé de fiche diffèrent.
   CONFIG.Actor.dataModels.mount = NpcData;
+  // Formes de Forme sauvage (Druide, chantier "Forme sauvage", 2026-08-23) : même principe que
+  // "mount" ci-dessus — même NpcData/DndCustomNpcSheet réutilisés tels quels, seul le type
+  // d'Actor et le libellé de fiche diffèrent. Liée au personnage via
+  // system.combat.wildShapeActorId (character-data.js) ; sa propre réserve de PV sert de 2e
+  // réserve de PV pendant la transformation.
+  CONFIG.Actor.dataModels.wildShapeForm = NpcData;
   CONFIG.Actor.dataModels.vehicle = VehicleActorData;
   CONFIG.Item.dataModels.weapon = WeaponData;
   CONFIG.Item.dataModels.armor = ArmorData;
@@ -109,6 +115,13 @@ Hooks.once("init", async () => {
     makeDefault: true,
     width: 726,
     label: "DND_CUSTOM.SheetLabels.Mount"
+  });
+
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomNpcSheet, {
+    types: ["wildShapeForm"],
+    makeDefault: true,
+    width: 726,
+    label: "DND_CUSTOM.SheetLabels.WildShapeForm"
   });
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, VehicleActorSheet, {
@@ -508,7 +521,7 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
 // que le champ XP lui-même soit modifié dans le même envoi de formulaire, pour laisser le MJ
 // libre de le personnaliser ensuite sans qu'un futur changement de FI ne l'écrase.
 Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
-  if (!["npc", "mount"].includes(actor.type)) return;
+  if (!["npc", "mount", "wildShapeForm"].includes(actor.type)) return;
   const newChallengeRating = changes.system?.challengeRating;
   if (newChallengeRating === undefined || changes.system?.xpReward !== undefined) return;
 
@@ -565,7 +578,7 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
 // userId), pour ne pas déclencher la même correction depuis chaque client connecté.
 Hooks.on("updateActor", async (actor, changes, options, userId) => {
   if (game.user.id !== userId) return;
-  if (!["character", "npc", "mount"].includes(actor.type)) return;
+  if (!["character", "npc", "mount", "wildShapeForm"].includes(actor.type)) return;
 
   const updates = {};
   const hp = actor.system.attributes?.hp;
@@ -616,6 +629,32 @@ Hooks.on("updateActor", async (actor, changes, options) => {
 // ramener à la vie (retour de test/décision assumée). Le MJ reste seul juge : pour annuler la
 // mort d'un PNJ, il retire manuellement le statut "Mort" (menu des états du token) et le
 // marqueur "vaincu" (clic droit sur le Combattant dans le Combat Tracker).
+
+// Retour automatique à la forme normale quand les PV d'une Forme sauvage (chantier "Forme
+// sauvage", 2026-08-23) tombent à 0, SRD 5e — les dégâts excédentaires ne sont JAMAIS reportés
+// sur le personnage (contrairement à un PNJ ci-dessus, cette forme n'est jamais "morte" pour de
+// bon : juste vidée, l'Actor wildShapeForm lui-même reste réutilisable). Cherche le personnage
+// qui a actuellement cette forme active (system.combat.wildShapeActorId) et vide ce champ. Même
+// garde MJ actif que la mort de PNJ ci-dessus, pour n'agir qu'une fois même à plusieurs MJ
+// connectés.
+Hooks.on("updateActor", async (actor, changes, options) => {
+  if (actor.type !== "wildShapeForm") return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  const oldHp = options.dndCustomOldHp;
+  if (oldHp === undefined || oldHp === 0) return;
+  if (actor.system.attributes.hp.value !== 0) return;
+
+  const character = game.actors.find(
+    (candidate) => candidate.type === "character" && candidate.system.combat.wildShapeActorId === actor.id
+  );
+  if (!character) return;
+
+  await character.update({ "system.combat.wildShapeActorId": "" });
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor: character }),
+    content: game.i18n.format("DND_CUSTOM.Chat.WildShapeEnded", { name: character.name, form: actor.name })
+  });
+});
 
 // Régénère la réaction, l'Action et l'Action bonus du personnage dont c'est désormais le tour,
 // SRD 5e ("vous récupérez votre réaction/action/action bonus au début de votre tour") — pas un

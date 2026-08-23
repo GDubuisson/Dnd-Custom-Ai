@@ -11,10 +11,10 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 const SYSTEM_ID = "dnd-custom-ai";
 
 /** Feuille d'ennemi/PNJ : ApplicationV2/ActorSheetV2, stats simplifiées (bonus direct,
- *  sauvegarde = bonus). Réutilisée telle quelle pour le type "mount" (montures vivantes,
- *  cf. dnd-custom-ai.js) : même fiche, juste un type d'Actor et un libellé différents. Le
- *  glisser-déposer (InventoryDragDropMixin) permet d'ajouter/retirer du butin ou de la
- *  sellerie via l'onglet "Butin". */
+ *  sauvegarde = bonus). Réutilisée telle quelle pour les types "mount" (montures vivantes) et
+ *  "wildShapeForm" (formes de Forme sauvage, Druide, cf. dnd-custom-ai.js) : même fiche, juste
+ *  un type d'Actor et un libellé différents. Le glisser-déposer (InventoryDragDropMixin) permet
+ *  d'ajouter/retirer du butin ou de la sellerie via l'onglet "Butin". */
 export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "npc"],

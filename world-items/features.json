@@ -120,11 +120,12 @@
       "class": "druid",
       "level": 2,
       "activation": "bonusAction",
+      "entersWildShape": true,
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Action bonus : prenez la forme d'une bête déjà observée (taille/FI maximale selon votre niveau, à valider avec le MJ). 2 utilisations par repos court ou long. Simplifié : ce système ne gère pas de fiche de créature séparée — le MJ et vous adjugez ensemble les capacités de la forme prise, sans suivi mécanique automatisé (deuxième réserve de PV, etc.)."
+      "description": "Action bonus : ciblez le token d'un Actor de type Forme sauvage (bête déjà observée, taille/FI maximale selon votre niveau, à valider avec le MJ) puis cliquez \"Prendre forme\". Vos PV normaux restent gelés : les PV propres de cette forme servent de 2e réserve pendant la transformation, et vous en revenez automatiquement à la forme normale si elle tombe à 0 (dégâts excédentaires ignorés, SRD 5e). 2 utilisations par repos court ou long. Retour volontaire à tout moment (bouton \"Redevenir soi-même\", onglet Statistiques). Simplifié : le MJ et vous adjugez ensemble les capacités précises de la forme prise (CA, attaques...), non automatisées au-delà des PV."
     }
   },
   {

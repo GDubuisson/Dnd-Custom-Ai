@@ -187,7 +187,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       toggleAction: DndCustomActorSheet.#onToggleAction,
       toggleBonusAction: DndCustomActorSheet.#onToggleBonusAction,
       mount: DndCustomActorSheet.#onMount,
-      dismount: DndCustomActorSheet.#onDismount
+      dismount: DndCustomActorSheet.#onDismount,
+      enterWildShape: DndCustomActorSheet.#onEnterWildShape,
+      revertWildShape: DndCustomActorSheet.#onRevertWildShape
     }
   };
 
@@ -326,6 +328,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Combat monté (don SRD 5e, cf. #onMount ci-dessous) : monture actuellement chevauchée,
     // résolue en Actor pour affichage (nom) — vide si non montée.
     context.mount = system.combat.mountedActorId ? (game.actors.get(system.combat.mountedActorId) ?? null) : null;
+
+    // Forme sauvage (don SRD 5e, cf. #onEnterWildShape ci-dessous) : forme actuellement prise,
+    // résolue en Actor pour affichage (nom + PV de la forme) — vide si forme normale.
+    context.wildShapeForm = system.combat.wildShapeActorId ? (game.actors.get(system.combat.wildShapeActorId) ?? null) : null;
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -1228,6 +1234,38 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Descend de sa monture actuelle (cf. #onMount ci-dessus). */
   static async #onDismount() {
     await this.actor.update({ "system.combat.mountedActorId": "" });
+  }
+
+  /** Prend la forme de la créature actuellement ciblée (Forme sauvage, Druide — chantier "Forme
+   *  sauvage", 2026-08-23) : même convention de ciblage que #onMount ci-dessus, réservé aux
+   *  Actors de type "wildShapeForm". `item` est la Capacité "Forme sauvage" elle-même
+   *  (`system.entersWildShape`, item-data.js) — décompte une charge, comme n'importe quelle
+   *  autre Capacité à charges limitées (#consumeFeatureCharge), et suit l'Action/Action bonus
+   *  du tour comme toute autre Capacité (#consumeActionEconomy). */
+  static async #onEnterWildShape(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.entersWildShape) return;
+
+    const targetToken = [...game.user.targets][0];
+    if (!targetToken?.actor || targetToken.actor.type !== "wildShapeForm") {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.WildShapeNoTarget"));
+      return;
+    }
+
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    await this.actor.update({ "system.combat.wildShapeActorId": targetToken.actor.id });
+  }
+
+  /** Redevient soi-même (cf. #onEnterWildShape ci-dessus) : volontaire, à tout moment — jamais
+   *  bloquant, contrairement au retour AUTOMATIQUE à 0 PV de forme (hook updateActor,
+   *  dnd-custom-ai.js). Ne rend jamais la charge de Capacité déjà consommée (SRD 5e : reprendre
+   *  une forme, même la même, en recoûte une). */
+  static async #onRevertWildShape() {
+    await this.actor.update({ "system.combat.wildShapeActorId": "" });
   }
 
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.

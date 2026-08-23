@@ -52,6 +52,16 @@
         <button type="button" class="ability-btn" data-action="mount">{{localize "DND_CUSTOM.Actor.Mount"}}</button>
         {{/if}}
       </div>
+      {{! Forme sauvage (don SRD 5e) : la prise de forme se fait depuis la Capacité elle-même
+          (onglet Capacités, bouton dédié "Prendre forme") — ce chip n'affiche le statut/le
+          retour manuel que si une forme est déjà active. }}
+      {{#if wildShapeForm}}
+      <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
+        <span>{{localize "DND_CUSTOM.Actor.WildShapeForm"}} : {{wildShapeForm.name}}
+          ({{wildShapeForm.system.attributes.hp.value}}/{{wildShapeForm.system.attributes.hp.max}} {{localize "DND_CUSTOM.Actor.HP"}})</span>
+        <button type="button" class="ability-btn" data-action="revertWildShape">{{localize "DND_CUSTOM.Actor.RevertWildShape"}}</button>
+      </div>
+      {{/if}}
     </div>
   </div>
 
