@@ -878,12 +878,11 @@
       "class": "bard",
       "subclass": "lore",
       "level": 3,
-      "activation": "reaction",
-      "reactionTrigger": "Une créature à moins de 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "costsResource": "Inspiration bardique",
       "source": "",
-      "description": "Réaction, quand une créature à 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts : dépensez un dé d'Inspiration bardique et retranchez-le du résultat (après le jet, avant de savoir s'il réussit)."
+      "description": "Réaction, quand une créature à 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts : dépensez un dé d'Inspiration bardique et retranchez-le du résultat (après le jet, avant de savoir s'il réussit). Deux boutons séparés ci-dessous : le bouton de jet (dé) donne le montant à retrancher (à appliquer manuellement au jet visé) ; le bouton \"Inspiration bardique\" décompte la charge dépensée. Économie de Réaction non suivie ici (contrairement à la plupart des autres Réactions de ce système) : les deux boutons se bloqueraient mutuellement sinon."
     }
   },
   {
@@ -1062,7 +1061,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vos attaques d'arme obtiennent un coup critique sur un résultat de 19 ou 20 au jet d'attaque, au lieu de seulement 20."
+      "description": "Vos attaques d'arme obtiennent un coup critique sur un résultat de 19 ou 20 au jet d'attaque, au lieu de seulement 20. Automatique tant que cette Capacité est présente sur la fiche (appliqué aussi aux jets d'attaque de sort, simplification déjà en place pour le critique automatique d'Assassinat)."
     }
   },
   {
@@ -1398,7 +1397,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous utilisez l'action bonus d'Action rusée, vous pouvez aussi effectuer un test d'Escamotage, utiliser des Outils de voleur pour désamorcer un piège ou crocheter une serrure, ou utiliser un objet grâce à cette action bonus."
+      "description": "Quand vous utilisez l'action bonus d'Action rusée, vous pouvez aussi effectuer un test d'Escamotage, utiliser des Outils de voleur pour désamorcer un piège ou crocheter une serrure, ou utiliser un objet grâce à cette action bonus. Non automatisable : seule l'économie d'action change (action bonus au lieu d'action), le jet lui-même utilise déjà le bouton normal de la compétence/de l'outil concerné."
     }
   },
   {
@@ -1412,7 +1411,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale."
+      "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale. Non automatisable : mouvement/distance non trackés par ce système (combat tactique hors scope, comme Salve repoussante)."
     }
   },
   {
@@ -1616,7 +1615,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous lancez un sort d'évocation qui affecte d'autres créatures que vous voyez, vous pouvez en protéger un nombre égal à 1 + le niveau du sort : elles réussissent automatiquement leur jet de sauvegarde contre le sort et ne subissent aucun dégât si elles n'en auraient normalement subi que la moitié en cas de réussite."
+      "description": "Quand vous lancez un sort d'évocation qui affecte d'autres créatures que vous voyez, vous pouvez en protéger un nombre égal à 1 + le niveau du sort : elles réussissent automatiquement leur jet de sauvegarde contre le sort et ne subissent aucun dégât si elles n'en auraient normalement subi que la moitié en cas de réussite. Automatisé de façon approximative (l'école de magie n'est plus suivie par ce système) : Maj-clic sur \"Lancer\" pour TOUT sort à sauvegarde du Magicien = une cible ciblée choisie réussit automatiquement, gratuit (même convention que Sort Prudent/Métamagie, sans le coût) — un seul allié protégé par lancer, pas le total \"1 + niveau du sort\" du texte SRD."
     }
   },
   {

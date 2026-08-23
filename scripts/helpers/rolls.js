@@ -34,7 +34,13 @@ function isActorInCombat(actor) {
  *  la même garde `isActorInCombat` que `criticalRules` : pas de critique automatique hors
  *  combat. N'annule jamais un échec critique naturel (1 naturel reste un échec critique même si
  *  `forceCriticalHit` est vrai — l'un ou l'autre, jamais les deux en même temps en pratique
- *  puisque `forceCriticalHit` dépend d'un état de la cible, pas du dé). */
+ *  puisque `forceCriticalHit` dépend d'un état de la cible, pas du dé).
+ *
+ *  `criticalThreshold` (jets d'attaque uniquement, défaut 20) : seuil à partir duquel le dé
+ *  naturel compte comme critique — ex. Critique amélioré (Champion, Guerrier, SRD 5e : critique
+ *  sur 19-20 au lieu de 20 seul). Calculé par l'appelant (actor-sheet.js > hasFeature), jamais ici
+ *  (même principe que le don Chanceux ci-dessous : ce helper générique reste ignorant des noms de
+ *  Capacités précis). Un 1 naturel reste toujours un échec critique, quel que soit le seuil. */
 export async function rollCheck({
   actor,
   formula,
@@ -43,7 +49,8 @@ export async function rollCheck({
   disadvantage = false,
   compareToTargetAc = false,
   criticalRules = false,
-  forceCriticalHit = false
+  forceCriticalHit = false,
+  criticalThreshold = 20
 }) {
   const useAdvantage = advantage && !disadvantage;
   const useDisadvantage = disadvantage && !advantage;
@@ -63,7 +70,7 @@ export async function rollCheck({
     // Un 1 naturel reste toujours un échec critique en premier, avant même de considérer
     // forceCriticalHit : un jet raté au dé ne devient jamais un coup critique automatique.
     isCriticalFumble = naturalFace === 1;
-    isCriticalHit = !isCriticalFumble && (naturalFace === 20 || forceCriticalHit);
+    isCriticalHit = !isCriticalFumble && (naturalFace >= criticalThreshold || forceCriticalHit);
     if (isCriticalHit) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalHit")})`;
     else if (isCriticalFumble) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalFumble")})`;
   }

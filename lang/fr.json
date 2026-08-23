@@ -240,6 +240,7 @@
       "SaveSuccessHalf": "{name} réussit son jet de sauvegarde de {ability} (DD {dc}) contre {spell} — dégâts réduits de moitié.",
       "SaveFail": "{name} échoue son jet de sauvegarde de {ability} (DD {dc}) contre {spell}.",
       "MetamagicCarefulSuccess": "{name} réussit automatiquement son jet de sauvegarde contre {spell} — Sort Prudent (Métamagie).",
+      "SculptSpellsSuccess": "{name} réussit automatiquement son jet de sauvegarde contre {spell} — Sculpteur de sorts.",
       "DeathSave": "Jet de sauvegarde de la mort",
       "Advantage": "Avantage",
       "Disadvantage": "Désavantage",
@@ -448,7 +449,8 @@
       "RecoveryLevelResult": "niveau {level} (+{amount})",
       "MetamagicCarefulTitle": "Sort Prudent — cible protégée",
       "MetamagicHeightenedTitle": "Sort Élevé — cible désavantagée",
-      "MetamagicConfirm": "Confirmer"
+      "MetamagicConfirm": "Confirmer",
+      "SculptSpellsTitle": "Sculpteur de sorts — cible protégée"
     },
     "Wizard": {
       "Title": "Assistant de création de personnage",

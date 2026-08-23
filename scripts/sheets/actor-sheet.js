@@ -35,6 +35,7 @@ import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
 import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
+import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -61,6 +62,15 @@ const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation ri
 function hasAssassinAutoCritical(actor) {
   if (actor.system.subclass !== "assassin") return false;
   return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
+}
+
+/** Seuil de critique (cf. rollCheck > criticalThreshold, rolls.js) : 19 si `actor` possède
+ *  "Critique amélioré" (Champion, Guerrier, SRD 5e), 20 (comportement par défaut) sinon.
+ *  Appliqué aux jets d'attaque d'arme ET de sort — RAW ne vise que les attaques d'arme, mais ce
+ *  système applique déjà la même simplification pour le critique automatique d'Assassinat
+ *  ci-dessus (les deux jets d'attaque partagent le même pipeline rollCheck). */
+function improvedCriticalThreshold(actor) {
+  return hasFeature(actor.items.contents, "Critique amélioré") ? 19 : 20;
 }
 
 /** Avantage/désavantage/bonus automatique selon les états actifs (cf. CONFIG.statusEffects) et
@@ -1446,7 +1456,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       disadvantage: event.ctrlKey || cond.disadvantage,
       compareToTargetAc: true,
       criticalRules: true,
-      forceCriticalHit: hasAssassinAutoCritical(this.actor)
+      forceCriticalHit: hasAssassinAutoCritical(this.actor),
+      criticalThreshold: improvedCriticalThreshold(this.actor)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
   }
@@ -1607,7 +1618,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         disadvantage: event.ctrlKey || cond.disadvantage,
         compareToTargetAc: true,
         criticalRules: true,
-        forceCriticalHit: hasAssassinAutoCritical(this.actor)
+        forceCriticalHit: hasAssassinAutoCritical(this.actor),
+        criticalThreshold: improvedCriticalThreshold(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
       return;
@@ -1647,6 +1659,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         careful: event.shiftKey,
         heightened: event.ctrlKey
       });
+      // Sculpteur de sorts (Évocation, Magicien, cf. helpers/sculpt-spells.js) : même Maj-clic
+      // que Sort Prudent ci-dessus mais gratuit — jamais les deux à la fois en pratique (classes
+      // différentes), donc pas de conflit si les deux helpers sont interrogés systématiquement.
+      const sculptedTargetId = await chooseSculptSpellsTarget(this.actor, targets, { careful: event.shiftKey });
 
       for (const token of targets) {
         const targetActor = token.actor;
@@ -1656,6 +1672,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ actor: targetActor }),
             content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
+          });
+          continue;
+        }
+        if (sculptedTargetId === targetActor.id) {
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+            content: game.i18n.format("DND_CUSTOM.Roll.SculptSpellsSuccess", { name: targetActor.name, spell: item.name })
           });
           continue;
         }
