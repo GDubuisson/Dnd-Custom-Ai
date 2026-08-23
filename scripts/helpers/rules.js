@@ -86,8 +86,10 @@ export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAll
  *  sans ambiguïté (cf. character-data.js > Défense sans armure du Barbare, actor-sheet.js >
  *  Aptitudes multiples du Barde, Incantation rituelle du Clerc) — pour que le joueur/MJ n'ait
  *  pas à s'en souvenir/l'appliquer à la main. Les Capacités dont l'effet dépend d'un choix du
- *  joueur (Domaine divin, Métamagie, Invocations occultes...) restent volontairement du texte
- *  descriptif, non automatisées. */
+ *  joueur (Domaine divin, Métamagie...) restent volontairement du texte descriptif, non
+ *  automatisées — à l'exception de la seule Invocation occulte "Salve implacable", mécanisée via
+ *  FeatureData#boostsSpellDamage (item-data.js) plutôt que ce helper, le reste des Invocations
+ *  restant du texte descriptif. */
 export function hasFeature(items, name) {
   return items.some((item) => item.type === "feature" && item.name === name);
 }

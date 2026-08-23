@@ -353,7 +353,121 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Apprenez avec le temps de petits pouvoirs magiques permanents (ex. voir dans le noir, parler avec les bêtes, résister à un type de dégâts). Simplifié : à choisir avec le MJ selon votre niveau, pas de liste d'options figée dans ce système."
+      "description": "À partir du niveau 2, apprenez des Invocations occultes (liste SRD de 30+ pouvoirs magiques permanents) au rythme indiqué par la table de la classe — le nombre exact connu simultanément n'est pas suivi par ce système, à gérer avec le MJ. Une sélection est disponible en tant que Capacités individuelles dans le compendium (jamais octroyées automatiquement, contrairement aux autres Capacités de classe : à glisser sur la fiche une fois choisies) : Salve implacable, Lance occulte, Salve repoussante, Vue du diable, Parole bestiale, Vue occulte, Influence enjôleuse, Buveur de vie. Seule Salve implacable a une mécanique automatisée (bonus de dégâts sur Décharge occulte) ; les autres options SRD restent à l'arbitrage du MJ."
+    }
+  },
+  {
+    "name": "Salve implacable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "boostsSpellDamage": "Décharge occulte",
+      "boostsSpellDamageAbility": "cha",
+      "description": "Invocation occulte (Agonizing Blast, SRD 5e — nécessite de connaître le sort Décharge occulte). Ajoutez votre modificateur de Charisme aux dégâts infligés par Décharge occulte : automatique, le bouton \"Jet de dégâts\" de ce sort inclut désormais ce bonus tant que cette Capacité est présente sur la fiche."
+    }
+  },
+  {
+    "name": "Lance occulte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Eldritch Spear, SRD 5e — nécessite de connaître le sort Décharge occulte). La portée de Décharge occulte passe de 18 m à 90 m. Portée non suivie numériquement par ce système : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Salve repoussante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Repelling Blast, SRD 5e — nécessite de connaître le sort Décharge occulte). Chaque fois qu'une cible est touchée par Décharge occulte, elle est repoussée de 3 m. Positionnement/déplacement non automatisés par ce système (combat tactique hors scope) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Vue du diable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Devil's Sight, SRD 5e). Voyez normalement jusqu'à 18 m dans l'obscurité, magique ou non. Vision non modélisée par ce système (pas d'intégration à l'éclairage des tokens pour cette Invocation) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Parole bestiale",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Beast Speech, SRD 5e). Vous pouvez comprendre et communiquer, dans une mesure limitée, avec les bêtes. Purement narratif, aucune mécanique de jet associée."
+    }
+  },
+  {
+    "name": "Vue occulte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Eldritch Sight, SRD 5e). Lancez Détection de la magie à volonté, sans dépenser d'emplacement de sort. Ce sort n'existe pas dans le compendium de ce système (jamais sur aucune liste de classe jouée) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Influence enjôleuse",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Beguiling Influence, SRD 5e). Maîtrise des compétences Tromperie et Persuasion. L'octroi automatique de maîtrise de compétence n'est pas modélisé par ce système : cochez manuellement les cases correspondantes sur l'onglet Compétences."
+    }
+  },
+  {
+    "name": "Buveur de vie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Lifedrinker, SRD 5e — nécessite le Bienfait de pacte de la Lame, non modélisé par ce système). Ajoutez votre modificateur de Charisme (en dégâts nécrotiques) à chaque coup porté avec votre arme de pacte. Non automatisée faute de suivi du Bienfait de pacte : à l'appréciation du MJ."
     }
   },
   {

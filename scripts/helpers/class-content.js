@@ -86,7 +86,11 @@ export async function grantClassContent(actor, classKey, level) {
       // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
       // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
       // choisie par le personnage (cf. subclassKey ci-dessus).
-      (!system.subclass || system.subclass === subclassKey)
+      (!system.subclass || system.subclass === subclassKey) &&
+      // Capacité piochée dans un grand pool d'options (ex. Invocations occultes, Occultiste) :
+      // jamais octroyée automatiquement même si class/level correspondent — cf.
+      // FeatureData#manualOnly, item-data.js.
+      !system.manualOnly
   );
 
   // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.

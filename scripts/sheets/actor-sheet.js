@@ -1684,7 +1684,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Jet de dégâts d'un sort d'attaque (cf. #onCastSpell) : juste le(s) dé(s) de dégâts
    *  configurés sur le sort, sans modificateur — contrairement à une arme, les dégâts d'un
    *  sort SRD 5e n'ajoutent pas le modificateur de caractéristique d'incantation (sauf mention
-   *  explicite du sort, non modélisée ici). */
+   *  explicite du sort, non modélisée ici) — SAUF si l'Actor possède une Capacité dont
+   *  `boostsSpellDamage` cible ce Sort par son nom exact (ex. "Salve implacable"/Agonizing
+   *  Blast, Invocation occulte de l'Occultiste, qui ajoute le modificateur de Cha aux dégâts de
+   *  "Décharge occulte" — cf. FeatureData#boostsSpellDamage, item-data.js). */
   static async #onRollSpellDamage(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell" || !item.system.damage.dice) return;
@@ -1694,10 +1697,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       : "";
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
     if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
+
+    const boostFeature = this.actor.items.contents.find(
+      (candidate) => candidate.type === "feature" && candidate.system.boostsSpellDamage === item.name
+    );
+    const boostMod = boostFeature
+      ? abilityModifier(this.actor.system.abilities[boostFeature.system.boostsSpellDamageAbility].total)
+      : 0;
+
     await rollDamage({
       actor: this.actor,
       dice: item.system.damage.dice,
-      formula: "",
+      formula: boostMod ? formatModifier(boostMod) : "",
       critical,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageType ? ` (${damageType})` : ""}`
     });

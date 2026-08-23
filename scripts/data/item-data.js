@@ -339,7 +339,28 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // premier cast gratuit, le sort redevient un sort normal (décompte un emplacement du
       // personnage comme n'importe quel autre) — approximation assumée pour une classe non
       // jouée par le personnage (multiclassage non modélisé, cf. CONCEPTION_FONCTIONNELLE.md).
-      chosenLevelOneSpell: new StringField({ required: false, blank: true, initial: "" })
+      chosenLevelOneSpell: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité piochée dans un grand pool d'options propre à une classe (ex. les Invocations
+      // occultes de l'Occultiste, SRD 5e : liste de 30+ pouvoirs dont seul un sous-ensemble est
+      // connu à la fois, le nombre progressant avec le niveau) : `class`/`level` restent
+      // renseignés normalement (affichage/cohérence, cf. tests/data/consistency.test.js), mais
+      // `grantClassContent` (helpers/class-content.js) exclut explicitement toute Capacité
+      // `manualOnly` de l'octroi automatique — sinon TOUTES les options du pool seraient
+      // octroyées d'un coup à chaque personnage de cette classe dès le niveau atteint, alors que
+      // le joueur n'en connaît qu'une poignée à la fois. Même esprit que les langues "special"
+      // (jamais auto-octroyées) : à glisser manuellement depuis le compendium Capacités une fois
+      // choisie. `false` pour l'immense majorité des Capacités.
+      manualOnly: new BooleanField({ required: true, initial: false }),
+      // Invocation occulte "Salve implacable" (Agonizing Blast, Occultiste) — SEULE des
+      // Invocations occultes mécanisée (2026-08-23) : nom exact du Sort dont les dégâts
+      // reçoivent un bonus (texte libre, même convention que costsResource/grantsSpells
+      // ci-dessus), lu par #onRollSpellDamage (actor-sheet.js) pour ajouter le modificateur de
+      // `boostsSpellDamageAbility` ci-dessous au jet de dégâts de CE Sort précis. Vide pour
+      // l'immense majorité des Capacités.
+      boostsSpellDamage: new StringField({ required: false, blank: true, initial: "" }),
+      // Caractéristique dont le modificateur est ajouté (cf. boostsSpellDamage ci-dessus) —
+      // vide tant que boostsSpellDamage est vide.
+      boostsSpellDamageAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS })
     };
   }
 
