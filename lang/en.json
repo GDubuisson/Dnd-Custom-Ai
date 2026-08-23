@@ -252,6 +252,7 @@
       "InitiativeTooltip": "Rolls Initiative and joins (or creates) the current combat."
     },
     "Chat": {
+      "OpportunityAttackAvailable": "{reactor} can make an Opportunity Attack against {mover}, who just left their melee reach.",
       "RestShort": "{name} takes a short rest.",
       "RestLong": "{name} takes a long rest and regains all hit points.",
       "SpellSlotsRecovered": "{name} uses {feature} and recovers spell slots: {list}.",

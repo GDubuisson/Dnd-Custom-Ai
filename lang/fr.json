@@ -252,6 +252,7 @@
       "InitiativeTooltip": "Lance l'Initiative et rejoint (ou crée) le combat en cours."
     },
     "Chat": {
+      "OpportunityAttackAvailable": "{reactor} peut faire une Attaque d'opportunité contre {mover}, qui vient de quitter sa portée de mêlée.",
       "RestShort": "{name} prend un repos court.",
       "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",
       "SpellSlotsRecovered": "{name} utilise {feature} et récupère des emplacements de sorts : {list}.",
