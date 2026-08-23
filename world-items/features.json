@@ -819,7 +819,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Tant que vous êtes en Rage, vous ne pouvez être ni charmé ni effrayé. Si vous êtes déjà charmé ou effrayé quand vous entrez en Rage, l'effet est suspendu pour la durée de la Rage."
+      "description": "Tant que vous êtes en Rage, vous ne pouvez être ni charmé ni effrayé — automatisé (bloque l'application de ces états). Si vous êtes déjà charmé ou effrayé quand vous entrez en Rage, l'effet est suspendu pour la durée de la Rage : automatisé (retire l'état à l'entrée en Rage), simplifié — ne revient jamais tout seul à la fin de la Rage."
     }
   },
   {
@@ -950,7 +950,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vos sorts de soin sont plus efficaces : chaque fois que vous utilisez un sort de niveau 1 ou plus pour rendre des points de vie à une créature, elle en récupère 2 de plus, +1 supplémentaire par niveau d'emplacement au-delà du premier."
+      "description": "Vos sorts de soin sont plus efficaces : chaque fois que vous utilisez un sort de niveau 1 ou plus pour rendre des points de vie à une créature, elle en récupère 2 de plus, +1 supplémentaire par niveau d'emplacement au-delà du premier — automatisé (bonus ajouté au jet de soin, surclassement inclus)."
     }
   },
   {
@@ -1130,10 +1130,11 @@
       "class": "monk",
       "subclass": "openHand",
       "level": 3,
+      "offersOpenHandTechnique": true,
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Chaque fois que vous touchez une créature avec une attaque de Rafale de coups, vous pouvez imposer l'un des effets suivants (la cible doit réussir un jet de sauvegarde de Dextérité ou Force, DD 8 + bonus de maîtrise + modificateur de Sagesse, sous peine de le subir) : à terre ; repoussée de 4,50 m ; incapable d'effectuer de réaction jusqu'à la fin de votre prochain tour."
+      "description": "Chaque fois que vous touchez une créature avec une attaque de Rafale de coups, vous pouvez imposer l'un des effets suivants (la cible doit réussir un jet de sauvegarde de Dextérité ou Force, DD 8 + bonus de maîtrise + modificateur de Sagesse, sous peine de le subir) : à terre ; repoussée de 4,50 m ; incapable d'effectuer de réaction jusqu'à la fin de votre prochain tour. Automatisé (bouton dédié : choix de l'effet puis jet de sauvegarde de chaque cible ciblée) — simplifié, sauvegarde toujours de Dextérité (jamais Force) ; l'effet \"repoussée\" reste à déplacer manuellement en cas d'échec."
     }
   },
   {
@@ -1228,7 +1229,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient."
+      "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient — automatisé (bloque l'application de l'état Charmé sur toute créature à portée d'un Paladin conscient possédant cette Capacité)."
     }
   },
   {
@@ -1342,7 +1343,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Option de Proie du chasseur (Giant Killer, SRD 5e). En réaction, attaquez une créature de taille Grande ou plus à 1,50 m de vous qui vient de vous toucher ou manquer avec une attaque au corps à corps. Utilisez le bouton d'attaque de votre arme, comme d'habitude."
+      "description": "Option de Proie du chasseur (Giant Killer, SRD 5e). En réaction, attaquez une créature de taille Grande ou plus à 1,50 m de vous qui vient de vous toucher ou manquer avec une attaque au corps à corps. Utilisez le bouton d'attaque de votre arme, comme d'habitude — automatisé (rappel de chat non-bloquant, même principe que Sentinelle, quand une telle créature vous touche ou vous manque à portée avec votre réaction disponible)."
     }
   },
   {
@@ -1368,10 +1369,11 @@
       "class": "ranger",
       "subclass": "hunter",
       "level": 7,
+      "grantsChoice": "huntersDefense",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez une option avec le MJ : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé)."
+      "description": "Choisissez une option (bouton \"Choisir\") : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé). Choix enregistré et affiché sur la fiche, mais bonus PAS appliqué automatiquement aux jets : ce système ne distingue pas encore une attaque d'opportunité d'une attaque normale, ni ne suit quelles créatures vous ont déjà attaqué ce tour, ni ne tague un jet de sauvegarde par la condition qu'il résiste — reste à l'appréciation du MJ/joueur."
     }
   },
   {
@@ -1496,10 +1498,11 @@
       "class": "sorcerer",
       "subclass": "draconic",
       "level": 1,
+      "grantsChoice": "draconicResistanceType",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez un type de dragon avec le MJ : vous gagnez une résistance au type de dégâts associé (ex. feu pour un dragon rouge). Vos points de vie maximum augmentent de 1 par niveau d'Ensorceleur, et votre CA sans armure est égale à 13 + votre modificateur de Dextérité (un bouclier reste utilisable)."
+      "description": "Choisissez un type de dragon (bouton \"Choisir\") : vous gagnez une résistance au type de dégâts associé (ex. feu pour un dragon rouge) — automatisé (dégâts appliqués à vous divisés par deux via \"Appliquer les dégâts\"). Vos points de vie maximum augmentent de 1 par niveau d'Ensorceleur, et votre CA sans armure est égale à 13 + votre modificateur de Dextérité (un bouclier reste utilisable) — les deux automatisés."
     }
   },
   {

@@ -130,6 +130,11 @@
       "eagle": "Aigle",
       "wolf": "Loup"
     },
+    "HuntersDefenses": {
+      "mobile": "Échappée de la horde (désavantage aux attaques d'opportunité subies)",
+      "multiattackDefense": "Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour)",
+      "steadfast": "Volonté de fer (avantage aux jets de sauvegarde contre être effrayé)"
+    },
     "WildMagic": {
       "BarbarianTableName": "Surtenance sauvage (Barbare)",
       "SorcererTableName": "Surtenance sauvage (Ensorceleur)"
@@ -141,6 +146,11 @@
       "precise": "Attaque précise (+1d8 aux dégâts)",
       "push": "Repousser (la cible recule de 4,50 m si elle échoue à un jet de Force)",
       "feint": "Feinte (avantage à la prochaine attaque contre cette cible ce tour)"
+    },
+    "OpenHandEffects": {
+      "prone": "À terre (état appliqué automatiquement en cas d'échec)",
+      "pushed": "Repoussée de 4,50 m (à déplacer manuellement en cas d'échec, non automatisé)",
+      "noReaction": "Pas de réaction jusqu'à la fin de votre prochain tour (bloque sa réaction en cas d'échec)"
     },
     "Actor": {
       "Name": "Nom du personnage",
@@ -269,6 +279,8 @@
     "Chat": {
       "OpportunityAttackAvailable": "{reactor} peut faire une Attaque d'opportunité contre {mover}, qui vient de quitter sa portée de mêlée.",
       "SentinelAvailable": "{reactor} peut utiliser sa réaction (Sentinelle) pour attaquer {attacker}, qui vient d'attaquer un allié à 1,50 m de lui.",
+      "GiantKillerAvailable": "{reactor} peut utiliser sa réaction (Tueur de géants) pour attaquer {attacker}, une créature de taille Grande ou plus qui vient de le toucher ou de le manquer à 1,50 m.",
+      "ConditionBlockedByImmunity": "{name} est immunisé et ne peut pas être {condition}.",
       "MountNoTarget": "Ciblez le token de votre monture (Actor de type Monture) avant de cliquer Monter.",
       "WildShapeNoTarget": "Ciblez le token de la forme voulue (Actor de type Forme sauvage) avant de cliquer Prendre forme.",
       "WildShapeEnded": "{name} n'a plus assez de PV sous sa forme ({form}) et redevient lui-même.",

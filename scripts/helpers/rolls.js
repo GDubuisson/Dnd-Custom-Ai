@@ -126,17 +126,22 @@ export async function rollCheck({
  *  gère aussi correctement une formule à plusieurs types de dés (ex. arme magique
  *  "1d8+1d4"), contrairement à une manipulation de chaîne de caractères. DOIT être appelé avant
  *  `evaluate()` (altérer un jet déjà résolu n'a pas de sens côté Foundry). */
-export async function rollDamage({ actor, dice, formula, flavor, critical = false }) {
+export async function rollDamage({ actor, dice, formula, flavor, critical = false, damageType = "" }) {
   const roll = new Roll(`${dice}${formula}`);
   if (critical) roll.alter(2, 0);
   await roll.evaluate();
   const label = critical ? `${flavor} (${game.i18n.localize("DND_CUSTOM.Roll.CriticalDamage")})` : flavor;
   // criticalHit ici aussi (même flag que rollCheck ci-dessus) : le jet de dégâts doublé profite
   // du même effet visuel que le jet d'attaque qui l'a déclenché (retour de test, lot 3 point 8).
+  // `damageType` (clé brute DND_CUSTOM.damageTypes, ex. "fire" — chantier "8 sous-classes déjà à
+  // ≥1 mécanique", 2026-08-23) : posé en flag pour que le bouton "Appliquer les dégâts" (hook
+  // renderChatMessageHTML, dnd-custom-ai.js > applyDamageToTargets) puisse résoudre une
+  // résistance éventuelle propre à CHAQUE cible ciblée (ex. Résilience draconique). Vide = type
+  // non renseigné à la source (ex. Capacité `dealsDamage`) : jamais de résistance appliquée.
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: { "dnd-custom-ai": { damageRoll: true, ...(critical ? { criticalHit: true } : {}) } }
+    flags: { "dnd-custom-ai": { damageRoll: true, damageType, ...(critical ? { criticalHit: true } : {}) } }
   });
   return roll;
 }

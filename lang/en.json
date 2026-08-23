@@ -130,6 +130,11 @@
       "eagle": "Eagle",
       "wolf": "Wolf"
     },
+    "HuntersDefenses": {
+      "mobile": "Escape the Horde (disadvantage on opportunity attacks against you)",
+      "multiattackDefense": "Multiattack Defense (advantage on a saving throw against a creature that already attacked you this turn)",
+      "steadfast": "Steadfast (advantage on saving throws against being frightened)"
+    },
     "WildMagic": {
       "BarbarianTableName": "Wild Surge (Barbarian)",
       "SorcererTableName": "Wild Surge (Sorcerer)"
@@ -141,6 +146,11 @@
       "precise": "Precision Attack (+1d8 damage)",
       "push": "Pushing Attack (target pushed 15 ft. if it fails a Strength save)",
       "feint": "Feinting Attack (advantage on your next attack against that target this turn)"
+    },
+    "OpenHandEffects": {
+      "prone": "Knocked prone (status applied automatically on a failed save)",
+      "pushed": "Pushed 15 ft. away (move manually on a failed save, not automated)",
+      "noReaction": "Can't take a reaction until the end of your next turn (blocks their reaction on a failed save)"
     },
     "Actor": {
       "Name": "Character name",
@@ -269,6 +279,8 @@
     "Chat": {
       "OpportunityAttackAvailable": "{reactor} can make an Opportunity Attack against {mover}, who just left their melee reach.",
       "SentinelAvailable": "{reactor} can use their reaction (Sentinel) to attack {attacker}, who just attacked an ally within 1.5 m.",
+      "GiantKillerAvailable": "{reactor} can use their reaction (Giant Killer) to attack {attacker}, a Large or bigger creature that just hit or missed them within 1.5 m.",
+      "ConditionBlockedByImmunity": "{name} is immune and cannot be {condition}.",
       "MountNoTarget": "Target your mount's token (a Mount-type Actor) before clicking Mount.",
       "WildShapeNoTarget": "Target the token of the desired form (a Wild Shape Form-type Actor) before clicking Take Shape.",
       "WildShapeEnded": "{name} runs out of hit points in their shape ({form}) and reverts to themselves.",

@@ -188,6 +188,15 @@ DND_CUSTOM.maneuvers = {
   feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
+/** Effets de Technique de la Main Ouverte (Open Hand, Moine, SRD 5e) — reproposés à chaque
+ *  utilisation (cf. FeatureData#offersOpenHandTechnique, #onUseOpenHandTechnique dans
+ *  actor-sheet.js), même esprit que DND_CUSTOM.maneuvers ci-dessus. */
+DND_CUSTOM.openHandEffects = {
+  prone: "DND_CUSTOM.OpenHandEffects.prone",
+  pushed: "DND_CUSTOM.OpenHandEffects.pushed",
+  noReaction: "DND_CUSTOM.OpenHandEffects.noReaction"
+};
+
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
 DND_CUSTOM.classHitDice = {
   barbarian: 12,
@@ -381,6 +390,29 @@ DND_CUSTOM.damageTypes = {
   psychic: "DND_CUSTOM.Item.DamageTypes.psychic",
   radiant: "DND_CUSTOM.Item.DamageTypes.radiant",
   thunder: "DND_CUSTOM.Item.DamageTypes.thunder"
+};
+
+/** Sous-ensemble de DND_CUSTOM.damageTypes ci-dessus : les 5 seuls types réellement associés à
+ *  un type de dragon SRD 5e (Résilience draconique, Ensorceleur Lignée draconique — choix
+ *  ponctuel et définitif, cf. FeatureData#grantsChoice = "draconicResistanceType",
+ *  CharacterData#combat.draconicResistanceType, #onChooseFeatureOption dans actor-sheet.js).
+ *  Mêmes clés de localisation que damageTypes, pas de doublon à maintenir. */
+DND_CUSTOM.draconicResistanceTypes = {
+  acid: DND_CUSTOM.damageTypes.acid,
+  cold: DND_CUSTOM.damageTypes.cold,
+  fire: DND_CUSTOM.damageTypes.fire,
+  lightning: DND_CUSTOM.damageTypes.lightning,
+  poison: DND_CUSTOM.damageTypes.poison
+};
+
+/** Tactiques défensives (Hunter, Rôdeur, SRD 5e) : choix ponctuel et définitif d'un bonus passif
+ *  parmi 3 (cf. FeatureData#grantsChoice = "huntersDefense", CharacterData#combat.huntersDefense,
+ *  #onChooseFeatureOption dans actor-sheet.js) — non appliqué automatiquement aux jets (cf.
+ *  commentaire de la Capacité, features.json), seul le choix lui-même est enregistré/affiché. */
+DND_CUSTOM.huntersDefenses = {
+  mobile: "DND_CUSTOM.HuntersDefenses.mobile",
+  multiattackDefense: "DND_CUSTOM.HuntersDefenses.multiattackDefense",
+  steadfast: "DND_CUSTOM.HuntersDefenses.steadfast"
 };
 
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */

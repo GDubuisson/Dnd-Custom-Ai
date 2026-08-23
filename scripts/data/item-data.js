@@ -296,13 +296,21 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
       costsResource: new StringField({ required: false, blank: true, initial: "" }),
       // Capacité qui propose un choix ponctuel et définitif au joueur (ex. "Aspect de la bête",
-      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem) : clé du champ correspondant
-      // sous `CharacterData#combat` où le choix est persisté une fois fait (ex. "totemSpirit"
-      // -> `system.combat.totemSpirit`) — vide pour l'immense majorité des Capacités, qui n'ont
-      // pas ce genre de choix. Bouton "Choisir" affiché (onglet Capacités/Sorts, cf.
-      // #onChooseFeatureOption, actor-sheet.js) tant que le champ visé est encore vide,
-      // disparaît une fois le choix fait (verrouillé, même logique que le choix de sous-classe).
-      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] }),
+      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem ; "Résilience draconique",
+      // Ensorceleur — type de dégâts résisté ; "Tactiques défensives", Rôdeur — un bonus passif
+      // parmi 3) : clé du champ correspondant sous `CharacterData#combat` où le choix est
+      // persisté une fois fait (ex. "totemSpirit" -> `system.combat.totemSpirit`) — vide pour
+      // l'immense majorité des Capacités, qui n'ont pas ce genre de choix. Bouton "Choisir"
+      // affiché (onglet Capacités/Sorts, cf. #onChooseFeatureOption, actor-sheet.js et
+      // CHOICE_OPTIONS_TABLES qui y associe la table d'options correspondante) tant que le champ
+      // visé est encore vide, disparaît une fois le choix fait (verrouillé, même logique que le
+      // choix de sous-classe).
+      grantsChoice: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: ["totemSpirit", "draconicResistanceType", "huntersDefense"]
+      }),
       // Capacité qui invoque un compagnon animal (ex. "Compagnon animal", Maître des bêtes,
       // Rôdeur) : bouton "Invoquer le compagnon" affiché (onglet Capacités/Sorts, cf.
       // #onSummonCompanion, actor-sheet.js/helpers/companion.js) une seule fois (flag
@@ -330,6 +338,14 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // actor-sheet.js, et DND_CUSTOM.maneuvers, config.js. `false` pour l'immense majorité des
       // Capacités.
       offersManeuverChoice: new BooleanField({ required: true, initial: false }),
+      // Technique de la Main Ouverte (Open Hand, Moine, SRD 5e — chantier "8 sous-classes déjà à
+      // ≥1 mécanique", 2026-08-23) : choix d'un effet parmi 3 (à terre/repoussée/pas de
+      // réaction, cf. DND_CUSTOM.openHandEffects, config.js) reproposé À CHAQUE utilisation
+      // (même esprit que offersManeuverChoice ci-dessus), suivi d'un jet de sauvegarde de
+      // Dextérité (DD 8 + maîtrise + Sagesse, simplifié — SRD 5e laisse la cible choisir Dex ou
+      // Force) pour CHAQUE cible ciblée — cf. #onUseOpenHandTechnique, actor-sheet.js. `false`
+      // pour l'immense majorité des Capacités.
+      offersOpenHandTechnique: new BooleanField({ required: true, initial: false }),
       // Don qui laisse le joueur choisir UNE caractéristique à améliorer à l'octroi (ex.
       // Athlète : Force ou Dextérité ; Résilient : n'importe laquelle, avec en plus la maîtrise
       // du jet de sauvegarde correspondant) — `false` pour l'immense majorité des Capacités/

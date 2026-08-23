@@ -52,6 +52,14 @@ const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
 // #onCastSpell) : une par classe qui l'a en SRD 5e et pour laquelle elle est modélisée ici.
 const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
 
+// Table d'options par valeur de FeatureData#grantsChoice (cf. #onChooseFeatureOption ci-dessous)
+// — une entrée par choix ponctuel et définitif existant dans ce système.
+const CHOICE_OPTIONS_TABLES = {
+  totemSpirit: DND_CUSTOM.totemSpirits,
+  draconicResistanceType: DND_CUSTOM.draconicResistanceTypes,
+  huntersDefense: DND_CUSTOM.huntersDefenses
+};
+
 /** Critique automatique de la Capacité "Assassinat" (sous-classe Assassin, Roublard — cf.
  *  world-items/subclasses.json > "assassin") : vrai si `actor` possède cette sous-classe ET
  *  qu'au moins une des cibles actuellement ciblées (`game.user.targets`) porte l'état "Surpris"
@@ -183,6 +191,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       chooseInitiateMagic: DndCustomActorSheet.#onChooseInitiateMagic,
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       useManeuver: DndCustomActorSheet.#onUseManeuver,
+      useOpenHandTechnique: DndCustomActorSheet.#onUseOpenHandTechnique,
       toggleReaction: DndCustomActorSheet.#onToggleReaction,
       toggleAction: DndCustomActorSheet.#onToggleAction,
       toggleBonusAction: DndCustomActorSheet.#onToggleBonusAction,
@@ -1324,16 +1333,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "Aspect de la bête", Voie du Cœur sauvage/Barbare) : petite fenêtre à choix unique (radio),
    *  même mécanique que offerSubclassChoiceDialog (helpers/subclass-choice.js)/
    *  #offerEquipSlotDialog (sheets/inventory-drag-drop.js). Le champ ciblé
-   *  (`system.combat.<grantsChoice>`) et les options possibles viennent respectivement de
-   *  `grantsChoice` lui-même et de DND_CUSTOM.totemSpirits (seule table de choix existante
-   *  pour l'instant, cf. config.js) — n'affiche rien si le choix est déjà fait (bouton déjà
-   *  masqué côté template de toute façon, revérifié ici par sécurité). */
+   *  (`system.combat.<grantsChoice>`) et la table d'options viennent respectivement de
+   *  `grantsChoice` lui-même et de CHOICE_OPTIONS_TABLES ci-dessous — n'affiche rien si le choix
+   *  est déjà fait (bouton déjà masqué côté template de toute façon, revérifié ici par
+   *  sécurité). */
   static async #onChooseFeatureOption(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     const fieldKey = item?.system.grantsChoice;
     if (!fieldKey || this.actor.system.combat[fieldKey]) return;
 
-    const options = DND_CUSTOM.totemSpirits;
+    const options = CHOICE_OPTIONS_TABLES[fieldKey];
     const rows = Object.entries(options)
       .map(
         ([key, labelKey], index) => `
@@ -1444,6 +1453,86 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: `${item.name} — ${game.i18n.localize(options[chosenKey])} (${remaining}/${item.system.uses.max})`
     });
+  }
+
+  /** Technique de la Main Ouverte (Open Hand, Moine, SRD 5e — chantier "8 sous-classes déjà à
+   *  ≥1 mécanique", 2026-08-23) : sur un coup de Rafale de coups, choix d'un effet parmi 3 (cf.
+   *  FeatureData#offersOpenHandTechnique/DND_CUSTOM.openHandEffects, config.js), reproposé à
+   *  chaque utilisation (même dialogue que #onUseManeuver ci-dessus), puis jet de sauvegarde de
+   *  Dextérité (simplifié — SRD 5e laisse la cible choisir Dex ou Force) pour CHAQUE cible
+   *  actuellement ciblée, comparé au DD de Moine (8 + maîtrise + Sagesse, `saveDCAbility: "wis"`
+   *  toujours réglé sur cette Capacité, jamais `spellcastingAbility[class]` — le Moine n'est pas
+   *  une classe lanceuse). Ne consomme ni charge ni Action/Action bonus propres : rider gratuit
+   *  d'un coup de Rafale de coups déjà comptabilisée séparément (costsResource: "Ki"). Échec :
+   *  applique l'effet choisi (à terre -> toggleStatusEffect ; pas de réaction -> vide
+   *  reactionAvailable UNIQUEMENT pour un personnage joueur, une cible PNJ n'a pas ce suivi ;
+   *  repoussée -> non automatisé, laissé au MJ, cf. commentaire de la Capacité). */
+  static async #onUseOpenHandTechnique(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersOpenHandTechnique) return;
+
+    const options = DND_CUSTOM.openHandEffects;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="openHandEffect" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+    const chosenEffect = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.openHandEffect?.value
+      }
+    });
+    if (!chosenEffect) return;
+
+    const system = this.actor.system;
+    const wisMod = abilityModifier(system.abilities.wis.total);
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), wisMod);
+    const targets = Array.from(game.user.targets);
+
+    if (!targets.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", {
+          spell: item.name,
+          ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
+          dc
+        })
+      });
+      return;
+    }
+
+    for (const token of targets) {
+      const targetActor = token.actor;
+      if (!targetActor?.system?.abilities) continue;
+
+      const mod = targetSaveModifier(targetActor.system, "dex");
+      const roll = new Roll(`1d20${formatModifier(mod)}`);
+      await roll.evaluate();
+      const success = roll.total >= dc;
+      if (!success) {
+        if (chosenEffect === "prone") await targetActor.toggleStatusEffect("prone", { active: true });
+        else if (chosenEffect === "noReaction" && targetActor.type === "character") {
+          await targetActor.update({ "system.combat.reactionAvailable": false });
+        }
+      }
+      const resultKey = success ? "DND_CUSTOM.Roll.SaveSuccess" : "DND_CUSTOM.Roll.SaveFail";
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        flavor: `${game.i18n.format(resultKey, {
+          name: targetActor.name,
+          spell: item.name,
+          ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
+          dc
+        })} — ${game.i18n.localize(options[chosenEffect])}`
+      });
+    }
   }
 
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
@@ -1619,7 +1708,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       this.actor.system.abilities,
       proficiencyBonus(this.actor.system.attributes.level)
     );
-    const damageType = item.system.damage.type
+    const damageTypeLabel = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
     // Consomme le flag posé par #onRollWeaponAttack sur un coup critique (jamais sur l'Actor,
@@ -1632,8 +1721,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       dice,
       formula: formatModifier(atk.abilityMod),
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`,
-      critical
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      critical,
+      damageType: item.system.damage.type
     });
   }
 
@@ -1676,6 +1766,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       (feature) => feature.type === "feature" && feature.system.chosenLevelOneSpell === item.name
     );
     const castsAsFreeInitiateSpell = Boolean(initiateFeature && initiateFeature.system.uses.value > 0);
+    // Palier RÉELLEMENT dépensé (peut différer de item.system.level en cas de surclassement) —
+    // sert au bonus de soin de Disciple de la vie (Life, Clerc) ci-dessous, cf. son commentaire.
+    let effectiveSpellLevel = item.system.level;
     if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell && !castsAsFreeInitiateSpell) {
       const slots = this.actor.system.spells.slots;
       // Détermine quel palier dépenser (le sien si disponible, sinon propose un surclassement
@@ -1686,6 +1779,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
         return;
       }
+      effectiveSpellLevel = chosenLevel;
       await this.actor.update({ [`system.spells.slots.${chosenLevel}.value`]: slots[chosenLevel].value - 1 });
 
       // Voie de la Magie sauvage (Ensorceleur, cf. world-items/subclasses.json > "wildSorcery") :
@@ -1835,10 +1929,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const system = this.actor.system;
       const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      // Disciple de la vie (Life, Clerc, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
+      // 2026-08-23) : +2 PV sur tout sort de niveau 1+ qui soigne, +1 de plus par palier
+      // au-delà du premier (surclassement inclus, cf. effectiveSpellLevel ci-dessus). Un tour de
+      // magie (niveau 0) n'en bénéficie jamais.
+      const disciplineOfLifeBonus =
+        effectiveSpellLevel >= 1 && hasFeature(this.actor.items.contents, "Disciple de la vie")
+          ? 2 + (effectiveSpellLevel - 1)
+          : 0;
       await rollHeal({
         actor: this.actor,
         dice: item.system.heal.dice,
-        formula: formatModifier(spellAbilityMod),
+        formula: formatModifier(spellAbilityMod + disciplineOfLifeBonus),
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
       });
       return;
@@ -1861,7 +1963,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell" || !item.system.damage.dice) return;
 
-    const damageType = item.system.damage.type
+    const damageTypeLabel = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
@@ -1879,7 +1981,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       dice: item.system.damage.dice,
       formula: boostMod ? formatModifier(boostMod) : "",
       critical,
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageType ? ` (${damageType})` : ""}`
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      damageType: item.system.damage.type
     });
   }
 

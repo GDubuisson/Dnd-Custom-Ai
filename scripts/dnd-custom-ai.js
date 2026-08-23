@@ -31,6 +31,7 @@ import { registerOpportunityAttackHooks } from "./helpers/opportunity-attack.js"
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
+import { isImmuneToCondition, suspendExistingImmunizedConditions } from "./helpers/condition-immunity.js";
 import {
   equipmentSlots,
   isOffHandEligible,
@@ -723,12 +724,39 @@ Hooks.on("createActiveEffect", async (effect) => {
   // décompte de durée ci-dessous, volontairement pas conditionné à game.combat.round.
   if (actor.system.subclass === "wildMagic") await rollWildSurge(actor, "barbarian");
 
+  // Rage sans esprit (Berserker, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
+  // 2026-08-23) : suspend Charmé/Effrayé déjà actifs à l'instant où la Rage démarre, combat ou
+  // pas — même logique que la Surtenance sauvage ci-dessus, pas conditionnée à game.combat.round.
+  await suspendExistingImmunizedConditions(actor);
+
   if (!game.combat?.round) return;
 
   await actor.update({
     "system.combat.rageRoundsRemaining": RAGE_DURATION_ROUNDS,
     "system.combat.rageLastRound": game.combat.round
   });
+});
+
+// Rage sans esprit (Berserker)/Aura de dévotion (Devotion) — chantier "8 sous-classes déjà à
+// ≥1 mécanique", 2026-08-23 : bloque la création d'une ActiveEffect Charmé/Effrayé sur un
+// personnage actuellement immunisé (cf. isImmuneToCondition, helpers/condition-immunity.js).
+// Pas de garde MJ actif ici (contrairement aux hooks réactifs ci-dessus) : même principe que le
+// blocage de conflit d'emplacement d'équipement plus bas (preUpdateItem) — un hook "pre" qui
+// annule la création s'évalue localement chez le client à l'origine de la tentative, jamais
+// besoin de le restreindre à un seul MJ actif pour éviter un doublon.
+Hooks.on("preCreateActiveEffect", (effect) => {
+  const actor = effect.parent;
+  if (!(actor instanceof Actor)) return;
+  const conditionId = [...(effect.statuses ?? [])][0];
+  if (!conditionId || !isImmuneToCondition(actor, conditionId)) return;
+
+  ui.notifications.info(
+    game.i18n.format("DND_CUSTOM.Chat.ConditionBlockedByImmunity", {
+      name: actor.name,
+      condition: game.i18n.localize(DND_CUSTOM.conditions.find((c) => c.id === conditionId)?.name ?? conditionId)
+    })
+  );
+  return false;
 });
 
 // Symétrique de la création ci-dessus : remet le compteur à zéro quand "raging" est retiré
@@ -793,7 +821,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   } else {
     button.addEventListener("click", async () => {
       button.disabled = true;
-      await applyDamageToTargets(amount, message.speaker?.actor);
+      await applyDamageToTargets(amount, message.speaker?.actor, message.getFlag(SYSTEM_ID, "damageType"));
       await message.setFlag(SYSTEM_ID, "damageApplied", true);
     });
   }
@@ -802,8 +830,14 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 
 /** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
  *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
- *  des dégâts à un PNJ/une monture. */
-async function applyDamageToTargets(amount, sourceActorId) {
+ *  des dégâts à un PNJ/une monture.
+ *
+ *  `damageType` (clé brute DND_CUSTOM.damageTypes, cf. flag posé par rollDamage/rolls.js —
+ *  chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : résistance de CHAQUE cible
+ *  résolue individuellement (Résilience draconique, Ensorceleur — seule résistance modélisée
+ *  dans ce système pour l'instant, jamais sur un PNJ/une monture dont NpcData n'a pas ce champ),
+ *  dégâts arrondis à l'inférieur après moitié comme le veut le SRD 5e. */
+async function applyDamageToTargets(amount, sourceActorId, damageType = "") {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
@@ -835,7 +869,10 @@ async function applyDamageToTargets(amount, sourceActorId) {
       continue;
     }
 
-    let remaining = amount;
+    const isResistant = Boolean(damageType) && actor.system.combat?.draconicResistanceType === damageType;
+    const targetAmount = isResistant ? Math.floor(amount / 2) : amount;
+
+    let remaining = targetAmount;
     const updates = {};
     const temp = hp.temp ?? 0;
     if (temp > 0) {
@@ -853,8 +890,8 @@ async function applyDamageToTargets(amount, sourceActorId) {
     // taper une valeur arbitraire directement dans le champ PV de l'en-tête (character-sheet.hbs,
     // désormais `disabled` côté Joueur).
     if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
-    if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
-      await checkConcentration(actor, amount);
+    if (targetAmount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
+      await checkConcentration(actor, targetAmount);
     }
   }
 }

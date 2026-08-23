@@ -191,7 +191,28 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // soi-même") ou automatiquement quand les PV de la forme tombent à 0 (hook updateActor,
         // dnd-custom-ai.js — dégâts excédentaires jamais reportés sur le personnage, SRD 5e).
         // Vide = pas transformé.
-        wildShapeActorId: new StringField({ required: true, blank: true, initial: "" })
+        wildShapeActorId: new StringField({ required: true, blank: true, initial: "" }),
+        // Choix ponctuel et définitif du type de dégâts résisté (Résilience draconique,
+        // Ensorceleur Lignée draconique — cf. FeatureData#grantsChoice = "draconicResistanceType",
+        // chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : restreint aux 5 types
+        // réellement associés à un type de dragon SRD 5e (contrairement à totemSpirit/
+        // huntersDefense, une sous-liste de DND_CUSTOM.damageTypes plutôt qu'une table dédiée).
+        draconicResistanceType: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: ["acid", "cold", "fire", "lightning", "poison"]
+        }),
+        // Choix ponctuel et définitif d'un bonus passif parmi 3 (Tactiques défensives, Rôdeur
+        // Hunter — cf. FeatureData#grantsChoice = "huntersDefense", DND_CUSTOM.huntersDefenses,
+        // config.js). Non appliqué automatiquement aux jets (cf. commentaire de la Capacité,
+        // features.json) : seul le choix lui-même est enregistré/affiché.
+        huntersDefense: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: ["mobile", "multiattackDefense", "steadfast"]
+        })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
@@ -254,8 +275,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // ci-dessous) : l'Exhaustion divise par deux le maximum de PV dans son ensemble, bonus de
     // don inclus, pas seulement les PV de base.
     const toughFeatBonus = hasFeature(items, "Tenace") ? 2 * this.attributes.level : 0;
+    // Résilience draconique (Draconic, Ensorceleur, SRD 5e — chantier "8 sous-classes déjà à ≥1
+    // mécanique", 2026-08-23) : +1 PV max par niveau, même schéma que Tenace ci-dessus (recalculé
+    // à chaque niveau, jamais figé au niveau d'acquisition).
+    const draconicResilienceBonus = hasFeature(items, "Résilience draconique") ? this.attributes.level : 0;
     this.attributes.hp.max = exhaustionMaxHp(
-      maxHitPoints(hitDie, this.attributes.level, conMod) + toughFeatBonus,
+      maxHitPoints(hitDie, this.attributes.level, conMod) + toughFeatBonus + draconicResilienceBonus,
       this.attributes.exhaustion
     );
 
@@ -264,8 +289,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // uniquement sans armure portée (un bouclier reste utilisable sans perdre le bénéfice, cf.
     // armorClass qui ajoute son bonus séparément) — appliqué automatiquement dès que le
     // personnage possède la Capacité, sans que le joueur ait à y penser à chaque calcul de CA.
+    // Résilience draconique (Draconic, Ensorceleur, SRD 5e — chantier "8 sous-classes déjà à ≥1
+    // mécanique", 2026-08-23) : 13 + Dex au lieu de 10 + Dex sans armure, donc un bonus fixe de
+    // +3 par rapport à la base 10+Dex déjà posée par armorClass — même mécanisme que le Barbare
+    // ci-dessus (un bonus "sans armure" ajouté au 10+Dex de base), jamais les deux à la fois
+    // dans ce système mono-classe.
     const unarmoredDefenseBonus =
-      !equippedArmor && hasFeature(items, "Défense sans armure (Barbare)") ? conMod : 0;
+      (!equippedArmor && hasFeature(items, "Défense sans armure (Barbare)") ? conMod : 0) +
+      (!equippedArmor && hasFeature(items, "Résilience draconique") ? 3 : 0);
     this.attributes.ac.value = armorClass(
       dexMod,
       equippedArmor,

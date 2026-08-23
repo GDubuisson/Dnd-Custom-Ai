@@ -3,6 +3,7 @@ import { formatModifier } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
+import { checkGiantKillerReminder } from "../helpers/giant-killer.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -184,7 +185,11 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
    *  `checkSentinelReminder` (helpers/sentinel.js, chantier "Combat automatisé avancé", cadrage
    *  du 2026-08-23) : après le jet, si ce PNJ est hostile et attaque une cible autre qu'un
    *  Combattant PJ à 1,50 m possédant Sentinelle avec réaction disponible, poste un rappel de
-   *  chat — jamais d'interruption, le MJ/joueur reste libre d'agir ensuite. */
+   *  chat — jamais d'interruption, le MJ/joueur reste libre d'agir ensuite.
+   *
+   *  `checkGiantKillerReminder` (helpers/giant-killer.js, chantier "8 sous-classes déjà à ≥1
+   *  mécanique", 2026-08-23) : même principe, mais pour le Rôdeur LUI-MÊME quand il est touché
+   *  ou manqué par un PNJ hostile de taille Grande ou plus à 1,50 m. */
   static async #onRollAttack(event) {
     const attack = this.actor.system.attack;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
@@ -201,6 +206,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     });
     if (isCriticalHit) await this.actor.setFlag(SYSTEM_ID, "pendingAttackCritical", true);
     await checkSentinelReminder(this.actor);
+    await checkGiantKillerReminder(this.actor);
   }
 
   /** Jet de dégâts du profil simplifié : dé(s) configuré(s) + modificateur de la même
@@ -210,7 +216,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     const attack = this.actor.system.attack;
     if (!attack.damage.dice) return;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
-    const damageType = attack.damage.type ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage.type]) : "";
+    const damageTypeLabel = attack.damage.type ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage.type]) : "";
     const critical = Boolean(this.actor.getFlag(SYSTEM_ID, "pendingAttackCritical"));
     if (critical) await this.actor.unsetFlag(SYSTEM_ID, "pendingAttackCritical");
     await rollDamage({
@@ -219,8 +225,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       formula: formatModifier(abilityMod + attack.damage.bonus),
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", {
         weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
-      })}${damageType ? ` (${damageType})` : ""}`,
-      critical
+      })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      critical,
+      damageType: attack.damage.type
     });
   }
 
