@@ -146,10 +146,16 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       }),
       // Économie d'action de combat, SRD 5e (cf. FeatureData/SpellData#activation) : une seule
       // réaction utilisable par round, régénérée au début de son propre tour tant qu'un combat
-      // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js). Pas de suivi
-      // pour l'action/l'action bonus — hors scope, le système ne verrouille pas le tour lui-même.
+      // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js).
       combat: new SchemaField({
         reactionAvailable: new BooleanField({ required: true, initial: true }),
+        // Action/Action bonus du tour (chantier "Suivi de l'action/action bonus", 2026-08-23) :
+        // même régénération que reactionAvailable ci-dessus, mais suivi NON-bloquant (cf.
+        // helpers/action-economy.js) — aucun bouton n'est jamais grisé/refusé pour ça,
+        // contrairement à la réaction ; un simple rappel de chat avertit si l'Action/Action bonus
+        // est déjà utilisée ce tour.
+        actionAvailable: new BooleanField({ required: true, initial: true }),
+        bonusActionAvailable: new BooleanField({ required: true, initial: true }),
         // Rounds restants de Rage (SRD 5e : jusqu'à 10 rounds/1 minute), cf. RAGE_DURATION_ROUNDS
         // et hooks createActiveEffect/updateCombat, dnd-custom-ai.js — 0 = pas de suivi en cours
         // (Rage inactive, ou activée hors combat). Ne modélise QUE la limite de durée, pas la fin

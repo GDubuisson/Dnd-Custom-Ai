@@ -617,18 +617,23 @@ Hooks.on("updateActor", async (actor, changes, options) => {
 // mort d'un PNJ, il retire manuellement le statut "Mort" (menu des états du token) et le
 // marqueur "vaincu" (clic droit sur le Combattant dans le Combat Tracker).
 
-// Régénère la réaction du personnage dont c'est désormais le tour, SRD 5e ("vous récupérez
-// votre réaction au début de votre tour") — pas un reset global par round, pour rester fidèle à
-// la règle. Ne réagit qu'à un changement effectif de tour/round (`turn`/`round` dans `changes`,
-// pas une simple édition du Combat comme l'ajout d'un Combattant), même garde MJ actif que la
-// mort de PNJ ci-dessus pour n'agir qu'une fois même à plusieurs MJ connectés.
+// Régénère la réaction, l'Action et l'Action bonus du personnage dont c'est désormais le tour,
+// SRD 5e ("vous récupérez votre réaction/action/action bonus au début de votre tour") — pas un
+// reset global par round, pour rester fidèle à la règle. Ne réagit qu'à un changement effectif de
+// tour/round (`turn`/`round` dans `changes`, pas une simple édition du Combat comme l'ajout d'un
+// Combattant), même garde MJ actif que la mort de PNJ ci-dessus pour n'agir qu'une fois même à
+// plusieurs MJ connectés.
 Hooks.on("updateCombat", async (combat, changes) => {
   if (!("turn" in changes) && !("round" in changes)) return;
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const actor = combat.combatant?.actor;
-  if (actor?.type === "character" && !actor.system.combat.reactionAvailable) {
-    await actor.update({ "system.combat.reactionAvailable": true });
+  if (actor?.type === "character") {
+    const updates = {};
+    if (!actor.system.combat.reactionAvailable) updates["system.combat.reactionAvailable"] = true;
+    if (!actor.system.combat.actionAvailable) updates["system.combat.actionAvailable"] = true;
+    if (!actor.system.combat.bonusActionAvailable) updates["system.combat.bonusActionAvailable"] = true;
+    if (Object.keys(updates).length) await actor.update(updates);
   }
 
   // Décompte de la durée de Rage (cf. RAGE_DURATION_ROUNDS ci-dessus), round par round, pour
@@ -699,16 +704,23 @@ Hooks.on("deleteActiveEffect", async (effect) => {
   await actor.update({ "system.combat.rageRoundsRemaining": 0, "system.combat.rageLastRound": 0 });
 });
 
-// Filet de sécurité : ne laisse pas un personnage "réaction bloquée" une fois le combat terminé
-// (ex. combat clos sans que ce soit revenu à son tour). Régénère la réaction de tous les
-// personnages ayant participé, même garde MJ actif que ci-dessus.
+// Filet de sécurité : ne laisse pas un personnage "réaction/action/action bonus bloquée" une fois
+// le combat terminé (ex. combat clos sans que ce soit revenu à son tour). Régénère les trois pour
+// tous les personnages ayant participé, même garde MJ actif que ci-dessus.
 Hooks.on("deleteCombat", async (combat) => {
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const updates = combat.combatants
     .map((combatant) => combatant.actor)
-    .filter((actor) => actor?.type === "character" && !actor.system.combat.reactionAvailable)
-    .map((actor) => ({ _id: actor.id, "system.combat.reactionAvailable": true }));
+    .filter((actor) => actor?.type === "character")
+    .map((actor) => {
+      const update = { _id: actor.id };
+      if (!actor.system.combat.reactionAvailable) update["system.combat.reactionAvailable"] = true;
+      if (!actor.system.combat.actionAvailable) update["system.combat.actionAvailable"] = true;
+      if (!actor.system.combat.bonusActionAvailable) update["system.combat.bonusActionAvailable"] = true;
+      return update;
+    })
+    .filter((update) => Object.keys(update).length > 1);
   if (updates.length) await Actor.updateDocuments(updates);
 });
 

@@ -106,6 +106,23 @@ function targetToken(tokenId) {
   return cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
 }
 
+// Chantier "Suivi de l'action/action bonus" (2026-08-23, helpers/action-economy.js) : un jet
+// d'attaque à l'arme/de sort poste désormais un 2e message (rappel non-bloquant) si l'Action est
+// déjà consommée ce tour — ce qui casserait `lastMessageRoll()` ci-dessous (`.at(-1)` irait
+// chercher le rappel, pas le jet) dès le 2e jet d'attaque d'un même personnage dans ce fichier.
+// Ce spec teste les critiques, pas ce chantier : l'Action est réinitialisée avant chaque jet
+// d'attaque/de sort pour ne jamais déclencher ce rappel ici.
+function resetActionEconomy(actorId) {
+  return cy.window().then((win) =>
+    win.game.actors
+      .get(actorId)
+      .update(
+        win.JSON.parse(win.JSON.stringify({ "system.combat.actionAvailable": true, "system.combat.bonusActionAvailable": true })),
+        { dndCustomWizard: true }
+      )
+  );
+}
+
 let fighterId;
 let wizardId;
 
@@ -172,6 +189,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(20);
       targetToken(tokenId);
@@ -208,6 +226,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(1);
       targetToken(tokenId);
@@ -238,6 +257,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(20);
       targetToken(tokenId);
@@ -277,6 +297,7 @@ describe("Critiques en combat — jet d'attaque de sort", () => {
       goToTab("abilities");
 
       withItemId(wizardId, "Trait de feu", (itemId) => {
+        resetActionEconomy(wizardId);
         resetMessageBaseline();
         cy.forceD20(20);
         targetToken(tokenId);
@@ -364,6 +385,7 @@ describe("Critiques en combat — effet visuel sur la carte de jet", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(20);
       targetToken(tokenId);
@@ -392,6 +414,7 @@ describe("Critiques en combat — effet visuel sur la carte de jet", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(1);
       targetToken(tokenId);
@@ -413,6 +436,7 @@ describe("Critiques en combat — effet visuel sur la carte de jet", () => {
       cy.loginAsPlayer();
       cy.openActorSheet(fighterId);
       goToTab("equipment");
+      resetActionEconomy(fighterId);
       resetMessageBaseline();
       cy.forceD20(10);
       targetToken(tokenId);

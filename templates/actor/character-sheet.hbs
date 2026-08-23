@@ -136,6 +136,14 @@
             <button type="button" data-action="resolvePendingAsi">{{localize "DND_CUSTOM.LevelUp.PendingChoiceButton"}}</button>
           </span>
           {{/if}}
+          <button type="button" class="reaction-indicator {{#unless actionAvailable}}used{{/unless}}" data-action="toggleAction"
+                  title="{{#if actionAvailable}}{{localize 'DND_CUSTOM.Actor.ActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ActionUsedTooltip'}}{{/if}}">
+            <i class="fa-solid fa-hand-fist"></i> {{localize "DND_CUSTOM.Actor.Action"}}
+          </button>
+          <button type="button" class="reaction-indicator {{#unless bonusActionAvailable}}used{{/unless}}" data-action="toggleBonusAction"
+                  title="{{#if bonusActionAvailable}}{{localize 'DND_CUSTOM.Actor.BonusActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.BonusActionUsedTooltip'}}{{/if}}">
+            <i class="fa-solid fa-hand-sparkles"></i> {{localize "DND_CUSTOM.Actor.BonusAction"}}
+          </button>
           <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
                   title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
             <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}

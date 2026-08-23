@@ -36,6 +36,7 @@ import { requestBeastCompanion } from "../helpers/companion.js";
 import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
+import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -183,6 +184,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       useManeuver: DndCustomActorSheet.#onUseManeuver,
       toggleReaction: DndCustomActorSheet.#onToggleReaction,
+      toggleAction: DndCustomActorSheet.#onToggleAction,
+      toggleBonusAction: DndCustomActorSheet.#onToggleBonusAction,
       mount: DndCustomActorSheet.#onMount,
       dismount: DndCustomActorSheet.#onDismount
     }
@@ -312,8 +315,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
-    // Capacités/Sorts (cf. #consumeReaction ci-dessous, hooks updateCombat/deleteCombat).
+    // Capacités/Sorts (cf. #consumeActionEconomy ci-dessous, hooks updateCombat/deleteCombat).
+    // Action/Action bonus (chantier "Suivi de l'action/action bonus", 2026-08-23) : mêmes
+    // indicateurs en en-tête, mais suivi non-bloquant (cf. helpers/action-economy.js) — jamais
+    // utilisés pour griser un bouton de Capacité/Sort.
     context.reactionAvailable = canUseReaction(system);
+    context.actionAvailable = system.combat.actionAvailable;
+    context.bonusActionAvailable = system.combat.bonusActionAvailable;
 
     // Combat monté (don SRD 5e, cf. #onMount ci-dessous) : monture actuellement chevauchée,
     // résolue en Actor pour affichage (nom) — vide si non montée.
@@ -1026,7 +1034,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -1064,7 +1072,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeatureSave(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.savingThrow) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const chargeHolder = item.system.costsResource
       ? this.actor.items.contents.find(
@@ -1128,7 +1136,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseFeatureCharge(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -1161,17 +1169,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Économie d'action de combat (SRD 5e) : si `item` (Capacité ou Sort) est de type
    *  "reaction", vérifie que la réaction n'est pas déjà consommée ce round-ci
-   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée.
-   *  Renvoie `true` si l'action associée peut se poursuivre (item non-réaction, ou réaction
-   *  disponible et désormais consommée), `false` sinon (avec avertissement) — l'appelant doit
-   *  alors annuler l'action, sans avoir encore décompté de charge. */
-  async #consumeReaction(item) {
-    if (item.system.activation !== "reaction") return true;
-    if (!canUseReaction(this.actor.system)) {
-      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
-      return false;
+   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée —
+   *  bloquant, comme avant. Pour "action"/"bonusAction" (chantier "Suivi de l'action/action
+   *  bonus", 2026-08-23) : suivi NON-bloquant délégué à noteActionEconomyUsage
+   *  (helpers/action-economy.js). Renvoie `true` si l'action associée peut se poursuivre (item
+   *  non-réaction, ou réaction disponible et désormais consommée), `false` UNIQUEMENT si une
+   *  réaction est bloquée (avec avertissement) — l'appelant doit alors annuler l'action, sans
+   *  avoir encore décompté de charge. */
+  async #consumeActionEconomy(item) {
+    if (item.system.activation === "reaction") {
+      if (!canUseReaction(this.actor.system)) {
+        ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
+        return false;
+      }
+      await this.actor.update({ "system.combat.reactionAvailable": false });
+      return true;
     }
-    await this.actor.update({ "system.combat.reactionAvailable": false });
+    await noteActionEconomyUsage(this.actor, item.system.activation);
     return true;
   }
 
@@ -1182,6 +1196,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onToggleReaction() {
     const available = this.actor.system.combat.reactionAvailable;
     await this.actor.update({ "system.combat.reactionAvailable": !available });
+  }
+
+  /** Rattrapage manuel de l'Action/Action bonus (même principe que #onToggleReaction ci-dessus) :
+   *  utile pour se resynchroniser après un rappel de chat non-bloquant, ou remettre à disposition
+   *  une Action rendue par une Capacité (ex. Action fulgurante). */
+  static async #onToggleAction() {
+    const available = this.actor.system.combat.actionAvailable;
+    await this.actor.update({ "system.combat.actionAvailable": !available });
+  }
+
+  static async #onToggleBonusAction() {
+    const available = this.actor.system.combat.bonusActionAvailable;
+    await this.actor.update({ "system.combat.bonusActionAvailable": !available });
   }
 
   /** Monte la créature actuellement ciblée (Combat monté, don SRD 5e — chantier "Combat
@@ -1212,7 +1239,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseResourceTechnique(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.costsResource) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const resource = this.actor.items.contents.find(
       (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
@@ -1244,7 +1271,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresState) return;
     if (!this.actor.statuses.has(item.system.requiresState)) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -1348,7 +1375,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseManeuver(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || !item.system.offersManeuverChoice) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const options = DND_CUSTOM.maneuvers;
     const rows = Object.entries(options)
@@ -1489,7 +1516,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  `criticalRules: true` : 1/20 naturel = échec/coup critique automatique EN COMBAT (retour de
    *  test) — un coup critique pose un flag transitoire sur CETTE arme précise (pas sur l'Actor,
    *  pour ne jamais affecter une autre arme/un autre sort en cours d'usage), consommé par le
-   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés. */
+   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés.
+   *
+   *  `noteActionEconomyUsage(..., { isWeaponAttack: true })` (chantier "Suivi de l'action/action
+   *  bonus", 2026-08-23) : contrairement aux Capacités/Sorts (`item.system.activation`), une arme
+   *  n'a pas de champ activation propre — un jet d'attaque à l'arme consomme toujours l'Action,
+   *  `isWeaponAttack` exempte du rappel les personnages avec Attaque supplémentaire. */
   static async #onRollWeaponAttack(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "weapon") return;
@@ -1513,6 +1545,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       criticalThreshold: improvedCriticalThreshold(this.actor)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+    await noteActionEconomyUsage(this.actor, "action", { isWeaponAttack: true });
   }
 
   /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
@@ -1577,7 +1610,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
     // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —

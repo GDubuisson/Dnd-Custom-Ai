@@ -332,9 +332,10 @@
   color: var(--dca-tertiary);
 }
 
-/* Indicateur de réaction (économie d'action de combat, SRD 5e) dans la zone commune de la
-   fiche : cliquable pour un rattrapage manuel (cf. #onToggleReaction, actor-sheet.js). Doré
-   (comme .level-up-badge) tant que la réaction est disponible, grisé une fois consommée. */
+/* Indicateurs d'économie d'action de combat (SRD 5e) dans la zone commune de la fiche — Action,
+   Action bonus et Réaction partagent cette même classe (cf. #onToggleAction/#onToggleBonusAction/
+   #onToggleReaction, actor-sheet.js), cliquables pour un rattrapage manuel. Doré (comme
+   .level-up-badge) tant que la ressource est disponible, grisé une fois consommée. */
 .dnd-custom-ai .reaction-indicator {
   display: inline-flex;
   align-items: center;
