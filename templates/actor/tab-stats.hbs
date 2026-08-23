@@ -42,6 +42,16 @@
         <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
         <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
       </div>
+      {{! Combat monté (don SRD 5e) : cible le token de la monture puis "Monter" — même
+          convention que les Capacités à cible (game.user.targets) qu'ailleurs sur cette fiche. }}
+      <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.MountTooltip'}}">
+        {{#if mount}}
+        <span>{{localize "DND_CUSTOM.Actor.MountedOn"}} : {{mount.name}}</span>
+        <button type="button" class="ability-btn" data-action="dismount">{{localize "DND_CUSTOM.Actor.Dismount"}}</button>
+        {{else}}
+        <button type="button" class="ability-btn" data-action="mount">{{localize "DND_CUSTOM.Actor.Mount"}}</button>
+        {{/if}}
+      </div>
     </div>
   </div>
 

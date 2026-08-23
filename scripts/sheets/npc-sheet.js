@@ -2,6 +2,7 @@ import { DND_CUSTOM } from "../helpers/config.js";
 import { formatModifier } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
+import { checkSentinelReminder } from "../helpers/sentinel.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -178,7 +179,12 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
    *  (actor-sheet.js) — comparaison automatique à la CA des cibles ciblées, coups/échecs
    *  critiques en combat (1/20 naturel) : un coup critique pose un flag transitoire sur l'ACTOR
    *  (pas un Item, un PNJ n'a qu'un seul profil d'attaque, pas d'ambiguïté possible), consommé
-   *  par le prochain jet de dégâts (#onRollAttackDamage) pour doubler ses dés. */
+   *  par le prochain jet de dégâts (#onRollAttackDamage) pour doubler ses dés.
+   *
+   *  `checkSentinelReminder` (helpers/sentinel.js, chantier "Combat automatisé avancé", cadrage
+   *  du 2026-08-23) : après le jet, si ce PNJ est hostile et attaque une cible autre qu'un
+   *  Combattant PJ à 1,50 m possédant Sentinelle avec réaction disponible, poste un rappel de
+   *  chat — jamais d'interruption, le MJ/joueur reste libre d'agir ensuite. */
   static async #onRollAttack(event) {
     const attack = this.actor.system.attack;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
@@ -194,6 +200,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       criticalRules: true
     });
     if (isCriticalHit) await this.actor.setFlag(SYSTEM_ID, "pendingAttackCritical", true);
+    await checkSentinelReminder(this.actor);
   }
 
   /** Jet de dégâts du profil simplifié : dé(s) configuré(s) + modificateur de la même

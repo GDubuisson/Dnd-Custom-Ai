@@ -166,7 +166,15 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // FeatureData#grantsChoice = "totemSpirit", "Aspect de la bête" dans features.json) :
         // vide tant que non choisi (bouton "Choisir" affiché, #onChooseFeatureOption,
         // actor-sheet.js), jamais réinitialisé une fois posé.
-        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] })
+        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] }),
+        // Monture actuellement chevauchée (Combat monté, don SRD 5e — chantier "Combat automatisé
+        // avancé", 2026-08-23) : id d'un Actor de type "mount" (créature vivante, cf.
+        // CONFIG.Actor.dataModels.mount = NpcData dans dnd-custom-ai.js — jamais "vehicle",
+        // schéma trop pauvre pour Combat monté, pas de taille). Choisi en ciblant le token de la
+        // monture puis en cliquant "Monter" (#onMount, actor-sheet.js), même convention que les
+        // Capacités à cible (game.user.targets) déjà utilisée ailleurs plutôt qu'un select dédié.
+        // Vide = pas monté.
+        mountedActorId: new StringField({ required: true, blank: true, initial: "" })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })

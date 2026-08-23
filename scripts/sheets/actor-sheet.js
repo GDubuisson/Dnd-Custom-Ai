@@ -73,6 +73,25 @@ function improvedCriticalThreshold(actor) {
   return hasFeature(actor.items.contents, "Critique amélioré") ? 19 : 20;
 }
 
+/** Avantage automatique aux jets d'attaque du don Combat monté (SRD 5e — chantier "Combat
+ *  automatisé avancé", 2026-08-23) : vrai si `actor` possède le don, est actuellement monté
+ *  (`system.combat.mountedActorId`), et qu'au moins une des cibles actuellement ciblées
+ *  (`game.user.targets`) a une taille strictement inférieure à celle de la monture
+ *  (config.js > DND_CUSTOM.sizes, ordre déjà croissant tp/p/m/g/tg/gig). Ne modélise pas la nuance "à pied"
+ *  du texte SRD (une cible elle-même montée resterait à tort concernée) — simplification
+ *  assumée, comme d'autres nuances déjà documentées ailleurs. */
+function hasMountedSizeAdvantage(actor) {
+  const mountId = actor.system.combat.mountedActorId;
+  if (!mountId || !hasFeature(actor.items.contents, "Combat monté")) return false;
+
+  const mount = game.actors.get(mountId);
+  const sizeOrder = Object.keys(DND_CUSTOM.sizes);
+  const mountSizeIndex = sizeOrder.indexOf(mount?.system.size);
+  if (mountSizeIndex < 0) return false;
+
+  return [...game.user.targets].some((token) => sizeOrder.indexOf(token.actor?.system?.size) >= 0 && sizeOrder.indexOf(token.actor.system.size) < mountSizeIndex);
+}
+
 /** Avantage/désavantage/bonus automatique selon les états actifs (cf. CONFIG.statusEffects) et
  *  le niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
  *  automatisées (pas d'effets dépendant d'une cible/de la position, hors du scope "combat
@@ -163,7 +182,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       chooseInitiateMagic: DndCustomActorSheet.#onChooseInitiateMagic,
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       useManeuver: DndCustomActorSheet.#onUseManeuver,
-      toggleReaction: DndCustomActorSheet.#onToggleReaction
+      toggleReaction: DndCustomActorSheet.#onToggleReaction,
+      mount: DndCustomActorSheet.#onMount,
+      dismount: DndCustomActorSheet.#onDismount
     }
   };
 
@@ -293,6 +314,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
     // Capacités/Sorts (cf. #consumeReaction ci-dessous, hooks updateCombat/deleteCombat).
     context.reactionAvailable = canUseReaction(system);
+
+    // Combat monté (don SRD 5e, cf. #onMount ci-dessous) : monture actuellement chevauchée,
+    // résolue en Actor pour affichage (nom) — vide si non montée.
+    context.mount = system.combat.mountedActorId ? (game.actors.get(system.combat.mountedActorId) ?? null) : null;
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -1159,6 +1184,25 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ "system.combat.reactionAvailable": !available });
   }
 
+  /** Monte la créature actuellement ciblée (Combat monté, don SRD 5e — chantier "Combat
+   *  automatisé avancé", 2026-08-23) : même convention que les Capacités à cible
+   *  (`game.user.targets`) plutôt qu'un select dédié. Réservé aux Actors de type "mount"
+   *  (créature vivante, `CONFIG.Actor.dataModels.mount = NpcData`, dnd-custom-ai.js) — jamais
+   *  "vehicle" (schéma trop pauvre pour ce don : pas de taille). */
+  static async #onMount() {
+    const target = [...game.user.targets][0];
+    if (!target?.actor || target.actor.type !== "mount") {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.MountNoTarget"));
+      return;
+    }
+    await this.actor.update({ "system.combat.mountedActorId": target.actor.id });
+  }
+
+  /** Descend de sa monture actuelle (cf. #onMount ci-dessus). */
+  static async #onDismount() {
+    await this.actor.update({ "system.combat.mountedActorId": "" });
+  }
+
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
    *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
    *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
@@ -1365,12 +1409,21 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const mod = abilityModifier(system.abilities[key].total);
     const profBonus = system.saves[key].proficient ? proficiencyBonus(system.attributes.level) : 0;
     const cond = conditionRollEffects(this.actor, "save", key);
+    // Combat monté (don SRD 5e, clause 3) : "votre monture réussit automatiquement tout jet de
+    // sauvegarde de Dextérité que vous réussissez vous-même" — la réussite n'étant jamais
+    // déterminée par ce système (aucune sauvegarde générique ne compare à un DD, le MJ juge à
+    // l'œil, cf. commentaire ci-dessus), seul un rappel textuel est ajouté, jamais un jet/statut
+    // appliqué automatiquement à la monture.
+    const mount = system.combat.mountedActorId ? game.actors.get(system.combat.mountedActorId) : null;
+    const mountNote = key === "dex" && mount && hasFeature(this.actor.items.contents, "Combat monté")
+      ? ` (${game.i18n.format("DND_CUSTOM.Roll.MountedDexSaveNote", { mount: mount.name })})`
+      : "";
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod + profBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
-      }),
+      }) + mountNote,
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
       criticalRules: true
@@ -1452,7 +1505,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       formula: formatModifier(atk.attackBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
-      advantage: event.shiftKey || cond.advantage,
+      advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
       disadvantage: event.ctrlKey || cond.disadvantage,
       compareToTargetAc: true,
       criticalRules: true,
@@ -1614,7 +1667,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         actor: this.actor,
         formula: formatModifier(attackBonus) + cond.bonus,
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
-        advantage: event.shiftKey || cond.advantage,
+        advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
         disadvantage: event.ctrlKey || cond.disadvantage,
         compareToTargetAc: true,
         criticalRules: true,

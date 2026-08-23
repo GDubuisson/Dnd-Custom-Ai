@@ -39,7 +39,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : quand vous touchez une créature avec une attaque d'opportunité, sa vitesse tombe à 0 pour le reste du tour. Les créatures provoquent une attaque d'opportunité de votre part même si elles ont utilisé Se désengager. Quand une créature à 1,50 m de vous attaque une cible autre que vous (et ne vous inclut pas comme cible), vous pouvez utiliser votre réaction pour l'attaquer."
+      "description": "Don : quand vous touchez une créature avec une attaque d'opportunité, sa vitesse tombe à 0 pour le reste du tour (non automatisé : rien ne distingue une attaque d'opportunité réussie d'une attaque normale). Les créatures provoquent une attaque d'opportunité de votre part même si elles ont utilisé Se désengager (déjà vrai de fait : ce système ne suit jamais Se désengager, aucune AO n'est jamais bloquée pour cette raison). Quand une créature hostile à 1,50 m de vous attaque une cible autre que vous, vous pouvez utiliser votre réaction pour l'attaquer : automatisé (message de rappel de chat quand un PNJ hostile attaque un allié à votre portée), vous restez libre de cliquer ensuite le bouton d'attaque de votre arme."
     }
   },
   {
@@ -141,7 +141,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "PHB",
-      "description": "Don : avantage aux jets d'attaque contre une créature à pied plus petite que votre monture. Vous pouvez rediriger vers vous une attaque visant votre monture, si elle vous a pour seule cible possible. Votre monture réussit automatiquement tout jet de sauvegarde de Dextérité que vous réussissez vous-même (au lieu d'être affectée séparément)."
+      "description": "Don : avantage aux jets d'attaque contre une créature à pied plus petite que votre monture — automatisé (Actor de type Monture ciblé puis bouton \"Monter\", onglet Statistiques) tant que la monture porte une taille inférieure à celle de la cible actuellement ciblée ; ne distingue pas \"à pied\" d'une créature elle-même montée. Vous pouvez rediriger vers vous une attaque visant votre monture, si elle vous a pour seule cible possible : non automatisé (demanderait une vraie interruption du jet de l'attaquant, hors scope). Votre monture réussit automatiquement tout jet de sauvegarde de Dextérité que vous réussissez vous-même : un rappel apparaît sur vos jets de sauvegarde de Dextérité tant que vous êtes monté (aucune sauvegarde n'étant comparée à un DD par ce système, la réussite reste jugée par le MJ, jamais appliquée automatiquement à la monture)."
     }
   }
 ]
