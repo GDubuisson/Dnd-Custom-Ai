@@ -35,10 +35,27 @@ function buildOverviewPage() {
       réaction bonus, correction d'un clic).</li>
       <li>Onglet Capacités/Sorts : en-tête visuel adapté à la classe du personnage (titre
       thématique, icône) — purement cosmétique, aucun effet sur les calculs.</li>
-      <li>Attaque d'opportunité (règle universelle, octroyée à toute classe) : le don Sentinelle,
-      s'il est glissé sur la fiche, en modifie automatiquement le déclencheur affiché (fonctionne
-      même contre le désengagement, se déclenche aussi pour une cible tierce à 1,50 m) — recalculé
-      à chaque affichage, rien à retoucher si tu ajoutes/retires le don.</li>
+      <li>Attaque d'opportunité (règle universelle, octroyée à toute classe) : rappel automatique
+      en chat quand un PNJ hostile quitte la portée de mêlée (1,50 m) d'un Combattant joueur avec
+      réaction disponible. Le don Sentinelle, s'il est glissé sur la fiche, en modifie
+      automatiquement le déclencheur affiché (fonctionne même contre le désengagement, se
+      déclenche aussi pour une cible tierce à 1,50 m) — recalculé à chaque affichage, rien à
+      retoucher si tu ajoutes/retires le don.</li>
+      <li>Combat monté (don) : avantage automatique aux jets d'attaque contre une cible plus
+      petite que la monture ; rappel textuel sur les sauvegardes de Dextérité montées (résultat
+      pour la monture laissé à ton jugement).</li>
+      <li>Suivi de l'Action/Action bonus du tour : rappel de chat non-bloquant (jamais de jet
+      refusé) si un personnage utilise deux fois la même ressource dans le même tour — actif
+      uniquement pendant un combat suivi, deux indicateurs cliquables en en-tête de fiche pour un
+      rattrapage manuel si besoin.</li>
+      <li>Forme sauvage (Druide) : "Prendre forme" cible une créature dédiée (2e réserve de PV
+      propre, jamais cumulée à celle du personnage). Retour à la forme normale automatique à 0 PV
+      de forme (dégâts excédentaires jamais reportés sur le personnage), ou volontaire à tout
+      moment via un bouton dédié.</li>
+      <li>Tactiques défensives (Hunter, Rôdeur) : les 3 options sont appliquées automatiquement
+      selon le choix fait — avantage à la sauvegarde contre Effrayé ou contre un attaquant ayant
+      déjà attaqué ce round, ou désavantage sur le prochain jet d'un PNJ hostile dont le Rôdeur
+      s'éloigne.</li>
       <li>Mécaniques des 24 sous-classes supplémentaires (inspirées de Baldur's Gate 3, cf.
       compendium "Sous-classes") : bouton dédié selon la Capacité — tirage automatique de
       Surtenance sauvage posté en chat (Barbare/Ensorceleur), compagnon animal invocable (Maître
@@ -46,6 +63,11 @@ function buildOverviewPage() {
       l'Assassinat contre une cible portant l'état "Surpris", incantation mineure toujours prête
       sans emplacement dédié (Chevalier occulte)... Détail complet des mécaniques dans
       <code>world-items/README.md</code>.</li>
+      <li>6 des 8 sous-classes SRD 5e d'origine ayant déjà une mécanique active en ont désormais
+      une seconde : bonus de soin automatique (Disciple de la vie), résistance aux dégâts choisie
+      (Résilience draconique), rappel de réaction contre les créatures Grandes+ (Tueur de géants),
+      immunité Charmé/Effrayé (Rage sans esprit, Aura de dévotion), choix d'effet + sauvegarde
+      (Technique de la Main Ouverte).</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle
@@ -86,8 +108,9 @@ function buildSimplificationsPage() {
       personnage).</li>
       <li><strong>Points de Ki / Sorcellerie innée</strong> : réserves fixes, ne progressent pas
       avec le niveau dans ce système (simplifié par rapport au SRD 5e).</li>
-      <li><strong>Forme sauvage (Druide)</strong> : pas de fiche de créature séparée ni de
-      deuxième réserve de PV suivie automatiquement — à adjuger ensemble à la table.</li>
+      <li><strong>Forme sauvage (Druide)</strong> : une créature dédiée sert de 2e réserve de PV
+      (bouton "Prendre forme"), mais sa CA/ses attaques précises et la restriction "pas de sorts
+      en Forme sauvage" restent à ton arbitrage — pas de fiche de créature figée par forme.</li>
       <li><strong>Domaines divins / Sous-classes / Voies / Cercles</strong> : les 12 sous-classes
       SRD 5e d'origine (une par classe) restent majoritairement génériques (Canalisation divine,
       Forme sauvage etc. non automatisées en détail) — à l'inverse, les 24 sous-classes
@@ -100,7 +123,9 @@ function buildSimplificationsPage() {
       Capacité/d'un Sort "Réaction" (ex. "une créature quitte votre portée") : à toi de valider
       que la situation s'est bien produite avant que le joueur clique. Hors combat suivi par le
       Suivi de combat, rien ne régénère automatiquement une réaction consommée — seul un clic
-      manuel sur l'indicateur de l'en-tête la rétablit.</li>
+      manuel sur l'indicateur de l'en-tête la rétablit. Le suivi de l'Action/Action bonus est
+      volontairement **non-bloquant** (simple rappel, jamais un jet refusé), contrairement à la
+      réaction.</li>
       <li><strong>Compendium Classes</strong> : les champs sauvegardes/compétences/maîtrises
       visibles sur chaque Item Classe sont informatifs — les modifier n'a aucun effet sur les
       calculs de la fiche de personnage (dé de vie, sauvegardes appliquées...), qui restent

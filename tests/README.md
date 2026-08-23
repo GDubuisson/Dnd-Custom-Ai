@@ -181,6 +181,26 @@ npm run docker:down        # arrête l'instance
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
   `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via
   `CONFIG.Dice.randomUniform` — Foundry n'utilise PAS `Math.random()` pour ses jets).
+- **Specs ajoutées après les 17 sections initiales** (chaque chantier ultérieur, cf.
+  `ClaudeFiles/ANOMALIES_ACTIVES.md`/historique git — pas de nouvelle section numérotée dans
+  `tests/E2E_TEST_PLAN.md`, qui reste le plan initial) : `damage-reduction-features.cy.js`
+  (réduction de dégâts reçus), `scaling-resource-features.cy.js` (Ki/Sorcellerie innée qui
+  progresse avec le niveau), `turn-undead-feature.cy.js` (Repousser les morts-vivants),
+  `paladin-channel-divinity.cy.js` (réserve de Canalisation divine unifiée), `metamagic-
+  careful-heightened.cy.js` (Sort Prudent/Sort Élevé), `eldritch-invocations.cy.js` (Salve
+  implacable), `deferred-rider-spells.cy.js` (9 sorts/capacités à rider différé),
+  `srd-generic-subclasses.cy.js` (Champion/Lore/Evocation), `opportunity-attack.cy.js` (Attaque
+  d'opportunité), `sentinel-mounted-combat.cy.js` (Sentinelle + Combat monté),
+  `action-economy.cy.js` (suivi Action/Action bonus du tour), `wild-shape.cy.js` (Forme
+  sauvage), `hunter-subclasses-extra-mechanics.cy.js` (2e mécanique sur 6 des 8 sous-classes SRD
+  déjà actives), `hunters-defense-automation.cy.js` (Tactiques défensives, 3 options),
+  `spell-saving-throws.cy.js`/`spell-slot-recovery.cy.js` (emplacements de sorts 1-9,
+  surclassement, récupération arcanique/naturelle), `initiate-magic-feat.cy.js` (don Magie
+  d'initié), `gm-token-sync.cy.js` (resynchronisation `actorLink` d'un token PJ),
+  `accessibility.cy.js` (contrastes RGAA), `subclass-<classe>.cy.js` (12 fichiers, un par classe —
+  au moins une mécanique active par sous-classe supplémentaire de cette classe). ~50 fichiers de
+  specs au total à ce jour — voir directement `cypress/e2e/` pour la liste exhaustive, ce README
+  ne détaille plus chaque nouveau fichier ligne à ligne au-delà de ce résumé.
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
   montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +

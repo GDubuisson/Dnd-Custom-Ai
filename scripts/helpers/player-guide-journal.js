@@ -67,6 +67,13 @@ function buildRulesPage(glossary) {
     disponible (doré) ou déjà utilisée (grisé) ; elle se régénère automatiquement au début de
     votre tour tant qu'un combat est suivi par le Maître du Jeu (Suivi de combat de Foundry).</p>
 
+    <h2>Action et Action bonus</h2>
+    <p>Deux indicateurs similaires ("Action"/"Action bonus") suivent également votre tour, actifs
+    uniquement pendant un combat suivi. Contrairement à la réaction, ce suivi n'empêche jamais un
+    jet : un simple rappel apparaît en chat si vous utilisez deux fois la même ressource dans le
+    même tour, à vous de décider si c'est légitime (ex. Attaque supplémentaire). Un clic sur
+    l'indicateur permet de le rétablir manuellement en cas d'erreur.</p>
+
     <h2>Repos</h2>
     <p>${abbr("Repos court")} et ${abbr("Repos long")} sont accessibles par les boutons dédiés de
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>

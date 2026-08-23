@@ -307,7 +307,14 @@ gérées séparément) — étendue ici aux sauvegardes normales, sur demande ex
 ## Hors scope (rappel, cf. `tests/README.md` et mémoire projet)
 
 - Pas de Hit Dice côté joueur : ne pas écrire de test qui en suppose l'existence.
-- Pas de combat automatisé avancé dépendant de la position/portée/ligne de vue — seuls les
-  effets univoques propres au personnage qui jette sont couverts (cf. `conditionRollEffects`).
 - CI GitHub Actions (secrets + monde éphémère) : hors périmètre de ce plan, cf.
   [[project_docker_e2e_testing_setup]] pour l'état d'avancement de ce chantier séparé.
+
+**Note (2026-08-23)** : au moment d'écrire ce plan (sections 1-17), le combat automatisé dépendant
+de la position/portée était hors scope — ce n'est plus le cas depuis le cadrage du 2026-08-23
+(Attaque d'opportunité, Sentinelle, Combat monté, Tactiques défensives, cf.
+`ClaudeFiles/CONCEPTION_FONCTIONNELLE.md`). Chaque chantier de ce type a sa propre spec Cypress
+ciblée (`opportunity-attack.cy.js`, `sentinel-mounted-combat.cy.js`,
+`hunters-defense-automation.cy.js`...) plutôt qu'une nouvelle section numérotée de ce plan — ce
+document reste le plan **initial** (sections 1-17, toutes codées et vertes), pas un journal continu
+de toute la couche E2E.
