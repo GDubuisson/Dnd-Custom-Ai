@@ -544,7 +544,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Votre instinct s'aiguise : vous avez un avantage aux jets d'Initiative. De plus, si vous êtes surpris au début d'un combat et n'êtes pas incapable d'agir, vous pouvez agir normalement à votre premier tour à condition d'entrer en Rage avant d'y faire quoi que ce soit d'autre."
+      "description": "Votre instinct s'aiguise : vous avez un avantage aux jets d'Initiative — automatisé. De plus, si vous êtes surpris au début d'un combat et n'êtes pas incapable d'agir, vous pouvez agir normalement à votre premier tour à condition d'entrer en Rage avant d'y faire quoi que ce soit d'autre (à l'arbitrage du MJ, aucune notion de \"surprise\" suivie par ce système)."
     }
   },
   {
@@ -557,7 +557,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vous pouvez lancer un dé de dégâts supplémentaire lorsque vous déterminez les dégâts additionnels d'un coup critique porté avec une arme de corps à corps."
+      "description": "Vous pouvez lancer un dé de dégâts supplémentaire lorsque vous déterminez les dégâts additionnels d'un coup critique porté avec une arme de corps à corps — automatisé (dé supplémentaire ajouté automatiquement au jet de dégâts d'un critique à l'arme de corps à corps)."
     }
   },
   {
@@ -637,7 +637,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système)."
+      "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système) — automatisé (bouton de relance sur le jet, résultat imposé)."
     }
   },
   {
@@ -1044,7 +1044,7 @@
       "rollFormula": "",
       "requiresState": "wildShape",
       "source": "",
-      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation, et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
+      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation — automatisé (PV temporaires posés automatiquement sur la Forme au moment de la transformation), et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
     }
   },
   {
@@ -1517,7 +1517,7 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Sorcellerie innée",
-      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort (passif, sans coût). Le bouton \"Sorcellerie innée\" ci-dessous ne concerne que l'option active : dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
+      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort — automatisé (bonus ajouté automatiquement au jet de dégâts dès que le type correspond), passif, sans coût. Le bouton \"Sorcellerie innée\" ci-dessous ne concerne que l'option active : dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
     }
   },
   {
@@ -1560,7 +1560,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Résistance passive aux dégâts de foudre et de tonnerre — jamais de jet à faire, réduisez simplement de moitié tout dégât de ce type que vous subissez."
+      "description": "Résistance passive aux dégâts de foudre et de tonnerre — automatisé (moitié des dégâts de ce type appliquée automatiquement au bouton \"Appliquer les dégâts\"), jamais de jet à faire."
     }
   },
   {

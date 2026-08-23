@@ -39,6 +39,7 @@ import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
+import { requestActorUpdate } from "../helpers/actor-relay.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -1276,6 +1277,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     if (remaining === null) return;
 
     await this.actor.update({ "system.combat.wildShapeActorId": targetToken.actor.id });
+
+    // Forme sauvage de combat (Cercle de la Lune, Druide 2, SRD 5e) : PV temporaires égaux à 2×
+    // le niveau du Druide au moment de la transformation, posés sur la FORME (system.attributes
+    // .hp.temp, NpcData) puisque c'est sa réserve de PV qui sert de 2e réserve pendant la
+    // transformation (cf. commentaire de wildShapeActorId, character-data.js) — jamais sur le
+    // personnage lui-même.
+    if (hasFeature(this.actor.items.contents, "Forme sauvage de combat")) {
+      // requestActorUpdate (pas targetToken.actor.update direct) : la Forme n'est généralement
+      // pas possédée par le Joueur qui la cible (Actor "wildShapeForm" créé par le MJ), cf.
+      // même motif que applyDamageToTargets (dnd-custom-ai.js).
+      await requestActorUpdate(targetToken.actor, { "system.attributes.hp.temp": 2 * this.actor.system.attributes.level });
+    }
   }
 
   /** Redevient soi-même (cf. #onEnterWildShape ci-dessus) : volontaire, à tout moment — jamais
@@ -1589,7 +1602,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       }) + mountNote,
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
-      criticalRules: true
+      criticalRules: true,
+      savingThrow: true
     });
   }
 
@@ -1727,12 +1741,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // de ses clics, cohérent avec "le jet reste manuel").
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
     if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
+    // Critique brutal (Barbare 9, SRD 5e) : un dé de dégâts supplémentaire sur un coup critique
+    // à l'arme de CORPS À CORPS uniquement (RAW) — cf. rollDamage#criticalMultiplier.
+    const isMelee = item.system.weaponType?.startsWith("melee");
+    const criticalMultiplier =
+      critical && isMelee && hasFeature(this.actor.items.contents, "Critique brutal") ? 3 : 2;
     await rollDamage({
       actor: this.actor,
       dice,
       formula: formatModifier(atk.abilityMod),
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       critical,
+      criticalMultiplier,
       damageType: item.system.damage.type
     });
   }
@@ -1998,10 +2018,22 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       ? abilityModifier(this.actor.system.abilities[boostFeature.system.boostsSpellDamageAbility].total)
       : 0;
 
+    // Affinité élémentaire (Ensorceleur, Lignage draconique 6, SRD 5e) : modificateur de
+    // Charisme ajouté aux dégâts d'un sort dont le TYPE correspond au lignage draconique choisi
+    // (`system.combat.draconicResistanceType`, cf. Résilience draconique) — contrairement à
+    // `boostsSpellDamage` ci-dessus (ciblé par nom de Sort exact), ce bonus se déclenche par
+    // correspondance de type, jamais les deux en pratique (classes différentes).
+    const hasElementalAffinity = hasFeature(this.actor.items.contents, "Affinité élémentaire");
+    const elementalAffinityMod =
+      hasElementalAffinity && item.system.damage.type && item.system.damage.type === this.actor.system.combat.draconicResistanceType
+        ? abilityModifier(this.actor.system.abilities.cha.total)
+        : 0;
+    const totalBoostMod = boostMod + elementalAffinityMod;
+
     await rollDamage({
       actor: this.actor,
       dice: item.system.damage.dice,
-      formula: boostMod ? formatModifier(boostMod) : "",
+      formula: totalBoostMod ? formatModifier(totalBoostMod) : "",
       critical,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       damageType: item.system.damage.type

@@ -37,7 +37,13 @@ export class NpcData extends foundry.abstract.TypeDataModel {
       attributes: new SchemaField({
         hp: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
-          max: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
+          max: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
+          // Points de vie temporaires (même champ que CharacterData#hp.temp, absorbés en
+          // premier par `applyDamageToTargets`, dnd-custom-ai.js) — quasi toujours à 0 pour un
+          // PNJ ordinaire, sert à "Forme sauvage de combat" (Cercle de la Lune, Druide 2) : la
+          // réserve de PV d'un Actor "wildShapeForm" (même NpcData) sert de 2e réserve pendant
+          // la transformation, cf. #onEnterWildShape (actor-sheet.js).
+          temp: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         }),
         ac: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 })
@@ -83,9 +89,12 @@ export class NpcData extends foundry.abstract.TypeDataModel {
 
   /** Modificateur d'Initiative : donnée dérivée non persistée (le bonus de Dextérité est déjà
    *  la valeur finale pour un PNJ, cf. npcAbilityField), exposée pour la formule d'initiative
-   *  du Combat Tracker Foundry (`"initiative": "1d20 + @attributes.initiativeMod"` dans
-   *  system.json — même convention que CharacterData). */
+   *  du Combat Tracker Foundry (cf. system.json > "initiative" — même convention que
+   *  CharacterData). `initiativeDice` toujours à 1 ici (jamais de "Instinct sauvage" sur un
+   *  PNJ) : requis pour que la formule partagée (`@attributes.initiativeDice`) reste valide
+   *  quel que soit le type d'Actor Combattant. */
   prepareDerivedData() {
     this.attributes.initiativeMod = this.abilities.dex.mod;
+    this.attributes.initiativeDice = 1;
   }
 }

@@ -325,8 +325,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
 
     // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
-    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
-    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json). Traqueur des
+    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry (cf.
+    // system.json > "initiative", et le commentaire d'attributes.initiativeDice plus bas pour le
+    // nombre de dés). Traqueur des
     // ténèbres (sous-classe Rôdeur, "Embuscade des ténèbres") : +2 supplémentaire, appliqué
     // automatiquement dès la sous-classe choisie (disponible seulement à partir du niveau
     // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
@@ -335,6 +336,13 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // restent hors modèle (pas de suivi de "surprise"/visibilité dans ce système), à arbitrer.
     this.attributes.initiativeMod =
       dexMod + (this.subclass === "gloomStalker" ? 2 : 0) + (hasFeature(items, "Alerte") ? 5 : 0);
+
+    // Nombre de d20 lancés pour l'Initiative (cf. `"initiative": "(@attributes.initiativeDice)
+    // d20kh1 + @attributes.initiativeMod"` dans system.json — kh1 sur un seul dé équivaut à ce
+    // dé seul, donc la même formule fonctionne pour 1 et 2 sans branche conditionnelle côté
+    // Foundry) : 2 = avantage. Capacité "Instinct sauvage" (Barbare 7, SRD 5e) : avantage
+    // automatique aux jets d'Initiative — appliqué automatiquement, sans case à cocher.
+    this.attributes.initiativeDice = hasFeature(items, "Instinct sauvage") ? 2 : 1;
 
     // Emplacements de sorts par niveau (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
     // seul `max` de chaque palier est recalculé à chaque préparation. `maxLevel` (plus haut

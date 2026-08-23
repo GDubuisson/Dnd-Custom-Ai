@@ -309,6 +309,8 @@
       "LuckyReroll": "{name} spends a Luck point — new d20, best of the two totals kept: {kept}",
       "SpendFiendLuck": "Fiendish Luck: +1d10 ({remaining} left)",
       "FiendLuckBonus": "{name} uses Fiendish Luck — new total: {newTotal}",
+      "SpendIndomitable": "Use Indomitable ({remaining} left)",
+      "IndomitableReroll": "{name} uses Indomitable — new saving throw, result must be kept",
       "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
       "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",

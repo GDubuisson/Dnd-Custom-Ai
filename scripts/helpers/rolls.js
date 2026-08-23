@@ -50,7 +50,8 @@ export async function rollCheck({
   compareToTargetAc = false,
   criticalRules = false,
   forceCriticalHit = false,
-  criticalThreshold = 20
+  criticalThreshold = 20,
+  savingThrow = false
 }) {
   const useAdvantage = advantage && !disadvantage;
   const useDisadvantage = disadvantage && !advantage;
@@ -110,6 +111,13 @@ export async function rollCheck({
   flags["dnd-custom-ai"].luckRoll = true;
   flags["dnd-custom-ai"].luckFormula = `${die}${formula}`;
   flags["dnd-custom-ai"].luckActorId = actor.id;
+  // Capacité "Indomptable" (Guerrier 9, SRD 5e) : relance complète d'un jet de SAUVEGARDE raté,
+  // nouveau résultat obligatoire (contrairement à Chanceux/Chance du Fiélon ci-dessus, qui gardent
+  // le meilleur des deux) — `savingThrow` distingue ce cas des tests/jets d'attaque, jamais posé
+  // par #onRollAbility/#onRollSkill/les jets d'attaque. Même flag `luckActorId`/`luckFormula` que
+  // Chanceux (relance la même formule), lu par un hook dédié (dnd-custom-ai.js), volontairement
+  // ignorant lui aussi du nom de Capacité précis.
+  if (savingThrow) flags["dnd-custom-ai"].savingThrowRoll = true;
   await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label, flags });
   return { roll, isCriticalHit, isCriticalFumble };
 }
@@ -125,10 +133,18 @@ export async function rollCheck({
  *  `false` par défaut donc les termes numériques (le modificateur) ne sont jamais multipliés —
  *  gère aussi correctement une formule à plusieurs types de dés (ex. arme magique
  *  "1d8+1d4"), contrairement à une manipulation de chaîne de caractères. DOIT être appelé avant
- *  `evaluate()` (altérer un jet déjà résolu n'a pas de sens côté Foundry). */
-export async function rollDamage({ actor, dice, formula, flavor, critical = false, damageType = "" }) {
+ *  `evaluate()` (altérer un jet déjà résolu n'a pas de sens côté Foundry).
+ *
+ *  `criticalMultiplier` (défaut 2, ignoré si `critical` est faux) : Critique brutal (Barbare 9,
+ *  SRD 5e — "un dé de dégâts SUPPLÉMENTAIRE" en plus du doublement normal) passe 3 depuis
+ *  l'appelant (#onRollWeaponDamage, actor-sheet.js) — approximation assumée pour une formule à
+ *  plusieurs types de dés (ex. "1d8+1d4") : chaque terme de dé reçoit +1 exemplaire plutôt qu'un
+ *  seul dé supplémentaire au total, cas rare en pratique (l'immense majorité des armes n'ont
+ *  qu'un seul type de dé). Ce helper générique reste ignorant du nom "Critique brutal" lui-même,
+ *  même principe que `criticalThreshold` ci-dessus. */
+export async function rollDamage({ actor, dice, formula, flavor, critical = false, criticalMultiplier = 2, damageType = "" }) {
   const roll = new Roll(`${dice}${formula}`);
-  if (critical) roll.alter(2, 0);
+  if (critical) roll.alter(criticalMultiplier, 0);
   await roll.evaluate();
   const label = critical ? `${flavor} (${game.i18n.localize("DND_CUSTOM.Roll.CriticalDamage")})` : flavor;
   // criticalHit ici aussi (même flag que rollCheck ci-dessus) : le jet de dégâts doublé profite

@@ -38,15 +38,13 @@ import {
   abilityModifier,
   proficiencyBonus,
   formatModifier,
-  SPELL_LEVELS
+  SPELL_LEVELS,
+  hasFeature
 } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
+import { registerActorUpdateRelay, requestActorUpdate } from "./helpers/actor-relay.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
-// Canal socket (system.json > "socket": true) utilisé pour relayer au MJ actif une mise à jour
-// qu'un joueur n'a pas la permission d'effectuer lui-même (cf. requestActorUpdate plus bas —
-// PNJ ciblé pour l'application de dégâts, notamment).
-const SOCKET_EVENT = `system.${SYSTEM_ID}`;
 
 // Durée de la Rage, SRD 5e (jusqu'à 1 minute = 10 rounds) : décomptée automatiquement round par
 // round UNIQUEMENT si un combat Foundry est déjà démarré au moment où l'état "En Rage" (cf.
@@ -248,39 +246,13 @@ async function ensureTokenDisplayDefaults() {
   }
 }
 
-// Écoute du canal socket (cf. requestActorUpdate) : un joueur sans permission de modification
-// sur l'Actor ciblé (PNJ non possédé, le cas courant) délègue sa mise à jour au MJ actif, seul
-// habilité à l'appliquer — même motif game.users.activeGM que les hooks updateActor plus bas,
-// pour qu'un seul des MJ éventuellement connectés traite chaque requête.
+// Écoute du canal socket de relais d'update (cf. requestActorUpdate, helpers/actor-relay.js) et
+// des autres canaux dédiés — un seul enregistrement, au ready.
 Hooks.once("ready", () => {
-  game.socket.on(SOCKET_EVENT, async ({ uuid, updates } = {}) => {
-    if (game.users.activeGM?.id !== game.user.id) return;
-    const doc = await fromUuid(uuid);
-    if (doc) await doc.update(updates);
-  });
+  registerActorUpdateRelay();
   ensureBeastCompanionRequestListener();
   registerOpportunityAttackHooks();
 });
-
-/** Applique `updates` à `actor` : directement si le client a la permission, sinon relayée au MJ
- *  actif via socket (cf. écoute ci-dessus) — nécessaire pour un PNJ dont un joueur n'est pas
- *  propriétaire (cas courant : dégâts appliqués à un monstre ciblé, cf.
- *  applyDamageToTargets plus bas), sans quoi Actor#update lève une erreur de permission
- *  ("User lacks permission...") côté joueur au lieu d'échouer silencieusement comme espéré. */
-async function requestActorUpdate(actor, updates, options = {}) {
-  if (actor.isOwner) {
-    await actor.update(updates, options);
-    return;
-  }
-  if (!game.users.activeGM) {
-    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
-    return;
-  }
-  // `options` (ex. dndCustomDamageApply, cf. preUpdateActor plus bas) n'a de sens que pour un
-  // update local direct : relayé au MJ actif, c'est SON client qui appelle doc.update(), déjà
-  // hors du filtre non-MJ de preUpdateActor (`game.users.get(userId)?.isGM`) — rien à transmettre.
-  game.socket.emit(SOCKET_EVENT, { uuid: actor.uuid, updates });
-}
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
 // réservés au MJ. Filet de sécurité côté données, en complément du "disabled" côté UI
@@ -839,9 +811,22 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
  *
  *  `damageType` (clé brute DND_CUSTOM.damageTypes, cf. flag posé par rollDamage/rolls.js —
  *  chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : résistance de CHAQUE cible
- *  résolue individuellement (Résilience draconique, Ensorceleur — seule résistance modélisée
- *  dans ce système pour l'instant, jamais sur un PNJ/une monture dont NpcData n'a pas ce champ),
- *  dégâts arrondis à l'inférieur après moitié comme le veut le SRD 5e. */
+ *  résolue individuellement (cf. `isResistantToDamageType` ci-dessous), dégâts arrondis à
+ *  l'inférieur après moitié comme le veut le SRD 5e. */
+function isResistantToDamageType(actor, damageType) {
+  if (!damageType) return false;
+  // Résilience draconique (Ensorceleur, Lignage draconique) : type choisi par le joueur, stocké
+  // sur l'Actor (jamais sur un PNJ/une monture dont NpcData n'a pas ce champ).
+  if (actor.system.combat?.draconicResistanceType === damageType) return true;
+  // Affinité de la tempête (Ensorceleur, Tempête 1, SRD 5e) : résistance passive fixe (toujours
+  // active, pas un choix) aux dégâts de foudre/tonnerre — même mécanisme de résolution que
+  // Résilience draconique, juste une source différente (présence de la Capacité plutôt qu'un
+  // champ choisi).
+  if ((damageType === "lightning" || damageType === "thunder") && hasFeature(actor.items.contents, "Affinité de la tempête"))
+    return true;
+  return false;
+}
+
 async function applyDamageToTargets(amount, sourceActorId, damageType = "") {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
@@ -874,7 +859,7 @@ async function applyDamageToTargets(amount, sourceActorId, damageType = "") {
       continue;
     }
 
-    const isResistant = Boolean(damageType) && actor.system.combat?.draconicResistanceType === damageType;
+    const isResistant = isResistantToDamageType(actor, damageType);
     const targetAmount = isResistant ? Math.floor(amount / 2) : amount;
 
     let remaining = targetAmount;
@@ -984,6 +969,10 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 // seul point de chance peut être dépensé par jet").
 Hooks.on("renderChatMessageHTML", (message, html) => {
   if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "luckApplied")) return;
+  // Garde-fou anti-doublon : Foundry peut re-déclencher ce hook pour un même message déjà rendu
+  // (ex. la barre latérale re-rend son journal de chat) — sans ce garde, un second appel
+  // ajouterait un second bouton identique au même `.message-content`.
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
 
   const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
   const luckyFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chanceux");
@@ -1022,6 +1011,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 // d'usage — aucune règle SRD ne l'interdit explicitement.
 Hooks.on("renderChatMessageHTML", (message, html) => {
   if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "fiendLuckApplied")) return;
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
 
   const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
   const fiendLuckFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chance du Fiélon");
@@ -1043,6 +1033,41 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     });
     await fiendLuckFeat.update({ "system.uses.value": fiendLuckFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "fiendLuckApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Capacité "Indomptable" (Guerrier 9, SRD 5e) : même famille que Chanceux/Chance du Fiélon
+// ci-dessus (flag `luckRoll`/`luckActorId`, ignorant du nom de Capacité), mais réservé aux jets
+// de SAUVEGARDE (flag `savingThrowRoll`, posé uniquement par #onRollSave, cf. rolls.js) et
+// mécanique différente — SRD : relance complète, résultat obligatoirement conservé (contrairement
+// à Chanceux qui garde le meilleur des deux). Ce système ne comparant déjà aucune sauvegarde à un
+// DD (le MJ juge à l'œil), le bouton reste proposé sur CHAQUE jet de sauvegarde éligible, au
+// joueur de décider si le résultat "ne lui convient pas" — même logique que Chanceux.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "savingThrowRoll") || message.getFlag(SYSTEM_ID, "indomitableApplied")) return;
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const indomitableFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Indomptable");
+  if (!indomitableFeat || indomitableFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendIndomitable", { remaining: indomitableFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    await reroll.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name })
+    });
+    await indomitableFeat.update({ "system.uses.value": indomitableFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "indomitableApplied", true);
   });
   html.querySelector(".message-content")?.appendChild(button);
 });
