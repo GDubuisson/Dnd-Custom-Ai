@@ -562,7 +562,9 @@
       "wildShape": "Wild Shape",
       "hunted": "Hunted",
       "blessed": "Blessed",
-      "guided": "Guided"
+      "guided": "Guided",
+      "freedomOfMovement": "Freedom of Movement",
+      "protectedFromEvilGood": "Protected from Evil and Good"
     },
     "Journal": {
       "Biography": "Biography",

@@ -151,6 +151,7 @@
       "details": "1 action, Contact, Concentration, jusqu'à 1 heure",
       "concentration": true,
       "ritual": false,
+      "grantsCondition": "invisible",
       "description": "Une créature que vous touchez devient invisible jusqu'à la fin du sort. Tout ce qu'elle porte ou transporte est également invisible tant que cela reste sur elle. Le sort prend fin pour la cible si elle attaque ou lance un sort."
     }
   },
@@ -179,6 +180,7 @@
       "details": "1 action, 18 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
+      "save": { "ability": "wis", "appliesCondition": "paralyzed" },
       "description": "Choisissez un humanoïde que vous voyez à portée. Il doit réussir un jet de sauvegarde de Sagesse sous peine d'être paralysé pour la durée du sort. À la fin de chacun de ses tours, la cible peut retenter ce jet de sauvegarde ; en cas de réussite, le sort prend fin."
     }
   },
@@ -354,6 +356,7 @@
       "details": "1 action, 27 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
+      "save": { "ability": "str", "appliesCondition": "restrained" },
       "description": "Des plantes rampantes et des vrilles surgissent du sol dans une zone de 6 m de côté à portée. Chaque créature qui s'y trouve au moment du lancer doit réussir un jet de sauvegarde de Force sous peine d'être entravée pour la durée du sort ; une créature entravée peut utiliser son action pour retenter ce jet. Une créature qui entre dans la zone ou y termine son tour doit également réussir ce jet ou être entravée. Les plantes s'attardent et rendent le terrain difficile pendant 1 minute après la fin du sort."
     }
   },
@@ -382,6 +385,7 @@
       "details": "1 action, 9 m, Instantanée",
       "concentration": false,
       "ritual": false,
+      "save": { "ability": "wis", "appliesCondition": "charmed" },
       "description": "Vous tentez de charmer un humanoïde que vous voyez à portée. Il doit réussir un jet de sauvegarde de Sagesse (avec avantage si vous ou vos compagnons êtes en train de le combattre) sous peine d'être charmé pendant 1 heure ou jusqu'à ce que vous ou vos compagnons lui infligiez des dégâts : il vous considère comme une relation amicale de connaissance. Une fois le sort terminé, la cible sait qu'elle a été charmée."
     }
   },
@@ -493,6 +497,7 @@
       "details": "1 action, Personnelle ou Contact, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
+      "grantsCondition": "invisible",
       "description": "Vous ou une créature que vous touchez devenez invisibles jusqu'à la fin du sort. Contrairement au sort Invisibilité, celui-ci n'est pas rompu si la cible attaque ou lance un sort."
     }
   },
@@ -546,6 +551,7 @@
       "details": "1 action, 27 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
+      "save": { "ability": "wis", "appliesCondition": "paralyzed" },
       "description": "Choisissez une créature que vous voyez à portée, de n'importe quel type (contrairement à Immobilisation de personne, limité aux humanoïdes). Elle doit réussir un jet de sauvegarde de Sagesse sous peine d'être paralysée pour la durée du sort. À la fin de chacun de ses tours, elle peut retenter ce jet de sauvegarde ; en cas de réussite, le sort prend fin."
     }
   },
@@ -559,6 +565,7 @@
       "details": "1 action, 18 m, Concentration, jusqu'à 1 minute",
       "concentration": true,
       "ritual": false,
+      "save": { "ability": "wis", "appliesCondition": "charmed" },
       "description": "Vous tentez de placer un humanoïde que vous voyez à portée sous votre contrôle mental. Il doit réussir un jet de sauvegarde de Sagesse (avec désavantage s'il est déjà blessé au combat contre vous ou vos compagnons) sous peine d'être charmé pour la durée du sort : à chacun de vos tours, vous pouvez lui dicter mentalement ses actions (ou lui laisser agir à sa guise). Il peut retenter le jet de sauvegarde chaque fois qu'il subit des dégâts."
     }
   },

@@ -32,9 +32,8 @@ export function hasMultiattackDefenseAdvantage(targetActor, attackerActor) {
 }
 
 /** "Volonté de fer" (option de Tactiques défensives) : avantage à la sauvegarde de
- *  `targetActor` quand la Capacité qui la force applique Effrayé en cas d'échec
- *  (`conditionOnFail`, cf. FeatureData#appliesCondition — les Sorts n'ont pas ce champ, cette
- *  option ne s'applique donc jamais à un jet de sauvegarde de sort). */
+ *  `targetActor` quand la Capacité/le Sort qui la force applique Effrayé en cas d'échec
+ *  (`conditionOnFail`, cf. FeatureData#appliesCondition / SpellData#save.appliesCondition). */
 export function hasSteadfastAdvantage(targetActor, conditionOnFail) {
   return targetActor?.type === "character" && targetActor.system.combat?.huntersDefense === "steadfast" && conditionOnFail === "frightened";
 }

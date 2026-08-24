@@ -27,17 +27,17 @@ function proficiencyBonusFor(level) {
   return Math.ceil(level / 4) + 1;
 }
 
-function grantSaveSpell(win, actorId, { ability, halfOnSave, damageDice = "" }) {
+function grantSaveSpell(win, actorId, { ability, halfOnSave, damageDice = "", appliesCondition = "", name = "Test Fireball" }) {
   return win.game.actors.get(actorId).createEmbeddedDocuments("Item", [
     win.JSON.parse(
       JSON.stringify({
-        name: "Test Fireball",
+        name,
         type: "spell",
         system: {
           classes: ["wizard"],
           level: 0,
           details: "1 action, 45 m, Instantanée",
-          save: { ability, halfOnSave },
+          save: { ability, halfOnSave, appliesCondition },
           damage: { dice: damageDice, type: damageDice ? "fire" : "" }
         }
       })
@@ -241,6 +241,53 @@ describe("Sort à sauvegarde de la cible — auto-jet côté lanceur", () => {
       const message = win.game.messages.contents.at(-1);
       expect(message.speaker.actor, "message posté au nom du PNJ cible").to.equal(npcId);
       expect(message.rolls[0].total, "20 naturel + mod. direct du PNJ (pas de .total/.saves à lire)").to.equal(24);
+    });
+  });
+});
+
+// Niveau B, cf. ClaudeFiles/MECANIQUES_A_AUTOMATISER.md (2026-08-24) : SpellData#save.appliesCondition,
+// même mécanisme que FeatureData#appliesCondition (cf. turn-undead-feature.cy.js) mais pour un sort
+// à sauvegarde — pas de restriction de type de créature ici (contrairement à Repousser les
+// morts-vivants), donc pas de branche "mauvais type" à tester.
+describe("Sort à sauvegarde de la cible — appliesCondition (Niveau B)", () => {
+  beforeEach(() => cy.loginAsGM());
+
+  it("échec du jet (1 naturel) : la condition configurée est appliquée à la cible", () => {
+    cy.window().then((win) =>
+      grantSaveSpell(win, casterId, { ability: "wis", appliesCondition: "paralyzed", name: "Test Hold Person" })
+    );
+    cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("paralyzed", { active: false }));
+    cy.forceD20(1);
+    cy.window().then((win) => win.canvas.tokens.get(targetTokenId).setTarget(true, { releaseOthers: true }));
+    cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+    cy.get(".application.character").find('nav.tabs [data-tab="abilities"]').click();
+    cy.get(".application.character").contains("li", "Test Hold Person").find('button[data-action="castSpell"]').click();
+
+    cy.window().should((win) => {
+      const target = win.canvas.tokens.get(targetTokenId).actor;
+      expect(target.statuses.has("paralyzed"), "condition configurée appliquée sur échec").to.be.true;
+    });
+  });
+
+  it("réussite du jet (20 naturel) : aucune condition appliquée", () => {
+    cy.window().then((win) =>
+      grantSaveSpell(win, casterId, { ability: "wis", appliesCondition: "paralyzed", name: "Test Hold Person Success" })
+    );
+    cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("paralyzed", { active: false }));
+    cy.forceD20(20);
+    cy.window().then((win) => win.canvas.tokens.get(targetTokenId).setTarget(true, { releaseOthers: true }));
+    cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+    cy.get(".application.character").find('nav.tabs [data-tab="abilities"]').click();
+    cy.get(".application.character")
+      .contains("li", "Test Hold Person Success")
+      .find('button[data-action="castSpell"]')
+      .click();
+
+    cy.window().should((win) => {
+      const target = win.canvas.tokens.get(targetTokenId).actor;
+      expect(target.statuses.has("paralyzed"), "aucun effet en cas de réussite").to.be.false;
     });
   });
 });

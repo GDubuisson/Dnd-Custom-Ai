@@ -7,6 +7,23 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
+`ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient
+du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme
+déjà en place) : Indomptable, Critique brutal, Instinct sauvage, Affinité de la tempête, Affinité
+élémentaire, Forme sauvage de combat. Niveau B (3 généralisations, chacune débloquant plusieurs
+sorts/capacités d'un coup) :
+- `SpellData#save.appliesCondition` : un sort à sauvegarde peut désormais poser automatiquement une
+  condition sur échec (même mécanisme que les Capacités à sauvegarde). Câblé sur Immobilisation de
+  personne/de monstre (paralysé), Charme-personne/Domination de personne (charmé), Enchevêtrement
+  (entravé).
+- `SpellData#grantsCondition` : un sort qui pose un état sans jet associé (ex. Invisibilité,
+  Invisibilité suprême) bascule désormais cet état sur la cible au moment du lancer.
+- Immunité à une condition généralisée au-delà de Rage sans esprit/Aura de dévotion : deux
+  nouvelles conditions homebrew (états à poser manuellement sur l'onglet États, comme "Béni"/
+  "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
+  (immunité à Charmé/Effrayé).
+
 Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
 vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du
 sort est épuisé) et cas particulier Magie de Pacte (Occultiste, un seul palier actif, rechargé

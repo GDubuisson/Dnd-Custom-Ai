@@ -1936,16 +1936,26 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
         // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier
         // "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : avantage si CE lanceur a déjà
-        // attaqué la cible ce round. Les Sorts n'ont pas d'`appliesCondition` (cf.
-        // hasSteadfastAdvantage) : "Volonté de fer" ne s'applique donc jamais ici. S'annule avec
+        // attaqué la cible ce round. "Volonté de fer" (cf. hasSteadfastAdvantage) s'applique
+        // aussi depuis que les Sorts ont un `appliesCondition` (Niveau B, cf.
+        // ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) — ne se déclenche en pratique que si le sort
+        // pose Effrayé sur échec, aucun des sorts SRD actuellement automatisés ici. S'annule avec
         // Sort Élevé (Métamagie) comme avantage/désavantage normalement (même logique que
         // rollCheck, rolls.js).
-        const hasDefenseAdvantage = hasMultiattackDefenseAdvantage(targetActor, this.actor) && !heightened;
+        const hasDefenseAdvantage =
+          (hasMultiattackDefenseAdvantage(targetActor, this.actor) ||
+            hasSteadfastAdvantage(targetActor, item.system.save.appliesCondition)) &&
+          !heightened;
         const useDisadvantage = heightened && !hasMultiattackDefenseAdvantage(targetActor, this.actor);
         const die = hasDefenseAdvantage ? "2d20kh1" : useDisadvantage ? "2d20kl1" : "1d20";
         const roll = new Roll(`${die}${formatModifier(mod)}`);
         await roll.evaluate();
         const success = roll.total >= dc;
+        // Applique automatiquement la condition configurée sur échec (ex. paralysé pour
+        // Immobilisation de personne), même mécanisme que #onRollFeatureSave ci-dessus.
+        if (!success && item.system.save.appliesCondition) {
+          await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
+        }
         const resultKey = success
           ? item.system.save.halfOnSave
             ? "DND_CUSTOM.Roll.SaveSuccessHalf"
@@ -1986,6 +1996,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
       });
       return;
+    }
+
+    // Sort qui pose un état sans jet associé (ex. Invisibilité, Invisibilité suprême, cf.
+    // SpellData#grantsCondition dans item-data.js) : bascule l'état configuré sur chaque cible
+    // actuellement ciblée (même convention de ciblage que save/heal ci-dessus — pour se rendre
+    // soi-même invisible, le lanceur doit se cibler lui-même). Pas de jet, donc pas de message
+    // dédié : tombe ensuite dans le message générique "lance {sort}" ci-dessous.
+    if (item.system.grantsCondition) {
+      const targets = Array.from(game.user.targets);
+      if (!targets.length) {
+        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+      } else {
+        for (const token of targets) {
+          if (!token.actor) continue;
+          await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+        }
+      }
     }
 
     await ChatMessage.create({

@@ -339,7 +339,22 @@ DND_CUSTOM.conditions = [
   // cible. SRD 5e : normalement une seule utilisation avant la fin du sort ; simplifié comme le
   // reste des conditions homebrew (pas de décompte automatique, à lever manuellement après usage
   // ou fin du sort).
-  { id: "guided", name: "DND_CUSTOM.Conditions.guided", img: "icons/svg/light.svg" }
+  { id: "guided", name: "DND_CUSTOM.Conditions.guided", img: "icons/svg/light.svg" },
+  // Homebrew (comme "blessed"/"guided" ci-dessus) : bascule manuelle posée par le lanceur de
+  // Liberté de mouvement (Clerc, Paladin, Druide) sur sa cible — tant qu'active, immunité à
+  // Entravé (cf. isImmuneToCondition, helpers/condition-immunity.js, chantier "généraliser
+  // condition-immunity.js" de ClaudeFiles/MECANIQUES_A_AUTOMATISER.md, 2026-08-24). Pas de
+  // décompte automatique (1 h SRD), à lever manuellement comme le reste des conditions homebrew.
+  { id: "freedomOfMovement", name: "DND_CUSTOM.Conditions.freedomOfMovement", img: "icons/svg/wing.svg" },
+  // Homebrew (comme ci-dessus) : bascule manuelle posée par le lanceur de Protection contre le
+  // mal et le bien sur sa cible — tant qu'active, immunité à Charmé/Effrayé (cf.
+  // isImmuneToCondition). Simplification assumée par rapport au texte SRD exact : la protection
+  // RAW ne vaut QUE contre les Aberrations/Célestes/Élémentaires/Fées/Fiélons/Morts-vivants (pas
+  // n'importe quelle source de Charmé/Effrayé) — ce système ne trace pas le type de créature à
+  // l'origine d'une condition posée (aucun mécanisme d'"origine d'attaquant" pour une
+  // ActiveEffect nulle part ailleurs dans ce système), donc l'immunité posée ici est
+  // volontairement plus large que le SRD plutôt que non modélisée du tout.
+  { id: "protectedFromEvilGood", name: "DND_CUSTOM.Conditions.protectedFromEvilGood", img: "icons/svg/holy-shield.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé

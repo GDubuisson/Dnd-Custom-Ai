@@ -493,9 +493,20 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       // le bouton "Appliquer les dégâts" générique, comme pour une attaque qui touche/rate déjà
       // aujourd'hui (ce bouton n'a jamais tenu compte du résultat Touche/Rate non plus). Mutuel-
       // lement exclusif avec `attack`/`heal` ci-dessous en usage normal (jamais les deux en SRD).
+      // `appliesCondition` (Niveau B, cf. ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : même principe
+      // que FeatureData#appliesCondition ci-dessus (condition posée automatiquement, via
+      // `Actor#toggleStatusEffect`, sur ÉCHEC du jet) — vide = aucun effet appliqué
+      // automatiquement, comportement inchangé (l'immense majorité des sorts à sauvegarde, ex.
+      // Boule de feu qui n'inflige qu'un jet de dégâts).
       save: new SchemaField({
         ability: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
-        halfOnSave: new BooleanField({ required: true, initial: false })
+        halfOnSave: new BooleanField({ required: true, initial: false }),
+        appliesCondition: new StringField({
+          required: false,
+          blank: true,
+          initial: "",
+          choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+        })
       }),
       damage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
@@ -522,6 +533,18 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       light: new SchemaField({
         bright: new NumberField({ required: true, min: 0, initial: 0 }),
         dim: new NumberField({ required: true, min: 0, initial: 0 })
+      }),
+      // Sort qui pose un état sur la cible SANS jet associé (ex. Invisibilité, Invisibilité
+      // suprême → "invisible", déjà lu par `conditionRollEffects`/le rendu de la fiche PJ) :
+      // bascule automatiquement cet état sur chaque cible actuellement ciblée au moment du
+      // lancer (`#onCastSpell`, actor-sheet.js), sans jet de sauvegarde/d'attaque à faire —
+      // contrairement à `save.appliesCondition` ci-dessus, qui dépend du résultat d'un jet.
+      // Vide = comportement inchangé (l'immense majorité des sorts, qui n'affectent aucun état).
+      grantsCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
       }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };

@@ -13,16 +13,39 @@ import { tokenCenter, distanceBetweenPoints } from "./tactical-distance.js";
 const MINDLESS_RAGE_FEAT_NAME = "Rage sans esprit";
 const DEVOTION_AURA_FEAT_NAME = "Aura de dévotion";
 const DEVOTION_AURA_METERS = 3;
-const IMMUNIZABLE_CONDITIONS = new Set(["charmed", "frightened"]);
+const IMMUNIZABLE_CONDITIONS = new Set(["charmed", "frightened", "restrained"]);
+// Sous-ensemble concerné par Rage sans esprit spécifiquement (cf. suspendExistingImmunizedConditions
+// ci-dessous) : Entravé n'en fait PAS partie, cette Capacité n'accorde jamais d'immunité à Entravé
+// (contrairement à Liberté de mouvement, cf. isImmuneToCondition plus bas).
+const CHARM_FEAR_CONDITIONS = new Set(["charmed", "frightened"]);
 
-/** Vrai si `actor` est actuellement immunisé à `conditionId` par une des deux Capacités
- *  ci-dessus. Consulté par le hook `preCreateActiveEffect` (dnd-custom-ai.js) pour annuler la
- *  création de l'ActiveEffect correspondante avant même qu'elle existe. */
+/** Vrai si `actor` est actuellement immunisé à `conditionId`. Consulté par le hook
+ *  `preCreateActiveEffect` (dnd-custom-ai.js) pour annuler la création de l'ActiveEffect
+ *  correspondante avant même qu'elle existe.
+ *
+ *  Chantier "généraliser condition-immunity.js" (Niveau B, cf.
+ *  ClaudeFiles/MECANIQUES_A_AUTOMATISER.md, 2026-08-24) : deux cas de plus au-delà de Rage sans
+ *  esprit/Aura de dévotion (Capacités permanentes du personnage lui-même), tous deux des SORTS
+ *  ciblant un tiers — pas de Capacité permanente à vérifier, juste une condition homebrew
+ *  ("freedomOfMovement"/"protectedFromEvilGood", cf. config.js) posée manuellement par le
+ *  lanceur sur SA CIBLE au moment du lancer (même convention que "blessed"/"guided", aucune des
+ *  conditions homebrew de ce système n'a de décompte de durée automatique) :
+ *  - `freedomOfMovement` (Liberté de mouvement) → immunité à Entravé, sans restriction (fidèle
+ *    au SRD, cette immunité ne dépend jamais de la source).
+ *  - `protectedFromEvilGood` (Protection contre le mal et le bien) → immunité à Charmé/Effrayé.
+ *    Simplification assumée : le SRD ne protège QUE contre les Aberrations/Célestes/
+ *    Élémentaires/Fées/Fiélons/Morts-vivants, mais ce système ne trace l'origine (l'"attaquant")
+ *    d'aucune ActiveEffect nulle part ailleurs (`toggleStatusEffect` ne prend pas ce paramètre,
+ *    cf. tous les appelants de ce fichier/actor-sheet.js) — immunité posée ici plus large que le
+ *    SRD (bloque Charmé/Effrayé quelle que soit la source) plutôt que non modélisée du tout. */
 export function isImmuneToCondition(actor, conditionId) {
   if (actor?.type !== "character" || !IMMUNIZABLE_CONDITIONS.has(conditionId)) return false;
 
-  if (actor.statuses.has("raging") && hasFeature(actor.items.contents, MINDLESS_RAGE_FEAT_NAME)) return true;
+  if (CHARM_FEAR_CONDITIONS.has(conditionId) && actor.statuses.has("raging") && hasFeature(actor.items.contents, MINDLESS_RAGE_FEAT_NAME))
+    return true;
   if (conditionId === "charmed" && isProtectedByDevotionAura(actor)) return true;
+  if (conditionId === "restrained" && actor.statuses.has("freedomOfMovement")) return true;
+  if (CHARM_FEAR_CONDITIONS.has(conditionId) && actor.statuses.has("protectedFromEvilGood")) return true;
   return false;
 }
 
@@ -53,7 +76,7 @@ function isProtectedByDevotionAura(actor) {
  *  (dnd-custom-ai.js). */
 export async function suspendExistingImmunizedConditions(actor) {
   if (!hasFeature(actor.items.contents, MINDLESS_RAGE_FEAT_NAME)) return;
-  for (const conditionId of IMMUNIZABLE_CONDITIONS) {
+  for (const conditionId of CHARM_FEAR_CONDITIONS) {
     if (actor.statuses.has(conditionId)) await actor.toggleStatusEffect(conditionId, { active: false });
   }
 }
