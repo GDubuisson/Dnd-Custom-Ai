@@ -58,6 +58,22 @@
     {{/if}}
   </fieldset>
 
+  <fieldset class="form-group">
+    <legend>{{localize "DND_CUSTOM.Item.Fields.SecondaryDamage"}}</legend>
+    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.SecondaryDamageNote"}}</p>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.DamageDice"}}</label>
+      <input type="text" name="system.secondaryDamage.dice" value="{{system.secondaryDamage.dice}}" placeholder="1d6" {{#unless isGM}}disabled{{/unless}}>
+    </div>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.DamageType"}}</label>
+      <select name="system.secondaryDamage.type" {{#unless isGM}}disabled{{/unless}}>
+        <option value=""></option>
+        {{selectOptions config.damageTypes selected=system.secondaryDamage.type localize=true}}
+      </select>
+    </div>
+  </fieldset>
+
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Weight"}}</label>
     <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.01" {{#unless isGM}}disabled{{/unless}}>

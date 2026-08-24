@@ -666,6 +666,8 @@
         "DamageType": "Type de dégâts",
         "DamageVersatile": "Dégâts (deux mains)",
         "Magic": "Magique",
+        "SecondaryDamage": "Dégâts secondaires",
+        "SecondaryDamageNote": "Dégâts bonus d'une propriété magique (ex. épée de feu = tranchant + feu) : optionnel, résolu séparément contre les résistances de la cible, jamais de modificateur de caractéristique ajouté.",
         "Properties": "Propriétés",
         "Handedness": "Prise en main",
         "Versatile": "Polyvalente",

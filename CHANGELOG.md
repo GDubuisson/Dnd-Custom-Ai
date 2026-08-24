@@ -27,6 +27,16 @@ morts-vivants/constructs, vulnérabilité radiant, sort à zone touchant plusieu
 avec une résistance résolue indépendamment pour chacune). Les armes/armures à dégâts combinés
 physique+magique restent prévues pour une phase ultérieure.
 
+Chantier "types de dégâts" — Phase 3 (armes et attaques de PNJ à dégâts combinés) : une arme
+(`WeaponData#secondaryDamage`) ou une attaque de PNJ (`NpcData#attack.secondaryDamage`) peut
+désormais infliger un SECOND type de dégâts bonus, indépendant du premier (ex. épée de feu =
+tranchant + feu). Un seul clic sur "Dégâts" poste 2 messages de chat distincts, chacun résolu
+indépendamment contre les résistances de la cible (ex. cible résistante au tranchant : tranchant
+réduit de moitié, feu intégral — la résistance physique n'est jamais annulée par la présence d'un
+second type). Le coup critique double les dés des deux composants. Le composant secondaire ne
+reçoit jamais de modificateur de caractéristique ni de bonus de Rage (dés fixes, SRD 5e). Les
+armures à résistances physique/magique restent prévues pour la Phase 4.
+
 Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
 `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient
 du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme

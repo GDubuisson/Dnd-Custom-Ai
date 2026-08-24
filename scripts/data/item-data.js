@@ -54,6 +54,23 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       damageVersatile: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" })
       }),
+      // Chantier "types de dégâts" (Phase 3, 2026-08-24) : dégâts BONUS d'une arme aux propriétés
+      // magiques (ex. épée de feu = tranchant + feu), optionnels (`dice` vide = pas de composant
+      // secondaire, l'immense majorité des armes). Type libre parmi les 13 (pas seulement
+      // magique — une arme pourrait en théorie cumuler deux types physiques). Jamais de
+      // modificateur de caractéristique ajouté (SRD 5e : les dégâts bonus d'une propriété
+      // magique sont des dés fixes) — cf. #onRollWeaponDamage (actor-sheet.js), qui poste un
+      // 2e message de dégâts distinct pour ce composant, résolu indépendamment du premier contre
+      // les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+      secondaryDamage: new SchemaField({
+        dice: new StringField({ required: false, blank: true, initial: "" }),
+        type: new StringField({
+          required: false,
+          blank: true,
+          initial: "",
+          choices: Object.keys(DND_CUSTOM.damageTypes)
+        })
+      }),
       slot: new StringField({
         required: true,
         initial: "mainHand",
@@ -62,10 +79,10 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       // Chantier "types de dégâts" (Phase 1, 2026-08-24) : une arme magique (+1/+2/+3, ou tout
       // simplement enchantée) contourne la résistance/immunité aux dégâts contondants/
       // perforants/tranchants "contre les attaques non magiques" (nuance SRD 5e commune aux
-      // monstres) — cf. isPhysicalResistanceBypassed, dnd-custom-ai.js. Sans lien avec un
-      // éventuel type de dégâts SECONDAIRE (ex. épée de feu = tranchant + feu) : ce champ ne
-      // couvre que le contournement de résistance physique, pas un second jet de dégâts
-      // (Phase 3, non traitée ici).
+      // monstres) — cf. damageTypeMultiplier, dnd-custom-ai.js. S'applique aussi bien au
+      // composant `damage` (physique) qu'à `secondaryDamage` ci-dessus si celui-ci est LUI-MÊME
+      // d'un type physique (rare) — sans effet sur un type déjà magique (Phase 2 : la nuance ne
+      // concerne que les 3 types physiques).
       magic: new BooleanField({ required: true, initial: false }),
       properties: new SchemaField({
         handedness: new StringField({

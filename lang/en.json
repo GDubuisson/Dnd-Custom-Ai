@@ -666,6 +666,8 @@
         "DamageType": "Damage Type",
         "DamageVersatile": "Versatile Damage",
         "Magic": "Magic",
+        "SecondaryDamage": "Secondary Damage",
+        "SecondaryDamageNote": "Bonus damage from a magical property (ex. flaming sword = slashing + fire): optional, resolved separately against the target's resistances, never adds an ability modifier.",
         "Properties": "Properties",
         "Handedness": "Handedness",
         "Versatile": "Versatile",

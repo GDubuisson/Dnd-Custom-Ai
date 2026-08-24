@@ -86,6 +86,19 @@ export class NpcData extends foundry.abstract.TypeDataModel {
             initial: "",
             choices: Object.keys(DND_CUSTOM.damageTypes)
           })
+        }),
+        // Chantier "types de dégâts" (Phase 3, 2026-08-24) : dégâts BONUS d'une attaque aux
+        // propriétés magiques (ex. une morsure qui inflige perforant + poison), optionnels
+        // (`dice` vide = pas de composant secondaire) — même principe que WeaponData#
+        // secondaryDamage (item-data.js), jamais de modificateur de caractéristique ajouté.
+        secondaryDamage: new SchemaField({
+          dice: new StringField({ required: false, blank: true, initial: "" }),
+          type: new StringField({
+            required: false,
+            blank: true,
+            initial: "",
+            choices: Object.keys(DND_CUSTOM.damageTypes)
+          })
         })
       }),
       // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. damageAffinitySchema

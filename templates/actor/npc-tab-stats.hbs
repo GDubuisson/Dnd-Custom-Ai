@@ -42,6 +42,19 @@
       </label>
     </div>
     <label class="checkbox-row"><input type="checkbox" name="system.attack.magic" {{#if attack.magic}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
+    <div class="npc-attack-fields">
+      <label>{{localize "DND_CUSTOM.Item.Fields.SecondaryDamage"}}
+        <input type="text" name="system.attack.secondaryDamage.dice" value="{{attack.secondaryDamageDice}}" placeholder="1d6">
+      </label>
+      <label>{{localize "DND_CUSTOM.Npc.AttackDamageType"}}
+        <select name="system.attack.secondaryDamage.type">
+          {{#each attack.secondaryDamageTypeOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{#if this.label}}{{localize this.label}}{{/if}}</option>
+          {{/each}}
+        </select>
+      </label>
+    </div>
+    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.SecondaryDamageNote"}}</p>
     <p class="item-stats-line equipment-roll-row">
       <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
         <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{attack.attackBonusLabel}}

@@ -1860,6 +1860,28 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       damageType: item.system.damage.type,
       isMagicalSource: item.system.magic
     });
+
+    // Dégâts BONUS d'une propriété magique (chantier "types de dégâts", Phase 3, 2026-08-24 —
+    // ex. épée de feu = tranchant + feu) : 2e message de dégâts DISTINCT, son propre type, jamais
+    // de modificateur de caractéristique/Rage ajouté (SRD 5e : dés fixes) — résolu indépendamment
+    // du 1er contre les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+    // Même critique (dés doublés/triplés) que le composant principal, SRD 5e : "roll all of the
+    // attack's damage dice twice" sur un coup critique, sans distinction de composant.
+    if (item.system.secondaryDamage.dice) {
+      const secondaryDamageTypeLabel = item.system.secondaryDamage.type
+        ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.secondaryDamage.type])
+        : "";
+      await rollDamage({
+        actor: this.actor,
+        dice: item.system.secondaryDamage.dice,
+        formula: "",
+        flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${secondaryDamageTypeLabel ? ` (${secondaryDamageTypeLabel})` : ""}`,
+        critical,
+        criticalMultiplier,
+        damageType: item.system.secondaryDamage.type,
+        isMagicalSource: item.system.magic
+      });
+    }
   }
 
   /** Lance un sort de l'onglet Sorts : décompte 1 charge d'un emplacement de sort (système réel

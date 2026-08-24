@@ -128,7 +128,20 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : "",
       // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. WeaponData#magic (item-data.js)
       // pour le détail — contourne la résistance/immunité GÉNÉRIQUE aux 3 types physiques.
-      magic: attack.magic
+      magic: attack.magic,
+      // Chantier "types de dégâts" (Phase 3, 2026-08-24) : cf. NpcData#attack.secondaryDamage
+      // (npc-data.js) pour le détail — dégâts bonus optionnels d'un second type (ex. morsure
+      // perforant + poison), jamais de modificateur ajouté (dés fixes, contrairement à
+      // damageLabel ci-dessus qui inclut le modificateur du profil principal).
+      secondaryDamageDice: attack.secondaryDamage.dice,
+      secondaryDamageTypeOptions: [
+        { key: "", label: "", selected: !attack.secondaryDamage.type },
+        ...Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({
+          key,
+          label,
+          selected: attack.secondaryDamage.type === key
+        }))
+      ]
     };
 
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
@@ -262,6 +275,29 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       damageType: attack.damage.type,
       isMagicalSource: attack.magic
     });
+
+    // Dégâts BONUS d'une attaque aux propriétés magiques (chantier "types de dégâts", Phase 3,
+    // 2026-08-24 — ex. une morsure qui inflige perforant + poison) : 2e message de dégâts
+    // DISTINCT, son propre type, jamais de modificateur de caractéristique ajouté (SRD 5e : dés
+    // fixes) — résolu indépendamment du 1er contre les résistances de la cible (cf.
+    // damageTypeMultiplier, dnd-custom-ai.js). Même critique (dés doublés) que le composant
+    // principal, cf. #onRollWeaponDamage (actor-sheet.js) pour le même principe côté PJ.
+    if (attack.secondaryDamage.dice) {
+      const secondaryDamageTypeLabel = attack.secondaryDamage.type
+        ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.secondaryDamage.type])
+        : "";
+      await rollDamage({
+        actor: this.actor,
+        dice: attack.secondaryDamage.dice,
+        formula: "",
+        flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", {
+          weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
+        })}${secondaryDamageTypeLabel ? ` (${secondaryDamageTypeLabel})` : ""}`,
+        critical,
+        damageType: attack.secondaryDamage.type,
+        isMagicalSource: attack.magic
+      });
+    }
   }
 
   /** Ouvre la boîte de dialogue de distribution d'XP, montant pré-rempli avec le XP rapporté
