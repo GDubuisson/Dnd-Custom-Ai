@@ -125,8 +125,27 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
           selected: attack.damage.type === key
         }))
       ],
-      damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : ""
+      damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : "",
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. WeaponData#magic (item-data.js)
+      // pour le détail — contourne la résistance/immunité GÉNÉRIQUE aux 3 types physiques.
+      magic: attack.magic
     };
+
+    // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
+    // ensemble), même pattern que weaponProficiencyOptions (class-sheet.hbs/item-sheets.js) —
+    // cf. damageAffinitySchema (shared-schema.js) pour le champ lui-même, damageTypeMultiplier
+    // (dnd-custom-ai.js) pour la résolution.
+    const damageAffinityOptions = (setField) =>
+      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
+    context.damageAffinityGroups = [
+      { field: "damageResistances", titleKey: "DND_CUSTOM.Npc.DamageResistances", options: damageAffinityOptions(system.damageResistances) },
+      { field: "damageImmunities", titleKey: "DND_CUSTOM.Npc.DamageImmunities", options: damageAffinityOptions(system.damageImmunities) },
+      {
+        field: "damageVulnerabilities",
+        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
+        options: damageAffinityOptions(system.damageVulnerabilities)
+      }
+    ];
 
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
     // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
@@ -240,7 +259,8 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
         weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
       })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       critical,
-      damageType: attack.damage.type
+      damageType: attack.damage.type,
+      isMagicalSource: attack.magic
     });
   }
 

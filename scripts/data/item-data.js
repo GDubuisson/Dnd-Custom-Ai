@@ -59,6 +59,14 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
         initial: "mainHand",
         choices: ["mainHand", "offHand"]
       }),
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : une arme magique (+1/+2/+3, ou tout
+      // simplement enchantée) contourne la résistance/immunité aux dégâts contondants/
+      // perforants/tranchants "contre les attaques non magiques" (nuance SRD 5e commune aux
+      // monstres) — cf. isPhysicalResistanceBypassed, dnd-custom-ai.js. Sans lien avec un
+      // éventuel type de dégâts SECONDAIRE (ex. épée de feu = tranchant + feu) : ce champ ne
+      // couvre que le contournement de résistance physique, pas un second jet de dégâts
+      // (Phase 3, non traitée ici).
+      magic: new BooleanField({ required: true, initial: false }),
       properties: new SchemaField({
         handedness: new StringField({
           required: true,

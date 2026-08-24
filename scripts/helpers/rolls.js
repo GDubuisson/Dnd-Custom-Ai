@@ -151,7 +151,8 @@ export async function rollDamage({
   criticalMultiplier = 2,
   damageType = "",
   isSpellDamage = false,
-  spellName = ""
+  spellName = "",
+  isMagicalSource = false
 }) {
   const roll = new Roll(`${dice}${formula}`);
   if (critical) roll.alter(criticalMultiplier, 0);
@@ -173,6 +174,11 @@ export async function rollDamage({
   // (dnd-custom-ai.js) de vérifier que le résultat de sauvegarde stocké sur la cible
   // (`pendingSpellSaveOutcome`, posé par #onCastSpell) correspond bien à CE sort précis avant
   // d'en réduire les dégâts, plutôt que d'appliquer aveuglément le dernier résultat connu.
+  // `isMagicalSource` (chantier "types de dégâts", Phase 1, 2026-08-24) : vrai pour un sort
+  // (toujours magique au SRD, posé par #onRollSpellDamage), ou selon WeaponData#magic/
+  // NpcData#attack.magic pour une arme/attaque de PNJ — contourne la résistance/immunité
+  // GÉNÉRIQUE (pas celle câblée en dur) aux 3 types de dégâts physiques, cf.
+  // damageTypeMultiplier (dnd-custom-ai.js).
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
@@ -182,7 +188,8 @@ export async function rollDamage({
         damageType,
         ...(critical ? { criticalHit: true } : {}),
         ...(isSpellDamage ? { isSpellDamage: true } : {}),
-        ...(spellName ? { spellName } : {})
+        ...(spellName ? { spellName } : {}),
+        ...(isMagicalSource ? { isMagicalSource: true } : {})
       }
     }
   });

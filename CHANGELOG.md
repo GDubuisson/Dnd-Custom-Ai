@@ -7,6 +7,20 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Chantier "types de dégâts" — Phase 1 (physique, cadrée avec l'utilisateur avant implémentation) :
+résistance/immunité/vulnérabilité aux dégâts GÉNÉRIQUES, réglables librement par le MJ sur toute
+fiche PNJ ou Personnage (3 nouveaux groupes de cases à cocher), pour les 3 types physiques
+(contondant/perforant/tranchant) — jusqu'ici, seules quelques Capacités isolées (Rage, Résilience
+draconique...) donnaient une résistance câblée en dur, sans réglage possible ailleurs. Nouvelle
+case "Magique" sur les armes et sur le profil d'attaque des PNJ : une source magique contourne
+cette résistance/immunité générique (nuance SRD "contre les attaques non magiques"), les
+résistances déjà câblées en dur restant toujours actives quel que soit ce réglage (fidèle au SRD,
+qui ne prévoit pas cette nuance pour Rage par exemple). Résistance et vulnérabilité sur le même
+type s'annulent (dégâts normaux), conformément à la règle SRD explicite. Les dégâts magiques
+(feu, nécrotique, etc.) et les armes/armures à dégâts combinés physique+magique sont prévus pour
+une phase ultérieure — le champ accepte déjà les 13 types SRD pour ne jamais nécessiter de
+migration de schéma entre-temps.
+
 Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
 `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient
 du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme

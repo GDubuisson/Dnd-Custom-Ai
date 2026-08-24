@@ -731,6 +731,30 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // les garde visibles "quelque part sur la fiche générale" quel que soit l'onglet ouvert.
     context.activeConditions = context.conditions.filter((condition) => condition.active);
 
+    // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
+    // ensemble), même pattern que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
+    // (verrouillé côté Joueur, comme la fiche Origine), cf. damageAffinitySchema
+    // (shared-schema.js), damageTypeMultiplier (dnd-custom-ai.js).
+    const damageAffinityOptions = (setField) =>
+      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
+    context.damageAffinityGroups = [
+      {
+        field: "damageResistances",
+        titleKey: "DND_CUSTOM.Npc.DamageResistances",
+        options: damageAffinityOptions(system.combat.damageResistances)
+      },
+      {
+        field: "damageImmunities",
+        titleKey: "DND_CUSTOM.Npc.DamageImmunities",
+        options: damageAffinityOptions(system.combat.damageImmunities)
+      },
+      {
+        field: "damageVulnerabilities",
+        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
+        options: damageAffinityOptions(system.combat.damageVulnerabilities)
+      }
+    ];
+
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
       carryingCapacity(system.abilities.str.total, "kg") + carryingCapacityBonus(context.inventoryItems);
@@ -1833,7 +1857,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       critical,
       criticalMultiplier,
-      damageType: item.system.damage.type
+      damageType: item.system.damage.type,
+      isMagicalSource: item.system.magic
     });
   }
 
@@ -2166,7 +2191,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       damageType: item.system.damage.type,
       isSpellDamage: true,
-      spellName: item.name
+      spellName: item.name,
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : un sort est toujours considéré
+      // magique au SRD 5e (contourne la résistance/immunité générique "contre les attaques non
+      // magiques", cf. damageTypeMultiplier, dnd-custom-ai.js).
+      isMagicalSource: true
     });
   }
 

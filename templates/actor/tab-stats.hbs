@@ -65,6 +65,26 @@
     </div>
   </div>
 
+  {{! Chantier "types de dégâts" (Phase 1, 2026-08-24) : réglé par le MJ uniquement, comme la
+      fiche Origine (verrouillage MJ/Joueur) — coexiste avec les résistances déjà câblées en dur
+      par Capacité (Rage, Résilience draconique...). }}
+  <div class="damage-affinity-panel">
+    {{#unless isGM}}
+    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}</p>
+    {{/unless}}
+    {{#each damageAffinityGroups}}
+    <fieldset class="form-group">
+      <legend>{{localize this.titleKey}}</legend>
+      {{#each this.options}}
+      <label class="checkbox-row">
+        <input type="checkbox" name="system.combat.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../../isGM}}disabled{{/unless}}>
+        {{localize this.label}}
+      </label>
+      {{/each}}
+    </fieldset>
+    {{/each}}
+  </div>
+
   <div class="stats-columns">
     <div class="abilities-column">
       {{#each abilities}}

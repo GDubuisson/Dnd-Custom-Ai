@@ -49,6 +49,7 @@
         {{selectOptions config.damageTypes selected=system.damage.type localize=true}}
       </select>
     </div>
+    <label class="checkbox-row"><input type="checkbox" name="system.magic" {{#if system.magic}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
     {{#if system.properties.versatile}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageVersatile"}}</label>

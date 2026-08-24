@@ -1,7 +1,8 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS } from "./character-data.js";
+import { damageAffinitySchema } from "./shared-schema.js";
 
-const { SchemaField, NumberField, StringField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, HTMLField, BooleanField, SetField } = foundry.data.fields;
 
 /** Statistique simplifiée d'ennemi/PNJ : un bonus direct (pas de score) ; la sauvegarde vaut ce même bonus. */
 function npcAbilityField() {
@@ -71,6 +72,11 @@ export class NpcData extends foundry.abstract.TypeDataModel {
         name: new StringField({ required: false, blank: true, initial: "" }),
         ability: new StringField({ required: true, initial: "str", choices: ["str", "dex"] }),
         bonus: new NumberField({ required: true, integer: true, initial: 0 }),
+        // Chantier "types de dégâts" (Phase 1, 2026-08-24) : même contournement de résistance
+        // physique "non magique" qu'une arme de PJ (WeaponData#magic, item-data.js) — une
+        // attaque de PNJ peut elle aussi être magique (ex. une créature dont les attaques
+        // naturelles sont explicitement magiques au SRD).
+        magic: new BooleanField({ required: true, initial: false }),
         damage: new SchemaField({
           dice: new StringField({ required: false, blank: true, initial: "" }),
           bonus: new NumberField({ required: true, integer: true, initial: 0 }),
@@ -82,6 +88,9 @@ export class NpcData extends foundry.abstract.TypeDataModel {
           })
         })
       }),
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. damageAffinitySchema
+      // (shared-schema.js) pour le détail — champ générique partagé avec CharacterData.
+      ...damageAffinitySchema(),
       specialAbilities: new HTMLField({ required: false, blank: true, initial: "" }),
       particularity: new HTMLField({ required: false, blank: true, initial: "" })
     };

@@ -23,7 +23,10 @@
       "AttackBonus": "Bonus au jet",
       "AttackDamageDice": "Dé(s) de dégâts",
       "AttackDamageBonus": "Bonus de dégâts",
-      "AttackDamageType": "Type de dégâts"
+      "AttackDamageType": "Type de dégâts",
+      "DamageResistances": "Résistances aux dégâts",
+      "DamageImmunities": "Immunités aux dégâts",
+      "DamageVulnerabilities": "Vulnérabilités aux dégâts"
     },
     "CreatureTypes": {
       "aberration": "Aberration",
@@ -662,6 +665,7 @@
         "DamageDice": "Dé de dégâts",
         "DamageType": "Type de dégâts",
         "DamageVersatile": "Dégâts (deux mains)",
+        "Magic": "Magique",
         "Properties": "Propriétés",
         "Handedness": "Prise en main",
         "Versatile": "Polyvalente",

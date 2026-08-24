@@ -11,7 +11,7 @@ import {
   SPELL_LEVELS,
   hasFeature
 } from "../helpers/rules.js";
-import { currencySchema } from "./shared-schema.js";
+import { currencySchema, damageAffinitySchema } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
 
@@ -226,6 +226,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           initial: "",
           choices: Object.keys(DND_CUSTOM.creatureTypes)
         }),
+        // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. damageAffinitySchema
+        // (shared-schema.js) pour le détail — champ générique partagé avec NpcData. Réglé par le
+        // MJ (section verrouillée côté Joueur, comme la fiche Origine), couvre par ex. un futur
+        // objet magique/don donnant une résistance sans Capacité dédiée — coexiste avec les
+        // résistances déjà câblées en dur par Capacité (Rage, Résilience draconique...).
+        ...damageAffinitySchema(),
         // Ensemble des id d'Actor ayant fait un jet d'ATTAQUE (arme/sort) contre ce personnage
         // depuis le début de SON round (Défense contre les attaques multiples, Tactiques
         // défensives — cf. helpers/hunters-defense.js#recordAttackOnTargets/

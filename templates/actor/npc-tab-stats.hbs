@@ -41,6 +41,7 @@
         </select>
       </label>
     </div>
+    <label class="checkbox-row"><input type="checkbox" name="system.attack.magic" {{#if attack.magic}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
     <p class="item-stats-line equipment-roll-row">
       <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
         <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{attack.attackBonusLabel}}
@@ -51,6 +52,20 @@
       </button>
       {{/if}}
     </p>
+  </div>
+
+  <div class="damage-affinity-panel">
+    {{#each damageAffinityGroups}}
+    <fieldset class="form-group">
+      <legend>{{localize this.titleKey}}</legend>
+      {{#each this.options}}
+      <label class="checkbox-row">
+        <input type="checkbox" name="system.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
+        {{localize this.label}}
+      </label>
+      {{/each}}
+    </fieldset>
+    {{/each}}
   </div>
 
   <div class="conditions-panel">

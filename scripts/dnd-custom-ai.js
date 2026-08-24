@@ -804,7 +804,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
         message.speaker?.actor,
         message.getFlag(SYSTEM_ID, "damageType"),
         Boolean(message.getFlag(SYSTEM_ID, "isSpellDamage")),
-        message.getFlag(SYSTEM_ID, "spellName") ?? ""
+        message.getFlag(SYSTEM_ID, "spellName") ?? "",
+        Boolean(message.getFlag(SYSTEM_ID, "isMagicalSource"))
       );
       await message.setFlag(SYSTEM_ID, "damageApplied", true);
     });
@@ -812,9 +813,11 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
-// Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : les 3 types de dégâts physiques couverts par
-// la résistance de Rage, cf. isResistantToDamageType ci-dessous.
-const RAGE_RESISTANT_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashing"]);
+// Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) + chantier "types de dégâts" (Phase 1,
+// 2026-08-24) : les 3 types de dégâts physiques SRD — servent à la fois à la résistance de Rage
+// ci-dessous et à la nuance "contre les attaques non magiques" du champ générique
+// damageResistances/Immunities/Vulnerabilities (cf. damageTypeMultiplier plus bas).
+const PHYSICAL_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashing"]);
 
 // Voile des anciens (Paladin, Serment des Anciens — Niveau C, 2026-08-24) : zone de 3 m autour
 // du Paladin ayant activé la bascule "ancientsVeil" (config.js), même mécanisme de portée que
@@ -840,36 +843,65 @@ function isProtectedByAncientsVeil(actor) {
   });
 }
 
-/** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
- *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
- *  des dégâts à un PNJ/une monture.
+/** Vrai si `actor` possède `field` ("damageResistances"/"damageImmunities"/
+ *  "damageVulnerabilities", cf. damageAffinitySchema, shared-schema.js) pour `damageType`.
+ *  CharacterData range ce champ sous `system.combat` (comme ses voisins draconicResistanceType/
+ *  favoredEnemyType) tandis que NpcData (pas de sous-objet `combat`) le garde à la racine — testé
+ *  dans cet ordre plutôt que d'imposer le même emplacement aux deux DataModel. Un PNJ/PJ sans le
+ *  champ (Actor non encore préparé, cas théorique) ne plante jamais, `false` par défaut. */
+function hasGenericDamageAffinity(actor, damageType, field) {
+  const set = actor.system.combat?.[field] ?? actor.system[field];
+  return set?.has?.(damageType) ?? false;
+}
+
+/** Multiplicateur final (0 immunité, 0.5 résistance, 1 normal, 2 vulnérabilité) des dégâts de
+ *  `damageType` subis par `actor` — combine les résistances déjà câblées en dur par Capacité/
+ *  état (Rage, Résilience draconique, Affinité de la tempête, Voile des anciens) et le champ
+ *  générique réglable par le MJ (chantier "types de dégâts", Phase 1, 2026-08-24 —
+ *  damageResistances/Immunities/Vulnerabilities, cf. damageAffinitySchema, shared-schema.js).
  *
- *  `damageType` (clé brute DND_CUSTOM.damageTypes, cf. flag posé par rollDamage/rolls.js —
- *  chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : résistance de CHAQUE cible
- *  résolue individuellement (cf. `isResistantToDamageType` ci-dessous), dégâts arrondis à
- *  l'inférieur après moitié comme le veut le SRD 5e.
+ *  `isSpellDamage` (Voile des anciens) : contrairement aux autres cas, cette résistance ne
+ *  dépend d'AUCUN `damageType` précis (le SRD résiste à "les dégâts des sorts" quel que soit
+ *  leur type).
  *
- *  `isSpellDamage` (Voile des anciens — Niveau C, 2026-08-24) : contrairement aux autres cas
- *  ci-dessous, cette résistance ne dépend d'AUCUN `damageType` précis (le SRD résiste à "les
- *  dégâts des sorts" quel que soit leur type) — vérifiée AVANT le `if (!damageType)` ci-dessous,
- *  qui ne concerne que les résistances par type. */
-function isResistantToDamageType(actor, damageType, isSpellDamage = false) {
-  if (isSpellDamage && isProtectedByAncientsVeil(actor)) return true;
-  if (!damageType) return false;
-  // Résilience draconique (Ensorceleur, Lignage draconique) : type choisi par le joueur, stocké
-  // sur l'Actor (jamais sur un PNJ/une monture dont NpcData n'a pas ce champ).
-  if (actor.system.combat?.draconicResistanceType === damageType) return true;
-  // Affinité de la tempête (Ensorceleur, Tempête 1, SRD 5e) : résistance passive fixe (toujours
-  // active, pas un choix) aux dégâts de foudre/tonnerre — même mécanisme de résolution que
-  // Résilience draconique, juste une source différente (présence de la Capacité plutôt qu'un
-  // champ choisi).
-  if ((damageType === "lightning" || damageType === "thunder") && hasFeature(actor.items.contents, "Affinité de la tempête"))
-    return true;
-  // Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : résistance aux dégâts contondants/perforants/
-  // tranchants tant que "raging" est actif — même mécanisme de résolution que les 2 cas
-  // ci-dessus, juste conditionné à un état plutôt qu'à une Capacité/un choix figé.
-  if (RAGE_RESISTANT_DAMAGE_TYPES.has(damageType) && actor.statuses?.has("raging")) return true;
-  return false;
+ *  `isMagicalSource` (chantier "types de dégâts", Phase 1) : pour les 3 types PHYSIQUES
+ *  UNIQUEMENT, une source magique (sort — toujours magique — ou arme/attaque de PNJ dont la case
+ *  "Magique" est cochée) contourne le champ GÉNÉRIQUE, fidèle à la nuance SRD "contre les
+ *  attaques non magiques" propre aux monstres. Les résistances déjà câblées en dur (Rage
+ *  incluse) n'ONT PAS cette nuance au SRD 5e et restent donc TOUJOURS actives quelle que soit
+ *  `isMagicalSource` — seul le champ générique en tient compte.
+ *
+ *  Immunité prioritaire sur tout le reste ; résistance ET vulnérabilité sur le MÊME type
+ *  s'annulent (dégâts normaux), règle SRD 5e explicite. */
+function damageTypeMultiplier(actor, damageType, { isSpellDamage = false, isMagicalSource = false } = {}) {
+  const genericBypassed = Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && isMagicalSource);
+
+  const immune = !genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageImmunities");
+  if (immune) return 0;
+
+  const resistant =
+    (isSpellDamage && isProtectedByAncientsVeil(actor)) ||
+    // Résilience draconique (Ensorceleur, Lignage draconique) : type choisi par le joueur, stocké
+    // sur l'Actor (jamais sur un PNJ/une monture dont CharacterData n'a pas ce champ).
+    Boolean(damageType && actor.system.combat?.draconicResistanceType === damageType) ||
+    // Affinité de la tempête (Ensorceleur, Tempête 1, SRD 5e) : résistance passive fixe (toujours
+    // active, pas un choix) aux dégâts de foudre/tonnerre.
+    Boolean(
+      damageType &&
+        (damageType === "lightning" || damageType === "thunder") &&
+        hasFeature(actor.items.contents, "Affinité de la tempête")
+    ) ||
+    // Rage (Barbare, SRD 5e) : résistance aux dégâts contondants/perforants/tranchants tant que
+    // "raging" est actif, quel que soit le champ générique.
+    Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && actor.statuses?.has("raging")) ||
+    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageResistances"));
+
+  const vulnerable = !genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageVulnerabilities");
+
+  if (resistant && vulnerable) return 1;
+  if (resistant) return 0.5;
+  if (vulnerable) return 2;
+  return 1;
 }
 
 // Prérequis Évasion/Tour de magie renforcé (Niveau C, 2026-08-24) : cf. spellSaveDamageMultiplier
@@ -904,7 +936,14 @@ function spellSaveDamageMultiplier(targetActor, sourceActor, outcome) {
   return 1;
 }
 
-async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSpellDamage = false, spellName = "") {
+async function applyDamageToTargets(
+  amount,
+  sourceActorId,
+  damageType = "",
+  isSpellDamage = false,
+  spellName = "",
+  isMagicalSource = false
+) {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
@@ -949,13 +988,15 @@ async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSp
     const saveMultiplier = matchesPendingSave ? spellSaveDamageMultiplier(actor, sourceActor, pendingSaveOutcome) : 1;
     if (matchesPendingSave) await actor.unsetFlag(SYSTEM_ID, "pendingSpellSaveOutcome");
 
-    // Résistance de type (cf. isResistantToDamageType ci-dessus) appliquée APRÈS la réduction de
-    // sauvegarde ci-dessus, chacune arrondie à l'inférieur séparément — cumul de réductions
-    // multiples conforme au SRD 5e (jamais une simple multiplication des fractions en un seul
-    // arrondi).
-    const isResistant = isResistantToDamageType(actor, damageType, isSpellDamage);
+    // Résistance/immunité/vulnérabilité de type (cf. damageTypeMultiplier ci-dessus) appliquée
+    // APRÈS la réduction de sauvegarde ci-dessus, chacune arrondie à l'inférieur séparément —
+    // cumul de réductions multiples conforme au SRD 5e (jamais une simple multiplication des
+    // fractions en un seul arrondi). `isMagicalSource` : cf. WeaponData#magic (item-data.js)/
+    // NpcData#attack.magic pour une attaque, toujours vrai pour un sort (rollDamage#isSpellDamage
+    // déjà posé par #onRollSpellDamage).
+    const typeMultiplier = damageTypeMultiplier(actor, damageType, { isSpellDamage, isMagicalSource });
     let targetAmount = saveMultiplier === 1 ? amount : Math.floor(amount * saveMultiplier);
-    if (isResistant) targetAmount = Math.floor(targetAmount / 2);
+    targetAmount = typeMultiplier === 1 ? targetAmount : Math.floor(targetAmount * typeMultiplier);
 
     let remaining = targetAmount;
     const updates = {};
