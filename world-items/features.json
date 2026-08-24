@@ -790,7 +790,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec."
+      "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec — automatisé (bouton \"Appliquer les dégâts\", cf. le résultat de votre jet de sauvegarde)."
     }
   },
   {
@@ -1651,7 +1651,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
+      "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui n'inflige normalement AUCUN dégât en cas de réussite, elle en subit tout de même la moitié — automatisé (bouton \"Appliquer les dégâts\")."
     }
   },
   {

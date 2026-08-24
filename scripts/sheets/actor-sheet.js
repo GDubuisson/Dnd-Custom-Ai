@@ -1993,11 +1993,30 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // différentes), donc pas de conflit si les deux helpers sont interrogés systématiquement.
       const sculptedTargetId = await chooseSculptSpellsTarget(this.actor, targets, { careful: event.shiftKey });
 
+      // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+      // pose sur la CIBLE le résultat du jet (réussite/échec) pour que #onRollSpellDamage +
+      // "Appliquer les dégâts" (dnd-custom-ai.js > applyDamageToTargets) puisse appliquer
+      // automatiquement la bonne fraction de dégâts plus tard — jamais fait jusqu'ici (le bouton
+      // appliquait toujours le montant plein, quel que soit le résultat de CE jet). Un seul
+      // exemplaire par cible (`setFlag` écrase le précédent) : lancer un 2e sort à sauvegarde sur
+      // la même cible sans avoir appliqué les dégâts du 1er perd silencieusement son résultat —
+      // simplification acceptée avec l'utilisateur, jamais de risque d'appliquer le MAUVAIS
+      // multiplicateur au mauvais sort (spellName revérifié à la consommation, dnd-custom-ai.js).
+      const setPendingSpellSaveOutcome = (targetActor, success) =>
+        targetActor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", {
+          success,
+          halfOnSave: item.system.save.halfOnSave,
+          ability: item.system.save.ability,
+          spellLevel: item.system.level,
+          spellName: item.name
+        });
+
       for (const token of targets) {
         const targetActor = token.actor;
         if (!targetActor?.system?.abilities) continue;
 
         if (metamagic?.targetActorId === targetActor.id && metamagic.option === "careful") {
+          await setPendingSpellSaveOutcome(targetActor, true);
           await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ actor: targetActor }),
             content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
@@ -2005,6 +2024,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           continue;
         }
         if (sculptedTargetId === targetActor.id) {
+          await setPendingSpellSaveOutcome(targetActor, true);
           await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ actor: targetActor }),
             content: game.i18n.format("DND_CUSTOM.Roll.SculptSpellsSuccess", { name: targetActor.name, spell: item.name })
@@ -2036,6 +2056,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         if (!success && item.system.save.appliesCondition) {
           await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
         }
+        await setPendingSpellSaveOutcome(targetActor, success);
         const resultKey = success
           ? item.system.save.halfOnSave
             ? "DND_CUSTOM.Roll.SaveSuccessHalf"
@@ -2144,7 +2165,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       critical,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       damageType: item.system.damage.type,
-      isSpellDamage: true
+      isSpellDamage: true,
+      spellName: item.name
     });
   }
 

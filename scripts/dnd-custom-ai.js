@@ -803,7 +803,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
         amount,
         message.speaker?.actor,
         message.getFlag(SYSTEM_ID, "damageType"),
-        Boolean(message.getFlag(SYSTEM_ID, "isSpellDamage"))
+        Boolean(message.getFlag(SYSTEM_ID, "isSpellDamage")),
+        message.getFlag(SYSTEM_ID, "spellName") ?? ""
       );
       await message.setFlag(SYSTEM_ID, "damageApplied", true);
     });
@@ -871,7 +872,39 @@ function isResistantToDamageType(actor, damageType, isSpellDamage = false) {
   return false;
 }
 
-async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSpellDamage = false) {
+// Prérequis Évasion/Tour de magie renforcé (Niveau C, 2026-08-24) : cf. spellSaveDamageMultiplier
+// ci-dessous pour le détail des 2 exceptions posées par-dessus la règle SRD par défaut.
+const EVASION_FEAT_NAME = "Évasion";
+const POTENT_CANTRIP_FEAT_NAME = "Tour de magie renforcé";
+
+/** Fraction (0, 0.5 ou 1) des dégâts d'un sort à sauvegarde réellement subie par `targetActor`,
+ *  selon le résultat de SON jet (`outcome.success`), si le sort réduit normalement de moitié en
+ *  cas de réussite (`outcome.halfOnSave`) — jusqu'ici jamais appliqué du tout (le bouton
+ *  "Appliquer les dégâts" ignorait entièrement le résultat de la sauvegarde, cf.
+ *  ClaudeFiles/MECANIQUES_A_AUTOMATISER.md > "Évasion"/"Tour de magie renforcé").
+ *
+ *  Règle SRD par défaut : réussite → moitié si `halfOnSave`, sinon 0 ; échec → dégâts pleins.
+ *
+ *  - **Évasion** (Roublard 7) : `targetActor` la possède, sauvegarde de Dextérité, `halfOnSave`
+ *    vrai → réussite = AUCUN dégât (au lieu de moitié), échec = moitié (au lieu de plein).
+ *  - **Tour de magie renforcé** (Magicien Évocation 6) : `sourceActor` (le lanceur) la possède,
+ *    sort de niveau 0 (tour de magie), `halfOnSave` FAUX (le cas par défaut où une réussite
+ *    n'inflige normalement AUCUN dégât) → réussite = moitié (au lieu d'aucun) ; échec inchangé.
+ *    Les deux exceptions sont mutuellement exclusives par construction (`halfOnSave` opposé),
+ *    jamais besoin d'arbitrer un conflit entre elles. */
+function spellSaveDamageMultiplier(targetActor, sourceActor, outcome) {
+  const { success, halfOnSave, ability, spellLevel } = outcome;
+  if (ability === "dex" && halfOnSave && hasFeature(targetActor.items.contents, EVASION_FEAT_NAME)) {
+    return success ? 0 : 0.5;
+  }
+  if (!halfOnSave && spellLevel === 0 && sourceActor && hasFeature(sourceActor.items.contents, POTENT_CANTRIP_FEAT_NAME)) {
+    return success ? 0.5 : 1;
+  }
+  if (success) return halfOnSave ? 0.5 : 0;
+  return 1;
+}
+
+async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSpellDamage = false, spellName = "") {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
@@ -903,8 +936,26 @@ async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSp
       continue;
     }
 
+    // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+    // n'agit QUE sur des dégâts de sort (`isSpellDamage`, jamais une attaque d'arme/PNJ) ET
+    // seulement si le flag posé sur CETTE cible par #onCastSpell (`pendingSpellSaveOutcome`)
+    // correspond au MÊME sort que ce jet de dégâts (`spellName`, cf. commentaire de rollDamage#
+    // spellName, rolls.js) — sinon dégâts pleins, comportement identique à avant ce chantier, et
+    // le flag n'est PAS consommé (laissé disponible pour le jet de dégâts qui lui correspond
+    // vraiment, s'il arrive plus tard). Toujours consommé (unset) dès qu'utilisé, qu'il s'agisse
+    // d'une réussite/d'un échec — jamais réutilisable pour un dégât ultérieur.
+    const pendingSaveOutcome = isSpellDamage ? actor.getFlag(SYSTEM_ID, "pendingSpellSaveOutcome") : null;
+    const matchesPendingSave = pendingSaveOutcome && pendingSaveOutcome.spellName === spellName;
+    const saveMultiplier = matchesPendingSave ? spellSaveDamageMultiplier(actor, sourceActor, pendingSaveOutcome) : 1;
+    if (matchesPendingSave) await actor.unsetFlag(SYSTEM_ID, "pendingSpellSaveOutcome");
+
+    // Résistance de type (cf. isResistantToDamageType ci-dessus) appliquée APRÈS la réduction de
+    // sauvegarde ci-dessus, chacune arrondie à l'inférieur séparément — cumul de réductions
+    // multiples conforme au SRD 5e (jamais une simple multiplication des fractions en un seul
+    // arrondi).
     const isResistant = isResistantToDamageType(actor, damageType, isSpellDamage);
-    const targetAmount = isResistant ? Math.floor(amount / 2) : amount;
+    let targetAmount = saveMultiplier === 1 ? amount : Math.floor(amount * saveMultiplier);
+    if (isResistant) targetAmount = Math.floor(targetAmount / 2);
 
     let remaining = targetAmount;
     const updates = {};

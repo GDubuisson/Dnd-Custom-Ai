@@ -150,7 +150,8 @@ export async function rollDamage({
   critical = false,
   criticalMultiplier = 2,
   damageType = "",
-  isSpellDamage = false
+  isSpellDamage = false,
+  spellName = ""
 }) {
   const roll = new Roll(`${dice}${formula}`);
   if (critical) roll.alter(criticalMultiplier, 0);
@@ -167,6 +168,11 @@ export async function rollDamage({
   // pour un jet posé par #onRollSpellDamage (actor-sheet.js), jamais pour une arme/Capacité —
   // seul moyen pour isResistantToDamageType (dnd-custom-ai.js) de savoir qu'un dégât vient d'un
   // SORT plutôt que d'une source précise, indépendamment de son `damageType`.
+  // `spellName` (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+  // nom EXACT du Sort, posé uniquement par #onRollSpellDamage — permet à applyDamageToTargets
+  // (dnd-custom-ai.js) de vérifier que le résultat de sauvegarde stocké sur la cible
+  // (`pendingSpellSaveOutcome`, posé par #onCastSpell) correspond bien à CE sort précis avant
+  // d'en réduire les dégâts, plutôt que d'appliquer aveuglément le dernier résultat connu.
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
@@ -175,7 +181,8 @@ export async function rollDamage({
         damageRoll: true,
         damageType,
         ...(critical ? { criticalHit: true } : {}),
-        ...(isSpellDamage ? { isSpellDamage: true } : {})
+        ...(isSpellDamage ? { isSpellDamage: true } : {}),
+        ...(spellName ? { spellName } : {})
       }
     }
   });
