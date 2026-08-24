@@ -142,7 +142,16 @@ export async function rollCheck({
  *  seul dé supplémentaire au total, cas rare en pratique (l'immense majorité des armes n'ont
  *  qu'un seul type de dé). Ce helper générique reste ignorant du nom "Critique brutal" lui-même,
  *  même principe que `criticalThreshold` ci-dessus. */
-export async function rollDamage({ actor, dice, formula, flavor, critical = false, criticalMultiplier = 2, damageType = "" }) {
+export async function rollDamage({
+  actor,
+  dice,
+  formula,
+  flavor,
+  critical = false,
+  criticalMultiplier = 2,
+  damageType = "",
+  isSpellDamage = false
+}) {
   const roll = new Roll(`${dice}${formula}`);
   if (critical) roll.alter(criticalMultiplier, 0);
   await roll.evaluate();
@@ -154,10 +163,21 @@ export async function rollDamage({ actor, dice, formula, flavor, critical = fals
   // renderChatMessageHTML, dnd-custom-ai.js > applyDamageToTargets) puisse résoudre une
   // résistance éventuelle propre à CHAQUE cible ciblée (ex. Résilience draconique). Vide = type
   // non renseigné à la source (ex. Capacité `dealsDamage`) : jamais de résistance appliquée.
+  // `isSpellDamage` (Voile des anciens, Paladin Anciens — Niveau C, 2026-08-24) : vrai UNIQUEMENT
+  // pour un jet posé par #onRollSpellDamage (actor-sheet.js), jamais pour une arme/Capacité —
+  // seul moyen pour isResistantToDamageType (dnd-custom-ai.js) de savoir qu'un dégât vient d'un
+  // SORT plutôt que d'une source précise, indépendamment de son `damageType`.
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: { "dnd-custom-ai": { damageRoll: true, damageType, ...(critical ? { criticalHit: true } : {}) } }
+    flags: {
+      "dnd-custom-ai": {
+        damageRoll: true,
+        damageType,
+        ...(critical ? { criticalHit: true } : {}),
+        ...(isSpellDamage ? { isSpellDamage: true } : {})
+      }
+    }
   });
   return roll;
 }

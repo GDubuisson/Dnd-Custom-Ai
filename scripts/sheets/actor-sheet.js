@@ -2124,7 +2124,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       formula: totalBoostMod ? formatModifier(totalBoostMod) : "",
       critical,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
-      damageType: item.system.damage.type
+      damageType: item.system.damage.type,
+      isSpellDamage: true
     });
   }
 

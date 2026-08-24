@@ -1245,7 +1245,7 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Canalisation divine (Paladin)",
-      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, 1 minute, vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts."
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, 1 minute, vous et les créatures à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts — automatisé (bascule \"Voile des anciens\", liste des États, à poser sur vous-même ; zone de 3 m recalculée à chaque dégât de sort, aucun décompte de durée)."
     }
   },
   {

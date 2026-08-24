@@ -32,6 +32,7 @@ import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import { isImmuneToCondition, suspendExistingImmunizedConditions } from "./helpers/condition-immunity.js";
+import { tokenCenter, distanceBetweenPoints } from "./helpers/tactical-distance.js";
 import {
   equipmentSlots,
   isOffHandEligible,
@@ -798,7 +799,12 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   } else {
     button.addEventListener("click", async () => {
       button.disabled = true;
-      await applyDamageToTargets(amount, message.speaker?.actor, message.getFlag(SYSTEM_ID, "damageType"));
+      await applyDamageToTargets(
+        amount,
+        message.speaker?.actor,
+        message.getFlag(SYSTEM_ID, "damageType"),
+        Boolean(message.getFlag(SYSTEM_ID, "isSpellDamage"))
+      );
       await message.setFlag(SYSTEM_ID, "damageApplied", true);
     });
   }
@@ -809,6 +815,30 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 // la résistance de Rage, cf. isResistantToDamageType ci-dessous.
 const RAGE_RESISTANT_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashing"]);
 
+// Voile des anciens (Paladin, Serment des Anciens — Niveau C, 2026-08-24) : zone de 3 m autour
+// du Paladin ayant activé la bascule "ancientsVeil" (config.js), même mécanisme de portée que
+// isProtectedByDevotionAura (helpers/condition-immunity.js) mais pour une résistance aux dégâts
+// plutôt qu'une immunité à une condition.
+const ANCIENTS_VEIL_METERS = 3;
+
+/** Voile des anciens : `actor` (le Paladin qui a activé la bascule inclus, distance à lui-même
+ *  valant toujours 0) est protégé s'il existe un personnage avec l'état "ancientsVeil" actif à
+ *  3 m ou moins. Contrairement à Aura de dévotion (bascule passive liée à la possession d'une
+ *  Capacité), "ancientsVeil" est une bascule manuelle temporaire — cohérent avec le reste des
+ *  conditions homebrew (blessed/guided/raging...), aucun décompte de durée. */
+function isProtectedByAncientsVeil(actor) {
+  const actorToken = actor.getActiveTokens()[0]?.document;
+  if (!actorToken) return false;
+  const actorCenter = tokenCenter(actorToken);
+
+  return game.actors.some((paladin) => {
+    if (paladin.type !== "character" || !paladin.statuses.has("ancientsVeil")) return false;
+    const paladinToken = paladin.getActiveTokens()[0]?.document;
+    if (!paladinToken) return false;
+    return distanceBetweenPoints(actorCenter, tokenCenter(paladinToken)) <= ANCIENTS_VEIL_METERS;
+  });
+}
+
 /** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
  *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
  *  des dégâts à un PNJ/une monture.
@@ -816,8 +846,14 @@ const RAGE_RESISTANT_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashin
  *  `damageType` (clé brute DND_CUSTOM.damageTypes, cf. flag posé par rollDamage/rolls.js —
  *  chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : résistance de CHAQUE cible
  *  résolue individuellement (cf. `isResistantToDamageType` ci-dessous), dégâts arrondis à
- *  l'inférieur après moitié comme le veut le SRD 5e. */
-function isResistantToDamageType(actor, damageType) {
+ *  l'inférieur après moitié comme le veut le SRD 5e.
+ *
+ *  `isSpellDamage` (Voile des anciens — Niveau C, 2026-08-24) : contrairement aux autres cas
+ *  ci-dessous, cette résistance ne dépend d'AUCUN `damageType` précis (le SRD résiste à "les
+ *  dégâts des sorts" quel que soit leur type) — vérifiée AVANT le `if (!damageType)` ci-dessous,
+ *  qui ne concerne que les résistances par type. */
+function isResistantToDamageType(actor, damageType, isSpellDamage = false) {
+  if (isSpellDamage && isProtectedByAncientsVeil(actor)) return true;
   if (!damageType) return false;
   // Résilience draconique (Ensorceleur, Lignage draconique) : type choisi par le joueur, stocké
   // sur l'Actor (jamais sur un PNJ/une monture dont NpcData n'a pas ce champ).
@@ -835,7 +871,7 @@ function isResistantToDamageType(actor, damageType) {
   return false;
 }
 
-async function applyDamageToTargets(amount, sourceActorId, damageType = "") {
+async function applyDamageToTargets(amount, sourceActorId, damageType = "", isSpellDamage = false) {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
@@ -867,7 +903,7 @@ async function applyDamageToTargets(amount, sourceActorId, damageType = "") {
       continue;
     }
 
-    const isResistant = isResistantToDamageType(actor, damageType);
+    const isResistant = isResistantToDamageType(actor, damageType, isSpellDamage);
     const targetAmount = isResistant ? Math.floor(amount / 2) : amount;
 
     let remaining = targetAmount;
