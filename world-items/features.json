@@ -11,7 +11,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "longRest" },
-      "description": "Action bonus pour entrer en rage (1 minute, sans armure lourde) : avantage aux tests et sauvegardes de Force, +2 dégâts aux attaques de corps à corps à la Force, résistance aux dégâts contondants/perforants/tranchants. 2 utilisations par repos long (simplifié : ne progresse pas avec le niveau dans ce système). Prend fin si assommé ou après un tour sans attaque ni dégât subi."
+      "description": "Action bonus pour entrer en rage (1 minute, sans armure lourde) — bascule \"En Rage\" (liste des États, onglet Stats) pour poser/lever l'état, décompte de durée automatique. Tant qu'actif : avantage aux tests et sauvegardes de Force — automatisé ; +2 dégâts aux attaques de corps à corps à la Force — automatisé ; résistance aux dégâts contondants/perforants/tranchants — automatisé (bouton \"Appliquer les dégâts\"). 2 utilisations par repos long (simplifié : ne progresse pas avec le niveau dans ce système). Prend fin si assommé ou après un tour sans attaque ni dégât subi (à lever manuellement, aucun décompte de ce critère de fin)."
     }
   },
   {

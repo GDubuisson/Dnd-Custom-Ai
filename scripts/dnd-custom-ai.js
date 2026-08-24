@@ -805,6 +805,10 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : les 3 types de dégâts physiques couverts par
+// la résistance de Rage, cf. isResistantToDamageType ci-dessous.
+const RAGE_RESISTANT_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashing"]);
+
 /** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
  *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
  *  des dégâts à un PNJ/une monture.
@@ -824,6 +828,10 @@ function isResistantToDamageType(actor, damageType) {
   // champ choisi).
   if ((damageType === "lightning" || damageType === "thunder") && hasFeature(actor.items.contents, "Affinité de la tempête"))
     return true;
+  // Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : résistance aux dégâts contondants/perforants/
+  // tranchants tant que "raging" est actif — même mécanisme de résolution que les 2 cas
+  // ci-dessus, juste conditionné à un état plutôt qu'à une Capacité/un choix figé.
+  if (RAGE_RESISTANT_DAMAGE_TYPES.has(damageType) && actor.statuses?.has("raging")) return true;
   return false;
 }
 

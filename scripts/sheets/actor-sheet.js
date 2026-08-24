@@ -24,6 +24,7 @@ import {
   spellSlotFillUpdates,
   targetSaveModifier
 } from "../helpers/rules.js";
+import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
@@ -120,10 +121,17 @@ function hasMountedSizeAdvantage(actor) {
  *  compétence uniquement (SRD 5e : Avis divin ne cible qu'UN test, simplifié ici comme
  *  "guided" reste actif tant que le joueur ne le lève pas lui-même, cohérent avec le reste des
  *  bascules homebrew). Jets de sauvegarde contre la mort (#onRollDeathSave) volontairement
- *  exclus : flux spécial à part (1d20 brut, sans passer par rollCheck/conditionRollEffects). */
+ *  exclus : flux spécial à part (1d20 brut, sans passer par rollCheck/conditionRollEffects).
+ *
+ *  Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : avantage aux tests ET sauvegardes de FORCE
+ *  tant que "raging" est actif. `abilityKey` pour "check" désigne soit l'aptitude brute testée
+ *  (#onRollAbility, ex. "str"), soit celle de la compétence testée (#onRollSkill, cf.
+ *  SKILL_ABILITIES dans character-data.js — Athlétisme = "str") : les deux comptent comme "tests
+ *  de Force" au sens du SRD. */
 function conditionRollEffects(actor, kind, abilityKey) {
   const statuses = actor.statuses;
   const exhaustion = actor.system.attributes?.exhaustion ?? 0;
+  const strengthRageAdvantage = statuses.has("raging") && abilityKey === "str";
   let advantage = false;
   let disadvantage = false;
   let bonus = "";
@@ -131,6 +139,7 @@ function conditionRollEffects(actor, kind, abilityKey) {
   if (kind === "check") {
     disadvantage =
       statuses.has("poisoned") || statuses.has("frightened") || exhaustion >= EXHAUSTION_CHECK_DISADVANTAGE_LEVEL;
+    advantage = strengthRageAdvantage;
     if (statuses.has("guided")) bonus = "+1d4";
   } else if (kind === "attack") {
     disadvantage =
@@ -145,6 +154,7 @@ function conditionRollEffects(actor, kind, abilityKey) {
   } else if (kind === "save") {
     disadvantage =
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL || (abilityKey === "dex" && statuses.has("restrained"));
+    advantage = strengthRageAdvantage;
     if (statuses.has("blessed")) bonus = "+1d4";
   }
   return { advantage, disadvantage, bonus };
@@ -1562,7 +1572,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollAbility(event, target) {
     const key = target.dataset.key;
     const mod = abilityModifier(this.actor.system.abilities[key].total);
-    const cond = conditionRollEffects(this.actor, "check");
+    const cond = conditionRollEffects(this.actor, "check", key);
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod) + cond.bonus,
@@ -1636,7 +1646,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
     // sous-classe choisie : le niveau 9 doit être atteint.
     const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
-    const cond = conditionRollEffects(this.actor, "check");
+    const cond = conditionRollEffects(this.actor, "check", SKILL_ABILITIES[key]);
 
     let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
     const specialTrait = game.dndCustomAi?.origins?.[system.origin]?.specialTrait;
@@ -1746,10 +1756,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const isMelee = item.system.weaponType?.startsWith("melee");
     const criticalMultiplier =
       critical && isMelee && hasFeature(this.actor.items.contents, "Critique brutal") ? 3 : 2;
+    // Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : +2 dégâts sur une attaque d'arme de CORPS
+    // À CORPS utilisant la Force (RAW : "si vous utilisez une arme basée sur la Force").
+    // `atk.abilityMod` (weaponAttackDamage, rules.js) vaut déjà le meilleur de Force/Dextérité
+    // pour une arme Finesse — comparer à strMod exclut donc le cas où le joueur combat en
+    // Dextérité sur une Finesse (Dextérité strictement supérieure), sans complexifier
+    // weaponAttackDamage pour ce seul cas.
+    const strMod = abilityModifier(this.actor.system.abilities.str.total);
+    const rageDamageBonus = this.actor.statuses.has("raging") && isMelee && atk.abilityMod === strMod ? "+2" : "";
     await rollDamage({
       actor: this.actor,
       dice,
-      formula: formatModifier(atk.abilityMod),
+      formula: formatModifier(atk.abilityMod) + rageDamageBonus,
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
       critical,
       criticalMultiplier,
