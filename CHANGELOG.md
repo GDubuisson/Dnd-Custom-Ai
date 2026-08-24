@@ -24,8 +24,8 @@ sorts/capacités d'un coup) :
   "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
   (immunité à Charmé/Effrayé).
 
-Niveau C (4 des 6 mécaniques restantes, les 2 autres bloquées structurellement ou par un
-chantier préalable plus large — détail dans `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) :
+Niveau C (5 des 6 mécaniques restantes, la dernière bloquée structurellement — détail dans
+`ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) :
 - Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de corps à
   corps à la Force, résistance aux dégâts contondants/perforants/tranchants — les 3 tant que
   l'état "En Rage" (onglet États) est actif.
@@ -36,6 +36,11 @@ chantier préalable plus large — détail dans `ClaudeFiles/MECANIQUES_A_AUTOMA
   3 m, tant que la nouvelle bascule "Voile des anciens" (onglet États) est active.
 - Ennemi juré (Rôdeur 1) : choix ponctuel d'un type de créature favori (bouton "Choisir"),
   avantage automatique aux tests de Survie et d'Intelligence contre une cible ciblée de ce type.
+- Application des dégâts d'un sort à sauvegarde : tient désormais compte du résultat du jet de
+  CHAQUE cible (réussite = moitié des dégâts si le sort le prévoit sinon aucun ; échec = dégâts
+  pleins), ce qui n'était jamais le cas auparavant (dégâts pleins systématiques). Débloque au
+  passage Évasion (Roublard 7 : réussite = aucun dégât, échec = moitié) et Tour de magie renforcé
+  (Magicien Évocation 6 : réussite à un tour de magie = moitié au lieu d'aucun).
 
 Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
 vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du
