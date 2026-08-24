@@ -270,7 +270,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez un type d'ennemi favori avec le MJ : avantage aux tests de Sagesse (Survie) pour le pister et aux tests d'Intelligence pour vous souvenir d'informations à son sujet."
+      "grantsChoice": "favoredEnemyType",
+      "description": "Choix ponctuel et définitif d'un type d'ennemi favori (bouton \"Choisir\") : avantage aux tests de Sagesse (Survie) pour le pister et aux tests d'Intelligence pour vous souvenir d'informations à son sujet — automatisé (déclenché dès qu'une cible actuellement ciblée est de ce type)."
     }
   },
   {

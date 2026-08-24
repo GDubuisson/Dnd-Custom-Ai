@@ -60,7 +60,8 @@ const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation ri
 const CHOICE_OPTIONS_TABLES = {
   totemSpirit: DND_CUSTOM.totemSpirits,
   draconicResistanceType: DND_CUSTOM.draconicResistanceTypes,
-  huntersDefense: DND_CUSTOM.huntersDefenses
+  huntersDefense: DND_CUSTOM.huntersDefenses,
+  favoredEnemyType: DND_CUSTOM.creatureTypes
 };
 
 /** Critique automatique de la Capacité "Assassinat" (sous-classe Assassin, Roublard — cf.
@@ -74,6 +75,18 @@ const CHOICE_OPTIONS_TABLES = {
 function hasAssassinAutoCritical(actor) {
   if (actor.system.subclass !== "assassin") return false;
   return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
+}
+
+/** Ennemi juré (Rôdeur 1, SRD 5e — Niveau C, 2026-08-24) : vrai si `actor` a choisi un type de
+ *  créature favori (`system.combat.favoredEnemyType`, cf. FeatureData#grantsChoice =
+ *  "favoredEnemyType", DND_CUSTOM.creatureTypes) ET qu'au moins une des cibles actuellement
+ *  ciblées (`game.user.targets`) est de ce type — même mécanisme de lecture de cible que
+ *  `hasAssassinAutoCritical` ci-dessus. Pilote l'avantage aux tests de Sagesse (Survie, pister)
+ *  ET d'Intelligence (se souvenir d'une info), cf. #onRollSkill/#onRollAbility. */
+function hasFavoredEnemyAdvantage(actor) {
+  const favoredType = actor.system.combat?.favoredEnemyType;
+  if (!favoredType) return false;
+  return [...game.user.targets].some((token) => token.actor?.system?.creatureType === favoredType);
 }
 
 /** Seuil de critique (cf. rollCheck > criticalThreshold, rolls.js) : 19 si `actor` possède
@@ -1616,13 +1629,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const key = target.dataset.key;
     const mod = abilityModifier(this.actor.system.abilities[key].total);
     const cond = conditionRollEffects(this.actor, "check", key);
+    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test d'Intelligence brut (se souvenir d'une
+    // info) contre une cible actuellement ciblée du type de créature favori choisi.
+    const favoredEnemyAdvantage = key === "int" && hasFavoredEnemyAdvantage(this.actor);
     await rollCheck({
       actor: this.actor,
       formula: formatModifier(mod) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
-      advantage: event.shiftKey || cond.advantage,
+      advantage: event.shiftKey || cond.advantage || favoredEnemyAdvantage,
       disadvantage: event.ctrlKey || cond.disadvantage
     });
   }
@@ -1689,6 +1705,9 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
     // sous-classe choisie : le niveau 9 doit être atteint.
     const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
+    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test de Survie (pister) contre une cible
+    // actuellement ciblée du type de créature favori choisi.
+    const favoredEnemyAdvantage = key === "survival" && hasFavoredEnemyAdvantage(this.actor);
     const cond = conditionRollEffects(this.actor, "check", SKILL_ABILITIES[key]);
 
     let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
@@ -1709,7 +1728,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       formula: formatModifier(mod) + cond.bonus,
       flavor,
-      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || cond.advantage,
+      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || favoredEnemyAdvantage || cond.advantage,
       disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
     });
   }

@@ -214,6 +214,18 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           initial: "",
           choices: ["mobile", "multiattackDefense", "steadfast"]
         }),
+        // Choix ponctuel et définitif du type de créature favori (Ennemi juré, Rôdeur 1, SRD 5e —
+        // Niveau C, 2026-08-24) : cf. FeatureData#grantsChoice = "favoredEnemyType",
+        // DND_CUSTOM.creatureTypes (config.js, même table que NpcData#creatureType/
+        // requiresCreatureTypes — pas de table dédiée, contrairement à totemSpirit/huntersDefense
+        // ci-dessus). Avantage aux tests de Survie (pister) et d'Intelligence (se souvenir d'une
+        // info) contre une cible de ce type, cf. #onRollSkill (actor-sheet.js).
+        favoredEnemyType: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: Object.keys(DND_CUSTOM.creatureTypes)
+        }),
         // Ensemble des id d'Actor ayant fait un jet d'ATTAQUE (arme/sort) contre ce personnage
         // depuis le début de SON round (Défense contre les attaques multiples, Tactiques
         // défensives — cf. helpers/hunters-defense.js#recordAttackOnTargets/

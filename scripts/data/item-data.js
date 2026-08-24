@@ -309,7 +309,7 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         required: false,
         blank: true,
         initial: "",
-        choices: ["totemSpirit", "draconicResistanceType", "huntersDefense"]
+        choices: ["totemSpirit", "draconicResistanceType", "huntersDefense", "favoredEnemyType"]
       }),
       // Capacité qui invoque un compagnon animal (ex. "Compagnon animal", Maître des bêtes,
       // Rôdeur) : bouton "Invoquer le compagnon" affiché (onglet Capacités/Sorts, cf.
