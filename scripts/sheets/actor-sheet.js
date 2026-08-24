@@ -85,6 +85,32 @@ function improvedCriticalThreshold(actor) {
   return hasFeature(actor.items.contents, "Critique amélioré") ? 19 : 20;
 }
 
+/** Destruction des morts-vivants (Clerc 5, SRD 5e — Niveau C, 2026-08-24) : seuil de FI (indice
+ *  de dangerosité) sous lequel un Mort-vivant est DÉTRUIT au lieu de seulement repoussé par
+ *  Canalisation divine "Repousser les morts-vivants", selon le niveau du Clerc — table SRD 5e
+ *  officielle. `null` sous le niveau 5 (Capacité pas encore acquise). */
+function destroyUndeadThreshold(clericLevel) {
+  if (clericLevel >= 17) return "4";
+  if (clericLevel >= 14) return "3";
+  if (clericLevel >= 11) return "2";
+  if (clericLevel >= 8) return "1";
+  if (clericLevel >= 5) return "1/2";
+  return null;
+}
+
+/** Vrai si `targetChallengeRating` (FI du PNJ ciblé, DND_CUSTOM.challengeRatings — tableau
+ *  ORDONNÉ croissant, cf. config.js) est inférieur ou égal au seuil de `destroyUndeadThreshold`
+ *  ci-dessus pour `casterLevel` — comparaison par INDEX dans le tableau plutôt que par valeur
+ *  numérique, pour ne pas avoir à parser les fractions ("1/8", "1/4", "1/2"). FI absent/invalide
+ *  (indexOf -1) : jamais détruit, seulement repoussé (comportement par défaut inchangé). */
+function isUndeadDestroyed(casterLevel, targetChallengeRating) {
+  const threshold = destroyUndeadThreshold(casterLevel);
+  if (!threshold) return false;
+  const ratings = DND_CUSTOM.challengeRatings;
+  const targetIndex = ratings.indexOf(targetChallengeRating);
+  return targetIndex >= 0 && targetIndex <= ratings.indexOf(threshold);
+}
+
 /** Avantage automatique aux jets d'attaque du don Combat monté (SRD 5e — chantier "Combat
  *  automatisé avancé", 2026-08-23) : vrai si `actor` possède le don, est actuellement monté
  *  (`system.combat.mountedActorId`), et qu'au moins une des cibles actuellement ciblées
@@ -1152,10 +1178,27 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const roll = new Roll(`${hasDefenseAdvantage ? "2d20kh1" : "1d20"}${formatModifier(mod)}`);
       await roll.evaluate();
       const success = roll.total >= dc;
-      if (!success && item.system.appliesCondition) {
+      // Destruction des morts-vivants (Clerc 5, SRD 5e) : ne concerne QUE "Repousser les
+      // morts-vivants" (seule Capacité de ce système à cibler "undead" via requiresCreatureTypes,
+      // cf. son commentaire d'en-tête) — remplace l'application de la condition (Effrayé/
+      // "repoussé") par une destruction pure quand le Clerc possède la Capacité ET que la FI de
+      // la cible est sous le seuil de son niveau.
+      const destroysUndead =
+        item.system.requiresCreatureTypes.has("undead") &&
+        targetActor.system.creatureType === "undead" &&
+        hasFeature(this.actor.items.contents, "Destruction des morts-vivants") &&
+        isUndeadDestroyed(system.attributes.level, targetActor.system.challengeRating);
+      if (!success && destroysUndead) {
+        await targetActor.update({ "system.attributes.hp.value": 0 });
+        if (!targetActor.statuses.has("dead")) await targetActor.toggleStatusEffect("dead", { active: true });
+      } else if (!success && item.system.appliesCondition) {
         await targetActor.toggleStatusEffect(item.system.appliesCondition, { active: true });
       }
-      const resultKey = success ? "DND_CUSTOM.Roll.SaveSuccess" : "DND_CUSTOM.Roll.SaveFail";
+      const resultKey = success
+        ? "DND_CUSTOM.Roll.SaveSuccess"
+        : destroysUndead
+          ? "DND_CUSTOM.Roll.SaveFailUndeadDestroyed"
+          : "DND_CUSTOM.Roll.SaveFail";
       await roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: targetActor }),
         flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${

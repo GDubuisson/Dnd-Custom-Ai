@@ -264,6 +264,7 @@
       "SaveSuccess": "{name} réussit son jet de sauvegarde de {ability} (DD {dc}) contre {spell} — aucun effet.",
       "SaveSuccessHalf": "{name} réussit son jet de sauvegarde de {ability} (DD {dc}) contre {spell} — dégâts réduits de moitié.",
       "SaveFail": "{name} échoue son jet de sauvegarde de {ability} (DD {dc}) contre {spell}.",
+      "SaveFailUndeadDestroyed": "{name} échoue son jet de sauvegarde de {ability} (DD {dc}) contre {spell} et est détruit (Destruction des morts-vivants).",
       "MetamagicCarefulSuccess": "{name} réussit automatiquement son jet de sauvegarde contre {spell} — Sort Prudent (Métamagie).",
       "SculptSpellsSuccess": "{name} réussit automatiquement son jet de sauvegarde contre {spell} — Sculpteur de sorts.",
       "DeathSave": "Jet de sauvegarde de la mort",

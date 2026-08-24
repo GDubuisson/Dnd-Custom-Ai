@@ -610,7 +610,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (Clerc) (option Repousser les morts-vivants) et que son indice de dangerosité est inférieur ou égal à 1/2, il est détruit au lieu d'être seulement repoussé (seuil à confirmer avec le MJ selon votre niveau)."
+      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (Clerc) (option Repousser les morts-vivants) et que son indice de dangerosité est sous le seuil de votre niveau (1/2 au niveau 5, 1 au niveau 8, 2 au niveau 11, 3 au niveau 14, 4 au niveau 17), il est détruit au lieu d'être seulement repoussé — automatisé (table SRD 5e, cf. #onRollFeatureSave)."
     }
   },
   {

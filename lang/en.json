@@ -264,6 +264,7 @@
       "SaveSuccess": "{name} succeeds their {ability} saving throw (DC {dc}) against {spell} — no effect.",
       "SaveSuccessHalf": "{name} succeeds their {ability} saving throw (DC {dc}) against {spell} — damage halved.",
       "SaveFail": "{name} fails their {ability} saving throw (DC {dc}) against {spell}.",
+      "SaveFailUndeadDestroyed": "{name} fails their {ability} saving throw (DC {dc}) against {spell} and is destroyed (Destroy Undead).",
       "MetamagicCarefulSuccess": "{name} automatically succeeds their saving throw against {spell} — Careful Spell (Metamagic).",
       "SculptSpellsSuccess": "{name} automatically succeeds their saving throw against {spell} — Sculpt Spells.",
       "DeathSave": "Death saving throw",
