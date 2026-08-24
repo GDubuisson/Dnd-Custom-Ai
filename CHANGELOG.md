@@ -24,6 +24,19 @@ sorts/capacités d'un coup) :
   "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
   (immunité à Charmé/Effrayé).
 
+Niveau C (4 des 6 mécaniques restantes, les 2 autres bloquées structurellement ou par un
+chantier préalable plus large — détail dans `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) :
+- Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de corps à
+  corps à la Force, résistance aux dégâts contondants/perforants/tranchants — les 3 tant que
+  l'état "En Rage" (onglet États) est actif.
+- Destruction des morts-vivants (Clerc 5) : "Repousser les morts-vivants" détruit désormais un
+  mort-vivant (au lieu de simplement le repousser) quand son indice de dangerosité est sous le
+  seuil de la table SRD pour le niveau du Clerc.
+- Voile des anciens (Paladin, Serment des Anciens) : résistance aux dégâts de sorts en zone de
+  3 m, tant que la nouvelle bascule "Voile des anciens" (onglet États) est active.
+- Ennemi juré (Rôdeur 1) : choix ponctuel d'un type de créature favori (bouton "Choisir"),
+  avantage automatique aux tests de Survie et d'Intelligence contre une cible ciblée de ce type.
+
 Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
 vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du
 sort est épuisé) et cas particulier Magie de Pacte (Occultiste, un seul palier actif, rechargé
