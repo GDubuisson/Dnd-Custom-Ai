@@ -16,10 +16,16 @@ case "Magique" sur les armes et sur le profil d'attaque des PNJ : une source mag
 cette résistance/immunité générique (nuance SRD "contre les attaques non magiques"), les
 résistances déjà câblées en dur restant toujours actives quel que soit ce réglage (fidèle au SRD,
 qui ne prévoit pas cette nuance pour Rage par exemple). Résistance et vulnérabilité sur le même
-type s'annulent (dégâts normaux), conformément à la règle SRD explicite. Les dégâts magiques
-(feu, nécrotique, etc.) et les armes/armures à dégâts combinés physique+magique sont prévus pour
-une phase ultérieure — le champ accepte déjà les 13 types SRD pour ne jamais nécessiter de
-migration de schéma entre-temps.
+type s'annulent (dégâts normaux), conformément à la règle SRD explicite.
+
+Chantier "types de dégâts" — Phase 2 (magique) : aucun nouveau code, le mécanisme générique de la
+Phase 1 fonctionnait déjà sans condition pour les 10 types magiques (feu, nécrotique, poison,
+radiant...) — la nuance "contourné par une source magique" ne concerne QUE les 3 types physiques,
+fidèle au SRD (aucun monstre n'a de résistance "au feu sauf source non magique"). Cette phase
+n'a donc consisté qu'à valider en E2E réel les cas magiques courants (immunité poison/psychique
+morts-vivants/constructs, vulnérabilité radiant, sort à zone touchant plusieurs cibles à la fois
+avec une résistance résolue indépendamment pour chacune). Les armes/armures à dégâts combinés
+physique+magique restent prévues pour une phase ultérieure.
 
 Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
 `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient
