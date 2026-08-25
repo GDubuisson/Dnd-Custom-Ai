@@ -288,7 +288,7 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
       });
 
     cy.window()
-      .then((win) => createActor(win, { name: "Mobile Enemy", type: "npc", system: { attack: { ability: "str", bonus: 5 } } }))
+      .then((win) => createActor(win, { name: "Mobile Enemy", type: "npc", system: { attacks: [{ ability: "str", bonus: 5 }] } }))
       .then((actor) => {
         enemyId = actor.id;
       });

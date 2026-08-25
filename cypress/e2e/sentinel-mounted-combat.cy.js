@@ -170,7 +170,7 @@ describe("Sentinelle — rappel automatique quand un PNJ hostile attaque un alli
           updateActor(win, win.game.actors.get(fighterId), { "system.combat.reactionAvailable": true }, { dndCustomWizard: true })
         );
       })
-      .then(() => cy.window().then((win) => createActor(win, { name: "Sentinel Enemy", type: "npc", system: { attack: { ability: "str", bonus: 5 } } })))
+      .then(() => cy.window().then((win) => createActor(win, { name: "Sentinel Enemy", type: "npc", system: { attacks: [{ ability: "str", bonus: 5 }] } })))
       .then((actor) => {
         enemyId = actor.id;
         return cy.window().then((win) => createToken(win, enemyId, 1060, 1000)); // 0,9 m du Guerrier

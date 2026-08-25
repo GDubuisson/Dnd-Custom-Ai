@@ -160,7 +160,8 @@ describe("Fiche PNJ, session MJ", () => {
   });
 
   // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
-  // profil d'attaque simplifié (NpcData#attack, npc-data.js), configuré ici par le MJ (Force,
+  // profils d'attaque simplifiés (NpcData#attacks, npc-data.js — LISTE depuis le chantier
+  // "mécaniques jamais modélisées" point 4/6, 2026-08-25), configurés ici par le MJ (Force,
   // bonus +2, dégâts 1d6+1 tranchant), vérifie le jet d'attaque (1d20 + mod Force + bonus) et de
   // dégâts (dé + mod Force + bonus), même mécanique que #onRollWeaponAttack/#onRollWeaponDamage
   // côté fiche personnage (rollCheck/rollDamage, rolls.js).
@@ -169,7 +170,7 @@ describe("Fiche PNJ, session MJ", () => {
       win.game.actors.get(npcActorId).update(
         win.JSON.parse(
           win.JSON.stringify({
-            "system.attack": { name: "Griffe", ability: "str", bonus: 2, damage: { dice: "1d6", bonus: 1, type: "slashing" } }
+            "system.attacks": [{ name: "Griffe", ability: "str", bonus: 2, damage: { dice: "1d6", bonus: 1, type: "slashing" } }]
           })
         )
       )
@@ -213,7 +214,9 @@ describe("Fiche PNJ, session MJ", () => {
     // seulement le branchement du flag transitoire sur l'Actor (cf. #onRollAttack/
     // #onRollAttackDamage, npc-sheet.js) — le doublement des dés lui-même (Roll#alter) est déjà
     // couvert ailleurs (combat-criticals.cy.js) pour la mécanique partagée rollDamage.
-    cy.window().then((win) => win.game.actors.get(npcActorId).setFlag("dnd-custom-ai", "pendingAttackCritical", true));
+    cy.window().then((win) =>
+      win.game.actors.get(npcActorId).setFlag("dnd-custom-ai", "pendingAttackCritical", win.JSON.parse(win.JSON.stringify({ 0: true })))
+    );
     cy.window().then((win) => {
       const before = win.game.messages.size;
       sheetRoot().find('button[data-action="rollAttackDamage"]').click();
@@ -221,7 +224,10 @@ describe("Fiche PNJ, session MJ", () => {
         expect(win2.game.messages.size).to.be.greaterThan(before);
         const message = win2.game.messages.contents.at(-1);
         expect(message.rolls[0]?.formula ?? "", "dé doublé sur coup critique (2d6)").to.match(/^2d6/);
-        expect(win2.game.actors.get(npcActorId).getFlag("dnd-custom-ai", "pendingAttackCritical"), "flag consommé après usage").to.be.undefined;
+        expect(
+          win2.game.actors.get(npcActorId).getFlag("dnd-custom-ai", "pendingAttackCritical")?.[0],
+          "flag consommé après usage (index 0)"
+        ).to.be.undefined;
       });
     });
 
@@ -229,7 +235,7 @@ describe("Fiche PNJ, session MJ", () => {
     cy.window().then((win) =>
       win.game.actors.get(npcActorId).update(
         win.JSON.parse(
-          win.JSON.stringify({ "system.attack": { name: "", ability: "str", bonus: 0, damage: { dice: "", bonus: 0, type: "" } } })
+          win.JSON.stringify({ "system.attacks": [{ name: "", ability: "str", bonus: 0, damage: { dice: "", bonus: 0, type: "" } }] })
         )
       )
     );

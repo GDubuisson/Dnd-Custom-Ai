@@ -272,7 +272,7 @@ describe("Affinité de la tempête — résistance passive foudre/tonnerre", () 
       .then((win) =>
         win.Actor.create(
           win.JSON.parse(
-            win.JSON.stringify({ name: "Storm Attacker", type: "npc", system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "lightning" } } } })
+            win.JSON.stringify({ name: "Storm Attacker", type: "npc", system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "lightning" } }] } })
           )
         )
       )

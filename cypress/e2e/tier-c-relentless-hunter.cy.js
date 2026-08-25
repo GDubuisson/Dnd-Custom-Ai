@@ -241,7 +241,7 @@ describe("Traque implacable — désavantage aux jets d'attaque contre la cible 
         );
       });
     cy.window()
-      .then((win) => createActor(win, { name: "Other Attacker NPC", type: "npc", system: { attack: { ability: "str", bonus: 5, damage: { dice: "8", bonus: 0, type: "piercing" } } } }))
+      .then((win) => createActor(win, { name: "Other Attacker NPC", type: "npc", system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "8", bonus: 0, type: "piercing" } }] } }))
       .then((actor) => {
         attackerNpcId = actor.id;
       });

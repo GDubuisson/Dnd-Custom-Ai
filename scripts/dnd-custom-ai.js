@@ -182,6 +182,7 @@ Hooks.once("ready", async () => {
   await ensureWildSurgeTable("sorcerer");
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();
+  await ensureNpcAttacksArray();
 });
 
 /** Migration ponctuelle (monde déjà en cours, cf. hook preCreateActor plus bas pour les
@@ -245,6 +246,32 @@ async function ensureTokenDisplayDefaults() {
       }));
     if (tokenUpdates.length) await scene.updateEmbeddedDocuments("Token", tokenUpdates);
   }
+}
+
+/** Migration ponctuelle (monde déjà en cours) : `NpcData#attack` (profil d'attaque UNIQUE) est
+ *  devenu `NpcData#attacks` (liste — chantier "mécaniques jamais modélisées" point 4/6,
+ *  2026-08-25, cadré avec l'utilisateur : un vrai bloc de statistiques SRD 5e a souvent
+ *  plusieurs attaques distinctes). Un Actor déjà créé sous l'ancien schéma a son ancien profil
+ *  encore présent dans `actor._source.system.attack` (données brutes telles que sauvegardées,
+ *  jamais retraitées par un changement de DataModel) alors que `actor.system.attacks` (données
+ *  PRÉPARÉES sous le nouveau schéma) est déjà revenu à son défaut `[{}]` — le champ inconnu
+ *  `attack` est silencieusement ignoré par le nettoyage de schéma, jamais migré tout seul.
+ *  Convertit l'ancien profil en premier élément de la nouvelle liste, une seule fois par Actor
+ *  (ne touche jamais un Actor qui a déjà un vrai profil dans `attacks`, y compris un profil créé
+ *  après coup par le MJ). S'applique à tout type d'Actor utilisant `NpcData` (`npc`/`mount`/
+ *  `wildShapeForm`, cf. Hooks.once("init") plus haut) — détecté par la présence même du champ
+ *  `attack` dans les données brutes, jamais par le type d'Actor en dur. */
+async function ensureNpcAttacksArray() {
+  if (!game.user.isGM) return;
+
+  const hasContent = (attack) => attack && (attack.name || attack.bonus || attack.damage?.dice);
+  const updates = game.actors
+    .filter((actor) => {
+      const rawSystem = actor._source.system ?? {};
+      return hasContent(rawSystem.attack) && !rawSystem.attacks?.length;
+    })
+    .map((actor) => ({ _id: actor.id, "system.attacks": [actor._source.system.attack] }));
+  if (updates.length) await Actor.updateDocuments(updates);
 }
 
 // Écoute du canal socket de relais d'update (cf. requestActorUpdate, helpers/actor-relay.js) et

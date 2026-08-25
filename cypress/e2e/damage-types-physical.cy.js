@@ -287,7 +287,7 @@ describe("Résistance générique — attaque de PNJ contre un PJ (sens symétri
         createActor(win, {
           name: "Physical Attacker",
           type: "npc",
-          system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" }, magic: false } }
+          system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" }, magic: false }] }
         })
       )
       .then((actor) => {
@@ -336,7 +336,7 @@ describe("Non-régression — Rage (résistance câblée en dur) reste active m�
         createActor(win, {
           name: "Magic Physical Attacker",
           type: "npc",
-          system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" }, magic: true } }
+          system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" }, magic: true }] }
         })
       )
       .then((actor) => {

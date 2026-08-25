@@ -268,7 +268,7 @@ describe("Voile des anciens — résistance aux dégâts de sorts, en zone", () 
             win.JSON.stringify({
               name: "Veil Non-Spell Attacker",
               type: "npc",
-              system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "fire" } } }
+              system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "fire" } }] }
             })
           )
         )

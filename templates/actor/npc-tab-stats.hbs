@@ -11,44 +11,50 @@
     {{/each}}
   </div>
 
+  {{#each attacks}}
   <div class="npc-attack-panel">
-    <h3 class="section-subtitle">{{localize "DND_CUSTOM.Npc.AttackTitle"}}</h3>
+    <h3 class="section-subtitle">
+      {{localize "DND_CUSTOM.Npc.AttackTitle"}}
+      <button type="button" class="npc-attack-remove-btn" data-action="removeNpcAttack" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Npc.RemoveAttack'}}">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </h3>
     <div class="npc-attack-fields">
       <label class="npc-attack-name-field">{{localize "DND_CUSTOM.Npc.AttackName"}}
-        <input type="text" name="system.attack.name" value="{{attack.name}}" placeholder="{{attack.defaultName}}">
+        <input type="text" name="system.attacks.{{this.index}}.name" value="{{this.name}}" placeholder="{{this.defaultName}}">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackAbility"}}
-        <select name="system.attack.ability">
-          {{#each attack.abilityOptions}}
+        <select name="system.attacks.{{this.index}}.ability">
+          {{#each this.abilityOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
           {{/each}}
         </select>
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackBonus"}}
-        <input type="number" name="system.attack.bonus" value="{{attack.bonus}}">
+        <input type="number" name="system.attacks.{{this.index}}.bonus" value="{{this.bonus}}">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackDamageDice"}}
-        <input type="text" name="system.attack.damage.dice" value="{{attack.damageDice}}" placeholder="1d6">
+        <input type="text" name="system.attacks.{{this.index}}.damage.dice" value="{{this.damageDice}}" placeholder="1d6">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackDamageBonus"}}
-        <input type="number" name="system.attack.damage.bonus" value="{{attack.damageBonus}}">
+        <input type="number" name="system.attacks.{{this.index}}.damage.bonus" value="{{this.damageBonus}}">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackDamageType"}}
-        <select name="system.attack.damage.type">
-          {{#each attack.damageTypeOptions}}
+        <select name="system.attacks.{{this.index}}.damage.type">
+          {{#each this.damageTypeOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{#if this.label}}{{localize this.label}}{{/if}}</option>
           {{/each}}
         </select>
       </label>
     </div>
-    <label class="checkbox-row"><input type="checkbox" name="system.attack.magic" {{#if attack.magic}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
+    <label class="checkbox-row"><input type="checkbox" name="system.attacks.{{this.index}}.magic" {{#if this.magic}}checked{{/if}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
     <div class="npc-attack-fields">
       <label>{{localize "DND_CUSTOM.Item.Fields.SecondaryDamage"}}
-        <input type="text" name="system.attack.secondaryDamage.dice" value="{{attack.secondaryDamageDice}}" placeholder="1d6">
+        <input type="text" name="system.attacks.{{this.index}}.secondaryDamage.dice" value="{{this.secondaryDamageDice}}" placeholder="1d6">
       </label>
       <label>{{localize "DND_CUSTOM.Npc.AttackDamageType"}}
-        <select name="system.attack.secondaryDamage.type">
-          {{#each attack.secondaryDamageTypeOptions}}
+        <select name="system.attacks.{{this.index}}.secondaryDamage.type">
+          {{#each this.secondaryDamageTypeOptions}}
           <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{#if this.label}}{{localize this.label}}{{/if}}</option>
           {{/each}}
         </select>
@@ -56,16 +62,22 @@
     </div>
     <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.SecondaryDamageNote"}}</p>
     <p class="item-stats-line equipment-roll-row">
-      <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
-        <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{attack.attackBonusLabel}}
+      <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollAttack" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+        <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackBonusLabel}}
       </button>
-      {{#if attack.damageDice}}
-      <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollAttackDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
-        <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{attack.damageLabel}}
+      {{#if this.damageDice}}
+      <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollAttackDamage" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
+        <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
       </button>
       {{/if}}
     </p>
   </div>
+  {{else}}
+  <p class="field-note">{{localize "DND_CUSTOM.Npc.NoAttackConfigured"}}</p>
+  {{/each}}
+  <button type="button" class="npc-attack-add-btn" data-action="addNpcAttack">
+    <i class="fa-solid fa-plus"></i> {{localize "DND_CUSTOM.Npc.AddAttack"}}
+  </button>
 
   <div class="damage-affinity-panel">
     {{#each damageAffinityGroups}}

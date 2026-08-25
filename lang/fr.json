@@ -24,6 +24,9 @@
       "AttackDamageDice": "Dé(s) de dégâts",
       "AttackDamageBonus": "Bonus de dégâts",
       "AttackDamageType": "Type de dégâts",
+      "AddAttack": "Ajouter une attaque",
+      "RemoveAttack": "Retirer cette attaque",
+      "NoAttackConfigured": "Aucune attaque configurée.",
       "DamageResistances": "Résistances aux dégâts",
       "DamageImmunities": "Immunités aux dégâts",
       "DamageVulnerabilities": "Vulnérabilités aux dégâts"

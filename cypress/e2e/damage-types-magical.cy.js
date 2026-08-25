@@ -245,7 +245,7 @@ describe("La case 'Magique' reste sans effet sur un type de dégâts magique (at
         createActor(win, {
           name: "Magic Fire Breather",
           type: "npc",
-          system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "fire" }, magic: true } }
+          system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "fire" }, magic: true }] }
         })
       )
       .then((actor) => {

@@ -7,6 +7,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+PNJ à plusieurs profils d'attaque (SRD 5e, point 4/6 de la liste "mécaniques jamais modélisées",
+cadré avec l'utilisateur point par point) : `NpcData#attack` (profil UNIQUE) devient
+`NpcData#attacks` (LISTE) — un vrai bloc de statistiques SRD 5e a souvent plusieurs attaques
+distinctes (ex. "Morsure" + "Griffe"). Bouton "Ajouter une attaque"/"Retirer" sur la fiche PNJ,
+chaque attaque garde son propre jet Attaque/Dégâts, résolue individuellement (jamais un seul jet
+combiné). PNJ déjà créés automatiquement migrés au premier chargement du monde (leur ancien profil
+devient le premier élément de la nouvelle liste) ; un PNJ neuf démarre sans aucune attaque
+configurée. Validé `cypress/e2e/npc-multiattack.cy.js` (4/4, 2 runs stables) + régression sur 11
+suites liées + 803/803 unitaires.
+
 Agripper / Bousculer (SRD 5e, 1er des 6 points de la liste "mécaniques jamais modélisées",
 cadré avec l'utilisateur point par point) : au lieu d'une attaque, un personnage peut tenter
 d'agripper ou de bousculer une seule créature à sa portée — premier TEST OPPOSÉ de ce système

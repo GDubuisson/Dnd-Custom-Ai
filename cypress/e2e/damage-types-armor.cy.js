@@ -83,7 +83,7 @@ describe("Résistance/immunité/vulnérabilité PROPRE à une armure équipée (
     return createActor(win, {
       name: `Armor Test Attacker (${damageType}${magic ? " magique" : ""})`,
       type: "npc",
-      system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: damageType }, magic } }
+      system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: damageType }, magic }] }
     });
   }
 

@@ -1,6 +1,6 @@
 // Chantier "types de dégâts" — Phase 3 (armes/attaques à dégâts combinés, 2026-08-24, cadrée
 // avec l'utilisateur après les Phases 1/2) : une arme (WeaponData#secondaryDamage, item-data.js)
-// ou une attaque de PNJ (NpcData#attack.secondaryDamage, npc-data.js) peut désormais infliger un
+// ou une attaque de PNJ (NpcData#attacks[].secondaryDamage, npc-data.js) peut désormais infliger un
 // SECOND type de dégâts bonus (ex. épée de feu = tranchant + feu), résolu INDÉPENDAMMENT du
 // premier contre les résistances de la cible — un seul clic sur "Dégâts" poste 2 messages de
 // chat distincts, chacun avec son propre bouton "Appliquer les dégâts". Jamais de modificateur
@@ -261,12 +261,14 @@ describe("Attaque de PNJ à dégâts combinés (morsure = perforant + poison)", 
           name: "Venomous Biter",
           type: "npc",
           system: {
-            attack: {
-              ability: "str",
-              bonus: 5,
-              damage: { dice: "10", bonus: 0, type: "piercing" },
-              secondaryDamage: { dice: "10", type: "poison" }
-            }
+            attacks: [
+              {
+                ability: "str",
+                bonus: 5,
+                damage: { dice: "10", bonus: 0, type: "piercing" },
+                secondaryDamage: { dice: "10", type: "poison" }
+              }
+            ]
           }
         })
       )
@@ -357,16 +359,20 @@ describe("UI — les nouveaux champs 'Dégâts secondaires' soumettent réelleme
         cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
       });
     cy.get(".application.npc input.actor-name", { timeout: 15000 }).should("be.visible");
+    // NpcData#attacks démarre vide (`initial: []`, cf. npc-data.js) : pose un premier profil
+    // d'attaque avant de pouvoir remplir ses champs de dégâts secondaires.
+    cy.get(".application.npc button[data-action=\"addNpcAttack\"]").click();
+    cy.get(".application.npc input[name=\"system.attacks.0.secondaryDamage.dice\"]", { timeout: 10000 }).should("exist");
     // Même précaution anti-race que T-DMGTYPE-024 (dé confirmé persisté avant le select).
-    cy.get(".application.npc input[name=\"system.attack.secondaryDamage.dice\"]").type("1d4").blur();
+    cy.get(".application.npc input[name=\"system.attacks.0.secondaryDamage.dice\"]").type("1d4").blur();
     cy.window().should((win) => {
-      expect(win.game.actors.get(npcId).system.attack.secondaryDamage.dice, "dé secondaire persisté (PNJ)").to.equal("1d4");
+      expect(win.game.actors.get(npcId).system.attacks[0].secondaryDamage.dice, "dé secondaire persisté (PNJ)").to.equal("1d4");
     });
-    cy.get(".application.npc select[name=\"system.attack.secondaryDamage.type\"]").select("poison");
+    cy.get(".application.npc select[name=\"system.attacks.0.secondaryDamage.type\"]").select("poison");
     cy.window().should((win) => {
       const npc = win.game.actors.get(npcId);
-      expect(npc.system.attack.secondaryDamage.dice, "dé secondaire persisté (PNJ)").to.equal("1d4");
-      expect(npc.system.attack.secondaryDamage.type, "type secondaire persisté (PNJ)").to.equal("poison");
+      expect(npc.system.attacks[0].secondaryDamage.dice, "dé secondaire persisté (PNJ)").to.equal("1d4");
+      expect(npc.system.attacks[0].secondaryDamage.type, "type secondaire persisté (PNJ)").to.equal("poison");
     });
   });
 });

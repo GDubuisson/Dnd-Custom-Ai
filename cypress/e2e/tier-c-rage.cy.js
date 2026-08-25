@@ -222,7 +222,7 @@ describe("Rage — résistance aux dégâts contondants/perforants/tranchants", 
             win.JSON.stringify({
               name: "Rage Resist Attacker",
               type: "npc",
-              system: { attack: { ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" } } }
+              system: { attacks: [{ ability: "str", bonus: 5, damage: { dice: "10", bonus: 0, type: "slashing" } }] }
             })
           )
         )

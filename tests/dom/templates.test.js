@@ -243,9 +243,11 @@ describe("tab-stats.hbs", () => {
 });
 
 // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
-// profil d'attaque simplifié (NpcData#attack, npc-data.js), un seul par PNJ sur le modèle des
-// stat-blocks SRD 5e, au lieu d'un système d'armes/inventaire complet.
-describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
+// profils d'attaque simplifiés (NpcData#attacks, npc-data.js), LISTE depuis le chantier
+// "mécaniques jamais modélisées" point 4/6 (2026-08-25) — un vrai bloc de statistiques SRD 5e a
+// souvent plusieurs attaques distinctes (ex. "Morsure. ... Griffe. ..."), au lieu d'un système
+// d'armes/inventaire complet.
+describe("npc-tab-stats.hbs — profils d'attaque (NpcData#attacks)", () => {
   function render(attackOverrides = {}) {
     return parse(
       renderTemplate("actor/npc-tab-stats.hbs", {
@@ -256,21 +258,26 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
           { key: "str", label: "DND_CUSTOM.Abilities.str", mod: 3, modLabel: "+3" },
           { key: "dex", label: "DND_CUSTOM.Abilities.dex", mod: 1, modLabel: "+1" }
         ],
-        attack: {
-          name: "",
-          defaultName: "Attaque",
-          abilityOptions: [
-            { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
-            { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
-          ],
-          bonus: 0,
-          attackBonusLabel: "+3",
-          damageDice: "",
-          damageBonus: 0,
-          damageTypeOptions: [{ key: "", label: "", selected: true }],
-          damageLabel: "",
-          ...attackOverrides
-        }
+        attacks: [
+          {
+            index: 0,
+            name: "",
+            defaultName: "Attaque",
+            abilityOptions: [
+              { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
+              { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
+            ],
+            bonus: 0,
+            attackBonusLabel: "+3",
+            damageDice: "",
+            damageBonus: 0,
+            damageTypeOptions: [{ key: "", label: "", selected: true }],
+            damageLabel: "",
+            secondaryDamageDice: "",
+            secondaryDamageTypeOptions: [{ key: "", label: "", selected: true }],
+            ...attackOverrides
+          }
+        ]
       })
     );
   }
@@ -279,6 +286,7 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
     const doc = render();
     const button = doc.querySelector('[data-action="rollAttack"]');
     assert.ok(button, "bouton d'attaque introuvable");
+    assert.equal(button.dataset.index, "0");
     assert.match(button.textContent, /\+3/);
   });
 
@@ -290,14 +298,22 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
     assert.match(button.textContent, /1d6\+3/);
   });
 
-  test("les champs de configuration sont bien reliés à system.attack.*", () => {
+  test("les champs de configuration sont bien reliés à system.attacks.0.*", () => {
     const doc = render();
-    assert.ok(doc.querySelector('input[name="system.attack.name"]'));
-    assert.ok(doc.querySelector('select[name="system.attack.ability"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.bonus"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.damage.dice"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.damage.bonus"]'));
-    assert.ok(doc.querySelector('select[name="system.attack.damage.type"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.name"]'));
+    assert.ok(doc.querySelector('select[name="system.attacks.0.ability"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.bonus"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.damage.dice"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.damage.bonus"]'));
+    assert.ok(doc.querySelector('select[name="system.attacks.0.damage.type"]'));
+  });
+
+  test("bouton 'Ajouter une attaque' toujours affiché, un bouton 'Retirer' par attaque", () => {
+    const doc = render();
+    assert.ok(doc.querySelector('[data-action="addNpcAttack"]'), "bouton Ajouter introuvable");
+    const removeBtn = doc.querySelector('[data-action="removeNpcAttack"]');
+    assert.ok(removeBtn, "bouton Retirer introuvable");
+    assert.equal(removeBtn.dataset.index, "0");
   });
 });
 

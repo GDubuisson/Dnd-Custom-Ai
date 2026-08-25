@@ -228,7 +228,7 @@ describe("Résilience draconique (Draconic, Ensorceleur) — CA, choix, résista
 
   it("dégâts de feu (type résisté) : moitié appliquée (T-DRACO-003)", () => {
     cy.window()
-      .then((win) => createActor(win, { name: "Fire Damage NPC", type: "npc", system: { attack: { ability: "str", damage: { dice: "1d1", bonus: 3, type: "fire" } } } }))
+      .then((win) => createActor(win, { name: "Fire Damage NPC", type: "npc", system: { attacks: [{ ability: "str", damage: { dice: "1d1", bonus: 3, type: "fire" } }] } }))
       .then((npc) => {
         cy.window().then((win) =>
           updateActor(win, win.game.actors.get(sorcererId), { "system.attributes.hp.value": win.game.actors.get(sorcererId).system.attributes.hp.max }, { dndCustomWizard: true })
@@ -250,7 +250,7 @@ describe("Résilience draconique (Draconic, Ensorceleur) — CA, choix, résista
 
   it("dégâts de froid (type non résisté) : totalité appliquée (T-DRACO-004)", () => {
     cy.window()
-      .then((win) => createActor(win, { name: "Cold Damage NPC", type: "npc", system: { attack: { ability: "str", damage: { dice: "1d1", bonus: 3, type: "cold" } } } }))
+      .then((win) => createActor(win, { name: "Cold Damage NPC", type: "npc", system: { attacks: [{ ability: "str", damage: { dice: "1d1", bonus: 3, type: "cold" } }] } }))
       .then((npc) => {
         cy.window().then((win) =>
           updateActor(win, win.game.actors.get(sorcererId), { "system.attributes.hp.value": win.game.actors.get(sorcererId).system.attributes.hp.max }, { dndCustomWizard: true })
@@ -298,7 +298,7 @@ describe("Tueur de géants (Hunter, Rôdeur) — rappel automatique de réaction
     );
 
     cy.window()
-      .then((win) => createActor(win, { name: "Giant Enemy", type: "npc", system: { size: "g", attack: { ability: "str", bonus: 5 } } }))
+      .then((win) => createActor(win, { name: "Giant Enemy", type: "npc", system: { size: "g", attacks: [{ ability: "str", bonus: 5 }] } }))
       .then((actor) => {
         enemyId = actor.id;
       });
