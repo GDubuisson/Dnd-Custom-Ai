@@ -30,7 +30,13 @@ function withItemId(actorId, itemName, callback) {
 after(() => {
   cy.loginAsGM();
   cy.window().then((win) => {
-    const companions = win.game.actors.filter((a) => a.name.startsWith("Loup ("));
+    // Piège locale rencontré (retour de test, 2026-08-25) : filtrer par le préfixe FRANÇAIS
+    // "Loup (" (DND_CUSTOM.Companion.Name) laissait le compagnon orphelin dans le monde dès que
+    // la locale active était l'anglais ("Wolf (..." ne matchait jamais) — 3 doublons accumulés
+    // en conditions réelles avant d'être repéré. `game.i18n.format` reconstruit le nom EXACT
+    // attendu quelle que soit la locale active, au lieu de deviner un préfixe en dur.
+    const companionName = win.game.i18n.format("DND_CUSTOM.Companion.Name", { owner: "Sub Ranger Beastmaster" });
+    const companions = win.game.actors.filter((a) => a.name === companionName);
     const ids = [...createdActorIds, ...companions.map((a) => a.id)];
     return win.Actor.deleteDocuments(ids);
   });
