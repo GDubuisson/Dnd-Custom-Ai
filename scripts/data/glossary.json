@@ -94,5 +94,9 @@
   {
     "term": "Emplacement d'équipement",
     "definition": "Main principale, Main secondaire, Armure ou Accessoire : chaque emplacement ne peut contenir qu'un seul objet équipé à la fois. Une arme à deux mains occupe Main principale ET Main secondaire."
+  },
+  {
+    "term": "Résistance / Immunité / Vulnérabilité (dégâts)",
+    "definition": "Une résistance divise par deux les dégâts d'un type donné subis, une immunité les annule totalement, une vulnérabilité les double. Résistance et vulnérabilité sur le même type s'annulent (dégâts normaux). Réglable sur la fiche Personnage/PNJ (MJ) et propre à chaque armure équipée."
   }
 ]

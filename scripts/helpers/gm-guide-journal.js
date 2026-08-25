@@ -68,6 +68,37 @@ function buildOverviewPage() {
       (Résilience draconique), rappel de réaction contre les créatures Grandes+ (Tueur de géants),
       immunité Charmé/Effrayé (Rage sans esprit, Aura de dévotion), choix d'effet + sauvegarde
       (Technique de la Main Ouverte).</li>
+      <li>Résistance/immunité/vulnérabilité aux dégâts : réglable librement (3 groupes de cases à
+      cocher, 13 types SRD) sur toute fiche Personnage/PNJ, ET propre à chaque armure équipée
+      (mêmes cases, indépendantes) — la meilleure protection l'emporte, résistance et
+      vulnérabilité sur le même type s'annulent. Une case "Magique" sur une arme/le profil
+      d'attaque d'un PNJ contourne UNIQUEMENT la résistance/l'immunité générique aux 3 types
+      physiques (nuance SRD "contre les attaques non magiques") — jamais une résistance déjà
+      propre à une Capacité (Rage...) ou à une armure. Une arme/attaque de PNJ peut aussi infliger
+      un second type de dégâts bonus indépendant du premier (ex. épée de feu).</li>
+      <li>Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de
+      corps à corps à la Force, résistance aux dégâts contondants/perforants/tranchants — tant que
+      l'état "En Rage" (onglet États) est actif, sans rien à recocher.</li>
+      <li>Destruction des morts-vivants (Clerc 5) : "Repousser les morts-vivants" détruit
+      directement un mort-vivant dont l'indice de dangerosité est sous le seuil de la table SRD
+      pour ton niveau, au lieu de le repousser.</li>
+      <li>Voile des anciens (Paladin, Serment des Anciens) : résistance aux dégâts de sorts en
+      zone de 3 m autour du Paladin, tant que la bascule dédiée (onglet États) est active.</li>
+      <li>Ennemi juré (Rôdeur 1) : choix ponctuel d'un type de créature favori (bouton "Choisir"),
+      avantage automatique aux tests de Survie et d'Intelligence contre une cible ciblée de ce
+      type.</li>
+      <li>Traque implacable (Paladin, Serment de Vengeance 3) : bouton dédié qui désigne la cible
+      actuellement ciblée comme proie ("Traqué") et consomme la réserve de Canalisation divine.
+      Toute créature autre que ce Paladin subit alors un désavantage automatique à ses jets
+      d'attaque contre elle — un état "Traqué" posé à la main depuis l'onglet États reste un
+      simple marqueur, sans désavantage automatique associé.</li>
+      <li>Application des dégâts d'un sort à sauvegarde : tient compte du résultat du jet de
+      CHAQUE cible (réussite = moitié des dégâts si le sort le prévoit sinon aucun ; échec =
+      dégâts pleins) — avec 2 exceptions automatisées, Évasion (Roublard 7 : réussite = aucun
+      dégât, échec = moitié) et Tour de magie renforcé (Magicien Évocation 6 : réussite à un tour
+      de magie = moitié au lieu d'aucun).</li>
+      <li>Invisibilité/Invisibilité suprême et sorts similaires : basculent automatiquement leur
+      état sur la cible au moment du lancer, sans jet associé.</li>
     </ul>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle

@@ -74,6 +74,19 @@ function buildRulesPage(glossary) {
     même tour, à vous de décider si c'est légitime (ex. Attaque supplémentaire). Un clic sur
     l'indicateur permet de le rétablir manuellement en cas d'erreur.</p>
 
+    <h2>${abbr("Résistance / Immunité / Vulnérabilité (dégâts)", "Résistances aux dégâts")}</h2>
+    <p>Certaines cibles résistent, sont immunisées ou sont vulnérables à un type de dégâts précis
+    (feu, tranchant...) — appliqué automatiquement au clic sur "Appliquer les dégâts", visible
+    dans le message de chat. Une case "Magique" sur une arme (ou le profil d'attaque d'un PNJ)
+    peut contourner une résistance/immunité générique aux dégâts contondants/perforants/tranchants
+    (règle valable uniquement pour ces 3 types physiques).</p>
+    <h2>États actifs et jets automatiques</h2>
+    <p>Certains États (onglet Statistiques) modifient automatiquement vos jets tant qu'ils restent
+    actifs — avantage, désavantage ou résistance selon le cas (ex. "En Rage" pour un Barbare,
+    "Traqué" pour la cible d'un Paladin Vengeance) — sans rien à recocher à chaque jet. Certains
+    Sorts/Capacités les posent eux-mêmes automatiquement sur la cible visée au moment de leur
+    utilisation.</p>
+
     <h2>Repos</h2>
     <p>${abbr("Repos court")} et ${abbr("Repos long")} sont accessibles par les boutons dédiés de
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>

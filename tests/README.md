@@ -198,9 +198,18 @@ npm run docker:down        # arrête l'instance
   surclassement, récupération arcanique/naturelle), `initiate-magic-feat.cy.js` (don Magie
   d'initié), `gm-token-sync.cy.js` (resynchronisation `actorLink` d'un token PJ),
   `accessibility.cy.js` (contrastes RGAA), `subclass-<classe>.cy.js` (12 fichiers, un par classe —
-  au moins une mécanique active par sous-classe supplémentaire de cette classe). ~50 fichiers de
-  specs au total à ce jour — voir directement `cypress/e2e/` pour la liste exhaustive, ce README
-  ne détaille plus chaque nouveau fichier ligne à ligne au-delà de ce résumé.
+  au moins une mécanique active par sous-classe supplémentaire de cette classe),
+  `condition-immunity-generalized.cy.js`/`spell-grants-condition.cy.js` (généralisations Niveau
+  B — immunité de condition étendue, `SpellData#grantsCondition`), `tier-a-mechanics.cy.js` (6
+  mécaniques isolées Niveau A), `tier-c-rage.cy.js`/`tier-c-destroy-undead.cy.js`/
+  `tier-c-ancients-veil.cy.js`/`tier-c-favored-enemy.cy.js`/`tier-c-half-on-save.cy.js`/
+  `tier-c-relentless-hunter.cy.js` (Niveau C, 6/6, terminé le 2026-08-25), `damage-types-
+  physical.cy.js`/`damage-types-magical.cy.js`/`damage-types-combined.cy.js`/`damage-types-
+  armor.cy.js` (chantier "types de dégâts", 4/4 phases, terminé le 2026-08-25 — résistance/
+  immunité/vulnérabilité générique, nuance arme/PNJ magique, dégâts combinés, armures). ~63
+  fichiers de specs au total à ce jour — voir directement `cypress/e2e/` pour la liste
+  exhaustive, ce README ne détaille plus chaque nouveau fichier ligne à ligne au-delà de ce
+  résumé.
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
   montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +
@@ -290,16 +299,14 @@ npm run docker:down        # arrête l'instance
 
 ### Limites connues de cette couche
 
-- Mise en place le 2026-08-14 sans accès à Docker dans l'environnement d'exécution : la
-  configuration (fichiers, scripts, module Quench réellement téléchargé et vérifié) est
-  fonctionnelle sur le papier, mais **aucun test E2E/Quench n'a pu être réellement exécuté**
-  contre une instance Foundry vivante. Les sélecteurs DOM de `system-load.cy.js` sont donc à
-  vérifier/ajuster au premier lancement réel.
-- Même limite pour `cypress/e2e/wizard.cy.js` et le batch Quench `dndCustomAi.wizard` (écrits le
-  2026-08-15, toujours sans accès à Docker) : en particulier la zone de notifications
-  (sélecteur `.notification`), le bouton de fermeture de fenêtre AppV2 (`[data-action="close"]`
-  dans `.window-header`) et le nom du hook `closeCharacterCreationWizard` (utilisé par
-  `submitWizardForm` dans `quench-tests.js` pour savoir quand une soumission valide est
-  terminée) sont écrits d'après les conventions Foundry v13/14 usuelles, jamais vérifiés en
-  conditions réelles.
+- **Point historique dépassé** : cette couche a été mise en place le 2026-08-14 sans accès à
+  Docker (sélecteurs jamais vérifiés en conditions réelles à l'époque) — ce n'est plus le cas
+  depuis longtemps. Elle tourne réellement à chaque session qui la sollicite (des dizaines de
+  runs propres depuis, cf. historique git/mémoire) et fait partie du flux de validation normal de
+  tout nouveau chantier de mécanique de jeu (cf. `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`, chaque
+  point y référence sa spec Cypress dédiée validée en conditions réelles).
 - Nécessite une licence Foundry VTT payante — pas de mode démo/gratuit pour l'image Docker.
+- Manuelle/locale uniquement (jamais en CI, cf. section précédente) : Docker Desktop doit être
+  lancé par l'utilisateur avant toute session de tests E2E ; le monde de test peut se désactiver
+  entre deux sessions sans raison apparente (relancer via `POST /auth` + `POST /setup
+  {action:"launchWorld"}`, jamais recréer le conteneur — invaliderait la licence Foundry).
