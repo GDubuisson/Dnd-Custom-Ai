@@ -6,6 +6,7 @@ import { checkSentinelReminder } from "../helpers/sentinel.js";
 import { checkGiantKillerReminder } from "../helpers/giant-killer.js";
 import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
 import { PENDING_OPPORTUNITY_DISADVANTAGE_FLAG } from "../helpers/opportunity-attack.js";
+import { isDisadvantagedByHuntedTarget } from "../helpers/relentless-hunter.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -231,7 +232,12 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
    *
    *  `PENDING_OPPORTUNITY_DISADVANTAGE_FLAG` (helpers/opportunity-attack.js, même chantier) :
    *  "Échappée de la horde" (Tactiques défensives) — désavantage consommé sur CE jet si un
-   *  Rôdeur avec ce choix vient de s'éloigner de ce PNJ précis, approximation assumée. */
+   *  Rôdeur avec ce choix vient de s'éloigner de ce PNJ précis, approximation assumée.
+   *
+   *  `isDisadvantagedByHuntedTarget` (helpers/relentless-hunter.js, Niveau C, 2026-08-25) : Traque
+   *  implacable (Paladin, Serment de Vengeance) — désavantage si la cible actuellement ciblée
+   *  porte l'état "Traqué" posé par un AUTRE Actor que ce PNJ (SRD : "toute créature autre que
+   *  vous"), un PNJ attaquant étant concerné au même titre qu'un PJ. */
   static async #onRollAttack(event) {
     const attack = this.actor.system.attack;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
@@ -244,7 +250,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
         weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
       }),
       advantage: event.shiftKey,
-      disadvantage: event.ctrlKey || hasPendingOpportunityDisadvantage,
+      disadvantage: event.ctrlKey || hasPendingOpportunityDisadvantage || isDisadvantagedByHuntedTarget(this.actor),
       compareToTargetAc: true,
       criticalRules: true
     });

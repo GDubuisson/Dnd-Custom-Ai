@@ -275,6 +275,17 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         required: true,
         initial: []
       }),
+      // Capacité qui pose une condition sur CHAQUE cible actuellement ciblée SANS jet associé (ex.
+      // Traque implacable, Paladin Serment de Vengeance — Niveau C, 2026-08-25) : même principe que
+      // SpellData#grantsCondition ci-dessous (Invisibilité), pour une Capacité au lieu d'un Sort —
+      // contrairement à `appliesCondition` ci-dessus, qui dépend du résultat d'un jet de
+      // sauvegarde. Vide = comportement inchangé (l'immense majorité des Capacités).
+      grantsCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+      }),
       // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
       // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
       // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables

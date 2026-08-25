@@ -116,6 +116,10 @@
           <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeatureSave" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{this.name}}
           </button>
+          {{else if this.system.grantsCondition}}
+          <button type="button" class="roll-btn feature-roll-btn" data-action="grantFeatureCondition" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+            <i class="fa-solid fa-crosshairs"></i> {{this.name}}
+          </button>
           {{else if this.system.entersWildShape}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="enterWildShape" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{this.system.uses.value}}/{{this.system.uses.max}}">
             <i class="fa-solid fa-paw"></i> {{localize "DND_CUSTOM.Abilities.EnterWildShape"}}

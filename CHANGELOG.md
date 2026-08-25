@@ -66,7 +66,7 @@ sorts/capacités d'un coup) :
   "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
   (immunité à Charmé/Effrayé).
 
-Niveau C (5 des 6 mécaniques restantes, la dernière bloquée structurellement — détail dans
+Niveau C (les 6 mécaniques restantes, intégralement terminé — détail dans
 `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) :
 - Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de corps à
   corps à la Force, résistance aux dégâts contondants/perforants/tranchants — les 3 tant que
@@ -83,6 +83,13 @@ Niveau C (5 des 6 mécaniques restantes, la dernière bloquée structurellement 
   pleins), ce qui n'était jamais le cas auparavant (dégâts pleins systématiques). Débloque au
   passage Évasion (Roublard 7 : réussite = aucun dégât, échec = moitié) et Tour de magie renforcé
   (Magicien Évocation 6 : réussite à un tour de magie = moitié au lieu d'aucun).
+- Traque implacable (Paladin, Serment de Vengeance 3) : nouveau bouton dédié (comme les autres
+  options de Canalisation divine du Serment) qui désigne la cible actuellement ciblée comme proie
+  ("Traqué", onglet États) et consomme la réserve de Canalisation divine. Toute créature autre que
+  le Paladin qui l'a désignée subit désormais un désavantage automatique aux jets d'attaque contre
+  cette cible (arme/sort d'un personnage, attaque d'un PNJ) tant qu'elle porte l'état — un état
+  "Traqué" posé à la main depuis l'onglet États (sans passer par ce bouton) reste un simple
+  marqueur visuel, sans désavantage automatique associé.
 
 Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
 vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du

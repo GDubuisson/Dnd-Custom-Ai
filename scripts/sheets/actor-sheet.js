@@ -41,6 +41,11 @@ import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import { requestActorUpdate } from "../helpers/actor-relay.js";
+import {
+  RELENTLESS_HUNTER_FEATURE_NAME,
+  HUNTED_BY_ACTOR_ID_FLAG,
+  isDisadvantagedByHuntedTarget
+} from "../helpers/relentless-hunter.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -235,6 +240,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
       rollFeatureSave: DndCustomActorSheet.#onRollFeatureSave,
+      grantFeatureCondition: DndCustomActorSheet.#onGrantFeatureCondition,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
@@ -1245,6 +1251,61 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     }
   }
 
+  /** Capacité qui pose une condition sur CHAQUE cible actuellement ciblée SANS jet associé (ex.
+   *  Traque implacable, Paladin Serment de Vengeance — Niveau C, 2026-08-25, cf.
+   *  FeatureData#grantsCondition, item-data.js) : même mécanisme que SpellData#grantsCondition
+   *  (#onCastSpell plus bas), pour une Capacité au lieu d'un Sort. `costsResource` : comme
+   *  #onRollFeatureSave ci-dessus, consomme la réserve d'une AUTRE Capacité si configuré
+   *  (Canalisation divine (Paladin), partagée avec Abjurer un ennemi pour Traque implacable).
+   *
+   *  Spécialisation par NOM (comme Destruction des morts-vivants dans #onRollFeatureSave) :
+   *  Traque implacable pose EN PLUS le flag `HUNTED_BY_ACTOR_ID_FLAG`
+   *  (helpers/relentless-hunter.js) sur chaque cible, identifiant ce Paladin comme celui qui l'a
+   *  désignée — seul moyen dans ce système de savoir QUI a posé un état homebrew (aucun autre
+   *  n'a de "propriétaire"), scopé à cette seule Capacité plutôt que généralisé à
+   *  `toggleStatusEffect`. Consommé par `isDisadvantagedByHuntedTarget` (même fichier) sur les 3
+   *  jets d'attaque (arme/sort PJ, attaque PNJ) pour exempter le Paladin du désavantage "toute
+   *  créature autre que vous". */
+  static async #onGrantFeatureCondition(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.grantsCondition) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const chargeHolder = item.system.costsResource
+      ? this.actor.items.contents.find(
+          (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+        )
+      : item;
+    if (!chargeHolder) return;
+
+    const remaining = await this.#consumeFeatureCharge(chargeHolder);
+    if (remaining === null) return;
+
+    const targets = Array.from(game.user.targets);
+    if (!targets.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+      return;
+    }
+
+    for (const token of targets) {
+      if (!token.actor) continue;
+      await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+      if (item.name === RELENTLESS_HUNTER_FEATURE_NAME) {
+        await token.actor.setFlag(SYSTEM_ID, HUNTED_BY_ACTOR_ID_FLAG, this.actor.id);
+      }
+    }
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseFeature", {
+        name: this.actor.name,
+        feature: item.name,
+        remaining,
+        max: chargeHolder.system.uses.max
+      })
+    });
+  }
+
   /** Utilisation d'une Capacité à charges limitées sans jet associé (ex. Imposition des
    *  mains) : décrémente le compteur et l'annonce dans le chat (pas de jet à afficher, donc
    *  pas de message automatique sinon comme pour #onRollFeature). */
@@ -1784,7 +1845,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       formula: formatModifier(atk.attackBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
       advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
-      disadvantage: event.ctrlKey || cond.disadvantage,
+      disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
       compareToTargetAc: true,
       criticalRules: true,
       forceCriticalHit: hasAssassinAutoCritical(this.actor),
@@ -1990,7 +2051,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         formula: formatModifier(attackBonus) + cond.bonus,
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
         advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
-        disadvantage: event.ctrlKey || cond.disadvantage,
+        disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
         compareToTargetAc: true,
         criticalRules: true,
         forceCriticalHit: hasAssassinAutoCritical(this.actor),

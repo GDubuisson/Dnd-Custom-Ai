@@ -1280,7 +1280,8 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Canalisation divine (Paladin)",
-      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle."
+      "grantsCondition": "hunted",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, ciblez une créature que vous voyez à 18 m comme votre proie et cliquez sur le bouton pour lui poser l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle (automatisé uniquement si posé via ce bouton — un état \"Traqué\" posé manuellement depuis l'onglet États n'accorde aucun désavantage automatique)."
     }
   },
   {
