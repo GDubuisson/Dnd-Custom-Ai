@@ -1257,6 +1257,47 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   html.querySelector(".message-content")?.appendChild(button);
 });
 
+// Points d'inspiration (PI, règle maison — cf. docstring rollCheck dans helpers/rolls.js) :
+// ajoute un bouton "Utiliser un point d'inspiration" sous tout jet de caractéristique/compétence
+// (flag `inspirationEligible`, posé UNIQUEMENT par #onRollAbility/#onRollSkill dans
+// actor-sheet.js — jamais une sauvegarde ou une attaque) SI l'acteur qui a lancé a au moins 1
+// point (`system.attributes.inspirationPoints`, CharacterData uniquement — un PNJ n'a jamais ce
+// champ, la condition échoue silencieusement). Différence volontaire avec Chanceux/Chance du
+// Fiélon/Indomptable ci-dessus (qui gardent le message d'origine et postent une relance à la
+// suite) : ici, `message.delete()` retire le jet d'origine du chat AVANT de poster le nouveau —
+// demande explicite de l'utilisateur ("le jet précédent disparaît"), un seul jet visible à la
+// fois. Résultat du nouveau jet TOUJOURS conservé (jamais le meilleur des deux, contrairement à
+// Chanceux) : ce n'est plus qu'un jet, l'ancien n'existe plus.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "inspirationEligible")) return;
+  if (html.querySelector(".dnd-spend-inspiration-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const remaining = actor?.system?.attributes?.inspirationPoints ?? 0;
+  if (remaining <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-inspiration-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendInspiration", { remaining });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const flavor = message.getFlag(SYSTEM_ID, "checkFlavor") ?? "";
+    const speaker = message.speaker;
+    await message.delete();
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    await reroll.toMessage({
+      speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor })
+    });
+    await actor.update({ "system.attributes.inspirationPoints": remaining - 1 });
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
 // Effet visuel sur les coups/échecs critiques (cf. flags criticalHit/criticalFumble posés par
 // rollCheck/rollDamage, rolls.js) : retour de test (lot 3, point 8) — le libellé texte déjà
 // présent dans le flavor ("Coup critique !"/"Échec critique !") ne suffisait pas, ajoute une

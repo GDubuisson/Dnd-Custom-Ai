@@ -1824,7 +1824,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
       advantage: event.shiftKey || cond.advantage || favoredEnemyAdvantage,
-      disadvantage: event.ctrlKey || cond.disadvantage
+      disadvantage: event.ctrlKey || cond.disadvantage,
+      inspirationEligible: true
     });
   }
 
@@ -1914,7 +1915,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       formula: formatModifier(mod) + cond.bonus,
       flavor,
       advantage: advantageKey || originAdvantage || assassinStealthAdvantage || favoredEnemyAdvantage || cond.advantage,
-      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
+      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage,
+      inspirationEligible: true
     });
   }
 

@@ -103,7 +103,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         death: new SchemaField({
           successes: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 }),
           failures: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 })
-        })
+        }),
+        // Points d'inspiration (PI), règle maison distincte de l'Inspiration bardique (Capacité
+        // de Barde, cf. world-items/features.json — un dé donné à un allié, mécanique différente)
+        // : ressource libre accordée manuellement par le MJ (pas de maximum SRD à respecter, ce
+        // système ne modélise pas l'Inspiration binaire du SRD), dépensée pour relancer
+        // intégralement un test de caractéristique ou de compétence déjà lancé (cf.
+        // #onRollAbility/#onRollSkill, actor-sheet.js, et le hook dédié dans dnd-custom-ai.js).
+        inspirationPoints: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),

@@ -7,6 +7,15 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Points d'inspiration (PI, règle maison, demande explicite de l'utilisateur) : ressource libre
+accordée manuellement par le MJ (`system.attributes.inspirationPoints`, sans maximum), distincte
+de l'Inspiration bardique du SRD. Un Joueur en dépense un via un bouton apparaissant sous un jet
+de caractéristique ou de compétence dans le chat (jamais une sauvegarde ni une attaque) : le jet
+d'origine disparaît du chat et un nouveau jet est effectué, résultat toujours conservé (même
+désavantageux) — contrairement à Chanceux/Indomptable qui gardent le jet d'origine et postent une
+relance à la suite. Validé `cypress/e2e/inspiration-points.cy.js` (4/4, 2 runs stables) +
+régression sur `tab-stats.cy.js`/`tier-a-mechanics.cy.js`/`i18n.cy.js` + 805/805 unitaires.
+
 PNJ à plusieurs profils d'attaque (SRD 5e, point 4/6 de la liste "mécaniques jamais modélisées",
 cadré avec l'utilisateur point par point) : `NpcData#attack` (profil UNIQUE) devient
 `NpcData#attacks` (LISTE) — un vrai bloc de statistiques SRD 5e a souvent plusieurs attaques
@@ -35,9 +44,7 @@ déjà testée isolément, jamais combinées. Comblé par
 les 2 réductions s'appliquent bien l'une après l'autre (arrondis séparés), pas qu'une écrase
 l'autre. Cahier de test manuel complet (23 chapitres, ~130 scénarios, suivi de progression)
 publié en artifact pour un testeur humain — voir `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md` pour
-le détail complet de l'audit et la liste des mécaniques D&D 5e jamais modélisées à ce jour
-(agripper/bousculer, couvert, munitions, multiattack PNJ, actions légendaires, vision dans le
-noir — aucun déclencheur cadré, listées pour mémoire).
+le détail complet de l'audit.
 
 Chantier "types de dégâts" — Phase 1 (physique, cadrée avec l'utilisateur avant implémentation) :
 résistance/immunité/vulnérabilité aux dégâts GÉNÉRIQUES, réglables librement par le MJ sur toute

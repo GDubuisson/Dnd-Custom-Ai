@@ -40,7 +40,15 @@ function isActorInCombat(actor) {
  *  naturel compte comme critique — ex. Critique amélioré (Champion, Guerrier, SRD 5e : critique
  *  sur 19-20 au lieu de 20 seul). Calculé par l'appelant (actor-sheet.js > hasFeature), jamais ici
  *  (même principe que le don Chanceux ci-dessous : ce helper générique reste ignorant des noms de
- *  Capacités précis). Un 1 naturel reste toujours un échec critique, quel que soit le seuil. */
+ *  Capacités précis). Un 1 naturel reste toujours un échec critique, quel que soit le seuil.
+ *
+ *  `inspirationEligible` (jets de caractéristique/compétence UNIQUEMENT, posé seulement par
+ *  #onRollAbility/#onRollSkill dans actor-sheet.js — jamais par une sauvegarde ou une attaque) :
+ *  règle maison "points d'inspiration" (PI), ressource libre accordée manuellement par le MJ
+ *  (system.attributes.inspirationPoints, CharacterData uniquement). Contrairement à Chanceux/
+ *  Indomptable ci-dessous (qui gardent le message d'origine et postent une relance à la suite), le
+ *  hook dédié (dnd-custom-ai.js) SUPPRIME le message d'origine du chat et remplace son résultat,
+ *  conformément à la demande explicite de l'utilisateur — jamais les deux visibles en même temps. */
 export async function rollCheck({
   actor,
   formula,
@@ -51,7 +59,8 @@ export async function rollCheck({
   criticalRules = false,
   forceCriticalHit = false,
   criticalThreshold = 20,
-  savingThrow = false
+  savingThrow = false,
+  inspirationEligible = false
 }) {
   const useAdvantage = advantage && !disadvantage;
   const useDisadvantage = disadvantage && !advantage;
@@ -111,6 +120,15 @@ export async function rollCheck({
   flags["dnd-custom-ai"].luckRoll = true;
   flags["dnd-custom-ai"].luckFormula = `${die}${formula}`;
   flags["dnd-custom-ai"].luckActorId = actor.id;
+  // Points d'inspiration (voir docstring ci-dessus) : réutilise luckFormula/luckActorId déjà
+  // posés juste au-dessus (même formule, même acteur) — seul ce flag supplémentaire change de
+  // famille de jets éligibles. `flavor` original conservé tel quel (sans le suffixe Avantage/
+  // Désavantage déjà inclus dans `label`) pour que le hook puisse composer son propre libellé de
+  // relance sans dépendre du texte déjà construit ci-dessus.
+  if (inspirationEligible) {
+    flags["dnd-custom-ai"].inspirationEligible = true;
+    flags["dnd-custom-ai"].checkFlavor = flavor;
+  }
   // Capacité "Indomptable" (Guerrier 9, SRD 5e) : relance complète d'un jet de SAUVEGARDE raté,
   // nouveau résultat obligatoire (contrairement à Chanceux/Chance du Fiélon ci-dessus, qui gardent
   // le meilleur des deux) — `savingThrow` distingue ce cas des tests/jets d'attaque, jamais posé

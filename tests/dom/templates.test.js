@@ -23,7 +23,8 @@ describe("character-sheet.hbs (en-tête)", () => {
         level: 3,
         hp: { value: 18, max: 24, temp: 2 },
         ac: { value: 15 },
-        speed: 30
+        speed: 30,
+        inspirationPoints: 2
       }
     },
     isGM: true,
@@ -54,6 +55,13 @@ describe("character-sheet.hbs (en-tête)", () => {
     assert.ok(doc.querySelector('input[name="system.attributes.hp.temp"]'));
   });
 
+  test("points d'inspiration : champ éditable côté MJ, valeur reflétée", () => {
+    const input = doc.querySelector('input[name="system.attributes.inspirationPoints"]');
+    assert.ok(input, "champ Points d'inspiration introuvable");
+    assert.equal(input.value, "2");
+    assert.equal(input.disabled, false);
+  });
+
   test("bouton Assistant absent quand Classe et Origine sont déjà définies", () => {
     assert.equal(doc.querySelector('[data-action="openCreationWizard"]'), null);
   });
@@ -75,7 +83,7 @@ describe("character-sheet.hbs (en-tête)", () => {
 describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
   const context = {
     actor: { img: "img.webp", name: "Aldric" },
-    system: { xp: 1200, attributes: { level: 3, hp: { value: 18, max: 24, temp: 2 }, ac: { value: 15 }, speed: 30 } },
+    system: { xp: 1200, attributes: { level: 3, hp: { value: 18, max: 24, temp: 2 }, ac: { value: 15 }, speed: 30, inspirationPoints: 1 } },
     isGM: false,
     levelUpAvailable: true,
     xpNextThreshold: 2700,
@@ -109,6 +117,13 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
     const hpInput = doc.querySelector('input[name="system.attributes.hp.value"]');
     assert.ok(hpInput, "champ PV actuels introuvable");
     assert.ok(hpInput.disabled, "le champ PV actuels devrait être désactivé pour un Joueur");
+  });
+
+  test("points d'inspiration : champ verrouillé côté Joueur (accordé par le MJ uniquement), valeur visible", () => {
+    const input = doc.querySelector('input[name="system.attributes.inspirationPoints"]');
+    assert.ok(input, "champ Points d'inspiration introuvable");
+    assert.equal(input.value, "1");
+    assert.ok(input.disabled, "le champ Points d'inspiration devrait être désactivé pour un Joueur");
   });
 });
 

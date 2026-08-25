@@ -44,6 +44,11 @@
             <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
           </label>
         </div>
+        <div class="header-row">
+          <label title="{{localize 'DND_CUSTOM.Actor.InspirationPointsTooltip'}}">{{localize "DND_CUSTOM.Actor.InspirationPoints"}}
+            <input type="number" name="system.attributes.inspirationPoints" value="{{system.attributes.inspirationPoints}}" min="0" {{#unless isGM}}disabled{{/unless}}>
+          </label>
+        </div>
       </div>
 
       <div class="header-stat-col header-stat-col-class">

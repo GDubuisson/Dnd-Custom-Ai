@@ -2655,7 +2655,8 @@
   filter: brightness(1.1);
 }
 
-.dnd-spend-luck-btn {
+.dnd-spend-luck-btn,
+.dnd-spend-inspiration-btn {
   display: block;
   width: 100%;
   margin-top: 0.4rem;
@@ -2668,7 +2669,8 @@
   cursor: pointer;
 }
 
-.dnd-spend-luck-btn:hover {
+.dnd-spend-luck-btn:hover,
+.dnd-spend-inspiration-btn:hover {
   filter: brightness(1.1);
 }
 
