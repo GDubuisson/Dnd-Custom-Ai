@@ -17,7 +17,7 @@ describe("Tests d'intégration Quench (vrai pipeline Document)", () => {
 
     cy.visit("/", { timeout: 30000 });
     cy.url({ timeout: 15000 }).should("include", "/join");
-    cy.get('select[name="userid"]').select("Gamemaster");
+    cy.get('input[name="username"]').type("Gamemaster");
     cy.get('#join-game-form button[type="submit"]').click();
     cy.get("#interface", { timeout: 30000 }).should("be.visible");
     cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);

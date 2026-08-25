@@ -6,11 +6,12 @@
     "system": {
       "class": "barbarian",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "longRest" },
-      "description": "Action bonus pour entrer en rage (1 minute, sans armure lourde) : avantage aux tests et sauvegardes de Force, +2 dégâts aux attaques de corps à corps à la Force, résistance aux dégâts contondants/perforants/tranchants. 2 utilisations par repos long (simplifié : ne progresse pas avec le niveau dans ce système). Prend fin si assommé ou après un tour sans attaque ni dégât subi."
+      "description": "Action bonus pour entrer en rage (1 minute, sans armure lourde) — bascule \"En Rage\" (liste des États, onglet Stats) pour poser/lever l'état, décompte de durée automatique. Tant qu'actif : avantage aux tests et sauvegardes de Force — automatisé ; +2 dégâts aux attaques de corps à corps à la Force — automatisé ; résistance aux dégâts contondants/perforants/tranchants — automatisé (bouton \"Appliquer les dégâts\"). 2 utilisations par repos long (simplifié : ne progresse pas avec le niveau dans ce système). Prend fin si assommé ou après un tour sans attaque ni dégât subi (à lever manuellement, aucun décompte de ce critère de fin)."
     }
   },
   {
@@ -33,6 +34,7 @@
     "system": {
       "class": "bard",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": true,
       "rollFormula": "1d6",
       "source": "",
@@ -90,7 +92,10 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Domaine divin (ex. Repousser les morts-vivants) — à définir avec le MJ selon le Domaine choisi (non modélisé automatiquement dans ce système)."
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureTypes": ["undead"],
+      "description": "1 utilisation par repos court ou long : Repousser les morts-vivants — chaque mort-vivant actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Clerc), échec = Effrayé (bouton dédié ci-dessous, jet automatique). Votre Domaine divin peut aussi offrir une AUTRE option de Canalisation divine, propre à ce Domaine — à définir avec le MJ (non modélisée automatiquement dans ce système)."
     }
   },
   {
@@ -104,7 +109,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "1 utilisation par repos court ou long : déclenchez un effet spécial mineur propre à votre Serment sacré — à définir avec le MJ selon le Serment choisi (non modélisé automatiquement dans ce système)."
+      "description": "Réserve de 1 utilisation par repos court ou long, partagée entre les 2 options de Canalisation divine de votre Serment sacré (ci-dessous, sur l'onglet Capacités) : Devotion (Arme sacrée, Repousser les impies), Anciens (Voile des anciens, Repousser les infidèles) ou Vengeance (Traque implacable, Abjurer un ennemi)."
     }
   },
   {
@@ -114,11 +119,13 @@
     "system": {
       "class": "druid",
       "level": 2,
+      "activation": "bonusAction",
+      "entersWildShape": true,
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Action bonus : prenez la forme d'une bête déjà observée (taille/FI maximale selon votre niveau, à valider avec le MJ). 2 utilisations par repos court ou long. Simplifié : ce système ne gère pas de fiche de créature séparée — le MJ et vous adjugez ensemble les capacités de la forme prise, sans suivi mécanique automatisé (deuxième réserve de PV, etc.)."
+      "description": "Action bonus : ciblez le token d'un Actor de type Forme sauvage (bête déjà observée, taille/FI maximale selon votre niveau, à valider avec le MJ) puis cliquez \"Prendre forme\". Vos PV normaux restent gelés : les PV propres de cette forme servent de 2e réserve pendant la transformation, et vous en revenez automatiquement à la forme normale si elle tombe à 0 (dégâts excédentaires ignorés, SRD 5e). 2 utilisations par repos court ou long. Retour volontaire à tout moment (bouton \"Redevenir soi-même\", onglet Statistiques). Simplifié : le MJ et vous adjugez ensemble les capacités précises de la forme prise (CA, attaques...), non automatisées au-delà des PV."
     }
   },
   {
@@ -128,6 +135,7 @@
     "system": {
       "class": "fighter",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": true,
       "rollFormula": "1d10 + @attributes.level",
       "source": "",
@@ -142,6 +150,7 @@
     "system": {
       "class": "fighter",
       "level": 2,
+      "activation": "free",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -156,6 +165,7 @@
     "system": {
       "class": "monk",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": true,
       "rollFormula": "1d4",
       "source": "",
@@ -173,16 +183,18 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Réserve de points de Ki (2, simplifié : ne progresse pas avec le niveau dans ce système), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
+      "scalesWithLevel": true,
+      "description": "Réserve de points de Ki (égale à votre niveau de Moine, SRD 5e), à dépenser pour les techniques ci-dessous (Rafale de coups, Défense patiente, Pas du vent, et d'autres Capacités à niveau supérieur). Récupérée après un repos court ou long."
     }
   },
   {
     "name": "Rafale de coups",
     "type": "feature",
-    "img": "icons/svg/sword.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Rafale-de-coups.png",
     "system": {
       "class": "monk",
       "level": 2,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -193,10 +205,11 @@
   {
     "name": "Défense patiente",
     "type": "feature",
-    "img": "icons/svg/shield.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Defense-patiente.png",
     "system": {
       "class": "monk",
       "level": 2,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -207,10 +220,11 @@
   {
     "name": "Pas du vent",
     "type": "feature",
-    "img": "icons/svg/wind.svg",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Pas-du-vent.png",
     "system": {
       "class": "monk",
       "level": 2,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -256,7 +270,8 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez un type d'ennemi favori avec le MJ : avantage aux tests de Sagesse (Survie) pour le pister et aux tests d'Intelligence pour vous souvenir d'informations à son sujet."
+      "grantsChoice": "favoredEnemyType",
+      "description": "Choix ponctuel et définitif d'un type d'ennemi favori (bouton \"Choisir\") : avantage aux tests de Sagesse (Survie) pour le pister et aux tests d'Intelligence pour vous souvenir d'informations à son sujet — automatisé (déclenché dès qu'une cible actuellement ciblée est de ce type)."
     }
   },
   {
@@ -309,7 +324,8 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "longRest" },
-      "description": "Réserve de points de sorcellerie (2, simplifié : ne progresse pas avec le niveau dans ce système), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (cf. onglet Sorts). Récupérée après un repos long."
+      "scalesWithLevel": true,
+      "description": "Réserve de points de sorcellerie (égale à votre niveau d'Ensorceleur, SRD 5e), dépensés via la Métamagie. Simplifié : pas de conversion avec les emplacements de sorts dans ce système (cf. onglet Sorts). Récupérée après un repos long."
     }
   },
   {
@@ -322,7 +338,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Dépensez des points de sorcellerie (cf. Sorcellerie innée) pour légèrement modifier un sort que vous lancez : le rendre silencieux ou sans geste, changer sa cible, réduire son temps d'incantation, etc. Simplifié : l'effet exact et son coût en points se décident avec le MJ, pas de liste d'options figées dans ce système."
+      "description": "Dépensez des points de sorcellerie (cf. Sorcellerie innée) pour légèrement modifier un sort que vous lancez. 2 des 8 options SRD sont automatisées sur un sort à sauvegarde : Maj-clic sur le bouton \"Lancer\" = Sort Prudent (une cible ciblée réussit automatiquement son jet), Ctrl-clic = Sort Élevé (une cible ciblée subit un désavantage à son jet) — 1 point dépensé à chaque fois, choix de la cible si plusieurs sont ciblées. Les 6 autres options (Sort Distant, Sort Prolongé, Sort Rapide, Sort Discret, Sort Amplifié, Sort Jumelé) restent à l'arbitrage du MJ, non modélisées dans ce système (portée/durée/composantes/économie d'action non trackées)."
     }
   },
   {
@@ -348,7 +364,121 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Apprenez avec le temps de petits pouvoirs magiques permanents (ex. voir dans le noir, parler avec les bêtes, résister à un type de dégâts). Simplifié : à choisir avec le MJ selon votre niveau, pas de liste d'options figée dans ce système."
+      "description": "À partir du niveau 2, apprenez des Invocations occultes (liste SRD de 30+ pouvoirs magiques permanents) au rythme indiqué par la table de la classe — le nombre exact connu simultanément n'est pas suivi par ce système, à gérer avec le MJ. Une sélection est disponible en tant que Capacités individuelles dans le compendium (jamais octroyées automatiquement, contrairement aux autres Capacités de classe : à glisser sur la fiche une fois choisies) : Salve implacable, Lance occulte, Salve repoussante, Vue du diable, Parole bestiale, Vue occulte, Influence enjôleuse, Buveur de vie. Seule Salve implacable a une mécanique automatisée (bonus de dégâts sur Décharge occulte) ; les autres options SRD restent à l'arbitrage du MJ."
+    }
+  },
+  {
+    "name": "Salve implacable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "boostsSpellDamage": "Décharge occulte",
+      "boostsSpellDamageAbility": "cha",
+      "description": "Invocation occulte (Agonizing Blast, SRD 5e — nécessite de connaître le sort Décharge occulte). Ajoutez votre modificateur de Charisme aux dégâts infligés par Décharge occulte : automatique, le bouton \"Jet de dégâts\" de ce sort inclut désormais ce bonus tant que cette Capacité est présente sur la fiche."
+    }
+  },
+  {
+    "name": "Lance occulte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Eldritch Spear, SRD 5e — nécessite de connaître le sort Décharge occulte). La portée de Décharge occulte passe de 18 m à 90 m. Portée non suivie numériquement par ce système : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Salve repoussante",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Repelling Blast, SRD 5e — nécessite de connaître le sort Décharge occulte). Chaque fois qu'une cible est touchée par Décharge occulte, elle est repoussée de 3 m. Positionnement/déplacement non automatisés par ce système (combat tactique hors scope) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Vue du diable",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Devil's Sight, SRD 5e). Voyez normalement jusqu'à 18 m dans l'obscurité, magique ou non. Vision non modélisée par ce système (pas d'intégration à l'éclairage des tokens pour cette Invocation) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Parole bestiale",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Beast Speech, SRD 5e). Vous pouvez comprendre et communiquer, dans une mesure limitée, avec les bêtes. Purement narratif, aucune mécanique de jet associée."
+    }
+  },
+  {
+    "name": "Vue occulte",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Eldritch Sight, SRD 5e). Lancez Détection de la magie à volonté, sans dépenser d'emplacement de sort. Ce sort n'existe pas dans le compendium de ce système (jamais sur aucune liste de classe jouée) : à l'appréciation du MJ."
+    }
+  },
+  {
+    "name": "Influence enjôleuse",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Beguiling Influence, SRD 5e). Maîtrise des compétences Tromperie et Persuasion. L'octroi automatique de maîtrise de compétence n'est pas modélisé par ce système : cochez manuellement les cases correspondantes sur l'onglet Compétences."
+    }
+  },
+  {
+    "name": "Buveur de vie",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Invocations-occultes.png",
+    "system": {
+      "class": "warlock",
+      "level": 2,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Invocation occulte (Lifedrinker, SRD 5e — nécessite le Bienfait de pacte de la Lame, non modélisé par ce système). Ajoutez votre modificateur de Charisme (en dégâts nécrotiques) à chaque coup porté avec votre arme de pacte. Non automatisée faute de suivi du Bienfait de pacte : à l'appréciation du MJ."
     }
   },
   {
@@ -375,7 +505,8 @@
       "rollFormula": "ceil(@attributes.level/2)",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas le résultat affiché (aucun emplacement de niveau 6 ou plus). Le bouton calcule ce total selon votre niveau — répartissez-le vous-même entre les paliers de votre choix."
+      "recoversSpellSlots": true,
+      "description": "Une fois par jour, lors de votre premier repos court : récupérez automatiquement des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas le résultat affiché (aucun emplacement de niveau 6 ou plus) — une fenêtre s'ouvre au moment du repos court pour répartir ce total entre les paliers de votre choix."
     }
   },
   {
@@ -414,7 +545,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Votre instinct s'aiguise : vous avez un avantage aux jets d'Initiative. De plus, si vous êtes surpris au début d'un combat et n'êtes pas incapable d'agir, vous pouvez agir normalement à votre premier tour à condition d'entrer en Rage avant d'y faire quoi que ce soit d'autre."
+      "description": "Votre instinct s'aiguise : vous avez un avantage aux jets d'Initiative — automatisé. De plus, si vous êtes surpris au début d'un combat et n'êtes pas incapable d'agir, vous pouvez agir normalement à votre premier tour à condition d'entrer en Rage avant d'y faire quoi que ce soit d'autre (à l'arbitrage du MJ, aucune notion de \"surprise\" suivie par ce système)."
     }
   },
   {
@@ -427,7 +558,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vous pouvez lancer un dé de dégâts supplémentaire lorsque vous déterminez les dégâts additionnels d'un coup critique porté avec une arme de corps à corps."
+      "description": "Vous pouvez lancer un dé de dégâts supplémentaire lorsque vous déterminez les dégâts additionnels d'un coup critique porté avec une arme de corps à corps — automatisé (dé supplémentaire ajouté automatiquement au jet de dégâts d'un critique à l'arme de corps à corps)."
     }
   },
   {
@@ -437,10 +568,11 @@
     "system": {
       "class": "bard",
       "level": 2,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "healsTarget": true,
       "source": "",
-      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas)."
+      "description": "Pendant un repos court, vous et les alliés à portée de voix qui se reposent récupèrent 1d6 points de vie supplémentaires en plus du repos habituel (progression simplifiée : ne monte pas avec le niveau dans ce système ; pas de Dé de vie à dépenser, ce système n'en utilise pas). Bouton de jet ci-dessous : à cliquer une fois par allié qui se repose (ciblé), applique directement le soin."
     }
   },
   {
@@ -479,7 +611,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (Clerc) (option Repousser les morts-vivants) et que son indice de dangerosité est inférieur ou égal à 1/2, il est détruit au lieu d'être seulement repoussé (seuil à confirmer avec le MJ selon votre niveau)."
+      "description": "Quand un Mort-vivant échoue son jet de sauvegarde contre votre Canalisation divine (Clerc) (option Repousser les morts-vivants) et que son indice de dangerosité est sous le seuil de votre niveau (1/2 au niveau 5, 1 au niveau 8, 2 au niveau 11, 3 au niveau 14, 4 au niveau 17), il est détruit au lieu d'être seulement repoussé — automatisé (table SRD 5e, cf. #onRollFeatureSave)."
     }
   },
   {
@@ -506,7 +638,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système)."
+      "description": "Vous pouvez relancer un jet de sauvegarde raté. Vous devez utiliser le nouveau résultat. 1 utilisation par repos long (simplifié : ne progresse pas avec le niveau dans ce système) — automatisé (bouton de relance sur le jet, résultat imposé)."
     }
   },
   {
@@ -518,10 +650,11 @@
       "level": 3,
       "activation": "reaction",
       "reactionTrigger": "Touché par une attaque à distance d'arme",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d10 + @abilities.dex.mod + @attributes.level",
+      "reducesDamage": true,
       "source": "",
-      "description": "Vous pouvez utiliser votre réaction pour dévier ou attraper un projectile qui vous touche avec une attaque à distance d'arme : les dégâts subis sont réduits de 1d10 + votre modificateur de Dextérité + votre niveau de Moine (calcul manuel). S'ils tombent à 0, vous attrapez le projectile si vous avez une main de libre."
+      "description": "Vous pouvez utiliser votre réaction pour dévier ou attraper un projectile qui vous touche avec une attaque à distance d'arme : les dégâts subis sont réduits de 1d10 + votre modificateur de Dextérité + votre niveau de Moine — bouton \"Appliquer la réduction\" affiché sur le jet, à cliquer sur la cible touchée. S'ils tombent à 0, vous attrapez le projectile si vous avez une main de libre (narratif, à l'arbitrage du MJ)."
     }
   },
   {
@@ -561,7 +694,10 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Ki",
-      "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour."
+      "savingThrow": "con",
+      "saveDCAbility": "wis",
+      "appliesCondition": "stunned",
+      "description": "Quand vous touchez une créature avec une attaque d'arme de corps à corps, vous pouvez dépenser 1 point de Ki (cf. Capacité Ki) pour tenter de l'étourdir : elle doit réussir un jet de sauvegarde de Constitution (DD 8 + bonus de maîtrise + modificateur de Sagesse) sous peine d'être étourdie jusqu'à la fin de votre prochain tour. Bouton de jet de sauvegarde ci-dessous, à utiliser sur la cible touchée (ciblée) juste après l'avoir frappée."
     }
   },
   {
@@ -654,7 +790,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec."
+      "description": "Quand vous êtes soumis à un effet qui vous permet un jet de sauvegarde de Dextérité pour ne subir que la moitié des dégâts, vous ne subissez aucun dégât en cas de réussite et seulement la moitié en cas d'échec — automatisé (bouton \"Appliquer les dégâts\", cf. le résultat de votre jet de sauvegarde)."
     }
   },
   {
@@ -665,6 +801,7 @@
       "class": "barbarian",
       "subclass": "berserker",
       "level": 3,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "requiresState": "raging",
@@ -683,7 +820,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Tant que vous êtes en Rage, vous ne pouvez être ni charmé ni effrayé. Si vous êtes déjà charmé ou effrayé quand vous entrez en Rage, l'effet est suspendu pour la durée de la Rage."
+      "description": "Tant que vous êtes en Rage, vous ne pouvez être ni charmé ni effrayé — automatisé (bloque l'application de ces états). Si vous êtes déjà charmé ou effrayé quand vous entrez en Rage, l'effet est suspendu pour la durée de la Rage : automatisé (retire l'état à l'entrée en Rage), simplifié — ne revient jamais tout seul à la fin de la Rage."
     }
   },
   {
@@ -753,12 +890,11 @@
       "class": "bard",
       "subclass": "lore",
       "level": 3,
-      "activation": "reaction",
-      "reactionTrigger": "Une créature à moins de 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d6",
+      "costsResource": "Inspiration bardique",
       "source": "",
-      "description": "Réaction, quand une créature à 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts : dépensez un dé d'Inspiration bardique et retranchez-le du résultat (après le jet, avant de savoir s'il réussit)."
+      "description": "Réaction, quand une créature à 18 m que vous voyez et entendez effectue un test de caractéristique, un jet d'attaque ou un jet de dégâts : dépensez un dé d'Inspiration bardique et retranchez-le du résultat (après le jet, avant de savoir s'il réussit). Deux boutons séparés ci-dessous : le bouton de jet (dé) donne le montant à retrancher (à appliquer manuellement au jet visé) ; le bouton \"Inspiration bardique\" décompte la charge dépensée. Économie de Réaction non suivie ici (contrairement à la plupart des autres Réactions de ce système) : les deux boutons se bloqueraient mutuellement sinon."
     }
   },
   {
@@ -815,7 +951,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vos sorts de soin sont plus efficaces : chaque fois que vous utilisez un sort de niveau 1 ou plus pour rendre des points de vie à une créature, elle en récupère 2 de plus, +1 supplémentaire par niveau d'emplacement au-delà du premier."
+      "description": "Vos sorts de soin sont plus efficaces : chaque fois que vous utilisez un sort de niveau 1 ou plus pour rendre des points de vie à une créature, elle en récupère 2 de plus, +1 supplémentaire par niveau d'emplacement au-delà du premier — automatisé (bonus ajouté au jet de soin, surclassement inclus)."
     }
   },
   {
@@ -843,11 +979,12 @@
       "level": 1,
       "activation": "reaction",
       "reactionTrigger": "Une créature à 9 m de vous que vous voyez subit des dégâts",
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "1d8 + @attributes.level",
+      "reducesDamage": true,
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc, et la source des dégâts (si vivante) subit un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour. 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
+      "description": "Réaction, quand une créature à 9 m que vous voyez subit des dégâts : réduisez ces dégâts de 1d8 + votre niveau de Clerc — bouton \"Appliquer la réduction\" affiché sur le jet, à cliquer sur la cible touchée. La source des dégâts (si vivante) subit en plus un désavantage aux jets d'attaque contre vous jusqu'à votre prochain tour (narratif, à l'arbitrage du MJ). 1 utilisation par repos long (simplifié : normalement rechargée en dépensant des emplacements de sort)."
     }
   },
   {
@@ -858,6 +995,7 @@
       "class": "cleric",
       "subclass": "trickery",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -887,11 +1025,12 @@
       "class": "druid",
       "subclass": "land",
       "level": 2,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "floor(@attributes.level/2)",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Une fois par jour, lors d'un repos court : récupérez des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas la moitié de votre niveau de Druide (arrondi à l'inférieur, aucun emplacement de niveau 6 ou plus) — répartissez-le vous-même entre les paliers de votre choix."
+      "recoversSpellSlots": true,
+      "description": "Une fois par jour, lors de votre premier repos court : récupérez automatiquement des emplacements de sorts déjà dépensés (onglet Sorts), pour un total de niveaux ne dépassant pas la moitié de votre niveau de Druide (arrondi à l'inférieur, aucun emplacement de niveau 6 ou plus) — une fenêtre s'ouvre au moment du repos court pour répartir ce total entre les paliers de votre choix."
     }
   },
   {
@@ -906,7 +1045,7 @@
       "rollFormula": "",
       "requiresState": "wildShape",
       "source": "",
-      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation, et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
+      "description": "Tant que l'état \"En Forme sauvage\" est actif (à activer manuellement en entrant en Forme sauvage, cf. Capacité Forme sauvage) : vous gagnez des points de vie temporaires égaux à 2 fois votre niveau de Druide au moment de la transformation — automatisé (PV temporaires posés automatiquement sur la Forme au moment de la transformation), et votre Forme sauvage peut atteindre une créature de niveau de défi plus élevé qu'un Druide ordinaire (à valider avec le MJ)."
     }
   },
   {
@@ -917,6 +1056,7 @@
       "class": "druid",
       "subclass": "spores",
       "level": 2,
+      "activation": "bonusAction",
       "requiresRoll": true,
       "rollFormula": "1d4",
       "source": "",
@@ -935,7 +1075,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vos attaques d'arme obtiennent un coup critique sur un résultat de 19 ou 20 au jet d'attaque, au lieu de seulement 20."
+      "description": "Vos attaques d'arme obtiennent un coup critique sur un résultat de 19 ou 20 au jet d'attaque, au lieu de seulement 20. Automatique tant que cette Capacité est présente sur la fiche (appliqué aussi aux jets d'attaque de sort, simplification déjà en place pour le critique automatique d'Assassinat)."
     }
   },
   {
@@ -991,10 +1131,11 @@
       "class": "monk",
       "subclass": "openHand",
       "level": 3,
+      "offersOpenHandTechnique": true,
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Chaque fois que vous touchez une créature avec une attaque de Rafale de coups, vous pouvez imposer l'un des effets suivants (la cible doit réussir un jet de sauvegarde de Dextérité ou Force, DD 8 + bonus de maîtrise + modificateur de Sagesse, sous peine de le subir) : à terre ; repoussée de 4,50 m ; incapable d'effectuer de réaction jusqu'à la fin de votre prochain tour."
+      "description": "Chaque fois que vous touchez une créature avec une attaque de Rafale de coups, vous pouvez imposer l'un des effets suivants (la cible doit réussir un jet de sauvegarde de Dextérité ou Force, DD 8 + bonus de maîtrise + modificateur de Sagesse, sous peine de le subir) : à terre ; repoussée de 4,50 m ; incapable d'effectuer de réaction jusqu'à la fin de votre prochain tour. Automatisé (bouton dédié : choix de l'effet puis jet de sauvegarde de chaque cible ciblée) — simplifié, sauvegarde toujours de Dextérité (jamais Force) ; l'effet \"repoussée\" reste à déplacer manuellement en cas d'échec."
     }
   },
   {
@@ -1020,6 +1161,7 @@
       "class": "monk",
       "subclass": "shadow",
       "level": 3,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -1035,11 +1177,12 @@
       "class": "monk",
       "subclass": "fourElements",
       "level": 3,
-      "requiresRoll": false,
-      "rollFormula": "",
+      "requiresRoll": true,
+      "rollFormula": "4d6",
+      "dealsDamage": true,
       "source": "",
       "costsResource": "Ki",
-      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts (jet de sauvegarde à mi-dégâts selon la discipline, à lancer manuellement)."
+      "description": "Dépensez 2 points de Ki ou plus (cf. Capacité Ki) pour lancer l'une des trois disciplines élémentaires apprises (Souffle du dragon, Poing de la vague déferlante, Onde de choc — à convenir avec le MJ) : 4d6 dégâts. Deux boutons séparés ci-dessous : le bouton de jet (dé) inflige les 4d6 dégâts (avec bouton \"Appliquer les dégâts\") ; le bouton \"Ki\" décompte 1 point de Ki par clic — cliquez-le 2 fois (ou plus) pour refléter le coût réel. Jet de sauvegarde à mi-dégâts selon la discipline choisie non automatisé (à gérer manuellement avec le MJ : appliquer la moitié du résultat en cas de réussite)."
     }
   },
   {
@@ -1050,11 +1193,30 @@
       "class": "paladin",
       "subclass": "devotion",
       "level": 3,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
       "costsResource": "Canalisation divine (Paladin)",
       "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, imprégnez une arme que vous tenez d'énergie divine pendant 1 minute. Vous ajoutez votre modificateur de Charisme (minimum +1) aux jets d'attaque effectués avec elle, et elle émet une lumière vive dans un rayon de 9 m (faible sur 9 m supplémentaires)."
+    }
+  },
+  {
+    "name": "Canalisation divine : Repousser les impies",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "devotion",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureTypes": ["fiend", "undead"],
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, chaque fiélon ou mort-vivant actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique)."
     }
   },
   {
@@ -1068,7 +1230,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient."
+      "description": "Vous et toute créature amicale à 3 m de vous ne pouvez être charmés tant que vous êtes conscient — automatisé (bloque l'application de l'état Charmé sur toute créature à portée d'un Paladin conscient possédant cette Capacité)."
     }
   },
   {
@@ -1079,11 +1241,30 @@
       "class": "paladin",
       "subclass": "ancients",
       "level": 3,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "uses": { "max": 1, "value": 1, "recharge": "shortRest" },
-      "description": "Action bonus, 1 minute : vous et les créatures amicales à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts. 1 utilisation par repos court ou long."
+      "costsResource": "Canalisation divine (Paladin)",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, 1 minute, vous et les créatures à 3 m de vous bénéficiez d'une résistance aux dégâts des sorts — automatisé (bascule \"Voile des anciens\", liste des États, à poser sur vous-même ; zone de 3 m recalculée à chaque dégât de sort, aucun décompte de durée)."
+    }
+  },
+  {
+    "name": "Canalisation divine : Repousser les infidèles",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "ancients",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "requiresCreatureTypes": ["fey", "fiend"],
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, chaque fée ou fiélon actuellement ciblé effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique)."
     }
   },
   {
@@ -1094,11 +1275,30 @@
       "class": "paladin",
       "subclass": "vengeance",
       "level": 3,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Action bonus : désignez une créature que vous voyez à 18 m comme votre proie et posez-lui manuellement l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle. 1 utilisation par repos long (simplifié : normalement lié à Sens divin, sans limite d'usage propre)."
+      "costsResource": "Canalisation divine (Paladin)",
+      "grantsCondition": "hunted",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action bonus, ciblez une créature que vous voyez à 18 m comme votre proie et cliquez sur le bouton pour lui poser l'état \"Traqué\" (cf. onglet États). Tant qu'elle le porte, toute créature autre que vous a un désavantage aux jets d'attaque contre elle (automatisé uniquement si posé via ce bouton — un état \"Traqué\" posé manuellement depuis l'onglet États n'accorde aucun désavantage automatique)."
+    }
+  },
+  {
+    "name": "Canalisation divine : Abjurer un ennemi",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Canalisation-divine.png",
+    "system": {
+      "class": "paladin",
+      "subclass": "vengeance",
+      "level": 3,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "costsResource": "Canalisation divine (Paladin)",
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "description": "Option de Canalisation divine (cf. Capacité Canalisation divine (Paladin)) : action, la créature actuellement ciblée effectue un jet de sauvegarde de Sagesse (DD du Paladin), échec = Effrayé (bouton dédié ci-dessous, jet automatique — aucune restriction de type de créature). Un fiélon ou mort-vivant qui échoue est en plus contraint de fuir (Renvoyé, SRD 5e) : nuance non modélisée, à l'arbitrage du MJ."
     }
   },
   {
@@ -1112,7 +1312,55 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez une option avec le MJ : Pourfendeur de colosses (une fois par tour, +1d8 dégâts supplémentaires à une créature déjà blessée) ; Tueur de géants (réaction, attaque contre une créature de taille Grande ou plus qui vous touche ou vous manque à 1,50 m) ; Briseur de horde (une fois par tour, attaquez une seconde créature à 1,50 m de votre cible d'origine)."
+      "description": "Choisissez UNE option, permanente (SRD 5e) : Pourfendeur de colosses, Tueur de géants ou Briseur de horde — chacune est une Capacité séparée à glisser sur la fiche depuis le compendium une fois choisie (jamais octroyées automatiquement, comme les Invocations occultes de l'Occultiste)."
+    }
+  },
+  {
+    "name": "Pourfendeur de colosses",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "requiresRoll": true,
+      "rollFormula": "1d8",
+      "dealsDamage": true,
+      "source": "",
+      "description": "Option de Proie du chasseur (Colossus Slayer, SRD 5e). Une fois par tour, infligez 1d8 dégâts supplémentaires à une créature déjà blessée (moins de son maximum de points de vie) que vous touchez avec une attaque. Bouton de jet ci-dessous, avec bouton \"Appliquer les dégâts\" — à cliquer une seule fois par tour, sur votre jugement."
+    }
+  },
+  {
+    "name": "Tueur de géants",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "activation": "reaction",
+      "reactionTrigger": "Une créature de taille Grande ou plus à 1,50 m vous touche ou vous manque avec une attaque",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Proie du chasseur (Giant Killer, SRD 5e). En réaction, attaquez une créature de taille Grande ou plus à 1,50 m de vous qui vient de vous toucher ou manquer avec une attaque au corps à corps. Utilisez le bouton d'attaque de votre arme, comme d'habitude — automatisé (rappel de chat non-bloquant, même principe que Sentinelle, quand une telle créature vous touche ou vous manque à portée avec votre réaction disponible)."
+    }
+  },
+  {
+    "name": "Briseur de horde",
+    "type": "feature",
+    "img": "systems/dnd-custom-ai/assets/icons/features/Proie-du-chasseur.png",
+    "system": {
+      "class": "ranger",
+      "subclass": "hunter",
+      "level": 3,
+      "manualOnly": true,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "description": "Option de Proie du chasseur (Horde Breaker, SRD 5e). Une fois par tour, quand vous touchez une créature avec une attaque, vous pouvez attaquer une seconde créature différente à 1,50 m de la première, si elle est à portée. Utilisez le bouton d'attaque de votre arme une seconde fois, comme d'habitude."
     }
   },
   {
@@ -1123,10 +1371,11 @@
       "class": "ranger",
       "subclass": "hunter",
       "level": 7,
+      "grantsChoice": "huntersDefense",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez une option avec le MJ : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé)."
+      "description": "Choisissez une option (bouton \"Choisir\"), désormais automatisée : Échappée de la horde (les attaques d'opportunité contre vous ont un désavantage — pose un désavantage éphémère sur le prochain jet du PNJ dont vous quittez la portée, approximation : suppose que ce jet EST bien son attaque d'opportunité) ; Défense contre les attaques multiples (avantage à un jet de sauvegarde contre une créature qui vous a déjà attaqué ce tour — nouveau suivi \"attaqué ce round\", remis à zéro à votre tour) ; Volonté de fer (avantage aux jets de sauvegarde contre être effrayé — Capacités uniquement, jamais un sort qui n'a pas ce champ dans ce système)."
     }
   },
   {
@@ -1169,7 +1418,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous utilisez l'action bonus d'Action rusée, vous pouvez aussi effectuer un test d'Escamotage, utiliser des Outils de voleur pour désamorcer un piège ou crocheter une serrure, ou utiliser un objet grâce à cette action bonus."
+      "description": "Quand vous utilisez l'action bonus d'Action rusée, vous pouvez aussi effectuer un test d'Escamotage, utiliser des Outils de voleur pour désamorcer un piège ou crocheter une serrure, ou utiliser un objet grâce à cette action bonus. Non automatisable : seule l'économie d'action change (action bonus au lieu d'action), le jet lui-même utilise déjà le bouton normal de la compétence/de l'outil concerné."
     }
   },
   {
@@ -1183,7 +1432,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale."
+      "description": "Grimper ne vous coûte plus de mouvement supplémentaire. De plus, un saut en longueur avec élan vous fait couvrir jusqu'à 1,50 m de plus que la normale. Non automatisable : mouvement/distance non trackés par ce système (combat tactique hors scope, comme Salve repoussante)."
     }
   },
   {
@@ -1251,10 +1500,11 @@
       "class": "sorcerer",
       "subclass": "draconic",
       "level": 1,
+      "grantsChoice": "draconicResistanceType",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Choisissez un type de dragon avec le MJ : vous gagnez une résistance au type de dégâts associé (ex. feu pour un dragon rouge). Vos points de vie maximum augmentent de 1 par niveau d'Ensorceleur, et votre CA sans armure est égale à 13 + votre modificateur de Dextérité (un bouclier reste utilisable)."
+      "description": "Choisissez un type de dragon (bouton \"Choisir\") : vous gagnez une résistance au type de dégâts associé (ex. feu pour un dragon rouge) — automatisé (dégâts appliqués à vous divisés par deux via \"Appliquer les dégâts\"). Vos points de vie maximum augmentent de 1 par niveau d'Ensorceleur, et votre CA sans armure est égale à 13 + votre modificateur de Dextérité (un bouclier reste utilisable) — les deux automatisés."
     }
   },
   {
@@ -1269,7 +1519,7 @@
       "rollFormula": "",
       "source": "",
       "costsResource": "Sorcellerie innée",
-      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort (passif, sans coût). Le bouton \"Sorcellerie innée\" ci-dessous ne concerne que l'option active : dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
+      "description": "Quand vous lancez un sort infligeant des dégâts du type associé à votre lignage draconique (cf. Résilience draconique), ajoutez votre modificateur de Charisme aux dégâts d'un des jets du sort — automatisé (bonus ajouté automatiquement au jet de dégâts dès que le type correspond), passif, sans coût. Le bouton \"Sorcellerie innée\" ci-dessous ne concerne que l'option active : dépenser 1 point de sorcellerie pour gagner une résistance à ce type de dégâts pendant 1 heure."
     }
   },
   {
@@ -1312,7 +1562,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Résistance passive aux dégâts de foudre et de tonnerre — jamais de jet à faire, réduisez simplement de moitié tout dégât de ce type que vous subissez."
+      "description": "Résistance passive aux dégâts de foudre et de tonnerre — automatisé (moitié des dégâts de ce type appliquée automatiquement au bouton \"Appliquer les dégâts\"), jamais de jet à faire."
     }
   },
   {
@@ -1341,7 +1591,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Si le résultat d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde ne vous convient pas, vous pouvez ajouter 1d10 au résultat. 1 utilisation par repos long (simplifié : normalement par repos court ou long)."
+      "description": "Si le résultat d'un test de caractéristique, d'un jet d'attaque ou d'une sauvegarde ne vous convient pas, un bouton \"Chance du Fiélon\" apparaît sur le message de ce jet : il ajoute automatiquement 1d10 au résultat. 1 utilisation par repos long (simplifié : normalement par repos court ou long)."
     }
   },
   {
@@ -1356,7 +1606,9 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 1, "value": 1, "recharge": "longRest" },
-      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir manuellement l'état \"Effrayé\" (cf. onglet États) jusqu'à la fin de votre prochain tour. 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
+      "savingThrow": "wis",
+      "appliesCondition": "frightened",
+      "description": "Action : une créature que vous voyez à 9 m doit réussir un jet de sauvegarde de Sagesse ou subir l'état \"Effrayé\" jusqu'à la fin de votre prochain tour (bouton de jet de sauvegarde ci-dessous, à utiliser sur la cible ciblée). 1 utilisation par repos long (simplifié : normalement selon votre modificateur de Charisme)."
     }
   },
   {
@@ -1367,6 +1619,7 @@
       "class": "warlock",
       "subclass": "archfey",
       "level": 1,
+      "activation": "bonusAction",
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
@@ -1385,7 +1638,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand vous lancez un sort d'évocation qui affecte d'autres créatures que vous voyez, vous pouvez en protéger un nombre égal à 1 + le niveau du sort : elles réussissent automatiquement leur jet de sauvegarde contre le sort et ne subissent aucun dégât si elles n'en auraient normalement subi que la moitié en cas de réussite."
+      "description": "Quand vous lancez un sort d'évocation qui affecte d'autres créatures que vous voyez, vous pouvez en protéger un nombre égal à 1 + le niveau du sort : elles réussissent automatiquement leur jet de sauvegarde contre le sort et ne subissent aucun dégât si elles n'en auraient normalement subi que la moitié en cas de réussite. Automatisé de façon approximative (l'école de magie n'est plus suivie par ce système) : Maj-clic sur \"Lancer\" pour TOUT sort à sauvegarde du Magicien = une cible ciblée choisie réussit automatiquement, gratuit (même convention que Sort Prudent/Métamagie, sans le coût) — un seul allié protégé par lancer, pas le total \"1 + niveau du sort\" du texte SRD."
     }
   },
   {
@@ -1399,7 +1652,7 @@
       "requiresRoll": false,
       "rollFormula": "",
       "source": "",
-      "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui inflige normalement la moitié des dégâts en cas de réussite, elle en subit tout de même la moitié plutôt qu'aucun."
+      "description": "Quand une créature réussit son jet de sauvegarde contre un de vos tours de magie qui n'inflige normalement AUCUN dégât en cas de réussite, elle en subit tout de même la moitié — automatisé (bouton \"Appliquer les dégâts\")."
     }
   },
   {
@@ -1448,6 +1701,38 @@
       "rollFormula": "",
       "source": "",
       "description": "Règle universelle SRD 5e, valable pour tout personnage : vous pouvez utiliser votre réaction pour effectuer une attaque au corps à corps contre une créature qui quitte la portée que vous menacez. L'attaque se résout normalement (bouton Attaque de l'onglet Équipement)."
+    }
+  },
+  {
+    "name": "Agripper",
+    "type": "feature",
+    "img": "icons/svg/net.svg",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "action",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "opposedCheckType": "grapple",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : au lieu d'une attaque, ciblez une seule créature à votre portée pour tenter de l'agripper. Test opposé automatique (bouton dédié) : votre Athlétisme contre le meilleur des Athlétisme/Acrobaties de la cible. Succès : la cible devient Agrippée (onglet États) tant que vous ne devenez pas Neutralisé ou qu'elle ne quitte pas votre portée."
+    }
+  },
+  {
+    "name": "Bousculer",
+    "type": "feature",
+    "img": "icons/svg/falling.svg",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "action",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "opposedCheckType": "shove",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : au lieu d'une attaque, ciblez une seule créature à votre portée pour tenter de la bousculer. Choisissez d'abord l'effet voulu (à terre, ou repoussée de 1,50 m), puis test opposé automatique (bouton dédié) : votre Athlétisme contre le meilleur des Athlétisme/Acrobaties de la cible. Succès \"à terre\" : état Prone posé automatiquement. Succès \"repoussée\" : à déplacer manuellement, ce système ne fait jamais bouger un token tout seul."
     }
   }
 ]

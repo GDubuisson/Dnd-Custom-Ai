@@ -91,6 +91,53 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
     });
   });
 
+  it("le champ Description reste cliquable même vide et grandit avec un texte long, sans défilement interne (anomalie 2026-08-19)", () => {
+    let originalDescription;
+    cy.window().then((win) => {
+      const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
+      originalDescription = item.system.description;
+      return item.update(win.JSON.parse(win.JSON.stringify({ "system.description": "" })));
+    });
+    cy.window().then((win) => win.game.items.find((candidate) => candidate.name === "Gourdin").sheet.render(true));
+
+    // Champ vide : la zone éditable doit rester non nulle et cliquable (retour de test déjà
+    // corrigé par le passé, cf. commentaire CSS .item-sheet-body .form-row prose-mirror) — pas
+    // de régression introduite par le correctif content-sized de ce point.
+    latestItemSheet()
+      .find('prose-mirror[name="system.description"] .editor-content')
+      .should(($el) => {
+        expect($el[0].clientHeight, "zone éditable vide : doit rester cliquable (hauteur non nulle)").to.be.greaterThan(0);
+      });
+
+    const longText = Array.from(
+      { length: 20 },
+      (_, i) => `<p>Ligne ${i + 1} d'un texte volontairement long pour dépasser la hauteur minimale du champ.</p>`
+    ).join("");
+    cy.window().then((win) => {
+      const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
+      return item.update(win.JSON.parse(win.JSON.stringify({ "system.description": longText })));
+    });
+    cy.window().then((win) => win.game.items.find((candidate) => candidate.name === "Gourdin").sheet.render(true));
+
+    latestItemSheet()
+      .find('prose-mirror[name="system.description"]')
+      .should(($el) => {
+        const el = $el[0];
+        expect(el.clientHeight, "doit grandir bien au-delà du plancher de 10rem (~160px)").to.be.greaterThan(300);
+        expect(
+          el.scrollHeight - el.clientHeight,
+          `aucun défilement interne attendu (scrollHeight ${el.scrollHeight} vs clientHeight ${el.clientHeight})`
+        ).to.be.at.most(2);
+      });
+
+    // Remet la description d'origine (retour de test : nettoyage complet obligatoire, cf. Item
+    // du monde partagé avec d'autres specs).
+    cy.window().then((win) => {
+      const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
+      return item.update(win.JSON.parse(win.JSON.stringify({ "system.description": originalDescription })));
+    });
+  });
+
   it("le champ Dégâts (Polyvalente) apparaît seulement une fois la propriété activée (T-ITEM-003)", () => {
     fetchWorldItem("Gourdin").then((item) => {
       expect(item.system.properties.versatile, "prérequis : 'Gourdin' n'est pas Polyvalente par défaut").to.be.false;

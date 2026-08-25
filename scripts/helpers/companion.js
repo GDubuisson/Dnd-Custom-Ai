@@ -5,7 +5,10 @@ const SOCKET_EVENT = `system.${SYSTEM_ID}.companion`;
  *  "Compagnon animal") : un Loup SRD 5e, réduit aux champs de NpcData (scripts/data/npc-data.js).
  *  Un seul profil pour l'instant, pas de choix proposé au joueur (contrairement à l'esprit
  *  totem du Barbare) — cohérent avec la simplification déjà assumée ailleurs (équipement de
- *  départ unique par classe, etc.). */
+ *  départ unique par classe, etc.). `attacks` (LISTE, pas `attack` singulier) : bug de régression
+ *  corrigé (2026-08-25) — le compagnon se retrouvait sans aucune attaque depuis le passage de
+ *  NpcData#attack à #attacks (chantier "Profil d'attaque PNJ", cf. CHANGELOG), Foundry ignorant
+ *  silencieusement une clé `attack` absente du schéma au lieu de lever une erreur. */
 const WOLF_PROFILE = {
   type: "npc",
   system: {
@@ -14,12 +17,14 @@ const WOLF_PROFILE = {
     size: "m",
     abilities: { str: { mod: 3 }, dex: { mod: 2 }, con: { mod: 1 }, int: { mod: -4 }, wis: { mod: 1 }, cha: { mod: -3 } },
     attributes: { hp: { value: 11, max: 11 }, ac: { value: 13 }, speed: 12 },
-    attack: {
-      name: "Morsure",
-      ability: "str",
-      bonus: 2,
-      damage: { dice: "2d4", bonus: 2, type: "piercing" }
-    },
+    attacks: [
+      {
+        name: "Morsure",
+        ability: "str",
+        bonus: 2,
+        damage: { dice: "2d4", bonus: 2, type: "piercing" }
+      }
+    ],
     particularity: "Tactique de meute : avantage aux jets d'attaque si un allié du Loup est à moins de 1,50 m de la cible."
   }
 };

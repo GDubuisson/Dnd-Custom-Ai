@@ -20,18 +20,33 @@ import {
   hasFeature,
   canUseReaction,
   opportunityAttackTrigger,
-  SPELL_LEVELS
+  SPELL_LEVELS,
+  spellSlotFillUpdates,
+  targetSaveModifier,
+  opposedCheckModifier
 } from "../helpers/rules.js";
+import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
-import { chooseSpellSlotLevel } from "../helpers/spell-slot-choice.js";
+import { chooseSpellSlotLevel, chooseSpellSlotRecovery } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
+import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
+import { chooseMetamagicOption } from "../helpers/metamagic.js";
+import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
+import { noteActionEconomyUsage } from "../helpers/action-economy.js";
+import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
+import { requestActorUpdate } from "../helpers/actor-relay.js";
+import {
+  RELENTLESS_HUNTER_FEATURE_NAME,
+  HUNTED_BY_ACTOR_ID_FLAG,
+  isDisadvantagedByHuntedTarget
+} from "../helpers/relentless-hunter.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -46,6 +61,15 @@ const EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL = 3;
 // #onCastSpell) : une par classe qui l'a en SRD 5e et pour laquelle elle est modélisée ici.
 const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
 
+// Table d'options par valeur de FeatureData#grantsChoice (cf. #onChooseFeatureOption ci-dessous)
+// — une entrée par choix ponctuel et définitif existant dans ce système.
+const CHOICE_OPTIONS_TABLES = {
+  totemSpirit: DND_CUSTOM.totemSpirits,
+  draconicResistanceType: DND_CUSTOM.draconicResistanceTypes,
+  huntersDefense: DND_CUSTOM.huntersDefenses,
+  favoredEnemyType: DND_CUSTOM.creatureTypes
+};
+
 /** Critique automatique de la Capacité "Assassinat" (sous-classe Assassin, Roublard — cf.
  *  world-items/subclasses.json > "assassin") : vrai si `actor` possède cette sous-classe ET
  *  qu'au moins une des cibles actuellement ciblées (`game.user.targets`) porte l'état "Surpris"
@@ -59,20 +83,109 @@ function hasAssassinAutoCritical(actor) {
   return [...game.user.targets].some((token) => token.actor?.statuses?.has("surprised"));
 }
 
-/** Avantage/désavantage automatique selon les états actifs (cf. CONFIG.statusEffects) et le
- *  niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
+/** Ennemi juré (Rôdeur 1, SRD 5e — Niveau C, 2026-08-24) : vrai si `actor` a choisi un type de
+ *  créature favori (`system.combat.favoredEnemyType`, cf. FeatureData#grantsChoice =
+ *  "favoredEnemyType", DND_CUSTOM.creatureTypes) ET qu'au moins une des cibles actuellement
+ *  ciblées (`game.user.targets`) est de ce type — même mécanisme de lecture de cible que
+ *  `hasAssassinAutoCritical` ci-dessus. Pilote l'avantage aux tests de Sagesse (Survie, pister)
+ *  ET d'Intelligence (se souvenir d'une info), cf. #onRollSkill/#onRollAbility. */
+function hasFavoredEnemyAdvantage(actor) {
+  const favoredType = actor.system.combat?.favoredEnemyType;
+  if (!favoredType) return false;
+  return [...game.user.targets].some((token) => token.actor?.system?.creatureType === favoredType);
+}
+
+/** Seuil de critique (cf. rollCheck > criticalThreshold, rolls.js) : 19 si `actor` possède
+ *  "Critique amélioré" (Champion, Guerrier, SRD 5e), 20 (comportement par défaut) sinon.
+ *  Appliqué aux jets d'attaque d'arme ET de sort — RAW ne vise que les attaques d'arme, mais ce
+ *  système applique déjà la même simplification pour le critique automatique d'Assassinat
+ *  ci-dessus (les deux jets d'attaque partagent le même pipeline rollCheck). */
+function improvedCriticalThreshold(actor) {
+  return hasFeature(actor.items.contents, "Critique amélioré") ? 19 : 20;
+}
+
+/** Destruction des morts-vivants (Clerc 5, SRD 5e — Niveau C, 2026-08-24) : seuil de FI (indice
+ *  de dangerosité) sous lequel un Mort-vivant est DÉTRUIT au lieu de seulement repoussé par
+ *  Canalisation divine "Repousser les morts-vivants", selon le niveau du Clerc — table SRD 5e
+ *  officielle. `null` sous le niveau 5 (Capacité pas encore acquise). */
+function destroyUndeadThreshold(clericLevel) {
+  if (clericLevel >= 17) return "4";
+  if (clericLevel >= 14) return "3";
+  if (clericLevel >= 11) return "2";
+  if (clericLevel >= 8) return "1";
+  if (clericLevel >= 5) return "1/2";
+  return null;
+}
+
+/** Vrai si `targetChallengeRating` (FI du PNJ ciblé, DND_CUSTOM.challengeRatings — tableau
+ *  ORDONNÉ croissant, cf. config.js) est inférieur ou égal au seuil de `destroyUndeadThreshold`
+ *  ci-dessus pour `casterLevel` — comparaison par INDEX dans le tableau plutôt que par valeur
+ *  numérique, pour ne pas avoir à parser les fractions ("1/8", "1/4", "1/2"). FI absent/invalide
+ *  (indexOf -1) : jamais détruit, seulement repoussé (comportement par défaut inchangé). */
+function isUndeadDestroyed(casterLevel, targetChallengeRating) {
+  const threshold = destroyUndeadThreshold(casterLevel);
+  if (!threshold) return false;
+  const ratings = DND_CUSTOM.challengeRatings;
+  const targetIndex = ratings.indexOf(targetChallengeRating);
+  return targetIndex >= 0 && targetIndex <= ratings.indexOf(threshold);
+}
+
+/** Avantage automatique aux jets d'attaque du don Combat monté (SRD 5e — chantier "Combat
+ *  automatisé avancé", 2026-08-23) : vrai si `actor` possède le don, est actuellement monté
+ *  (`system.combat.mountedActorId`), et qu'au moins une des cibles actuellement ciblées
+ *  (`game.user.targets`) a une taille strictement inférieure à celle de la monture
+ *  (config.js > DND_CUSTOM.sizes, ordre déjà croissant tp/p/m/g/tg/gig). Ne modélise pas la nuance "à pied"
+ *  du texte SRD (une cible elle-même montée resterait à tort concernée) — simplification
+ *  assumée, comme d'autres nuances déjà documentées ailleurs. */
+function hasMountedSizeAdvantage(actor) {
+  const mountId = actor.system.combat.mountedActorId;
+  if (!mountId || !hasFeature(actor.items.contents, "Combat monté")) return false;
+
+  const mount = game.actors.get(mountId);
+  const sizeOrder = Object.keys(DND_CUSTOM.sizes);
+  const mountSizeIndex = sizeOrder.indexOf(mount?.system.size);
+  if (mountSizeIndex < 0) return false;
+
+  return [...game.user.targets].some((token) => sizeOrder.indexOf(token.actor?.system?.size) >= 0 && sizeOrder.indexOf(token.actor.system.size) < mountSizeIndex);
+}
+
+/** Avantage/désavantage/bonus automatique selon les états actifs (cf. CONFIG.statusEffects) et
+ *  le niveau d'Exhaustion — seules les règles univoques et propres au personnage qui jette sont
  *  automatisées (pas d'effets dépendant d'une cible/de la position, hors du scope "combat
  *  automatisé avancé" explicitement exclu de ce système, cf. PROJECT.md). `kind` : "check"
- *  (test de caractéristique/compétence), "save" (sauvegarde), "attack" (jet d'attaque). */
+ *  (test de caractéristique/compétence), "save" (sauvegarde), "attack" (jet d'attaque).
+ *
+ *  `bonus` (chantier "9 sorts/capacités à rider différé", 2026-08-23) : dé supplémentaire à
+ *  ajouter à la formule du jet, ex. "+1d4" — mécanisme des sorts Bénédiction/Avis divin (SRD
+ *  5e), qui accordent normalement "ajoutez 1d4 à un jet avant la fin du sort" plutôt qu'un
+ *  simple avantage/désavantage. Comme les autres conditions homebrew (raging/hunted...), aucune
+ *  durée/décompte de sort n'est suivi automatiquement : "blessed"/"guided" sont des bascules
+ *  manuelles (onglet États) posées/levées par le joueur/MJ, la seule automatisation étant
+ *  d'éviter d'oublier le +1d4 en jouant. "blessed" (Bénédiction) s'applique aux jets d'attaque
+ *  ET de sauvegarde (pas aux tests, SRD 5e) ; "guided" (Avis divin) aux tests de caractéristique/
+ *  compétence uniquement (SRD 5e : Avis divin ne cible qu'UN test, simplifié ici comme
+ *  "guided" reste actif tant que le joueur ne le lève pas lui-même, cohérent avec le reste des
+ *  bascules homebrew). Jets de sauvegarde contre la mort (#onRollDeathSave) volontairement
+ *  exclus : flux spécial à part (1d20 brut, sans passer par rollCheck/conditionRollEffects).
+ *
+ *  Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : avantage aux tests ET sauvegardes de FORCE
+ *  tant que "raging" est actif. `abilityKey` pour "check" désigne soit l'aptitude brute testée
+ *  (#onRollAbility, ex. "str"), soit celle de la compétence testée (#onRollSkill, cf.
+ *  SKILL_ABILITIES dans character-data.js — Athlétisme = "str") : les deux comptent comme "tests
+ *  de Force" au sens du SRD. */
 function conditionRollEffects(actor, kind, abilityKey) {
   const statuses = actor.statuses;
   const exhaustion = actor.system.attributes?.exhaustion ?? 0;
+  const strengthRageAdvantage = statuses.has("raging") && abilityKey === "str";
   let advantage = false;
   let disadvantage = false;
+  let bonus = "";
 
   if (kind === "check") {
     disadvantage =
       statuses.has("poisoned") || statuses.has("frightened") || exhaustion >= EXHAUSTION_CHECK_DISADVANTAGE_LEVEL;
+    advantage = strengthRageAdvantage;
+    if (statuses.has("guided")) bonus = "+1d4";
   } else if (kind === "attack") {
     disadvantage =
       statuses.has("poisoned") ||
@@ -82,11 +195,14 @@ function conditionRollEffects(actor, kind, abilityKey) {
       statuses.has("blinded") ||
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL;
     advantage = statuses.has("invisible");
+    if (statuses.has("blessed")) bonus = "+1d4";
   } else if (kind === "save") {
     disadvantage =
       exhaustion >= EXHAUSTION_ATTACK_SAVE_DISADVANTAGE_LEVEL || (abilityKey === "dex" && statuses.has("restrained"));
+    advantage = strengthRageAdvantage;
+    if (statuses.has("blessed")) bonus = "+1d4";
   }
-  return { advantage, disadvantage };
+  return { advantage, disadvantage, bonus };
 }
 
 /** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
@@ -124,13 +240,24 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       rollFeature: DndCustomActorSheet.#onRollFeature,
+      rollFeatureSave: DndCustomActorSheet.#onRollFeatureSave,
+      grantFeatureCondition: DndCustomActorSheet.#onGrantFeatureCondition,
+      rollOpposedCheck: DndCustomActorSheet.#onRollOpposedCheck,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
       chooseFeatureOption: DndCustomActorSheet.#onChooseFeatureOption,
+      chooseInitiateMagic: DndCustomActorSheet.#onChooseInitiateMagic,
       summonCompanion: DndCustomActorSheet.#onSummonCompanion,
       useManeuver: DndCustomActorSheet.#onUseManeuver,
-      toggleReaction: DndCustomActorSheet.#onToggleReaction
+      useOpenHandTechnique: DndCustomActorSheet.#onUseOpenHandTechnique,
+      toggleReaction: DndCustomActorSheet.#onToggleReaction,
+      toggleAction: DndCustomActorSheet.#onToggleAction,
+      toggleBonusAction: DndCustomActorSheet.#onToggleBonusAction,
+      mount: DndCustomActorSheet.#onMount,
+      dismount: DndCustomActorSheet.#onDismount,
+      enterWildShape: DndCustomActorSheet.#onEnterWildShape,
+      revertWildShape: DndCustomActorSheet.#onRevertWildShape
     }
   };
 
@@ -258,8 +385,21 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
-    // Capacités/Sorts (cf. #consumeReaction ci-dessous, hooks updateCombat/deleteCombat).
+    // Capacités/Sorts (cf. #consumeActionEconomy ci-dessous, hooks updateCombat/deleteCombat).
+    // Action/Action bonus (chantier "Suivi de l'action/action bonus", 2026-08-23) : mêmes
+    // indicateurs en en-tête, mais suivi non-bloquant (cf. helpers/action-economy.js) — jamais
+    // utilisés pour griser un bouton de Capacité/Sort.
     context.reactionAvailable = canUseReaction(system);
+    context.actionAvailable = system.combat.actionAvailable;
+    context.bonusActionAvailable = system.combat.bonusActionAvailable;
+
+    // Combat monté (don SRD 5e, cf. #onMount ci-dessous) : monture actuellement chevauchée,
+    // résolue en Actor pour affichage (nom) — vide si non montée.
+    context.mount = system.combat.mountedActorId ? (game.actors.get(system.combat.mountedActorId) ?? null) : null;
+
+    // Forme sauvage (don SRD 5e, cf. #onEnterWildShape ci-dessous) : forme actuellement prise,
+    // résolue en Actor pour affichage (nom + PV de la forme) — vide si forme normale.
+    context.wildShapeForm = system.combat.wildShapeActorId ? (game.actors.get(system.combat.wildShapeActorId) ?? null) : null;
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -313,7 +453,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     };
 
     const dexMod = abilityModifier(system.abilities.dex.total);
-    context.initiative = { mod: dexMod, modLabel: formatModifier(dexMod) };
+    // Bug retour de test (exposé par l'automatisation du don Alerte, ANOMALIES_ACTIVES.md
+    // 2026-08-19) : recalculait le mod. d'Initiative à partir du seul mod. de Dex, ignorant tout
+    // bonus dérivé (Traqueur des ténèbres +2, Alerte +5, cf. CharacterData#prepareDerivedData >
+    // attributes.initiativeMod, déjà la source de vérité utilisée par la formule d'Initiative du
+    // Combat Tracker natif dans system.json) — la fiche affichait donc un mod. différent de celui
+    // réellement utilisé au jet d'Initiative. Lit maintenant la même donnée dérivée.
+    context.initiative = {
+      mod: system.attributes.initiativeMod,
+      modLabel: formatModifier(system.attributes.initiativeMod)
+    };
 
     const wisMod = abilityModifier(system.abilities.wis.total);
     context.passivePerception = passivePerception(
@@ -368,9 +517,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           // Désavantage imposé par l'armure équipée (SRD 5e) : ne concerne que la Discrétion
           // (cf. CharacterData#prepareDerivedData > this.stealthDisadvantage).
           armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
-          // Retour de test : affichait la clé technique brute ("str", "dex"...) au lieu du nom
-          // localisé de la caractéristique — même convention que context.abilities ci-dessus.
-          ability: game.i18n.localize(DND_CUSTOM.abilities[skill.ability]),
+          // Retour de test (2 passes) : affichait d'abord la clé technique brute ("str", "dex"...),
+          // remplacée par le nom complet localisé — puis un 2e retour de test a demandé une
+          // abréviation (le nom complet prenait trop de place à côté de chaque compétence) :
+          // vraie abréviation localisée (DND_CUSTOM.abilitiesShort, config.js), pas un retour à
+          // la clé technique brute d'origine.
+          ability: game.i18n.localize(DND_CUSTOM.abilitiesShort[skill.ability]),
           proficient: skill.proficient,
           jackOfAllTrades: jackOfAllTrades && !skill.proficient,
           mod,
@@ -409,7 +561,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.featureResourceState = {};
     for (const feature of context.features) {
       const resourceName = feature.system.costsResource;
-      if (!resourceName) continue;
+      // Une technique à jet de sauvegarde (system.savingThrow, ex. les options de Canalisation
+      // divine du Paladin) affiche déjà son propre bouton dédié (#onRollFeatureSave, qui gère
+      // lui-même la consommation de costsResource) — pas ce bouton générique "useResourceTechnique"
+      // en plus, qui doublonnerait la consommation de charge.
+      if (!resourceName || feature.system.savingThrow) continue;
       const resource = context.features.find((candidate) => candidate.name === resourceName);
       if (!resource) continue;
       context.featureResourceState[feature.id] = {
@@ -460,7 +616,15 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       spells: spells
         .filter((spell) => spell.system.level === level)
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
-        .map((spell) => ({ item: spell }))
+        // showDamageButton : un sort à jet d'attaque OU à sauvegarde (cf. SpellData#save,
+        // item-data.js) OU qui touche automatiquement sans aucun jet (ex. Projectile magique,
+        // seul `damage.dice` renseigné) peut avoir des dégâts — même logique que SpellItemSheet
+        // (item-sheets.js), précalculée ici pour ne pas dupliquer un `{{#if}}` combiné dans le
+        // template (aucun helper Handlebars "or" dans ce système).
+        .map((spell) => ({
+          item: spell,
+          showDamageButton: spell.system.attack || Boolean(spell.system.save.ability) || Boolean(spell.system.damage.dice)
+        }))
     })).filter((group) => group.spells.length);
     // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
     // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
@@ -575,6 +739,30 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // les garde visibles "quelque part sur la fiche générale" quel que soit l'onglet ouvert.
     context.activeConditions = context.conditions.filter((condition) => condition.active);
 
+    // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
+    // ensemble), même pattern que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
+    // (verrouillé côté Joueur, comme la fiche Origine), cf. damageAffinitySchema
+    // (shared-schema.js), damageTypeMultiplier (dnd-custom-ai.js).
+    const damageAffinityOptions = (setField) =>
+      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
+    context.damageAffinityGroups = [
+      {
+        field: "damageResistances",
+        titleKey: "DND_CUSTOM.Npc.DamageResistances",
+        options: damageAffinityOptions(system.combat.damageResistances)
+      },
+      {
+        field: "damageImmunities",
+        titleKey: "DND_CUSTOM.Npc.DamageImmunities",
+        options: damageAffinityOptions(system.combat.damageImmunities)
+      },
+      {
+        field: "damageVulnerabilities",
+        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
+        options: damageAffinityOptions(system.combat.damageVulnerabilities)
+      }
+    ];
+
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
       carryingCapacity(system.abilities.str.total, "kg") + carryingCapacityBonus(context.inventoryItems);
@@ -608,11 +796,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Repos court (simplifié, pas de dés de vie) : récupère la moitié des PV max, sans
    *  dépasser le max. Restaure aussi les emplacements de sorts de l'Occultiste (Magie de Pacte,
-   *  SRD 5e : seule classe qui récupère ses emplacements au repos court). */
+   *  SRD 5e : seule classe qui récupère ses emplacements au repos court).
+   *
+   *  Règle maison (absente du SRD, cf. CharacterData#attributes.shortRestCount) : à partir du
+   *  4e repos court depuis le dernier repos long (celui-ci inclus), CHAQUE repos court
+   *  supplémentaire ajoute 1 point d'Épuisement (plafonné à 6, SRD) — décourage l'abus répété de
+   *  repos courts plutôt qu'un unique repos long. Le soin de moitié des PV max ci-dessus reste
+   *  lui inchangé, quel que soit ce compteur. */
   static async #onRestShort() {
     if (this.#isDead()) return;
-    const hp = this.actor.system.attributes.hp;
-    const updates = { "system.attributes.hp.value": Math.min(hp.value + Math.floor(hp.max / 2), hp.max) };
+    const attributes = this.actor.system.attributes;
+    const shortRestCount = attributes.shortRestCount + 1;
+    const gainsExhaustion = shortRestCount > 3;
+    const updates = {
+      "system.attributes.hp.value": Math.min(attributes.hp.value + Math.floor(attributes.hp.max / 2), attributes.hp.max),
+      "system.attributes.shortRestCount": shortRestCount,
+      ...(gainsExhaustion ? { "system.attributes.exhaustion": Math.min(6, attributes.exhaustion + 1) } : {})
+    };
     if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
     await this.actor.update(updates);
     await this.#resetFeatureUses(["shortRest"]);
@@ -620,13 +820,69 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.RestShort", { name: this.actor.name })
     });
+    if (gainsExhaustion) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.TooManyShortRests", { name: this.actor.name, count: shortRestCount })
+      });
+    }
+    await this.#offerSpellSlotRecoveries();
+  }
+
+  /** Récupération arcanique/naturelle (cf. FeatureData#recoversSpellSlots, item-data.js) :
+   *  retour de test — le texte SRD de ces deux Capacités ("une fois par jour, LORS D'UN REPOS
+   *  COURT") n'était suivi par aucun code, le bouton de jet manuel restait cliquable à tout
+   *  moment. Déclenchée ici pour chaque Capacité de ce type encore chargée (uses.value > 0,
+   *  remis à zéro seulement au repos long, cf. #resetFeatureUses) : calcule le total de niveaux
+   *  récupérables (rollFormula) et ouvre une fenêtre de répartition entre paliers
+   *  (chooseSpellSlotRecovery, spell-slot-choice.js). La charge n'est consommée QUE si le
+   *  joueur confirme une répartition non vide — annuler la fenêtre ou n'avoir aucun emplacement
+   *  manquant à ce moment laisse la Capacité disponible pour un prochain repos court de la même
+   *  journée (léger écart au SRD strict "une seule fois par jour", jugé préférable à perdre
+   *  silencieusement l'occasion sans jet). */
+  async #offerSpellSlotRecoveries() {
+    const features = this.actor.items.contents.filter(
+      (item) => item.type === "feature" && item.system.recoversSpellSlots && item.system.uses.value > 0
+    );
+    for (const feature of features) {
+      const roll = new Roll(feature.system.rollFormula, this.actor.getRollData());
+      await roll.evaluate();
+      if (!roll.total) continue;
+
+      const distribution = await chooseSpellSlotRecovery(feature.name, roll.total, this.actor.system.spells.slots);
+      if (!distribution) continue;
+
+      const slotUpdates = {};
+      const parts = [];
+      for (const [level, amount] of Object.entries(distribution)) {
+        const slot = this.actor.system.spells.slots[level];
+        slotUpdates[`system.spells.slots.${level}.value`] = Math.min(slot.max, slot.value + amount);
+        parts.push(game.i18n.format("DND_CUSTOM.Spells.RecoveryLevelResult", { level, amount }));
+      }
+      await this.actor.update(slotUpdates);
+      await feature.update({ "system.uses.value": 0 });
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SpellSlotsRecovered", {
+          name: this.actor.name,
+          feature: feature.name,
+          list: parts.join(", ")
+        })
+      });
+    }
   }
 
   /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */
   static async #onRestLong() {
     if (this.#isDead()) return;
     const hp = this.actor.system.attributes.hp;
-    const updates = { "system.attributes.hp.value": hp.max, ...this.#spellSlotResetUpdates() };
+    const updates = {
+      "system.attributes.hp.value": hp.max,
+      // Remet à zéro le compteur de repos courts de la règle maison "Épuisement après le 4e
+      // repos court" (cf. #onRestShort ci-dessus) — seul le repos long le réinitialise.
+      "system.attributes.shortRestCount": 0,
+      ...this.#spellSlotResetUpdates()
+    };
     await this.actor.update(updates);
     // Un repos long inclut les bénéfices d'un repos court (SRD 5e) : les deux types de
     // récupération de charges de Capacité sont donc restaurés ici.
@@ -638,10 +894,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   #spellSlotResetUpdates() {
-    const slots = this.actor.system.spells.slots;
-    return Object.fromEntries(
-      SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max])
-    );
+    return spellSlotFillUpdates(this.actor);
   }
 
   /** Restaure au maximum les charges des Capacités à utilisations limitées (system.uses.max
@@ -681,12 +934,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  reconnue par le hook preUpdateActor (dnd-custom-ai.js) pour laisser passer `level` sans
    *  ouvrir les autres champs verrouillés MJ (classe/origine/caractéristiques...). Rend aussi
    *  tous les PV au joueur (retour de test — jusqu'ici seul le max se recalculait, les PV
-   *  actuels restaient inchangés). */
+   *  actuels restaient inchangés) et topper les emplacements de sorts au nouveau max (même
+   *  logique que #spellSlotResetUpdates pour les boutons de repos — sans quoi un lanceur de
+   *  sorts fraîchement monté de niveau reste à `value: 0` jusqu'à son prochain repos long). */
   static async #onLevelUp() {
     const system = this.actor.system;
     const next = system.attributes.level + 1;
     await this.actor.update({ "system.attributes.level": next }, { dndCustomLevelUp: true });
-    await this.actor.update({ "system.attributes.hp.value": this.actor.system.attributes.hp.max });
+    await this.actor.update({
+      "system.attributes.hp.value": this.actor.system.attributes.hp.max,
+      ...spellSlotFillUpdates(this.actor)
+    });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content: game.i18n.format("DND_CUSTOM.Chat.LevelUp", { name: this.actor.name, level: next })
@@ -863,11 +1121,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "1d10 + @attributes.level") : formule évaluée avec les données de l'Actor
    *  (Actor#getRollData, natif Foundry) pour résoudre les références `@...`. Consomme une
    *  charge si la capacité a des utilisations limitées (system.uses.max > 0), et annule le
-   *  jet si plus aucune charge n'est disponible. */
+   *  jet si plus aucune charge n'est disponible. `system.healsTarget` (ex. don Guérisseur) :
+   *  marque le message du même flag que les sorts de soin pour réutiliser le bouton "Appliquer
+   *  le soin" déjà existant (cf. FeatureData#healsTarget, item-data.js) — sans lui, un jet de
+   *  soin de Capacité/Don restait un simple nombre posté en chat, jamais réellement appliqué à
+   *  une cible (retour de test, ANOMALIES_ACTIVES.md). Ne modélise pas la restriction SRD "une
+   *  fois par créature et par repos" ni la branche "stabiliser une créature à 0 PV" du texte de
+   *  Guérisseur — laissées à l'arbitrage du MJ, comme d'autres clauses partiellement automatisées
+   *  ailleurs dans ce système (cf. Sentinelle/Alerte). */
   static async #onRollFeature(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -875,7 +1140,270 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
     await roll.evaluate();
     const flavor = remaining === undefined ? item.name : `${item.name} (${remaining}/${item.system.uses.max})`;
-    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor });
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor,
+      flags: {
+        "dnd-custom-ai": {
+          ...(item.system.healsTarget ? { healRoll: true } : {}),
+          ...(item.system.reducesDamage ? { damageReduction: true } : {}),
+          ...(item.system.dealsDamage ? { damageRoll: true } : {})
+        }
+      }
+    });
+  }
+
+  /** Capacité à jet de sauvegarde de CIBLE (ex. Canalisation divine "Repousser les
+   *  morts-vivants"/"Repousser les impies"/"Abjurer un ennemi" — cf.
+   *  FeatureData#savingThrow/appliesCondition/requiresCreatureTypes, item-data.js) : même
+   *  mécanisme que SpellData#save (#onCastSpell plus bas, rules.js > targetSaveModifier) — le
+   *  lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa caractéristique
+   *  d'incantation de classe) compte, comparé au jet propre de CHAQUE cible actuellement
+   *  ciblée. Une cible qui ne correspond à AUCUN type de créature requis (ensemble vide = pas de
+   *  restriction) ne subit même pas de jet — message informatif dédié. Échec du jet : applique
+   *  la condition configurée à la cible (`Actor#toggleStatusEffect`, natif Foundry).
+   *
+   *  `costsResource` (cf. item-data.js) : comme #onUseResourceTechnique, une option de
+   *  Canalisation divine peut consommer la réserve d'une AUTRE Capacité (ex. les 2 options de
+   *  chaque Serment de Paladin partagent la même réserve "Canalisation divine (Paladin)",
+   *  jamais leur propre charge) plutôt que sa propre `uses`. */
+  static async #onRollFeatureSave(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.savingThrow) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const chargeHolder = item.system.costsResource
+      ? this.actor.items.contents.find(
+          (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+        )
+      : item;
+    if (!chargeHolder) return;
+
+    const remaining = await this.#consumeFeatureCharge(chargeHolder);
+    if (remaining === null) return;
+
+    const system = this.actor.system;
+    // saveDCAbility (item-data.js) : caractéristique explicite quand la Capacité n'appartient
+    // pas à une classe lanceuse (ex. Frappe étourdissante, Moine — DD basé sur la Sagesse, pas
+    // sur `spellcastingAbility[class]` qui n'a pas d'entrée "monk") — sinon, comportement
+    // inchangé (caractéristique d'incantation de la classe).
+    const dcAbility = item.system.saveDCAbility || DND_CUSTOM.spellcastingAbility[system.class];
+    const dcAbilityMod = dcAbility ? abilityModifier(system.abilities[dcAbility].total) : 0;
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), dcAbilityMod);
+    const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.savingThrow]);
+    const targets = Array.from(game.user.targets);
+
+    if (!targets.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
+      });
+      return;
+    }
+
+    for (const token of targets) {
+      const targetActor = token.actor;
+      if (!targetActor?.system?.abilities) continue;
+
+      if (item.system.requiresCreatureTypes.size && !item.system.requiresCreatureTypes.has(targetActor.system.creatureType)) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.FeatureSaveWrongCreatureType", { name: targetActor.name, feature: item.name })
+        });
+        continue;
+      }
+
+      const mod = targetSaveModifier(targetActor.system, item.system.savingThrow);
+      // Tactiques défensives (Hunter, Rôdeur — chantier "8 sous-classes déjà à ≥1 mécanique",
+      // 2026-08-23) : avantage à la cible si "Volonté de fer" (contre Effrayé) ou "Défense contre
+      // les attaques multiples" (contre CET attaquant précis, déjà attaqué ce round) s'applique.
+      const hasDefenseAdvantage =
+        hasSteadfastAdvantage(targetActor, item.system.appliesCondition) ||
+        hasMultiattackDefenseAdvantage(targetActor, this.actor);
+      const roll = new Roll(`${hasDefenseAdvantage ? "2d20kh1" : "1d20"}${formatModifier(mod)}`);
+      await roll.evaluate();
+      const success = roll.total >= dc;
+      // Destruction des morts-vivants (Clerc 5, SRD 5e) : ne concerne QUE "Repousser les
+      // morts-vivants" (seule Capacité de ce système à cibler "undead" via requiresCreatureTypes,
+      // cf. son commentaire d'en-tête) — remplace l'application de la condition (Effrayé/
+      // "repoussé") par une destruction pure quand le Clerc possède la Capacité ET que la FI de
+      // la cible est sous le seuil de son niveau.
+      const destroysUndead =
+        item.system.requiresCreatureTypes.has("undead") &&
+        targetActor.system.creatureType === "undead" &&
+        hasFeature(this.actor.items.contents, "Destruction des morts-vivants") &&
+        isUndeadDestroyed(system.attributes.level, targetActor.system.challengeRating);
+      if (!success && destroysUndead) {
+        await targetActor.update({ "system.attributes.hp.value": 0 });
+        if (!targetActor.statuses.has("dead")) await targetActor.toggleStatusEffect("dead", { active: true });
+      } else if (!success && item.system.appliesCondition) {
+        await targetActor.toggleStatusEffect(item.system.appliesCondition, { active: true });
+      }
+      const resultKey = success
+        ? "DND_CUSTOM.Roll.SaveSuccess"
+        : destroysUndead
+          ? "DND_CUSTOM.Roll.SaveFailUndeadDestroyed"
+          : "DND_CUSTOM.Roll.SaveFail";
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
+          hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
+        }`
+      });
+    }
+  }
+
+  /** Capacité qui pose une condition sur CHAQUE cible actuellement ciblée SANS jet associé (ex.
+   *  Traque implacable, Paladin Serment de Vengeance — Niveau C, 2026-08-25, cf.
+   *  FeatureData#grantsCondition, item-data.js) : même mécanisme que SpellData#grantsCondition
+   *  (#onCastSpell plus bas), pour une Capacité au lieu d'un Sort. `costsResource` : comme
+   *  #onRollFeatureSave ci-dessus, consomme la réserve d'une AUTRE Capacité si configuré
+   *  (Canalisation divine (Paladin), partagée avec Abjurer un ennemi pour Traque implacable).
+   *
+   *  Spécialisation par NOM (comme Destruction des morts-vivants dans #onRollFeatureSave) :
+   *  Traque implacable pose EN PLUS le flag `HUNTED_BY_ACTOR_ID_FLAG`
+   *  (helpers/relentless-hunter.js) sur chaque cible, identifiant ce Paladin comme celui qui l'a
+   *  désignée — seul moyen dans ce système de savoir QUI a posé un état homebrew (aucun autre
+   *  n'a de "propriétaire"), scopé à cette seule Capacité plutôt que généralisé à
+   *  `toggleStatusEffect`. Consommé par `isDisadvantagedByHuntedTarget` (même fichier) sur les 3
+   *  jets d'attaque (arme/sort PJ, attaque PNJ) pour exempter le Paladin du désavantage "toute
+   *  créature autre que vous". */
+  static async #onGrantFeatureCondition(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.grantsCondition) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const chargeHolder = item.system.costsResource
+      ? this.actor.items.contents.find(
+          (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
+        )
+      : item;
+    if (!chargeHolder) return;
+
+    const remaining = await this.#consumeFeatureCharge(chargeHolder);
+    if (remaining === null) return;
+
+    const targets = Array.from(game.user.targets);
+    if (!targets.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+      return;
+    }
+
+    for (const token of targets) {
+      if (!token.actor) continue;
+      await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+      if (item.name === RELENTLESS_HUNTER_FEATURE_NAME) {
+        await token.actor.setFlag(SYSTEM_ID, HUNTED_BY_ACTOR_ID_FLAG, this.actor.id);
+      }
+    }
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.UseFeature", {
+        name: this.actor.name,
+        feature: item.name,
+        remaining,
+        max: chargeHolder.system.uses.max
+      })
+    });
+  }
+
+  /** Test opposé (Agripper/Bousculer, SRD 5e — chantier "mécaniques jamais modélisées",
+   *  2026-08-25, cadré avec l'utilisateur avant implémentation) : cf. FeatureData#opposedCheckType,
+   *  item-data.js pour le détail complet du mécanisme et des approximations assumées (meilleur des
+   *  deux jets de défense de la cible, Repoussé jamais automatisé). Contrairement au reste du
+   *  système (jet comparé à un DD/une CA fixe), les DEUX camps lancent ici un d20 — 2 messages de
+   *  jet distincts (attaquant puis cible, même convention que #onRollFeatureSave : un message par
+   *  "camp"), puis un 3e message de résolution. Une seule cible à la fois (test opposé 1 contre
+   *  1, pas de zone). */
+  static async #onRollOpposedCheck(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.opposedCheckType) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const targets = Array.from(game.user.targets);
+    if (targets.length !== 1) {
+      ui.notifications.warn(
+        game.i18n.localize(targets.length ? "DND_CUSTOM.Chat.OpposedCheckSingleTargetOnly" : "DND_CUSTOM.Chat.NoTarget")
+      );
+      return;
+    }
+    const targetActor = targets[0].actor;
+    if (!targetActor?.system?.abilities) return;
+
+    // Bousculer : le choix (à terre / repoussé) se fait AVANT le jet, même UX que
+    // #onUseOpenHandTechnique — appliqué seulement si l'attaquant l'emporte plus bas.
+    let chosenShoveEffect = null;
+    if (item.system.opposedCheckType === "shove") {
+      const rows = Object.entries(DND_CUSTOM.shoveEffects)
+        .map(
+          ([key, labelKey], index) => `
+          <label class="checkbox-row">
+            <input type="radio" name="shoveEffect" value="${key}" ${index === 0 ? "checked" : ""}>
+            ${game.i18n.localize(labelKey)}
+          </label>`
+        )
+        .join("");
+      chosenShoveEffect = await DialogV2.prompt({
+        window: { title: item.name },
+        content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+        ok: {
+          label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+          callback: (ev, button) => button.form.elements.shoveEffect?.value
+        }
+      });
+      if (!chosenShoveEffect) return;
+    }
+
+    const attackerMod = opposedCheckModifier(this.actor.system, "athletics", SKILL_ABILITIES.athletics);
+    const athleticsMod = opposedCheckModifier(targetActor.system, "athletics", SKILL_ABILITIES.athletics);
+    const acrobaticsMod = opposedCheckModifier(targetActor.system, "acrobatics", SKILL_ABILITIES.acrobatics);
+    const defenderSkillKey = athleticsMod >= acrobaticsMod ? "athletics" : "acrobatics";
+    const defenderMod = Math.max(athleticsMod, acrobaticsMod);
+
+    const attackerRoll = new Roll(`1d20${formatModifier(attackerMod)}`);
+    await attackerRoll.evaluate();
+    await attackerRoll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckAttacker", { name: this.actor.name, feature: item.name })
+    });
+
+    const defenderRoll = new Roll(`1d20${formatModifier(defenderMod)}`);
+    await defenderRoll.evaluate();
+    await defenderRoll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckDefender", {
+        name: targetActor.name,
+        skill: game.i18n.localize(DND_CUSTOM.skills[defenderSkillKey])
+      })
+    });
+
+    // Égalité = statu quo (règle générale des tests opposés SRD 5e) : l'attaquant doit
+    // STRICTEMENT dépasser le total de la cible pour que l'état change.
+    const success = attackerRoll.total > defenderRoll.total;
+
+    if (success) {
+      if (item.system.opposedCheckType === "grapple") {
+        await targetActor.toggleStatusEffect("grappled", { active: true });
+      } else if (chosenShoveEffect === "prone") {
+        await targetActor.toggleStatusEffect("prone", { active: true });
+      }
+      // "pushed" (Repoussé) : jamais de déplacement automatique de token, cf. commentaire de
+      // FeatureData#opposedCheckType — seul le message de résolution ci-dessous le mentionne.
+    }
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format(success ? "DND_CUSTOM.Chat.OpposedCheckSuccess" : "DND_CUSTOM.Chat.OpposedCheckFail", {
+        attacker: this.actor.name,
+        defender: targetActor.name,
+        feature: item.name,
+        effect:
+          item.system.opposedCheckType === "shove" && chosenShoveEffect
+            ? game.i18n.localize(DND_CUSTOM.shoveEffects[chosenShoveEffect])
+            : game.i18n.localize("DND_CUSTOM.Conditions.grappled")
+      })
+    });
   }
 
   /** Utilisation d'une Capacité à charges limitées sans jet associé (ex. Imposition des
@@ -884,7 +1412,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseFeatureCharge(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -917,17 +1445,23 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** Économie d'action de combat (SRD 5e) : si `item` (Capacité ou Sort) est de type
    *  "reaction", vérifie que la réaction n'est pas déjà consommée ce round-ci
-   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée.
-   *  Renvoie `true` si l'action associée peut se poursuivre (item non-réaction, ou réaction
-   *  disponible et désormais consommée), `false` sinon (avec avertissement) — l'appelant doit
-   *  alors annuler l'action, sans avoir encore décompté de charge. */
-  async #consumeReaction(item) {
-    if (item.system.activation !== "reaction") return true;
-    if (!canUseReaction(this.actor.system)) {
-      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
-      return false;
+   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée —
+   *  bloquant, comme avant. Pour "action"/"bonusAction" (chantier "Suivi de l'action/action
+   *  bonus", 2026-08-23) : suivi NON-bloquant délégué à noteActionEconomyUsage
+   *  (helpers/action-economy.js). Renvoie `true` si l'action associée peut se poursuivre (item
+   *  non-réaction, ou réaction disponible et désormais consommée), `false` UNIQUEMENT si une
+   *  réaction est bloquée (avec avertissement) — l'appelant doit alors annuler l'action, sans
+   *  avoir encore décompté de charge. */
+  async #consumeActionEconomy(item) {
+    if (item.system.activation === "reaction") {
+      if (!canUseReaction(this.actor.system)) {
+        ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
+        return false;
+      }
+      await this.actor.update({ "system.combat.reactionAvailable": false });
+      return true;
     }
-    await this.actor.update({ "system.combat.reactionAvailable": false });
+    await noteActionEconomyUsage(this.actor, item.system.activation);
     return true;
   }
 
@@ -940,6 +1474,82 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ "system.combat.reactionAvailable": !available });
   }
 
+  /** Rattrapage manuel de l'Action/Action bonus (même principe que #onToggleReaction ci-dessus) :
+   *  utile pour se resynchroniser après un rappel de chat non-bloquant, ou remettre à disposition
+   *  une Action rendue par une Capacité (ex. Action fulgurante). */
+  static async #onToggleAction() {
+    const available = this.actor.system.combat.actionAvailable;
+    await this.actor.update({ "system.combat.actionAvailable": !available });
+  }
+
+  static async #onToggleBonusAction() {
+    const available = this.actor.system.combat.bonusActionAvailable;
+    await this.actor.update({ "system.combat.bonusActionAvailable": !available });
+  }
+
+  /** Monte la créature actuellement ciblée (Combat monté, don SRD 5e — chantier "Combat
+   *  automatisé avancé", 2026-08-23) : même convention que les Capacités à cible
+   *  (`game.user.targets`) plutôt qu'un select dédié. Réservé aux Actors de type "mount"
+   *  (créature vivante, `CONFIG.Actor.dataModels.mount = NpcData`, dnd-custom-ai.js) — jamais
+   *  "vehicle" (schéma trop pauvre pour ce don : pas de taille). */
+  static async #onMount() {
+    const target = [...game.user.targets][0];
+    if (!target?.actor || target.actor.type !== "mount") {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.MountNoTarget"));
+      return;
+    }
+    await this.actor.update({ "system.combat.mountedActorId": target.actor.id });
+  }
+
+  /** Descend de sa monture actuelle (cf. #onMount ci-dessus). */
+  static async #onDismount() {
+    await this.actor.update({ "system.combat.mountedActorId": "" });
+  }
+
+  /** Prend la forme de la créature actuellement ciblée (Forme sauvage, Druide — chantier "Forme
+   *  sauvage", 2026-08-23) : même convention de ciblage que #onMount ci-dessus, réservé aux
+   *  Actors de type "wildShapeForm". `item` est la Capacité "Forme sauvage" elle-même
+   *  (`system.entersWildShape`, item-data.js) — décompte une charge, comme n'importe quelle
+   *  autre Capacité à charges limitées (#consumeFeatureCharge), et suit l'Action/Action bonus
+   *  du tour comme toute autre Capacité (#consumeActionEconomy). */
+  static async #onEnterWildShape(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.entersWildShape) return;
+
+    const targetToken = [...game.user.targets][0];
+    if (!targetToken?.actor || targetToken.actor.type !== "wildShapeForm") {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.WildShapeNoTarget"));
+      return;
+    }
+
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const remaining = await this.#consumeFeatureCharge(item);
+    if (remaining === null) return;
+
+    await this.actor.update({ "system.combat.wildShapeActorId": targetToken.actor.id });
+
+    // Forme sauvage de combat (Cercle de la Lune, Druide 2, SRD 5e) : PV temporaires égaux à 2×
+    // le niveau du Druide au moment de la transformation, posés sur la FORME (system.attributes
+    // .hp.temp, NpcData) puisque c'est sa réserve de PV qui sert de 2e réserve pendant la
+    // transformation (cf. commentaire de wildShapeActorId, character-data.js) — jamais sur le
+    // personnage lui-même.
+    if (hasFeature(this.actor.items.contents, "Forme sauvage de combat")) {
+      // requestActorUpdate (pas targetToken.actor.update direct) : la Forme n'est généralement
+      // pas possédée par le Joueur qui la cible (Actor "wildShapeForm" créé par le MJ), cf.
+      // même motif que applyDamageToTargets (dnd-custom-ai.js).
+      await requestActorUpdate(targetToken.actor, { "system.attributes.hp.temp": 2 * this.actor.system.attributes.level });
+    }
+  }
+
+  /** Redevient soi-même (cf. #onEnterWildShape ci-dessus) : volontaire, à tout moment — jamais
+   *  bloquant, contrairement au retour AUTOMATIQUE à 0 PV de forme (hook updateActor,
+   *  dnd-custom-ai.js). Ne rend jamais la charge de Capacité déjà consommée (SRD 5e : reprendre
+   *  une forme, même la même, en recoûte une). */
+  static async #onRevertWildShape() {
+    await this.actor.update({ "system.combat.wildShapeActorId": "" });
+  }
+
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
    *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
    *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
@@ -949,7 +1559,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseResourceTechnique(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.costsResource) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const resource = this.actor.items.contents.find(
       (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
@@ -981,7 +1591,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.requiresState) return;
     if (!this.actor.statuses.has(item.system.requiresState)) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -996,16 +1606,16 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "Aspect de la bête", Voie du Cœur sauvage/Barbare) : petite fenêtre à choix unique (radio),
    *  même mécanique que offerSubclassChoiceDialog (helpers/subclass-choice.js)/
    *  #offerEquipSlotDialog (sheets/inventory-drag-drop.js). Le champ ciblé
-   *  (`system.combat.<grantsChoice>`) et les options possibles viennent respectivement de
-   *  `grantsChoice` lui-même et de DND_CUSTOM.totemSpirits (seule table de choix existante
-   *  pour l'instant, cf. config.js) — n'affiche rien si le choix est déjà fait (bouton déjà
-   *  masqué côté template de toute façon, revérifié ici par sécurité). */
+   *  (`system.combat.<grantsChoice>`) et la table d'options viennent respectivement de
+   *  `grantsChoice` lui-même et de CHOICE_OPTIONS_TABLES ci-dessous — n'affiche rien si le choix
+   *  est déjà fait (bouton déjà masqué côté template de toute façon, revérifié ici par
+   *  sécurité). */
   static async #onChooseFeatureOption(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     const fieldKey = item?.system.grantsChoice;
     if (!fieldKey || this.actor.system.combat[fieldKey]) return;
 
-    const options = DND_CUSTOM.totemSpirits;
+    const options = CHOICE_OPTIONS_TABLES[fieldKey];
     const rows = Object.entries(options)
       .map(
         ([key, labelKey], index) => `
@@ -1029,6 +1639,43 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ [`system.combat.${fieldKey}`]: chosenKey });
   }
 
+  /** Don "Magie d'initié" (`FeatureData#offersSpellChoice`, SRD 5e) : choix en 2 étapes (classe
+   *  lanceuse, puis 2 tours de magie + 1 sort de niveau 1 de cette classe, cf.
+   *  chooseInitiateMagicSpells, helpers/initiate-magic-choice.js) — contrairement à
+   *  #onChooseFeatureOption (un seul champ, une seule table), ce choix octroie de VRAIS Items
+   *  Sort sur la fiche plutôt qu'une simple valeur. Règle le `uses` du don lui-même
+   *  (max:1/recharge:"longRest") pour servir de charge au cast gratuit du sort de niveau 1,
+   *  consommée dans #onCastSpell ci-dessous. Ne fait rien si déjà choisi (bouton déjà masqué
+   *  côté template, revérifié ici par sécurité). */
+  static async #onChooseInitiateMagic(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersSpellChoice || item.system.chosenLevelOneSpell) return;
+
+    const choice = await chooseInitiateMagicSpells();
+    if (!choice) return;
+
+    await this.actor.createEmbeddedDocuments("Item", [
+      ...choice.cantripItems.map((spell) => spell.toObject()),
+      choice.levelOneSpellItem.toObject()
+    ]);
+    await item.update({
+      "system.chosenSpellClass": choice.classKey,
+      "system.chosenCantrips": choice.cantripItems.map((spell) => spell.name),
+      "system.chosenLevelOneSpell": choice.levelOneSpellItem.name,
+      "system.uses": { max: 1, value: 1, recharge: "longRest" }
+    });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.InitiateMagicGranted", {
+        name: this.actor.name,
+        class: game.i18n.localize(DND_CUSTOM.classes[choice.classKey]),
+        cantrip1: choice.cantripItems[0].name,
+        cantrip2: choice.cantripItems[1].name,
+        spell: choice.levelOneSpellItem.name
+      })
+    });
+  }
+
   /** Invoque le compagnon animal d'une Capacité `system.summonsCompanion` (ex. "Compagnon
    *  animal", Maître des bêtes/Rôdeur) : une seule fois par personnage (flag
    *  `beastCompanionCreated`, cf. helpers/companion.js), jamais recréé ensuite. */
@@ -1048,7 +1695,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseManeuver(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || !item.system.offersManeuverChoice) return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     const options = DND_CUSTOM.maneuvers;
     const rows = Object.entries(options)
@@ -1081,20 +1728,104 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
+  /** Technique de la Main Ouverte (Open Hand, Moine, SRD 5e — chantier "8 sous-classes déjà à
+   *  ≥1 mécanique", 2026-08-23) : sur un coup de Rafale de coups, choix d'un effet parmi 3 (cf.
+   *  FeatureData#offersOpenHandTechnique/DND_CUSTOM.openHandEffects, config.js), reproposé à
+   *  chaque utilisation (même dialogue que #onUseManeuver ci-dessus), puis jet de sauvegarde de
+   *  Dextérité (simplifié — SRD 5e laisse la cible choisir Dex ou Force) pour CHAQUE cible
+   *  actuellement ciblée, comparé au DD de Moine (8 + maîtrise + Sagesse, `saveDCAbility: "wis"`
+   *  toujours réglé sur cette Capacité, jamais `spellcastingAbility[class]` — le Moine n'est pas
+   *  une classe lanceuse). Ne consomme ni charge ni Action/Action bonus propres : rider gratuit
+   *  d'un coup de Rafale de coups déjà comptabilisée séparément (costsResource: "Ki"). Échec :
+   *  applique l'effet choisi (à terre -> toggleStatusEffect ; pas de réaction -> vide
+   *  reactionAvailable UNIQUEMENT pour un personnage joueur, une cible PNJ n'a pas ce suivi ;
+   *  repoussée -> non automatisé, laissé au MJ, cf. commentaire de la Capacité). */
+  static async #onUseOpenHandTechnique(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || !item.system.offersOpenHandTechnique) return;
+
+    const options = DND_CUSTOM.openHandEffects;
+    const rows = Object.entries(options)
+      .map(
+        ([key, labelKey], index) => `
+        <label class="checkbox-row">
+          <input type="radio" name="openHandEffect" value="${key}" ${index === 0 ? "checked" : ""}>
+          ${game.i18n.localize(labelKey)}
+        </label>`
+      )
+      .join("");
+    const chosenEffect = await DialogV2.prompt({
+      window: { title: item.name },
+      content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+      ok: {
+        label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+        callback: (ev, button) => button.form.elements.openHandEffect?.value
+      }
+    });
+    if (!chosenEffect) return;
+
+    const system = this.actor.system;
+    const wisMod = abilityModifier(system.abilities.wis.total);
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), wisMod);
+    const targets = Array.from(game.user.targets);
+
+    if (!targets.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", {
+          spell: item.name,
+          ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
+          dc
+        })
+      });
+      return;
+    }
+
+    for (const token of targets) {
+      const targetActor = token.actor;
+      if (!targetActor?.system?.abilities) continue;
+
+      const mod = targetSaveModifier(targetActor.system, "dex");
+      const roll = new Roll(`1d20${formatModifier(mod)}`);
+      await roll.evaluate();
+      const success = roll.total >= dc;
+      if (!success) {
+        if (chosenEffect === "prone") await targetActor.toggleStatusEffect("prone", { active: true });
+        else if (chosenEffect === "noReaction" && targetActor.type === "character") {
+          await targetActor.update({ "system.combat.reactionAvailable": false });
+        }
+      }
+      const resultKey = success ? "DND_CUSTOM.Roll.SaveSuccess" : "DND_CUSTOM.Roll.SaveFail";
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        flavor: `${game.i18n.format(resultKey, {
+          name: targetActor.name,
+          spell: item.name,
+          ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
+          dc
+        })} — ${game.i18n.localize(options[chosenEffect])}`
+      });
+    }
+  }
+
   /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
    *  désavantage (cf. tooltip des boutons de jet). */
   static async #onRollAbility(event, target) {
     const key = target.dataset.key;
     const mod = abilityModifier(this.actor.system.abilities[key].total);
-    const cond = conditionRollEffects(this.actor, "check");
+    const cond = conditionRollEffects(this.actor, "check", key);
+    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test d'Intelligence brut (se souvenir d'une
+    // info) contre une cible actuellement ciblée du type de créature favori choisi.
+    const favoredEnemyAdvantage = key === "int" && hasFavoredEnemyAdvantage(this.actor);
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod),
+      formula: formatModifier(mod) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.AbilityCheck", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }),
-      advantage: event.shiftKey || cond.advantage,
-      disadvantage: event.ctrlKey || cond.disadvantage
+      advantage: event.shiftKey || cond.advantage || favoredEnemyAdvantage,
+      disadvantage: event.ctrlKey || cond.disadvantage,
+      inspirationEligible: true
     });
   }
 
@@ -1109,15 +1840,25 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const mod = abilityModifier(system.abilities[key].total);
     const profBonus = system.saves[key].proficient ? proficiencyBonus(system.attributes.level) : 0;
     const cond = conditionRollEffects(this.actor, "save", key);
+    // Combat monté (don SRD 5e, clause 3) : "votre monture réussit automatiquement tout jet de
+    // sauvegarde de Dextérité que vous réussissez vous-même" — la réussite n'étant jamais
+    // déterminée par ce système (aucune sauvegarde générique ne compare à un DD, le MJ juge à
+    // l'œil, cf. commentaire ci-dessus), seul un rappel textuel est ajouté, jamais un jet/statut
+    // appliqué automatiquement à la monture.
+    const mount = system.combat.mountedActorId ? game.actors.get(system.combat.mountedActorId) : null;
+    const mountNote = key === "dex" && mount && hasFeature(this.actor.items.contents, "Combat monté")
+      ? ` (${game.i18n.format("DND_CUSTOM.Roll.MountedDexSaveNote", { mount: mount.name })})`
+      : "";
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod + profBonus),
+      formula: formatModifier(mod + profBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
-      }),
+      }) + mountNote,
       advantage: event.shiftKey || cond.advantage,
       disadvantage: event.ctrlKey || cond.disadvantage,
-      criticalRules: true
+      criticalRules: true,
+      savingThrow: true
     });
   }
 
@@ -1150,7 +1891,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
     // sous-classe choisie : le niveau 9 doit être atteint.
     const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
-    const cond = conditionRollEffects(this.actor, "check");
+    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test de Survie (pister) contre une cible
+    // actuellement ciblée du type de créature favori choisi.
+    const favoredEnemyAdvantage = key === "survival" && hasFavoredEnemyAdvantage(this.actor);
+    const cond = conditionRollEffects(this.actor, "check", SKILL_ABILITIES[key]);
 
     let flavor = game.i18n.format("DND_CUSTOM.Roll.SkillCheck", { skill: game.i18n.localize(DND_CUSTOM.skills[key]) });
     const specialTrait = game.dndCustomAi?.origins?.[system.origin]?.specialTrait;
@@ -1168,10 +1912,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod),
+      formula: formatModifier(mod) + cond.bonus,
       flavor,
-      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || cond.advantage,
-      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage
+      advantage: advantageKey || originAdvantage || assassinStealthAdvantage || favoredEnemyAdvantage || cond.advantage,
+      disadvantage: disadvantageKey || armorDisadvantage || cond.disadvantage,
+      inspirationEligible: true
     });
   }
 
@@ -1180,7 +1925,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  `criticalRules: true` : 1/20 naturel = échec/coup critique automatique EN COMBAT (retour de
    *  test) — un coup critique pose un flag transitoire sur CETTE arme précise (pas sur l'Actor,
    *  pour ne jamais affecter une autre arme/un autre sort en cours d'usage), consommé par le
-   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés. */
+   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés.
+   *
+   *  `noteActionEconomyUsage(..., { isWeaponAttack: true })` (chantier "Suivi de l'action/action
+   *  bonus", 2026-08-23) : contrairement aux Capacités/Sorts (`item.system.activation`), une arme
+   *  n'a pas de champ activation propre — un jet d'attaque à l'arme consomme toujours l'Action,
+   *  `isWeaponAttack` exempte du rappel les personnages avec Attaque supplémentaire. */
   static async #onRollWeaponAttack(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "weapon") return;
@@ -1194,15 +1944,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const cond = conditionRollEffects(this.actor, "attack");
     const { isCriticalHit } = await rollCheck({
       actor: this.actor,
-      formula: formatModifier(atk.attackBonus),
+      formula: formatModifier(atk.attackBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
-      advantage: event.shiftKey || cond.advantage,
-      disadvantage: event.ctrlKey || cond.disadvantage,
+      advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
+      disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
       compareToTargetAc: true,
       criticalRules: true,
-      forceCriticalHit: hasAssassinAutoCritical(this.actor)
+      forceCriticalHit: hasAssassinAutoCritical(this.actor),
+      criticalThreshold: improvedCriticalThreshold(this.actor)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+    await noteActionEconomyUsage(this.actor, "action", { isWeaponAttack: true });
+    await recordAttackOnTargets(this.actor);
   }
 
   /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
@@ -1238,7 +1991,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       this.actor.system.abilities,
       proficiencyBonus(this.actor.system.attributes.level)
     );
-    const damageType = item.system.damage.type
+    const damageTypeLabel = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
     // Consomme le flag posé par #onRollWeaponAttack sur un coup critique (jamais sur l'Actor,
@@ -1247,13 +2000,51 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // de ses clics, cohérent avec "le jet reste manuel").
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
     if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
+    // Critique brutal (Barbare 9, SRD 5e) : un dé de dégâts supplémentaire sur un coup critique
+    // à l'arme de CORPS À CORPS uniquement (RAW) — cf. rollDamage#criticalMultiplier.
+    const isMelee = item.system.weaponType?.startsWith("melee");
+    const criticalMultiplier =
+      critical && isMelee && hasFeature(this.actor.items.contents, "Critique brutal") ? 3 : 2;
+    // Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : +2 dégâts sur une attaque d'arme de CORPS
+    // À CORPS utilisant la Force (RAW : "si vous utilisez une arme basée sur la Force").
+    // `atk.abilityMod` (weaponAttackDamage, rules.js) vaut déjà le meilleur de Force/Dextérité
+    // pour une arme Finesse — comparer à strMod exclut donc le cas où le joueur combat en
+    // Dextérité sur une Finesse (Dextérité strictement supérieure), sans complexifier
+    // weaponAttackDamage pour ce seul cas.
+    const strMod = abilityModifier(this.actor.system.abilities.str.total);
+    const rageDamageBonus = this.actor.statuses.has("raging") && isMelee && atk.abilityMod === strMod ? "+2" : "";
     await rollDamage({
       actor: this.actor,
       dice,
-      formula: formatModifier(atk.abilityMod),
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageType ? ` (${damageType})` : ""}`,
-      critical
+      formula: formatModifier(atk.abilityMod) + rageDamageBonus,
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      critical,
+      criticalMultiplier,
+      damageType: item.system.damage.type,
+      isMagicalSource: item.system.magic
     });
+
+    // Dégâts BONUS d'une propriété magique (chantier "types de dégâts", Phase 3, 2026-08-24 —
+    // ex. épée de feu = tranchant + feu) : 2e message de dégâts DISTINCT, son propre type, jamais
+    // de modificateur de caractéristique/Rage ajouté (SRD 5e : dés fixes) — résolu indépendamment
+    // du 1er contre les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+    // Même critique (dés doublés/triplés) que le composant principal, SRD 5e : "roll all of the
+    // attack's damage dice twice" sur un coup critique, sans distinction de composant.
+    if (item.system.secondaryDamage.dice) {
+      const secondaryDamageTypeLabel = item.system.secondaryDamage.type
+        ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.secondaryDamage.type])
+        : "";
+      await rollDamage({
+        actor: this.actor,
+        dice: item.system.secondaryDamage.dice,
+        formula: "",
+        flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${secondaryDamageTypeLabel ? ` (${secondaryDamageTypeLabel})` : ""}`,
+        critical,
+        criticalMultiplier,
+        damageType: item.system.secondaryDamage.type,
+        isMagicalSource: item.system.magic
+      });
+    }
   }
 
   /** Lance un sort de l'onglet Sorts : décompte 1 charge d'un emplacement de sort (système réel
@@ -1267,7 +2058,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
-    if (!(await this.#consumeReaction(item))) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
 
     // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
     // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —
@@ -1285,7 +2076,20 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const castsAsFreeSubclassSpell = this.actor.items.some(
       (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
     );
-    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
+    // Don "Magie d'initié" (cf. FeatureData#offersSpellChoice/chosenLevelOneSpell) : le sort de
+    // niveau 1 choisi se lance GRATUITEMENT une fois entre deux repos longs (SRD 5e), au-delà il
+    // redevient un sort normal (décompte un emplacement du personnage comme les autres, cf.
+    // commentaire de chosenLevelOneSpell dans item-data.js). Charge réutilisée directement sur
+    // le don lui-même (`uses`, réglé au moment du choix), consommée plus bas une fois le
+    // contournement confirmé.
+    const initiateFeature = this.actor.items.find(
+      (feature) => feature.type === "feature" && feature.system.chosenLevelOneSpell === item.name
+    );
+    const castsAsFreeInitiateSpell = Boolean(initiateFeature && initiateFeature.system.uses.value > 0);
+    // Palier RÉELLEMENT dépensé (peut différer de item.system.level en cas de surclassement) —
+    // sert au bonus de soin de Disciple de la vie (Life, Clerc) ci-dessous, cf. son commentaire.
+    let effectiveSpellLevel = item.system.level;
+    if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell && !castsAsFreeInitiateSpell) {
       const slots = this.actor.system.spells.slots;
       // Détermine quel palier dépenser (le sien si disponible, sinon propose un surclassement
       // vers un palier supérieur disponible, cf. spell-slot-choice.js) : renvoie null si aucun
@@ -1295,6 +2099,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
         return;
       }
+      effectiveSpellLevel = chosenLevel;
       await this.actor.update({ [`system.spells.slots.${chosenLevel}.value`]: slots[chosenLevel].value - 1 });
 
       // Voie de la Magie sauvage (Ensorceleur, cf. world-items/subclasses.json > "wildSorcery") :
@@ -1303,6 +2108,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // (rollWildSurge indexe par classe, pas par sous-classe : "wildMagic"/Barbare et
       // "wildSorcery"/Ensorceleur ne se confondent jamais).
       if (this.actor.system.subclass === "wildSorcery") await rollWildSurge(this.actor, "sorcerer");
+    } else if (castsAsFreeInitiateSpell) {
+      await initiateFeature.update({ "system.uses.value": 0 });
     }
 
     // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
@@ -1343,15 +2150,135 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // commentaire) — flag posé sur CE sort précis, consommé par #onRollSpellDamage.
       const { isCriticalHit } = await rollCheck({
         actor: this.actor,
-        formula: formatModifier(attackBonus),
+        formula: formatModifier(attackBonus) + cond.bonus,
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
-        advantage: event.shiftKey || cond.advantage,
-        disadvantage: event.ctrlKey || cond.disadvantage,
+        advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
+        disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
         compareToTargetAc: true,
         criticalRules: true,
-        forceCriticalHit: hasAssassinAutoCritical(this.actor)
+        forceCriticalHit: hasAssassinAutoCritical(this.actor),
+        criticalThreshold: improvedCriticalThreshold(this.actor)
       });
       if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+      await recordAttackOnTargets(this.actor);
+      return;
+    }
+
+    // Sort à jet de sauvegarde de la cible (ex. Boule de feu, cf. SpellData#save dans
+    // item-data.js) : auto-jet POUR CHAQUE cible actuellement ciblée (1d20 + son propre
+    // modificateur de sauvegarde, rules.js > targetSaveModifier), comparé au DD du lanceur —
+    // même niveau d'automatisation que le jet d'attaque ci-dessus (compareToTargetAc), jamais
+    // une interruption du client de la cible. Le dé de dégâts éventuel (system.damage.dice) se
+    // lance séparément via le même bouton "Dégâts" que pour un sort d'attaque (#onRollSpellDamage
+    // ci-dessous, déjà indifférent à attack/save) ; son application (pleine ou moitié selon
+    // halfOnSave) reste manuelle via "Appliquer les dégâts", comme pour une attaque qui touche/
+    // rate déjà aujourd'hui.
+    if (item.system.save?.ability) {
+      const system = this.actor.system;
+      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
+      const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.save.ability]);
+      const targets = Array.from(game.user.targets);
+
+      if (!targets.length) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
+        });
+        return;
+      }
+
+      // Sort Prudent/Sort Élevé (Métamagie, Ensorceleur, cf. helpers/metamagic.js) : Maj/Ctrl-clic
+      // sur "Lancer" propose de dépenser 1 point de sorcellerie pour faire réussir automatiquement
+      // (Prudent) ou désavantager (Élevé) le jet d'UNE cible ciblée — aucune touche maintenue,
+      // aucune Capacité "Métamagie" ou aucun point restant : `null` immédiat, comportement
+      // inchangé, jamais de fenêtre popup pour le cas courant.
+      const metamagic = await chooseMetamagicOption(this.actor, targets, {
+        careful: event.shiftKey,
+        heightened: event.ctrlKey
+      });
+      // Sculpteur de sorts (Évocation, Magicien, cf. helpers/sculpt-spells.js) : même Maj-clic
+      // que Sort Prudent ci-dessus mais gratuit — jamais les deux à la fois en pratique (classes
+      // différentes), donc pas de conflit si les deux helpers sont interrogés systématiquement.
+      const sculptedTargetId = await chooseSculptSpellsTarget(this.actor, targets, { careful: event.shiftKey });
+
+      // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+      // pose sur la CIBLE le résultat du jet (réussite/échec) pour que #onRollSpellDamage +
+      // "Appliquer les dégâts" (dnd-custom-ai.js > applyDamageToTargets) puisse appliquer
+      // automatiquement la bonne fraction de dégâts plus tard — jamais fait jusqu'ici (le bouton
+      // appliquait toujours le montant plein, quel que soit le résultat de CE jet). Un seul
+      // exemplaire par cible (`setFlag` écrase le précédent) : lancer un 2e sort à sauvegarde sur
+      // la même cible sans avoir appliqué les dégâts du 1er perd silencieusement son résultat —
+      // simplification acceptée avec l'utilisateur, jamais de risque d'appliquer le MAUVAIS
+      // multiplicateur au mauvais sort (spellName revérifié à la consommation, dnd-custom-ai.js).
+      const setPendingSpellSaveOutcome = (targetActor, success) =>
+        targetActor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", {
+          success,
+          halfOnSave: item.system.save.halfOnSave,
+          ability: item.system.save.ability,
+          spellLevel: item.system.level,
+          spellName: item.name
+        });
+
+      for (const token of targets) {
+        const targetActor = token.actor;
+        if (!targetActor?.system?.abilities) continue;
+
+        if (metamagic?.targetActorId === targetActor.id && metamagic.option === "careful") {
+          await setPendingSpellSaveOutcome(targetActor, true);
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+            content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
+          });
+          continue;
+        }
+        if (sculptedTargetId === targetActor.id) {
+          await setPendingSpellSaveOutcome(targetActor, true);
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+            content: game.i18n.format("DND_CUSTOM.Roll.SculptSpellsSuccess", { name: targetActor.name, spell: item.name })
+          });
+          continue;
+        }
+
+        const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
+        const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
+        // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier
+        // "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : avantage si CE lanceur a déjà
+        // attaqué la cible ce round. "Volonté de fer" (cf. hasSteadfastAdvantage) s'applique
+        // aussi depuis que les Sorts ont un `appliesCondition` (Niveau B, cf.
+        // ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) — ne se déclenche en pratique que si le sort
+        // pose Effrayé sur échec, aucun des sorts SRD actuellement automatisés ici. S'annule avec
+        // Sort Élevé (Métamagie) comme avantage/désavantage normalement (même logique que
+        // rollCheck, rolls.js).
+        const hasDefenseAdvantage =
+          (hasMultiattackDefenseAdvantage(targetActor, this.actor) ||
+            hasSteadfastAdvantage(targetActor, item.system.save.appliesCondition)) &&
+          !heightened;
+        const useDisadvantage = heightened && !hasMultiattackDefenseAdvantage(targetActor, this.actor);
+        const die = hasDefenseAdvantage ? "2d20kh1" : useDisadvantage ? "2d20kl1" : "1d20";
+        const roll = new Roll(`${die}${formatModifier(mod)}`);
+        await roll.evaluate();
+        const success = roll.total >= dc;
+        // Applique automatiquement la condition configurée sur échec (ex. paralysé pour
+        // Immobilisation de personne), même mécanisme que #onRollFeatureSave ci-dessus.
+        if (!success && item.system.save.appliesCondition) {
+          await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
+        }
+        await setPendingSpellSaveOutcome(targetActor, success);
+        const resultKey = success
+          ? item.system.save.halfOnSave
+            ? "DND_CUSTOM.Roll.SaveSuccessHalf"
+            : "DND_CUSTOM.Roll.SaveSuccess"
+          : "DND_CUSTOM.Roll.SaveFail";
+        await roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+          flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
+            hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
+          }`
+        });
+      }
       return;
     }
 
@@ -1365,13 +2292,38 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const system = this.actor.system;
       const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+      // Disciple de la vie (Life, Clerc, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
+      // 2026-08-23) : +2 PV sur tout sort de niveau 1+ qui soigne, +1 de plus par palier
+      // au-delà du premier (surclassement inclus, cf. effectiveSpellLevel ci-dessus). Un tour de
+      // magie (niveau 0) n'en bénéficie jamais.
+      const disciplineOfLifeBonus =
+        effectiveSpellLevel >= 1 && hasFeature(this.actor.items.contents, "Disciple de la vie")
+          ? 2 + (effectiveSpellLevel - 1)
+          : 0;
       await rollHeal({
         actor: this.actor,
         dice: item.system.heal.dice,
-        formula: formatModifier(spellAbilityMod),
+        formula: formatModifier(spellAbilityMod + disciplineOfLifeBonus),
         flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
       });
       return;
+    }
+
+    // Sort qui pose un état sans jet associé (ex. Invisibilité, Invisibilité suprême, cf.
+    // SpellData#grantsCondition dans item-data.js) : bascule l'état configuré sur chaque cible
+    // actuellement ciblée (même convention de ciblage que save/heal ci-dessus — pour se rendre
+    // soi-même invisible, le lanceur doit se cibler lui-même). Pas de jet, donc pas de message
+    // dédié : tombe ensuite dans le message générique "lance {sort}" ci-dessous.
+    if (item.system.grantsCondition) {
+      const targets = Array.from(game.user.targets);
+      if (!targets.length) {
+        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+      } else {
+        for (const token of targets) {
+          if (!token.actor) continue;
+          await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+        }
+      }
     }
 
     await ChatMessage.create({
@@ -1383,22 +2335,52 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Jet de dégâts d'un sort d'attaque (cf. #onCastSpell) : juste le(s) dé(s) de dégâts
    *  configurés sur le sort, sans modificateur — contrairement à une arme, les dégâts d'un
    *  sort SRD 5e n'ajoutent pas le modificateur de caractéristique d'incantation (sauf mention
-   *  explicite du sort, non modélisée ici). */
+   *  explicite du sort, non modélisée ici) — SAUF si l'Actor possède une Capacité dont
+   *  `boostsSpellDamage` cible ce Sort par son nom exact (ex. "Salve implacable"/Agonizing
+   *  Blast, Invocation occulte de l'Occultiste, qui ajoute le modificateur de Cha aux dégâts de
+   *  "Décharge occulte" — cf. FeatureData#boostsSpellDamage, item-data.js). */
   static async #onRollSpellDamage(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell" || !item.system.damage.dice) return;
 
-    const damageType = item.system.damage.type
+    const damageTypeLabel = item.system.damage.type
       ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
       : "";
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
     if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
+
+    const boostFeature = this.actor.items.contents.find(
+      (candidate) => candidate.type === "feature" && candidate.system.boostsSpellDamage === item.name
+    );
+    const boostMod = boostFeature
+      ? abilityModifier(this.actor.system.abilities[boostFeature.system.boostsSpellDamageAbility].total)
+      : 0;
+
+    // Affinité élémentaire (Ensorceleur, Lignage draconique 6, SRD 5e) : modificateur de
+    // Charisme ajouté aux dégâts d'un sort dont le TYPE correspond au lignage draconique choisi
+    // (`system.combat.draconicResistanceType`, cf. Résilience draconique) — contrairement à
+    // `boostsSpellDamage` ci-dessus (ciblé par nom de Sort exact), ce bonus se déclenche par
+    // correspondance de type, jamais les deux en pratique (classes différentes).
+    const hasElementalAffinity = hasFeature(this.actor.items.contents, "Affinité élémentaire");
+    const elementalAffinityMod =
+      hasElementalAffinity && item.system.damage.type && item.system.damage.type === this.actor.system.combat.draconicResistanceType
+        ? abilityModifier(this.actor.system.abilities.cha.total)
+        : 0;
+    const totalBoostMod = boostMod + elementalAffinityMod;
+
     await rollDamage({
       actor: this.actor,
       dice: item.system.damage.dice,
-      formula: "",
+      formula: totalBoostMod ? formatModifier(totalBoostMod) : "",
       critical,
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageType ? ` (${damageType})` : ""}`
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.SpellDamage", { spell: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      damageType: item.system.damage.type,
+      isSpellDamage: true,
+      spellName: item.name,
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : un sort est toujours considéré
+      // magique au SRD 5e (contourne la résistance/immunité générique "contre les attaques non
+      // magiques", cf. damageTypeMultiplier, dnd-custom-ai.js).
+      isMagicalSource: true
     });
   }
 

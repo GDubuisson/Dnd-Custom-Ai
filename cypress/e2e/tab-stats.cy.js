@@ -130,6 +130,28 @@ describe("Onglet Statistiques — jets de dés", () => {
     });
   });
 
+  it("compétence : abréviation localisée de la caractéristique, pas le nom complet ni la clé technique (anomalie 2026-08-19)", () => {
+    // "Athlétisme"/"Athletics" (fixture skills: ["athletics", "intimidation"]) est liée à
+    // Force (str) — cf. DND_CUSTOM.skills, config.js.
+    let expectedShort, fullName, athleticsLabel;
+    cy.window().then((win) => {
+      expectedShort = win.game.i18n.localize("DND_CUSTOM.Abilities.Short.str");
+      fullName = win.game.i18n.localize("DND_CUSTOM.Abilities.str");
+      athleticsLabel = win.game.i18n.localize("DND_CUSTOM.Skills.athletics");
+    });
+    cy.then(() => {
+      sheetRoot()
+        .find(".skill")
+        .then(($skills) => {
+          const $skillRow = $skills.filter((_, li) => li.textContent.includes(athleticsLabel)).first();
+          const tag = $skillRow.find(".ability-tag").text().trim();
+          expect(tag, `attendu "(${expectedShort})", obtenu "${tag}"`).to.equal(`(${expectedShort})`);
+          expect(tag, "ne doit plus afficher le nom complet de la caractéristique").not.to.include(fullName);
+          expect(tag, "ne doit jamais afficher la clé technique brute").not.to.equal("(str)");
+        });
+    });
+  });
+
   it("jet de caractéristique avec avantage, Maj-clic (T-STATS-002)", () => {
     sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click({ shiftKey: true });
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("2d20kh1"));
@@ -464,15 +486,23 @@ describe("Onglet Statistiques — repos", () => {
       return secondWind.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
     });
 
+    // `.should()` (pas un simple `.then()`) : le clic ne fait que distribuer l'évènement DOM, le
+    // gestionnaire (#onRestShort, plusieurs `await` avant la fin) continue de tourner après —
+    // même piège/même fix que lastMessageRoll et T-STATS-009 (cf. leurs commentaires). Devenu
+    // sensible avec l'ajout de #offerSpellSlotRecoveries (anomalie récupération arcanique/
+    // naturelle, 2026-08-22), qui allonge légèrement la chaîne d'attente de #onRestShort.
     sheetRoot().find('button[data-action="restShort"]').click();
-    cy.window().then((win) => {
+    cy.window().should((win) => {
       const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       expect(secondWind.system.uses.value, "rechargée après un repos court").to.equal(secondWind.system.uses.max);
+    });
+    cy.window().then((win) => {
+      const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       return secondWind.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
     });
 
     sheetRoot().find('button[data-action="restLong"]').click();
-    cy.window().then((win) => {
+    cy.window().should((win) => {
       const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
       expect(secondWind.system.uses.value, "rechargée après un repos long aussi").to.equal(secondWind.system.uses.max);
     });
@@ -514,6 +544,69 @@ describe("Onglet Statistiques — repos", () => {
       });
     });
   });
+
+  // Règle maison (absente du SRD, anomalie 2026-08-19 : "ne pas laisser abuser des repos
+  // courts") : à partir du 4e repos court depuis le dernier repos long (celui-ci inclus), CHAQUE
+  // repos court supplémentaire ajoute 1 point d'Épuisement (cf. CharacterData#attributes.
+  // shortRestCount, #onRestShort/#onRestLong dans actor-sheet.js). Préconditions posées
+  // explicitement (shortRestCount) plutôt que de dépendre du nombre de repos déjà déclenchés par
+  // les tests précédents de ce fichier.
+  it("Épuisement après le 4e repos court sans repos long (anomalie 2026-08-19)", () => {
+    cy.openActorSheet(sharedActorId);
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 0 });
+    });
+
+    lastMessageCount().then((before) => {
+      sheetRoot().find('button[data-action="restShort"]').click();
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        expect(actor.system.attributes.shortRestCount, "compteur incrémenté (4e repos court)").to.equal(4);
+        expect(actor.system.attributes.exhaustion, "1 point d'Épuisement gagné").to.equal(1);
+        expect(win.game.messages.size, "deux messages : repos + avertissement Épuisement").to.equal(before + 2);
+        expect(win.game.messages.contents.at(-1).content, "message cite le personnage").to.include(actor.name);
+      });
+    });
+
+    // 5e repos court (compteur déjà à 4) : chaque repos SUPPLÉMENTAIRE ajoute encore 1 point,
+    // pas seulement le 4e.
+    lastMessageCount().then((before) => {
+      sheetRoot().find('button[data-action="restShort"]').click();
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        expect(actor.system.attributes.shortRestCount, "5e repos court").to.equal(5);
+        expect(actor.system.attributes.exhaustion, "2e point d'Épuisement").to.equal(2);
+        expect(win.game.messages.size, "deux nouveaux messages encore").to.equal(before + 2);
+      });
+    });
+
+    // Plafond SRD (6) jamais dépassé même après de nombreux repos courts supplémentaires.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 6 });
+    });
+    sheetRoot().find('button[data-action="restShort"]').click();
+    cy.window().should((win) => {
+      expect(win.game.actors.get(sharedActorId).system.attributes.exhaustion, "plafonné à 6").to.equal(6);
+    });
+
+    // Repos long : remet le compteur à zéro (seul le repos long le fait, pas le repos court).
+    sheetRoot().find('button[data-action="restLong"]').click();
+    cy.window().should((win) => {
+      expect(
+        win.game.actors.get(sharedActorId).system.attributes.shortRestCount,
+        "compteur remis à zéro par le repos long"
+      ).to.equal(0);
+    });
+
+    // Nettoyage : ne pas laisser ce personnage partagé à 6 points d'Épuisement pour les tests
+    // suivants (T-STATS-016 notamment, qui manipule aussi ce champ).
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return updateActor(win, actor, { "system.attributes.exhaustion": 0 });
+    });
+  });
 });
 
 describe("Onglet Statistiques — Initiative", () => {
@@ -541,6 +634,260 @@ describe("Onglet Statistiques — Initiative", () => {
     });
 
     sheetRoot().find('button[data-action="rollInitiative"]').should("not.exist");
+  });
+});
+
+describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-19)", () => {
+  let featActorId;
+
+  // Un monde déjà chargé une fois conserve les anciennes données de compendium par nom
+  // (importSystemContent n'importe que les entrées ABSENTES, jamais une mise à jour d'une
+  // entrée existante, cf. ANOMALIES_ACTIVES.md) — resynchronise explicitement UNE entrée avant
+  // de tester un champ qui vient d'être ajouté à son schéma, plutôt que de dépendre d'un état de
+  // compendium implicite.
+  function resyncCompendiumEntry(win, packName, itemName) {
+    const pack = win.game.packs.get(`dnd-custom-ai.${packName}`);
+    return pack
+      .getDocuments()
+      .then((docs) => {
+        const stale = docs.find((doc) => doc.name === itemName);
+        expect(stale, `prérequis : '${itemName}' existe dans le compendium ${packName}`).to.exist;
+        return win.Item.deleteDocuments([stale.id], { pack: `dnd-custom-ai.${packName}` });
+      })
+      .then(() => win.game.dndCustomAi.importSystemContent());
+  }
+
+  function grantFeat(win, actorId, featName) {
+    const pack = win.game.packs.get("dnd-custom-ai.dons");
+    return pack.getIndex().then(() => {
+      const entry = [...pack.index].find((candidate) => candidate.name === featName);
+      expect(entry, `Don '${featName}' introuvable dans le compendium dons`).to.exist;
+      return pack
+        .getDocument(entry._id)
+        .then((doc) => win.game.actors.get(actorId).createEmbeddedDocuments("Item", [win.JSON.parse(win.JSON.stringify(doc.toObject()))]));
+    });
+  }
+
+  before(() => {
+    cy.loginAsPlayer();
+    cy.createReadyCharacter({
+      name: "Tab Stats Feats",
+      origin: "fleuraine",
+      classKey: "fighter",
+      skills: ["athletics", "intimidation"]
+    }).then((id) => {
+      featActorId = id;
+      createdActorIds.push(id);
+    });
+  });
+
+  beforeEach(() => {
+    cy.loginAsPlayer();
+  });
+
+  it("Doué : +1 Charisme visible sur la fiche, cumulé au-dessus de la valeur de base", () => {
+    let baseCha;
+    cy.window().then((win) => {
+      baseCha = win.game.actors.get(featActorId).system.abilities.cha.total;
+      return grantFeat(win, featActorId, "Doué");
+    });
+    // Vérifie d'abord que la donnée dérivée s'est bien stabilisée (retry) AVANT de rouvrir la
+    // fiche : rendre pendant que createEmbeddedDocuments est encore en cours de traitement peut
+    // capturer un instantané pas encore à jour, sans qu'un futur re-render ne le rafraîchisse
+    // (piège découvert au premier run réel de ce describe, sur le test Alerte ci-dessous).
+    cy.window().should((win) => {
+      expect(win.game.actors.get(featActorId).system.abilities.cha.total).to.equal(baseCha + 1);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find('button[data-action="rollAbility"][data-key="cha"]')
+      .closest(".ability-card")
+      .find(".ability-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseCha + 1));
+  });
+
+  it("Tenace : +2 PV max par niveau, visible dans l'en-tête de la fiche", () => {
+    let baseHpMax;
+    cy.window().then((win) => {
+      baseHpMax = win.game.actors.get(featActorId).system.attributes.hp.max;
+      return grantFeat(win, featActorId, "Tenace");
+    });
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      expect(actor.system.attributes.hp.max).to.equal(baseHpMax + 2 * actor.system.attributes.level);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find(".hp-max-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseHpMax + 2));
+  });
+
+  it("Alerte : +5 Initiative, visible sur l'onglet Statistiques", () => {
+    let baseInitiative;
+    cy.window().then((win) => {
+      baseInitiative = win.game.actors.get(featActorId).system.attributes.initiativeMod;
+      return grantFeat(win, featActorId, "Alerte");
+    });
+    cy.window().should((win) => {
+      expect(win.game.actors.get(featActorId).system.attributes.initiativeMod).to.equal(baseInitiative + 5);
+    });
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find(".derived-stats span")
+      .first()
+      .invoke("text")
+      // Forme callback obligatoire ici (pas `.should("include", formatModifier(baseInitiative +
+      // 5))`) : `baseInitiative` n'est affecté que dans le cy.window().then() ci-dessus, qui
+      // s'exécute de façon asynchrone APRÈS que cette ligne a été mise en file par Cypress —
+      // un appel eager de formatModifier() à cet endroit verrait encore `baseInitiative`
+      // undefined (NaN), piège découvert au premier run réel de ce test.
+      .should((text) => expect(text).to.include(formatModifier(baseInitiative + 5)));
+  });
+
+  it("Résilient : choix de caractéristique réglé via la fiche du don (MJ) -> bonus + maîtrise de sauvegarde appliqués", () => {
+    let baseWis;
+    let createdItems;
+    cy.loginAsGM();
+    cy.window().then((win) => resyncCompendiumEntry(win, "dons", "Résilient"));
+    cy.window().then((win) => {
+      baseWis = win.game.actors.get(featActorId).system.abilities.wis.total;
+      return grantFeat(win, featActorId, "Résilient").then((items) => {
+        createdItems = items;
+      });
+    });
+
+    // Le choix de caractéristique se règle sur la fiche du DON lui-même (system.chosenAbility,
+    // réservé au MJ, cf. feature-sheet.hbs), pas sur la fiche de l'Actor — un vrai select piloté,
+    // pas un update() direct, pour prouver que le sélecteur fonctionne de bout en bout.
+    cy.then(() => cy.window().then((win) => createdItems[0].sheet.render(true)));
+    cy.get(".application.sheet.item", { timeout: 10000 }).should("be.visible").and("contain.text", "Résilient");
+    cy.get('select[name="system.chosenAbility"]').select("wis");
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      expect(actor.system.abilities.wis.total, "bonus +1 appliqué").to.equal(baseWis + 1);
+      expect(actor.system.saves.wis.proficient, "maîtrise de sauvegarde accordée").to.be.true;
+    });
+
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot()
+      .find('button[data-action="rollAbility"][data-key="wis"]')
+      .closest(".ability-card")
+      .find(".ability-value")
+      .invoke("text")
+      .should((text) => expect(Number(text)).to.equal(baseWis + 1));
+    sheetRoot().find('input[name="system.saves.wis.proficient"]').should("be.checked");
+  });
+
+  it("Guérisseur : le jet réutilise le bouton 'Appliquer le soin' déjà existant pour les sorts de soin", () => {
+    let tokenId;
+    let hpBefore;
+    cy.loginAsGM();
+    cy.window().then((win) => resyncCompendiumEntry(win, "dons", "Guérisseur"));
+    cy.window().then((win) => {
+      hpBefore = Math.max(1, win.game.actors.get(featActorId).system.attributes.hp.max - 5);
+      return win.game.actors
+        .get(featActorId)
+        .getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 400, y: 400 })))
+        .then((tokenDoc) =>
+          win.canvas.scene.createEmbeddedDocuments("Token", [win.JSON.parse(win.JSON.stringify(tokenDoc.toObject()))])
+        )
+        .then((tokens) => {
+          tokenId = tokens[0].id;
+        });
+    });
+    cy.window().then((win) => grantFeat(win, featActorId, "Guérisseur"));
+    cy.window().then((win) =>
+      win.game.actors.get(featActorId).update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": hpBefore })), {
+        dndCustomDamageApply: true
+      })
+    );
+
+    cy.loginAsPlayer();
+    cy.then(() => cy.openActorSheet(featActorId));
+    sheetRoot().find('nav.tabs [data-tab="abilities"]').click();
+    sheetRoot().find('section.tab[data-tab="abilities"]').should("have.class", "active");
+
+    cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
+
+    cy.window().then((win) => {
+      const item = win.game.actors.get(featActorId).items.find((candidate) => candidate.name === "Guérisseur");
+      expect(item, "prérequis : don Guérisseur bien octroyé").to.exist;
+      sheetRoot().find(`li[data-item-id="${item.id}"] button[data-action="rollFeature"]`).click();
+    });
+
+    // Ferme la fiche (recouvre la moitié droite) et ouvre l'onglet Chat avant d'interagir avec
+    // le message posté — même piège/même fix que T-ABIL-024 (tab-abilities.cy.js).
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-apply-heal-btn").should("be.visible").click();
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const healAmount = win.game.messages.contents.at(-1).rolls?.[0]?.total ?? 0;
+      expect(healAmount, "un vrai total de soin doit avoir été calculé").to.be.greaterThan(0);
+      expect(actor.system.attributes.hp.value, "PV restaurés du montant du jet, plafonnés au max").to.equal(
+        Math.min(hpBefore + healAmount, actor.system.attributes.hp.max)
+      );
+    });
+
+    // Nettoyage : remet les PV au max et supprime le token créé pour ce test.
+    cy.loginAsGM();
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
+    });
+    cy.window().then((win) => win.canvas.scene.deleteEmbeddedDocuments("Token", [tokenId]));
+  });
+
+  it("Chanceux : bouton 'Dépenser un point de Chance' sur un jet de d20, relance et garde le meilleur total", () => {
+    cy.window().then((win) => grantFeat(win, featActorId, "Chanceux"));
+
+    cy.openActorSheet(featActorId);
+    resetMessageBaseline();
+    sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click();
+    lastMessageRoll();
+
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-spend-luck-btn").should("be.visible").click();
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      expect(luckyFeat.system.uses.value, "1 charge consommée").to.equal(2);
+
+      const messages = win.game.messages.contents;
+      const reroll = messages.at(-1);
+      const original = messages.at(-2);
+      expect(reroll.flavor, "message de relance distinct posté").to.include(actor.name);
+      expect(original.getFlag("dnd-custom-ai", "luckApplied"), "jet d'origine marqué, une seule relance par jet").to.be.true;
+    });
+
+    // Plus aucune charge : le bouton ne doit plus apparaître du tout sur un nouveau jet (pas un
+    // bouton grisé permanent, cf. commentaire du hook dnd-custom-ai.js).
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      return luckyFeat.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
+    });
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.render(true));
+    cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
+    resetMessageBaseline();
+    sheetRoot().find('button[data-action="rollAbility"][data-key="str"]').click();
+    lastMessageRoll();
+    cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
+    cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
+    cy.get(".chat-message").last().find("button.dnd-spend-luck-btn").should("not.exist");
+
+    // Restaure les charges pour ne pas fausser un futur run de cette spec.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(featActorId);
+      const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
+      return luckyFeat.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": luckyFeat.system.uses.max })));
+    });
   });
 });
 

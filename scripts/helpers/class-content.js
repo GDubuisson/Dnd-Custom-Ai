@@ -7,7 +7,7 @@ const SYSTEM_ID = "dnd-custom-ai";
  *  compendium `packName` (packs/capacites ou packs/sorts) une fois peuplé par l'import
  *  automatique (content-import.js) — dédoublonné par nom, l'exemplaire du monde prévalant s'il
  *  existe déjà (même logique que #grantStartingEquipment). */
-async function findClassContentCandidates(type, packName, predicate) {
+export async function findClassContentCandidates(type, packName, predicate) {
   const fromWorld = game.items.filter((item) => item.type === type && predicate(item.system));
 
   const pack = game.packs.get(`${SYSTEM_ID}.${packName}`);
@@ -86,7 +86,11 @@ export async function grantClassContent(actor, classKey, level) {
       // Capacité de classe de base (system.subclass vide) toujours éligible ; une Capacité de
       // sous-classe (system.subclass renseigné) seulement si elle correspond à la sous-classe
       // choisie par le personnage (cf. subclassKey ci-dessus).
-      (!system.subclass || system.subclass === subclassKey)
+      (!system.subclass || system.subclass === subclassKey) &&
+      // Capacité piochée dans un grand pool d'options (ex. Invocations occultes, Occultiste) :
+      // jamais octroyée automatiquement même si class/level correspondent — cf.
+      // FeatureData#manualOnly, item-data.js.
+      !system.manualOnly
   );
 
   // Incantation mineure de sous-classe (ex. Chevalier occulte, Guerrier — cf.

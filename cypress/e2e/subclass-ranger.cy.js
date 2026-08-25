@@ -75,6 +75,21 @@ describe("Sous-classes de Rôdeur — Maître des bêtes / Traqueur des ténèbr
             expect(win.game.actors.get(actorId).getFlag("dnd-custom-ai", "beastCompanionCreated"), "flag posé").to.be.true;
           });
 
+          // Retour de test (régression réelle rencontrée, 2026-08-25) : le compagnon utilisait
+          // encore l'ancien champ singulier `system.attack`, silencieusement ignoré par le
+          // DataModel depuis le passage à `attacks` (liste) — le Loup invoqué se retrouvait sans
+          // aucune attaque, sans qu'aucune erreur ne le signale. Vérifie explicitement qu'une
+          // vraie attaque est bien présente sur le compagnon créé.
+          cy.window().then((win) => {
+            // `type: "npc"` en plus du nom : le Personnage Joueur lui-même s'appelle aussi "Sub
+            // Ranger Beastmaster" (piège rencontré — .find() sans ce filtre retombait sur le PJ,
+            // dont system.attacks n'existe même pas, CharacterData n'ayant pas ce champ).
+            const wolf = [...win.game.actors].find((actor) => actor.type === "npc" && actor.name.includes("Sub Ranger Beastmaster"));
+            expect(wolf, "compagnon Loup introuvable parmi les Actors").to.exist;
+            expect(wolf.system.attacks, "le compagnon doit avoir au moins une attaque configurée").to.have.length.greaterThan(0);
+            expect(wolf.system.attacks[0].name).to.equal("Morsure");
+          });
+
           // Bouton disparu après invocation (déjà invoqué) : ré-affiche la fiche pour repartir
           // d'un rendu à jour plutôt que de dépendre d'un re-render implicite.
           cy.openActorSheet(actorId);

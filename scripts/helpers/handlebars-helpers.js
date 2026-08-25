@@ -23,13 +23,32 @@ export function registerHandlebarsHelpers() {
   // affichait la formule Foundry brute ("1d10 + @attributes.level"), illisible pour un joueur —
   // affichage seulement, la formule réelle passée à `new Roll()` (actor-sheet.js) reste
   // inchangée. `@attributes.level` est la seule référence de roll-data utilisée dans
-  // world-items/features.json à ce jour (cf. tests/data/consistency.test.js). `levelLabel` est
-  // résolu côté template via `{{localize "DND_CUSTOM.Actor.Level"}}` (pas `game.i18n` ici
-  // directement : ce fichier reste testable sans mock du global `game`, cf. tests/support/
-  // handlebars-env.js qui ne fournit que le helper `localize`).
-  Handlebars.registerHelper("displayRollFormula", (formula, levelLabel) =>
-    String(formula ?? "").replace(/@attributes\.level/g, String(levelLabel ?? "").toLowerCase())
-  );
+  // world-items/features.json à ce jour. `level` (numérique, ex. `system.attributes.level`) sert
+  // à la fois à substituer un vrai nombre et à évaluer les fonctions déterministes
+  // ceil/floor/round/min/max qu'une formule peut contenir (ex. Récupération arcanique,
+  // "ceil(@attributes.level/2)" affichait littéralement l'appel de fonction non évalué avant ce
+  // correctif — retour de test). Le contenu des parenthèses est restreint par la regex à des
+  // chiffres/opérateurs avant tout `eval`, aucune injection possible. Si `level` n'est pas un
+  // nombre (contexte de test minimal, ex.), on retombe sur l'ancien remplacement textuel via
+  // `levelLabel`, résolu côté template via `{{localize "DND_CUSTOM.Actor.Level"}}` (pas
+  // `game.i18n` ici directement : ce fichier reste testable sans mock du global `game`, cf.
+  // tests/support/handlebars-env.js qui ne fournit que le helper `localize`).
+  Handlebars.registerHelper("displayRollFormula", (formula, level, levelLabel) => {
+    const raw = String(formula ?? "");
+    const numericLevel = Number(level);
+    if (!Number.isFinite(numericLevel)) {
+      return raw.replace(/@attributes\.level/g, String(levelLabel ?? "").toLowerCase());
+    }
+    const substituted = raw.replace(/@attributes\.level/g, String(numericLevel));
+    return substituted.replace(/(?:ceil|floor|round|min|max)\([0-9+\-*/.,\s]*\)/g, (call) => {
+      try {
+        // eslint-disable-next-line no-new-func -- contenu validé par la regex ci-dessus (chiffres/opérateurs uniquement)
+        return String(new Function(`"use strict"; return Math.${call};`)());
+      } catch {
+        return call;
+      }
+    });
+  });
 
   // Économie d'action de combat (cf. FeatureData/SpellData#activation, item-data.js) : une
   // Capacité/un Sort "Réaction" affiche un badge dédié sur l'onglet Capacités/Sorts et voit son

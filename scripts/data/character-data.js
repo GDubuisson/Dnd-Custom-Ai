@@ -11,9 +11,9 @@ import {
   SPELL_LEVELS,
   hasFeature
 } from "../helpers/rules.js";
-import { currencySchema } from "./shared-schema.js";
+import { currencySchema, damageAffinitySchema } from "./shared-schema.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
 
 const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"];
 
@@ -90,13 +90,27 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // (vitesse dès le niveau 2, PV max dès le niveau 4) ; désavantage aux tests/
         // sauvegardes/attaques géré au moment du jet (cf. actor-sheet.js).
         exhaustion: new NumberField({ required: true, integer: true, min: 0, max: 6, initial: 0 }),
+        // Règle maison (absente du SRD, demande explicite testeur — retour ANOMALIES_ACTIVES.md,
+        // "ne pas laisser abuser des repos courts") : nombre de repos courts pris depuis le
+        // dernier repos long. À partir du 4e (celui-ci inclus), chaque repos court supplémentaire
+        // ajoute 1 point d'Épuisement (cf. #onRestShort, actor-sheet.js) — le bénéfice normal du
+        // repos court (soin de moitié des PV max) reste lui inchangé, quel que soit ce compteur.
+        // Remis à zéro uniquement au repos long, jamais par le repos court lui-même.
+        shortRestCount: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
         // Jets de sauvegarde de la mort, SRD 5e : 3 réussites = stabilisé, 3 échecs = mort.
         // Remis à zéro automatiquement en tombant à 0 PV ou en repassant au-dessus (cf. hook
         // updateActor dans dnd-custom-ai.js).
         death: new SchemaField({
           successes: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 }),
           failures: new NumberField({ required: true, integer: true, min: 0, max: 3, initial: 0 })
-        })
+        }),
+        // Points d'inspiration (PI), règle maison distincte de l'Inspiration bardique (Capacité
+        // de Barde, cf. world-items/features.json — un dé donné à un allié, mécanique différente)
+        // : ressource libre accordée manuellement par le MJ (pas de maximum SRD à respecter, ce
+        // système ne modélise pas l'Inspiration binaire du SRD), dépensée pour relancer
+        // intégralement un test de caractéristique ou de compétence déjà lancé (cf.
+        // #onRollAbility/#onRollSkill, actor-sheet.js, et le hook dédié dans dnd-custom-ai.js).
+        inspirationPoints: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
       origin: new StringField({ required: true, blank: true, initial: "" }),
       class: new StringField({ required: true, blank: true, initial: "" }),
@@ -139,10 +153,16 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       }),
       // Économie d'action de combat, SRD 5e (cf. FeatureData/SpellData#activation) : une seule
       // réaction utilisable par round, régénérée au début de son propre tour tant qu'un combat
-      // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js). Pas de suivi
-      // pour l'action/l'action bonus — hors scope, le système ne verrouille pas le tour lui-même.
+      // Foundry est actif (cf. hooks updateCombat/deleteCombat, dnd-custom-ai.js).
       combat: new SchemaField({
         reactionAvailable: new BooleanField({ required: true, initial: true }),
+        // Action/Action bonus du tour (chantier "Suivi de l'action/action bonus", 2026-08-23) :
+        // même régénération que reactionAvailable ci-dessus, mais suivi NON-bloquant (cf.
+        // helpers/action-economy.js) — aucun bouton n'est jamais grisé/refusé pour ça,
+        // contrairement à la réaction ; un simple rappel de chat avertit si l'Action/Action bonus
+        // est déjà utilisée ce tour.
+        actionAvailable: new BooleanField({ required: true, initial: true }),
+        bonusActionAvailable: new BooleanField({ required: true, initial: true }),
         // Rounds restants de Rage (SRD 5e : jusqu'à 10 rounds/1 minute), cf. RAGE_DURATION_ROUNDS
         // et hooks createActiveEffect/updateCombat, dnd-custom-ai.js — 0 = pas de suivi en cours
         // (Rage inactive, ou activée hors combat). Ne modélise QUE la limite de durée, pas la fin
@@ -159,7 +179,72 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // FeatureData#grantsChoice = "totemSpirit", "Aspect de la bête" dans features.json) :
         // vide tant que non choisi (bouton "Choisir" affiché, #onChooseFeatureOption,
         // actor-sheet.js), jamais réinitialisé une fois posé.
-        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] })
+        totemSpirit: new StringField({ required: true, blank: true, initial: "", choices: ["bear", "eagle", "wolf"] }),
+        // Monture actuellement chevauchée (Combat monté, don SRD 5e — chantier "Combat automatisé
+        // avancé", 2026-08-23) : id d'un Actor de type "mount" (créature vivante, cf.
+        // CONFIG.Actor.dataModels.mount = NpcData dans dnd-custom-ai.js — jamais "vehicle",
+        // schéma trop pauvre pour Combat monté, pas de taille). Choisi en ciblant le token de la
+        // monture puis en cliquant "Monter" (#onMount, actor-sheet.js), même convention que les
+        // Capacités à cible (game.user.targets) déjà utilisée ailleurs plutôt qu'un select dédié.
+        // Vide = pas monté.
+        mountedActorId: new StringField({ required: true, blank: true, initial: "" }),
+        // Forme sauvage actuellement prise (Druide, don SRD 5e — chantier "Forme sauvage",
+        // 2026-08-23) : id d'un Actor de type "wildShapeForm" (créature vivante, même schéma
+        // simplifié que "mount" ci-dessus — cf. CONFIG.Actor.dataModels.wildShapeForm = NpcData
+        // dans dnd-custom-ai.js). Sa propre réserve de PV (system.attributes.hp) SERT de 2e
+        // réserve de PV pendant la transformation : jamais dupliquée ici. Choisi en ciblant le
+        // token de la forme puis en cliquant "Prendre forme" sur la Capacité (#onEnterWildShape,
+        // actor-sheet.js, consomme une charge de la Capacité) ; vidé manuellement ("Redevenir
+        // soi-même") ou automatiquement quand les PV de la forme tombent à 0 (hook updateActor,
+        // dnd-custom-ai.js — dégâts excédentaires jamais reportés sur le personnage, SRD 5e).
+        // Vide = pas transformé.
+        wildShapeActorId: new StringField({ required: true, blank: true, initial: "" }),
+        // Choix ponctuel et définitif du type de dégâts résisté (Résilience draconique,
+        // Ensorceleur Lignée draconique — cf. FeatureData#grantsChoice = "draconicResistanceType",
+        // chantier "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : restreint aux 5 types
+        // réellement associés à un type de dragon SRD 5e (contrairement à totemSpirit/
+        // huntersDefense, une sous-liste de DND_CUSTOM.damageTypes plutôt qu'une table dédiée).
+        draconicResistanceType: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: ["acid", "cold", "fire", "lightning", "poison"]
+        }),
+        // Choix ponctuel et définitif d'un bonus passif parmi 3 (Tactiques défensives, Rôdeur
+        // Hunter — cf. FeatureData#grantsChoice = "huntersDefense", DND_CUSTOM.huntersDefenses,
+        // config.js). "steadfast"/"multiattackDefense" appliqués automatiquement (cf.
+        // helpers/hunters-defense.js) ; "mobile" appliqué via un flag éphémère sur l'ennemi qui
+        // s'éloigne (cf. helpers/opportunity-attack.js).
+        huntersDefense: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: ["mobile", "multiattackDefense", "steadfast"]
+        }),
+        // Choix ponctuel et définitif du type de créature favori (Ennemi juré, Rôdeur 1, SRD 5e —
+        // Niveau C, 2026-08-24) : cf. FeatureData#grantsChoice = "favoredEnemyType",
+        // DND_CUSTOM.creatureTypes (config.js, même table que NpcData#creatureType/
+        // requiresCreatureTypes — pas de table dédiée, contrairement à totemSpirit/huntersDefense
+        // ci-dessus). Avantage aux tests de Survie (pister) et d'Intelligence (se souvenir d'une
+        // info) contre une cible de ce type, cf. #onRollSkill (actor-sheet.js).
+        favoredEnemyType: new StringField({
+          required: true,
+          blank: true,
+          initial: "",
+          choices: Object.keys(DND_CUSTOM.creatureTypes)
+        }),
+        // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. damageAffinitySchema
+        // (shared-schema.js) pour le détail — champ générique partagé avec NpcData. Réglé par le
+        // MJ (section verrouillée côté Joueur, comme la fiche Origine), couvre par ex. un futur
+        // objet magique/don donnant une résistance sans Capacité dédiée — coexiste avec les
+        // résistances déjà câblées en dur par Capacité (Rage, Résilience draconique...).
+        ...damageAffinitySchema(),
+        // Ensemble des id d'Actor ayant fait un jet d'ATTAQUE (arme/sort) contre ce personnage
+        // depuis le début de SON round (Défense contre les attaques multiples, Tactiques
+        // défensives — cf. helpers/hunters-defense.js#recordAttackOnTargets/
+        // hasMultiattackDefenseAdvantage). Remis à zéro au début de son propre tour (hook
+        // updateCombat, dnd-custom-ai.js), même schéma que actionAvailable/reactionAvailable.
+        attackedByThisRound: new SetField(new StringField({ blank: false }), { required: true, initial: [] })
       }),
       biography: new HTMLField({ required: false, blank: true, initial: "" }),
       notes: new HTMLField({ required: false, blank: true, initial: "" })
@@ -170,13 +255,39 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
    *  bouclier/accessoires équipés, constante de base) : jamais des valeurs saisies, ni
    *  par le joueur ni par le MJ. Recalculés à chaque préparation de l'Actor, donc toujours à jour. */
   prepareDerivedData() {
+    const items = this.parent?.items ?? [];
     const originData = game.dndCustomAi?.origins?.[this.origin];
     const originBonuses = originData?.abilityBonuses ?? {};
+    // Don "Doué" (SRD 5e, world-items/feats.json) : +1 Charisme fixe, appliqué automatiquement
+    // dès que le personnage possède le don, même principe que le bonus d'Origine ci-dessus (pas
+    // de plafond à 20 modélisé, cohérent avec le bonus d'Origine qui n'en applique pas non plus).
+    const gracefulChaBonus = hasFeature(items, "Doué") ? 1 : 0;
+    // Dons "Athlète"/"Résilient" (FeatureData#offersAbilityChoice/chosenAbility, réglés sur la
+    // fiche du don lui-même par le MJ, cf. feature-sheet.hbs) : +1 sur la caractéristique
+    // choisie, appliqué automatiquement dès que le choix est réglé. Un même personnage peut
+    // posséder les deux (choix indépendants, contrairement à `grantsChoice` qui est ponctuel par
+    // Actor) — `.filter()` + `.length` cumule correctement si, par exemple, les deux dons visent
+    // la même caractéristique.
+    const abilityChoiceFeats = items.filter(
+      (item) => item.type === "feature" && item.system?.offersAbilityChoice && item.system?.chosenAbility
+    );
     for (const key of ABILITY_KEYS) {
-      this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0);
+      const featBonus = (key === "cha" ? gracefulChaBonus : 0) + abilityChoiceFeats.filter((item) => item.system.chosenAbility === key).length;
+      this.abilities[key].total = this.abilities[key].value + (originBonuses[key] ?? 0) + featBonus;
+      // Donnée dérivée non persistée (même convention que attributes.initiativeMod/speed
+      // ci-dessous) : expose le modificateur déjà calculable via abilityModifier(total) comme
+      // référence `@abilities.<clé>.mod` directement utilisable dans un rollFormula de Capacité
+      // (Actor#getRollData natif expose tout `system` déjà préparé) — ex. Déviation de
+      // projectiles (Moine), qui a besoin du mod. de Dextérité en plus du niveau.
+      this.abilities[key].mod = abilityModifier(this.abilities[key].total);
+    }
+    // Don "Résilient" seul (parmi les deux ci-dessus) accorde aussi la maîtrise du jet de
+    // sauvegarde de la caractéristique choisie (SRD 5e) — ne retire jamais une maîtrise déjà
+    // acquise par ailleurs (classe, MJ...), seulement `true` si le don la donne.
+    for (const item of abilityChoiceFeats) {
+      if (item.name === "Résilient") this.saves[item.system.chosenAbility].proficient = true;
     }
 
-    const items = this.parent?.items ?? [];
     const equippedArmor = items.find(
       (item) => item.type === "armor" && item.system.slot === "armor" && item.system.equipped
     );
@@ -189,8 +300,19 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     const hitDie = DND_CUSTOM.classHitDice[this.class] ?? 8;
     const conMod = abilityModifier(this.abilities.con.total);
+    // Don "Tenace" (SRD 5e) : +2 PV max par niveau, recalculé à chaque niveau (pas seulement au
+    // niveau d'acquisition — la formule "2×niveau" retombe exactement sur le texte SRD "+2 au
+    // niveau d'acquisition, +2 de plus à chaque niveau gagné ensuite" sans avoir à suivre à part
+    // le niveau où le don a été pris). Ajouté AVANT le halving d'Exhaustion (exhaustionMaxHp
+    // ci-dessous) : l'Exhaustion divise par deux le maximum de PV dans son ensemble, bonus de
+    // don inclus, pas seulement les PV de base.
+    const toughFeatBonus = hasFeature(items, "Tenace") ? 2 * this.attributes.level : 0;
+    // Résilience draconique (Draconic, Ensorceleur, SRD 5e — chantier "8 sous-classes déjà à ≥1
+    // mécanique", 2026-08-23) : +1 PV max par niveau, même schéma que Tenace ci-dessus (recalculé
+    // à chaque niveau, jamais figé au niveau d'acquisition).
+    const draconicResilienceBonus = hasFeature(items, "Résilience draconique") ? this.attributes.level : 0;
     this.attributes.hp.max = exhaustionMaxHp(
-      maxHitPoints(hitDie, this.attributes.level, conMod),
+      maxHitPoints(hitDie, this.attributes.level, conMod) + toughFeatBonus + draconicResilienceBonus,
       this.attributes.exhaustion
     );
 
@@ -199,8 +321,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // uniquement sans armure portée (un bouclier reste utilisable sans perdre le bénéfice, cf.
     // armorClass qui ajoute son bonus séparément) — appliqué automatiquement dès que le
     // personnage possède la Capacité, sans que le joueur ait à y penser à chaque calcul de CA.
+    // Résilience draconique (Draconic, Ensorceleur, SRD 5e — chantier "8 sous-classes déjà à ≥1
+    // mécanique", 2026-08-23) : 13 + Dex au lieu de 10 + Dex sans armure, donc un bonus fixe de
+    // +3 par rapport à la base 10+Dex déjà posée par armorClass — même mécanisme que le Barbare
+    // ci-dessus (un bonus "sans armure" ajouté au 10+Dex de base), jamais les deux à la fois
+    // dans ce système mono-classe.
     const unarmoredDefenseBonus =
-      !equippedArmor && hasFeature(items, "Défense sans armure (Barbare)") ? conMod : 0;
+      (!equippedArmor && hasFeature(items, "Défense sans armure (Barbare)") ? conMod : 0) +
+      (!equippedArmor && hasFeature(items, "Résilience draconique") ? 3 : 0);
     this.attributes.ac.value = armorClass(
       dexMod,
       equippedArmor,
@@ -222,12 +350,24 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.stealthDisadvantage = Boolean(equippedArmor?.system.stealthDisadvantage);
 
     // Modificateur d'Initiative (mod. de Dextérité) : donnée dérivée non persistée, exposée à
-    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry
-    // (`"initiative": "1d20 + @attributes.initiativeMod"` dans system.json). Traqueur des
+    // la fois pour l'affichage et pour la formule d'initiative du Combat Tracker Foundry (cf.
+    // system.json > "initiative", et le commentaire d'attributes.initiativeDice plus bas pour le
+    // nombre de dés). Traqueur des
     // ténèbres (sous-classe Rôdeur, "Embuscade des ténèbres") : +2 supplémentaire, appliqué
     // automatiquement dès la sous-classe choisie (disponible seulement à partir du niveau
     // d'obtention SRD de toute façon, cf. DND_CUSTOM.subclassLevel).
-    this.attributes.initiativeMod = dexMod + (this.subclass === "gloomStalker" ? 2 : 0);
+    // Don "Alerte" (SRD 5e) : +5 aux jets d'Initiative, appliqué automatiquement — les deux
+    // autres clauses du don (jamais surpris, pas d'avantage contre soi du fait d'être inaperçu)
+    // restent hors modèle (pas de suivi de "surprise"/visibilité dans ce système), à arbitrer.
+    this.attributes.initiativeMod =
+      dexMod + (this.subclass === "gloomStalker" ? 2 : 0) + (hasFeature(items, "Alerte") ? 5 : 0);
+
+    // Nombre de d20 lancés pour l'Initiative (cf. `"initiative": "(@attributes.initiativeDice)
+    // d20kh1 + @attributes.initiativeMod"` dans system.json — kh1 sur un seul dé équivaut à ce
+    // dé seul, donc la même formule fonctionne pour 1 et 2 sans branche conditionnelle côté
+    // Foundry) : 2 = avantage. Capacité "Instinct sauvage" (Barbare 7, SRD 5e) : avantage
+    // automatique aux jets d'Initiative — appliqué automatiquement, sans case à cocher.
+    this.attributes.initiativeDice = hasFeature(items, "Instinct sauvage") ? 2 : 1;
 
     // Emplacements de sorts par niveau (cf. schéma ci-dessus) : `value` n'est jamais touché ici,
     // seul `max` de chaque palier est recalculé à chaque préparation. `maxLevel` (plus haut

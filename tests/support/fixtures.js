@@ -27,6 +27,7 @@ export const WORLD_CLASSES = loadJson("world-items/classes.json");
 export const WORLD_SUBCLASSES = loadJson("world-items/subclasses.json");
 export const WORLD_ORIGIN_ITEMS = loadJson("world-items/origins.json");
 export const WORLD_LANGUAGES = loadJson("world-items/languages.json");
+export const WORLD_NPCS = loadJson("world-items/npcs.json");
 export const GLOSSARY = loadJson("scripts/data/glossary.json");
 
 /** Construit un objet "brut" au format du schéma CharacterData (cf. scripts/data/character-
@@ -38,10 +39,12 @@ export function buildCharacterFixture(overrides = {}) {
   const abilities = Object.fromEntries(
     ["str", "dex", "con", "int", "wis", "cha"].map((key) => [key, { value: 10, total: 10 }])
   );
+  const saves = Object.fromEntries(["str", "dex", "con", "int", "wis", "cha"].map((key) => [key, { proficient: false }]));
   const base = {
     origin: "",
     class: "",
     abilities,
+    saves,
     attributes: {
       level: 1,
       exhaustion: 0,
@@ -63,6 +66,7 @@ export function buildCharacterFixture(overrides = {}) {
     ...base,
     ...overrides,
     abilities: { ...base.abilities, ...(overrides.abilities ?? {}) },
+    saves: { ...base.saves, ...(overrides.saves ?? {}) },
     attributes: { ...base.attributes, ...(overrides.attributes ?? {}) },
     spells: { ...base.spells, ...(overrides.spells ?? {}) }
   };

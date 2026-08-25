@@ -1,0 +1,744 @@
+[
+  {
+    "name": "Brigand",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Membre d'une bande organisée : agit rarement seul, souvent accompagné d'autres Brigands ou d'un Chef de brigands."
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon", "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.45, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces d'argent et de cuivre."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Maraudeur",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Arc court", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Tire depuis la distance et évite le corps-à-corps quand c'est possible ; se replie si un ennemi l'approche."
+    },
+    "items": [
+      {
+        "name": "Arc court", "type": "weapon", "img": "icons/weapons/bows/shortbow-leather.webp",
+        "system": {
+          "weaponType": "rangedSimple", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.9, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 24, "long": 96 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 4, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces de cuivre."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Garde",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Lance", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Membre d'une milice locale ou d'une garnison ; agit rarement sans consigne d'un supérieur."
+    },
+    "items": [
+      {
+        "name": "Lance simple", "type": "weapon", "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "1d8" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor", "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 }, "baseAC": 2,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "offHand",
+          "weight": 2.7, "quantity": 1, "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Gambison", "type": "armor", "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 }, "baseAC": 11,
+          "strengthRequired": 0, "stealthDisadvantage": true, "slot": "armor",
+          "weight": 3.6, "quantity": 1, "equipped": true,
+          "description": "Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion)."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces de cuivre et d'argent."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Espion",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 27, "max": 27, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète de poing", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Excelle dans la discrétion et la collecte d'informations ; évite le combat ouvert quand c'est possible."
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon", "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.9, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète de poing", "type": "weapon", "img": "icons/weapons/crossbows/crossbow-slotted.webp",
+        "system": {
+          "weaponType": "rangedMartial", "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "offHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
+            "range": { "normal": 9, "long": 36 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Outils de voleur", "type": "tool", "img": "icons/tools/hand/lockpicks-steel-grey.webp",
+        "system": {
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 }, "weight": 0.45, "quantity": 1, "equipped": false,
+          "useEffect": { "skill": "sleightOfHand", "bonus": 0 },
+          "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage à tout test de Dextérité (Escamotage) impliquant crochetage de serrure ou désamorçage de piège."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-silver-grey.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Pièces d'argent et un message codé illisible."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chef de brigands",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 3 }, "con": { "mod": 2 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 65, "max": 65, "temp": 0 }, "ac": { "value": 15 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Dague", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Meneur d'une bande de Brigands ; dirige le combat et n'hésite pas à se retirer si la situation tourne mal."
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon", "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "offHand", "weight": 0.45, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Mercenaire vétéran",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 58, "max": 58, "temp": 0 }, "ac": { "value": 17 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Combattant expérimenté loué au plus offrant ; ne se bat pas jusqu'à la mort si mal payé."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon", "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" }, "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon", "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial", "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 8.2, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+            "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1,
+            "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse", "type": "armor", "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium", "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 }, "baseAC": 14,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "armor",
+          "weight": 9, "quantity": 1, "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Solde d'engagement, en partie déjà dépensé."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chevalier",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 0 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 52, "max": 52, "temp": 0 }, "ac": { "value": 18 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Suit un code d'honneur (serment, ordre de chevalerie) ; se rend rarement sans y être forcé."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon", "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" }, "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor", "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 }, "baseAC": 2,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "offHand",
+          "weight": 2.7, "quantity": 1, "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates", "type": "armor", "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy", "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 }, "baseAC": 17,
+          "strengthRequired": 15, "stealthDisadvantage": true, "slot": "armor",
+          "weight": 27.2, "quantity": 1, "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 40, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Rat",
+    "type": "npc",
+    "img": "icons/creatures/mammals/rodent-rat-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -2 }, "dex": { "mod": 1 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 1, "max": 1, "temp": 0 }, "ac": { "value": 10 }, "speed": 6 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d2", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Fuit dès que le combat tourne à son désavantage ; rarement rencontré seul."
+    },
+    "items": []
+  },
+  {
+    "name": "Corbeau",
+    "type": "npc",
+    "img": "icons/creatures/birds/corvid-flying-wings-purple.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 2 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 1, "max": 1, "temp": 0 }, "ac": { "value": 12 }, "speed": 15 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Bec", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d2", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Vole ; difficile à toucher en mêlée depuis le sol sans capacité adaptée."
+    },
+    "items": []
+  },
+  {
+    "name": "Loup",
+    "type": "npc",
+    "img": "icons/creatures/mammals/wolf-howl-moon-gray.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 13 }, "speed": 12 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Tactique de meute : avantage aux jets d'attaque si un allié du Loup est à moins de 1,50 m de la cible."
+    },
+    "items": [
+      {
+        "name": "Fourrure de loup", "type": "gear", "img": "icons/commodities/leather/fur-pelt-brown.webp",
+        "system": {
+          "weight": 1.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Peut être vendue à un tanneur."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Sanglier",
+    "type": "npc",
+    "img": "icons/creatures/mammals/livestock-pig-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": -1 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 11 }, "speed": 12 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Défense", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Acharné : peut tenter une dernière charge même mortellement blessé (à l'appréciation du MJ)."
+    },
+    "items": [
+      {
+        "name": "Défenses de sanglier", "type": "gear", "img": "icons/commodities/bones/skull-tusked-grey.webp",
+        "system": {
+          "weight": 0.5, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Trophée de chasse sans grande valeur marchande."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Serpent venimeux",
+    "type": "npc",
+    "img": "icons/creatures/reptiles/snake-fangs-bite-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 3 }, "con": { "mod": 0 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 2, "max": 2, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "3d6", "type": "poison" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Venin puissant malgré sa petite taille ; préfère fuir plutôt qu'engager un combat prolongé."
+    },
+    "items": []
+  },
+  {
+    "name": "Panthère",
+    "type": "npc",
+    "img": "icons/creatures/mammals/cat-hunched-glowing-red.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 2 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 13, "max": 13, "temp": 0 }, "ac": { "value": 12 }, "speed": 15 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Griffe", "ability": "str", "bonus": 1, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Camouflage naturel : avantage aux tests de Discrétion en milieu naturel dense."
+    },
+    "items": [
+      {
+        "name": "Fourrure de panthère", "type": "gear", "img": "icons/commodities/leather/fur-pelt-spotted-brown.webp",
+        "system": {
+          "weight": 1.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 8, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Fourrure tachetée, recherchée par certains tanneurs."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Crocodile",
+    "type": "npc",
+    "img": "icons/creatures/reptiles/lizard-mouth-glowing-red.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 19, "max": 19, "temp": 0 }, "ac": { "value": 12 }, "speed": 6 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Peut retenir sa respiration longtemps sous l'eau et attaquer par surprise depuis la surface."
+    },
+    "items": [
+      {
+        "name": "Peau de crocodile", "type": "gear", "img": "icons/commodities/leather/scales-green.webp",
+        "system": {
+          "weight": 2.3, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Peau épaisse, prisée pour la maroquinerie fine."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Ours brun",
+    "type": "npc",
+    "img": "icons/creatures/abilities/bear-roar-bite-brown.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 0 }, "con": { "mod": 3 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 34, "max": 34, "temp": 0 }, "ac": { "value": 11 }, "speed": 12 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffe", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Odorat très développé ; difficile à surprendre par une embuscade."
+    },
+    "items": [
+      {
+        "name": "Fourrure d'ours", "type": "gear", "img": "icons/commodities/leather/fur-pelt-bear.webp",
+        "system": {
+          "weight": 3.6, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Grande fourrure épaisse, de bonne valeur marchande."
+        }
+      },
+      {
+        "name": "Griffes d'ours", "type": "gear", "img": "icons/commodities/claws/claw-bear-brown.webp",
+        "system": {
+          "weight": 0.5, "quantity": 4, "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Trophée de chasse, parfois utilisé en artisanat."
+        }
+      }
+    ]
+  }
+]

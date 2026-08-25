@@ -101,12 +101,16 @@ describe("Intégration Combat Tracker", () => {
     });
   });
 
-  it("la réaction se régénère en début de tour propre, via le vrai bouton 'Tour suivant' (T-COMBAT-002)", () => {
+  it("la réaction, l'Action et l'Action bonus se régénèrent en début de tour propre, via le vrai bouton 'Tour suivant' (T-COMBAT-002)", () => {
     const actorId = createdActorIds[0];
 
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
-      return updateActor(win, actor, { "system.combat.reactionAvailable": false });
+      return updateActor(win, actor, {
+        "system.combat.reactionAvailable": false,
+        "system.combat.actionAvailable": false,
+        "system.combat.bonusActionAvailable": false
+      });
     });
 
     cy.window().then((win) => {
@@ -126,16 +130,28 @@ describe("Intégration Combat Tracker", () => {
     cy.window().then((win) => win.game.combat.startCombat());
 
     cy.window({ timeout: 10000 }).should((win) => {
-      expect(win.game.actors.get(actorId).system.combat.reactionAvailable, "réaction régénérée au début du combat/tour").to.be.true;
+      const system = win.game.actors.get(actorId).system;
+      expect(system.combat.reactionAvailable, "réaction régénérée au début du combat/tour").to.be.true;
+      expect(system.combat.actionAvailable, "Action régénérée au début du combat/tour").to.be.true;
+      expect(system.combat.bonusActionAvailable, "Action bonus régénérée au début du combat/tour").to.be.true;
     });
 
-    // Reconsomme la réaction, puis avance le tour via le VRAI bouton du Combat Tracker (pas
+    // Reconsomme les trois, puis avance le tour via le VRAI bouton du Combat Tracker (pas
     // l'API) : seul Combattant du combat, donc "Tour suivant" boucle sur son propre tour.
-    cy.window().then((win) => updateActor(win, win.game.actors.get(actorId), { "system.combat.reactionAvailable": false }));
+    cy.window().then((win) =>
+      updateActor(win, win.game.actors.get(actorId), {
+        "system.combat.reactionAvailable": false,
+        "system.combat.actionAvailable": false,
+        "system.combat.bonusActionAvailable": false
+      })
+    );
     cy.get('#combat button[data-action="nextTurn"]', { timeout: 10000 }).click();
 
     cy.window({ timeout: 10000 }).should((win) => {
-      expect(win.game.actors.get(actorId).system.combat.reactionAvailable, "réaction régénérée après 'Tour suivant'").to.be.true;
+      const system = win.game.actors.get(actorId).system;
+      expect(system.combat.reactionAvailable, "réaction régénérée après 'Tour suivant'").to.be.true;
+      expect(system.combat.actionAvailable, "Action régénérée après 'Tour suivant'").to.be.true;
+      expect(system.combat.bonusActionAvailable, "Action bonus régénérée après 'Tour suivant'").to.be.true;
     });
   });
 

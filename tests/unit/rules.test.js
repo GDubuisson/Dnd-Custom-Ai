@@ -14,7 +14,9 @@ import {
   passivePerception,
   spellSaveDC,
   spellAttackBonus,
+  targetSaveModifier,
   spellSlotsForClass,
+  spellSlotFillUpdates,
   SPELL_LEVELS,
   maxHitPoints,
   armorClass,
@@ -166,6 +168,34 @@ describe("spellSaveDC / spellAttackBonus", () => {
   test("bonus d'attaque = maîtrise + mod", () => assert.equal(spellAttackBonus(3, 4), 7));
 });
 
+describe("targetSaveModifier (mod. de sauvegarde d'une CIBLE, sort/capacité à sauvegarde)", () => {
+  function targetSystem({ dexTotal = 10, proficient = false, level = 1 }) {
+    return {
+      abilities: { dex: { total: dexTotal } },
+      saves: { dex: { proficient } },
+      attributes: { level }
+    };
+  }
+
+  test("non maîtrisé -> seul le modificateur de caractéristique compte", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16 }), "dex"), 3);
+  });
+  test("maîtrisé -> modificateur + bonus de maîtrise (niveau 1 -> +2)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16, proficient: true, level: 1 }), "dex"), 5);
+  });
+  test("maîtrisé, niveau plus élevé -> bonus de maîtrise recalculé (niveau 9 -> +4)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 16, proficient: true, level: 9 }), "dex"), 7);
+  });
+  test("modificateur négatif possible (caractéristique faible)", () => {
+    assert.equal(targetSaveModifier(targetSystem({ dexTotal: 6 }), "dex"), -2);
+  });
+
+  test("cible PNJ (NpcData, forme simplifiée sans .total ni saves) -> mod direct, pas de crash", () => {
+    const npcSystem = { abilities: { dex: { mod: 3 } } };
+    assert.equal(targetSaveModifier(npcSystem, "dex"), 3);
+  });
+});
+
 function emptySlots() {
   return Object.fromEntries(SPELL_LEVELS.map((level) => [level, 0]));
 }
@@ -228,6 +258,30 @@ describe("spellSlotsForClass (emplacements par niveau 1-9, dérivés de spell-sl
         isPactMagic: true
       });
     }
+  });
+});
+
+describe("spellSlotFillUpdates (topper tous les paliers au max, création/montée de niveau/repos)", () => {
+  test("un objet d'update par palier (1-9), value réglé sur le max courant de ce palier", () => {
+    const actor = {
+      system: {
+        spells: {
+          slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: level === 3 ? 2 : 0 }]))
+        }
+      }
+    };
+    const updates = spellSlotFillUpdates(actor);
+    for (const level of SPELL_LEVELS) {
+      assert.equal(updates[`system.spells.slots.${level}.value`], level === 3 ? 2 : 0);
+    }
+  });
+
+  test("classe non lanceuse (tous les max à 0) -> tous les paliers remis à 0, sans erreur", () => {
+    const actor = {
+      system: { spells: { slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: 0 }])) } }
+    };
+    const updates = spellSlotFillUpdates(actor);
+    assert.ok(SPELL_LEVELS.every((level) => updates[`system.spells.slots.${level}.value`] === 0));
   });
 });
 

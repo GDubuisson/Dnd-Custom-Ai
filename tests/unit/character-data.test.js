@@ -35,6 +35,95 @@ describe("CharacterData#prepareDerivedData — caractéristiques", () => {
     prepare(fixture);
     assert.equal(fixture.abilities.str.total, 14);
   });
+
+  test("mod dérivé (donnée non persistée, exposée pour rollFormula @abilities.<clé>.mod, ex. Déviation de projectiles)", () => {
+    const fixture = buildCharacterFixture({
+      origin: "altenmark", // str +2 (cf. origins.json)
+      abilities: { str: { value: 14, total: 0 }, dex: { value: 8, total: 0 } }
+    });
+    prepare(fixture);
+    assert.equal(fixture.abilities.str.mod, 3); // total 16 -> +3
+    assert.equal(fixture.abilities.dex.mod, -1); // total 8 -> -1
+  });
+
+  describe("Don 'Doué' — +1 Charisme fixe, appliqué automatiquement", () => {
+    test("avec le don -> +1 Charisme, autres caractéristiques inchangées", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { cha: { value: 14, total: 0 }, str: { value: 12, total: 0 } },
+        items: [{ type: "feature", name: "Doué" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 15);
+      assert.equal(fixture.abilities.str.total, 12);
+    });
+    test("sans le don -> aucun bonus", () => {
+      const fixture = buildCharacterFixture({ abilities: { cha: { value: 14, total: 0 } } });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 14);
+    });
+    test("cumulable avec le bonus d'Origine", () => {
+      const fixture = buildCharacterFixture({
+        origin: "lucentia", // cha +2 (cf. origins.json)
+        abilities: { cha: { value: 14, total: 0 } },
+        items: [{ type: "feature", name: "Doué" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.cha.total, 17); // 14 + 2 (origine) + 1 (don)
+    });
+  });
+
+  describe("Dons 'Athlète'/'Résilient' — choix de caractéristique posé sur le don lui-même", () => {
+    function abilityChoiceFeature(name, chosenAbility) {
+      return { type: "feature", name, system: { offersAbilityChoice: true, chosenAbility } };
+    }
+
+    test("Athlète, choix réglé -> +1 sur la caractéristique choisie", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "dex")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.dex.total, 15);
+    });
+
+    test("Athlète, choix PAS ENCORE réglé (chosenAbility vide) -> aucun bonus", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.dex.total, 14);
+    });
+
+    test("Résilient, choix réglé -> +1 ET maîtrise de sauvegarde correspondante", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { wis: { value: 12, total: 0 } },
+        items: [abilityChoiceFeature("Résilient", "wis")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.wis.total, 13);
+      assert.equal(fixture.saves.wis.proficient, true);
+    });
+
+    test("Résilient ne retire jamais une maîtrise déjà acquise par ailleurs sur une AUTRE caractéristique", () => {
+      const fixture = buildCharacterFixture({
+        saves: { str: { proficient: true } },
+        items: [abilityChoiceFeature("Résilient", "wis")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.saves.str.proficient, true);
+    });
+
+    test("les deux dons cumulés sur la MÊME caractéristique -> bonus additionnés (+2)", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { con: { value: 14, total: 0 } },
+        items: [abilityChoiceFeature("Athlète", "con"), abilityChoiceFeature("Résilient", "con")]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.con.total, 16); // 14 + 1 (Athlète) + 1 (Résilient)
+      assert.equal(fixture.saves.con.proficient, true); // toujours accordée par Résilient
+    });
+  });
 });
 
 describe("CharacterData#prepareDerivedData — PV max", () => {
@@ -60,6 +149,49 @@ describe("CharacterData#prepareDerivedData — PV max", () => {
     });
     prepare(fixture);
     assert.equal(fixture.attributes.hp.max, 6); // floor(12/2)
+  });
+
+  describe("Don 'Tenace' — +2 PV max par niveau, appliqué automatiquement", () => {
+    test("avec le don, niveau 1 -> +2 PV max", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 14); // 12 (base) + 2×1 (Tenace)
+    });
+    test("avec le don, niveau 5 -> bonus recalculé à 2×niveau, pas figé au niveau d'acquisition", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 5 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      // maxHitPoints(10, 5, 2) = 10+2 + 4×(5+1+2) = 44 ; +2×5 (Tenace) = 54.
+      assert.equal(fixture.attributes.hp.max, 54);
+    });
+    test("sans le don -> aucun bonus, comportement inchangé", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1 },
+        abilities: { con: { value: 14, total: 14 } }
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 12);
+    });
+    test("exhaustion niveau 4+ : le bonus de Tenace est inclus dans le halving, pas ajouté après", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 1, exhaustion: 4 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Tenace" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 7); // floor((12+2)/2)
+    });
   });
 });
 
@@ -175,6 +307,31 @@ describe("CharacterData#prepareDerivedData — dérivés non persistés", () => 
     const fixture = buildCharacterFixture({ abilities: { dex: { value: 18, total: 18 } } });
     prepare(fixture);
     assert.equal(fixture.attributes.initiativeMod, 4);
+  });
+
+  describe("Don 'Alerte' — +5 Initiative, appliqué automatiquement", () => {
+    test("avec le don -> mod Dex + 5", () => {
+      const fixture = buildCharacterFixture({
+        abilities: { dex: { value: 18, total: 18 } },
+        items: [{ type: "feature", name: "Alerte" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 9); // 4 (dex) + 5 (Alerte)
+    });
+    test("sans le don -> aucun bonus, comportement inchangé", () => {
+      const fixture = buildCharacterFixture({ abilities: { dex: { value: 18, total: 18 } } });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 4);
+    });
+    test("cumulable avec le bonus de sous-classe (Traqueur des ténèbres)", () => {
+      const fixture = buildCharacterFixture({
+        subclass: "gloomStalker",
+        abilities: { dex: { value: 18, total: 18 } },
+        items: [{ type: "feature", name: "Alerte" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.initiativeMod, 11); // 4 (dex) + 2 (sous-classe) + 5 (Alerte)
+    });
   });
 });
 

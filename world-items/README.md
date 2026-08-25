@@ -15,9 +15,10 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 - `armors.json`, `weapons.json`, `gear.json`, `tools.json` → importés dans les Items du monde
   (onglet "Objets" de Foundry, entre "Acteurs" et "Journaux").
 - `classes.json`, `subclasses.json`, `origins.json`, `spells.json`, `features.json`,
-  `feats.json` → importés **directement dans leurs compendiums** (`packs/classes`,
-  `packs/sous-classes`, `packs/origines`, `packs/sorts`, `packs/capacites`, `packs/dons`), pas
-  dans les Items du monde (cf. "Note sur les classes et les origines" plus bas).
+  `feats.json`, `npcs.json` → importés **directement dans leurs compendiums** (`packs/classes`,
+  `packs/sous-classes`, `packs/origines`, `packs/sorts`, `packs/capacites`, `packs/dons`,
+  `packs/adversaires`), pas dans les Items du monde (cf. "Note sur les classes et les origines"
+  plus bas). `npcs.json` est le seul à peupler un compendium **Actor** plutôt qu'Item.
 
 | Fichier | Contenu | Type d'Item | Destination |
 |---|---|---|---|
@@ -31,6 +32,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
+| `npcs.json` | 15 PNJ prêts à l'emploi (7 humanoïdes, 8 bêtes sauvages réelles — aucune créature légendaire/mythique) avec butin embarqué | Actor `npc` | Compendium "Adversaires" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
 avec le système) — dupliquez l'Item une fois importé si vous voulez le personnaliser.
@@ -145,6 +147,27 @@ Capacités de classe de base :
 - Critique automatique conditionnel (`forceCriticalHit`, cf. `rollCheck` dans `scripts/helpers/
   rolls.js`) : un jet d'attaque contre une cible portant l'état "surprised" devient
   systématiquement critique (Assassinat, Assassin).
+
+## Note sur les Adversaires
+
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 15 Actors `npc` prêts à
+glisser sur une scène : 7 humanoïdes (Brigand, Maraudeur, Garde, Espion, Chef de brigands,
+Mercenaire vétéran, Chevalier) et 8 bêtes sauvages réelles (Rat, Corbeau, Loup, Sanglier, Serpent
+venimeux, Panthère, Crocodile, Ours brun) — volontairement **aucune** créature légendaire/
+mythique/fantastique (pas de dragon, gobelin, mort-vivant...), sur demande explicite de
+l'utilisateur. Indices de dangerosité SRD 5e du FI 0 au FI 3, calculés à partir de vrais blocs de
+statistiques SRD adaptés au schéma simplifié de `NpcData` (bonus directs, pas de score complet) —
+`xpReward` pré-rempli depuis `DND_CUSTOM.challengeRatingXp`. Chaque PNJ embarque son propre butin
+(`items`, visible dans l'onglet "Butin" de sa fiche une fois placé sur une scène) : armes/armures
+correspondant à ses attaques, plus quelques objets de circonstance (bourse de pièces pour les
+humanoïdes, trophées — fourrure, défenses, griffes — pour les bêtes qui s'y prêtent). Ce
+compendium n'est **visible que du MJ** par défaut (`ownership.PLAYER: "NONE"`, cf. `system.json`
+> `packs`), contrairement aux autres compendiums de ce système (tous "OBSERVER" pour les joueurs)
+— un bestiaire n'a pas vocation à être consulté à l'avance par les joueurs. Plusieurs PNJ
+illustrent le profil d'attaque multiple (Espion, Chef de brigands, Ours brun — 2 attaques
+distinctes chacun) et le Serpent venimeux illustre `secondaryDamage` (poison en plus du
+perforant). Comme les autres fichiers de ce dossier, pas censé être modifié directement —
+dupliquez le PNJ une fois glissé sur une scène pour le personnaliser.
 
 ## Note sur les dons
 

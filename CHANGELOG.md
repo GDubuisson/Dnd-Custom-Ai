@@ -7,6 +7,151 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Compendium "Adversaires" (bestiaire, demande explicite de l'utilisateur) : nouveau compendium
+Actor `packs/adversaires` (`world-items/npcs.json`, importé automatiquement comme le reste du
+contenu de référence) avec 15 PNJ prêts à l'emploi — 7 humanoïdes du FI 1/8 au FI 3 (Brigand,
+Maraudeur, Garde, Espion, Chef de brigands, Mercenaire vétéran, Chevalier) et 8 bêtes sauvages
+réelles du FI 0 au FI 1 (Rat, Corbeau, Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours
+brun), volontairement aucune créature légendaire/mythique. Chaque PNJ a des attaques réellement
+jouables (certains à profil multiple) et son propre butin embarqué (armes/armures/objets).
+`content-import.js` généralisé pour peupler un compendium Actor en plus des compendiums Item déjà
+gérés (`compendium.documentClass.createDocuments`), et corrige au passage un bug de course réel
+(`compendium.index` brut non awaité pouvait renvoyer un index vide au moment du hook `ready`,
+dupliquant le contenu importé à chaque rechargement du monde — remplacé par
+`await compendium.getIndex()` pour tous les fichiers de référence). Remplace et retire l'ancien
+embryon de bestiaire `world-actors/adversaries.json` (v0.9.0, 2026-08-09) : import manuel par
+macro, jamais branché sur le pipeline d'import standard, et sans aucune attaque automatisée (texte
+libre uniquement). Validé `cypress/e2e/bestiary-adversaires.cy.js` (4/4, 2 runs stables) +
+régression `wizard.cy.js` (18/18) + 864/864 unitaires (nouveau bloc de cohérence dédié dans
+`tests/data/consistency.test.js`).
+
+Correction de régression : le compagnon animal (Maître des bêtes, Rôdeur) utilisait encore
+l'ancien champ `system.attack` (singulier), retiré de `NpcData` lors du passage à `attacks`
+(liste) plus tôt dans ce même chantier — le Loup invoqué se retrouvait sans aucune attaque,
+silencieusement (Foundry ignore une clé inconnue du schéma sans erreur). Corrigé
+(`scripts/helpers/companion.js`), test T-SUB-RANGER-001 renforcé pour vérifier explicitement la
+présence d'une attaque sur le compagnon créé.
+
+Points d'inspiration (PI, règle maison, demande explicite de l'utilisateur) : ressource libre
+accordée manuellement par le MJ (`system.attributes.inspirationPoints`, sans maximum), distincte
+de l'Inspiration bardique du SRD. Un Joueur en dépense un via un bouton apparaissant sous un jet
+de caractéristique ou de compétence dans le chat (jamais une sauvegarde ni une attaque) : le jet
+d'origine disparaît du chat et un nouveau jet est effectué, résultat toujours conservé (même
+désavantageux) — contrairement à Chanceux/Indomptable qui gardent le jet d'origine et postent une
+relance à la suite. Validé `cypress/e2e/inspiration-points.cy.js` (4/4, 2 runs stables) +
+régression sur `tab-stats.cy.js`/`tier-a-mechanics.cy.js`/`i18n.cy.js` + 805/805 unitaires.
+
+PNJ à plusieurs profils d'attaque (SRD 5e, point 4/6 de la liste "mécaniques jamais modélisées",
+cadré avec l'utilisateur point par point) : `NpcData#attack` (profil UNIQUE) devient
+`NpcData#attacks` (LISTE) — un vrai bloc de statistiques SRD 5e a souvent plusieurs attaques
+distinctes (ex. "Morsure" + "Griffe"). Bouton "Ajouter une attaque"/"Retirer" sur la fiche PNJ,
+chaque attaque garde son propre jet Attaque/Dégâts, résolue individuellement (jamais un seul jet
+combiné). PNJ déjà créés automatiquement migrés au premier chargement du monde (leur ancien profil
+devient le premier élément de la nouvelle liste) ; un PNJ neuf démarre sans aucune attaque
+configurée. Validé `cypress/e2e/npc-multiattack.cy.js` (4/4, 2 runs stables) + régression sur 11
+suites liées + 803/803 unitaires.
+
+Agripper / Bousculer (SRD 5e, 1er des 6 points de la liste "mécaniques jamais modélisées",
+cadré avec l'utilisateur point par point) : au lieu d'une attaque, un personnage peut tenter
+d'agripper ou de bousculer une seule créature à sa portée — premier TEST OPPOSÉ de ce système
+(les deux camps lancent un d20, comparés entre eux, plutôt qu'un jet comparé à un DD/une CA
+fixe). La défense retient le meilleur des jets d'Athlétisme/Acrobaties de la cible. Agripper
+réussi : état "Agrippé" posé automatiquement. Bousculer réussi : choix à l'avance entre "à
+terre" (état "Prone" automatique) et "repoussé de 1,50 m" (jamais automatisé, simple mention —
+ce système ne déplace jamais un token). Validé `cypress/e2e/opposed-check-grapple-shove.cy.js`
+(6/6, 2 runs stables) + régression + 802/802 unitaires.
+
+Revue de couverture de tests (2026-08-25, demande explicite) : audit ciblé montée de niveau/
+résistances/charges/réactions — déjà testées en grande profondeur en E2E réel. Seule lacune
+trouvée : `halfOnSave` (Évasion/Tour de magie renforcé) et résistance/immunité de type, chacune
+déjà testée isolément, jamais combinées. Comblé par
+`cypress/e2e/spell-save-damage-resistance-interaction.cy.js` (3/3, 2 runs stables) : vérifie que
+les 2 réductions s'appliquent bien l'une après l'autre (arrondis séparés), pas qu'une écrase
+l'autre. Cahier de test manuel complet (23 chapitres, ~130 scénarios, suivi de progression)
+publié en artifact pour un testeur humain.
+
+Chantier "types de dégâts" — Phase 1 (physique, cadrée avec l'utilisateur avant implémentation) :
+résistance/immunité/vulnérabilité aux dégâts GÉNÉRIQUES, réglables librement par le MJ sur toute
+fiche PNJ ou Personnage (3 nouveaux groupes de cases à cocher), pour les 3 types physiques
+(contondant/perforant/tranchant) — jusqu'ici, seules quelques Capacités isolées (Rage, Résilience
+draconique...) donnaient une résistance câblée en dur, sans réglage possible ailleurs. Nouvelle
+case "Magique" sur les armes et sur le profil d'attaque des PNJ : une source magique contourne
+cette résistance/immunité générique (nuance SRD "contre les attaques non magiques"), les
+résistances déjà câblées en dur restant toujours actives quel que soit ce réglage (fidèle au SRD,
+qui ne prévoit pas cette nuance pour Rage par exemple). Résistance et vulnérabilité sur le même
+type s'annulent (dégâts normaux), conformément à la règle SRD explicite.
+
+Chantier "types de dégâts" — Phase 2 (magique) : aucun nouveau code, le mécanisme générique de la
+Phase 1 fonctionnait déjà sans condition pour les 10 types magiques (feu, nécrotique, poison,
+radiant...) — la nuance "contourné par une source magique" ne concerne QUE les 3 types physiques,
+fidèle au SRD (aucun monstre n'a de résistance "au feu sauf source non magique"). Cette phase
+n'a donc consisté qu'à valider en E2E réel les cas magiques courants (immunité poison/psychique
+morts-vivants/constructs, vulnérabilité radiant, sort à zone touchant plusieurs cibles à la fois
+avec une résistance résolue indépendamment pour chacune). Les armes/armures à dégâts combinés
+physique+magique restent prévues pour une phase ultérieure.
+
+Chantier "types de dégâts" — Phase 3 (armes et attaques de PNJ à dégâts combinés) : une arme
+(`WeaponData#secondaryDamage`) ou une attaque de PNJ (`NpcData#attack.secondaryDamage`) peut
+désormais infliger un SECOND type de dégâts bonus, indépendant du premier (ex. épée de feu =
+tranchant + feu). Un seul clic sur "Dégâts" poste 2 messages de chat distincts, chacun résolu
+indépendamment contre les résistances de la cible (ex. cible résistante au tranchant : tranchant
+réduit de moitié, feu intégral — la résistance physique n'est jamais annulée par la présence d'un
+second type). Le coup critique double les dés des deux composants. Le composant secondaire ne
+reçoit jamais de modificateur de caractéristique ni de bonus de Rage (dés fixes, SRD 5e).
+
+Chantier "types de dégâts" — Phase 4 (armures, cadrée avec l'utilisateur avant implémentation) :
+une armure porte désormais sa propre résistance/immunité/vulnérabilité aux dégâts (même
+`damageAffinitySchema` que Personnage/PNJ, cf. Phase 1), indépendante des cases génériques déjà
+posées sur la fiche — active UNIQUEMENT si l'armure est équipée. Contrairement au champ générique,
+la résistance/immunité/vulnérabilité d'une armure n'a PAS la nuance SRD "contre les attaques non
+magiques" (une armure qui protège du feu protège du feu, source magique ou non) : les résistances
+déjà câblées en dur (Rage...) ont la même règle, seul le champ générique Personnage/PNJ en tient
+compte. Se combine avec le champ générique existant selon la règle déjà en place (immunité
+prioritaire, résistance+vulnérabilité sur le même type s'annulent). Validé
+`cypress/e2e/damage-types-armor.cy.js` (7/7, 2 runs consécutifs stables) + régression 34/34 sur
+les suites liées (Phases 1-3, Rage, Voile des anciens) + 798/798 unitaires. Ce chantier "types de
+dégâts" est désormais terminé (4/4 phases).
+
+Chantier "mécaniques encore en texte brut" (audit du 2026-08-24) : automatise plusieurs mécaniques
+SRD 5e qui restaient du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme
+déjà en place) : Indomptable, Critique brutal, Instinct sauvage, Affinité de la tempête, Affinité
+élémentaire, Forme sauvage de combat. Niveau B (3 généralisations, chacune débloquant plusieurs
+sorts/capacités d'un coup) :
+- `SpellData#save.appliesCondition` : un sort à sauvegarde peut désormais poser automatiquement une
+  condition sur échec (même mécanisme que les Capacités à sauvegarde). Câblé sur Immobilisation de
+  personne/de monstre (paralysé), Charme-personne/Domination de personne (charmé), Enchevêtrement
+  (entravé).
+- `SpellData#grantsCondition` : un sort qui pose un état sans jet associé (ex. Invisibilité,
+  Invisibilité suprême) bascule désormais cet état sur la cible au moment du lancer.
+- Immunité à une condition généralisée au-delà de Rage sans esprit/Aura de dévotion : deux
+  nouvelles conditions homebrew (états à poser manuellement sur l'onglet États, comme "Béni"/
+  "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
+  (immunité à Charmé/Effrayé).
+
+Niveau C (les 6 mécaniques restantes, intégralement terminé) :
+- Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de corps à
+  corps à la Force, résistance aux dégâts contondants/perforants/tranchants — les 3 tant que
+  l'état "En Rage" (onglet États) est actif.
+- Destruction des morts-vivants (Clerc 5) : "Repousser les morts-vivants" détruit désormais un
+  mort-vivant (au lieu de simplement le repousser) quand son indice de dangerosité est sous le
+  seuil de la table SRD pour le niveau du Clerc.
+- Voile des anciens (Paladin, Serment des Anciens) : résistance aux dégâts de sorts en zone de
+  3 m, tant que la nouvelle bascule "Voile des anciens" (onglet États) est active.
+- Ennemi juré (Rôdeur 1) : choix ponctuel d'un type de créature favori (bouton "Choisir"),
+  avantage automatique aux tests de Survie et d'Intelligence contre une cible ciblée de ce type.
+- Application des dégâts d'un sort à sauvegarde : tient désormais compte du résultat du jet de
+  CHAQUE cible (réussite = moitié des dégâts si le sort le prévoit sinon aucun ; échec = dégâts
+  pleins), ce qui n'était jamais le cas auparavant (dégâts pleins systématiques). Débloque au
+  passage Évasion (Roublard 7 : réussite = aucun dégât, échec = moitié) et Tour de magie renforcé
+  (Magicien Évocation 6 : réussite à un tour de magie = moitié au lieu d'aucun).
+- Traque implacable (Paladin, Serment de Vengeance 3) : nouveau bouton dédié (comme les autres
+  options de Canalisation divine du Serment) qui désigne la cible actuellement ciblée comme proie
+  ("Traqué", onglet États) et consomme la réserve de Canalisation divine. Toute créature autre que
+  le Paladin qui l'a désignée subit désormais un désavantage automatique aux jets d'attaque contre
+  cette cible (arme/sort d'un personnage, attaque d'un PNJ) tant qu'elle porte l'état — un état
+  "Traqué" posé à la main depuis l'onglet États (sans passer par ce bouton) reste un simple
+  marqueur visuel, sans désavantage automatique associé.
+
 Chantier "emplacements de sorts par niveau" : remplace le pool unique "Sorts par repos" par de
 vrais emplacements 1-9 (SRD 5e), avec surclassement (dépenser un palier supérieur si celui du
 sort est épuisé) et cas particulier Magie de Pacte (Occultiste, un seul palier actif, rechargé

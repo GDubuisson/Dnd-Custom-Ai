@@ -33,6 +33,7 @@
       <label class="hp-field">{{localize "DND_CUSTOM.Actor.HP"}}
         <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}">
         / <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" min="0">
+        <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
         <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
       </label>
       <label>{{localize "DND_CUSTOM.Actor.AC"}}

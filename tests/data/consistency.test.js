@@ -14,6 +14,7 @@ import {
   WORLD_SUBCLASSES,
   WORLD_ORIGIN_ITEMS,
   WORLD_LANGUAGES,
+  WORLD_NPCS,
   GLOSSARY
 } from "../support/fixtures.js";
 import { LOCALES } from "../support/i18n.js";
@@ -261,6 +262,78 @@ describe("world-items/*.json — objets physiques (armes/armures/objets/outils)"
       assert.equal(new Set(names).size, names.length, `doublon de nom détecté dans ${label}`);
     }
   });
+});
+
+// Chantier "Adversaires" (2026-08-25, demande explicite de l'utilisateur) : bestiaire prêt à
+// l'emploi (humanoïdes + bêtes sauvages réelles), importé directement dans le compendium Actor
+// "adversaires" (cf. content-import.js). Valide le schéma NpcData/WeaponData/ArmorData/
+// GearData/ToolData sur chaque entrée + butin embarqué, même esprit que les blocs
+// features.json/spells.json ci-dessus.
+describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () => {
+  const CREATURE_TYPE_KEYS = new Set(Object.keys(DND_CUSTOM.creatureTypes));
+  const SIZE_KEYS = new Set(Object.keys(DND_CUSTOM.sizes));
+  const DAMAGE_TYPE_KEYS = new Set(Object.keys(DND_CUSTOM.damageTypes));
+  const CR_KEYS = new Set(DND_CUSTOM.challengeRatings);
+
+  test("au moins une entrée, aucun nom en double", () => {
+    assert.ok(WORLD_NPCS.length > 0);
+    const names = WORLD_NPCS.map((npc) => npc.name);
+    assert.equal(new Set(names).size, names.length, "doublon de nom détecté dans npcs.json");
+  });
+
+  // Demande explicite de l'utilisateur : bestiaire volontairement limité aux humanoïdes et aux
+  // bêtes sauvages RÉELLES, aucune créature légendaire/mythique/fantastique (pas de dragon,
+  // mort-vivant, céleste, fiélon...).
+  test("seuls les types de créature \"humanoid\" et \"beast\" sont présents (aucune créature fantastique)", () => {
+    for (const npc of WORLD_NPCS) {
+      assert.ok(
+        ["humanoid", "beast"].includes(npc.system.creatureType),
+        `"${npc.name}" a un type de créature hors scope : "${npc.system.creatureType}"`
+      );
+    }
+  });
+
+  for (const npc of WORLD_NPCS) {
+    test(`${npc.name} : type de créature/taille/FI valides, PV/CA positifs`, () => {
+      assert.ok(CREATURE_TYPE_KEYS.has(npc.system.creatureType), `creatureType invalide sur "${npc.name}"`);
+      assert.ok(SIZE_KEYS.has(npc.system.size), `size invalide sur "${npc.name}"`);
+      assert.ok(CR_KEYS.has(npc.system.challengeRating), `challengeRating invalide sur "${npc.name}"`);
+      assert.equal(
+        npc.system.xpReward,
+        DND_CUSTOM.challengeRatingXp[npc.system.challengeRating],
+        `xpReward de "${npc.name}" ne correspond pas à la table SRD pour le FI ${npc.system.challengeRating}`
+      );
+      assert.ok(npc.system.attributes.hp.max > 0, `PV max de "${npc.name}" doit être positif`);
+      assert.ok(npc.system.attributes.ac.value > 0, `CA de "${npc.name}" doit être positive`);
+    });
+
+    test(`${npc.name} : les 6 caractéristiques sont renseignées`, () => {
+      for (const key of ABILITY_KEYS) {
+        assert.ok(typeof npc.system.abilities[key]?.mod === "number", `caractéristique "${key}" manquante sur "${npc.name}"`);
+      }
+    });
+
+    test(`${npc.name} : au moins une attaque, types de dégâts valides`, () => {
+      assert.ok(npc.system.attacks.length > 0, `"${npc.name}" n'a aucune attaque configurée`);
+      for (const attack of npc.system.attacks) {
+        assert.ok(["str", "dex"].includes(attack.ability), `ability d'attaque invalide sur "${npc.name}"`);
+        if (attack.damage.type) assert.ok(DAMAGE_TYPE_KEYS.has(attack.damage.type), `type de dégâts invalide sur "${npc.name}"`);
+        if (attack.secondaryDamage.type) {
+          assert.ok(DAMAGE_TYPE_KEYS.has(attack.secondaryDamage.type), `type de dégâts secondaire invalide sur "${npc.name}"`);
+        }
+      }
+    });
+
+    if (npc.items.length) {
+      test(`${npc.name} : butin embarqué bien formé (name/type/system)`, () => {
+        for (const item of npc.items) {
+          assert.ok(item.name?.length > 0, `un objet de butin de "${npc.name}" n'a pas de nom`);
+          assert.ok(["weapon", "armor", "gear", "tool"].includes(item.type), `type de butin invalide sur "${npc.name}" > "${item.name}"`);
+          assert.ok(typeof item.system === "object", `system manquant sur "${npc.name}" > "${item.name}"`);
+        }
+      });
+    }
+  }
 });
 
 describe("classStartingEquipment — les noms référencés existent dans world-items/weapons|armors.json", () => {

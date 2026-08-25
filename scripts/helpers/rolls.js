@@ -34,7 +34,21 @@ function isActorInCombat(actor) {
  *  la même garde `isActorInCombat` que `criticalRules` : pas de critique automatique hors
  *  combat. N'annule jamais un échec critique naturel (1 naturel reste un échec critique même si
  *  `forceCriticalHit` est vrai — l'un ou l'autre, jamais les deux en même temps en pratique
- *  puisque `forceCriticalHit` dépend d'un état de la cible, pas du dé). */
+ *  puisque `forceCriticalHit` dépend d'un état de la cible, pas du dé).
+ *
+ *  `criticalThreshold` (jets d'attaque uniquement, défaut 20) : seuil à partir duquel le dé
+ *  naturel compte comme critique — ex. Critique amélioré (Champion, Guerrier, SRD 5e : critique
+ *  sur 19-20 au lieu de 20 seul). Calculé par l'appelant (actor-sheet.js > hasFeature), jamais ici
+ *  (même principe que le don Chanceux ci-dessous : ce helper générique reste ignorant des noms de
+ *  Capacités précis). Un 1 naturel reste toujours un échec critique, quel que soit le seuil.
+ *
+ *  `inspirationEligible` (jets de caractéristique/compétence UNIQUEMENT, posé seulement par
+ *  #onRollAbility/#onRollSkill dans actor-sheet.js — jamais par une sauvegarde ou une attaque) :
+ *  règle maison "points d'inspiration" (PI), ressource libre accordée manuellement par le MJ
+ *  (system.attributes.inspirationPoints, CharacterData uniquement). Contrairement à Chanceux/
+ *  Indomptable ci-dessous (qui gardent le message d'origine et postent une relance à la suite), le
+ *  hook dédié (dnd-custom-ai.js) SUPPRIME le message d'origine du chat et remplace son résultat,
+ *  conformément à la demande explicite de l'utilisateur — jamais les deux visibles en même temps. */
 export async function rollCheck({
   actor,
   formula,
@@ -43,7 +57,10 @@ export async function rollCheck({
   disadvantage = false,
   compareToTargetAc = false,
   criticalRules = false,
-  forceCriticalHit = false
+  forceCriticalHit = false,
+  criticalThreshold = 20,
+  savingThrow = false,
+  inspirationEligible = false
 }) {
   const useAdvantage = advantage && !disadvantage;
   const useDisadvantage = disadvantage && !advantage;
@@ -63,7 +80,7 @@ export async function rollCheck({
     // Un 1 naturel reste toujours un échec critique en premier, avant même de considérer
     // forceCriticalHit : un jet raté au dé ne devient jamais un coup critique automatique.
     isCriticalFumble = naturalFace === 1;
-    isCriticalHit = !isCriticalFumble && (naturalFace === 20 || forceCriticalHit);
+    isCriticalHit = !isCriticalFumble && (naturalFace >= criticalThreshold || forceCriticalHit);
     if (isCriticalHit) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalHit")})`;
     else if (isCriticalFumble) label += ` (${game.i18n.localize("DND_CUSTOM.Roll.CriticalFumble")})`;
   }
@@ -93,6 +110,32 @@ export async function rollCheck({
   const flags = { "dnd-custom-ai": {} };
   if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
   if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
+  // Don "Chanceux" (SRD 5e) : tout jet de d20 passant par rollCheck (test de caractéristique/
+  // compétence, sauvegarde, attaque) est un jet potentiellement "relançable" contre un point de
+  // chance — la formule exacte est reprise telle quelle pour la relance (même die 1d20/2d20kh1/
+  // 2d20kl1 si avantage/désavantage était déjà en jeu). Le hook renderChatMessageHTML
+  // (dnd-custom-ai.js) décide seul si un bouton doit apparaître (l'acteur possède le don ET il
+  // lui reste des charges) — rolls.js reste volontairement ignorant de ce don, aucun import de
+  // hasFeature ici, pour ne pas coupler un helper de jet générique à un don précis.
+  flags["dnd-custom-ai"].luckRoll = true;
+  flags["dnd-custom-ai"].luckFormula = `${die}${formula}`;
+  flags["dnd-custom-ai"].luckActorId = actor.id;
+  // Points d'inspiration (voir docstring ci-dessus) : réutilise luckFormula/luckActorId déjà
+  // posés juste au-dessus (même formule, même acteur) — seul ce flag supplémentaire change de
+  // famille de jets éligibles. `flavor` original conservé tel quel (sans le suffixe Avantage/
+  // Désavantage déjà inclus dans `label`) pour que le hook puisse composer son propre libellé de
+  // relance sans dépendre du texte déjà construit ci-dessus.
+  if (inspirationEligible) {
+    flags["dnd-custom-ai"].inspirationEligible = true;
+    flags["dnd-custom-ai"].checkFlavor = flavor;
+  }
+  // Capacité "Indomptable" (Guerrier 9, SRD 5e) : relance complète d'un jet de SAUVEGARDE raté,
+  // nouveau résultat obligatoire (contrairement à Chanceux/Chance du Fiélon ci-dessus, qui gardent
+  // le meilleur des deux) — `savingThrow` distingue ce cas des tests/jets d'attaque, jamais posé
+  // par #onRollAbility/#onRollSkill/les jets d'attaque. Même flag `luckActorId`/`luckFormula` que
+  // Chanceux (relance la même formule), lu par un hook dédié (dnd-custom-ai.js), volontairement
+  // ignorant lui aussi du nom de Capacité précis.
+  if (savingThrow) flags["dnd-custom-ai"].savingThrowRoll = true;
   await messageRoll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: label, flags });
   return { roll, isCriticalHit, isCriticalFumble };
 }
@@ -108,18 +151,65 @@ export async function rollCheck({
  *  `false` par défaut donc les termes numériques (le modificateur) ne sont jamais multipliés —
  *  gère aussi correctement une formule à plusieurs types de dés (ex. arme magique
  *  "1d8+1d4"), contrairement à une manipulation de chaîne de caractères. DOIT être appelé avant
- *  `evaluate()` (altérer un jet déjà résolu n'a pas de sens côté Foundry). */
-export async function rollDamage({ actor, dice, formula, flavor, critical = false }) {
+ *  `evaluate()` (altérer un jet déjà résolu n'a pas de sens côté Foundry).
+ *
+ *  `criticalMultiplier` (défaut 2, ignoré si `critical` est faux) : Critique brutal (Barbare 9,
+ *  SRD 5e — "un dé de dégâts SUPPLÉMENTAIRE" en plus du doublement normal) passe 3 depuis
+ *  l'appelant (#onRollWeaponDamage, actor-sheet.js) — approximation assumée pour une formule à
+ *  plusieurs types de dés (ex. "1d8+1d4") : chaque terme de dé reçoit +1 exemplaire plutôt qu'un
+ *  seul dé supplémentaire au total, cas rare en pratique (l'immense majorité des armes n'ont
+ *  qu'un seul type de dé). Ce helper générique reste ignorant du nom "Critique brutal" lui-même,
+ *  même principe que `criticalThreshold` ci-dessus. */
+export async function rollDamage({
+  actor,
+  dice,
+  formula,
+  flavor,
+  critical = false,
+  criticalMultiplier = 2,
+  damageType = "",
+  isSpellDamage = false,
+  spellName = "",
+  isMagicalSource = false
+}) {
   const roll = new Roll(`${dice}${formula}`);
-  if (critical) roll.alter(2, 0);
+  if (critical) roll.alter(criticalMultiplier, 0);
   await roll.evaluate();
   const label = critical ? `${flavor} (${game.i18n.localize("DND_CUSTOM.Roll.CriticalDamage")})` : flavor;
   // criticalHit ici aussi (même flag que rollCheck ci-dessus) : le jet de dégâts doublé profite
   // du même effet visuel que le jet d'attaque qui l'a déclenché (retour de test, lot 3 point 8).
+  // `damageType` (clé brute DND_CUSTOM.damageTypes, ex. "fire" — chantier "8 sous-classes déjà à
+  // ≥1 mécanique", 2026-08-23) : posé en flag pour que le bouton "Appliquer les dégâts" (hook
+  // renderChatMessageHTML, dnd-custom-ai.js > applyDamageToTargets) puisse résoudre une
+  // résistance éventuelle propre à CHAQUE cible ciblée (ex. Résilience draconique). Vide = type
+  // non renseigné à la source (ex. Capacité `dealsDamage`) : jamais de résistance appliquée.
+  // `isSpellDamage` (Voile des anciens, Paladin Anciens — Niveau C, 2026-08-24) : vrai UNIQUEMENT
+  // pour un jet posé par #onRollSpellDamage (actor-sheet.js), jamais pour une arme/Capacité —
+  // seul moyen pour isResistantToDamageType (dnd-custom-ai.js) de savoir qu'un dégât vient d'un
+  // SORT plutôt que d'une source précise, indépendamment de son `damageType`.
+  // `spellName` (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+  // nom EXACT du Sort, posé uniquement par #onRollSpellDamage — permet à applyDamageToTargets
+  // (dnd-custom-ai.js) de vérifier que le résultat de sauvegarde stocké sur la cible
+  // (`pendingSpellSaveOutcome`, posé par #onCastSpell) correspond bien à CE sort précis avant
+  // d'en réduire les dégâts, plutôt que d'appliquer aveuglément le dernier résultat connu.
+  // `isMagicalSource` (chantier "types de dégâts", Phase 1, 2026-08-24) : vrai pour un sort
+  // (toujours magique au SRD, posé par #onRollSpellDamage), ou selon WeaponData#magic/
+  // NpcData#attack.magic pour une arme/attaque de PNJ — contourne la résistance/immunité
+  // GÉNÉRIQUE (pas celle câblée en dur) aux 3 types de dégâts physiques, cf.
+  // damageTypeMultiplier (dnd-custom-ai.js).
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: { "dnd-custom-ai": { damageRoll: true, ...(critical ? { criticalHit: true } : {}) } }
+    flags: {
+      "dnd-custom-ai": {
+        damageRoll: true,
+        damageType,
+        ...(critical ? { criticalHit: true } : {}),
+        ...(isSpellDamage ? { isSpellDamage: true } : {}),
+        ...(spellName ? { spellName } : {}),
+        ...(isMagicalSource ? { isMagicalSource: true } : {})
+      }
+    }
   });
   return roll;
 }

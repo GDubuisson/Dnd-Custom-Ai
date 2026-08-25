@@ -27,24 +27,25 @@ import { importSystemContent, ensureContentImportMacro } from "./helpers/content
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
 import { ensureWildSurgeTable, rollWildSurge } from "./helpers/wild-magic-tables.js";
 import { ensureBeastCompanionRequestListener } from "./helpers/companion.js";
+import { registerOpportunityAttackHooks } from "./helpers/opportunity-attack.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
 import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
+import { isImmuneToCondition, suspendExistingImmunizedConditions } from "./helpers/condition-immunity.js";
+import { tokenCenter, distanceBetweenPoints } from "./helpers/tactical-distance.js";
 import {
   equipmentSlots,
   isOffHandEligible,
   abilityModifier,
   proficiencyBonus,
   formatModifier,
-  SPELL_LEVELS
+  SPELL_LEVELS,
+  hasFeature
 } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
+import { registerActorUpdateRelay, requestActorUpdate } from "./helpers/actor-relay.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
-// Canal socket (system.json > "socket": true) utilisé pour relayer au MJ actif une mise à jour
-// qu'un joueur n'a pas la permission d'effectuer lui-même (cf. requestActorUpdate plus bas —
-// PNJ ciblé pour l'application de dégâts, notamment).
-const SOCKET_EVENT = `system.${SYSTEM_ID}`;
 
 // Durée de la Rage, SRD 5e (jusqu'à 1 minute = 10 rounds) : décomptée automatiquement round par
 // round UNIQUEMENT si un combat Foundry est déjà démarré au moment où l'état "En Rage" (cf.
@@ -65,6 +66,12 @@ Hooks.once("init", async () => {
   // Montures vivantes : même modèle de données que "npc" (bloc de stats de créature), cf.
   // scripts/sheets/npc-sheet.js — seul le type d'Actor et le libellé de fiche diffèrent.
   CONFIG.Actor.dataModels.mount = NpcData;
+  // Formes de Forme sauvage (Druide, chantier "Forme sauvage", 2026-08-23) : même principe que
+  // "mount" ci-dessus — même NpcData/DndCustomNpcSheet réutilisés tels quels, seul le type
+  // d'Actor et le libellé de fiche diffèrent. Liée au personnage via
+  // system.combat.wildShapeActorId (character-data.js) ; sa propre réserve de PV sert de 2e
+  // réserve de PV pendant la transformation.
+  CONFIG.Actor.dataModels.wildShapeForm = NpcData;
   CONFIG.Actor.dataModels.vehicle = VehicleActorData;
   CONFIG.Item.dataModels.weapon = WeaponData;
   CONFIG.Item.dataModels.armor = ArmorData;
@@ -108,6 +115,13 @@ Hooks.once("init", async () => {
     makeDefault: true,
     width: 726,
     label: "DND_CUSTOM.SheetLabels.Mount"
+  });
+
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomNpcSheet, {
+    types: ["wildShapeForm"],
+    makeDefault: true,
+    width: 726,
+    label: "DND_CUSTOM.SheetLabels.WildShapeForm"
   });
 
   DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, VehicleActorSheet, {
@@ -168,6 +182,7 @@ Hooks.once("ready", async () => {
   await ensureWildSurgeTable("sorcerer");
   await ensureCharacterTokensLinked();
   await ensureTokenDisplayDefaults();
+  await ensureNpcAttacksArray();
 });
 
 /** Migration ponctuelle (monde déjà en cours, cf. hook preCreateActor plus bas pour les
@@ -233,38 +248,39 @@ async function ensureTokenDisplayDefaults() {
   }
 }
 
-// Écoute du canal socket (cf. requestActorUpdate) : un joueur sans permission de modification
-// sur l'Actor ciblé (PNJ non possédé, le cas courant) délègue sa mise à jour au MJ actif, seul
-// habilité à l'appliquer — même motif game.users.activeGM que les hooks updateActor plus bas,
-// pour qu'un seul des MJ éventuellement connectés traite chaque requête.
-Hooks.once("ready", () => {
-  game.socket.on(SOCKET_EVENT, async ({ uuid, updates } = {}) => {
-    if (game.users.activeGM?.id !== game.user.id) return;
-    const doc = await fromUuid(uuid);
-    if (doc) await doc.update(updates);
-  });
-  ensureBeastCompanionRequestListener();
-});
+/** Migration ponctuelle (monde déjà en cours) : `NpcData#attack` (profil d'attaque UNIQUE) est
+ *  devenu `NpcData#attacks` (liste — chantier "mécaniques jamais modélisées" point 4/6,
+ *  2026-08-25, cadré avec l'utilisateur : un vrai bloc de statistiques SRD 5e a souvent
+ *  plusieurs attaques distinctes). Un Actor déjà créé sous l'ancien schéma a son ancien profil
+ *  encore présent dans `actor._source.system.attack` (données brutes telles que sauvegardées,
+ *  jamais retraitées par un changement de DataModel) alors que `actor.system.attacks` (données
+ *  PRÉPARÉES sous le nouveau schéma) est déjà revenu à son défaut `[{}]` — le champ inconnu
+ *  `attack` est silencieusement ignoré par le nettoyage de schéma, jamais migré tout seul.
+ *  Convertit l'ancien profil en premier élément de la nouvelle liste, une seule fois par Actor
+ *  (ne touche jamais un Actor qui a déjà un vrai profil dans `attacks`, y compris un profil créé
+ *  après coup par le MJ). S'applique à tout type d'Actor utilisant `NpcData` (`npc`/`mount`/
+ *  `wildShapeForm`, cf. Hooks.once("init") plus haut) — détecté par la présence même du champ
+ *  `attack` dans les données brutes, jamais par le type d'Actor en dur. */
+async function ensureNpcAttacksArray() {
+  if (!game.user.isGM) return;
 
-/** Applique `updates` à `actor` : directement si le client a la permission, sinon relayée au MJ
- *  actif via socket (cf. écoute ci-dessus) — nécessaire pour un PNJ dont un joueur n'est pas
- *  propriétaire (cas courant : dégâts appliqués à un monstre ciblé, cf.
- *  applyDamageToTargets plus bas), sans quoi Actor#update lève une erreur de permission
- *  ("User lacks permission...") côté joueur au lieu d'échouer silencieusement comme espéré. */
-async function requestActorUpdate(actor, updates, options = {}) {
-  if (actor.isOwner) {
-    await actor.update(updates, options);
-    return;
-  }
-  if (!game.users.activeGM) {
-    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
-    return;
-  }
-  // `options` (ex. dndCustomDamageApply, cf. preUpdateActor plus bas) n'a de sens que pour un
-  // update local direct : relayé au MJ actif, c'est SON client qui appelle doc.update(), déjà
-  // hors du filtre non-MJ de preUpdateActor (`game.users.get(userId)?.isGM`) — rien à transmettre.
-  game.socket.emit(SOCKET_EVENT, { uuid: actor.uuid, updates });
+  const hasContent = (attack) => attack && (attack.name || attack.bonus || attack.damage?.dice);
+  const updates = game.actors
+    .filter((actor) => {
+      const rawSystem = actor._source.system ?? {};
+      return hasContent(rawSystem.attack) && !rawSystem.attacks?.length;
+    })
+    .map((actor) => ({ _id: actor.id, "system.attacks": [actor._source.system.attack] }));
+  if (updates.length) await Actor.updateDocuments(updates);
 }
+
+// Écoute du canal socket de relais d'update (cf. requestActorUpdate, helpers/actor-relay.js) et
+// des autres canaux dédiés — un seul enregistrement, au ready.
+Hooks.once("ready", () => {
+  registerActorUpdateRelay();
+  ensureBeastCompanionRequestListener();
+  registerOpportunityAttackHooks();
+});
 
 // Champs de "build" du personnage (caractéristiques, maîtrises, classe/origine/niveau) :
 // réservés au MJ. Filet de sécurité côté données, en complément du "disabled" côté UI
@@ -506,7 +522,7 @@ Hooks.on("preUpdateItem", (item, changes, options, userId) => {
 // que le champ XP lui-même soit modifié dans le même envoi de formulaire, pour laisser le MJ
 // libre de le personnaliser ensuite sans qu'un futur changement de FI ne l'écrase.
 Hooks.on("preUpdateActor", (actor, changes, options, userId) => {
-  if (!["npc", "mount"].includes(actor.type)) return;
+  if (!["npc", "mount", "wildShapeForm"].includes(actor.type)) return;
   const newChallengeRating = changes.system?.challengeRating;
   if (newChallengeRating === undefined || changes.system?.xpReward !== undefined) return;
 
@@ -563,7 +579,7 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
 // userId), pour ne pas déclencher la même correction depuis chaque client connecté.
 Hooks.on("updateActor", async (actor, changes, options, userId) => {
   if (game.user.id !== userId) return;
-  if (!["character", "npc", "mount"].includes(actor.type)) return;
+  if (!["character", "npc", "mount", "wildShapeForm"].includes(actor.type)) return;
 
   const updates = {};
   const hp = actor.system.attributes?.hp;
@@ -615,18 +631,53 @@ Hooks.on("updateActor", async (actor, changes, options) => {
 // mort d'un PNJ, il retire manuellement le statut "Mort" (menu des états du token) et le
 // marqueur "vaincu" (clic droit sur le Combattant dans le Combat Tracker).
 
-// Régénère la réaction du personnage dont c'est désormais le tour, SRD 5e ("vous récupérez
-// votre réaction au début de votre tour") — pas un reset global par round, pour rester fidèle à
-// la règle. Ne réagit qu'à un changement effectif de tour/round (`turn`/`round` dans `changes`,
-// pas une simple édition du Combat comme l'ajout d'un Combattant), même garde MJ actif que la
-// mort de PNJ ci-dessus pour n'agir qu'une fois même à plusieurs MJ connectés.
+// Retour automatique à la forme normale quand les PV d'une Forme sauvage (chantier "Forme
+// sauvage", 2026-08-23) tombent à 0, SRD 5e — les dégâts excédentaires ne sont JAMAIS reportés
+// sur le personnage (contrairement à un PNJ ci-dessus, cette forme n'est jamais "morte" pour de
+// bon : juste vidée, l'Actor wildShapeForm lui-même reste réutilisable). Cherche le personnage
+// qui a actuellement cette forme active (system.combat.wildShapeActorId) et vide ce champ. Même
+// garde MJ actif que la mort de PNJ ci-dessus, pour n'agir qu'une fois même à plusieurs MJ
+// connectés.
+Hooks.on("updateActor", async (actor, changes, options) => {
+  if (actor.type !== "wildShapeForm") return;
+  if (game.users.activeGM?.id !== game.user.id) return;
+  const oldHp = options.dndCustomOldHp;
+  if (oldHp === undefined || oldHp === 0) return;
+  if (actor.system.attributes.hp.value !== 0) return;
+
+  const character = game.actors.find(
+    (candidate) => candidate.type === "character" && candidate.system.combat.wildShapeActorId === actor.id
+  );
+  if (!character) return;
+
+  await character.update({ "system.combat.wildShapeActorId": "" });
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor: character }),
+    content: game.i18n.format("DND_CUSTOM.Chat.WildShapeEnded", { name: character.name, form: actor.name })
+  });
+});
+
+// Régénère la réaction, l'Action, l'Action bonus et la liste "déjà attaqué ce round" du
+// personnage dont c'est désormais le tour, SRD 5e ("vous récupérez votre réaction/action/action
+// bonus au début de votre tour") — pas un reset global par round, pour rester fidèle à la règle.
+// Ne réagit qu'à un changement effectif de tour/round (`turn`/`round` dans `changes`, pas une
+// simple édition du Combat comme l'ajout d'un Combattant), même garde MJ actif que la mort de
+// PNJ ci-dessus pour n'agir qu'une fois même à plusieurs MJ connectés.
 Hooks.on("updateCombat", async (combat, changes) => {
   if (!("turn" in changes) && !("round" in changes)) return;
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const actor = combat.combatant?.actor;
-  if (actor?.type === "character" && !actor.system.combat.reactionAvailable) {
-    await actor.update({ "system.combat.reactionAvailable": true });
+  if (actor?.type === "character") {
+    const updates = {};
+    if (!actor.system.combat.reactionAvailable) updates["system.combat.reactionAvailable"] = true;
+    if (!actor.system.combat.actionAvailable) updates["system.combat.actionAvailable"] = true;
+    if (!actor.system.combat.bonusActionAvailable) updates["system.combat.bonusActionAvailable"] = true;
+    // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier "8
+    // sous-classes déjà à ≥1 mécanique", 2026-08-23) : "déjà attaqué CE round" redevient vide au
+    // début du round suivant, même schéma que les 3 champs ci-dessus.
+    if (actor.system.combat.attackedByThisRound.size) updates["system.combat.attackedByThisRound"] = [];
+    if (Object.keys(updates).length) await actor.update(updates);
   }
 
   // Décompte de la durée de Rage (cf. RAGE_DURATION_ROUNDS ci-dessus), round par round, pour
@@ -677,12 +728,39 @@ Hooks.on("createActiveEffect", async (effect) => {
   // décompte de durée ci-dessous, volontairement pas conditionné à game.combat.round.
   if (actor.system.subclass === "wildMagic") await rollWildSurge(actor, "barbarian");
 
+  // Rage sans esprit (Berserker, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
+  // 2026-08-23) : suspend Charmé/Effrayé déjà actifs à l'instant où la Rage démarre, combat ou
+  // pas — même logique que la Surtenance sauvage ci-dessus, pas conditionnée à game.combat.round.
+  await suspendExistingImmunizedConditions(actor);
+
   if (!game.combat?.round) return;
 
   await actor.update({
     "system.combat.rageRoundsRemaining": RAGE_DURATION_ROUNDS,
     "system.combat.rageLastRound": game.combat.round
   });
+});
+
+// Rage sans esprit (Berserker)/Aura de dévotion (Devotion) — chantier "8 sous-classes déjà à
+// ≥1 mécanique", 2026-08-23 : bloque la création d'une ActiveEffect Charmé/Effrayé sur un
+// personnage actuellement immunisé (cf. isImmuneToCondition, helpers/condition-immunity.js).
+// Pas de garde MJ actif ici (contrairement aux hooks réactifs ci-dessus) : même principe que le
+// blocage de conflit d'emplacement d'équipement plus bas (preUpdateItem) — un hook "pre" qui
+// annule la création s'évalue localement chez le client à l'origine de la tentative, jamais
+// besoin de le restreindre à un seul MJ actif pour éviter un doublon.
+Hooks.on("preCreateActiveEffect", (effect) => {
+  const actor = effect.parent;
+  if (!(actor instanceof Actor)) return;
+  const conditionId = [...(effect.statuses ?? [])][0];
+  if (!conditionId || !isImmuneToCondition(actor, conditionId)) return;
+
+  ui.notifications.info(
+    game.i18n.format("DND_CUSTOM.Chat.ConditionBlockedByImmunity", {
+      name: actor.name,
+      condition: game.i18n.localize(DND_CUSTOM.conditions.find((c) => c.id === conditionId)?.name ?? conditionId)
+    })
+  );
+  return false;
 });
 
 // Symétrique de la création ci-dessus : remet le compteur à zéro quand "raging" est retiré
@@ -697,16 +775,24 @@ Hooks.on("deleteActiveEffect", async (effect) => {
   await actor.update({ "system.combat.rageRoundsRemaining": 0, "system.combat.rageLastRound": 0 });
 });
 
-// Filet de sécurité : ne laisse pas un personnage "réaction bloquée" une fois le combat terminé
-// (ex. combat clos sans que ce soit revenu à son tour). Régénère la réaction de tous les
-// personnages ayant participé, même garde MJ actif que ci-dessus.
+// Filet de sécurité : ne laisse pas un personnage "réaction/action/action bonus bloquée" une fois
+// le combat terminé (ex. combat clos sans que ce soit revenu à son tour). Régénère les quatre
+// champs pour tous les personnages ayant participé, même garde MJ actif que ci-dessus.
 Hooks.on("deleteCombat", async (combat) => {
   if (game.users.activeGM?.id !== game.user.id) return;
 
   const updates = combat.combatants
     .map((combatant) => combatant.actor)
-    .filter((actor) => actor?.type === "character" && !actor.system.combat.reactionAvailable)
-    .map((actor) => ({ _id: actor.id, "system.combat.reactionAvailable": true }));
+    .filter((actor) => actor?.type === "character")
+    .map((actor) => {
+      const update = { _id: actor.id };
+      if (!actor.system.combat.reactionAvailable) update["system.combat.reactionAvailable"] = true;
+      if (!actor.system.combat.actionAvailable) update["system.combat.actionAvailable"] = true;
+      if (!actor.system.combat.bonusActionAvailable) update["system.combat.bonusActionAvailable"] = true;
+      if (actor.system.combat.attackedByThisRound.size) update["system.combat.attackedByThisRound"] = [];
+      return update;
+    })
+    .filter((update) => Object.keys(update).length > 1);
   if (updates.length) await Actor.updateDocuments(updates);
 });
 
@@ -740,17 +826,173 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   } else {
     button.addEventListener("click", async () => {
       button.disabled = true;
-      await applyDamageToTargets(amount, message.speaker?.actor);
+      await applyDamageToTargets(
+        amount,
+        message.speaker?.actor,
+        message.getFlag(SYSTEM_ID, "damageType"),
+        Boolean(message.getFlag(SYSTEM_ID, "isSpellDamage")),
+        message.getFlag(SYSTEM_ID, "spellName") ?? "",
+        Boolean(message.getFlag(SYSTEM_ID, "isMagicalSource"))
+      );
       await message.setFlag(SYSTEM_ID, "damageApplied", true);
     });
   }
   html.querySelector(".message-content")?.appendChild(button);
 });
 
-/** `sourceActorId` : Actor à l'origine du jet de dégâts (cf. `message.speaker.actor`, ChatMessage
- *  natif Foundry) — sert uniquement à bloquer le PvP ci-dessous, jamais requis pour appliquer
- *  des dégâts à un PNJ/une monture. */
-async function applyDamageToTargets(amount, sourceActorId) {
+// Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) + chantier "types de dégâts" (Phase 1,
+// 2026-08-24) : les 3 types de dégâts physiques SRD — servent à la fois à la résistance de Rage
+// ci-dessous et à la nuance "contre les attaques non magiques" du champ générique
+// damageResistances/Immunities/Vulnerabilities (cf. damageTypeMultiplier plus bas).
+const PHYSICAL_DAMAGE_TYPES = new Set(["bludgeoning", "piercing", "slashing"]);
+
+// Voile des anciens (Paladin, Serment des Anciens — Niveau C, 2026-08-24) : zone de 3 m autour
+// du Paladin ayant activé la bascule "ancientsVeil" (config.js), même mécanisme de portée que
+// isProtectedByDevotionAura (helpers/condition-immunity.js) mais pour une résistance aux dégâts
+// plutôt qu'une immunité à une condition.
+const ANCIENTS_VEIL_METERS = 3;
+
+/** Voile des anciens : `actor` (le Paladin qui a activé la bascule inclus, distance à lui-même
+ *  valant toujours 0) est protégé s'il existe un personnage avec l'état "ancientsVeil" actif à
+ *  3 m ou moins. Contrairement à Aura de dévotion (bascule passive liée à la possession d'une
+ *  Capacité), "ancientsVeil" est une bascule manuelle temporaire — cohérent avec le reste des
+ *  conditions homebrew (blessed/guided/raging...), aucun décompte de durée. */
+function isProtectedByAncientsVeil(actor) {
+  const actorToken = actor.getActiveTokens()[0]?.document;
+  if (!actorToken) return false;
+  const actorCenter = tokenCenter(actorToken);
+
+  return game.actors.some((paladin) => {
+    if (paladin.type !== "character" || !paladin.statuses.has("ancientsVeil")) return false;
+    const paladinToken = paladin.getActiveTokens()[0]?.document;
+    if (!paladinToken) return false;
+    return distanceBetweenPoints(actorCenter, tokenCenter(paladinToken)) <= ANCIENTS_VEIL_METERS;
+  });
+}
+
+/** Vrai si `actor` possède `field` ("damageResistances"/"damageImmunities"/
+ *  "damageVulnerabilities", cf. damageAffinitySchema, shared-schema.js) pour `damageType`.
+ *  CharacterData range ce champ sous `system.combat` (comme ses voisins draconicResistanceType/
+ *  favoredEnemyType) tandis que NpcData (pas de sous-objet `combat`) le garde à la racine — testé
+ *  dans cet ordre plutôt que d'imposer le même emplacement aux deux DataModel. Un PNJ/PJ sans le
+ *  champ (Actor non encore préparé, cas théorique) ne plante jamais, `false` par défaut. */
+function hasGenericDamageAffinity(actor, damageType, field) {
+  const set = actor.system.combat?.[field] ?? actor.system[field];
+  return set?.has?.(damageType) ?? false;
+}
+
+/** Chantier "types de dégâts" (Phase 4, 2026-08-25) : vrai si `actor` porte une armure ÉQUIPÉE
+ *  dont `field` ("damageResistances"/"damageImmunities"/"damageVulnerabilities", cf.
+ *  damageAffinitySchema, shared-schema.js — désormais aussi sur ArmorData, item-data.js) contient
+ *  `damageType`. Résistance/immunité/vulnérabilité PROPRE à l'objet, indépendante des cases
+ *  génériques Personnage/PNJ ci-dessus — pas de nuance "contre les attaques non magiques"
+ *  (`isMagicalSource`) ici : contrairement au champ générique qui modélise une résistance
+ *  NATURELLE de créature (SRD), une armure qui protège du feu protège du feu quelle que soit la
+ *  source de l'attaque, comme les résistances déjà câblées en dur (Rage, Résilience draconique,
+ *  Affinité de la tempête). Plusieurs armures équipées en même temps (armure + bouclier) sont
+ *  également possibles (emplacements distincts, cf. `slot`) : `some` sur toutes plutôt qu'une
+ *  seule armure supposée. */
+function hasArmorDamageAffinity(actor, damageType, field) {
+  return actor.items.some(
+    (item) => item.type === "armor" && item.system.equipped && item.system[field]?.has?.(damageType)
+  );
+}
+
+/** Multiplicateur final (0 immunité, 0.5 résistance, 1 normal, 2 vulnérabilité) des dégâts de
+ *  `damageType` subis par `actor` — combine les résistances déjà câblées en dur par Capacité/
+ *  état (Rage, Résilience draconique, Affinité de la tempête, Voile des anciens) et le champ
+ *  générique réglable par le MJ (chantier "types de dégâts", Phase 1, 2026-08-24 —
+ *  damageResistances/Immunities/Vulnerabilities, cf. damageAffinitySchema, shared-schema.js).
+ *
+ *  `isSpellDamage` (Voile des anciens) : contrairement aux autres cas, cette résistance ne
+ *  dépend d'AUCUN `damageType` précis (le SRD résiste à "les dégâts des sorts" quel que soit
+ *  leur type).
+ *
+ *  `isMagicalSource` (chantier "types de dégâts", Phase 1) : pour les 3 types PHYSIQUES
+ *  UNIQUEMENT, une source magique (sort — toujours magique — ou arme/attaque de PNJ dont la case
+ *  "Magique" est cochée) contourne le champ GÉNÉRIQUE, fidèle à la nuance SRD "contre les
+ *  attaques non magiques" propre aux monstres. Les résistances déjà câblées en dur (Rage
+ *  incluse) n'ONT PAS cette nuance au SRD 5e et restent donc TOUJOURS actives quelle que soit
+ *  `isMagicalSource` — seul le champ générique en tient compte.
+ *
+ *  Immunité prioritaire sur tout le reste ; résistance ET vulnérabilité sur le MÊME type
+ *  s'annulent (dégâts normaux), règle SRD 5e explicite. */
+function damageTypeMultiplier(actor, damageType, { isSpellDamage = false, isMagicalSource = false } = {}) {
+  const genericBypassed = Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && isMagicalSource);
+
+  const immune =
+    (!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageImmunities")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageImmunities"));
+  if (immune) return 0;
+
+  const resistant =
+    (isSpellDamage && isProtectedByAncientsVeil(actor)) ||
+    // Résilience draconique (Ensorceleur, Lignage draconique) : type choisi par le joueur, stocké
+    // sur l'Actor (jamais sur un PNJ/une monture dont CharacterData n'a pas ce champ).
+    Boolean(damageType && actor.system.combat?.draconicResistanceType === damageType) ||
+    // Affinité de la tempête (Ensorceleur, Tempête 1, SRD 5e) : résistance passive fixe (toujours
+    // active, pas un choix) aux dégâts de foudre/tonnerre.
+    Boolean(
+      damageType &&
+        (damageType === "lightning" || damageType === "thunder") &&
+        hasFeature(actor.items.contents, "Affinité de la tempête")
+    ) ||
+    // Rage (Barbare, SRD 5e) : résistance aux dégâts contondants/perforants/tranchants tant que
+    // "raging" est actif, quel que soit le champ générique.
+    Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && actor.statuses?.has("raging")) ||
+    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageResistances")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageResistances"));
+
+  const vulnerable =
+    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageVulnerabilities")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageVulnerabilities"));
+
+  if (resistant && vulnerable) return 1;
+  if (resistant) return 0.5;
+  if (vulnerable) return 2;
+  return 1;
+}
+
+// Prérequis Évasion/Tour de magie renforcé (Niveau C, 2026-08-24) : cf. spellSaveDamageMultiplier
+// ci-dessous pour le détail des 2 exceptions posées par-dessus la règle SRD par défaut.
+const EVASION_FEAT_NAME = "Évasion";
+const POTENT_CANTRIP_FEAT_NAME = "Tour de magie renforcé";
+
+/** Fraction (0, 0.5 ou 1) des dégâts d'un sort à sauvegarde réellement subie par `targetActor`,
+ *  selon le résultat de SON jet (`outcome.success`), si le sort réduit normalement de moitié en
+ *  cas de réussite (`outcome.halfOnSave`) — jusqu'ici jamais appliqué du tout (le bouton
+ *  "Appliquer les dégâts" ignorait entièrement le résultat de la sauvegarde, cf.
+ *  ClaudeFiles/MECANIQUES_A_AUTOMATISER.md > "Évasion"/"Tour de magie renforcé").
+ *
+ *  Règle SRD par défaut : réussite → moitié si `halfOnSave`, sinon 0 ; échec → dégâts pleins.
+ *
+ *  - **Évasion** (Roublard 7) : `targetActor` la possède, sauvegarde de Dextérité, `halfOnSave`
+ *    vrai → réussite = AUCUN dégât (au lieu de moitié), échec = moitié (au lieu de plein).
+ *  - **Tour de magie renforcé** (Magicien Évocation 6) : `sourceActor` (le lanceur) la possède,
+ *    sort de niveau 0 (tour de magie), `halfOnSave` FAUX (le cas par défaut où une réussite
+ *    n'inflige normalement AUCUN dégât) → réussite = moitié (au lieu d'aucun) ; échec inchangé.
+ *    Les deux exceptions sont mutuellement exclusives par construction (`halfOnSave` opposé),
+ *    jamais besoin d'arbitrer un conflit entre elles. */
+function spellSaveDamageMultiplier(targetActor, sourceActor, outcome) {
+  const { success, halfOnSave, ability, spellLevel } = outcome;
+  if (ability === "dex" && halfOnSave && hasFeature(targetActor.items.contents, EVASION_FEAT_NAME)) {
+    return success ? 0 : 0.5;
+  }
+  if (!halfOnSave && spellLevel === 0 && sourceActor && hasFeature(sourceActor.items.contents, POTENT_CANTRIP_FEAT_NAME)) {
+    return success ? 0.5 : 1;
+  }
+  if (success) return halfOnSave ? 0.5 : 0;
+  return 1;
+}
+
+async function applyDamageToTargets(
+  amount,
+  sourceActorId,
+  damageType = "",
+  isSpellDamage = false,
+  spellName = "",
+  isMagicalSource = false
+) {
   const targets = Array.from(game.user.targets);
   if (!targets.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
@@ -782,7 +1024,30 @@ async function applyDamageToTargets(amount, sourceActorId) {
       continue;
     }
 
-    let remaining = amount;
+    // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+    // n'agit QUE sur des dégâts de sort (`isSpellDamage`, jamais une attaque d'arme/PNJ) ET
+    // seulement si le flag posé sur CETTE cible par #onCastSpell (`pendingSpellSaveOutcome`)
+    // correspond au MÊME sort que ce jet de dégâts (`spellName`, cf. commentaire de rollDamage#
+    // spellName, rolls.js) — sinon dégâts pleins, comportement identique à avant ce chantier, et
+    // le flag n'est PAS consommé (laissé disponible pour le jet de dégâts qui lui correspond
+    // vraiment, s'il arrive plus tard). Toujours consommé (unset) dès qu'utilisé, qu'il s'agisse
+    // d'une réussite/d'un échec — jamais réutilisable pour un dégât ultérieur.
+    const pendingSaveOutcome = isSpellDamage ? actor.getFlag(SYSTEM_ID, "pendingSpellSaveOutcome") : null;
+    const matchesPendingSave = pendingSaveOutcome && pendingSaveOutcome.spellName === spellName;
+    const saveMultiplier = matchesPendingSave ? spellSaveDamageMultiplier(actor, sourceActor, pendingSaveOutcome) : 1;
+    if (matchesPendingSave) await actor.unsetFlag(SYSTEM_ID, "pendingSpellSaveOutcome");
+
+    // Résistance/immunité/vulnérabilité de type (cf. damageTypeMultiplier ci-dessus) appliquée
+    // APRÈS la réduction de sauvegarde ci-dessus, chacune arrondie à l'inférieur séparément —
+    // cumul de réductions multiples conforme au SRD 5e (jamais une simple multiplication des
+    // fractions en un seul arrondi). `isMagicalSource` : cf. WeaponData#magic (item-data.js)/
+    // NpcData#attack.magic pour une attaque, toujours vrai pour un sort (rollDamage#isSpellDamage
+    // déjà posé par #onRollSpellDamage).
+    const typeMultiplier = damageTypeMultiplier(actor, damageType, { isSpellDamage, isMagicalSource });
+    let targetAmount = saveMultiplier === 1 ? amount : Math.floor(amount * saveMultiplier);
+    targetAmount = typeMultiplier === 1 ? targetAmount : Math.floor(targetAmount * typeMultiplier);
+
+    let remaining = targetAmount;
     const updates = {};
     const temp = hp.temp ?? 0;
     if (temp > 0) {
@@ -800,8 +1065,8 @@ async function applyDamageToTargets(amount, sourceActorId) {
     // taper une valeur arbitraire directement dans le champ PV de l'en-tête (character-sheet.hbs,
     // désormais `disabled` côté Joueur).
     if (Object.keys(updates).length) await requestActorUpdate(actor, updates, { dndCustomDamageApply: true });
-    if (amount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
-      await checkConcentration(actor, amount);
+    if (targetAmount > 0 && actor.type === "character" && actor.system.spells.concentratingOn) {
+      await checkConcentration(actor, targetAmount);
     }
   }
 }
@@ -836,6 +1101,200 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
       await message.setFlag(SYSTEM_ID, "healApplied", true);
     });
   }
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Ajoute un bouton "Appliquer la réduction" sur toute carte de chat de jet de Capacité qui
+// réduit les dégâts subis (ex. Déviation de projectiles, Flamme protectrice — cf.
+// FeatureData#reducesDamage, item-data.js ; #onRollFeature, actor-sheet.js) : réutilise
+// directement applyHealToTargets (même effet mécanique qu'un soin, ajoute des PV à la cible
+// actuellement ciblée, plafonné au max) — seul le libellé du bouton diffère pour rester clair
+// en jeu, aucune nouvelle logique d'application. Fonctionne quel que soit l'ordre réel des
+// dégâts/de la réaction (le MJ peut cliquer avant ou après avoir appliqué les dégâts bruts, le
+// résultat net est le même).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "damageReduction")) return;
+  const amount = message.rolls?.[0]?.total;
+  if (!Number.isFinite(amount)) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-apply-heal-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.ApplyDamageReduction", { amount });
+
+  if (message.getFlag(SYSTEM_ID, "damageReductionApplied")) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.DamageReductionAlreadyApplied");
+  } else if (message.author?.id !== game.user.id && !game.user.isGM) {
+    button.disabled = true;
+    button.title = game.i18n.localize("DND_CUSTOM.Chat.ApplyDamageNotAuthor");
+  } else {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await applyHealToTargets(amount);
+      await message.setFlag(SYSTEM_ID, "damageReductionApplied", true);
+    });
+  }
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Don "Chanceux" (SRD 5e, world-items/feats.json) : ajoute un bouton "Point de Chance" sur tout
+// jet de d20 posté via rollCheck (test de caractéristique/compétence, sauvegarde, attaque — cf.
+// flags luckRoll/luckFormula/luckActorId posés dans rolls.js) SI l'acteur qui a lancé possède le
+// don et lui reste au moins une charge (`system.uses.value` de l'Item "Chanceux") — jamais un
+// bouton grisé permanent sur chaque jet, contrairement à "Appliquer le soin"/"Appliquer les
+// dégâts" ci-dessus qui, eux, s'appliquent toujours : ici, pas de charge restante = pas de
+// bouton du tout, pour ne pas polluer le journal de jets d'un personnage n'ayant pas (ou plus)
+// le don. Relance la MÊME formule que le jet d'origine (die + modificateur, avantage/désavantage
+// compris) et garde le meilleur des deux totaux — la règle SRD laisse le joueur choisir lequel
+// des deux d20 utiliser, mais dépenser un point de chance n'a jamais d'intérêt à choisir le plus
+// bas : simplification sans perte réelle de choix. Poste un second message plutôt que de
+// modifier le premier (Foundry ne permet pas de rejouer proprement l'affichage d'un Roll déjà
+// résolu) et marque l'original `luckApplied` pour ne proposer qu'UNE relance par jet (SRD : "un
+// seul point de chance peut être dépensé par jet").
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "luckApplied")) return;
+  // Garde-fou anti-doublon : Foundry peut re-déclencher ce hook pour un même message déjà rendu
+  // (ex. la barre latérale re-rend son journal de chat) — sans ce garde, un second appel
+  // ajouterait un second bouton identique au même `.message-content`.
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const luckyFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chanceux");
+  if (!luckyFeat || luckyFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendLuck", { remaining: luckyFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    const originalTotal = message.rolls?.[0]?.total ?? -Infinity;
+    const kept = reroll.total > originalTotal ? reroll.total : originalTotal;
+    await reroll.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept })
+    });
+    await luckyFeat.update({ "system.uses.value": luckyFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "luckApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Capacité "Chance du Fiélon" (sous-classe Occultiste, world-items/features.json) : même famille
+// que le don Chanceux ci-dessus (réutilise les mêmes flags luckRoll/luckActorId posés dans
+// rolls.js, indépendant du don lui-même) mais mécanique différente — SRD : "+1d10 au résultat"
+// plutôt qu'une relance complète. Poste un petit message de complément ("+1d10 = X, nouveau
+// total Y") plutôt que de modifier le message d'origine (même raison que Chanceux : Foundry ne
+// permet pas de rejouer proprement l'affichage d'un Roll déjà résolu). Flag dédié
+// (`fiendLuckApplied`, jamais `luckApplied`) : un personnage qui posséderait les deux (don ET
+// Capacité) pourrait en théorie cumuler les deux sur un même jet, chacun avec sa propre limite
+// d'usage — aucune règle SRD ne l'interdit explicitement.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "luckRoll") || message.getFlag(SYSTEM_ID, "fiendLuckApplied")) return;
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const fiendLuckFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Chance du Fiélon");
+  if (!fiendLuckFeat || fiendLuckFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendFiendLuck", { remaining: fiendLuckFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const bonus = new Roll("1d10");
+    await bonus.evaluate();
+    const originalTotal = message.rolls?.[0]?.total ?? 0;
+    await bonus.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total })
+    });
+    await fiendLuckFeat.update({ "system.uses.value": fiendLuckFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "fiendLuckApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Capacité "Indomptable" (Guerrier 9, SRD 5e) : même famille que Chanceux/Chance du Fiélon
+// ci-dessus (flag `luckRoll`/`luckActorId`, ignorant du nom de Capacité), mais réservé aux jets
+// de SAUVEGARDE (flag `savingThrowRoll`, posé uniquement par #onRollSave, cf. rolls.js) et
+// mécanique différente — SRD : relance complète, résultat obligatoirement conservé (contrairement
+// à Chanceux qui garde le meilleur des deux). Ce système ne comparant déjà aucune sauvegarde à un
+// DD (le MJ juge à l'œil), le bouton reste proposé sur CHAQUE jet de sauvegarde éligible, au
+// joueur de décider si le résultat "ne lui convient pas" — même logique que Chanceux.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "savingThrowRoll") || message.getFlag(SYSTEM_ID, "indomitableApplied")) return;
+  if (html.querySelector(".dnd-spend-luck-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const indomitableFeat = actor?.items.find((item) => item.type === "feature" && item.name === "Indomptable");
+  if (!indomitableFeat || indomitableFeat.system.uses.value <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-luck-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendIndomitable", { remaining: indomitableFeat.system.uses.value });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    await reroll.toMessage({
+      speaker: message.speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name })
+    });
+    await indomitableFeat.update({ "system.uses.value": indomitableFeat.system.uses.value - 1 });
+    await message.setFlag(SYSTEM_ID, "indomitableApplied", true);
+  });
+  html.querySelector(".message-content")?.appendChild(button);
+});
+
+// Points d'inspiration (PI, règle maison — cf. docstring rollCheck dans helpers/rolls.js) :
+// ajoute un bouton "Utiliser un point d'inspiration" sous tout jet de caractéristique/compétence
+// (flag `inspirationEligible`, posé UNIQUEMENT par #onRollAbility/#onRollSkill dans
+// actor-sheet.js — jamais une sauvegarde ou une attaque) SI l'acteur qui a lancé a au moins 1
+// point (`system.attributes.inspirationPoints`, CharacterData uniquement — un PNJ n'a jamais ce
+// champ, la condition échoue silencieusement). Différence volontaire avec Chanceux/Chance du
+// Fiélon/Indomptable ci-dessus (qui gardent le message d'origine et postent une relance à la
+// suite) : ici, `message.delete()` retire le jet d'origine du chat AVANT de poster le nouveau —
+// demande explicite de l'utilisateur ("le jet précédent disparaît"), un seul jet visible à la
+// fois. Résultat du nouveau jet TOUJOURS conservé (jamais le meilleur des deux, contrairement à
+// Chanceux) : ce n'est plus qu'un jet, l'ancien n'existe plus.
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "inspirationEligible")) return;
+  if (html.querySelector(".dnd-spend-inspiration-btn")) return;
+
+  const actor = game.actors.get(message.getFlag(SYSTEM_ID, "luckActorId"));
+  const remaining = actor?.system?.attributes?.inspirationPoints ?? 0;
+  if (remaining <= 0) return;
+  if (!actor.isOwner && !game.user.isGM) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dnd-spend-inspiration-btn";
+  button.textContent = game.i18n.format("DND_CUSTOM.Chat.SpendInspiration", { remaining });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    const formula = message.getFlag(SYSTEM_ID, "luckFormula");
+    const flavor = message.getFlag(SYSTEM_ID, "checkFlavor") ?? "";
+    const speaker = message.speaker;
+    await message.delete();
+    const reroll = new Roll(formula);
+    await reroll.evaluate();
+    await reroll.toMessage({
+      speaker,
+      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor })
+    });
+    await actor.update({ "system.attributes.inspirationPoints": remaining - 1 });
+  });
   html.querySelector(".message-content")?.appendChild(button);
 });
 

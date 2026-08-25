@@ -1,8 +1,8 @@
-import { SKILL_ABILITIES } from "./character-data.js";
-import { currencySchema } from "./shared-schema.js";
+import { SKILL_ABILITIES, ABILITY_KEYS } from "./character-data.js";
+import { currencySchema, damageAffinitySchema } from "./shared-schema.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField, ArrayField } = foundry.data.fields;
 
 /** Union de toutes les clés de sous-classe (ex. "champion"), toutes classes confondues — sert de
  *  contrainte `choices` pour FeatureData#subclass ci-dessous. Aplati une seule fois au chargement
@@ -54,11 +54,36 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       damageVersatile: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" })
       }),
+      // Chantier "types de dégâts" (Phase 3, 2026-08-24) : dégâts BONUS d'une arme aux propriétés
+      // magiques (ex. épée de feu = tranchant + feu), optionnels (`dice` vide = pas de composant
+      // secondaire, l'immense majorité des armes). Type libre parmi les 13 (pas seulement
+      // magique — une arme pourrait en théorie cumuler deux types physiques). Jamais de
+      // modificateur de caractéristique ajouté (SRD 5e : les dégâts bonus d'une propriété
+      // magique sont des dés fixes) — cf. #onRollWeaponDamage (actor-sheet.js), qui poste un
+      // 2e message de dégâts distinct pour ce composant, résolu indépendamment du premier contre
+      // les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+      secondaryDamage: new SchemaField({
+        dice: new StringField({ required: false, blank: true, initial: "" }),
+        type: new StringField({
+          required: false,
+          blank: true,
+          initial: "",
+          choices: Object.keys(DND_CUSTOM.damageTypes)
+        })
+      }),
       slot: new StringField({
         required: true,
         initial: "mainHand",
         choices: ["mainHand", "offHand"]
       }),
+      // Chantier "types de dégâts" (Phase 1, 2026-08-24) : une arme magique (+1/+2/+3, ou tout
+      // simplement enchantée) contourne la résistance/immunité aux dégâts contondants/
+      // perforants/tranchants "contre les attaques non magiques" (nuance SRD 5e commune aux
+      // monstres) — cf. damageTypeMultiplier, dnd-custom-ai.js. S'applique aussi bien au
+      // composant `damage` (physique) qu'à `secondaryDamage` ci-dessus si celui-ci est LUI-MÊME
+      // d'un type physique (rare) — sans effet sur un type déjà magique (Phase 2 : la nuance ne
+      // concerne que les 3 types physiques).
+      magic: new BooleanField({ required: true, initial: false }),
       properties: new SchemaField({
         handedness: new StringField({
           required: true,
@@ -99,7 +124,14 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
         required: true,
         initial: "armor",
         choices: ["armor", "offHand", "accessory"]
-      })
+      }),
+      // Chantier "types de dégâts" (Phase 4, 2026-08-25) : résistance/immunité/vulnérabilité
+      // PROPRE à cette armure (indépendante des cases génériques Personnage/PNJ de la Phase 1,
+      // cf. damageAffinitySchema, shared-schema.js) — n'agit que si l'armure est équipée
+      // (cf. `equipped`, physicalItemSchema ci-dessus) et se combine avec le générique dans
+      // damageTypeMultiplier (dnd-custom-ai.js) : la meilleure protection l'emporte, jamais de
+      // cumul (règle SRD "les résistances multiples au même type ne se cumulent pas").
+      ...damageAffinitySchema()
     };
   }
 }
@@ -181,6 +213,106 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       reactionTrigger: new StringField({ required: false, blank: true, initial: "" }),
       requiresRoll: new BooleanField({ required: true, initial: false }),
       rollFormula: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) est un SOIN à
+      // appliquer à une cible (ex. don Guérisseur) plutôt qu'un simple jet informatif posté en
+      // chat sans suite (#onRollFeature, actor-sheet.js) : marque le message de chat du même
+      // flag `healRoll` que SpellData#heal (cf. rolls.js > rollHeal), ce qui affiche
+      // automatiquement le bouton "Appliquer le soin" déjà existant pour les sorts de soin
+      // (hook renderChatMessageHTML, dnd-custom-ai.js) — aucune nouvelle logique d'application
+      // à écrire, juste réutiliser le pipeline déjà en place. `false` pour l'immense majorité
+      // des Capacités/Dons.
+      healsTarget: new BooleanField({ required: true, initial: false }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) RÉDUIT les dégâts
+      // subis par une cible plutôt que de simplement les infliger/soigner (ex. Déviation de
+      // projectiles, Flamme protectrice) : marque le message de chat d'un flag `damageReduction`
+      // dédié (hook renderChatMessageHTML, dnd-custom-ai.js), qui affiche un bouton "Appliquer
+      // la réduction" — réutilise directement `applyHealToTargets` (même effet mécanique qu'un
+      // soin : ajoute des PV à la cible actuellement ciblée, plafonné au max), seul le libellé
+      // du bouton diffère pour rester clair en jeu. `false` pour l'immense majorité des
+      // Capacités/Dons.
+      reducesDamage: new BooleanField({ required: true, initial: false }),
+      // Capacité/don dont le jet (`requiresRoll`/`rollFormula` ci-dessus) INFLIGE des dégâts à
+      // une cible (ex. Disciplines élémentaires, Moine — chantier "9 sorts/capacités à rider
+      // différé", 2026-08-23) : marque le message de chat du même flag `damageRoll` que
+      // `rollDamage` (rolls.js), ce qui affiche le bouton générique "Appliquer les dégâts" déjà
+      // existant (hook renderChatMessageHTML, dnd-custom-ai.js) — même pipeline que les dégâts
+      // d'arme/de sort, aucune nouvelle logique d'application. Ne modélise pas un éventuel jet
+      // de sauvegarde à mi-dégâts (contrairement à SpellData#save/halfOnSave) : reste, comme le
+      // reste de ce champ, à l'arbitrage du MJ quand la Capacité l'exige. `false` pour l'immense
+      // majorité des Capacités/Dons.
+      dealsDamage: new BooleanField({ required: true, initial: false }),
+      // Capacité qui inflige un jet de sauvegarde à CHAQUE cible actuellement ciblée (ex.
+      // Canalisation divine "Repousser les morts-vivants", Clerc) — même mécanisme que
+      // SpellData#save (rules.js > targetSaveModifier), mais pour une Capacité au lieu d'un
+      // Sort : le lanceur ne roule jamais lui-même, seul le DD (spellSaveDC de sa
+      // caractéristique d'incantation de classe) compte face au jet propre de chaque cible
+      // (#onRollFeatureSave, actor-sheet.js). Vide = pas de jet de sauvegarde, comportement
+      // `#onRollFeature` inchangé (l'immense majorité des Capacités).
+      savingThrow: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Caractéristique du DD (cf. savingThrow ci-dessus) quand elle N'EST PAS celle
+      // d'incantation de la classe (`DND_CUSTOM.spellcastingAbility[class]`, config.js) — ex.
+      // Frappe étourdissante (Moine, SRD 5e : DD 8 + maîtrise + Sagesse, alors que le Moine n'a
+      // pas de caractéristique d'incantation du tout, absent de `spellcastingAbility`). Vide (cas
+      // par défaut, l'immense majorité des Capacités à sauvegarde) : `#onRollFeatureSave` retombe
+      // sur `spellcastingAbility[class]` comme avant (ex. Repousser les morts-vivants, Clerc).
+      saveDCAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Condition (cf. DND_CUSTOM.conditions, config.js) appliquée à la cible en cas d'ÉCHEC du
+      // jet ci-dessus (ex. "frightened" pour Repousser les morts-vivants) — vide = aucun effet
+      // appliqué automatiquement, juste le résultat du jet posté en chat.
+      appliesCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+      }),
+      // Types de créature requis pour subir l'effet ci-dessus (ex. {"undead"} pour Repousser les
+      // morts-vivants, {"fiend","undead"} pour Repousser les impies — SRD 5e, plusieurs
+      // Capacités de ce type visent 2 types à la fois) : comparé à `NpcData#creatureType` de la
+      // cible, jamais présent sur un PJ (`CharacterData` n'a pas ce champ) donc jamais concerné.
+      // Ensemble VIDE = pas de restriction de type (ex. Abjurer un ennemi, Paladin Vengeance,
+      // qui vise n'importe quelle créature).
+      requiresCreatureTypes: new SetField(new StringField({ choices: Object.keys(DND_CUSTOM.creatureTypes) }), {
+        required: true,
+        initial: []
+      }),
+      // Capacité qui pose une condition sur CHAQUE cible actuellement ciblée SANS jet associé (ex.
+      // Traque implacable, Paladin Serment de Vengeance — Niveau C, 2026-08-25) : même principe que
+      // SpellData#grantsCondition ci-dessous (Invisibilité), pour une Capacité au lieu d'un Sort —
+      // contrairement à `appliesCondition` ci-dessus, qui dépend du résultat d'un jet de
+      // sauvegarde. Vide = comportement inchangé (l'immense majorité des Capacités).
+      grantsCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+      }),
+      // Capacité universelle qui se résout comme un TEST OPPOSÉ (Agripper/Bousculer, SRD 5e —
+      // chantier "mécaniques jamais modélisées", 2026-08-25, cadré avec l'utilisateur avant
+      // implémentation) : premier mécanisme de ce système où les DEUX camps lancent un jet et le
+      // résultat se compare entre eux, plutôt qu'un jet comparé à un DD/une CA fixe. Résolu par
+      // `#onRollOpposedCheck` (actor-sheet.js) : jet d'Athlétisme de l'attaquant contre le
+      // MEILLEUR des jets d'Athlétisme/Acrobaties de la cible (approximation assumée — le SRD
+      // laisse la cible choisir en direct, impossible à interroger depuis ce système). Succès de
+      // "grapple" -> état "Agrippé" posé automatiquement ; succès de "shove" -> choix À terre
+      // (état "prone" posé automatiquement) ou Repoussé de 1,50 m (jamais automatisé, simple
+      // rappel de chat — ce système ne déplace jamais un token, cf. combat automatisé). Vide =
+      // comportement inchangé (l'immense majorité des Capacités).
+      opposedCheckType: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: ["grapple", "shove"]
+      }),
+      // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
+      // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
+      // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables
+      // (ex. "ceil(@attributes.level/2)"), consommé par #onRestShort (actor-sheet.js) qui ouvre
+      // une fenêtre de répartition entre paliers (cf. chooseSpellSlotRecovery,
+      // spell-slot-choice.js) plutôt que par un bouton de jet manuel séparé — retour de test,
+      // le texte SRD de ces deux Capacités ("une fois par jour, LORS D'UN REPOS COURT") n'était
+      // suivi par aucun code, le bouton précédent restait cliquable à tout moment. `false` pour
+      // l'immense majorité des Capacités.
+      recoversSpellSlots: new BooleanField({ required: true, initial: false }),
       // Capacité utilisable seulement quand un état particulier (cf. DND_CUSTOM.conditions,
       // config.js) est actif sur l'Actor — ex. Frénésie (Barbare Berserker), qui nécessite
       // d'être En Rage. Retour de test (lot 3, point 5) : grisée par défaut sur l'onglet
@@ -207,6 +339,16 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
           choices: ["shortRest", "longRest"]
         })
       }),
+      // Réserve de charges (`uses` ci-dessus) dont le MAXIMUM progresse avec le niveau du
+      // personnage au lieu de rester fixe (ex. Ki du Moine, Sorcellerie innée de l'Ensorceleur —
+      // SRD 5e : dans les deux cas, `max` = niveau du personnage dans cette classe, à partir du
+      // niveau d'octroi de la Capacité). Restriction de conception levée le 2026-08-22 (ces deux
+      // réserves étaient figées à leur valeur d'octroi) : `uses.max` recalculé automatiquement
+      // dans #prepareDerivedData ci-dessous à chaque niveau, sans multiclassage modélisé
+      // (`attributes.level` = niveau dans l'unique classe du personnage, cf.
+      // CONCEPTION_FONCTIONNELLE.md). `false` pour l'immense majorité des Capacités/Dons, qui
+      // gardent un `uses.max` fixe.
+      scalesWithLevel: new BooleanField({ required: true, initial: false }),
       // Technique consommant 1 charge d'une AUTRE Capacité "réservoir" à charges partagées
       // (ex. les techniques de Moine — Rafale de coups, Défense patiente... — consomment
       // toutes le même pool "Ki" plutôt que d'avoir chacune leurs propres charges) : nom
@@ -214,19 +356,35 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // `class`/`subclass` ci-dessus), vide si cette Capacité n'a pas ce genre de coût.
       costsResource: new StringField({ required: false, blank: true, initial: "" }),
       // Capacité qui propose un choix ponctuel et définitif au joueur (ex. "Aspect de la bête",
-      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem) : clé du champ correspondant
-      // sous `CharacterData#combat` où le choix est persisté une fois fait (ex. "totemSpirit"
-      // -> `system.combat.totemSpirit`) — vide pour l'immense majorité des Capacités, qui n'ont
-      // pas ce genre de choix. Bouton "Choisir" affiché (onglet Capacités/Sorts, cf.
-      // #onChooseFeatureOption, actor-sheet.js) tant que le champ visé est encore vide,
-      // disparaît une fois le choix fait (verrouillé, même logique que le choix de sous-classe).
-      grantsChoice: new StringField({ required: false, blank: true, initial: "", choices: ["totemSpirit"] }),
+      // Voie du Cœur sauvage, Barbare — choix d'un esprit totem ; "Résilience draconique",
+      // Ensorceleur — type de dégâts résisté ; "Tactiques défensives", Rôdeur — un bonus passif
+      // parmi 3) : clé du champ correspondant sous `CharacterData#combat` où le choix est
+      // persisté une fois fait (ex. "totemSpirit" -> `system.combat.totemSpirit`) — vide pour
+      // l'immense majorité des Capacités, qui n'ont pas ce genre de choix. Bouton "Choisir"
+      // affiché (onglet Capacités/Sorts, cf. #onChooseFeatureOption, actor-sheet.js et
+      // CHOICE_OPTIONS_TABLES qui y associe la table d'options correspondante) tant que le champ
+      // visé est encore vide, disparaît une fois le choix fait (verrouillé, même logique que le
+      // choix de sous-classe).
+      grantsChoice: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: ["totemSpirit", "draconicResistanceType", "huntersDefense", "favoredEnemyType"]
+      }),
       // Capacité qui invoque un compagnon animal (ex. "Compagnon animal", Maître des bêtes,
       // Rôdeur) : bouton "Invoquer le compagnon" affiché (onglet Capacités/Sorts, cf.
       // #onSummonCompanion, actor-sheet.js/helpers/companion.js) une seule fois (flag
       // `beastCompanionCreated` posé sur l'Actor à la création, jamais recréé ensuite même si
       // le compagnon est supprimé). `false` pour l'immense majorité des Capacités.
       summonsCompanion: new BooleanField({ required: true, initial: false }),
+      // Capacité "Forme sauvage" (Druide, chantier "Forme sauvage", 2026-08-23) : bouton dédié
+      // "Prendre forme" (onglet Capacités/Sorts, cf. #onEnterWildShape, actor-sheet.js) au lieu
+      // du bouton générique de charge — cible le token d'un Actor de type "wildShapeForm"
+      // (bloc de stats de créature simplifié, même schéma que "mount", cf. dnd-custom-ai.js)
+      // puis décompte une charge de CETTE Capacité (system.uses) et lie l'Actor ciblé au
+      // personnage (system.combat.wildShapeActorId, character-data.js). `false` pour l'immense
+      // majorité des Capacités.
+      entersWildShape: new BooleanField({ required: true, initial: false }),
       // Incantation mineure de sous-classe (ex. "Incantation mineure", Chevalier occulte,
       // Guerrier) : liste de NOMS de Sorts (texte libre, comme costsResource ci-dessus — ce sont
       // des Sorts nommément désignés par la sous-classe, pas un filtre par classe/niveau)
@@ -239,8 +397,85 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // une seule fois), ce choix est reposé à chaque charge dépensée — cf. #onUseManeuver,
       // actor-sheet.js, et DND_CUSTOM.maneuvers, config.js. `false` pour l'immense majorité des
       // Capacités.
-      offersManeuverChoice: new BooleanField({ required: true, initial: false })
+      offersManeuverChoice: new BooleanField({ required: true, initial: false }),
+      // Technique de la Main Ouverte (Open Hand, Moine, SRD 5e — chantier "8 sous-classes déjà à
+      // ≥1 mécanique", 2026-08-23) : choix d'un effet parmi 3 (à terre/repoussée/pas de
+      // réaction, cf. DND_CUSTOM.openHandEffects, config.js) reproposé À CHAQUE utilisation
+      // (même esprit que offersManeuverChoice ci-dessus), suivi d'un jet de sauvegarde de
+      // Dextérité (DD 8 + maîtrise + Sagesse, simplifié — SRD 5e laisse la cible choisir Dex ou
+      // Force) pour CHAQUE cible ciblée — cf. #onUseOpenHandTechnique, actor-sheet.js. `false`
+      // pour l'immense majorité des Capacités.
+      offersOpenHandTechnique: new BooleanField({ required: true, initial: false }),
+      // Don qui laisse le joueur choisir UNE caractéristique à améliorer à l'octroi (ex.
+      // Athlète : Force ou Dextérité ; Résilient : n'importe laquelle, avec en plus la maîtrise
+      // du jet de sauvegarde correspondant) — `false` pour l'immense majorité des Capacités/
+      // Dons. Contrairement à `grantsChoice` (choix ponctuel posé sur l'ACTOR, une seule fois
+      // par personnage, ex. totemSpirit), ce choix est posé sur ce DON lui-même : un personnage
+      // pourrait posséder à la fois Athlète et Résilient, chacun avec son propre choix.
+      offersAbilityChoice: new BooleanField({ required: true, initial: false }),
+      // Caractéristique choisie (cf. offersAbilityChoice ci-dessus) — réglée sur la fiche de ce
+      // don lui-même (réservée au MJ comme le reste de cette fiche, cf. feature-sheet.hbs), lue
+      // par CharacterData#prepareDerivedData pour appliquer le bonus automatiquement. Vide tant
+      // que non choisi (aucun bonus appliqué).
+      chosenAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Don "Magie d'initié" (SRD 5e) : propose un choix en PLUSIEURS étapes (classe lanceuse,
+      // 2 tours de magie et 1 sort de niveau 1 de cette classe) plutôt qu'un simple bonus dérivé
+      // — cf. chooseInitiateMagicSpells (helpers/initiate-magic-choice.js) et
+      // #onChooseInitiateMagic (actor-sheet.js). Bouton "Choisir" affiché tant que
+      // `chosenLevelOneSpell` est vide (même convention que grantsChoice/offersAbilityChoice
+      // ci-dessus). `false` pour l'immense majorité des Capacités/Dons.
+      offersSpellChoice: new BooleanField({ required: true, initial: false }),
+      // Classe choisie (cf. offersSpellChoice) — clé stable (ex. "wizard"), vide tant que non
+      // choisie ; sert uniquement d'affichage/traçabilité, la liste réelle proposée au joueur
+      // (Barde/Clerc/Druide/Ensorceleur/Occultiste/Magicien, texte du don) est en dur dans
+      // initiate-magic-choice.js.
+      chosenSpellClass: new StringField({ required: false, blank: true, initial: "", choices: DND_CUSTOM.spellcastingClasses }),
+      // Les 2 tours de magie choisis (noms de Sorts, texte libre comme costsResource/
+      // grantsSpells ci-dessus) — vide tant que non choisis.
+      chosenCantrips: new ArrayField(new StringField({ blank: false }), { required: true, initial: [] }),
+      // Le sort de niveau 1 choisi : SRD 5e, lançable une fois GRATUITEMENT (sans dépenser
+      // d'emplacement) entre deux repos longs — réutilise directement `uses` ci-dessus (réglé à
+      // max:1/recharge:"longRest" au moment du choix) comme charge de ce cast gratuit, consommée
+      // par #onCastSpell (actor-sheet.js) qui reconnaît ce Sort par son nom exact. Au-delà de ce
+      // premier cast gratuit, le sort redevient un sort normal (décompte un emplacement du
+      // personnage comme n'importe quel autre) — approximation assumée pour une classe non
+      // jouée par le personnage (multiclassage non modélisé, cf. CONCEPTION_FONCTIONNELLE.md).
+      chosenLevelOneSpell: new StringField({ required: false, blank: true, initial: "" }),
+      // Capacité piochée dans un grand pool d'options propre à une classe (ex. les Invocations
+      // occultes de l'Occultiste, SRD 5e : liste de 30+ pouvoirs dont seul un sous-ensemble est
+      // connu à la fois, le nombre progressant avec le niveau) : `class`/`level` restent
+      // renseignés normalement (affichage/cohérence, cf. tests/data/consistency.test.js), mais
+      // `grantClassContent` (helpers/class-content.js) exclut explicitement toute Capacité
+      // `manualOnly` de l'octroi automatique — sinon TOUTES les options du pool seraient
+      // octroyées d'un coup à chaque personnage de cette classe dès le niveau atteint, alors que
+      // le joueur n'en connaît qu'une poignée à la fois. Même esprit que les langues "special"
+      // (jamais auto-octroyées) : à glisser manuellement depuis le compendium Capacités une fois
+      // choisie. `false` pour l'immense majorité des Capacités.
+      manualOnly: new BooleanField({ required: true, initial: false }),
+      // Invocation occulte "Salve implacable" (Agonizing Blast, Occultiste) — SEULE des
+      // Invocations occultes mécanisée (2026-08-23) : nom exact du Sort dont les dégâts
+      // reçoivent un bonus (texte libre, même convention que costsResource/grantsSpells
+      // ci-dessus), lu par #onRollSpellDamage (actor-sheet.js) pour ajouter le modificateur de
+      // `boostsSpellDamageAbility` ci-dessous au jet de dégâts de CE Sort précis. Vide pour
+      // l'immense majorité des Capacités.
+      boostsSpellDamage: new StringField({ required: false, blank: true, initial: "" }),
+      // Caractéristique dont le modificateur est ajouté (cf. boostsSpellDamage ci-dessus) —
+      // vide tant que boostsSpellDamage est vide.
+      boostsSpellDamageAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS })
     };
+  }
+
+  /** Réserve à progression (cf. scalesWithLevel ci-dessus) : `uses.max` recalculé au niveau
+   *  actuel du personnage propriétaire, jamais persisté (pure donnée dérivée, comme
+   *  CharacterData#abilities.<clé>.mod) — `value` (charges restantes) n'est jamais touché ici,
+   *  seul le plafond change. `this.parent` (TypeDataModel#parent) est l'ITEM lui-même, pas
+   *  l'Actor — piège rencontré en développant : `this.parent.actor` (Item#actor, natif Foundry)
+   *  est l'Actor propriétaire quand cet Item est embarqué sur une fiche, `null`/`undefined`
+   *  pour un Item encore dans un compendium/le monde (hors fiche : ne fait rien dans ce cas,
+   *  `uses.max` garde sa valeur JSON d'origine). */
+  prepareDerivedData() {
+    const level = this.parent?.actor?.system?.attributes?.level;
+    if (this.scalesWithLevel && level) this.uses.max = level;
   }
 }
 
@@ -300,11 +535,39 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       // Sort nécessitant un jet d'attaque (ex. Trait de feu), sur le même principe que les
       // armes (cf. WeaponData ci-dessus) : le bouton "Lancer" propose alors un jet d'attaque
       // (1d20 + spellAttackBonus, rules.js) puis un jet de dégâts, au lieu de se contenter de
-      // décompter une charge et poster la description (cf. #onCastSpell, actor-sheet.js). Un
-      // sort à sauvegarde (jet de la cible, pas du lanceur) reste volontairement non modélisé
-      // ici — hors du scope "combat automatisé" assumé par ce système (cf. le commentaire sur
-      // originTrait dans actor-sheet.js).
+      // décompter une charge et poster la description (cf. #onCastSpell, actor-sheet.js).
       attack: new BooleanField({ required: true, initial: false }),
+      // Sort à jet de sauvegarde de la CIBLE (ex. Boule de feu), pas du lanceur — retour de
+      // test (ANOMALIES_ACTIVES.md, cadré explicitement avec l'utilisateur le 2026-08-21) :
+      // longtemps volontairement exclu comme "combat automatisé", mais le scope réellement
+      // exclu (CONCEPTION_FONCTIONNELLE.md) ne couvre que la grille tactique et la réaction en
+      // pop-in générique — une simple comparaison déterministe à une valeur statique (le DD) est
+      // déjà acceptée pour les jets d'attaque (cf. `attack`/compareToTargetAc, rollCheck dans
+      // rolls.js). `#onCastSpell` lance donc 1d20 + modificateur de sauvegarde POUR CHAQUE cible
+      // actuellement ciblée (rules.js > targetSaveModifier) et poste le résultat au nom de la
+      // cible — jamais une interruption du client de la cible, même niveau d'automatisation que
+      // l'attaque. `ability` vide = sort sans sauvegarde (comportement par défaut, l'immense
+      // majorité des sorts). `halfOnSave` : dégâts réduits de moitié en cas de réussite (ex.
+      // Boule de feu) plutôt qu'aucun effet (ex. Moqueries cruelles) — n'affecte que le texte du
+      // résultat affiché, l'application réelle des dégâts (moitié ou plein) reste manuelle via
+      // le bouton "Appliquer les dégâts" générique, comme pour une attaque qui touche/rate déjà
+      // aujourd'hui (ce bouton n'a jamais tenu compte du résultat Touche/Rate non plus). Mutuel-
+      // lement exclusif avec `attack`/`heal` ci-dessous en usage normal (jamais les deux en SRD).
+      // `appliesCondition` (Niveau B, cf. ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : même principe
+      // que FeatureData#appliesCondition ci-dessus (condition posée automatiquement, via
+      // `Actor#toggleStatusEffect`, sur ÉCHEC du jet) — vide = aucun effet appliqué
+      // automatiquement, comportement inchangé (l'immense majorité des sorts à sauvegarde, ex.
+      // Boule de feu qui n'inflige qu'un jet de dégâts).
+      save: new SchemaField({
+        ability: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+        halfOnSave: new BooleanField({ required: true, initial: false }),
+        appliesCondition: new StringField({
+          required: false,
+          blank: true,
+          initial: "",
+          choices: DND_CUSTOM.conditions.map((condition) => condition.id)
+        })
+      }),
       damage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({ required: false, blank: true, initial: "" })
@@ -330,6 +593,18 @@ export class SpellData extends foundry.abstract.TypeDataModel {
       light: new SchemaField({
         bright: new NumberField({ required: true, min: 0, initial: 0 }),
         dim: new NumberField({ required: true, min: 0, initial: 0 })
+      }),
+      // Sort qui pose un état sur la cible SANS jet associé (ex. Invisibilité, Invisibilité
+      // suprême → "invisible", déjà lu par `conditionRollEffects`/le rendu de la fiche PJ) :
+      // bascule automatiquement cet état sur chaque cible actuellement ciblée au moment du
+      // lancer (`#onCastSpell`, actor-sheet.js), sans jet de sauvegarde/d'attaque à faire —
+      // contrairement à `save.appliesCondition` ci-dessus, qui dépend du résultat d'un jet.
+      // Vide = comportement inchangé (l'immense majorité des sorts, qui n'affectent aucun état).
+      grantsCondition: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: DND_CUSTOM.conditions.map((condition) => condition.id)
       }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };

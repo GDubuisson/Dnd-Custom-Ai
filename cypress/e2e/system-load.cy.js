@@ -56,7 +56,7 @@ describe("Chargement du système dnd-custom-ai", () => {
     cy.visit("/", { timeout: 30000 });
     cy.url({ timeout: 15000 }).should("include", "/join");
 
-    cy.get('select[name="userid"]').select("Gamemaster");
+    cy.get('input[name="username"]').type("Gamemaster");
     cy.get('#join-game-form button[type="submit"]').click();
 
     // Foundry peut être lent à charger (assets, compendiums) : timeout étendu, cf.

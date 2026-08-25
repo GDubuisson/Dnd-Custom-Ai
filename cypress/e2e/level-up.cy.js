@@ -515,6 +515,16 @@ describe("Montée de niveau — emplacements de sorts par niveau", () => {
       ).to.equal(0);
     });
 
+    // Simule un lanceur qui a déjà entamé ses emplacements de niveau 1 avant de monter de
+    // niveau (scénario réel du bug — anomalie 2026-08-19 : `#onLevelUp` ne touchait jamais
+    // `system.spells.slots`, un lanceur restait aux charges qu'il lui restait au lieu d'être
+    // rechargé). fullCaster[2] = [3,0,...] : max = 3, on entame à 1 restant.
+    cy.then(() =>
+      cy.window().then((win) =>
+        updateActor(win, win.game.actors.get(dedicatedActorId), { "system.spells.slots.1.value": 1 })
+      )
+    );
+
     cy.then(() => openSheet(dedicatedActorId));
     sheetRoot().find('button[data-action="levelUp"]').click();
 
@@ -524,6 +534,16 @@ describe("Montée de niveau — emplacements de sorts par niveau", () => {
       // fullCaster[3] = [4,2,0,...] : le magicien niveau 3 gagne son premier emplacement de
       // niveau 2.
       expect(actor.system.spells.slots[2].max, "emplacement de niveau 2 gagné au niveau 3").to.equal(2);
+      // Rechargé au nouveau max (4), pas resté à la valeur entamée (1) d'avant la montée de
+      // niveau — c'est le comportement corrigé par spellSlotFillUpdates (rules.js).
+      expect(
+        actor.system.spells.slots[1].value,
+        "emplacements de niveau 1 rechargés au max à la montée de niveau, pas laissés entamés"
+      ).to.equal(actor.system.spells.slots[1].max);
+      expect(
+        actor.system.spells.slots[2].value,
+        "nouvel emplacement de niveau 2 déjà à son max, pas à 0"
+      ).to.equal(actor.system.spells.slots[2].max);
     });
   });
 });

@@ -81,13 +81,29 @@ export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAll
   return mod + (jackOfAllTrades ? Math.floor(proficiencyBonusValue / 2) : 0);
 }
 
+/** Modificateur de compétence pour un test OPPOSÉ (Agripper/Bousculer, SRD 5e — chantier
+ *  "mécaniques jamais modélisées", 2026-08-25, cadré avec l'utilisateur avant implémentation) :
+ *  `system` peut être un Personnage (`skillModifier` ci-dessus, maîtrise incluse) ou un PNJ
+ *  (`NpcData`, pas de `system.skills` du tout — bonus DIRECT de la caractéristique liée, même
+ *  détection "pas de `.total` sur l'entrée `abilities`" que `targetSaveModifier` ci-dessous).
+ *  `ability` doit être résolu par l'appelant (`SKILL_ABILITIES[skillKey]`, character-data.js) —
+ *  jamais importé ici pour éviter un cycle d'import (`character-data.js` importe déjà ce
+ *  fichier). */
+export function opposedCheckModifier(system, skillKey, ability) {
+  const abilityData = system.abilities[ability];
+  if (!("total" in abilityData)) return abilityData.mod;
+  return skillModifier(system, skillKey, proficiencyBonus(system.attributes.level));
+}
+
 /** Le personnage possède-t-il une Capacité (Item type "feature") d'un nom exact donné ? Sert à
  *  déclencher automatiquement les quelques Capacités passives dont l'effet est mécanique et
  *  sans ambiguïté (cf. character-data.js > Défense sans armure du Barbare, actor-sheet.js >
  *  Aptitudes multiples du Barde, Incantation rituelle du Clerc) — pour que le joueur/MJ n'ait
  *  pas à s'en souvenir/l'appliquer à la main. Les Capacités dont l'effet dépend d'un choix du
- *  joueur (Domaine divin, Métamagie, Invocations occultes...) restent volontairement du texte
- *  descriptif, non automatisées. */
+ *  joueur (Domaine divin, Métamagie...) restent volontairement du texte descriptif, non
+ *  automatisées — à l'exception de la seule Invocation occulte "Salve implacable", mécanisée via
+ *  FeatureData#boostsSpellDamage (item-data.js) plutôt que ce helper, le reste des Invocations
+ *  restant du texte descriptif. */
 export function hasFeature(items, name) {
   return items.some((item) => item.type === "feature" && item.name === name);
 }
@@ -122,6 +138,26 @@ export function passivePerception(wisMod, perceptionProficient, proficiencyBonus
 /** DD de sauvegarde des sorts, SRD 5e : 8 + bonus de maîtrise + mod de la caractéristique d'incantation. */
 export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
   return 8 + proficiencyBonusValue + spellcastingAbilityMod;
+}
+
+/** Modificateur de sauvegarde d'une CIBLE pour une caractéristique donnée (mod. + bonus de
+ *  maîtrise si la cible est maîtrisée de cette sauvegarde), SRD 5e — sert à l'auto-jet de
+ *  sauvegarde d'un sort à sauvegarde (cf. SpellData#save, item-data.js ; #onCastSpell,
+ *  actor-sheet.js), même niveau d'automatisation que compareToTargetAc pour un jet d'attaque :
+ *  une simple lecture des stats déjà exposées de la cible, jamais une interruption de son
+ *  client. `targetSystem` = `actor.system` de la cible (pas l'Actor entier), pour rester
+ *  testable sans mock complet d'un Document Foundry.
+ *
+ *  PNJ (`NpcData`, forme volontairement simplifiée, cf. npc-data.js) : pas de score/maîtrise
+ *  séparée, `abilities[ability].mod` EST déjà le bonus de sauvegarde (même convention que le
+ *  bouton "Sauv" manuel de la fiche PNJ) — détecté par l'absence de `.total` sur l'entrée
+ *  d'`abilities` (forme `CharacterData`). */
+export function targetSaveModifier(targetSystem, ability) {
+  const abilityData = targetSystem.abilities[ability];
+  if (!("total" in abilityData)) return abilityData.mod;
+  const mod = abilityModifier(abilityData.total);
+  const profBonus = targetSystem.saves[ability].proficient ? proficiencyBonus(targetSystem.attributes.level) : 0;
+  return mod + profBonus;
 }
 
 /** Bonus d'attaque des sorts, SRD 5e : bonus de maîtrise + mod de la caractéristique d'incantation. */
@@ -174,6 +210,17 @@ export function spellSlotsForClass(className, level, tables) {
     });
   }
   return { slots, maxSpellLevel, isPactMagic: false };
+}
+
+/** Objet d'update `system.spells.slots.<n>.value` -> max, un par palier (1-9), pour topper au
+ *  maximum les emplacements de sorts actuellement dérivés de `actor.system.spells.slots` (déjà
+ *  recalculés par CharacterData#prepareDerivedData au moment de l'appel). Partagé entre repos
+ *  court/long (DndCustomActorSheet#onRestShort/Long), montée de niveau (#onLevelUp) et création
+ *  de personnage (CharacterCreationWizard) : mêmes emplacements à remplir, seul le moment
+ *  d'appel change. */
+export function spellSlotFillUpdates(actor) {
+  const slots = actor.system.spells.slots;
+  return Object.fromEntries(SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max]));
 }
 
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis

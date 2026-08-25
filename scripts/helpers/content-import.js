@@ -5,13 +5,15 @@ const SYSTEM_ID = "dnd-custom-ai";
 // Armes/armures/objets/outils : importés dans les Items du monde (comme avant, cf.
 // world-items/README.md), rangés dans un dossier par catégorie (cf. ensureFolder ci-dessous —
 // retour de test, tout arrivait en vrac dans l'onglet "Objets"). Classes/Sous-classes/Origines/
-// Sorts/Capacités de classe/Dons/Langues : importés DIRECTEMENT dans leur compendium
+// Sorts/Capacités de classe/Dons/Langues/Adversaires : importés DIRECTEMENT dans leur compendium
 // (packs/classes, packs/sous-classes, packs/origines, packs/sorts, packs/capacites,
-// packs/dons, packs/langues, cf. system.json > packs), qui
+// packs/dons, packs/langues, packs/adversaires, cf. system.json > packs), qui
 // reste vide sinon — Foundry ne compile ces packs qu'à partir de documents ajoutés depuis
 // l'interface, et ce système n'a pas d'étape de build pour les préremplir autrement (cf.
 // ClaudeFiles/CONCEPTION_TECHNIQUE.md > pas de build). Les compendiums n'ont pas cette notion de dossier ici (pas
-// demandé, et une seule catégorie par compendium de toute façon).
+// demandé, et une seule catégorie par compendium de toute façon). `packs/adversaires` est le seul
+// compendium Actor (tous les autres sont des compendiums Item) — cf. `compendium.documentClass`
+// dans la boucle COMPENDIUM_FILES plus bas, qui s'adapte au type réel du pack.
 const WORLD_ITEM_FILES = [
   {
     file: "weapons.json",
@@ -35,7 +37,13 @@ const COMPENDIUM_FILES = [
   { file: "spells.json", pack: `${SYSTEM_ID}.sorts` },
   { file: "features.json", pack: `${SYSTEM_ID}.capacites` },
   { file: "feats.json", pack: `${SYSTEM_ID}.dons` },
-  { file: "languages.json", pack: `${SYSTEM_ID}.langues` }
+  { file: "languages.json", pack: `${SYSTEM_ID}.langues` },
+  // Bestiaire (PNJ pré-configurés, chantier "Adversaires" — humanoïdes + bêtes sauvages
+  // réelles, aucune créature légendaire/mythique, cf. world-items/README.md), seul fichier de
+  // COMPENDIUM_FILES à peupler un compendium Actor plutôt qu'Item : cf. `compendium.
+  // documentClass.createDocuments` ci-dessous (résolu dynamiquement par pack, plutôt qu'un
+  // Item.createDocuments en dur qui échouerait silencieusement sur des données d'Actor).
+  { file: "npcs.json", pack: `${SYSTEM_ID}.adversaires` }
 ];
 
 /** Crée (une seule fois, si absent) un Folder de type "Item" nommé `name` sous `parentId`
@@ -123,9 +131,22 @@ export async function importSystemContent({ notifyIfEmpty = true } = {}) {
       console.log(`${SYSTEM_ID} | Compendium ${packId} déverrouillé automatiquement avant import`);
     }
     const data = await fetch(`systems/${SYSTEM_ID}/world-items/${file}`).then((r) => r.json());
-    const existingNames = new Set(compendium.index.map((entry) => entry.name));
+    // `await compendium.getIndex()` plutôt que le getter `compendium.index` brut : pour un pack
+    // dont l'index n'a pas encore été chargé par ce client à ce point précis du hook `ready`
+    // (retour de test — reproduit de façon fiable sur `adversaires`, tout juste ajouté à
+    // `system.json` > `packs`), `.index` renvoyable une Collection VIDE plutôt que de lever une
+    // erreur : `existingNames` restait vide à chaque session, si bien que `missing` valait TOUJOURS
+    // la liste complète et dupliquait les 15 PNJ à chaque rechargement du monde. `getIndex()`
+    // force explicitement le chargement/la mise à jour de l'index avant de le lire — inoffensif
+    // pour les compendiums déjà indexés (retourne l'index déjà en cache sans requête réseau
+    // superflue), donc appliqué à TOUS les fichiers de COMPENDIUM_FILES, pas seulement celui-ci.
+    const index = await compendium.getIndex();
+    const existingNames = new Set(index.map((entry) => entry.name));
     const missing = data.filter((entry) => !existingNames.has(entry.name));
-    if (missing.length) await Item.createDocuments(missing, { pack: packId });
+    // `compendium.documentClass` (Item ou Actor selon le pack, cf. system.json > packs > "type")
+    // plutôt qu'un `Item.createDocuments` en dur : seul ce fichier peuple un compendium Actor
+    // (npcs.json -> packs/adversaires), tous les autres restent des Items comme avant.
+    if (missing.length) await compendium.documentClass.createDocuments(missing, { pack: packId });
     totalImported += missing.length;
     console.log(`${SYSTEM_ID} | ${file} : ${missing.length} objet(s) importé(s) dans ${packId}`);
   }

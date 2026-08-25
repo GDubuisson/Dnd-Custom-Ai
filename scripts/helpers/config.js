@@ -9,6 +9,20 @@ DND_CUSTOM.abilities = {
   cha: "DND_CUSTOM.Abilities.cha"
 };
 
+/** Abréviation localisée (FR : FOR/DEX/CON/INT/SAG/CHA, EN : STR/DEX/CON/INT/WIS/CHA) — retour
+ *  de test : le nom complet de la caractéristique affiché à côté de chaque compétence
+ *  (context.skills, actor-sheet.js) prenait trop de place ; une vraie abréviation localisée,
+ *  différente d'une clé technique brute ("str"/"dex"...) qui avait causé le même retour de test
+ *  une première fois avant que le nom complet ne soit adopté. */
+DND_CUSTOM.abilitiesShort = {
+  str: "DND_CUSTOM.Abilities.Short.str",
+  dex: "DND_CUSTOM.Abilities.Short.dex",
+  con: "DND_CUSTOM.Abilities.Short.con",
+  int: "DND_CUSTOM.Abilities.Short.int",
+  wis: "DND_CUSTOM.Abilities.Short.wis",
+  cha: "DND_CUSTOM.Abilities.Short.cha"
+};
+
 DND_CUSTOM.skills = {
   acrobatics: "DND_CUSTOM.Skills.acrobatics",
   animalHandling: "DND_CUSTOM.Skills.animalHandling",
@@ -174,6 +188,23 @@ DND_CUSTOM.maneuvers = {
   feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
+/** Effets de Technique de la Main Ouverte (Open Hand, Moine, SRD 5e) — reproposés à chaque
+ *  utilisation (cf. FeatureData#offersOpenHandTechnique, #onUseOpenHandTechnique dans
+ *  actor-sheet.js), même esprit que DND_CUSTOM.maneuvers ci-dessus. */
+DND_CUSTOM.openHandEffects = {
+  prone: "DND_CUSTOM.OpenHandEffects.prone",
+  pushed: "DND_CUSTOM.OpenHandEffects.pushed",
+  noReaction: "DND_CUSTOM.OpenHandEffects.noReaction"
+};
+
+/** Effets de Bousculer (SRD 5e — cf. FeatureData#opposedCheckType, #onRollOpposedCheck dans
+ *  actor-sheet.js) : choisi par l'attaquant AVANT le jet (même UX que DND_CUSTOM.openHandEffects
+ *  ci-dessus), appliqué seulement en cas de succès du test opposé. */
+DND_CUSTOM.shoveEffects = {
+  prone: "DND_CUSTOM.ShoveEffects.prone",
+  pushed: "DND_CUSTOM.ShoveEffects.pushed"
+};
+
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
 DND_CUSTOM.classHitDice = {
   barbarian: 12,
@@ -304,7 +335,44 @@ DND_CUSTOM.conditions = [
   // Serment de Vengeance (désavantage aux attaques de quiconque n'est pas le Paladin contre
   // elle), à poser/lever manuellement par le MJ, cf. world-items/features.json > "Traque
   // implacable".
-  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" }
+  { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" },
+  // Homebrew (comme "raging"/"hunted" ci-dessus) : bascule manuelle posée par le lanceur sur une
+  // cible de Bénédiction (Clerc/Paladin) — tant qu'active, +1d4 automatique aux jets d'attaque et
+  // de sauvegarde de cette cible (cf. conditionRollEffects, actor-sheet.js). Comme les autres
+  // conditions homebrew, aucune durée ni décompte de sort n'est suivi : à lever manuellement
+  // quand le sort prend fin.
+  { id: "blessed", name: "DND_CUSTOM.Conditions.blessed", img: "icons/svg/angel.svg" },
+  // Homebrew (comme "blessed" ci-dessus) : bascule manuelle posée par le lanceur d'Avis divin
+  // (Clerc) — tant qu'active, +1d4 automatique aux tests de caractéristique/compétence de la
+  // cible. SRD 5e : normalement une seule utilisation avant la fin du sort ; simplifié comme le
+  // reste des conditions homebrew (pas de décompte automatique, à lever manuellement après usage
+  // ou fin du sort).
+  { id: "guided", name: "DND_CUSTOM.Conditions.guided", img: "icons/svg/light.svg" },
+  // Homebrew (comme "blessed"/"guided" ci-dessus) : bascule manuelle posée par le lanceur de
+  // Liberté de mouvement (Clerc, Paladin, Druide) sur sa cible — tant qu'active, immunité à
+  // Entravé (cf. isImmuneToCondition, helpers/condition-immunity.js, chantier "généraliser
+  // condition-immunity.js" de ClaudeFiles/MECANIQUES_A_AUTOMATISER.md, 2026-08-24). Pas de
+  // décompte automatique (1 h SRD), à lever manuellement comme le reste des conditions homebrew.
+  { id: "freedomOfMovement", name: "DND_CUSTOM.Conditions.freedomOfMovement", img: "icons/svg/wing.svg" },
+  // Homebrew (comme ci-dessus) : bascule manuelle posée par le lanceur de Protection contre le
+  // mal et le bien sur sa cible — tant qu'active, immunité à Charmé/Effrayé (cf.
+  // isImmuneToCondition). Simplification assumée par rapport au texte SRD exact : la protection
+  // RAW ne vaut QUE contre les Aberrations/Célestes/Élémentaires/Fées/Fiélons/Morts-vivants (pas
+  // n'importe quelle source de Charmé/Effrayé) — ce système ne trace pas le type de créature à
+  // l'origine d'une condition posée (aucun mécanisme d'"origine d'attaquant" pour une
+  // ActiveEffect nulle part ailleurs dans ce système), donc l'immunité posée ici est
+  // volontairement plus large que le SRD plutôt que non modélisée du tout.
+  { id: "protectedFromEvilGood", name: "DND_CUSTOM.Conditions.protectedFromEvilGood", img: "icons/svg/holy-shield.svg" },
+  // Homebrew (comme "raging"/"blessed" ci-dessus, Niveau C, 2026-08-24) : bascule manuelle posée
+  // par le Paladin lui-même à l'activation de "Voile des anciens" (Canalisation divine, Serment
+  // des Anciens) — tant qu'active sur LUI, toute créature à 3 m (lui inclus) bénéficie d'une
+  // résistance aux dégâts de SORTS (pas un type précis, cf. isResistantToDamageType >
+  // isSpellDamage/isProtectedByAncientsVeil, dnd-custom-ai.js) — même mécanisme de portée que
+  // isProtectedByDevotionAura (helpers/condition-immunity.js), la bascule remplaçant ici la
+  // possession passive de la Capacité (activation temporaire, pas un trait permanent). Aucun
+  // décompte de durée (1 min SRD) n'est suivi, comme le reste des conditions homebrew : à lever
+  // manuellement.
+  { id: "ancientsVeil", name: "DND_CUSTOM.Conditions.ancientsVeil", img: "icons/svg/mage-shield.svg" }
 ];
 
 /** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé
@@ -355,6 +423,29 @@ DND_CUSTOM.damageTypes = {
   psychic: "DND_CUSTOM.Item.DamageTypes.psychic",
   radiant: "DND_CUSTOM.Item.DamageTypes.radiant",
   thunder: "DND_CUSTOM.Item.DamageTypes.thunder"
+};
+
+/** Sous-ensemble de DND_CUSTOM.damageTypes ci-dessus : les 5 seuls types réellement associés à
+ *  un type de dragon SRD 5e (Résilience draconique, Ensorceleur Lignée draconique — choix
+ *  ponctuel et définitif, cf. FeatureData#grantsChoice = "draconicResistanceType",
+ *  CharacterData#combat.draconicResistanceType, #onChooseFeatureOption dans actor-sheet.js).
+ *  Mêmes clés de localisation que damageTypes, pas de doublon à maintenir. */
+DND_CUSTOM.draconicResistanceTypes = {
+  acid: DND_CUSTOM.damageTypes.acid,
+  cold: DND_CUSTOM.damageTypes.cold,
+  fire: DND_CUSTOM.damageTypes.fire,
+  lightning: DND_CUSTOM.damageTypes.lightning,
+  poison: DND_CUSTOM.damageTypes.poison
+};
+
+/** Tactiques défensives (Hunter, Rôdeur, SRD 5e) : choix ponctuel et définitif d'un bonus passif
+ *  parmi 3 (cf. FeatureData#grantsChoice = "huntersDefense", CharacterData#combat.huntersDefense,
+ *  #onChooseFeatureOption dans actor-sheet.js) — non appliqué automatiquement aux jets (cf.
+ *  commentaire de la Capacité, features.json), seul le choix lui-même est enregistré/affiché. */
+DND_CUSTOM.huntersDefenses = {
+  mobile: "DND_CUSTOM.HuntersDefenses.mobile",
+  multiattackDefense: "DND_CUSTOM.HuntersDefenses.multiattackDefense",
+  steadfast: "DND_CUSTOM.HuntersDefenses.steadfast"
 };
 
 /** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */

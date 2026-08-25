@@ -23,7 +23,8 @@ describe("character-sheet.hbs (en-tête)", () => {
         level: 3,
         hp: { value: 18, max: 24, temp: 2 },
         ac: { value: 15 },
-        speed: 30
+        speed: 30,
+        inspirationPoints: 2
       }
     },
     isGM: true,
@@ -54,6 +55,13 @@ describe("character-sheet.hbs (en-tête)", () => {
     assert.ok(doc.querySelector('input[name="system.attributes.hp.temp"]'));
   });
 
+  test("points d'inspiration : champ éditable côté MJ, valeur reflétée", () => {
+    const input = doc.querySelector('input[name="system.attributes.inspirationPoints"]');
+    assert.ok(input, "champ Points d'inspiration introuvable");
+    assert.equal(input.value, "2");
+    assert.equal(input.disabled, false);
+  });
+
   test("bouton Assistant absent quand Classe et Origine sont déjà définies", () => {
     assert.equal(doc.querySelector('[data-action="openCreationWizard"]'), null);
   });
@@ -75,7 +83,7 @@ describe("character-sheet.hbs (en-tête)", () => {
 describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
   const context = {
     actor: { img: "img.webp", name: "Aldric" },
-    system: { xp: 1200, attributes: { level: 3, hp: { value: 18, max: 24, temp: 2 }, ac: { value: 15 }, speed: 30 } },
+    system: { xp: 1200, attributes: { level: 3, hp: { value: 18, max: 24, temp: 2 }, ac: { value: 15 }, speed: 30, inspirationPoints: 1 } },
     isGM: false,
     levelUpAvailable: true,
     xpNextThreshold: 2700,
@@ -109,6 +117,13 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
     const hpInput = doc.querySelector('input[name="system.attributes.hp.value"]');
     assert.ok(hpInput, "champ PV actuels introuvable");
     assert.ok(hpInput.disabled, "le champ PV actuels devrait être désactivé pour un Joueur");
+  });
+
+  test("points d'inspiration : champ verrouillé côté Joueur (accordé par le MJ uniquement), valeur visible", () => {
+    const input = doc.querySelector('input[name="system.attributes.inspirationPoints"]');
+    assert.ok(input, "champ Points d'inspiration introuvable");
+    assert.equal(input.value, "1");
+    assert.ok(input.disabled, "le champ Points d'inspiration devrait être désactivé pour un Joueur");
   });
 });
 
@@ -243,9 +258,11 @@ describe("tab-stats.hbs", () => {
 });
 
 // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
-// profil d'attaque simplifié (NpcData#attack, npc-data.js), un seul par PNJ sur le modèle des
-// stat-blocks SRD 5e, au lieu d'un système d'armes/inventaire complet.
-describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
+// profils d'attaque simplifiés (NpcData#attacks, npc-data.js), LISTE depuis le chantier
+// "mécaniques jamais modélisées" point 4/6 (2026-08-25) — un vrai bloc de statistiques SRD 5e a
+// souvent plusieurs attaques distinctes (ex. "Morsure. ... Griffe. ..."), au lieu d'un système
+// d'armes/inventaire complet.
+describe("npc-tab-stats.hbs — profils d'attaque (NpcData#attacks)", () => {
   function render(attackOverrides = {}) {
     return parse(
       renderTemplate("actor/npc-tab-stats.hbs", {
@@ -256,21 +273,26 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
           { key: "str", label: "DND_CUSTOM.Abilities.str", mod: 3, modLabel: "+3" },
           { key: "dex", label: "DND_CUSTOM.Abilities.dex", mod: 1, modLabel: "+1" }
         ],
-        attack: {
-          name: "",
-          defaultName: "Attaque",
-          abilityOptions: [
-            { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
-            { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
-          ],
-          bonus: 0,
-          attackBonusLabel: "+3",
-          damageDice: "",
-          damageBonus: 0,
-          damageTypeOptions: [{ key: "", label: "", selected: true }],
-          damageLabel: "",
-          ...attackOverrides
-        }
+        attacks: [
+          {
+            index: 0,
+            name: "",
+            defaultName: "Attaque",
+            abilityOptions: [
+              { key: "str", label: "DND_CUSTOM.Abilities.str", selected: true },
+              { key: "dex", label: "DND_CUSTOM.Abilities.dex", selected: false }
+            ],
+            bonus: 0,
+            attackBonusLabel: "+3",
+            damageDice: "",
+            damageBonus: 0,
+            damageTypeOptions: [{ key: "", label: "", selected: true }],
+            damageLabel: "",
+            secondaryDamageDice: "",
+            secondaryDamageTypeOptions: [{ key: "", label: "", selected: true }],
+            ...attackOverrides
+          }
+        ]
       })
     );
   }
@@ -279,6 +301,7 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
     const doc = render();
     const button = doc.querySelector('[data-action="rollAttack"]');
     assert.ok(button, "bouton d'attaque introuvable");
+    assert.equal(button.dataset.index, "0");
     assert.match(button.textContent, /\+3/);
   });
 
@@ -290,14 +313,22 @@ describe("npc-tab-stats.hbs — profil d'attaque (NpcData#attack)", () => {
     assert.match(button.textContent, /1d6\+3/);
   });
 
-  test("les champs de configuration sont bien reliés à system.attack.*", () => {
+  test("les champs de configuration sont bien reliés à system.attacks.0.*", () => {
     const doc = render();
-    assert.ok(doc.querySelector('input[name="system.attack.name"]'));
-    assert.ok(doc.querySelector('select[name="system.attack.ability"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.bonus"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.damage.dice"]'));
-    assert.ok(doc.querySelector('input[name="system.attack.damage.bonus"]'));
-    assert.ok(doc.querySelector('select[name="system.attack.damage.type"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.name"]'));
+    assert.ok(doc.querySelector('select[name="system.attacks.0.ability"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.bonus"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.damage.dice"]'));
+    assert.ok(doc.querySelector('input[name="system.attacks.0.damage.bonus"]'));
+    assert.ok(doc.querySelector('select[name="system.attacks.0.damage.type"]'));
+  });
+
+  test("bouton 'Ajouter une attaque' toujours affiché, un bouton 'Retirer' par attaque", () => {
+    const doc = render();
+    assert.ok(doc.querySelector('[data-action="addNpcAttack"]'), "bouton Ajouter introuvable");
+    const removeBtn = doc.querySelector('[data-action="removeNpcAttack"]');
+    assert.ok(removeBtn, "bouton Retirer introuvable");
+    assert.equal(removeBtn.dataset.index, "0");
   });
 });
 
@@ -590,6 +621,43 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
   });
 });
 
+describe("tab-abilities.hbs — libellé du bouton de jet d'une Capacité (displayRollFormula)", () => {
+  function render(rollFormula, level) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: false,
+        concentratingOn: "",
+        originTrait: null,
+        reactionAvailable: true,
+        system: { attributes: { level } },
+        features: [
+          { id: "f1", name: "Récupération arcanique", system: { source: "", uses: { max: 0 }, requiresRoll: true, rollFormula, costsResource: "" } }
+        ]
+      })
+    );
+  }
+
+  test("une fonction déterministe (ceil/floor/round/min/max) est évaluée, pas affichée en tant qu'appel brut", () => {
+    const doc = render("ceil(@attributes.level/2)", 5);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /\b3\b/, `attendu "3" (ceil(5/2)), obtenu "${button.textContent.trim()}"`);
+    assert.doesNotMatch(button.textContent, /ceil/, "l'appel de fonction brut ne devrait plus apparaître");
+  });
+
+  test("une fonction déterministe suivie d'une notation de dé reste lisible (ex. Attaque sournoise)", () => {
+    const doc = render("ceil(@attributes.level/2)d6", 7);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /4d6/, `attendu "4d6" (ceil(7/2)d6), obtenu "${button.textContent.trim()}"`);
+  });
+
+  test("un niveau numérique valide substitue un vrai nombre, pas un rappel textuel générique", () => {
+    const doc = render("1d10 + @attributes.level", 5);
+    const button = doc.querySelector('[data-item-id="f1"] [data-action="rollFeature"]');
+    assert.match(button.textContent, /1d10 \+ 5/);
+  });
+});
+
 describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/actor/abilities/class-flavor.hbs)", () => {
   const CLASS_FLAVOR_PARTIAL = "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs";
 
@@ -721,6 +789,58 @@ describe("item/spell-sheet.hbs — sort de soin (system.heal)", () => {
   });
 });
 
+describe("item/spell-sheet.hbs — sort à sauvegarde de la cible (system.save)", () => {
+  function render(save, { attack = false, damage = { dice: "", type: "" } } = {}) {
+    return parse(
+      renderTemplate("item/spell-sheet.hbs", {
+        item: { img: "spell.webp", name: "Boule de feu" },
+        isGM: true,
+        config: { abilities: DND_CUSTOM.abilities, damageTypes: DND_CUSTOM.damageTypes },
+        classOptions: [{ key: "wizard", label: "Magicien", checked: true }],
+        showDamageFields: attack || Boolean(save.ability),
+        system: {
+          classes: new Set(["wizard"]),
+          level: 3,
+          details: "1 action, 45 m, Instantanée",
+          concentration: false,
+          ritual: false,
+          attack,
+          save,
+          damage,
+          heal: { dice: "" },
+          description: ""
+        }
+      })
+    );
+  }
+
+  test("aucune caractéristique choisie -> la case 'dégâts réduits de moitié' n'apparaît pas", () => {
+    const doc = render({ ability: "", halfOnSave: false });
+    assert.equal(doc.querySelector('select[name="system.save.ability"]').value, "");
+    assert.equal(doc.querySelector('input[name="system.save.halfOnSave"]'), null);
+  });
+
+  test("caractéristique choisie -> select pré-rempli et case 'dégâts réduits de moitié' visible", () => {
+    const doc = render({ ability: "dex", halfOnSave: true });
+    assert.equal(doc.querySelector('select[name="system.save.ability"]').value, "dex");
+    const halfCheckbox = doc.querySelector('input[name="system.save.halfOnSave"]');
+    assert.ok(halfCheckbox, "case à cocher HalfOnSave introuvable");
+    assert.ok(halfCheckbox.checked);
+  });
+
+  test("champ Dégâts visible pour un sort à sauvegarde même sans jet d'attaque", () => {
+    const doc = render({ ability: "dex", halfOnSave: true }, { attack: false, damage: { dice: "8d6", type: "fire" } });
+    const damageInput = doc.querySelector('input[name="system.damage.dice"]');
+    assert.ok(damageInput, "champ Dégâts absent pour un sort à sauvegarde");
+    assert.equal(damageInput.getAttribute("value"), "8d6");
+  });
+
+  test("champ Dégâts absent si ni attaque ni sauvegarde", () => {
+    const doc = render({ ability: "", halfOnSave: false }, { attack: false });
+    assert.equal(doc.querySelector('input[name="system.damage.dice"]'), null);
+  });
+});
+
 describe("item/spell-sheet.hbs — sort de type Réaction", () => {
   const doc = parse(
     renderTemplate("item/spell-sheet.hbs", {
@@ -809,6 +929,38 @@ describe("item/feature-sheet.hbs — Capacité universelle (system.universal)", 
     assert.ok(checkbox, "case Universelle introuvable");
     assert.ok(checkbox.hasAttribute("checked"));
     assert.equal(render(false).querySelector('input[name="system.universal"]').hasAttribute("checked"), false);
+  });
+});
+
+describe("item/feature-sheet.hbs — réserve à progression (system.scalesWithLevel, ex. Ki)", () => {
+  function render(scalesWithLevel) {
+    return parse(
+      renderTemplate("item/feature-sheet.hbs", {
+        item: { img: "f.webp", name: "Ki" },
+        isGM: true,
+        config: { activationTypes: { action: "DND_CUSTOM.Item.ActivationTypes.action" }, classes: DND_CUSTOM.classes },
+        subclassOptions: {},
+        rechargeOptions: { shortRest: "DND_CUSTOM.Item.RechargeTypes.shortRest" },
+        system: {
+          class: "monk", subclass: "", level: 2, source: "", requiresRoll: false, costsResource: "",
+          uses: { max: 4, value: 2, recharge: "shortRest" }, description: "",
+          activation: "action", reactionTrigger: "", scalesWithLevel
+        },
+        isReaction: false
+      })
+    );
+  }
+
+  test("scalesWithLevel: true -> champ Maximum masqué, note affichée avec la valeur courante", () => {
+    const doc = render(true);
+    assert.equal(doc.querySelector('input[name="system.uses.max"]'), null, "le champ Maximum ne doit pas être éditable");
+    assert.ok(doc.querySelector('input[name="system.uses.value"]'), "le champ Valeur courante doit rester éditable");
+  });
+
+  test("scalesWithLevel: false -> champ Maximum éditable normalement (comportement inchangé)", () => {
+    const input = render(false).querySelector('input[name="system.uses.max"]');
+    assert.ok(input, "le champ Maximum devrait être visible");
+    assert.equal(input.getAttribute("value"), "4");
   });
 });
 

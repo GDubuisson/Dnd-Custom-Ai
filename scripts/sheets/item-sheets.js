@@ -97,6 +97,30 @@ export class ArmorItemSheet extends DndCustomItemSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.slotOptions = DND_CUSTOM.armorSlotOptions;
+    // Chantier "types de dégâts" (Phase 4, 2026-08-25) : 3 groupes de cases à cocher, résistance/
+    // immunité/vulnérabilité PROPRE à cette armure (indépendante des cases génériques Personnage/
+    // PNJ de la Phase 1) — même pattern que npc-sheet.js (champ à la racine de `system`, pas sous
+    // `combat`), cf. damageAffinitySchema (shared-schema.js), hasArmorDamageAffinity
+    // (dnd-custom-ai.js) pour la résolution.
+    const damageAffinityOptions = (setField) =>
+      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
+    context.damageAffinityGroups = [
+      {
+        field: "damageResistances",
+        titleKey: "DND_CUSTOM.Npc.DamageResistances",
+        options: damageAffinityOptions(context.system.damageResistances)
+      },
+      {
+        field: "damageImmunities",
+        titleKey: "DND_CUSTOM.Npc.DamageImmunities",
+        options: damageAffinityOptions(context.system.damageImmunities)
+      },
+      {
+        field: "damageVulnerabilities",
+        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
+        options: damageAffinityOptions(context.system.damageVulnerabilities)
+      }
+    ];
     return context;
   }
 }
@@ -221,6 +245,14 @@ export class SpellItemSheet extends DndCustomItemSheet {
       checked: context.system.classes.has(key)
     }));
     context.isReaction = context.system.activation === "reaction";
+    // Un sort à jet d'attaque OU à sauvegarde peut avoir des dégâts (cf. SpellData#save,
+    // item-data.js) — un seul champ précalculé plutôt qu'un helper Handlebars "or" (aucun
+    // n'existe dans ce système, cf. handlebars-helpers.js) pour éviter de dupliquer le fieldset
+    // Dégâts deux fois dans le template. `Boolean(damage.dice)` en plus : un sort qui touche
+    // automatiquement sans aucun jet (ex. Projectile magique, SRD 5e — "touche automatiquement",
+    // ni jet d'attaque ni sauvegarde) doit rester éditable même une fois déjà configuré.
+    context.showDamageFields =
+      context.system.attack || Boolean(context.system.save.ability) || Boolean(context.system.damage.dice);
     return context;
   }
 }

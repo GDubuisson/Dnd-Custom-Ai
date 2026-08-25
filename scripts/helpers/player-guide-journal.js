@@ -50,6 +50,21 @@ function buildRulesPage(glossary) {
     automatiquement. Maj-clic : ${abbr("Avantage / Désavantage", "avantage")}. Ctrl-clic :
     ${abbr("Avantage / Désavantage", "désavantage")}.</p>
 
+    <h2>Agripper / Bousculer</h2>
+    <p>Au lieu d'une attaque, vous pouvez tenter d'agripper ou de bousculer une seule créature à
+    votre portée (bouton dédié sur l'onglet Statistiques) : votre Athlétisme est comparé au
+    meilleur des jets d'Athlétisme/Acrobaties de la cible — un test opposé, les deux camps lancent
+    un d20. Agripper réussi pose l'état "Agrippé" sur la cible. Bousculer réussi vous laisse
+    choisir entre "À terre" (état "Prone" posé automatiquement) et "Repoussé de 1,50 m" (à votre
+    Maître du Jeu de déplacer la cible en conséquence, le système ne déplace jamais de token).</p>
+
+    <h2>Points d'inspiration</h2>
+    <p>Une ressource libre, distincte de l'Inspiration bardique, que votre Maître du Jeu vous
+    accorde en jeu (compteur visible en en-tête de fiche, à côté des PV). Dépensez-en un via le
+    bouton qui apparaît sous un jet de caractéristique ou de compétence dans le chat : le jet
+    d'origine disparaît, remplacé par un nouveau jet dont le résultat est toujours conservé — même
+    s'il est pire. Ne s'applique jamais à une sauvegarde ni à un jet d'attaque.</p>
+
     <h2>Points de Vie et mort</h2>
     <p>Quand les ${abbr("Points de Vie (PV)", "PV")} tombent à 0, le personnage devient
     inconscient et doit réussir des jets de sauvegarde de la mort (1d20 sans modificateur, 10+
@@ -67,6 +82,26 @@ function buildRulesPage(glossary) {
     disponible (doré) ou déjà utilisée (grisé) ; elle se régénère automatiquement au début de
     votre tour tant qu'un combat est suivi par le Maître du Jeu (Suivi de combat de Foundry).</p>
 
+    <h2>Action et Action bonus</h2>
+    <p>Deux indicateurs similaires ("Action"/"Action bonus") suivent également votre tour, actifs
+    uniquement pendant un combat suivi. Contrairement à la réaction, ce suivi n'empêche jamais un
+    jet : un simple rappel apparaît en chat si vous utilisez deux fois la même ressource dans le
+    même tour, à vous de décider si c'est légitime (ex. Attaque supplémentaire). Un clic sur
+    l'indicateur permet de le rétablir manuellement en cas d'erreur.</p>
+
+    <h2>${abbr("Résistance / Immunité / Vulnérabilité (dégâts)", "Résistances aux dégâts")}</h2>
+    <p>Certaines cibles résistent, sont immunisées ou sont vulnérables à un type de dégâts précis
+    (feu, tranchant...) — appliqué automatiquement au clic sur "Appliquer les dégâts", visible
+    dans le message de chat. Une case "Magique" sur une arme (ou le profil d'attaque d'un PNJ)
+    peut contourner une résistance/immunité générique aux dégâts contondants/perforants/tranchants
+    (règle valable uniquement pour ces 3 types physiques).</p>
+    <h2>États actifs et jets automatiques</h2>
+    <p>Certains États (onglet Statistiques) modifient automatiquement vos jets tant qu'ils restent
+    actifs — avantage, désavantage ou résistance selon le cas (ex. "En Rage" pour un Barbare,
+    "Traqué" pour la cible d'un Paladin Vengeance) — sans rien à recocher à chaque jet. Certains
+    Sorts/Capacités les posent eux-mêmes automatiquement sur la cible visée au moment de leur
+    utilisation.</p>
+
     <h2>Repos</h2>
     <p>${abbr("Repos court")} et ${abbr("Repos long")} sont accessibles par les boutons dédiés de
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>
@@ -81,10 +116,9 @@ function buildRulesPage(glossary) {
 function buildSpellsPage(glossary) {
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   return `
-    <p>Ce système suit les ${abbr("Emplacement de sort", "emplacements de sorts par niveau")}
-    du D&D classique (1 à 9), affichés en haut de l'onglet Sorts. Reste simplifié : accès à toute
-    la liste de sorts de la classe plutôt que les tables "sorts connus" propres à chaque classe
-    (cf. "Sorts connus" plus bas).</p>
+    <p>Les ${abbr("Emplacement de sort", "emplacements de sorts par niveau")} (1 à 9) sont
+    affichés en haut de l'onglet Sorts. Un lanceur de sorts a accès à toute la liste de sorts de
+    sa classe (cf. "Sorts connus" plus bas).</p>
     <h2>${abbr("Emplacement de sort", "Emplacements de sorts")}</h2>
     <p>Un jeton par palier accessible (Niv. 1, Niv. 2...), chacun avec ses charges
     disponibles/max. Lancer un sort de niveau 1 ou plus dépense un emplacement de son propre
@@ -98,7 +132,7 @@ function buildSpellsPage(glossary) {
     seul le coût en emplacement change) — rien n'est décompté sans confirmation, et le bouton
     "Lancer" reste bloqué si vraiment aucun palier utilisable n'est disponible.</p>
     <h2>Magie de Pacte (Occultiste)</h2>
-    <p>L'Occultiste suit une règle à part (SRD 5e) : un seul palier d'emplacement actif à la
+    <p>L'Occultiste suit une règle à part : un seul palier d'emplacement actif à la
     fois, dont le niveau augmente avec le sien, identifié par un badge "Magie de Pacte" sur
     l'onglet Sorts. Contrairement aux autres lanceurs, ces emplacements se rechargent aussi bien
     au repos court qu'au repos long.</p>
@@ -139,10 +173,10 @@ async function buildClassesPage() {
     })
     .join("");
   return `<p>Les 12 classes suivantes sont disponibles dans ce système. Les points de vie
-    maximum sont calculés automatiquement à chaque niveau (pas de jet de Dé de vie dans ce
-    système) ; sauvegardes maîtrisées, compétences au choix et maîtrises d'armes ci-dessous sont
-    appliquées automatiquement par l'assistant de création de personnage. Le même détail est
-    aussi consultable classe par classe dans le compendium "Classes".</p>${sections}`;
+    maximum sont calculés automatiquement à chaque niveau ; sauvegardes maîtrisées, compétences
+    au choix et maîtrises d'armes ci-dessous sont appliquées automatiquement par l'assistant de
+    création de personnage. Le même détail est aussi consultable classe par classe dans le
+    compendium "Classes".</p>${sections}`;
 }
 
 async function buildOriginsPage(glossary) {
