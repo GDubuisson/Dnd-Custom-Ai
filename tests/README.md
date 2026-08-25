@@ -206,10 +206,14 @@ npm run docker:down        # arrête l'instance
   `tier-c-relentless-hunter.cy.js` (Niveau C, 6/6, terminé le 2026-08-25), `damage-types-
   physical.cy.js`/`damage-types-magical.cy.js`/`damage-types-combined.cy.js`/`damage-types-
   armor.cy.js` (chantier "types de dégâts", 4/4 phases, terminé le 2026-08-25 — résistance/
-  immunité/vulnérabilité générique, nuance arme/PNJ magique, dégâts combinés, armures). ~63
-  fichiers de specs au total à ce jour — voir directement `cypress/e2e/` pour la liste
-  exhaustive, ce README ne détaille plus chaque nouveau fichier ligne à ligne au-delà de ce
-  résumé.
+  immunité/vulnérabilité générique, nuance arme/PNJ magique, dégâts combinés, armures),
+  `spell-save-damage-resistance-interaction.cy.js` (2026-08-25, revue de couverture explicite —
+  vérifie que la réduction `halfOnSave` d'un sort à sauvegarde ET une résistance/immunité de
+  type se cumulent bien l'une après l'autre, arrondies séparément, plutôt que l'une écrasant
+  l'autre ; seule vraie lacune trouvée lors de cette revue, les deux mécaniques étant chacune
+  déjà testées en profondeur isolément). ~64 fichiers de specs au total à ce jour — voir
+  directement `cypress/e2e/` pour la liste exhaustive, ce README ne détaille plus chaque
+  nouveau fichier ligne à ligne au-delà de ce résumé.
 - `tests/E2E_TEST_PLAN.md` — plan de tests d'interface (assistant de création, fiche personnage,
   montée de niveau, NPC, véhicule, Items, glisser-déposer...) écrit avant leur implémentation.
   Sections codées : 1 (assistant de création, `cypress/e2e/wizard.cy.js` +

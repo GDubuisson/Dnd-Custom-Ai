@@ -7,6 +7,18 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Revue de couverture de tests (2026-08-25, demande explicite) : audit ciblé montée de niveau/
+résistances/charges/réactions — déjà testées en grande profondeur en E2E réel. Seule lacune
+trouvée : `halfOnSave` (Évasion/Tour de magie renforcé) et résistance/immunité de type, chacune
+déjà testée isolément, jamais combinées. Comblé par
+`cypress/e2e/spell-save-damage-resistance-interaction.cy.js` (3/3, 2 runs stables) : vérifie que
+les 2 réductions s'appliquent bien l'une après l'autre (arrondis séparés), pas qu'une écrase
+l'autre. Cahier de test manuel complet (23 chapitres, ~130 scénarios, suivi de progression)
+publié en artifact pour un testeur humain — voir `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md` pour
+le détail complet de l'audit et la liste des mécaniques D&D 5e jamais modélisées à ce jour
+(agripper/bousculer, couvert, munitions, multiattack PNJ, actions légendaires, vision dans le
+noir — aucun déclencheur cadré, listées pour mémoire).
+
 Chantier "types de dégâts" — Phase 1 (physique, cadrée avec l'utilisateur avant implémentation) :
 résistance/immunité/vulnérabilité aux dégâts GÉNÉRIQUES, réglables librement par le MJ sur toute
 fiche PNJ ou Personnage (3 nouveaux groupes de cases à cocher), pour les 3 types physiques
