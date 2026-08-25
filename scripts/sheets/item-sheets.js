@@ -97,6 +97,30 @@ export class ArmorItemSheet extends DndCustomItemSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.slotOptions = DND_CUSTOM.armorSlotOptions;
+    // Chantier "types de dégâts" (Phase 4, 2026-08-25) : 3 groupes de cases à cocher, résistance/
+    // immunité/vulnérabilité PROPRE à cette armure (indépendante des cases génériques Personnage/
+    // PNJ de la Phase 1) — même pattern que npc-sheet.js (champ à la racine de `system`, pas sous
+    // `combat`), cf. damageAffinitySchema (shared-schema.js), hasArmorDamageAffinity
+    // (dnd-custom-ai.js) pour la résolution.
+    const damageAffinityOptions = (setField) =>
+      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
+    context.damageAffinityGroups = [
+      {
+        field: "damageResistances",
+        titleKey: "DND_CUSTOM.Npc.DamageResistances",
+        options: damageAffinityOptions(context.system.damageResistances)
+      },
+      {
+        field: "damageImmunities",
+        titleKey: "DND_CUSTOM.Npc.DamageImmunities",
+        options: damageAffinityOptions(context.system.damageImmunities)
+      },
+      {
+        field: "damageVulnerabilities",
+        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
+        options: damageAffinityOptions(context.system.damageVulnerabilities)
+      }
+    ];
     return context;
   }
 }

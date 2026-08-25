@@ -34,8 +34,20 @@ tranchant + feu). Un seul clic sur "Dégâts" poste 2 messages de chat distincts
 indépendamment contre les résistances de la cible (ex. cible résistante au tranchant : tranchant
 réduit de moitié, feu intégral — la résistance physique n'est jamais annulée par la présence d'un
 second type). Le coup critique double les dés des deux composants. Le composant secondaire ne
-reçoit jamais de modificateur de caractéristique ni de bonus de Rage (dés fixes, SRD 5e). Les
-armures à résistances physique/magique restent prévues pour la Phase 4.
+reçoit jamais de modificateur de caractéristique ni de bonus de Rage (dés fixes, SRD 5e).
+
+Chantier "types de dégâts" — Phase 4 (armures, cadrée avec l'utilisateur avant implémentation) :
+une armure porte désormais sa propre résistance/immunité/vulnérabilité aux dégâts (même
+`damageAffinitySchema` que Personnage/PNJ, cf. Phase 1), indépendante des cases génériques déjà
+posées sur la fiche — active UNIQUEMENT si l'armure est équipée. Contrairement au champ générique,
+la résistance/immunité/vulnérabilité d'une armure n'a PAS la nuance SRD "contre les attaques non
+magiques" (une armure qui protège du feu protège du feu, source magique ou non) : les résistances
+déjà câblées en dur (Rage...) ont la même règle, seul le champ générique Personnage/PNJ en tient
+compte. Se combine avec le champ générique existant selon la règle déjà en place (immunité
+prioritaire, résistance+vulnérabilité sur le même type s'annulent). Validé
+`cypress/e2e/damage-types-armor.cy.js` (7/7, 2 runs consécutifs stables) + régression 34/34 sur
+les suites liées (Phases 1-3, Rage, Voile des anciens) + 798/798 unitaires. Ce chantier "types de
+dégâts" est désormais terminé (4/4 phases).
 
 Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
 `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient

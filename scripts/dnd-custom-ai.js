@@ -854,6 +854,23 @@ function hasGenericDamageAffinity(actor, damageType, field) {
   return set?.has?.(damageType) ?? false;
 }
 
+/** Chantier "types de dégâts" (Phase 4, 2026-08-25) : vrai si `actor` porte une armure ÉQUIPÉE
+ *  dont `field` ("damageResistances"/"damageImmunities"/"damageVulnerabilities", cf.
+ *  damageAffinitySchema, shared-schema.js — désormais aussi sur ArmorData, item-data.js) contient
+ *  `damageType`. Résistance/immunité/vulnérabilité PROPRE à l'objet, indépendante des cases
+ *  génériques Personnage/PNJ ci-dessus — pas de nuance "contre les attaques non magiques"
+ *  (`isMagicalSource`) ici : contrairement au champ générique qui modélise une résistance
+ *  NATURELLE de créature (SRD), une armure qui protège du feu protège du feu quelle que soit la
+ *  source de l'attaque, comme les résistances déjà câblées en dur (Rage, Résilience draconique,
+ *  Affinité de la tempête). Plusieurs armures équipées en même temps (armure + bouclier) sont
+ *  également possibles (emplacements distincts, cf. `slot`) : `some` sur toutes plutôt qu'une
+ *  seule armure supposée. */
+function hasArmorDamageAffinity(actor, damageType, field) {
+  return actor.items.some(
+    (item) => item.type === "armor" && item.system.equipped && item.system[field]?.has?.(damageType)
+  );
+}
+
 /** Multiplicateur final (0 immunité, 0.5 résistance, 1 normal, 2 vulnérabilité) des dégâts de
  *  `damageType` subis par `actor` — combine les résistances déjà câblées en dur par Capacité/
  *  état (Rage, Résilience draconique, Affinité de la tempête, Voile des anciens) et le champ
@@ -876,7 +893,9 @@ function hasGenericDamageAffinity(actor, damageType, field) {
 function damageTypeMultiplier(actor, damageType, { isSpellDamage = false, isMagicalSource = false } = {}) {
   const genericBypassed = Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && isMagicalSource);
 
-  const immune = !genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageImmunities");
+  const immune =
+    (!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageImmunities")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageImmunities"));
   if (immune) return 0;
 
   const resistant =
@@ -894,9 +913,12 @@ function damageTypeMultiplier(actor, damageType, { isSpellDamage = false, isMagi
     // Rage (Barbare, SRD 5e) : résistance aux dégâts contondants/perforants/tranchants tant que
     // "raging" est actif, quel que soit le champ générique.
     Boolean(damageType && PHYSICAL_DAMAGE_TYPES.has(damageType) && actor.statuses?.has("raging")) ||
-    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageResistances"));
+    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageResistances")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageResistances"));
 
-  const vulnerable = !genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageVulnerabilities");
+  const vulnerable =
+    Boolean(!genericBypassed && damageType && hasGenericDamageAffinity(actor, damageType, "damageVulnerabilities")) ||
+    Boolean(damageType && hasArmorDamageAffinity(actor, damageType, "damageVulnerabilities"));
 
   if (resistant && vulnerable) return 1;
   if (resistant) return 0.5;

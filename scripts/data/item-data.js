@@ -1,5 +1,5 @@
 import { SKILL_ABILITIES, ABILITY_KEYS } from "./character-data.js";
-import { currencySchema } from "./shared-schema.js";
+import { currencySchema, damageAffinitySchema } from "./shared-schema.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField, ArrayField } = foundry.data.fields;
@@ -124,7 +124,14 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
         required: true,
         initial: "armor",
         choices: ["armor", "offHand", "accessory"]
-      })
+      }),
+      // Chantier "types de dégâts" (Phase 4, 2026-08-25) : résistance/immunité/vulnérabilité
+      // PROPRE à cette armure (indépendante des cases génériques Personnage/PNJ de la Phase 1,
+      // cf. damageAffinitySchema, shared-schema.js) — n'agit que si l'armure est équipée
+      // (cf. `equipped`, physicalItemSchema ci-dessus) et se combine avec le générique dans
+      // damageTypeMultiplier (dnd-custom-ai.js) : la meilleure protection l'emporte, jamais de
+      // cumul (règle SRD "les résistances multiples au même type ne se cumulent pas").
+      ...damageAffinitySchema()
     };
   }
 }

@@ -59,6 +59,23 @@
     <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
   </div>
 
+  {{! Chantier "types de dégâts" (Phase 4, 2026-08-25) : résistance/immunité/vulnérabilité propre
+      à cette armure, active uniquement si "Équipé" ci-dessus est coché (cf. hasArmorDamageAffinity,
+      dnd-custom-ai.js). }}
+  <div class="damage-affinity-panel">
+    {{#each damageAffinityGroups}}
+    <fieldset class="form-group">
+      <legend>{{localize this.titleKey}}</legend>
+      {{#each this.options}}
+      <label class="checkbox-row">
+        <input type="checkbox" name="system.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../../isGM}}disabled{{/unless}}>
+        {{localize this.label}}
+      </label>
+      {{/each}}
+    </fieldset>
+    {{/each}}
+  </div>
+
   <div class="form-row description-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
     <prose-mirror class="content-sized" name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
