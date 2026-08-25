@@ -286,6 +286,23 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         initial: "",
         choices: DND_CUSTOM.conditions.map((condition) => condition.id)
       }),
+      // Capacité universelle qui se résout comme un TEST OPPOSÉ (Agripper/Bousculer, SRD 5e —
+      // chantier "mécaniques jamais modélisées", 2026-08-25, cadré avec l'utilisateur avant
+      // implémentation) : premier mécanisme de ce système où les DEUX camps lancent un jet et le
+      // résultat se compare entre eux, plutôt qu'un jet comparé à un DD/une CA fixe. Résolu par
+      // `#onRollOpposedCheck` (actor-sheet.js) : jet d'Athlétisme de l'attaquant contre le
+      // MEILLEUR des jets d'Athlétisme/Acrobaties de la cible (approximation assumée — le SRD
+      // laisse la cible choisir en direct, impossible à interroger depuis ce système). Succès de
+      // "grapple" -> état "Agrippé" posé automatiquement ; succès de "shove" -> choix À terre
+      // (état "prone" posé automatiquement) ou Repoussé de 1,50 m (jamais automatisé, simple
+      // rappel de chat — ce système ne déplace jamais un token, cf. combat automatisé). Vide =
+      // comportement inchangé (l'immense majorité des Capacités).
+      opposedCheckType: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: ["grapple", "shove"]
+      }),
       // Capacité qui récupère automatiquement des emplacements de sorts au premier repos court
       // de la journée (ex. Récupération arcanique du Magicien, Récupération naturelle du
       // Druide de la Terre) : `rollFormula` ci-dessus calcule le total de NIVEAUX récupérables

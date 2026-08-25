@@ -197,6 +197,14 @@ DND_CUSTOM.openHandEffects = {
   noReaction: "DND_CUSTOM.OpenHandEffects.noReaction"
 };
 
+/** Effets de Bousculer (SRD 5e — cf. FeatureData#opposedCheckType, #onRollOpposedCheck dans
+ *  actor-sheet.js) : choisi par l'attaquant AVANT le jet (même UX que DND_CUSTOM.openHandEffects
+ *  ci-dessus), appliqué seulement en cas de succès du test opposé. */
+DND_CUSTOM.shoveEffects = {
+  prone: "DND_CUSTOM.ShoveEffects.prone",
+  pushed: "DND_CUSTOM.ShoveEffects.pushed"
+};
+
 /** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
 DND_CUSTOM.classHitDice = {
   barbarian: 12,

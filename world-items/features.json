@@ -1702,5 +1702,37 @@
       "source": "",
       "description": "Règle universelle SRD 5e, valable pour tout personnage : vous pouvez utiliser votre réaction pour effectuer une attaque au corps à corps contre une créature qui quitte la portée que vous menacez. L'attaque se résout normalement (bouton Attaque de l'onglet Équipement)."
     }
+  },
+  {
+    "name": "Agripper",
+    "type": "feature",
+    "img": "icons/svg/net.svg",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "action",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "opposedCheckType": "grapple",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : au lieu d'une attaque, ciblez une seule créature à votre portée pour tenter de l'agripper. Test opposé automatique (bouton dédié) : votre Athlétisme contre le meilleur des Athlétisme/Acrobaties de la cible. Succès : la cible devient Agrippée (onglet États) tant que vous ne devenez pas Neutralisé ou qu'elle ne quitte pas votre portée."
+    }
+  },
+  {
+    "name": "Bousculer",
+    "type": "feature",
+    "img": "icons/svg/falling.svg",
+    "system": {
+      "class": "",
+      "universal": true,
+      "level": 1,
+      "activation": "action",
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "",
+      "opposedCheckType": "shove",
+      "description": "Règle universelle SRD 5e, valable pour tout personnage : au lieu d'une attaque, ciblez une seule créature à votre portée pour tenter de la bousculer. Choisissez d'abord l'effet voulu (à terre, ou repoussée de 1,50 m), puis test opposé automatique (bouton dédié) : votre Athlétisme contre le meilleur des Athlétisme/Acrobaties de la cible. Succès \"à terre\" : état Prone posé automatiquement. Succès \"repoussée\" : à déplacer manuellement, ce système ne fait jamais bouger un token tout seul."
+    }
   }
 ]

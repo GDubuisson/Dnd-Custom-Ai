@@ -155,6 +155,10 @@
       "pushed": "Pushed 15 ft. away (move manually on a failed save, not automated)",
       "noReaction": "Can't take a reaction until the end of your next turn (blocks their reaction on a failed save)"
     },
+    "ShoveEffects": {
+      "prone": "Knocked prone (status applied automatically on success)",
+      "pushed": "Pushed 5 ft. away (move manually on success, not automated)"
+    },
     "Actor": {
       "Name": "Character name",
       "Level": "Level",
@@ -260,6 +264,8 @@
       "ToolCheck": "{tool} — {skill} check",
       "OriginTraitBonusPrompt": "Use the \"{trait}\" trait to add its bonus to this roll?",
       "WeaponAttack": "Attack with {weapon}",
+      "OpposedCheckAttacker": "{name} attempts {feature} — Athletics (attacker)",
+      "OpposedCheckDefender": "{name} resists — {skill} (defender)",
       "WeaponDamage": "{weapon} damage",
       "SpellAttack": "Attack with {spell}",
       "SpellDamage": "{spell} damage",
@@ -318,6 +324,9 @@
       "PvpBlocked": "{attacker} cannot deal damage to {target}: player-versus-player combat is disabled.",
       "SelfDamageBlocked": "{name} cannot apply damage to themselves: only the GM can (poison, falling, traps...).",
       "NoTarget": "No target selected (double right-click a token to target it).",
+      "OpposedCheckSingleTargetOnly": "Target EXACTLY ONE creature for an opposed check (Grapple/Shove).",
+      "OpposedCheckSuccess": "{attacker} bests {defender} — {feature} succeeds: {effect}.",
+      "OpposedCheckFail": "{defender} resists {attacker} — {feature} fails.",
       "SaveSpellNoTarget": "{spell} (DC {dc}, {ability} save) — no target selected, no automatic saving throw.",
       "FeatureSaveWrongCreatureType": "{name} is not affected by {feature} (wrong creature type) — no roll, no effect.",
       "NoGmOnline": "No GM connected: unable to apply this change to that NPC.",

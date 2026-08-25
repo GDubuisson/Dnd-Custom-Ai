@@ -7,6 +7,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Agripper / Bousculer (SRD 5e, 1er des 6 points de la liste "mécaniques jamais modélisées",
+cadré avec l'utilisateur point par point) : au lieu d'une attaque, un personnage peut tenter
+d'agripper ou de bousculer une seule créature à sa portée — premier TEST OPPOSÉ de ce système
+(les deux camps lancent un d20, comparés entre eux, plutôt qu'un jet comparé à un DD/une CA
+fixe). La défense retient le meilleur des jets d'Athlétisme/Acrobaties de la cible. Agripper
+réussi : état "Agrippé" posé automatiquement. Bousculer réussi : choix à l'avance entre "à
+terre" (état "Prone" automatique) et "repoussé de 1,50 m" (jamais automatisé, simple mention —
+ce système ne déplace jamais un token). Validé `cypress/e2e/opposed-check-grapple-shove.cy.js`
+(6/6, 2 runs stables) + régression + 802/802 unitaires.
+
 Revue de couverture de tests (2026-08-25, demande explicite) : audit ciblé montée de niveau/
 résistances/charges/réactions — déjà testées en grande profondeur en E2E réel. Seule lacune
 trouvée : `halfOnSave` (Évasion/Tour de magie renforcé) et résistance/immunité de type, chacune

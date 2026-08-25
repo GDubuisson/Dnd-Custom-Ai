@@ -22,7 +22,8 @@ import {
   opportunityAttackTrigger,
   SPELL_LEVELS,
   spellSlotFillUpdates,
-  targetSaveModifier
+  targetSaveModifier,
+  opposedCheckModifier
 } from "../helpers/rules.js";
 import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
@@ -241,6 +242,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       rollFeature: DndCustomActorSheet.#onRollFeature,
       rollFeatureSave: DndCustomActorSheet.#onRollFeatureSave,
       grantFeatureCondition: DndCustomActorSheet.#onGrantFeatureCondition,
+      rollOpposedCheck: DndCustomActorSheet.#onRollOpposedCheck,
       useFeatureCharge: DndCustomActorSheet.#onUseFeatureCharge,
       useResourceTechnique: DndCustomActorSheet.#onUseResourceTechnique,
       useConditionalFeature: DndCustomActorSheet.#onUseConditionalFeature,
@@ -1302,6 +1304,104 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         feature: item.name,
         remaining,
         max: chargeHolder.system.uses.max
+      })
+    });
+  }
+
+  /** Test opposé (Agripper/Bousculer, SRD 5e — chantier "mécaniques jamais modélisées",
+   *  2026-08-25, cadré avec l'utilisateur avant implémentation) : cf. FeatureData#opposedCheckType,
+   *  item-data.js pour le détail complet du mécanisme et des approximations assumées (meilleur des
+   *  deux jets de défense de la cible, Repoussé jamais automatisé). Contrairement au reste du
+   *  système (jet comparé à un DD/une CA fixe), les DEUX camps lancent ici un d20 — 2 messages de
+   *  jet distincts (attaquant puis cible, même convention que #onRollFeatureSave : un message par
+   *  "camp"), puis un 3e message de résolution. Une seule cible à la fois (test opposé 1 contre
+   *  1, pas de zone). */
+  static async #onRollOpposedCheck(event, target) {
+    const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
+    if (!item || item.type !== "feature" || !item.system.opposedCheckType) return;
+    if (!(await this.#consumeActionEconomy(item))) return;
+
+    const targets = Array.from(game.user.targets);
+    if (targets.length !== 1) {
+      ui.notifications.warn(
+        game.i18n.localize(targets.length ? "DND_CUSTOM.Chat.OpposedCheckSingleTargetOnly" : "DND_CUSTOM.Chat.NoTarget")
+      );
+      return;
+    }
+    const targetActor = targets[0].actor;
+    if (!targetActor?.system?.abilities) return;
+
+    // Bousculer : le choix (à terre / repoussé) se fait AVANT le jet, même UX que
+    // #onUseOpenHandTechnique — appliqué seulement si l'attaquant l'emporte plus bas.
+    let chosenShoveEffect = null;
+    if (item.system.opposedCheckType === "shove") {
+      const rows = Object.entries(DND_CUSTOM.shoveEffects)
+        .map(
+          ([key, labelKey], index) => `
+          <label class="checkbox-row">
+            <input type="radio" name="shoveEffect" value="${key}" ${index === 0 ? "checked" : ""}>
+            ${game.i18n.localize(labelKey)}
+          </label>`
+        )
+        .join("");
+      chosenShoveEffect = await DialogV2.prompt({
+        window: { title: item.name },
+        content: `<div style="display:flex;flex-direction:column;gap:0.4rem;">${rows}</div>`,
+        ok: {
+          label: game.i18n.localize("DND_CUSTOM.Abilities.ChooseOptionConfirm"),
+          callback: (ev, button) => button.form.elements.shoveEffect?.value
+        }
+      });
+      if (!chosenShoveEffect) return;
+    }
+
+    const attackerMod = opposedCheckModifier(this.actor.system, "athletics", SKILL_ABILITIES.athletics);
+    const athleticsMod = opposedCheckModifier(targetActor.system, "athletics", SKILL_ABILITIES.athletics);
+    const acrobaticsMod = opposedCheckModifier(targetActor.system, "acrobatics", SKILL_ABILITIES.acrobatics);
+    const defenderSkillKey = athleticsMod >= acrobaticsMod ? "athletics" : "acrobatics";
+    const defenderMod = Math.max(athleticsMod, acrobaticsMod);
+
+    const attackerRoll = new Roll(`1d20${formatModifier(attackerMod)}`);
+    await attackerRoll.evaluate();
+    await attackerRoll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckAttacker", { name: this.actor.name, feature: item.name })
+    });
+
+    const defenderRoll = new Roll(`1d20${formatModifier(defenderMod)}`);
+    await defenderRoll.evaluate();
+    await defenderRoll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckDefender", {
+        name: targetActor.name,
+        skill: game.i18n.localize(DND_CUSTOM.skills[defenderSkillKey])
+      })
+    });
+
+    // Égalité = statu quo (règle générale des tests opposés SRD 5e) : l'attaquant doit
+    // STRICTEMENT dépasser le total de la cible pour que l'état change.
+    const success = attackerRoll.total > defenderRoll.total;
+
+    if (success) {
+      if (item.system.opposedCheckType === "grapple") {
+        await targetActor.toggleStatusEffect("grappled", { active: true });
+      } else if (chosenShoveEffect === "prone") {
+        await targetActor.toggleStatusEffect("prone", { active: true });
+      }
+      // "pushed" (Repoussé) : jamais de déplacement automatique de token, cf. commentaire de
+      // FeatureData#opposedCheckType — seul le message de résolution ci-dessous le mentionne.
+    }
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format(success ? "DND_CUSTOM.Chat.OpposedCheckSuccess" : "DND_CUSTOM.Chat.OpposedCheckFail", {
+        attacker: this.actor.name,
+        defender: targetActor.name,
+        feature: item.name,
+        effect:
+          item.system.opposedCheckType === "shove" && chosenShoveEffect
+            ? game.i18n.localize(DND_CUSTOM.shoveEffects[chosenShoveEffect])
+            : game.i18n.localize("DND_CUSTOM.Conditions.grappled")
       })
     });
   }

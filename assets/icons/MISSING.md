@@ -6,7 +6,14 @@ VTT (dossier `icons/`). Pour toute icône manquante : dépose une image dans `as
 droit), et je la câblerai au champ `img` correspondant dans le fichier `world-items/*.json`
 concerné.
 
-## État actuel : tout est câblé ✅
+## Icônes en attente (placeholders Foundry core en place)
+
+- **Agripper** (`world-items/features.json`) : `icons/svg/net.svg` (même icône que l'état
+  "Agrippé") — pas d'icône dédiée trouvée.
+- **Bousculer** (`world-items/features.json`) : `icons/svg/falling.svg` (même icône que l'état
+  "Prone") — pas d'icône dédiée trouvée.
+
+## État actuel (hors les 2 placeholders ci-dessus) : tout est câblé ✅
 
 | Catégorie | Fichier | Dossier | Compte |
 |---|---|---|---|
@@ -19,7 +26,7 @@ concerné.
 | Origines | `world-items/origins.json` | `assets/icons/origins/` | 6/6 |
 | Langues | `world-items/languages.json` | `assets/icons/languages/` (+ blasons d'Origine) | 11/11 |
 | Sorts | `world-items/spells.json` | `assets/icons/spells/` | 42/42 |
-| Capacités | `world-items/features.json` | `assets/icons/features/` | 103/103 |
+| Capacités | `world-items/features.json` | `assets/icons/features/` | 103/105 (2 placeholders ci-dessus) |
 | Dons | `world-items/feats.json` | `assets/icons/feats/` | 10/10 |
 
 ## À savoir pour la suite

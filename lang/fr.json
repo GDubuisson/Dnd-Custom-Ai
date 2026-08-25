@@ -155,6 +155,10 @@
       "pushed": "Repoussée de 4,50 m (à déplacer manuellement en cas d'échec, non automatisé)",
       "noReaction": "Pas de réaction jusqu'à la fin de votre prochain tour (bloque sa réaction en cas d'échec)"
     },
+    "ShoveEffects": {
+      "prone": "À terre (état appliqué automatiquement en cas de succès)",
+      "pushed": "Repoussée de 1,50 m (à déplacer manuellement en cas de succès, non automatisé)"
+    },
     "Actor": {
       "Name": "Nom du personnage",
       "Level": "Niveau",
@@ -260,6 +264,8 @@
       "ToolCheck": "{tool} — Test de {skill}",
       "OriginTraitBonusPrompt": "Utiliser le trait \"{trait}\" pour ajouter son bonus à ce jet ?",
       "WeaponAttack": "Attaque avec {weapon}",
+      "OpposedCheckAttacker": "{name} tente {feature} — Athlétisme (attaquant)",
+      "OpposedCheckDefender": "{name} résiste — {skill} (défenseur)",
       "WeaponDamage": "Dégâts de {weapon}",
       "SpellAttack": "Attaque avec {spell}",
       "SpellDamage": "Dégâts de {spell}",
@@ -318,6 +324,9 @@
       "PvpBlocked": "{attacker} ne peut pas infliger de dégâts à {target} : le combat entre joueurs est désactivé.",
       "SelfDamageBlocked": "{name} ne peut pas s'appliquer de dégâts soi-même : seul le MJ peut le faire (poison, chute, piège...).",
       "NoTarget": "Aucune cible sélectionnée (double-clic droit sur un token pour le cibler).",
+      "OpposedCheckSingleTargetOnly": "Ciblez UNE SEULE créature pour un test opposé (Agripper/Bousculer).",
+      "OpposedCheckSuccess": "{attacker} l'emporte sur {defender} — {feature} réussi(e) : {effect}.",
+      "OpposedCheckFail": "{defender} résiste à {attacker} — {feature} échoue.",
       "SaveSpellNoTarget": "{spell} (DD {dc}, sauvegarde de {ability}) — aucune cible sélectionnée, aucun jet de sauvegarde automatique.",
       "FeatureSaveWrongCreatureType": "{name} n'est pas concerné(e) par {feature} (mauvais type de créature) — aucun jet, aucun effet.",
       "NoGmOnline": "Aucun MJ connecté : impossible d'appliquer la modification à ce PNJ.",

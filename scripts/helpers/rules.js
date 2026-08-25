@@ -81,6 +81,20 @@ export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAll
   return mod + (jackOfAllTrades ? Math.floor(proficiencyBonusValue / 2) : 0);
 }
 
+/** Modificateur de compétence pour un test OPPOSÉ (Agripper/Bousculer, SRD 5e — chantier
+ *  "mécaniques jamais modélisées", 2026-08-25, cadré avec l'utilisateur avant implémentation) :
+ *  `system` peut être un Personnage (`skillModifier` ci-dessus, maîtrise incluse) ou un PNJ
+ *  (`NpcData`, pas de `system.skills` du tout — bonus DIRECT de la caractéristique liée, même
+ *  détection "pas de `.total` sur l'entrée `abilities`" que `targetSaveModifier` ci-dessous).
+ *  `ability` doit être résolu par l'appelant (`SKILL_ABILITIES[skillKey]`, character-data.js) —
+ *  jamais importé ici pour éviter un cycle d'import (`character-data.js` importe déjà ce
+ *  fichier). */
+export function opposedCheckModifier(system, skillKey, ability) {
+  const abilityData = system.abilities[ability];
+  if (!("total" in abilityData)) return abilityData.mod;
+  return skillModifier(system, skillKey, proficiencyBonus(system.attributes.level));
+}
+
 /** Le personnage possède-t-il une Capacité (Item type "feature") d'un nom exact donné ? Sert à
  *  déclencher automatiquement les quelques Capacités passives dont l'effet est mécanique et
  *  sans ambiguïté (cf. character-data.js > Défense sans armure du Barbare, actor-sheet.js >
