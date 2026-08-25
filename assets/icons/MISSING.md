@@ -12,8 +12,14 @@ concerné.
   "Agrippé") — pas d'icône dédiée trouvée.
 - **Bousculer** (`world-items/features.json`) : `icons/svg/falling.svg` (même icône que l'état
   "Prone") — pas d'icône dédiée trouvée.
+- **Crocodile** (`world-items/npcs.json`) : `icons/creatures/reptiles/lizard-mouth-glowing-red.webp`
+  — aucun crocodile/alligator dédié dans la bibliothèque Foundry core, approximation par un
+  reptile générique à la gueule ouverte.
+- **Défenses de sanglier** (butin, `world-items/npcs.json`) : `icons/commodities/bones/
+  skull-tusked-grey.webp` — pas d'icône "défense"/"tusk" isolée trouvée, un crâne défendu s'en
+  rapproche le plus.
 
-## État actuel (hors les 2 placeholders ci-dessus) : tout est câblé ✅
+## État actuel (hors les 4 placeholders ci-dessus) : tout est câblé ✅
 
 | Catégorie | Fichier | Dossier | Compte |
 |---|---|---|---|
@@ -28,6 +34,7 @@ concerné.
 | Sorts | `world-items/spells.json` | `assets/icons/spells/` | 42/42 |
 | Capacités | `world-items/features.json` | `assets/icons/features/` | 103/105 (2 placeholders ci-dessus) |
 | Dons | `world-items/feats.json` | `assets/icons/feats/` | 10/10 |
+| Adversaires | `world-items/npcs.json` | icônes core Foundry (`icons/creatures/`, `icons/svg/mystery-man.svg`) | 13/15 (2 placeholders ci-dessus) |
 
 ## À savoir pour la suite
 

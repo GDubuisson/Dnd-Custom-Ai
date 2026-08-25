@@ -50,6 +50,21 @@ function buildRulesPage(glossary) {
     automatiquement. Maj-clic : ${abbr("Avantage / Désavantage", "avantage")}. Ctrl-clic :
     ${abbr("Avantage / Désavantage", "désavantage")}.</p>
 
+    <h2>Agripper / Bousculer</h2>
+    <p>Au lieu d'une attaque, vous pouvez tenter d'agripper ou de bousculer une seule créature à
+    votre portée (bouton dédié sur l'onglet Statistiques) : votre Athlétisme est comparé au
+    meilleur des jets d'Athlétisme/Acrobaties de la cible — un test opposé, les deux camps lancent
+    un d20. Agripper réussi pose l'état "Agrippé" sur la cible. Bousculer réussi vous laisse
+    choisir entre "À terre" (état "Prone" posé automatiquement) et "Repoussé de 1,50 m" (à votre
+    Maître du Jeu de déplacer la cible en conséquence, le système ne déplace jamais de token).</p>
+
+    <h2>Points d'inspiration</h2>
+    <p>Une ressource libre, distincte de l'Inspiration bardique, que votre Maître du Jeu vous
+    accorde en jeu (compteur visible en en-tête de fiche, à côté des PV). Dépensez-en un via le
+    bouton qui apparaît sous un jet de caractéristique ou de compétence dans le chat : le jet
+    d'origine disparaît, remplacé par un nouveau jet dont le résultat est toujours conservé — même
+    s'il est pire. Ne s'applique jamais à une sauvegarde ni à un jet d'attaque.</p>
+
     <h2>Points de Vie et mort</h2>
     <p>Quand les ${abbr("Points de Vie (PV)", "PV")} tombent à 0, le personnage devient
     inconscient et doit réussir des jets de sauvegarde de la mort (1d20 sans modificateur, 10+

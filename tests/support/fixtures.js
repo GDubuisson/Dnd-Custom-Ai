@@ -27,6 +27,7 @@ export const WORLD_CLASSES = loadJson("world-items/classes.json");
 export const WORLD_SUBCLASSES = loadJson("world-items/subclasses.json");
 export const WORLD_ORIGIN_ITEMS = loadJson("world-items/origins.json");
 export const WORLD_LANGUAGES = loadJson("world-items/languages.json");
+export const WORLD_NPCS = loadJson("world-items/npcs.json");
 export const GLOSSARY = loadJson("scripts/data/glossary.json");
 
 /** Construit un objet "brut" au format du schéma CharacterData (cf. scripts/data/character-

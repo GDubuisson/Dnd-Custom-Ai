@@ -99,7 +99,26 @@ function buildOverviewPage() {
       de magie = moitié au lieu d'aucun).</li>
       <li>Invisibilité/Invisibilité suprême et sorts similaires : basculent automatiquement leur
       état sur la cible au moment du lancer, sans jet associé.</li>
+      <li>Agripper/Bousculer (règle universelle) : premier test opposé de ce système — bouton
+      dédié qui lance l'Athlétisme de l'attaquant contre le meilleur des jets d'Athlétisme/
+      Acrobaties de la cible. Agripper réussi pose l'état "Agrippé" ; Bousculer réussi propose de
+      poser "À terre" (automatique) ou "Repoussé de 1,50 m" (simple rappel, aucun déplacement de
+      token automatisé).</li>
+      <li>Points d'inspiration (règle maison, distincte de l'Inspiration bardique) : compteur
+      libre en en-tête de fiche, à accorder toi-même (champ verrouillé côté Joueur). Un Joueur en
+      dépense un via un bouton sous un jet de caractéristique/compétence dans le chat : le jet
+      d'origine disparaît, remplacé par un nouveau jet dont le résultat est toujours conservé.</li>
+      <li>PNJ à plusieurs profils d'attaque : la fiche PNJ accepte désormais plusieurs attaques
+      distinctes (ex. "Morsure" + "Griffe"), chacune avec son propre bouton Attaque/Dégâts, fidèle
+      aux blocs de statistiques SRD 5e.</li>
     </ul>
+    <h2>Compendium "Adversaires" — bestiaire prêt à l'emploi</h2>
+    <p>15 PNJ déjà configurés (attaques + butin embarqué), visibles uniquement de toi : 7
+    humanoïdes du FI 1/8 au FI 3 (Brigand, Maraudeur, Garde, Espion, Chef de brigands, Mercenaire
+    vétéran, Chevalier) et 8 bêtes sauvages réelles du FI 0 au FI 1 (Rat, Corbeau, Loup, Sanglier,
+    Serpent venimeux, Panthère, Crocodile, Ours brun) — aucune créature légendaire/mythique.
+    Glisse-dépose directement depuis le compendium vers une scène, ou duplique le PNJ dans les
+    Actors du monde pour le personnaliser avant de le déployer.</p>
     <h2>Ce qui reste à ton arbitrage</h2>
     <p>Certaines Capacités listent volontairement un effet à définir avec toi plutôt qu'une règle
     figée dans le code (cf. page "Capacités à arbitrer" ci-dessous) — ce système simplifie

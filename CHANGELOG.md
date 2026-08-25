@@ -7,6 +7,31 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Compendium "Adversaires" (bestiaire, demande explicite de l'utilisateur) : nouveau compendium
+Actor `packs/adversaires` (`world-items/npcs.json`, importé automatiquement comme le reste du
+contenu de référence) avec 15 PNJ prêts à l'emploi — 7 humanoïdes du FI 1/8 au FI 3 (Brigand,
+Maraudeur, Garde, Espion, Chef de brigands, Mercenaire vétéran, Chevalier) et 8 bêtes sauvages
+réelles du FI 0 au FI 1 (Rat, Corbeau, Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours
+brun), volontairement aucune créature légendaire/mythique. Chaque PNJ a des attaques réellement
+jouables (certains à profil multiple) et son propre butin embarqué (armes/armures/objets).
+`content-import.js` généralisé pour peupler un compendium Actor en plus des compendiums Item déjà
+gérés (`compendium.documentClass.createDocuments`), et corrige au passage un bug de course réel
+(`compendium.index` brut non awaité pouvait renvoyer un index vide au moment du hook `ready`,
+dupliquant le contenu importé à chaque rechargement du monde — remplacé par
+`await compendium.getIndex()` pour tous les fichiers de référence). Remplace et retire l'ancien
+embryon de bestiaire `world-actors/adversaries.json` (v0.9.0, 2026-08-09) : import manuel par
+macro, jamais branché sur le pipeline d'import standard, et sans aucune attaque automatisée (texte
+libre uniquement). Validé `cypress/e2e/bestiary-adversaires.cy.js` (4/4, 2 runs stables) +
+régression `wizard.cy.js` (18/18) + 864/864 unitaires (nouveau bloc de cohérence dédié dans
+`tests/data/consistency.test.js`).
+
+Correction de régression : le compagnon animal (Maître des bêtes, Rôdeur) utilisait encore
+l'ancien champ `system.attack` (singulier), retiré de `NpcData` lors du passage à `attacks`
+(liste) plus tôt dans ce même chantier — le Loup invoqué se retrouvait sans aucune attaque,
+silencieusement (Foundry ignore une clé inconnue du schéma sans erreur). Corrigé
+(`scripts/helpers/companion.js`), test T-SUB-RANGER-001 renforcé pour vérifier explicitement la
+présence d'une attaque sur le compagnon créé.
+
 Points d'inspiration (PI, règle maison, demande explicite de l'utilisateur) : ressource libre
 accordée manuellement par le MJ (`system.attributes.inspirationPoints`, sans maximum), distincte
 de l'Inspiration bardique du SRD. Un Joueur en dépense un via un bouton apparaissant sous un jet
@@ -43,8 +68,7 @@ déjà testée isolément, jamais combinées. Comblé par
 `cypress/e2e/spell-save-damage-resistance-interaction.cy.js` (3/3, 2 runs stables) : vérifie que
 les 2 réductions s'appliquent bien l'une après l'autre (arrondis séparés), pas qu'une écrase
 l'autre. Cahier de test manuel complet (23 chapitres, ~130 scénarios, suivi de progression)
-publié en artifact pour un testeur humain — voir `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md` pour
-le détail complet de l'audit.
+publié en artifact pour un testeur humain.
 
 Chantier "types de dégâts" — Phase 1 (physique, cadrée avec l'utilisateur avant implémentation) :
 résistance/immunité/vulnérabilité aux dégâts GÉNÉRIQUES, réglables librement par le MJ sur toute
@@ -88,9 +112,8 @@ prioritaire, résistance+vulnérabilité sur le même type s'annulent). Validé
 les suites liées (Phases 1-3, Rage, Voile des anciens) + 798/798 unitaires. Ce chantier "types de
 dégâts" est désormais terminé (4/4 phases).
 
-Chantier "mécaniques encore en texte brut" (audit du 2026-08-24, cf.
-`ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) : automatise plusieurs mécaniques SRD 5e qui restaient
-du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme
+Chantier "mécaniques encore en texte brut" (audit du 2026-08-24) : automatise plusieurs mécaniques
+SRD 5e qui restaient du texte purement descriptif. Niveau A (6 mécaniques isolées, chacune réutilisant un mécanisme
 déjà en place) : Indomptable, Critique brutal, Instinct sauvage, Affinité de la tempête, Affinité
 élémentaire, Forme sauvage de combat. Niveau B (3 généralisations, chacune débloquant plusieurs
 sorts/capacités d'un coup) :
@@ -105,8 +128,7 @@ sorts/capacités d'un coup) :
   "Guidé") — Liberté de mouvement (immunité à Entravé) et Protection contre le mal et le bien
   (immunité à Charmé/Effrayé).
 
-Niveau C (les 6 mécaniques restantes, intégralement terminé — détail dans
-`ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`) :
+Niveau C (les 6 mécaniques restantes, intégralement terminé) :
 - Rage (Barbare) : avantage aux tests/sauvegardes de Force, +2 dégâts aux attaques de corps à
   corps à la Force, résistance aux dégâts contondants/perforants/tranchants — les 3 tant que
   l'état "En Rage" (onglet États) est actif.

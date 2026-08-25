@@ -307,8 +307,8 @@ npm run docker:down        # arrête l'instance
   Docker (sélecteurs jamais vérifiés en conditions réelles à l'époque) — ce n'est plus le cas
   depuis longtemps. Elle tourne réellement à chaque session qui la sollicite (des dizaines de
   runs propres depuis, cf. historique git/mémoire) et fait partie du flux de validation normal de
-  tout nouveau chantier de mécanique de jeu (cf. `ClaudeFiles/MECANIQUES_A_AUTOMATISER.md`, chaque
-  point y référence sa spec Cypress dédiée validée en conditions réelles).
+  tout nouveau chantier de mécanique de jeu (chaque mécanique validée par une spec Cypress dédiée
+  en conditions réelles).
 - Nécessite une licence Foundry VTT payante — pas de mode démo/gratuit pour l'image Docker.
 - Manuelle/locale uniquement (jamais en CI, cf. section précédente) : Docker Desktop doit être
   lancé par l'utilisateur avant toute session de tests E2E ; le monde de test peut se désactiver
