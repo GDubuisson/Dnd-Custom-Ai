@@ -7,6 +7,13 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Retour de test : la liste de Sorts de l'onglet Capacités (triée par niveau) imposait de
+scroller pour atteindre les paliers hauts (ex. niveau 5+) — regroupée en onglets par niveau
+("Tours"/"Niv. 1"/"Niv. 2"/...), un seul palier affiché à la fois. Bascule purement visuelle
+côté client (`#onSelectSpellLevel`, `actor-sheet.js`), sans `actor.update()` ni re-render ; le
+palier sélectionné est mémorisé sur l'instance de la fiche (`#activeSpellLevel`) pour survivre
+à un re-render déclenché ailleurs (ex. lancer un sort met à jour les emplacements).
+
 4 retours de test sur la fiche de personnage (`images_test/`) : le bouton "Monter" (combat
 monté) débordait de son cadre rond (réutilisait `.ability-btn`, taillé pour un seul glyphe "-"/
 "+" — nouvelle classe `.ability-btn-text`, largeur auto) ; le tableau complet des résistances/

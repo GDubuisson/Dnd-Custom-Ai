@@ -164,8 +164,20 @@
     {{#if hasAnySpells}}
     <div class="spells-column">
       <h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
+      {{! Retour de test : la liste de Sorts triée par niveau imposait de scroller pour
+          atteindre les paliers hauts — un onglet par niveau (bascule purement visuelle, cf.
+          #onSelectSpellLevel/actor-sheet.js) affiche un seul palier à la fois. }}
+      {{#if spellsByLevel.length}}
+      <div class="spell-level-tabs" role="tablist">
+        {{#each spellsByLevel}}
+        <button type="button" class="spell-level-tab {{#if this.active}}active{{/if}}" data-action="selectSpellLevel" data-level="{{this.level}}" role="tab" aria-selected="{{this.active}}">
+          {{this.shortLabel}}
+        </button>
+        {{/each}}
+      </div>
+      {{/if}}
       {{#each spellsByLevel}}
-      <div class="spell-level-group">
+      <div class="spell-level-group {{#if this.active}}active{{/if}}" data-level="{{this.level}}" role="tabpanel">
         <h4 class="spell-level-subtitle">{{this.label}}</h4>
         <ul class="spells-list">
           {{#each this.spells}}

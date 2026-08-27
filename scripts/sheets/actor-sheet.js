@@ -257,7 +257,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       mount: DndCustomActorSheet.#onMount,
       dismount: DndCustomActorSheet.#onDismount,
       enterWildShape: DndCustomActorSheet.#onEnterWildShape,
-      revertWildShape: DndCustomActorSheet.#onRevertWildShape
+      revertWildShape: DndCustomActorSheet.#onRevertWildShape,
+      selectSpellLevel: DndCustomActorSheet.#onSelectSpellLevel
     }
   };
 
@@ -284,6 +285,14 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       labelPrefix: "DND_CUSTOM.Tabs"
     }
   };
+
+  /** Retour de test : liste des Sorts (onglet Capacités) triée par niveau nécessitait de
+   *  scroller pour atteindre les paliers hauts — regroupée en onglets par niveau (cf.
+   *  #onSelectSpellLevel, context.spellsByLevel). Palier actuellement affiché, mémorisé sur
+   *  l'instance de la fiche (comme `this.tabGroups` le fait nativement pour l'onglet primaire)
+   *  pour survivre à un re-render déclenché ailleurs (ex. lancer un sort met à jour les
+   *  emplacements) — sans ça, chaque re-render retomberait sur le premier palier. */
+  #activeSpellLevel = null;
 
   /** @override
    *  Ne rend JAMAIS cette fiche tant que l'assistant de création (CharacterCreationWizard) est
@@ -613,6 +622,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         level === 0
           ? game.i18n.localize("DND_CUSTOM.Abilities.Cantrips")
           : game.i18n.format("DND_CUSTOM.Abilities.SpellLevelLabel", { level }),
+      // Libellé court pour l'onglet par niveau (retour de test, cf. #activeSpellLevel
+      // ci-dessus) : "Tours"/"Niv. X" plutôt que le libellé complet "Sorts de niveau X",
+      // trop long pour tenir dans une bande d'onglets.
+      shortLabel:
+        level === 0
+          ? game.i18n.localize("DND_CUSTOM.Abilities.CantripsShort")
+          : game.i18n.format("DND_CUSTOM.Abilities.SpellSlotLevelShort", { level }),
       spells: spells
         .filter((spell) => spell.system.level === level)
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
@@ -626,6 +642,17 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           showDamageButton: spell.system.attack || Boolean(spell.system.save.ability) || Boolean(spell.system.damage.dice)
         }))
     })).filter((group) => group.spells.length);
+    // Palier affiché par défaut : celui mémorisé sur l'instance s'il existe encore parmi les
+    // paliers ayant des Sorts (ex. le dernier a été supprimé), sinon le premier palier
+    // disponible — jamais `null` tant qu'au moins un palier a des Sorts.
+    if (!context.spellsByLevel.some((group) => group.level === this.#activeSpellLevel)) {
+      this.#activeSpellLevel = context.spellsByLevel[0]?.level ?? null;
+    }
+    context.activeSpellLevel = this.#activeSpellLevel;
+    context.spellsByLevel = context.spellsByLevel.map((group) => ({
+      ...group,
+      active: group.level === this.#activeSpellLevel
+    }));
     // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
     // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
     // moins un Sort octroyé — sinon ses 3 Sorts fixes n'apparaîtraient jamais sur sa fiche.
@@ -2399,6 +2426,22 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Rompt volontairement la concentration en cours (SRD 5e : possible à tout moment). */
   static async #onDropConcentration() {
     await this.actor.update({ "system.spells.concentratingOn": "" });
+  }
+
+  /** Bascule l'onglet par niveau de la liste de Sorts (retour de test, cf. #activeSpellLevel) :
+   *  purement visuel (classe `.active` sur l'onglet cliqué + le panneau correspondant), aucun
+   *  `actor.update()` donc aucun re-render — mémorise juste le palier choisi sur l'instance pour
+   *  qu'un re-render déclenché ailleurs (ex. lancer un sort) le restitue au lieu de retomber sur
+   *  le premier palier (cf. context.spellsByLevel, #_prepareContext). */
+  static #onSelectSpellLevel(event, target) {
+    const level = Number(target.dataset.level);
+    this.#activeSpellLevel = level;
+    target.closest(".spell-level-tabs")
+      ?.querySelectorAll(".spell-level-tab")
+      .forEach((tab) => tab.classList.toggle("active", tab === target));
+    this.element
+      .querySelectorAll(".spell-level-group")
+      .forEach((panel) => panel.classList.toggle("active", Number(panel.dataset.level) === level));
   }
 
   /** Bouton "Utiliser" de l'inventaire : objets `gear` avec `system.use.type` renseigné
