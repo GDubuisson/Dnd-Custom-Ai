@@ -7,6 +7,17 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+4 retours de test sur la fiche de personnage (`images_test/`) : le bouton "Monter" (combat
+monté) débordait de son cadre rond (réutilisait `.ability-btn`, taillé pour un seul glyphe "-"/
+"+" — nouvelle classe `.ability-btn-text`, largeur auto) ; le tableau complet des résistances/
+immunités/vulnérabilités aux dégâts (une case par type, `tab-stats.hbs`) n'est plus affiché
+qu'au MJ, un Joueur ne voit désormais qu'un résumé listant les seules entrées déjà actives
+(`context.damageAffinitySummary`, `actor-sheet.js`), rien du tout si aucune n'est active, plus
+un peu d'espace sous le panneau ; le badge "Monter de niveau" (pilule pleine largeur) remplacé
+par un simple bouton rond rouge entre le niveau et la barre d'XP ; les libellés "Sorts de niveau
+N" (`.spell-level-subtitle`) mieux démarqués (taille/poids/couleur d'accent + soulignement, au
+lieu du gris passe-partout à peine visible).
+
 Compendium "Adversaires" (bestiaire, demande explicite de l'utilisateur) : nouveau compendium
 Actor `packs/adversaires` (`world-items/npcs.json`, importé automatiquement comme le reste du
 contenu de référence) avec 15 PNJ prêts à l'emploi — 7 humanoïdes du FI 1/8 au FI 3 (Brigand,

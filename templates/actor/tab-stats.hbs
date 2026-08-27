@@ -47,9 +47,9 @@
       <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.MountTooltip'}}">
         {{#if mount}}
         <span>{{localize "DND_CUSTOM.Actor.MountedOn"}} : {{mount.name}}</span>
-        <button type="button" class="ability-btn" data-action="dismount">{{localize "DND_CUSTOM.Actor.Dismount"}}</button>
+        <button type="button" class="ability-btn-text" data-action="dismount">{{localize "DND_CUSTOM.Actor.Dismount"}}</button>
         {{else}}
-        <button type="button" class="ability-btn" data-action="mount">{{localize "DND_CUSTOM.Actor.Mount"}}</button>
+        <button type="button" class="ability-btn-text" data-action="mount">{{localize "DND_CUSTOM.Actor.Mount"}}</button>
         {{/if}}
       </div>
       {{! Forme sauvage (don SRD 5e) : la prise de forme se fait depuis la Capacité elle-même
@@ -59,31 +59,42 @@
       <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
         <span>{{localize "DND_CUSTOM.Actor.WildShapeForm"}} : {{wildShapeForm.name}}
           ({{wildShapeForm.system.attributes.hp.value}}/{{wildShapeForm.system.attributes.hp.max}} {{localize "DND_CUSTOM.Actor.HP"}})</span>
-        <button type="button" class="ability-btn" data-action="revertWildShape">{{localize "DND_CUSTOM.Actor.RevertWildShape"}}</button>
+        <button type="button" class="ability-btn-text" data-action="revertWildShape">{{localize "DND_CUSTOM.Actor.RevertWildShape"}}</button>
       </div>
       {{/if}}
     </div>
   </div>
 
-  {{! Chantier "types de dégâts" (Phase 1, 2026-08-24) : réglé par le MJ uniquement, comme la
-      fiche Origine (verrouillage MJ/Joueur) — coexiste avec les résistances déjà câblées en dur
-      par Capacité (Rage, Résilience draconique...). }}
+  {{! Chantier "types de dégâts" (Phase 1, 2026-08-24) : réglage réservé au MJ, comme la fiche
+      Origine (verrouillage MJ/Joueur) — coexiste avec les résistances déjà câblées en dur par
+      Capacité (Rage, Résilience draconique...). Retour de test : le tableau complet (une case
+      par type de dégât, la plupart jamais cochées) n'a aucune valeur côté Joueur — remplacé par
+      un résumé listant uniquement les entrées déjà actives (context.damageAffinitySummary,
+      actor-sheet.js), rien du tout si aucune n'est active. }}
+  {{#if isGM}}
   <div class="damage-affinity-panel">
-    {{#unless isGM}}
-    <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}</p>
-    {{/unless}}
     {{#each damageAffinityGroups}}
     <fieldset class="form-group">
       <legend>{{localize this.titleKey}}</legend>
       {{#each this.options}}
       <label class="checkbox-row">
-        <input type="checkbox" name="system.combat.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../../isGM}}disabled{{/unless}}>
+        <input type="checkbox" name="system.combat.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}}>
         {{localize this.label}}
       </label>
       {{/each}}
     </fieldset>
     {{/each}}
   </div>
+  {{else if damageAffinitySummary.length}}
+  <div class="damage-affinity-summary">
+    {{#each damageAffinitySummary}}
+    <div class="damage-affinity-summary-row">
+      <span class="damage-affinity-summary-title">{{localize this.titleKey}}</span>
+      <span class="damage-affinity-summary-values">{{this.labelsText}}</span>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
 
   <div class="stats-columns">
     <div class="abilities-column">
