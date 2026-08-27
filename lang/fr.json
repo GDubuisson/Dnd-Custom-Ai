@@ -431,6 +431,7 @@
       "SpellSaveDC": "DD de sauvegarde",
       "SpellAttackBonus": "Bonus d'attaque",
       "Cantrips": "Tours de magie",
+      "CantripsShort": "Tours",
       "SpellLevelLabel": "Sorts de niveau {level}",
       "SpellSlotLevelShort": "Niv. {level}",
       "SpellSlotsTooltip": "Emplacements de sorts par niveau (SRD 5e) : chaque sort (hors tour de magie, gratuit) dépense un emplacement de son niveau, ou d'un niveau supérieur si le vôtre est épuisé (surclassement). Se rechargent intégralement au repos long.",

@@ -461,6 +461,81 @@ describe("tab-abilities.hbs — emplacements de sorts par niveau (1-9)", () => {
   });
 });
 
+// Retour de test : liste de Sorts triée par niveau imposait de scroller jusqu'aux paliers hauts
+// — un onglet par niveau (context.spellsByLevel[].active/shortLabel, cf. actor-sheet.js) affiche
+// un seul palier à la fois, cf. #onSelectSpellLevel pour la bascule côté JS (non testée ici,
+// jsdom.parse ne charge pas la fiche ApplicationV2 — seule la structure HTML est vérifiée).
+describe("tab-abilities.hbs — onglets par niveau de sort", () => {
+  function render(spellsByLevel) {
+    return parse(
+      renderTemplate("actor/tab-abilities.hbs", {
+        tab: {},
+        isSpellcaster: true,
+        hasAnySpells: true,
+        spellcasting: { dc: 14, attackBonusLabel: "+6" },
+        spellSlots: [],
+        concentratingOn: "",
+        originTrait: null,
+        features: [],
+        spellsByLevel
+      })
+    );
+  }
+
+  const threeLevels = [
+    { level: 0, label: "Tours de magie", shortLabel: "Tours", active: false, spells: [] },
+    {
+      level: 1,
+      label: "Sorts de niveau 1",
+      shortLabel: "Niv. 1",
+      active: true,
+      spells: [{ item: { id: "s1", name: "Bouclier", system: { details: "", concentration: false, ritual: false, level: 1 } } }]
+    },
+    {
+      level: 3,
+      label: "Sorts de niveau 3",
+      shortLabel: "Niv. 3",
+      active: false,
+      spells: [{ item: { id: "s3", name: "Boule de feu", system: { details: "", concentration: false, ritual: false, level: 3 } } }]
+    }
+  ];
+
+  test("un onglet et un panneau par palier, dans l'ordre de spellsByLevel", () => {
+    const doc = render(threeLevels);
+    const tabs = [...doc.querySelectorAll(".spell-level-tab")];
+    const panels = [...doc.querySelectorAll(".spell-level-group")];
+    assert.equal(tabs.length, 3, `attendu 3 onglets, trouvé ${tabs.length}`);
+    assert.equal(panels.length, 3, `attendu 3 panneaux, trouvé ${panels.length}`);
+    assert.deepEqual(tabs.map((tab) => tab.dataset.level), ["0", "1", "3"]);
+    assert.deepEqual(tabs.map((tab) => tab.textContent.trim()), ["Tours", "Niv. 1", "Niv. 3"]);
+  });
+
+  test("seul le palier actif porte la classe .active (onglet ET panneau)", () => {
+    const doc = render(threeLevels);
+    const activeTabs = doc.querySelectorAll(".spell-level-tab.active");
+    const activePanels = doc.querySelectorAll(".spell-level-group.active");
+    assert.equal(activeTabs.length, 1, "un seul onglet devrait être actif");
+    assert.equal(activePanels.length, 1, "un seul panneau devrait être actif");
+    assert.equal(activeTabs[0].dataset.level, "1");
+    assert.equal(activePanels[0].dataset.level, "1");
+  });
+
+  test("chaque onglet cliqué appelle l'action selectSpellLevel avec son niveau", () => {
+    const doc = render(threeLevels);
+    for (const tab of doc.querySelectorAll(".spell-level-tab")) {
+      assert.equal(tab.dataset.action, "selectSpellLevel");
+      assert.ok(tab.hasAttribute("data-level"));
+    }
+  });
+
+  test("aucun onglet affiché quand la liste de Sorts est vide", () => {
+    const doc = render([]);
+    assert.equal(doc.querySelectorAll(".spell-level-tab").length, 0);
+    assert.equal(doc.querySelectorAll(".spell-level-group").length, 0);
+    assert.ok(doc.querySelector(".empty-slot"), "message 'aucun sort' introuvable");
+  });
+});
+
 describe("tab-abilities.hbs — technique consommant la réserve d'une autre Capacité (ex. Ki)", () => {
   function render(remaining) {
     return parse(

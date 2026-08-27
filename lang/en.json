@@ -431,6 +431,7 @@
       "SpellSaveDC": "Spell save DC",
       "SpellAttackBonus": "Spell attack bonus",
       "Cantrips": "Cantrips",
+      "CantripsShort": "Cantrips",
       "SpellLevelLabel": "Level {level} spells",
       "SpellSlotLevelShort": "Lvl. {level}",
       "SpellSlotsTooltip": "Spell slots by level (5e SRD): each spell (cantrips are free) spends a slot of its own level, or a higher one if yours is used up (upcasting). Fully restored on a long rest.",

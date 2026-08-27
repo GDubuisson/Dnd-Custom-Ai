@@ -1927,6 +1927,42 @@
   margin-top: 0;
 }
 
+/* Retour de test : un onglet par niveau (Tours/Niv. 1/Niv. 2/...) au-dessus de la liste de
+   Sorts, pour ne plus avoir à scroller jusqu'aux paliers hauts — même habillage "pilule" que
+   .spell-slot-chip juste en dessous, actif = fond plein plutôt qu'un simple soulignement (la
+   couleur seule ne suffit jamais à marquer l'état actif, cf. .pact-magic-badge). */
+.dnd-custom-ai .spell-level-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0 0 0.6rem;
+}
+
+.dnd-custom-ai .spell-level-tab {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 999px;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-on-surface-variant);
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .spell-level-tab:hover {
+  border-color: var(--dca-secondary);
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .spell-level-tab.active {
+  background: var(--dca-secondary);
+  border-color: var(--dca-secondary);
+  color: var(--dca-surface-lowest);
+}
+
 /* ---------- Sorts ---------- */
 
 /* Séparateur centré entre l'en-tête de classe et la liste Capacités/Sorts, cf.
@@ -2019,8 +2055,17 @@
   color: var(--dca-secondary-container);
 }
 
+/* Retour de test : un seul palier affiché à la fois (cf. .spell-level-tabs ci-dessus), le
+   reste bascule côté JS via #onSelectSpellLevel — jamais de scroll pour atteindre les paliers
+   hauts. Tous les panneaux restent dans le DOM (rendus par Handlebars), seul .active est
+   visible. */
 .dnd-custom-ai .spell-level-group {
+  display: none;
   margin-top: 0.9rem;
+}
+
+.dnd-custom-ai .spell-level-group.active {
+  display: block;
 }
 
 .dnd-custom-ai .spells-list {
