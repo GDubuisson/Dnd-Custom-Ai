@@ -15,6 +15,14 @@
           <label>{{localize "DND_CUSTOM.Actor.Level"}}
             <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
           </label>
+          {{! Retour de test : bouton "Monter de niveau" trop imposant (pilule pleine largeur,
+              images_test/bouton_monter_niveau.png) — remplacé par un simple bouton rond entre le
+              niveau et la barre d'XP (images_test/proposition_position.png). }}
+          {{#if levelUpAvailable}}
+          <button type="button" class="level-up-btn" data-action="levelUp" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actions.LevelUp'}}">
+            <i class="fa-solid fa-arrow-up"></i>
+          </button>
+          {{/if}}
           <div class="xp-field">
             {{#if isGM}}
             <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
@@ -125,12 +133,6 @@
           </div>
         </div>
         <div class="header-row">
-          {{#if levelUpAvailable}}
-          <span class="level-up-badge" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}">
-            <i class="fa-solid fa-arrow-up"></i> {{localize "DND_CUSTOM.Actor.LevelUpAvailable"}}
-            <button type="button" data-action="levelUp">{{localize "DND_CUSTOM.Actions.LevelUp"}}</button>
-          </span>
-          {{/if}}
           {{! Retour de test : fermer la fenêtre Amélioration de caractéristiques/Don sans
               choisir faisait perdre le choix pour toujours — ce badge reste affiché tant que le
               choix est dû (system.attributes.pendingAsiChoices > 0), rattrapage manuel possible

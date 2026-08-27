@@ -300,6 +300,30 @@
   width: 2.2rem;
 }
 
+/* Retour de test : le badge "Monter de niveau" (pilule pleine largeur, images_test/
+   bouton_monter_niveau.png) remplacé par un simple bouton rond entre le niveau et la barre
+   d'XP (images_test/proposition_position.png) — rouge/rond pour rester bien visible sans
+   déséquilibrer la ligne niveau/XP. */
+.dnd-custom-ai .level-up-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: 0 0 auto;
+  align-self: center;
+  border: none;
+  border-radius: 999px;
+  background: var(--dca-error);
+  color: var(--dca-surface-lowest);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .level-up-btn:hover {
+  filter: brightness(1.1);
+}
+
 .dnd-custom-ai .level-up-badge {
   display: inline-flex;
   align-items: center;
@@ -819,6 +843,34 @@
 }
 
 .dnd-custom-ai .ability-btn:hover {
+  background: var(--dca-secondary-container);
+  border-color: var(--dca-secondary);
+}
+
+/* Retour de test : "Monter"/"Descendre"/"Reprendre forme" (mount-chip) réutilisaient
+   .ability-btn (cercle 1.1rem taillé pour un seul glyphe "-"/"+") — le texte du bouton
+   débordait largement du cadre rond. Même habillage (pilule, mêmes couleurs) mais largeur
+   auto + padding horizontal pour accueillir un libellé. */
+.dnd-custom-ai .ability-btn-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.1rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 999px;
+  background: var(--dca-surface-lowest);
+  color: var(--dca-secondary);
+  font-family: var(--dca-font-label);
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dnd-custom-ai .ability-btn-text:hover {
   background: var(--dca-secondary-container);
   border-color: var(--dca-secondary);
 }
@@ -1856,14 +1908,19 @@
   min-width: 0;
 }
 
+/* Retour de test : les libellés "Sorts de niveau 1/2/..." (0.62rem, --dca-muted-text) se
+   confondaient avec le reste de la fiche — taille/poids augmentés, couleur d'accent (au lieu
+   du gris passe-partout) et soulignement pour bien marquer chaque nouveau palier. */
 .dnd-custom-ai .spell-level-subtitle {
-  margin: 0.7rem 0 0.3rem;
+  margin: 0.9rem 0 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--dca-outline-variant);
   font-family: var(--dca-font-label);
-  font-size: 0.62rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--dca-muted-text);
+  color: var(--dca-secondary);
 }
 
 .dnd-custom-ai .spell-level-group:first-child .spell-level-subtitle {
@@ -2190,6 +2247,72 @@
   font-style: italic;
   font-size: 0.8rem;
   margin: 0.2rem 0 0.6rem;
+}
+
+/* Panneau MJ "types de dégâts" (tab-stats.hbs) : fieldset/legend natifs, jamais habillés
+   ailleurs sur la fiche (habillage réservé à .item-sheet-body) — reprend le style des autres
+   groupes de la fiche au lieu du rendu par défaut du navigateur. margin-bottom sur le panneau
+   laisse un peu d'air avant les cartes de caractéristiques qui suivent (retour de test). */
+.dnd-custom-ai .damage-affinity-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+}
+
+.dnd-custom-ai .damage-affinity-panel .form-group {
+  margin: 0;
+  padding: 0.4rem 0.6rem 0.5rem;
+  border: 1px solid var(--dca-outline-variant);
+  border-radius: 0.35rem;
+  background: var(--dca-surface-container);
+}
+
+.dnd-custom-ai .damage-affinity-panel .form-group legend {
+  padding: 0 0.35rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .damage-affinity-panel .checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.2rem 0.7rem 0 0;
+  font-family: var(--dca-font-label);
+  font-size: 0.75rem;
+  color: var(--dca-on-surface-variant);
+}
+
+/* Résumé côté Joueur (remplace le tableau ci-dessus, réservé au MJ) : uniquement les types déjà
+   actifs, une ligne par groupe non vide. */
+.dnd-custom-ai .damage-affinity-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+}
+
+.dnd-custom-ai .damage-affinity-summary-row {
+  font-size: 0.8rem;
+}
+
+.dnd-custom-ai .damage-affinity-summary-title {
+  font-family: var(--dca-font-label);
+  font-weight: 600;
+  color: var(--dca-secondary);
+}
+
+.dnd-custom-ai .damage-affinity-summary-title::after {
+  content: " : ";
+}
+
+.dnd-custom-ai .damage-affinity-summary-values {
+  color: var(--dca-on-surface);
 }
 
 /* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,

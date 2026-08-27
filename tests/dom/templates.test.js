@@ -108,8 +108,8 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
     assert.match(fill.getAttribute("style"), /width: 60%/);
   });
 
-  test("le badge 'niveau disponible' et son bouton sont accessibles au joueur, pas seulement au MJ", () => {
-    assert.ok(doc.querySelector(".level-up-badge"), "badge niveau disponible introuvable");
+  test("le bouton 'monter de niveau' est accessible au joueur, pas seulement au MJ", () => {
+    assert.ok(doc.querySelector(".level-up-btn"), "bouton rond de montée de niveau introuvable");
     assert.ok(doc.querySelector('[data-action="levelUp"]'), "bouton de montée de niveau introuvable côté joueur");
   });
 
