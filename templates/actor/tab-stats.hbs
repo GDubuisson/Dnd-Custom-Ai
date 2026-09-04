@@ -58,9 +58,23 @@
       {{#if wildShapeForm}}
       <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
         <span>{{localize "DND_CUSTOM.Actor.WildShapeForm"}} : {{wildShapeForm.name}}
-          ({{wildShapeForm.system.attributes.hp.value}}/{{wildShapeForm.system.attributes.hp.max}} {{localize "DND_CUSTOM.Actor.HP"}})</span>
+          ({{wildShapeForm.system.attributes.hp.value}}/{{wildShapeForm.system.attributes.hp.max}} {{localize "DND_CUSTOM.Actor.HP"}},
+          {{localize "DND_CUSTOM.Actor.AC"}} {{wildShapeForm.system.attributes.ac.value}},
+          {{localize "DND_CUSTOM.Actor.Speed"}} {{wildShapeForm.system.attributes.speed}})</span>
         <button type="button" class="ability-btn-text" data-action="revertWildShape">{{localize "DND_CUSTOM.Actor.RevertWildShape"}}</button>
       </div>
+      {{#each wildShapeAttacks}}
+      <p class="item-stats-line equipment-roll-row">
+        <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWildShapeAttack" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <i class="fa-solid fa-dice-d20"></i> {{this.name}} {{this.attackBonusLabel}}
+        </button>
+        {{#if this.damageLabel}}
+        <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWildShapeAttackDamage" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
+          <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
+        </button>
+        {{/if}}
+      </p>
+      {{/each}}
       {{/if}}
     </div>
   </div>

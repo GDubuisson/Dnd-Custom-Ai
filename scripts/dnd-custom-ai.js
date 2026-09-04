@@ -27,6 +27,7 @@ import { importSystemContent, ensureContentImportMacro } from "./helpers/content
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
 import { ensureWildSurgeTable, rollWildSurge } from "./helpers/wild-magic-tables.js";
 import { ensureBeastCompanionRequestListener } from "./helpers/companion.js";
+import { registerWildShapeFormRequestListener } from "./helpers/wild-shape-form.js";
 import { registerOpportunityAttackHooks } from "./helpers/opportunity-attack.js";
 import { declareDeath } from "./helpers/death.js";
 import { grantClassContent } from "./helpers/class-content.js";
@@ -279,6 +280,7 @@ async function ensureNpcAttacksArray() {
 Hooks.once("ready", () => {
   registerActorUpdateRelay();
   ensureBeastCompanionRequestListener();
+  registerWildShapeFormRequestListener();
   registerOpportunityAttackHooks();
 });
 

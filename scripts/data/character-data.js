@@ -188,16 +188,17 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         // Capacités à cible (game.user.targets) déjà utilisée ailleurs plutôt qu'un select dédié.
         // Vide = pas monté.
         mountedActorId: new StringField({ required: true, blank: true, initial: "" }),
-        // Forme sauvage actuellement prise (Druide, don SRD 5e — chantier "Forme sauvage",
-        // 2026-08-23) : id d'un Actor de type "wildShapeForm" (créature vivante, même schéma
-        // simplifié que "mount" ci-dessus — cf. CONFIG.Actor.dataModels.wildShapeForm = NpcData
-        // dans dnd-custom-ai.js). Sa propre réserve de PV (system.attributes.hp) SERT de 2e
-        // réserve de PV pendant la transformation : jamais dupliquée ici. Choisi en ciblant le
-        // token de la forme puis en cliquant "Prendre forme" sur la Capacité (#onEnterWildShape,
-        // actor-sheet.js, consomme une charge de la Capacité) ; vidé manuellement ("Redevenir
-        // soi-même") ou automatiquement quand les PV de la forme tombent à 0 (hook updateActor,
-        // dnd-custom-ai.js — dégâts excédentaires jamais reportés sur le personnage, SRD 5e).
-        // Vide = pas transformé.
+        // Forme sauvage actuellement prise (Druide, don SRD 5e — refonte 2026-09-04) : id d'un
+        // Actor de type "wildShapeForm" (créature vivante, même schéma simplifié que "mount"
+        // ci-dessus — cf. CONFIG.Actor.dataModels.wildShapeForm = NpcData dans dnd-custom-ai.js),
+        // créé/réutilisé PAR PERSONNAGE ET PAR FORME (flag wildShapeFormActors, cf.
+        // helpers/wild-shape-form.js) plutôt que ciblé sur un jeton posé par le MJ. Sa propre
+        // réserve de PV (system.attributes.hp) SERT de 2e réserve de PV pendant la
+        // transformation : jamais dupliquée ici. Choisi via un dialogue proposé au clic sur
+        // "Prendre forme" sur la Capacité (#onEnterWildShape, actor-sheet.js, consomme une
+        // charge de la Capacité) ; vidé manuellement ("Redevenir soi-même") ou automatiquement
+        // quand les PV de la forme tombent à 0 (hook updateActor, dnd-custom-ai.js — dégâts
+        // excédentaires jamais reportés sur le personnage, SRD 5e). Vide = pas transformé.
         wildShapeActorId: new StringField({ required: true, blank: true, initial: "" }),
         // Choix ponctuel et définitif du type de dégâts résisté (Résilience draconique,
         // Ensorceleur Lignée draconique — cf. FeatureData#grantsChoice = "draconicResistanceType",

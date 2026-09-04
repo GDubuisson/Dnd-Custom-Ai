@@ -377,13 +377,14 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       // `beastCompanionCreated` posé sur l'Actor à la création, jamais recréé ensuite même si
       // le compagnon est supprimé). `false` pour l'immense majorité des Capacités.
       summonsCompanion: new BooleanField({ required: true, initial: false }),
-      // Capacité "Forme sauvage" (Druide, chantier "Forme sauvage", 2026-08-23) : bouton dédié
-      // "Prendre forme" (onglet Capacités/Sorts, cf. #onEnterWildShape, actor-sheet.js) au lieu
-      // du bouton générique de charge — cible le token d'un Actor de type "wildShapeForm"
-      // (bloc de stats de créature simplifié, même schéma que "mount", cf. dnd-custom-ai.js)
-      // puis décompte une charge de CETTE Capacité (system.uses) et lie l'Actor ciblé au
-      // personnage (system.combat.wildShapeActorId, character-data.js). `false` pour l'immense
-      // majorité des Capacités.
+      // Capacité "Forme sauvage" (Druide, refonte 2026-09-04) : bouton dédié "Prendre forme"
+      // (onglet Capacités/Sorts, cf. #onEnterWildShape, actor-sheet.js) au lieu du bouton
+      // générique de charge — propose un dialogue de choix parmi DND_CUSTOM.wildShapeForms
+      // (config.js, filtré par niveau), crée/réutilise l'Actor de type "wildShapeForm"
+      // correspondant (bloc de stats de créature simplifié, même schéma que "mount", cf.
+      // dnd-custom-ai.js et helpers/wild-shape-form.js) puis décompte une charge de CETTE
+      // Capacité (system.uses) et lie cet Actor au personnage (system.combat.wildShapeActorId,
+      // character-data.js). `false` pour l'immense majorité des Capacités.
       entersWildShape: new BooleanField({ required: true, initial: false }),
       // Incantation mineure de sous-classe (ex. "Incantation mineure", Chevalier occulte,
       // Guerrier) : liste de NOMS de Sorts (texte libre, comme costsResource ci-dessus — ce sont
