@@ -3373,6 +3373,9 @@
   padding: 0 0 4px !important;
 }
 
+/* Retour de test : le trait de "cire" sous le résultat (::after, supprimé) ressortait comme un
+   simple trait rouge disgracieux plutôt qu'un soulignement discret — juste le chiffre en grand,
+   sans décoration en dessous. */
 .dnd-sheet-roll .dice-total {
   text-align: left;
   padding: 0 !important;
@@ -3380,22 +3383,4 @@
   font-weight: 600;
   font-size: 1.7em;
   color: #2b2011;
-  position: relative;
-  display: inline-block;
-}
-
-/* Trait de "cire" sous le résultat plutôt qu'un simple soulignement CSS classique : un peu
-   irrégulier (légère rotation), cohérent avec le reste du thème "sceau de cire". */
-.dnd-sheet-roll .dice-total::after {
-  content: "";
-  position: absolute;
-  left: -2px;
-  right: -6px;
-  bottom: 2px;
-  height: 5px;
-  background: #7a3712;
-  opacity: 0.85;
-  border-radius: 2px 5px 4px 3px;
-  transform: rotate(-0.6deg) scaleY(0.6);
-  z-index: -1;
 }
