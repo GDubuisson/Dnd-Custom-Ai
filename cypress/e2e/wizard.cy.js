@@ -34,10 +34,24 @@
 //     déclenche une notification d'erreur permanente qui finit par recouvrir des boutons —
 //     cf. viewportWidth/Height, cypress.config.js.
 //
-// Actor.create() est appelé directement via cy.window() plutôt qu'en pilotant le dialogue natif
-// "Créer un acteur" de la sidebar : ce qui est testé ici est le comportement déclenché par la
-// création (hook createActor, dnd-custom-ai.js), pas ce formulaire natif lui-même — même
-// approche que tests/quench/quench-tests.js.
+// Actor.create() est appelé directement via cy.window() (plutôt qu'en pilotant le dialogue natif
+// "Créer un acteur" de la sidebar) pour la MAJORITÉ des scénarios ci-dessous : ce qui est testé
+// est le comportement déclenché par la création (hook createActor, dnd-custom-ai.js), pas ce
+// formulaire natif lui-même — même approche que tests/quench/quench-tests.js.
+//
+// ATTENTION — cette approximation a laissé passer le bug "fiche visible pendant l'assistant"
+// pendant 5 signalements testeur (2026-08-19 à 2026-09-05, cf. ClaudeFiles/ANOMALIES_ACTIVES.md) :
+// `createBlankCharacter(..., { renderSheet: true })` (T-WIZ-010 ci-dessous) simule le chemin
+// SUPPOSÉ du bouton natif "Créer un Acteur" — `Document.create(data, {renderSheet: true})` — mais
+// la vraie boîte de dialogue (v13+, `DialogV2`) appelle en réalité `doc.sheet.render(true)`
+// **directement dans le callback de son bouton "ok"**, un chemin que `{renderSheet: true}` passé
+// à `Actor.create()` ne déclenche PAS du tout. Root cause confirmée le 2026-09-05 par un traçage
+// en direct (Hooks.callAll/render instrumentés) après une repro exacte enfin obtenue de
+// l'utilisateur — cf. docstring d'`openWizardActorIds`, character-creation-wizard.js. T-WIZ-022/
+// T-WIZ-023 ci-dessous pilotent donc la VRAIE boîte de dialogue (clic sur le bouton de la
+// sidebar, formulaire réel), seule façon de couvrir ce chemin précis — les autres scénarios
+// (T-WIZ-010, T-WIZ-020, T-WIZ-021) restent des approximations utiles pour le reste du
+// comportement de l'assistant, mais jamais suffisantes seules pour ce bug précis.
 
 // Chaînes localisées (DND_CUSTOM.* de lang/<langue active>.json) et langue active elle-même :
 // déterminées dynamiquement par session plutôt que fixées à "fr" à l'écriture de ce fichier —
@@ -101,6 +115,43 @@ function createBlankCharacter(name, { renderSheet = false } = {}) {
 
 function getWizardForm() {
   return cy.get("form.character-wizard", { timeout: 15000 });
+}
+
+// Échantillonne en continu (toutes les 50ms par défaut) plutôt qu'un contrôle ponctuel avant/
+// après : capable de repérer un flash isolé qu'une vérification à un seul instant manquerait.
+// Hissé à la portée du module (au lieu d'être local à la section Joueur) : réutilisé par la
+// section MJ ci-dessous (T-WIZ-023).
+function pollNoOverlap(times = 30, intervalMs = 50) {
+  const overlaps = [];
+  for (let i = 0; i < times; i += 1) {
+    cy.wait(intervalMs);
+    cy.window().then((win) => {
+      const sheetInput = win.document.querySelector("input.actor-name");
+      const wizardForm = win.document.querySelector("form.character-wizard");
+      const sheetVisible = Boolean(sheetInput?.checkVisibility());
+      const wizardVisible = Boolean(wizardForm?.checkVisibility());
+      if (sheetVisible && wizardVisible) overlaps.push(i * intervalMs);
+    });
+  }
+  cy.then(() => {
+    expect(overlaps, `fiche et assistant visibles en même temps aux instants (ms) : ${overlaps.join(", ")}`).to.deep.equal([]);
+  });
+}
+
+// Pilote la VRAIE boîte de dialogue native "Créer un Acteur" de la sidebar (clic sur le bouton,
+// remplissage du formulaire, soumission) — PAS une simulation via Actor.create(). Sélecteurs
+// relevés en direct sur l'instance Docker de test (v13+, dialogue `DialogV2`) : bouton
+// `#actors button.create-entry[data-action="createEntry"]`, champ `input[name="name"]`, select
+// `select[name="type"]` (déjà sur "character" par défaut — sélectionné explicitement quand même,
+// pour rester correct si cet ordre changeait), soumission via le bouton du footer. Ne pousse PAS
+// l'id créé dans createdActorIds (l'appelant le récupère par nom une fois l'Actor visible côté
+// jeu, cf. T-WIZ-022/023) : au moment de cet appel, l'Actor n'existe pas encore côté client.
+function createCharacterViaNativeDialog(name) {
+  cy.get('[data-tab="actors"]').first().click({ force: true });
+  cy.get('#actors button.create-entry[data-action="createEntry"]').click();
+  cy.get("dialog.application.dialog input[name=\"name\"]", { timeout: 10000 }).type(name);
+  cy.get('dialog.application.dialog select[name="type"]').select("character");
+  cy.get('dialog.application.dialog footer button[type="submit"]').click();
 }
 
 before(() => {
@@ -408,22 +459,26 @@ describe("Assistant de création de personnage — session Joueur", () => {
   // Contrairement à T-WIZ-010 (2 points de contrôle discrets, limite documentée dans son propre
   // commentaire), ces deux tests échantillonnent en continu (toutes les 50ms) sur toute la
   // transition — capable de repérer un flash isolé qu'une vérification ponctuelle manquerait.
-  function pollNoOverlap(times = 30, intervalMs = 50) {
-    const overlaps = [];
-    for (let i = 0; i < times; i += 1) {
-      cy.wait(intervalMs);
-      cy.window().then((win) => {
-        const sheetInput = win.document.querySelector("input.actor-name");
-        const wizardForm = win.document.querySelector("form.character-wizard");
-        const sheetVisible = Boolean(sheetInput?.checkVisibility());
-        const wizardVisible = Boolean(wizardForm?.checkVisibility());
-        if (sheetVisible && wizardVisible) overlaps.push(i * intervalMs);
-      });
-    }
-    cy.then(() => {
-      expect(overlaps, `fiche et assistant visibles en même temps aux instants (ms) : ${overlaps.join(", ")}`).to.deep.equal([]);
+  // (`pollNoOverlap` : hissée à la portée du module, cf. plus haut dans ce fichier.)
+
+  // 5e signalement testeur (2026-08-19 à 2026-09-05, cf. ClaudeFiles/ANOMALIES_ACTIVES.md) : le
+  // bug persistait malgré T-WIZ-010/020/021 ci-dessus/dessous, tous VERTS — parce qu'aucun ne
+  // pilotait la VRAIE boîte de dialogue native, cf. l'avertissement en tête de fichier. Root
+  // cause confirmée le 2026-09-05 (repro exacte enfin obtenue + traçage en direct) : la boîte de
+  // dialogue `DialogV2` "Créer un Acteur" appelle `doc.sheet.render(true)` dans le callback de
+  // son bouton "ok", un chemin qu'aucune des simulations ci-dessus n'exerce. Corrigé par
+  // `openWizardActorIds` (Set synchrone, character-creation-wizard.js) — ce test aurait échoué
+  // avant ce correctif (vérifié en conditions réelles) et sert de garde-fou contre toute
+  // régression future sur ce chemin précis.
+  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue) : jamais de chevauchement, échantillonné en continu (T-WIZ-022)", () => {
+    createCharacterViaNativeDialog("Wizard T-WIZ-022");
+    pollNoOverlap();
+    getWizardForm().should("be.visible");
+    cy.window().then((win) => {
+      const actor = win.game.actors.getName("Wizard T-WIZ-022");
+      if (actor) createdActorIds.push(actor.id);
     });
-  }
+  });
 
   it("soumission de l'assistant -> réouverture de la fiche : jamais de chevauchement, échantillonné en continu (T-WIZ-020)", () => {
     cy.window().then((win) => win.Actor.create(toAutObject(win, { name: "Wizard T-WIZ-020", type: "character" }))).then((actor) => {
@@ -555,6 +610,21 @@ describe("Assistant de création de personnage — session MJ", () => {
     cy.window().then((win) => {
       expect(win.game.user.character?.id ?? null).to.equal(previousCharacterId);
       expect(win.game.actors.get(actorId).system.class).to.equal("cleric"); // création réussie malgré tout
+    });
+  });
+
+  // Pendant MJ de T-WIZ-022 (session Joueur ci-dessus) : même bug, même correctif, mais le
+  // repro utilisateur d'origine (2026-09-05) couvrait explicitement les DEUX rôles — cf.
+  // l'avertissement en tête de fichier pour pourquoi seule la vraie boîte de dialogue native
+  // (pas Actor.create() simulé) exerce ce chemin.
+  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue), session MJ : jamais de chevauchement (T-WIZ-023)", () => {
+    cy.loginAsGM();
+    createCharacterViaNativeDialog("Wizard T-WIZ-023 GM");
+    pollNoOverlap();
+    getWizardForm().should("be.visible");
+    cy.window().then((win) => {
+      const actor = win.game.actors.getName("Wizard T-WIZ-023 GM");
+      if (actor) createdActorIds.push(actor.id);
     });
   });
 });

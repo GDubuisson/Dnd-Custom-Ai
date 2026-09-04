@@ -28,7 +28,7 @@ import {
 import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { rollCheck, rollDamage, rollHeal, sheetRollFlags } from "../helpers/rolls.js";
-import { CharacterCreationWizard } from "./character-creation-wizard.js";
+import { CharacterCreationWizard, openWizardActorIds } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
@@ -302,26 +302,26 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
   /** @override
    *  Ne rend JAMAIS cette fiche tant que l'assistant de création (CharacterCreationWizard) est
-   *  actuellement ouvert pour ce même Actor — bloque directement à la source la course entre le
-   *  rendu natif post-création de Foundry et l'ouverture de l'assistant (cf. Hooks.on(
-   *  "createActor"), dnd-custom-ai.js), plutôt que de dépendre du timing interne des hooks
-   *  Foundry pour supprimer ce rendu natif : 3 tentatives précédentes insuffisantes (retour de
-   *  test répété — la fiche continuait de flasher par-dessus l'assistant), la dernière en date
-   *  posant `options.renderSheet = false` dans `preCreateActor` (toujours en place ci-dessous,
-   *  best-effort, mais visiblement pas fiable à elle seule selon la version de Foundry). Ici, la
-   *  détection ne dépend d'aucune hypothèse de timing/plomberie interne : `this.actor` reste la
-   *  même référence quel que soit l'appelant, et `foundry.applications.instances` est mis à jour
-   *  de façon synchrone dès la construction/fermeture d'une Application (cf. doc Foundry v11+).
-   *  Contrairement à bloquer sur `!(system.class && system.origin)` (root cause initialement
-   *  envisagée), cette approche scope précisément la fenêtre de course : une fois l'assistant
-   *  refermé — même sans avoir terminé — la fiche native redevient normalement accessible (cf.
-   *  T-WIZ-018, wizard.cy.js : rouvrir la fiche après une fermeture sans soumission doit encore
-   *  afficher le bouton "Créer un personnage"). */
+   *  actuellement ouvert (ou en train de s'ouvrir) pour ce même Actor.
+   *
+   *  Root cause confirmée le 2026-09-05 (5e signalement, repro exacte enfin obtenue + traçage en
+   *  direct — cf. docstring d'`openWizardActorIds`, character-creation-wizard.js) : la boîte de
+   *  dialogue native "Créer un Acteur" (v13+, `DialogV2`) appelle `doc.sheet.render(true)`
+   *  directement dans le callback de son bouton "ok", indépendamment de `options.renderSheet`
+   *  (best-effort, `preCreateActor` ci-dessous, insuffisant seul). Ce rendu survient AVANT que
+   *  l'assistant (construit dans le hook `createActor`, dnd-custom-ai.js) n'ait eu le temps
+   *  d'apparaître dans `foundry.applications.instances` — 4 tentatives précédentes basées sur ce
+   *  registre (scan de `foundry.applications.instances`, en place jusqu'ici) perdaient donc
+   *  systématiquement cette course, malgré l'hypothèse (fausse en pratique) que l'inscription y
+   *  serait synchrone. `openWizardActorIds` est rempli de façon strictement synchrone, au
+   *  constructeur de l'assistant, avant tout appel à `.render()` : plus aucune fenêtre de course
+   *  possible. Contrairement à bloquer sur `!(system.class && system.origin)` (root cause
+   *  initialement envisagée), cette approche scope précisément la fenêtre de course : une fois
+   *  l'assistant refermé — même sans avoir terminé — la fiche native redevient normalement
+   *  accessible (cf. T-WIZ-018, wizard.cy.js : rouvrir la fiche après une fermeture sans
+   *  soumission doit encore afficher le bouton "Créer un personnage"). */
   render(...args) {
-    const wizardOpen = [...foundry.applications.instances.values()].some(
-      (app) => app instanceof CharacterCreationWizard && app.actor?.id === this.actor.id
-    );
-    if (wizardOpen) return Promise.resolve(this);
+    if (openWizardActorIds.has(this.actor.id)) return Promise.resolve(this);
     return super.render(...args);
   }
 

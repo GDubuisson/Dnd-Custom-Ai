@@ -7,6 +7,26 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Corrigé** — Bug "fiche visible pendant l'assistant de création" (5e signalement depuis
+2026-08-19, `ClaudeFiles/ANOMALIES_ACTIVES.md`) : root cause enfin identifiée grâce à une repro
+exacte fournie par l'utilisateur (bouton natif "Créer un Acteur" de la sidebar) puis confirmée
+par un traçage en direct sur une instance Foundry réelle. La boîte de dialogue "Créer un Acteur"
+(Foundry v13+, `DialogV2`) rend la fiche directement depuis le callback de son bouton "ok",
+indépendamment de `options.renderSheet` (mécanisme sur lequel comptaient les 4 correctifs
+précédents) et avant que l'assistant de création n'ait eu le temps de s'enregistrer dans le
+registre des fenêtres ouvertes de Foundry. Nouveau `openWizardActorIds` (Set synchrone,
+`character-creation-wizard.js`) ferme cette fenêtre de course sans dépendre d'aucune hypothèse de
+timing. Deux nouveaux tests E2E (T-WIZ-022/023, `wizard.cy.js`) pilotent pour la première fois la
+VRAIE boîte de dialogue native (au lieu d'une simulation via `Actor.create()`) — la seule façon
+de couvrir ce chemin, et la raison pour laquelle ce bug avait échappé à l'E2E jusqu'ici.
+
+**Corrigé** (repéré pendant l'investigation ci-dessus) : le titre de la fenêtre de la fiche
+personnage affichait la clé i18n brute non résolue (`TYPES.Actor.character: <nom>`) au lieu d'un
+libellé propre — `lang/en.json`/`lang/fr.json` ne déclaraient de libellé `TYPES.Actor`/`TYPES.Item`
+que pour une partie des types du système. Les 5 types d'Actor et 10 types d'Item ont maintenant
+tous un libellé dans les deux langues (visible aussi dans le menu déroulant "Type" de la boîte de
+dialogue "Créer un Acteur"/"Créer un Item").
+
 Enrichissement du style de jet de chat (retour d'une maquette externe fournie par l'utilisateur,
 `maquettes/chat-roll-style-stitch/`) — version "sobre" : ce qui sortait du cadre réel du chat
 Foundry (chrome de session, compositeur personnalisé, badge de DD affiché au joueur — contraire

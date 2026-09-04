@@ -9,6 +9,27 @@ const { ApplicationV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
+/** Ensemble SYNCHRONE des `Actor.id` pour lesquels un assistant de création est actuellement
+ *  ouvert (ou en train de s'ouvrir) — cf. `DndCustomActorSheet#render()`, actor-sheet.js.
+ *
+ *  Root cause du bug "fiche visible pendant l'assistant" (5e signalement, 2026-08-19,
+ *  ClaudeFiles/ANOMALIES_ACTIVES.md), confirmée le 2026-09-05 par une repro exacte de
+ *  l'utilisateur puis un traçage en direct (Hooks.callAll/render instrumentés sur l'instance
+ *  Docker de test) : la boîte de dialogue "Créer un Acteur" native de la sidebar (v13+,
+ *  `DialogV2`) appelle `doc.sheet.render(true)` **directement dans le callback de son propre
+ *  bouton "ok"**, juste après la résolution de `Actor.create()` — un chemin totalement
+ *  indépendant de `options.renderSheet` (qui ne concernait qu'un ancien mécanisme de
+ *  `Document#createDialog()`, cf. commentaire `preCreateActor` dans dnd-custom-ai.js, best-effort
+ *  mais plus la vraie protection). Ce rendu de fiche survient synchrones-ment APRÈS le hook
+ *  `createActor` (qui construit l'assistant) mais AVANT que l'assistant n'ait eu le temps
+ *  d'apparaître dans `foundry.applications.instances` (son propre pipeline de rendu — chargement
+ *  de template, etc. — prend, mesuré en conditions réelles, plusieurs centaines de ms) :
+ *  l'ancien garde-fou de `DndCustomActorSheet#render()`, qui scannait ce registre, perdait
+ *  donc systématiquement cette course. Un `Set` synchrone, rempli au constructeur de l'assistant
+ *  (avant tout appel à `.render()`) et vidé à sa fermeture (`_onClose` ci-dessous), ne dépend
+ *  d'aucune hypothèse de timing sur le pipeline de rendu de Foundry. */
+export const openWizardActorIds = new Set();
+
 /** Échappement minimal pour insérer `text` sans risque dans un attribut HTML entre guillemets
  *  doubles (cf. même convention que glossaryAbbr, player-guide-journal.js) : ce résumé est
  *  injecté via `.innerHTML` (cf. #syncSelectionInfo) pour porter le nom du trait spécial en
@@ -90,6 +111,9 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
+    // Synchrone, AVANT tout `.render()` — cf. docstring de `openWizardActorIds` ci-dessus pour
+    // la course que ça referme.
+    openWizardActorIds.add(actor.id);
   }
 
   /** @override */
@@ -99,6 +123,16 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     this.#syncSkillCountHint();
     this.#syncSkillLimit();
     this.#syncSelectionInfo();
+  }
+
+  /** @override
+   *  Retire l'Actor de `openWizardActorIds` à la fermeture de l'assistant, qu'il ait été soumis
+   *  (cf. #onSubmit ci-dessous, qui appelle `this.close()`) ou fermé sans avoir terminé (bouton
+   *  natif "Fermer la fenêtre") — dans les deux cas, `DndCustomActorSheet` doit redevenir
+   *  normalement accessible pour cet Actor (cf. T-WIZ-018, wizard.cy.js). */
+  _onClose(options) {
+    super._onClose(options);
+    openWizardActorIds.delete(this.actor.id);
   }
 
   /** Affiche sous chaque select (Origine/Classe) un résumé de ses bonus de caractéristiques/

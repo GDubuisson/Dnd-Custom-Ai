@@ -761,8 +761,11 @@
   },
   "TYPES": {
     "Actor": {
-      "vehicle": "Véhicule",
-      "mount": "Monture"
+      "character": "Personnage",
+      "npc": "PNJ",
+      "mount": "Monture",
+      "wildShapeForm": "Forme sauvage",
+      "vehicle": "Véhicule"
     },
     "Item": {
       "weapon": "Arme",
@@ -771,6 +774,7 @@
       "feature": "Capacité",
       "origin": "Origine",
       "class": "Classe",
+      "subclass": "Sous-classe",
       "tool": "Outil",
       "spell": "Sort",
       "language": "Langue"

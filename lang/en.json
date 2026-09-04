@@ -761,8 +761,11 @@
   },
   "TYPES": {
     "Actor": {
-      "vehicle": "Vehicle",
-      "mount": "Mount"
+      "character": "Character",
+      "npc": "NPC",
+      "mount": "Mount",
+      "wildShapeForm": "Wild Shape Form",
+      "vehicle": "Vehicle"
     },
     "Item": {
       "weapon": "Weapon",
@@ -771,6 +774,7 @@
       "feature": "Feature",
       "origin": "Origin",
       "class": "Class",
+      "subclass": "Subclass",
       "tool": "Tool",
       "spell": "Spell",
       "language": "Language"
