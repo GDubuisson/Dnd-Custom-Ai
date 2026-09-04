@@ -688,7 +688,7 @@
       "properties": {
         "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
         "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
-        "range": { "normal": 7.5, "long": 30 }, "special": ""
+        "range": { "normal": 8, "long": 30 }, "special": ""
       }
     }
   },
@@ -772,7 +772,7 @@
       "properties": {
         "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false,
         "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
-        "range": { "normal": 1.5, "long": 4.5 }, "special": "Entrave la cible touchée (DD 10 Athlétisme pour se libérer) ; aucun dégât."
+        "range": { "normal": 2, "long": 5 }, "special": "Entrave la cible touchée (DD 10 Athlétisme pour se libérer) ; aucun dégât."
       }
     }
   }

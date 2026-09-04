@@ -72,33 +72,90 @@ async function resolveFolderId(entry, topFolder, subfolderFn, cache) {
   return cache.get(label).id;
 }
 
+/** `entry` (donnée brute JSON, forcément PARTIELLE — un fichier world-items/*.json n'écrit
+ *  jamais un champ de schéma qui garde sa valeur par défaut) diffère-t-il de `existing` (Item/
+ *  Actor déjà présent, même nom) ? Comparer `entry.system` directement à `existing.system` (le
+ *  `system` "préparé", DataModel résolu avec valeurs par défaut ET données dérivées calculées)
+ *  déclencherait un patch sur QUASIMENT CHAQUE entrée à CHAQUE appel, JSON identique ou pas — un
+ *  premier essai en conditions réelles (2026-09-05, capacités/sorts/dons... 100% "modifiés" à
+ *  chaque rechargement) l'a confirmé avant que ça n'atteigne un commit. La bonne comparaison :
+ *  fusionner `entry.system` PAR-DESSUS `existing.toObject().system` (données brutes stockées,
+ *  sans dérivé ni défaut de schéma ajouté au vol) via `foundry.utils.mergeObject` — exactement
+ *  la même fusion récursive (clé par clé, jamais un remplacement complet) que celle qu'appliquera
+ *  réellement `updateDocuments({system: entry.system})`. Si le résultat de cette fusion est
+ *  identique aux données brutes déjà stockées, rien à appliquer ; sinon, `entry.system` est le
+ *  patch (partiel, jamais l'objet complet). Renvoie `null` si rien n'a changé — évite un
+ *  `updateDocuments` (et le hook `updateItem`/`updateActor` associé) pour une entrée déjà à jour. */
+function diffPatch(entry, existing) {
+  const patch = {};
+  if (entry.img && entry.img !== existing.img) patch.img = entry.img;
+  if (entry.system) {
+    const currentSystem = existing.toObject().system ?? {};
+    const mergedSystem = foundry.utils.mergeObject(currentSystem, entry.system, { inplace: false });
+    if (!foundry.utils.objectsEqual(mergedSystem, currentSystem)) patch.system = entry.system;
+  }
+  if (!Object.keys(patch).length) return null;
+  return { _id: existing.id ?? existing._id, ...patch };
+}
+
 /** Importe tout le contenu de référence du système (classes, origines, sorts, capacités de
- *  classe, armes/armures/objets/outils) : sans doublon (comparaison par nom), rejouable sans
- *  risque à chaque nouvelle version de world-items/*.json. Lancée automatiquement au chargement
- *  du monde (hook "ready", cf. dnd-custom-ai.js) — plus besoin d'une action manuelle du MJ ;
- *  reste aussi exposée via `game.dndCustomAi.importSystemContent()` et une Macro monde (cf.
- *  ensureContentImportMacro ci-dessous) en secours si l'auto-import a été raté (ex. monde
- *  ouvert hors ligne lors d'une mise à jour du système). Retour de test à l'origine de ce
- *  découplage : les compendiums Classes/Origines restaient vides et les sorts/capacités de
- *  classe absents faute d'avoir remarqué/exécuté la macro documentée. */
+ *  classe, armes/armures/objets/outils) et le **resynchronise** : une entrée absente (par nom)
+ *  est créée, une entrée déjà présente dont le contenu (`img`/`system`) diffère du JSON source
+ *  est ÉCRASÉE par ce JSON — `world-items/*.json` reste l'unique source de vérité pour ce
+ *  contenu de règles (cf. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`), jamais un espace de
+ *  personnalisation libre. Décision explicite de l'utilisateur (2026-09-05, cf. dette technique
+ *  "les compendiums ne se remettent jamais à jour", `ClaudeFiles/ANOMALIES_ACTIVES.md`) : **toute
+ *  modification manuelle d'un Item/Actor de compendium (ou d'un Item de référence du monde —
+ *  arme/armure/objet/outil) sera écrasée au prochain chargement du monde** si le JSON source a
+ *  changé depuis, sans confirmation ni sauvegarde préalable — attendu, pas un bug. Un renommage
+ *  dans le JSON source (le nom sert de clé de rapprochement) reste hors de portée de cette
+ *  resynchronisation : traité comme une suppression + un ajout, l'ancienne entrée nommée
+ *  différemment n'est ni renommée ni retirée automatiquement (limitation connue, cf.
+ *  `ClaudeFiles/CONCEPTION_TECHNIQUE.md`).
+ *
+ *  Rejouable sans risque à chaque nouvelle version de world-items/*.json — lancée automatiquement
+ *  au chargement du monde (hook "ready", cf. dnd-custom-ai.js) ; reste aussi exposée via
+ *  `game.dndCustomAi.importSystemContent()` et une Macro monde (cf. ensureContentImportMacro
+ *  ci-dessous) en secours si l'auto-import a été raté (ex. monde ouvert hors ligne lors d'une
+ *  mise à jour du système). Retour de test à l'origine du découplage import/hook "ready" : les
+ *  compendiums Classes/Origines restaient vides et les sorts/capacités de classe absents faute
+ *  d'avoir remarqué/exécuté la macro documentée. */
 export async function importSystemContent({ notifyIfEmpty = true } = {}) {
   if (!game.user.isGM) return;
 
   let totalImported = 0;
+  let totalUpdated = 0;
 
   for (const { file, type, folderKey, subfolder } of WORLD_ITEM_FILES) {
     const topFolder = await ensureFolder(game.i18n.localize(folderKey));
     const subfolderCache = new Map();
 
     const data = await fetch(`systems/${SYSTEM_ID}/world-items/${file}`).then((r) => r.json());
-    const existingNames = new Set(game.items.map((item) => item.name));
-    const missing = data.filter((entry) => !existingNames.has(entry.name));
+    const existingByName = new Map(game.items.map((item) => [item.name, item]));
+    const missing = data.filter((entry) => !existingByName.has(entry.name));
     for (const entry of missing) {
       entry.folder = await resolveFolderId(entry, topFolder, subfolder, subfolderCache);
     }
     if (missing.length) await Item.createDocuments(missing);
     totalImported += missing.length;
     console.log(`${SYSTEM_ID} | ${file} : ${missing.length} objet(s) importé(s) dans les Items du monde`);
+
+    // Resynchronisation : une entrée déjà présente (par nom) dont img/system diffère du JSON
+    // source est écrasée par ce JSON (cf. docstring d'importSystemContent ci-dessus — politique
+    // assumée, pas un bug). `diffPatch` ne renvoie un patch que si quelque chose a réellement
+    // changé, pour ne jamais déclencher un `updateItem` (hooks, `_stats.modifiedTime`...) sur une
+    // entrée déjà identique.
+    const staleUpdates = data
+      .map((entry) => {
+        const existing = existingByName.get(entry.name);
+        return existing ? diffPatch(entry, existing) : null;
+      })
+      .filter(Boolean);
+    if (staleUpdates.length) {
+      await Item.updateDocuments(staleUpdates);
+      console.log(`${SYSTEM_ID} | ${file} : ${staleUpdates.length} objet(s) existant(s) resynchronisé(s) depuis le JSON`);
+    }
+    totalUpdated += staleUpdates.length;
 
     // Range aussi rétroactivement les Items de ce type déjà importés avant l'ajout de cette
     // organisation en dossiers (mondes déjà en cours) : uniquement ceux sans dossier du tout,
@@ -149,10 +206,34 @@ export async function importSystemContent({ notifyIfEmpty = true } = {}) {
     if (missing.length) await compendium.documentClass.createDocuments(missing, { pack: packId });
     totalImported += missing.length;
     console.log(`${SYSTEM_ID} | ${file} : ${missing.length} objet(s) importé(s) dans ${packId}`);
+
+    // Resynchronisation (même politique que les Items du monde ci-dessus, cf. docstring
+    // d'importSystemContent) : `getIndex()` ne porte pas `system` (juste nom/type/img), donc pas
+    // assez pour diffé — `getDocuments()` charge les documents complets du pack. Contrairement au
+    // getter `.index` (cf. commentaire ci-dessus sur le bug de course déjà corrigé),
+    // `getDocuments()` est une vraie méthode asynchrone qui attend le chargement réel : aucun
+    // risque de retomber sur ce même bug ici.
+    const documents = await compendium.getDocuments();
+    const existingByName = new Map(documents.map((doc) => [doc.name, doc]));
+    const staleUpdates = data
+      .map((entry) => {
+        const existing = existingByName.get(entry.name);
+        return existing ? diffPatch(entry, existing) : null;
+      })
+      .filter(Boolean);
+    if (staleUpdates.length) {
+      await compendium.documentClass.updateDocuments(staleUpdates, { pack: packId });
+      console.log(`${SYSTEM_ID} | ${file} : ${staleUpdates.length} objet(s) existant(s) resynchronisé(s) dans ${packId} depuis le JSON`);
+    }
+    totalUpdated += staleUpdates.length;
   }
 
-  if (totalImported > 0 || notifyIfEmpty) {
-    ui.notifications.info(game.i18n.localize("DND_CUSTOM.Macros.ImportContentDone"));
+  if (totalImported > 0 || totalUpdated > 0 || notifyIfEmpty) {
+    ui.notifications.info(
+      totalUpdated > 0
+        ? game.i18n.format("DND_CUSTOM.Macros.ImportContentDoneWithUpdates", { updated: totalUpdated })
+        : game.i18n.localize("DND_CUSTOM.Macros.ImportContentDone")
+    );
   }
 }
 

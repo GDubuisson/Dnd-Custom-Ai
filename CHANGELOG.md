@@ -7,6 +7,21 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Corrigé** — Dette technique "les compendiums ne se remettent jamais à jour"
+(`ClaudeFiles/ANOMALIES_ACTIVES.md`) : `importSystemContent()` (`scripts/helpers/content-import.js`)
+ne se contentait jusqu'ici que d'ajouter les entrées absentes par nom — une entrée déjà présente
+(Item du monde ou document de compendium) restait figée dans son état d'import initial, même après
+une correction du JSON source. Ajout d'une seconde passe qui détecte et écrase (choix explicite :
+le JSON reste l'unique source de vérité pour ce contenu de règles) toute entrée déjà présente dont
+`img`/`system` diffère du JSON, en patch partiel (seuls les champs qui diffèrent sont réécrits, un
+seul `updateDocuments()` par catégorie). 3 nouveaux tests E2E (`content-resync.cy.js`) valident
+l'absence de faux positif sur tout le contenu existant, la resynchronisation d'un document de
+compendium modifié à la main, et celle d'un Item du monde. Corrigé au passage, découvert pendant la
+vérification en conditions réelles : `world-items/weapons.json` stockait des portées fractionnaires
+(Sarbacane, Filet) que le schéma d'Item (`NumberField({integer:true})`) a toujours arrondies
+silencieusement en écriture — sans correction, le nouveau mécanisme les aurait réécrites en boucle
+à chaque appel ; réalignées sur leur équivalent entier (cohérent avec les 13 autres armes).
+
 **Corrigé** — Bug "fiche visible pendant l'assistant de création" (5e signalement depuis
 2026-08-19, `ClaudeFiles/ANOMALIES_ACTIVES.md`) : root cause enfin identifiée grâce à une repro
 exacte fournie par l'utilisateur (bouton natif "Créer un Acteur" de la sidebar) puis confirmée

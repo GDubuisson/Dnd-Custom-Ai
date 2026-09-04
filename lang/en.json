@@ -233,6 +233,7 @@
     "Macros": {
       "ImportContent": "Import system content",
       "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details).",
+      "ImportContentDoneWithUpdates": "Import complete: {updated} existing entry/entries resynced from the system's reference content (see console for details).",
       "ResyncToken": "Resync a token"
     },
     "TokenSync": {
