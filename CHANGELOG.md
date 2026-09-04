@@ -18,6 +18,13 @@ l'identique ; la fiche PNJ n'est pas touchée (bloc CSS `.sheet-header-compact` 
 garde-fou visuel `tests/visual/layout.test.js` : l'en-tête reste sous ~300 px de haut et la bande
 de constantes ne se scinde pas en 2 lignes à 708 px de large.
 
+Onglet Statistiques resserré dans la foulée (retours utilisateur successifs) : les cases de
+caractéristiques ne gonflent plus (la valeur ne s'étire plus dans `.ability-main`, bloc
+MOD./SAUV. collé à droite) — la colonne se contente de ~284 px au lieu de 368 px ; et les
+gouttières latérales de cet onglet passent de 1,1 rem à 0,5 rem. La liste des compétences y
+gagne près de 100 px de large. La case à cocher de maîtrise de sauvegarde (session MJ) tient
+toujours dans chaque case.
+
 Refonte "Forme sauvage" (Druide, demande explicite de l'utilisateur : mécanique jugée trop
 compliquée à gérer) : le ciblage manuel d'un jeton préparé à l'avance par le MJ est remplacé par
 un dialogue de choix parmi les formes accessibles au niveau du personnage (`DND_CUSTOM.
