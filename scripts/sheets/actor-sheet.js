@@ -213,7 +213,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "character"],
     tag: "form",
-    position: { width: 720, height: 720 },
+    // Plafond de confort adopté le 2026-09-04 (maquette maquettes/fiche-708x768/) : la fiche
+    // s'ouvre à 708 × 768 et chaque onglet reste consultable en entier à cette taille grâce à
+    // l'en-tête compact (character-sheet.hbs). Reste librement redimensionnable au-delà.
+    position: { width: 708, height: 768 },
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {

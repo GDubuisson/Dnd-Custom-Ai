@@ -7,6 +7,17 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Fiche de personnage joueur — en-tête compact tenant dans une fenêtre de 708 × 768 px (demande
+explicite de l'utilisateur, maquette `maquettes/fiche-708x768/`). L'en-tête passe des 3 colonnes
+de statistiques à 3 bandes fines empilées : identité (portrait réduit, classe/sous-classe/origine
+sur une ligne, niveau + jauge d'XP), constantes toujours visibles quel que soit l'onglet (PV, CA,
+Vitesse, Initiative, Perception passive, Inspiration) et économie d'action + repos. La fenêtre
+s'ouvre désormais à 708 × 768 (au lieu de 720 × 720) et reste librement redimensionnable au-delà.
+Aucun changement fonctionnel : tous les champs, jets et actions (`data-action`) sont conservés à
+l'identique ; la fiche PNJ n'est pas touchée (bloc CSS `.sheet-header-compact` scopé). Nouveau
+garde-fou visuel `tests/visual/layout.test.js` : l'en-tête reste sous ~300 px de haut et la bande
+de constantes ne se scinde pas en 2 lignes à 708 px de large.
+
 Refonte "Forme sauvage" (Druide, demande explicite de l'utilisateur : mécanique jugée trop
 compliquée à gérer) : le ciblage manuel d'un jeton préparé à l'avance par le MJ est remplacé par
 un dialogue de choix parmi les formes accessibles au niveau du personnage (`DND_CUSTOM.

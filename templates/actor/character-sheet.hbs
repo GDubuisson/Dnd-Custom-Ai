@@ -1,194 +1,177 @@
-<header class="dnd-custom-ai sheet-header">
-  <img class="portrait" src="{{actor.img}}" alt="{{actor.name}}">
+<header class="dnd-custom-ai sheet-header sheet-header-compact">
+  {{! En-tête « compact » (maquette maquettes/fiche-708x768/, adoptée le 2026-09-04) : la fenêtre
+      de fiche est désormais plafonnée à 708 × 768 (cf. DEFAULT_OPTIONS.position, actor-sheet.js).
+      L'en-tête tient en 3 bandes fines — identité, constantes, économie d'action — pour laisser
+      la hauteur restante à l'onglet actif. Tous les sélecteurs testés (.xp-gm-field, .xp-bar-fill,
+      .level-up-btn, .fixed-field-value, .computed-value, [data-action="toggleReaction"], champs
+      `name="system.attributes.*"`, libellé « Vitesse » + .computed-value « 9 m »…) sont conservés
+      à l'identique — cf. tests/dom/templates.test.js et tests/visual/layout.test.js. }}
 
-  <div class="header-fields">
-    <input type="text" class="actor-name" name="name" value="{{actor.name}}"
-           placeholder="{{localize 'DND_CUSTOM.Actor.Name'}}">
+  {{! ---- Bande 1 : identité (portrait, nom, classe/sous-classe/origine, niveau + XP) ---- }}
+  <div class="hdr-identity">
+    <img class="portrait" src="{{actor.img}}" alt="{{actor.name}}">
 
-    {{! 3 groupes colonne (progression/classe/origine), chacun 2 lignes empilées — cf.
-        images_test/img_6.png. `.header-stats` (flex-wrap) reflue les colonnes sur plusieurs
-        lignes plutôt que de les comprimer : jamais de chevauchement, quelle que soit la largeur
-        de la fenêtre (cf. min-width posé sur la fiche elle-même, dnd-custom-ai.css). }}
-    <div class="header-stats">
-      <div class="header-stat-col header-stat-col-progression">
-        <div class="header-row">
-          <label>{{localize "DND_CUSTOM.Actor.Level"}}
-            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
-          </label>
-          {{! Retour de test : bouton "Monter de niveau" trop imposant (pilule pleine largeur,
-              images_test/bouton_monter_niveau.png) — remplacé par un simple bouton rond entre le
-              niveau et la barre d'XP (images_test/proposition_position.png). }}
-          {{#if levelUpAvailable}}
-          <button type="button" class="level-up-btn" data-action="levelUp" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actions.LevelUp'}}">
-            <i class="fa-solid fa-arrow-up"></i>
-          </button>
+    <div class="hdr-id-main">
+      <input type="text" class="actor-name" name="name" value="{{actor.name}}"
+             placeholder="{{localize 'DND_CUSTOM.Actor.Name'}}">
+
+      <div class="hdr-sub">
+        <span class="hdr-sub-field">
+          <span class="hdr-sub-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
+          {{#if classLabel}}
+          <button type="button" class="fixed-field-value roll-btn" data-action="openClassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{classLabel}}</button>
+          {{else}}
+          <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
           {{/if}}
-          <div class="xp-field">
-            {{#if isGM}}
-            <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
-              <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
-              <span class="fixed-field-value">
-                {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
-              </span>
-            </div>
-            {{else}}
-            {{! Retour de test : côté Joueur, la jauge n'avait qu'une infobulle, aucun libellé
-                visible en permanence — même position/style que le bloc MJ ci-dessus, sans les
-                chiffres exacts (réservés au MJ, cf. XpBarTooltip/XpGmTooltip). }}
-            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpLabel"}}</span>
-            {{/if}}
-            <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
-              <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>
-            </span>
-          </div>
-        </div>
-        <div class="header-row">
-          <label class="hp-field" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">{{localize "DND_CUSTOM.Actor.HP"}}
-            <span class="hp-values">
-              <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}" {{#unless isGM}}disabled{{/unless}}>
-              / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
-              <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
-            </span>
-            <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
-          </label>
-        </div>
-        <div class="header-row">
-          <label title="{{localize 'DND_CUSTOM.Actor.InspirationPointsTooltip'}}">{{localize "DND_CUSTOM.Actor.InspirationPoints"}}
-            <input type="number" name="system.attributes.inspirationPoints" value="{{system.attributes.inspirationPoints}}" min="0" {{#unless isGM}}disabled{{/unless}}>
-          </label>
-        </div>
-      </div>
+        </span>
 
-      <div class="header-stat-col header-stat-col-class">
-        <div class="header-row">
-          <div class="fixed-field">
-            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Class"}}</span>
-            {{#if classLabel}}
-            <button type="button" class="fixed-field-value roll-btn" data-action="openClassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{classLabel}}</button>
-            {{else}}
-            <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoClass"}}</span>
-            {{/if}}
-          </div>
-          {{#if subclassAvailable}}
-          <div class="fixed-field">
-            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
-            {{#if subclassLabel}}
-              {{#if isGM}}
-              {{! Retour de test (lot 3) : la liste déroulante reste réservée au MJ une fois la
-                  sous-classe déjà choisie (correction possible à tout moment), cf. le champ texte
-                  simple ci-dessous côté Joueur. }}
-              <select name="system.subclass">
-                <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
-                {{#each subclassOptions}}
-                <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
-                {{/each}}
-              </select>
-              {{else}}
-              {{! Côté Joueur, une fois choisie : champ classique (texte), pas une liste déroulante
-                  désactivée qui reste visuellement trompeuse (a l'air cliquable) — même pattern que
-                  le champ Classe ci-dessus. }}
-              <span class="fixed-field-value">{{subclassLabel}}</span>
-              {{/if}}
-              <button type="button" class="roll-btn" data-action="openSubclassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
-                <i class="fa-solid fa-book"></i>
-              </button>
-            {{else}}
-            {{! Pas encore choisie : liste déroulante fonctionnelle pour tout propriétaire (MJ ou
-                Joueur) — secours du choix normalement fait via la boîte de dialogue de montée de
-                niveau, cf. #onLevelUp/actor-sheet.js et T-LVL-008. }}
+        {{#if subclassAvailable}}
+        <span class="hdr-sub-field">
+          <span class="hdr-sub-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+          {{#if subclassLabel}}
+            {{#if isGM}}
+            {{! Retour de test (lot 3) : la liste déroulante reste réservée au MJ une fois la
+                sous-classe déjà choisie (correction possible à tout moment), cf. le champ texte
+                simple ci-dessous côté Joueur. }}
             <select name="system.subclass">
               <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
               {{#each subclassOptions}}
               <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
               {{/each}}
             </select>
-            {{/if}}
-          </div>
-          {{else if subclassLevelHint}}
-          <div class="fixed-field">
-            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
-            <span class="fixed-field-value empty">{{subclassLevelHint}}</span>
-          </div>
-          {{/if}}
-        </div>
-        <div class="header-row">
-          <label title="{{localize 'DND_CUSTOM.Actor.ACTooltip'}}">{{localize "DND_CUSTOM.Actor.AC"}}
-            <span class="computed-value">{{system.attributes.ac.value}}</span>
-          </label>
-          <label title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">{{localize "DND_CUSTOM.Actor.Speed"}}
-            <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="header-stat-col header-stat-col-origin">
-        <div class="header-row">
-          <div class="fixed-field">
-            <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
-            {{#if originLabel}}
-            <button type="button" class="fixed-field-value roll-btn" data-action="openOriginSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{originLabel}}</button>
             {{else}}
-            <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoOrigin"}}</span>
+            {{! Côté Joueur, une fois choisie : champ classique (texte), pas une liste déroulante
+                désactivée qui reste visuellement trompeuse (a l'air cliquable) — même pattern que
+                le champ Classe ci-dessus. }}
+            <span class="fixed-field-value">{{subclassLabel}}</span>
             {{/if}}
-          </div>
-        </div>
-        <div class="header-row">
-          {{! Retour de test : fermer la fenêtre Amélioration de caractéristiques/Don sans
-              choisir faisait perdre le choix pour toujours — ce badge reste affiché tant que le
-              choix est dû (system.attributes.pendingAsiChoices > 0), rattrapage manuel possible
-              à tout moment sans attendre la prochaine montée de niveau. }}
-          {{#if pendingAsiChoices}}
-          <span class="level-up-badge" title="{{localize 'DND_CUSTOM.LevelUp.PendingChoiceTooltip'}}">
-            <i class="fa-solid fa-star"></i> {{localize "DND_CUSTOM.LevelUp.PendingChoiceLabel"}} ({{pendingAsiChoices}})
-            <button type="button" data-action="resolvePendingAsi">{{localize "DND_CUSTOM.LevelUp.PendingChoiceButton"}}</button>
-          </span>
+            <button type="button" class="roll-btn" data-action="openSubclassSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
+              <i class="fa-solid fa-book"></i>
+            </button>
+          {{else}}
+          {{! Pas encore choisie : liste déroulante fonctionnelle pour tout propriétaire (MJ ou
+              Joueur) — secours du choix normalement fait via la boîte de dialogue de montée de
+              niveau, cf. #onLevelUp/actor-sheet.js et T-LVL-008. }}
+          <select name="system.subclass">
+            <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
+            {{#each subclassOptions}}
+            <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
           {{/if}}
-          <button type="button" class="reaction-indicator {{#unless actionAvailable}}used{{/unless}}" data-action="toggleAction"
-                  title="{{#if actionAvailable}}{{localize 'DND_CUSTOM.Actor.ActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ActionUsedTooltip'}}{{/if}}">
-            <i class="fa-solid fa-hand-fist"></i> {{localize "DND_CUSTOM.Actor.Action"}}
-          </button>
-          <button type="button" class="reaction-indicator {{#unless bonusActionAvailable}}used{{/unless}}" data-action="toggleBonusAction"
-                  title="{{#if bonusActionAvailable}}{{localize 'DND_CUSTOM.Actor.BonusActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.BonusActionUsedTooltip'}}{{/if}}">
-            <i class="fa-solid fa-hand-sparkles"></i> {{localize "DND_CUSTOM.Actor.BonusAction"}}
-          </button>
-          <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
-                  title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
-            <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}
-          </button>
-        </div>
+        </span>
+        {{else if subclassLevelHint}}
+        <span class="hdr-sub-field">
+          <span class="hdr-sub-label">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
+          <span class="fixed-field-value empty">{{subclassLevelHint}}</span>
+        </span>
+        {{/if}}
+
+        <span class="hdr-sub-field">
+          <span class="hdr-sub-label">{{localize "DND_CUSTOM.Actor.Origin"}}</span>
+          {{#if originLabel}}
+          <button type="button" class="fixed-field-value roll-btn" data-action="openOriginSheet" title="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">{{originLabel}}</button>
+          {{else}}
+          <span class="fixed-field-value empty">{{localize "DND_CUSTOM.Actor.NoOrigin"}}</span>
+          {{/if}}
+        </span>
       </div>
     </div>
 
-    {{#if activeConditions.length}}
-    <div class="active-conditions-row" title="{{localize 'DND_CUSTOM.Conditions.ActiveTooltip'}}">
-      {{#each activeConditions}}
-      <span class="active-condition-chip" title="{{this.label}}">
-        <img src="{{this.img}}" alt="">
-        <span>{{this.label}}</span>
-      </span>
-      {{/each}}
+    <div class="hdr-progression">
+      <div class="hdr-level-row">
+        <label class="hdr-level-field">{{localize "DND_CUSTOM.Actor.Level"}}
+          <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
+        </label>
+        {{! Retour de test : bouton "Monter de niveau" trop imposant (pilule pleine largeur) —
+            simple bouton rond entre le niveau et la barre d'XP. }}
+        {{#if levelUpAvailable}}
+        <button type="button" class="level-up-btn" data-action="levelUp" title="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actions.LevelUp'}}">
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        {{/if}}
+      </div>
+      <div class="xp-field">
+        {{#if isGM}}
+        <div class="fixed-field xp-gm-field" title="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
+          <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
+          <span class="fixed-field-value">
+            {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
+          </span>
+        </div>
+        {{else}}
+        {{! Côté Joueur, la jauge n'a qu'un libellé discret — les chiffres exacts restent
+            réservés au MJ (cf. XpBarTooltip/XpGmTooltip). }}
+        <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpLabel"}}</span>
+        {{/if}}
+        <span class="xp-bar" title="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
+          <span class="xp-bar-track"><span class="xp-bar-fill" style="width: {{xpPercent}}%"></span></span>
+        </span>
+      </div>
     </div>
+  </div>
+
+  {{! ---- Bande 2 : constantes visibles quel que soit l'onglet ---- }}
+  <div class="hdr-vitals">
+    <label class="hp-field vital vital-hp" title="{{localize 'DND_CUSTOM.Actor.HPTooltip'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.HP"}}</span>
+      <span class="hp-values">
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" min="0" max="{{system.attributes.hp.max}}" {{#unless isGM}}disabled{{/unless}}>
+        / <span class="hp-max-value">{{system.attributes.hp.max}}</span>
+        <span class="hp-temp" title="{{localize 'DND_CUSTOM.Actor.HPTemp'}}">(+<input type="number" name="system.attributes.hp.temp" value="{{system.attributes.hp.temp}}" min="0">)</span>
+      </span>
+      <span class="hp-bar-track"><span class="hp-bar-fill" style="width: {{hpPercent}}%"></span></span>
+    </label>
+
+    <label class="vital" title="{{localize 'DND_CUSTOM.Actor.ACTooltip'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.AC"}}</span>
+      <span class="computed-value">{{system.attributes.ac.value}}</span>
+    </label>
+
+    <label class="vital" title="{{localize 'DND_CUSTOM.Actor.SpeedTooltip'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.Speed"}}</span>
+      <span class="computed-value">{{formatSpeed system.attributes.speed}}</span>
+    </label>
+
+    <div class="vital vital-derived" title="{{localize 'DND_CUSTOM.Actor.Initiative'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.Initiative"}}</span>
+      <span class="computed-value">{{initiative.modLabel}}</span>
+    </div>
+
+    <div class="vital vital-derived" title="{{localize 'DND_CUSTOM.Actor.PassivePerception'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.PassivePerception"}}</span>
+      <span class="computed-value">{{passivePerception}}</span>
+    </div>
+
+    <label class="vital" title="{{localize 'DND_CUSTOM.Actor.InspirationPointsTooltip'}}">
+      <span class="vital-label">{{localize "DND_CUSTOM.Actor.InspirationPoints"}}</span>
+      <input type="number" name="system.attributes.inspirationPoints" value="{{system.attributes.inspirationPoints}}" min="0" {{#unless isGM}}disabled{{/unless}}>
+    </label>
+  </div>
+
+  {{! ---- Bande 3 : économie d'action + repos ---- }}
+  <div class="hdr-econ">
+    {{#if pendingAsiChoices}}
+    <span class="level-up-badge" title="{{localize 'DND_CUSTOM.LevelUp.PendingChoiceTooltip'}}">
+      <i class="fa-solid fa-star"></i> {{localize "DND_CUSTOM.LevelUp.PendingChoiceLabel"}} ({{pendingAsiChoices}})
+      <button type="button" data-action="resolvePendingAsi">{{localize "DND_CUSTOM.LevelUp.PendingChoiceButton"}}</button>
+    </span>
     {{/if}}
 
-    {{#if dying.active}}
-    <div class="death-panel">
-      <span class="death-pips">
-        {{localize "DND_CUSTOM.Actor.DeathSuccesses"}}
-        {{#each dying.successPips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
-      </span>
-      <span class="death-pips failures">
-        {{localize "DND_CUSTOM.Actor.DeathFailures"}}
-        {{#each dying.failurePips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
-      </span>
-      {{#if dying.resolved}}
-      <span class="death-status">
-        {{#if dying.stabilized}}{{localize "DND_CUSTOM.Actor.Stabilized"}}{{else}}{{localize "DND_CUSTOM.Actor.Dead"}}{{/if}}
-      </span>
-      {{else}}
-      <button type="button" data-action="rollDeathSave">{{localize "DND_CUSTOM.Roll.DeathSave"}}</button>
-      {{/if}}
-    </div>
-    {{/if}}
+    <button type="button" class="reaction-indicator {{#unless actionAvailable}}used{{/unless}}" data-action="toggleAction"
+            title="{{#if actionAvailable}}{{localize 'DND_CUSTOM.Actor.ActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ActionUsedTooltip'}}{{/if}}">
+      <i class="fa-solid fa-hand-fist"></i> {{localize "DND_CUSTOM.Actor.Action"}}
+    </button>
+    <button type="button" class="reaction-indicator {{#unless bonusActionAvailable}}used{{/unless}}" data-action="toggleBonusAction"
+            title="{{#if bonusActionAvailable}}{{localize 'DND_CUSTOM.Actor.BonusActionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.BonusActionUsedTooltip'}}{{/if}}">
+      <i class="fa-solid fa-hand-sparkles"></i> {{localize "DND_CUSTOM.Actor.BonusAction"}}
+    </button>
+    <button type="button" class="reaction-indicator {{#unless reactionAvailable}}used{{/unless}}" data-action="toggleReaction"
+            title="{{#if reactionAvailable}}{{localize 'DND_CUSTOM.Actor.ReactionAvailableTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actor.ReactionUsedTooltip'}}{{/if}}">
+      <i class="fa-solid fa-bolt"></i> {{localize "DND_CUSTOM.Actor.Reaction"}}
+    </button>
+
+    <span class="hdr-econ-spacer"></span>
 
     <div class="header-actions">
       {{#if showCreationWizardButton}}
@@ -196,12 +179,43 @@
         <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}
       </button>
       {{/if}}
-      <button type="button" data-action="restShort" {{#if dying.dead}}disabled title="{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}"{{/if}}>
-        <i class="fa-solid fa-mug-hot"></i> {{localize "DND_CUSTOM.Actions.RestShort"}}
+      <button type="button" class="header-action-icon" data-action="restShort" title="{{#if dying.dead}}{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actions.RestShort'}}{{/if}}" {{#if dying.dead}}disabled{{/if}}>
+        <i class="fa-solid fa-mug-hot"></i> <span class="header-action-label">{{localize "DND_CUSTOM.Actions.RestShort"}}</span>
       </button>
-      <button type="button" data-action="restLong" {{#if dying.dead}}disabled title="{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}"{{/if}}>
-        <i class="fa-solid fa-bed"></i> {{localize "DND_CUSTOM.Actions.RestLong"}}
+      <button type="button" class="header-action-icon" data-action="restLong" title="{{#if dying.dead}}{{localize 'DND_CUSTOM.Actor.RestBlockedDeadTooltip'}}{{else}}{{localize 'DND_CUSTOM.Actions.RestLong'}}{{/if}}" {{#if dying.dead}}disabled{{/if}}>
+        <i class="fa-solid fa-bed"></i> <span class="header-action-label">{{localize "DND_CUSTOM.Actions.RestLong"}}</span>
       </button>
     </div>
   </div>
+
+  {{#if activeConditions.length}}
+  <div class="active-conditions-row" title="{{localize 'DND_CUSTOM.Conditions.ActiveTooltip'}}">
+    {{#each activeConditions}}
+    <span class="active-condition-chip" title="{{this.label}}">
+      <img src="{{this.img}}" alt="">
+      <span>{{this.label}}</span>
+    </span>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if dying.active}}
+  <div class="death-panel">
+    <span class="death-pips">
+      {{localize "DND_CUSTOM.Actor.DeathSuccesses"}}
+      {{#each dying.successPips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+    </span>
+    <span class="death-pips failures">
+      {{localize "DND_CUSTOM.Actor.DeathFailures"}}
+      {{#each dying.failurePips}}<i class="fa-solid fa-circle {{#if this}}filled{{/if}}"></i>{{/each}}
+    </span>
+    {{#if dying.resolved}}
+    <span class="death-status">
+      {{#if dying.stabilized}}{{localize "DND_CUSTOM.Actor.Stabilized"}}{{else}}{{localize "DND_CUSTOM.Actor.Dead"}}{{/if}}
+    </span>
+    {{else}}
+    <button type="button" data-action="rollDeathSave">{{localize "DND_CUSTOM.Roll.DeathSave"}}</button>
+    {{/if}}
+  </div>
+  {{/if}}
 </header>
