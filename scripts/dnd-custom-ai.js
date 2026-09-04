@@ -1327,6 +1327,32 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 Hooks.on("renderChatMessageHTML", (message, html) => {
   if (!message.getFlag(SYSTEM_ID, "sheetRoll")) return;
   html.classList.add("dnd-sheet-roll");
+
+  // Icône de classe du personnage qui lance, en médaillon (retour visuel demandé par
+  // l'utilisateur sur inspiration d'une maquette externe, cf. maquettes/chat-roll-style-stitch/)
+  // — réutilise DND_CUSTOM.classFlavorIcon (même donnée que l'en-tête d'ambiance de classe de
+  // l'onglet Capacités, class-flavor.hbs), résolue depuis le `speaker` natif du message : aucune
+  // modification des ~19 sites Roll#toMessage/RollTable#toMessage nécessaire. Rien pour un PNJ
+  // (pas de `system.class`) ni une classe non reconnue.
+  const speakerActor = game.actors.get(message.speaker?.actor);
+  const classIcon =
+    speakerActor?.type === "character" ? DND_CUSTOM.classFlavorIcon[speakerActor.system.class] : null;
+  if (classIcon) {
+    const icon = document.createElement("i");
+    icon.className = `fa-solid ${classIcon} dnd-class-icon`;
+    icon.setAttribute("aria-hidden", "true");
+    html.querySelector(".message-header")?.prepend(icon);
+  }
+
+  // Accent de couleur selon le type de jet (cf. .dnd-roll-attack/-save/-damage/-heal,
+  // dnd-custom-ai.css) — jamais cumulé avec le halo de coup/échec critique (déjà géré à part,
+  // ci-dessous, et déjà visuellement distinct à lui seul).
+  if (!message.getFlag(SYSTEM_ID, "criticalHit") && !message.getFlag(SYSTEM_ID, "criticalFumble")) {
+    if (message.getFlag(SYSTEM_ID, "damageRoll")) html.classList.add("dnd-roll-damage");
+    else if (message.getFlag(SYSTEM_ID, "healRoll")) html.classList.add("dnd-roll-heal");
+    else if (message.getFlag(SYSTEM_ID, "attackRoll")) html.classList.add("dnd-roll-attack");
+    else if (message.getFlag(SYSTEM_ID, "savingThrowRoll")) html.classList.add("dnd-roll-save");
+  }
 });
 
 Hooks.on("renderChatMessageHTML", (message, html) => {
@@ -1382,7 +1408,7 @@ async function checkConcentration(actor, damageAmount) {
       spell: spellName,
       dc
     }),
-    flags: sheetRollFlags()
+    flags: sheetRollFlags({ savingThrowRoll: true })
   });
 }
 

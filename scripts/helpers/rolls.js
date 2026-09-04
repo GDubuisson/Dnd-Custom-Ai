@@ -121,6 +121,10 @@ export async function rollCheck({
   const flags = sheetRollFlags();
   if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
   if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
+  // Accent visuel par type de jet (cf. .dnd-roll-attack, dnd-custom-ai.css) : `compareToTargetAc`
+  // n'est jamais vrai en dehors d'un vrai jet d'attaque (arme/sort, cf. docstring ci-dessus),
+  // signal déjà fiable — pas besoin d'un paramètre dédié.
+  if (compareToTargetAc) flags["dnd-custom-ai"].attackRoll = true;
   // Don "Chanceux" (SRD 5e) : tout jet de d20 passant par rollCheck (test de caractéristique/
   // compétence, sauvegarde, attaque) est un jet potentiellement "relançable" contre un point de
   // chance — la formule exacte est reprise telle quelle pour la relance (même die 1d20/2d20kh1/

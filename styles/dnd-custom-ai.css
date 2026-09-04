@@ -3312,10 +3312,22 @@
    propriétés qui doivent gagner sur le style de base `.chat-message` du cœur Foundry, dont on ne
    connaît pas la spécificité exacte selon la version. */
 .dnd-sheet-roll {
+  /* 6 couches : voile crème + texture parchemin (déjà livrée) + 4 petits repères "cire" aux
+     coins (retour utilisateur : coins ornés, discrets pour ne pas concurrencer le bord
+     déchiré). Chaque propriété ci-dessous liste ses valeurs dans le même ordre que les couches. */
   background-image:
     linear-gradient(rgba(233, 220, 184, 0.88), rgba(227, 212, 169, 0.9)),
-    url("textures/parchment.jpg") !important;
-  background-size: 100% 100%, 300px 300px !important;
+    url("textures/parchment.jpg"),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%) !important;
+  background-size: 100% 100%, 300px 300px, 8px 8px, 8px 8px, 8px 8px, 8px 8px !important;
+  background-position:
+    0 0, 0 0,
+    12px 12px, calc(100% - 12px) 12px,
+    12px calc(100% - 12px), calc(100% - 12px) calc(100% - 12px) !important;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat !important;
   background-color: #e3d4a9 !important;
   border: none !important;
   border-radius: 2px !important;
@@ -3328,6 +3340,60 @@
     100% calc(100% - 5px), 96% 100%, 82% calc(100% - 4px), 64% 100%, 46% calc(100% - 3px),
     28% 100%, 12% calc(100% - 4px), 2% 100%, 0 calc(100% - 3px)
   );
+}
+
+/* Icône de classe du personnage en médaillon, en tête de carte (cf. hook renderChatMessageHTML,
+   dnd-custom-ai.js > DND_CUSTOM.classFlavorIcon). Absente pour un PNJ ou un jet sans acteur
+   reconnu (le hook n'injecte alors rien). */
+.dnd-sheet-roll .dnd-class-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 0.45em;
+  border-radius: 50%;
+  background: #3d2b17;
+  color: #d7b47f;
+  font-size: 0.8em;
+  box-shadow: 0 0 0 1px #7a5a35;
+  flex: 0 0 auto;
+}
+
+/* Accent de couleur selon le type de jet (cf. hook renderChatMessageHTML) : ne retouche que le
+   petit fleuron devant le libellé et la couleur du résultat — jamais le fond parchemin, pour
+   rester sobre et cohérent avec le style de base. Un coup/échec critique (halo doré/rouge déjà
+   existant) n'a jamais l'une de ces classes en plus (cf. garde dans le hook). */
+.dnd-sheet-roll.dnd-roll-attack .flavor-text::before {
+  color: #a16207;
+}
+
+.dnd-sheet-roll.dnd-roll-attack .dice-total {
+  color: #6b4415;
+}
+
+.dnd-sheet-roll.dnd-roll-save .flavor-text::before {
+  color: #5b3a8a;
+}
+
+.dnd-sheet-roll.dnd-roll-save .dice-total {
+  color: #43296b;
+}
+
+.dnd-sheet-roll.dnd-roll-damage .flavor-text::before {
+  color: #8a1f11;
+}
+
+.dnd-sheet-roll.dnd-roll-damage .dice-total {
+  color: #6b1a0e;
+}
+
+.dnd-sheet-roll.dnd-roll-heal .flavor-text::before {
+  color: #2f6b3a;
+}
+
+.dnd-sheet-roll.dnd-roll-heal .dice-total {
+  color: #1f4a28;
 }
 
 .dnd-sheet-roll .message-header {
@@ -3377,7 +3443,8 @@
    simple trait rouge disgracieux plutôt qu'un soulignement discret — juste le chiffre en grand,
    sans décoration en dessous. */
 .dnd-sheet-roll .dice-total {
-  text-align: left;
+  display: block;
+  text-align: center;
   padding: 0 !important;
   font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
   font-weight: 600;

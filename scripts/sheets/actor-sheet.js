@@ -1175,7 +1175,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: game.i18n.localize("DND_CUSTOM.Roll.DeathSave"),
-      flags: sheetRollFlags()
+      flags: sheetRollFlags({ savingThrowRoll: true })
     });
   }
 
@@ -1309,7 +1309,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
           hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
         }`,
-        flags: sheetRollFlags()
+        flags: sheetRollFlags({ savingThrowRoll: true })
       });
     }
   }
@@ -1927,7 +1927,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
           dc
         })} — ${game.i18n.localize(options[chosenEffect])}`,
-        flags: sheetRollFlags()
+        flags: sheetRollFlags({ savingThrowRoll: true })
       });
     }
   }
@@ -2401,7 +2401,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
             hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
           }`,
-          flags: sheetRollFlags()
+          flags: sheetRollFlags({ savingThrowRoll: true })
         });
       }
       return;

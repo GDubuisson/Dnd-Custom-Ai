@@ -7,6 +7,22 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Enrichissement du style de jet de chat (retour d'une maquette externe fournie par l'utilisateur,
+`maquettes/chat-roll-style-stitch/`) — version "sobre" : ce qui sortait du cadre réel du chat
+Foundry (chrome de session, compositeur personnalisé, badge de DD affiché au joueur — contraire
+à un choix de conception déjà pris) a été écarté. Repris uniquement ce qui rentre dans la vraie
+structure du message :
+- **Médaillon d'icône de classe** en tête de carte, résolu depuis le `speaker` du message
+  (`DND_CUSTOM.classFlavorIcon`, déjà utilisé sur l'onglet Capacités) — rien pour un PNJ.
+- **Accent de couleur selon le type de jet** : ambre (attaque), violet (sauvegarde — y compris
+  sauvegarde de la mort et de concentration, désormais aussi marquées), rouille (dégâts), vert
+  (soin) ; un coup/échec critique garde son halo existant, jamais cumulé. Nouveau flag
+  `attackRoll` dans `rollCheck` (posé quand `compareToTargetAc` est vrai) ; `savingThrowRoll`
+  étendu aux jets de sauvegarde imposés à une cible (Capacité/sort) et au jet de concentration,
+  en plus des sauvegardes du personnage lui-même.
+- **Coins ornés**, discrets (4 petits repères "cire" en CSS pur, sans nouvel élément).
+- **Résultat du jet centré** (retour de test).
+
 Style "parchemin déchiré" sur les cartes de jet de dés générées par ce système, dans le chat
 (demande explicite de l'utilisateur, plusieurs itérations visuelles cf. `maquettes/chat-roll-style/`) :
 bord irrégulier, vraie texture parchemin (déjà livrée), libellé en serif, résultat souligné d'un
