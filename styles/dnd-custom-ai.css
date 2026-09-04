@@ -852,6 +852,14 @@
   padding: 1rem 1.1rem 1.4rem;
 }
 
+/* Onglet Caractéristiques : marges latérales réduites (retour utilisateur — récupérer de la
+   largeur pour les cases de caractéristiques et la liste de compétences sur une fenêtre de
+   708px). Ne touche que cet onglet ; les autres gardent la gouttière d'origine. */
+.dnd-custom-ai .tab.stats {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .dnd-custom-ai .tab-title {
   display: flex;
   align-items: center;
@@ -1013,7 +1021,7 @@
 .dnd-custom-ai .stats-columns {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.7rem;
 }
 
 /* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
