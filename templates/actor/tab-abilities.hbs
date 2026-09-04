@@ -4,13 +4,13 @@
   <div class="abilities-top-row">
     {{#if isSpellcaster}}
     <div class="spellcasting-stats">
-      <span>{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
-      <span>{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
+      <span data-tooltip="{{glossaryTip 'dd-sorts'}}">{{localize "DND_CUSTOM.Abilities.SpellSaveDC"}} : {{spellcasting.dc}}</span>
+      <span data-tooltip="{{glossaryTip 'attaque-sorts'}}">{{localize "DND_CUSTOM.Abilities.SpellAttackBonus"}} : {{spellcasting.attackBonusLabel}}</span>
     </div>
     {{/if}}
 
     <div class="journal-block languages-block">
-      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
+      <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'langue'}}">{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
       <ul class="languages-list">
         {{#each languages}}
         <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" title="{{htmlSnippet this.system.description}}">
@@ -27,7 +27,7 @@
   </div>
 
   {{#if originTrait}}
-  <div class="origin-trait-panel">
+  <div class="origin-trait-panel" data-tooltip="{{glossaryTip 'origine'}}">
     <strong>{{originTrait.name}}</strong>
     <span class="source">({{localize "DND_CUSTOM.Actor.Origin"}})</span>
     <p>{{originTrait.description}}</p>
@@ -47,7 +47,7 @@
 
   {{#if isSpellcaster}}
   {{#if spellSlots.length}}
-  <div class="spell-slots-row" title="{{#if isPactMagic}}{{localize 'DND_CUSTOM.Abilities.PactMagicTooltip'}}{{else}}{{localize 'DND_CUSTOM.Abilities.SpellSlotsTooltip'}}{{/if}}">
+  <div class="spell-slots-row" data-tooltip="{{#if isPactMagic}}{{glossaryTip 'magie-de-pacte'}}{{else}}{{glossaryTip 'emplacement-de-sort'}}{{/if}}">
     {{#each spellSlots}}
     <label class="spell-slot-chip">
       {{localize "DND_CUSTOM.Abilities.SpellSlotLevelShort" level=this.level}}
@@ -56,13 +56,13 @@
     </label>
     {{/each}}
     {{#if isPactMagic}}
-    <span class="pact-magic-badge">{{localize "DND_CUSTOM.Abilities.PactMagicLabel"}}</span>
+    <span class="pact-magic-badge" data-tooltip="{{glossaryTip 'magie-de-pacte'}}">{{localize "DND_CUSTOM.Abilities.PactMagicLabel"}}</span>
     {{/if}}
   </div>
   {{/if}}
 
   {{#if concentratingOn}}
-  <div class="concentration-banner">
+  <div class="concentration-banner" data-tooltip="{{glossaryTip 'concentration'}}">
     <i class="fa-solid fa-brain"></i>
     {{localize "DND_CUSTOM.Abilities.ConcentratingOn"}} <strong>{{concentratingOn}}</strong>
     <button type="button" data-action="dropConcentration">{{localize "DND_CUSTOM.Abilities.DropConcentration"}}</button>
@@ -72,7 +72,7 @@
 
   <div class="abilities-tab-columns">
     <div class="features-column">
-      {{#if isSpellcaster}}<h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.FeaturesTitle"}}</h3>{{/if}}
+      {{#if isSpellcaster}}<h3 class="section-subtitle" data-tooltip="{{glossaryTip 'capacite'}}">{{localize "DND_CUSTOM.Abilities.FeaturesTitle"}}</h3>{{/if}}
       <ul class="features-list">
         {{#each features}}
         <li data-item-id="{{this.id}}">
@@ -163,14 +163,14 @@
 
     {{#if hasAnySpells}}
     <div class="spells-column">
-      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
+      <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'sort'}}">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
       {{! Retour de test : la liste de Sorts triée par niveau imposait de scroller pour
           atteindre les paliers hauts — un onglet par niveau (bascule purement visuelle, cf.
           #onSelectSpellLevel/actor-sheet.js) affiche un seul palier à la fois. }}
       {{#if spellsByLevel.length}}
       <div class="spell-level-tabs" role="tablist">
         {{#each spellsByLevel}}
-        <button type="button" class="spell-level-tab {{#if this.active}}active{{/if}}" data-action="selectSpellLevel" data-level="{{this.level}}" role="tab" aria-selected="{{this.active}}">
+        <button type="button" class="spell-level-tab {{#if this.active}}active{{/if}}" data-action="selectSpellLevel" data-level="{{this.level}}" role="tab" aria-selected="{{this.active}}" data-tooltip="{{#if this.level}}{{glossaryTip 'emplacement-de-sort'}}{{else}}{{glossaryTip 'tour-de-magie'}}{{/if}}">
           {{this.shortLabel}}
         </button>
         {{/each}}
@@ -184,8 +184,8 @@
           <li data-item-id="{{this.item.id}}">
             <strong class="item-name-tooltip" title="{{htmlSnippet this.item.system.description}}">{{this.item.name}}</strong>
             {{#if this.item.system.details}}<span class="spell-details">({{this.item.system.details}})</span>{{/if}}
-            {{#if this.item.system.concentration}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Concentration'}}">C</span>{{/if}}
-            {{#if this.item.system.ritual}}<span class="spell-tag" title="{{localize 'DND_CUSTOM.Item.Fields.Ritual'}}">R</span>{{/if}}
+            {{#if this.item.system.concentration}}<span class="spell-tag" data-tooltip="{{glossaryTip 'concentration'}}">C</span>{{/if}}
+            {{#if this.item.system.ritual}}<span class="spell-tag" data-tooltip="{{glossaryTip 'rituel'}}">R</span>{{/if}}
             {{#if (isReactionItem this.item)}}
             <span class="reaction-badge" title="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
             {{/if}}

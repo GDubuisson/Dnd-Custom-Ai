@@ -157,6 +157,11 @@ Hooks.once("init", async () => {
   game.dndCustomAi = {
     origins: await loadOrigins(),
     spellSlotTables: await loadSpellSlotTables(),
+    // Glossaire des termes de jeu (scripts/data/glossary.json) : même source que la page
+    // "Glossaire" du Guide du Joueur, réutilisée ici en infobulles sur la fiche via le helper
+    // Handlebars `glossaryTip` (cf. handlebars-helpers.js). Map terme -> définition pour un
+    // accès direct au rendu.
+    glossary: await loadGlossary(),
     openAwardXpDialog,
     importSystemContent,
     resyncControlledToken
@@ -1371,4 +1376,12 @@ async function loadOrigins() {
 async function loadSpellSlotTables() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/spell-slots.json`);
   return response.json();
+}
+
+async function loadGlossary() {
+  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/glossary.json`);
+  const entries = await response.json();
+  // Indexé par `key` (slug ASCII stable, ex. "ca", "pv-temporaires") : les templates passent ce
+  // slug au helper `glossaryTip` sans avoir à échapper les apostrophes/parenthèses du `term`.
+  return new Map(entries.map((entry) => [entry.key, entry.definition]));
 }

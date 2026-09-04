@@ -2,7 +2,7 @@
   <h2 class="tab-title"><i class="fa-solid fa-sack"></i> {{localize "DND_CUSTOM.Tabs.inventory"}}</h2>
 
   <div class="currency">
-    <h3>{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
+    <h3 data-tooltip="{{glossaryTip 'monnaie'}}">{{localize "DND_CUSTOM.Inventory.Currency"}}</h3>
     <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.currency.pc" value="{{system.currency.pc}}" min="0"></label>
     <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.currency.pa" value="{{system.currency.pa}}" min="0"></label>
     <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.currency.po" value="{{system.currency.po}}" min="0"></label>
@@ -31,7 +31,7 @@
         {{#with (lookup ../weaponStats this.id)}}
         <td>
           <span>{{this.damageLabel}}</span>
-          {{#unless this.proficient}}<span class="not-proficient-tag" title="{{localize 'DND_CUSTOM.Inventory.NotProficientTooltip'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+          {{#unless this.proficient}}<span class="not-proficient-tag" data-tooltip="{{glossaryTip 'maitrise'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
         </td>
         {{else}}
         <td>{{#with (lookup ../armorStats this.id)}}{{localize "DND_CUSTOM.Equipment.ACBonus"}} {{this.acLabel}}{{/with}}</td>
@@ -93,7 +93,7 @@
     </tbody>
   </table>
 
-  <div class="carrying-capacity">
+  <div class="carrying-capacity" data-tooltip="{{glossaryTip 'charge'}}">
     <span class="label">
       <span>{{localize "DND_CUSTOM.Inventory.CarriedWeight"}}</span>
       <span>{{formatWeight carriedWeight}} / {{formatWeight carryingCapacity}}</span>

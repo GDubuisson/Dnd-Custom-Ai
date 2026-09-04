@@ -3,7 +3,7 @@
 
   <div class="equipment-grid">
     <div class="equipment-slot">
-      <h3>{{localize "DND_CUSTOM.Equipment.MainHand"}}</h3>
+      <h3 data-tooltip="{{glossaryTip 'emplacement-equipement'}}">{{localize "DND_CUSTOM.Equipment.MainHand"}}</h3>
       {{#if equipment.mainHand}}
         <div class="equipped-item-line" data-item-id="{{equipment.mainHand.id}}">
           <img class="equipped-item-img" src="{{equipment.mainHand.img}}" alt="">
@@ -17,7 +17,7 @@
               <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
                 <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
               </button>
-              {{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+              {{#unless this.proficient}} <span class="not-proficient-tag" data-tooltip="{{glossaryTip 'maitrise'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
             </p>
             {{/with}}
             {{#if equipment.mainHand.system.description}}
@@ -31,7 +31,7 @@
     </div>
 
     <div class="equipment-slot">
-      <h3>{{localize "DND_CUSTOM.Equipment.OffHand"}}</h3>
+      <h3 data-tooltip="{{glossaryTip 'emplacement-equipement'}}">{{localize "DND_CUSTOM.Equipment.OffHand"}}</h3>
       {{#if equipment.offHandOccupiedByMainHand}}
         <p class="empty-slot">{{localize "DND_CUSTOM.Equipment.OccupiedTwoHanded"}}</p>
       {{else if equipment.offHand}}
@@ -47,7 +47,7 @@
               <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
                 <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
               </button>
-              {{#unless this.proficient}} <span class="not-proficient-tag">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
+              {{#unless this.proficient}} <span class="not-proficient-tag" data-tooltip="{{glossaryTip 'maitrise'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
             </p>
             {{/with}}
             {{#with (lookup armorStats equipment.offHand.id)}}
@@ -64,7 +64,7 @@
     </div>
 
     <div class="equipment-slot">
-      <h3>{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
+      <h3 data-tooltip="{{glossaryTip 'emplacement-equipement'}}">{{localize "DND_CUSTOM.Equipment.Armor"}}</h3>
       {{#if equipment.armor}}
         <div class="equipped-item-line" data-item-id="{{equipment.armor.id}}">
           <img class="equipped-item-img" src="{{equipment.armor.img}}" alt="">
@@ -84,7 +84,7 @@
     </div>
 
     <div class="equipment-slot">
-      <h3>{{localize "DND_CUSTOM.Equipment.Accessories"}}</h3>
+      <h3 data-tooltip="{{glossaryTip 'emplacement-equipement'}}">{{localize "DND_CUSTOM.Equipment.Accessories"}}</h3>
       {{#if equipment.accessories.length}}
         <ul>
           {{#each equipment.accessories}}

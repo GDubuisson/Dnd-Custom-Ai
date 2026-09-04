@@ -204,6 +204,88 @@ describe("character-sheet.hbs (en-tête) — indicateur de réaction", () => {
   });
 });
 
+describe("character-sheet.hbs (en-tête) — infobulles de glossaire", () => {
+  const context = {
+    actor: { img: "img.webp", name: "Aldric" },
+    system: { xp: 0, attributes: { level: 3, hp: { value: 18, max: 24, temp: 0 }, ac: { value: 15 }, speed: 30, inspirationPoints: 0 } },
+    isGM: false,
+    xpPercent: 40,
+    levelUpAvailable: false,
+    classLabel: "Guerrier",
+    originLabel: "Altenmark",
+    hpPercent: 75,
+    initiative: { modLabel: "+2" },
+    passivePerception: 12,
+    dying: { active: false },
+    showCreationWizardButton: false
+  };
+  const doc = parse(renderTemplate("actor/character-sheet.hbs", context));
+
+  // Le helper `glossaryTip` est résolu contre le VRAI scripts/data/glossary.json dans
+  // l'environnement de test (cf. tests/support/handlebars-env.js) — ces assertions vérifient
+  // donc les infobulles réellement rendues, pas une chaîne vide.
+  test("les libellés de constantes portent un data-tooltip non vide (PV, CA, Vitesse, Initiative, Perception passive, Inspiration)", () => {
+    const vitalTips = [...doc.querySelectorAll(".hdr-vitals .vital")].map((el) => el.getAttribute("data-tooltip"));
+    assert.equal(vitalTips.length, 6, "6 cases de constantes attendues");
+    for (const tip of vitalTips) assert.ok(tip && tip.length > 10, `infobulle de constante vide ou trop courte : "${tip}"`);
+  });
+
+  test("le libellé PV renvoie bien la définition de glossaire correspondante", () => {
+    const hp = doc.querySelector(".hdr-vitals .vital-hp");
+    assert.match(hp.getAttribute("data-tooltip"), /jets? de sauvegarde de la mort/i);
+  });
+
+  test("aucun élément ne cumule title ET data-tooltip (double infobulle)", () => {
+    const both = [...doc.querySelectorAll("[data-tooltip][title]")];
+    assert.deepEqual(both, [], `${both.length} élément(s) portent à la fois title et data-tooltip`);
+  });
+
+  test("les indicateurs d'économie d'action ont une infobulle de glossaire", () => {
+    for (const action of ["toggleAction", "toggleBonusAction", "toggleReaction"]) {
+      const btn = doc.querySelector(`[data-action="${action}"]`);
+      assert.ok(btn.getAttribute("data-tooltip")?.length > 10, `pas d'infobulle sur ${action}`);
+    }
+  });
+});
+
+describe("tab-stats.hbs — infobulles de glossaire", () => {
+  const doc = parse(
+    renderTemplate("actor/tab-stats.hbs", {
+      tab: {},
+      isGM: false,
+      proficiencyBonus: 2,
+      initiative: { modLabel: "+2" },
+      passivePerception: 12,
+      conditions: [],
+      activeConditions: [],
+      damageAffinitySummary: [],
+      system: { attributes: { exhaustion: 0 } },
+      abilities: [
+        {
+          key: "str",
+          label: "DND_CUSTOM.Abilities.str",
+          total: 16,
+          modLabel: "+3",
+          save: { proficient: false, mod: "+1" }
+        }
+      ],
+      skills: [{ key: "acr", label: "Acrobaties", ability: "DEX", proficient: false, modLabel: "+3" }]
+    })
+  );
+
+  test("le bonus de maîtrise, l'épuisement et le titre Compétences portent un data-tooltip", () => {
+    assert.ok(doc.querySelector(".proficiency-bonus").getAttribute("data-tooltip")?.length > 10);
+    assert.ok(doc.querySelector(".exhaustion-chip").getAttribute("data-tooltip")?.length > 10);
+    assert.ok(doc.querySelector(".skills-column .section-subtitle").getAttribute("data-tooltip")?.length > 10);
+  });
+
+  test("les libellés MOD. et SAUV. de chaque carte de caractéristique ont une infobulle", () => {
+    const labels = [...doc.querySelectorAll(".ability-side-label")];
+    assert.ok(labels.length >= 2);
+    for (const label of labels) assert.ok(label.getAttribute("data-tooltip")?.length > 10);
+  });
+});
+
 describe("tab-stats.hbs", () => {
   const context = {
     tab: {},

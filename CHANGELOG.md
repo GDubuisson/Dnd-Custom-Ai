@@ -7,6 +7,24 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Infobulles de glossaire sur la fiche de personnage (demande explicite de l'utilisateur) : tous
+les libellés « techniques » de la fiche portent désormais un `data-tooltip` qui affiche, au
+survol, une définition tirée du glossaire (`scripts/data/glossary.json` — même source que la
+page « Glossaire » du Guide du Joueur, désormais indexée par un slug ASCII stable). Couverts :
+PV, PV temporaires, CA, Vitesse, Initiative, Perception passive, points d'inspiration, niveau,
+XP, classe, sous-classe, origine ; Action / Action bonus / Réaction, Repos court / long ;
+caractéristique, modificateur, jet de sauvegarde, bonus de maîtrise, épuisement, états,
+sauvegardes de la mort, compétences, avantage d'origine / désavantage d'armure / aptitudes
+multiples ; DD et bonus d'attaque des sorts, emplacements de sorts, tours de magie, Magie de
+Pacte, concentration, rituel ; monnaie, poids porté / capacité de charge, emplacements
+d'équipement, non-maîtrise. Le glossaire passe de 25 à 43 entrées. Nouveau helper Handlebars
+`glossaryTip`, glossaire chargé au `ready` sur `game.dndCustomAi.glossary`. Les infobulles
+manuelles redondantes de `lang/*.json` (10 clés `*Tooltip`) sont supprimées au profit du
+glossaire (source unique). Migration `title=` → `data-tooltip=` sur ces éléments (infobulle
+stylée Foundry au lieu de l'infobulle navigateur) ; jamais les deux sur un même élément.
+Garde-fous : `tests/dom/templates.test.js` (présence et contenu des infobulles, absence de
+double `title`/`data-tooltip`).
+
 Fiche de personnage joueur — en-tête compact tenant dans une fenêtre de 708 × 768 px (demande
 explicite de l'utilisateur, maquette `maquettes/fiche-708x768/`). L'en-tête passe des 3 colonnes
 de statistiques à 3 bandes fines empilées : identité (portrait réduit, classe/sous-classe/origine

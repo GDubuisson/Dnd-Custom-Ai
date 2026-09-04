@@ -43,6 +43,18 @@ Handlebars.registerHelper("selectOptions", function (choices, options) {
 const { registerHandlebarsHelpers } = await import("../../scripts/helpers/handlebars-helpers.js");
 registerHandlebarsHelpers();
 
+// `glossaryTip` (handlebars-helpers.js) lit `game.dndCustomAi.glossary`, une Map peuplée au
+// hook "ready" en jeu — absente ici. Ré-enregistré contre le VRAI scripts/data/glossary.json
+// (même principe que `localize`/`selectOptions` ci-dessus, résolus contre les vrais fichiers) :
+// les tests de rendu vérifient ainsi les infobulles réelles, pas une chaîne vide.
+const GLOSSARY = new Map(
+  JSON.parse(readFileSync(path.join(ROOT, "scripts", "data", "glossary.json"), "utf8")).map((e) => [
+    e.key,
+    e.definition
+  ])
+);
+Handlebars.registerHelper("glossaryTip", (key) => GLOSSARY.get(key) ?? "");
+
 // En-tête d'onglet Capacités/Sorts spécialisé par classe (cf. scripts/dnd-custom-ai.js >
 // loadTemplates au hook "init") : même clé de partial (chemin système complet) que
 // context.classTabPartial (actor-sheet.js), pour que {{> (lookup this "classTabPartial")}}

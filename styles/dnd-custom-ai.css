@@ -888,6 +888,25 @@
   color: var(--dca-muted-text);
 }
 
+/* Infobulles de glossaire (data-tooltip -> infobulle stylée Foundry, cf. helper `glossaryTip`
+   et scripts/data/glossary.json) posées sur des libellés non cliquables : curseur "aide" pour
+   signaler qu'un survol donne une définition. Les éléments cliquables (button/a/input/select)
+   gardent leur propre curseur. */
+.dnd-custom-ai span[data-tooltip],
+.dnd-custom-ai label[data-tooltip],
+.dnd-custom-ai h3[data-tooltip],
+.dnd-custom-ai .vital[data-tooltip],
+.dnd-custom-ai .exhaustion-chip[data-tooltip],
+.dnd-custom-ai .proficiency-bonus[data-tooltip],
+.dnd-custom-ai .derived-stats[data-tooltip],
+.dnd-custom-ai .damage-affinity-summary[data-tooltip],
+.dnd-custom-ai .origin-trait-panel[data-tooltip],
+.dnd-custom-ai .concentration-banner[data-tooltip],
+.dnd-custom-ai .active-conditions-row[data-tooltip],
+.dnd-custom-ai .carrying-capacity[data-tooltip] {
+  cursor: help;
+}
+
 .dnd-custom-ai input[type="checkbox"] {
   accent-color: var(--dca-secondary);
   width: 0.9rem;

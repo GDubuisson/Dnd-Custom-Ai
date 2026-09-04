@@ -2,7 +2,7 @@
   <h2 class="tab-title"><i class="fa-solid fa-chart-simple"></i> {{localize "DND_CUSTOM.Tabs.stats"}}</h2>
 
   <div class="conditions-panel">
-    <h3 class="section-subtitle">{{localize "DND_CUSTOM.Conditions.Title"}}</h3>
+    <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'etat'}}">{{localize "DND_CUSTOM.Conditions.Title"}}</h3>
     <div class="conditions-row">
       <details class="conditions-dropdown">
         <summary class="conditions-summary">
@@ -24,7 +24,7 @@
         </div>
       </details>
 
-      <div class="exhaustion-chip" title="{{localize 'DND_CUSTOM.Conditions.ExhaustionTooltip'}}">
+      <div class="exhaustion-chip" data-tooltip="{{glossaryTip 'exhaustion'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
         <div class="ability-stepper">
           <button type="button" class="ability-btn" data-action="exhaustionDecrease" aria-label="-">−</button>
@@ -35,12 +35,12 @@
 
       {{! Bonus de maîtrise/Initiative/Perception passive : sur la même ligne que Liste d'état/
           Épuisement plutôt que sous la liste de Compétences, cf. retour de test. }}
-      <div class="proficiency-bonus" title="{{localize 'DND_CUSTOM.Actor.ProficiencyBonusTooltip'}}">
+      <div class="proficiency-bonus" data-tooltip="{{glossaryTip 'bonus-maitrise'}}">
         {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
       </div>
       <div class="derived-stats">
-        <span>{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
-        <span>{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
+        <span data-tooltip="{{glossaryTip 'initiative'}}">{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
+        <span data-tooltip="{{glossaryTip 'perception-passive'}}">{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
       </div>
       {{! Combat monté (don SRD 5e) : cible le token de la monture puis "Monter" — même
           convention que les Capacités à cible (game.user.targets) qu'ailleurs sur cette fiche. }}
@@ -100,7 +100,7 @@
     {{/each}}
   </div>
   {{else if damageAffinitySummary.length}}
-  <div class="damage-affinity-summary">
+  <div class="damage-affinity-summary" data-tooltip="{{glossaryTip 'affinite-degats'}}">
     {{#each damageAffinitySummary}}
     <div class="damage-affinity-summary-row">
       <span class="damage-affinity-summary-title">{{localize this.titleKey}}</span>
@@ -114,7 +114,7 @@
     <div class="abilities-column">
       {{#each abilities}}
       <div class="ability-card">
-        <div class="ability-card-name">{{localize this.label}}</div>
+        <div class="ability-card-name" data-tooltip="{{glossaryTip 'caracteristique'}}">{{localize this.label}}</div>
         <div class="ability-card-row">
           <div class="ability-main">
             <div class="ability-stepper">
@@ -132,12 +132,12 @@
           </div>
           <div class="ability-side">
             <div class="ability-side-item">
-              <span class="ability-side-label">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
+              <span class="ability-side-label" data-tooltip="{{glossaryTip 'modificateur'}}">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
               <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
             </div>
             <div class="ability-side-item">
               {{#if ../isGM}}
-              <label class="ability-side-label" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+              <label class="ability-side-label" data-tooltip="{{glossaryTip 'sauvegarde'}}">
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
                 <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}}>
               </label>
@@ -146,7 +146,7 @@
                   seule, la maîtrise de sauvegarde découle uniquement de la classe) — affichée comme
                   interactive alors qu'elle ne servait à rien pour lui. Simple indicateur visuel côté
                   Joueur (classe .proficient posée sur le libellé), l'édition reste réservée au MJ. }}
-              <span class="ability-side-label {{#if this.save.proficient}}proficient{{/if}}" title="{{localize 'DND_CUSTOM.Actor.SaveShort'}}">
+              <span class="ability-side-label {{#if this.save.proficient}}proficient{{/if}}" data-tooltip="{{glossaryTip 'sauvegarde'}}">
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
               </span>
               {{/if}}
@@ -159,7 +159,7 @@
     </div>
 
     <div class="skills-column">
-      <h3 class="section-subtitle">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
+      <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'test-competence'}}">{{localize "DND_CUSTOM.Actor.SkillsTitle"}}</h3>
       <ul class="skills-list">
         {{#each skills}}
         <li class="skill {{#if this.proficient}}proficient{{/if}}">
@@ -169,13 +169,13 @@
           </label>
           <span class="ability-tag">({{this.ability}})</span>
           {{#if this.originAdvantage}}
-          <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
+          <span class="origin-advantage-tag" data-tooltip="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
           {{/if}}
           {{#if this.armorDisadvantage}}
-          <span class="armor-disadvantage-tag" title="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
+          <span class="armor-disadvantage-tag" data-tooltip="{{localize 'DND_CUSTOM.Actor.ArmorDisadvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.ArmorDisadvantageShort"}}</span>
           {{/if}}
           {{#if this.jackOfAllTrades}}
-          <span class="origin-advantage-tag" title="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
+          <span class="origin-advantage-tag" data-tooltip="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
           {{/if}}
           <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
         </li>
