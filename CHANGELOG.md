@@ -7,6 +7,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Refonte "Forme sauvage" (Druide, demande explicite de l'utilisateur : mécanique jugée trop
+compliquée à gérer) : le ciblage manuel d'un jeton préparé à l'avance par le MJ est remplacé par
+un dialogue de choix parmi les formes accessibles au niveau du personnage (`DND_CUSTOM.
+wildShapeForms`, filtré par CR, `scripts/helpers/config.js`), tirées du compendium "Adversaires"
+déjà existant. L'Actor de la forme est créé/réutilisé automatiquement par personnage ET par forme
+(`scripts/helpers/wild-shape-form.js`), sans plus jamais nécessiter de préparation MJ en amont.
+CA/Vitesse/attaques de la forme sont désormais accessibles et jouables directement depuis l'onglet
+Statistiques du personnage, sans ouvrir de fiche séparée. Le mécanisme de PV séparés (2e réserve,
+retour automatique à 0 PV, SRD 5e) reste inchangé.
+
 Retour de test : la liste de Sorts de l'onglet Capacités (triée par niveau) imposait de
 scroller pour atteindre les paliers hauts (ex. niveau 5+) — regroupée en onglets par niveau
 ("Tours"/"Niv. 1"/"Niv. 2"/...), un seul palier affiché à la fois. Bascule purement visuelle

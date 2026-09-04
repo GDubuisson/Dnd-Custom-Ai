@@ -188,6 +188,22 @@ DND_CUSTOM.maneuvers = {
   feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
+/** Formes proposées au choix pour "Forme sauvage" (Druide, refonte 2026-09-04) : nom exact du
+ *  PNJ correspondant dans le compendium `dnd-custom-ai.adversaires` (world-items/npcs.json) +
+ *  niveau de Druide minimum, dérivé du `challengeRating` déjà présent sur chaque PNJ selon la
+ *  progression SRD 5e (CR ≤1/4 dès le niveau 2 où la Capacité s'obtient, CR ≤1/2 dès le niveau 4,
+ *  CR ≤1 dès le niveau 8) — cf. scripts/helpers/wild-shape-choice.js pour l'usage. */
+DND_CUSTOM.wildShapeForms = [
+  { name: "Rat", minLevel: 2 },
+  { name: "Corbeau", minLevel: 2 },
+  { name: "Loup", minLevel: 2 },
+  { name: "Sanglier", minLevel: 2 },
+  { name: "Serpent venimeux", minLevel: 2 },
+  { name: "Panthère", minLevel: 2 },
+  { name: "Crocodile", minLevel: 4 },
+  { name: "Ours brun", minLevel: 8 }
+];
+
 /** Effets de Technique de la Main Ouverte (Open Hand, Moine, SRD 5e) — reproposés à chaque
  *  utilisation (cf. FeatureData#offersOpenHandTechnique, #onUseOpenHandTechnique dans
  *  actor-sheet.js), même esprit que DND_CUSTOM.maneuvers ci-dessus. */

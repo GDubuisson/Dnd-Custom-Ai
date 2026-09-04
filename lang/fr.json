@@ -297,7 +297,7 @@
       "GiantKillerAvailable": "{reactor} peut utiliser sa réaction (Tueur de géants) pour attaquer {attacker}, une créature de taille Grande ou plus qui vient de le toucher ou de le manquer à 1,50 m.",
       "ConditionBlockedByImmunity": "{name} est immunisé et ne peut pas être {condition}.",
       "MountNoTarget": "Ciblez le token de votre monture (Actor de type Monture) avant de cliquer Monter.",
-      "WildShapeNoTarget": "Ciblez le token de la forme voulue (Actor de type Forme sauvage) avant de cliquer Prendre forme.",
+      "WildShapeNoFormAvailable": "Aucune forme disponible à votre niveau actuel.",
       "WildShapeEnded": "{name} n'a plus assez de PV sous sa forme ({form}) et redevient lui-même.",
       "RestShort": "{name} prend un repos court.",
       "RestLong": "{name} prend un repos long et récupère tous ses points de vie.",
@@ -556,6 +556,11 @@
       "PendingChoiceLabel": "Choix dû",
       "PendingChoiceButton": "Résoudre",
       "PendingChoiceTooltip": "Amélioration de caractéristiques ou Don encore dû(s) — fenêtre fermée sans choisir lors d'une montée de niveau précédente, cliquez pour reprendre."
+    },
+    "WildShape": {
+      "DialogTitle": "Choisir une forme",
+      "Confirm": "Se transformer",
+      "FormActorName": "{form} ({owner})"
     },
     "Conditions": {
       "Title": "États",

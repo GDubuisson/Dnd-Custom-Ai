@@ -35,13 +35,14 @@ import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
 import { chooseSpellSlotLevel, chooseSpellSlotRecovery } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { requestBeastCompanion } from "../helpers/companion.js";
+import { offerWildShapeFormDialog } from "../helpers/wild-shape-choice.js";
+import { requestWildShapeTransformation } from "../helpers/wild-shape-form.js";
 import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
-import { requestActorUpdate } from "../helpers/actor-relay.js";
 import {
   RELENTLESS_HUNTER_FEATURE_NAME,
   HUNTED_BY_ACTOR_ID_FLAG,
@@ -258,6 +259,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       dismount: DndCustomActorSheet.#onDismount,
       enterWildShape: DndCustomActorSheet.#onEnterWildShape,
       revertWildShape: DndCustomActorSheet.#onRevertWildShape,
+      rollWildShapeAttack: DndCustomActorSheet.#onRollWildShapeAttack,
+      rollWildShapeAttackDamage: DndCustomActorSheet.#onRollWildShapeAttackDamage,
       selectSpellLevel: DndCustomActorSheet.#onSelectSpellLevel
     }
   };
@@ -407,8 +410,24 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.mount = system.combat.mountedActorId ? (game.actors.get(system.combat.mountedActorId) ?? null) : null;
 
     // Forme sauvage (don SRD 5e, cf. #onEnterWildShape ci-dessous) : forme actuellement prise,
-    // résolue en Actor pour affichage (nom + PV de la forme) — vide si forme normale.
+    // résolue en Actor pour affichage (CA/Vitesse/PV de la forme) — vide si forme normale.
     context.wildShapeForm = system.combat.wildShapeActorId ? (game.actors.get(system.combat.wildShapeActorId) ?? null) : null;
+
+    // Attaques de la Forme sauvage actuellement prise (refonte 2026-09-04, cf.
+    // #onRollWildShapeAttack ci-dessous) : mêmes libellés déjà formatés (attackBonusLabel/
+    // damageLabel) que context.attacks côté fiche PNJ (npc-sheet.js), pour rester accessibles
+    // directement depuis la fiche du personnage sans ouvrir celle de la forme.
+    context.wildShapeAttacks = context.wildShapeForm
+      ? context.wildShapeForm.system.attacks.map((attack, index) => {
+          const abilityMod = context.wildShapeForm.system.abilities[attack.ability]?.mod ?? 0;
+          return {
+            index,
+            name: attack.name,
+            attackBonusLabel: formatModifier(abilityMod + attack.bonus),
+            damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(abilityMod + attack.damage.bonus)}` : ""
+          };
+        })
+      : [];
 
     // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
     // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
@@ -1545,40 +1564,39 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await this.actor.update({ "system.combat.mountedActorId": "" });
   }
 
-  /** Prend la forme de la créature actuellement ciblée (Forme sauvage, Druide — chantier "Forme
-   *  sauvage", 2026-08-23) : même convention de ciblage que #onMount ci-dessus, réservé aux
-   *  Actors de type "wildShapeForm". `item` est la Capacité "Forme sauvage" elle-même
-   *  (`system.entersWildShape`, item-data.js) — décompte une charge, comme n'importe quelle
-   *  autre Capacité à charges limitées (#consumeFeatureCharge), et suit l'Action/Action bonus
-   *  du tour comme toute autre Capacité (#consumeActionEconomy). */
+  /** Prend une forme choisie dans un dialogue (Forme sauvage, Druide — refonte 2026-09-04,
+   *  cf. offerWildShapeFormDialog, wild-shape-choice.js) : plus de ciblage de token, le joueur
+   *  choisit directement parmi les formes disponibles à son niveau. Le dialogue s'affiche AVANT
+   *  de consommer l'Action/Action bonus et la charge de Capacité (#consumeActionEconomy/
+   *  #consumeFeatureCharge, comme toute autre Capacité), pour ne rien décompter si le joueur
+   *  ferme le dialogue sans choisir. `item` est la Capacité "Forme sauvage" elle-même
+   *  (`system.entersWildShape`, item-data.js). La création/réutilisation de l'Actor de la forme
+   *  et la pose des PV temporaires de "Forme sauvage de combat" (Cercle de la Lune) sont
+   *  déléguées à requestWildShapeTransformation (wild-shape-form.js), qui gère aussi le relais
+   *  MJ nécessaire pour créer un Actor (permission que le Joueur n'a pas). */
   static async #onEnterWildShape(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "feature" || !item.system.entersWildShape) return;
 
-    const targetToken = [...game.user.targets][0];
-    if (!targetToken?.actor || targetToken.actor.type !== "wildShapeForm") {
-      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.WildShapeNoTarget"));
-      return;
-    }
+    const chosenFormName = await offerWildShapeFormDialog(this.actor);
+    if (!chosenFormName) return;
 
     if (!(await this.#consumeActionEconomy(item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
 
-    await this.actor.update({ "system.combat.wildShapeActorId": targetToken.actor.id });
-
     // Forme sauvage de combat (Cercle de la Lune, Druide 2, SRD 5e) : PV temporaires égaux à 2×
     // le niveau du Druide au moment de la transformation, posés sur la FORME (system.attributes
     // .hp.temp, NpcData) puisque c'est sa réserve de PV qui sert de 2e réserve pendant la
     // transformation (cf. commentaire de wildShapeActorId, character-data.js) — jamais sur le
-    // personnage lui-même.
-    if (hasFeature(this.actor.items.contents, "Forme sauvage de combat")) {
-      // requestActorUpdate (pas targetToken.actor.update direct) : la Forme n'est généralement
-      // pas possédée par le Joueur qui la cible (Actor "wildShapeForm" créé par le MJ), cf.
-      // même motif que applyDamageToTargets (dnd-custom-ai.js).
-      await requestActorUpdate(targetToken.actor, { "system.attributes.hp.temp": 2 * this.actor.system.attributes.level });
-    }
+    // personnage lui-même. Calculé ici (niveau du Druide connu côté Joueur) mais appliqué dans
+    // requestWildShapeTransformation, seule habilitée à écrire sur l'Actor de la forme.
+    const combatWildShapeBonus = hasFeature(this.actor.items.contents, "Forme sauvage de combat")
+      ? 2 * this.actor.system.attributes.level
+      : undefined;
+
+    await requestWildShapeTransformation(this.actor, chosenFormName, combatWildShapeBonus);
   }
 
   /** Redevient soi-même (cf. #onEnterWildShape ci-dessus) : volontaire, à tout moment — jamais
@@ -1587,6 +1605,66 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  une forme, même la même, en recoûte une). */
   static async #onRevertWildShape() {
     await this.actor.update({ "system.combat.wildShapeActorId": "" });
+  }
+
+  /** Jet d'attaque avec la Forme sauvage actuellement prise (refonte 2026-09-04) : profil
+   *  d'attaque `target.dataset.index` lu sur l'Actor lié (system.combat.wildShapeActorId), pas
+   *  sur `this.actor` — même lecture que #onRollAttack (npc-sheet.js), mais exécutée depuis la
+   *  fiche du PERSONNAGE pour éviter d'avoir à ouvrir la fiche PNJ de la forme en combat. `actor:
+   *  this.actor` passé à rollCheck (pas la forme) : c'est le PERSONNAGE qui est Combattant du
+   *  combat en cours (criticalRules > isActorInCombat) et qui parle dans le chat, la forme n'a en
+   *  général ni jeton ni entrée dans le Suivi de combat. Le flag de critique en attente est donc
+   *  posé sur `this.actor` (`pendingWildShapeAttackCritical`, objet par index) plutôt que sur la
+   *  forme, qui n'est pas forcément possédée par le Joueur (cf. requestWildShapeTransformation,
+   *  wild-shape-form.js). */
+  static async #onRollWildShapeAttack(event, target) {
+    const formActor = game.actors.get(this.actor.system.combat.wildShapeActorId);
+    const index = Number(target.dataset.index);
+    const attack = formActor?.system.attacks[index];
+    if (!attack) return;
+
+    const abilityMod = formActor.system.abilities[attack.ability]?.mod ?? 0;
+    const { isCriticalHit } = await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(abilityMod + attack.bonus),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: attack.name }),
+      advantage: event.shiftKey,
+      disadvantage: event.ctrlKey || isDisadvantagedByHuntedTarget(this.actor),
+      compareToTargetAc: true,
+      criticalRules: true
+    });
+    if (isCriticalHit) {
+      const pending = this.actor.getFlag(SYSTEM_ID, "pendingWildShapeAttackCritical") ?? {};
+      await this.actor.setFlag(SYSTEM_ID, "pendingWildShapeAttackCritical", { ...pending, [index]: true });
+    }
+    await noteActionEconomyUsage(this.actor, "action", { isWeaponAttack: true });
+    await recordAttackOnTargets(this.actor);
+  }
+
+  /** Jet de dégâts d'une attaque de Forme sauvage (cf. #onRollWildShapeAttack ci-dessus) — même
+   *  moteur (rollDamage, rolls.js) que les armes/attaques de PNJ, dés/type lus sur la forme
+   *  liée. */
+  static async #onRollWildShapeAttackDamage(event, target) {
+    const formActor = game.actors.get(this.actor.system.combat.wildShapeActorId);
+    const index = Number(target.dataset.index);
+    const attack = formActor?.system.attacks[index];
+    if (!attack || !attack.damage.dice) return;
+
+    const abilityMod = formActor.system.abilities[attack.ability]?.mod ?? 0;
+    const damageTypeLabel = attack.damage.type ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage.type]) : "";
+    const pending = this.actor.getFlag(SYSTEM_ID, "pendingWildShapeAttackCritical") ?? {};
+    const critical = Boolean(pending[index]);
+    if (critical) await this.actor.update({ [`flags.${SYSTEM_ID}.pendingWildShapeAttackCritical.-=${index}`]: null });
+
+    await rollDamage({
+      actor: this.actor,
+      dice: attack.damage.dice,
+      formula: formatModifier(abilityMod + attack.damage.bonus),
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: attack.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      critical,
+      damageType: attack.damage.type,
+      isMagicalSource: attack.magic
+    });
   }
 
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.

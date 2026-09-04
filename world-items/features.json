@@ -125,7 +125,7 @@
       "rollFormula": "",
       "source": "",
       "uses": { "max": 2, "value": 2, "recharge": "shortRest" },
-      "description": "Action bonus : ciblez le token d'un Actor de type Forme sauvage (bête déjà observée, taille/FI maximale selon votre niveau, à valider avec le MJ) puis cliquez \"Prendre forme\". Vos PV normaux restent gelés : les PV propres de cette forme servent de 2e réserve pendant la transformation, et vous en revenez automatiquement à la forme normale si elle tombe à 0 (dégâts excédentaires ignorés, SRD 5e). 2 utilisations par repos court ou long. Retour volontaire à tout moment (bouton \"Redevenir soi-même\", onglet Statistiques). Simplifié : le MJ et vous adjugez ensemble les capacités précises de la forme prise (CA, attaques...), non automatisées au-delà des PV."
+      "description": "Action bonus : cliquez \"Prendre forme\" et choisissez une bête dans la liste proposée (disponibilité selon votre niveau). CA, Vitesse et attaques de la forme s'affichent et se jouent directement depuis votre fiche (onglet Statistiques), sans ouvrir de fiche séparée. Vos PV normaux restent gelés : les PV propres de cette forme servent de 2e réserve pendant la transformation, et vous en revenez automatiquement à la forme normale si elle tombe à 0 (dégâts excédentaires ignorés, SRD 5e). 2 utilisations par repos court ou long. Retour volontaire à tout moment (bouton \"Redevenir soi-même\", onglet Statistiques)."
     }
   },
   {

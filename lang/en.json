@@ -297,7 +297,7 @@
       "GiantKillerAvailable": "{reactor} can use their reaction (Giant Killer) to attack {attacker}, a Large or bigger creature that just hit or missed them within 1.5 m.",
       "ConditionBlockedByImmunity": "{name} is immune and cannot be {condition}.",
       "MountNoTarget": "Target your mount's token (a Mount-type Actor) before clicking Mount.",
-      "WildShapeNoTarget": "Target the token of the desired form (a Wild Shape Form-type Actor) before clicking Take Shape.",
+      "WildShapeNoFormAvailable": "No form available at your current level.",
       "WildShapeEnded": "{name} runs out of hit points in their shape ({form}) and reverts to themselves.",
       "RestShort": "{name} takes a short rest.",
       "RestLong": "{name} takes a long rest and regains all hit points.",
@@ -556,6 +556,11 @@
       "PendingChoiceLabel": "Choice due",
       "PendingChoiceButton": "Resolve",
       "PendingChoiceTooltip": "Ability Score Improvement or Feat still due — dialog closed without choosing at a previous level-up, click to resume."
+    },
+    "WildShape": {
+      "DialogTitle": "Choose a form",
+      "Confirm": "Transform",
+      "FormActorName": "{form} ({owner})"
     },
     "Conditions": {
       "Title": "Conditions",
