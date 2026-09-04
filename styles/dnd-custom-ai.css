@@ -1019,15 +1019,18 @@
 /* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
    les 6 cases ne tenaient plus toutes à l'écran sans défiler dès qu'une fenêtre de fiche assez
    basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne.
-   Largeur de colonne relevée à 176px (retour de test suivant, cf. images_test/img.png) : à
-   150px, le bloc MOD./SAUV. de chaque case (cf. .ability-side plus bas) n'avait plus assez de
-   place pour la case à cocher de maîtrise de sauvegarde (session MJ) sans se chevaucher avec le
-   reste de la case. */
+   Retour de test (2026-09-04, images_test/cellule_stat_plus_petite.png) : les cases prenaient
+   trop de largeur (la valeur, centrée dans `.ability-main` en `flex: 1 1 auto`, gonflait la
+   case) — `.ability-main` ne grandit plus (valeur collée à gauche, bloc MOD./SAUV. collé à
+   droite) et cette colonne se contente désormais de ~300px, laissant plus de place aux
+   Compétences sur une fenêtre de 708px de large. Le bloc MOD./SAUV. (`.ability-side`) garde sa
+   largeur naturelle : la case à cocher de maîtrise de sauvegarde (session MJ) ne peut plus se
+   faire écraser puisque plus rien ne se dispute l'espace horizontal dans la case. */
 .dnd-custom-ai .abilities-column {
   display: grid;
-  grid-template-columns: repeat(2, minmax(176px, 1fr));
+  grid-template-columns: repeat(2, minmax(132px, 1fr));
   gap: 0.4rem;
-  flex: 0 0 368px;
+  flex: 0 1 284px;
 }
 
 .dnd-custom-ai .skills-column {
@@ -1071,11 +1074,12 @@
 .dnd-custom-ai .ability-card-row {
   display: flex;
   align-items: stretch;
+  justify-content: space-between;
   gap: 0.35rem;
 }
 
 .dnd-custom-ai .ability-main {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -193,6 +193,7 @@ const statsCtx = (() => {
 
 const tabs = {
   stats: renderTemplate("actor/tab-stats.hbs", statsCtx),
+  "stats-mj": renderTemplate("actor/tab-stats.hbs", { ...statsCtx, isGM: true }),
   equipment: renderTemplate("actor/tab-equipment.hbs", equipmentCtx),
   inventory: renderTemplate("actor/tab-inventory.hbs", inventoryCtx),
   abilities: renderTemplate("actor/tab-abilities.hbs", abilitiesCtx),
