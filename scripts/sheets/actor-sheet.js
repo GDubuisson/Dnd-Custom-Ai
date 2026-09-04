@@ -27,7 +27,7 @@ import {
 } from "../helpers/rules.js";
 import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
-import { rollCheck, rollDamage, rollHeal } from "../helpers/rolls.js";
+import { rollCheck, rollDamage, rollHeal, sheetRollFlags } from "../helpers/rolls.js";
 import { CharacterCreationWizard } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
@@ -1174,7 +1174,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: game.i18n.localize("DND_CUSTOM.Roll.DeathSave")
+      flavor: game.i18n.localize("DND_CUSTOM.Roll.DeathSave"),
+      flags: sheetRollFlags()
     });
   }
 
@@ -1204,13 +1205,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor,
-      flags: {
-        "dnd-custom-ai": {
-          ...(item.system.healsTarget ? { healRoll: true } : {}),
-          ...(item.system.reducesDamage ? { damageReduction: true } : {}),
-          ...(item.system.dealsDamage ? { damageRoll: true } : {})
-        }
-      }
+      flags: sheetRollFlags({
+        ...(item.system.healsTarget ? { healRoll: true } : {}),
+        ...(item.system.reducesDamage ? { damageReduction: true } : {}),
+        ...(item.system.dealsDamage ? { damageRoll: true } : {})
+      })
     });
   }
 
@@ -1309,7 +1308,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         speaker: ChatMessage.getSpeaker({ actor: targetActor }),
         flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
           hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
-        }`
+        }`,
+        flags: sheetRollFlags()
       });
     }
   }
@@ -1426,7 +1426,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await attackerRoll.evaluate();
     await attackerRoll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckAttacker", { name: this.actor.name, feature: item.name })
+      flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckAttacker", { name: this.actor.name, feature: item.name }),
+      flags: sheetRollFlags()
     });
 
     const defenderRoll = new Roll(`1d20${formatModifier(defenderMod)}`);
@@ -1436,7 +1437,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       flavor: game.i18n.format("DND_CUSTOM.Roll.OpposedCheckDefender", {
         name: targetActor.name,
         skill: game.i18n.localize(DND_CUSTOM.skills[defenderSkillKey])
-      })
+      }),
+      flags: sheetRollFlags()
     });
 
     // Égalité = statu quo (règle générale des tests opposés SRD 5e) : l'attaquant doit
@@ -1844,7 +1846,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     await roll.evaluate();
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `${item.name} — ${game.i18n.localize(options[chosenKey])} (${remaining}/${item.system.uses.max})`
+      flavor: `${item.name} — ${game.i18n.localize(options[chosenKey])} (${remaining}/${item.system.uses.max})`,
+      flags: sheetRollFlags()
     });
   }
 
@@ -1923,7 +1926,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           spell: item.name,
           ability: game.i18n.localize(DND_CUSTOM.abilities.dex),
           dc
-        })} — ${game.i18n.localize(options[chosenEffect])}`
+        })} — ${game.i18n.localize(options[chosenEffect])}`,
+        flags: sheetRollFlags()
       });
     }
   }
@@ -2396,7 +2400,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           speaker: ChatMessage.getSpeaker({ actor: targetActor }),
           flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
             hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
-          }`
+          }`,
+          flags: sheetRollFlags()
         });
       }
       return;

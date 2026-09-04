@@ -3297,3 +3297,105 @@
 .dice-roll.dnd-critical-fumble .dnd-critical-icon {
   color: #ba1a1a;
 }
+
+/* ---------- Style "parchemin déchiré" des jets issus de ce système ----------
+   Demande explicite de l'utilisateur (2026-09-04, cf. maquettes/chat-roll-style/) : distinguer
+   dans le chat les jets générés par la fiche (bouton d'attaque/compétence/sauvegarde, relance
+   automatique d'un don, jet de concentration...) d'un jet tapé à la main (/r). Marqué à la
+   source par `sheetRollFlags()` (helpers/rolls.js), posé sur QUASIMENT tout `Roll#toMessage`/
+   `RollTable#toMessage` du système (jamais deviné ici depuis le speaker : un joueur peut très
+   bien taper /r avec son personnage sélectionné, le speaker seul ne prouve rien) ; classe
+   `.dnd-sheet-roll` posée sur la racine du message par le hook renderChatMessageHTML
+   (dnd-custom-ai.js). Pas scopé `.dnd-custom-ai` (même raison que les critiques ci-dessus : les
+   cartes de chat vivent dans la barre latérale, jamais dans la fiche — couleurs en dur, texture
+   servie par le même chemin relatif que --dca-texture-parchment). `!important` sur les
+   propriétés qui doivent gagner sur le style de base `.chat-message` du cœur Foundry, dont on ne
+   connaît pas la spécificité exacte selon la version. */
+.dnd-sheet-roll {
+  background-image:
+    linear-gradient(rgba(233, 220, 184, 0.88), rgba(227, 212, 169, 0.9)),
+    url("textures/parchment.jpg") !important;
+  background-size: 100% 100%, 300px 300px !important;
+  background-color: #e3d4a9 !important;
+  border: none !important;
+  border-radius: 2px !important;
+  padding: 10px 14px 16px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  /* Bord irrégulier façon page déchirée : dents peu profondes (quelques px), donc lisible à
+     n'importe quelle hauteur de carte (contenu court ou long). */
+  clip-path: polygon(
+    0 4px, 3% 0, 10% 3px, 22% 0, 38% 4px, 55% 0, 72% 3px, 88% 0, 97% 4px, 100% 1px,
+    100% calc(100% - 5px), 96% 100%, 82% calc(100% - 4px), 64% 100%, 46% calc(100% - 3px),
+    28% 100%, 12% calc(100% - 4px), 2% 100%, 0 calc(100% - 3px)
+  );
+}
+
+.dnd-sheet-roll .message-header {
+  color: #8a7a55;
+}
+
+.dnd-sheet-roll .message-sender {
+  color: #3d2b17;
+}
+
+/* Même pile de polices que --dca-font-headline (fiche) : cohérence visuelle entre fiche et
+   chat sans dépendre d'une variable CSS (hors du bloc .dnd-custom-ai ici). */
+.dnd-sheet-roll .flavor-text {
+  font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.05em;
+  color: #5c2c0d;
+  margin: 1px 0 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+}
+
+.dnd-sheet-roll .flavor-text::before {
+  content: "\2726";
+  color: #b3401f;
+  font-size: 0.7em;
+}
+
+.dnd-sheet-roll .dice-roll .dice-result,
+.dnd-sheet-roll .dice-tooltip {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dnd-sheet-roll .dice-formula {
+  background: transparent !important;
+  border: none !important;
+  color: #6b5330;
+  font-style: italic;
+  font-family: "Vollkorn", "Iowan Old Style", Palatino, Georgia, serif;
+  padding: 0 0 4px !important;
+}
+
+.dnd-sheet-roll .dice-total {
+  text-align: left;
+  padding: 0 !important;
+  font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  font-weight: 600;
+  font-size: 1.7em;
+  color: #2b2011;
+  position: relative;
+  display: inline-block;
+}
+
+/* Trait de "cire" sous le résultat plutôt qu'un simple soulignement CSS classique : un peu
+   irrégulier (légère rotation), cohérent avec le reste du thème "sceau de cire". */
+.dnd-sheet-roll .dice-total::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -6px;
+  bottom: 2px;
+  height: 5px;
+  background: #7a3712;
+  opacity: 0.85;
+  border-radius: 2px 5px 4px 3px;
+  transform: rotate(-0.6deg) scaleY(0.6);
+  z-index: -1;
+}

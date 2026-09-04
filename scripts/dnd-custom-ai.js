@@ -45,6 +45,7 @@ import {
 } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
 import { registerActorUpdateRelay, requestActorUpdate } from "./helpers/actor-relay.js";
+import { sheetRollFlags } from "./helpers/rolls.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -1184,7 +1185,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     const kept = reroll.total > originalTotal ? reroll.total : originalTotal;
     await reroll.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept }),
+      flags: sheetRollFlags()
     });
     await luckyFeat.update({ "system.uses.value": luckyFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "luckApplied", true);
@@ -1221,7 +1223,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     const originalTotal = message.rolls?.[0]?.total ?? 0;
     await bonus.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total }),
+      flags: sheetRollFlags()
     });
     await fiendLuckFeat.update({ "system.uses.value": fiendLuckFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "fiendLuckApplied", true);
@@ -1256,7 +1259,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     await reroll.evaluate();
     await reroll.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name }),
+      flags: sheetRollFlags()
     });
     await indomitableFeat.update({ "system.uses.value": indomitableFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "indomitableApplied", true);
@@ -1298,7 +1302,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     await reroll.evaluate();
     await reroll.toMessage({
       speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor }),
+      flags: sheetRollFlags()
     });
     await actor.update({ "system.attributes.inspirationPoints": remaining - 1 });
   });
@@ -1312,6 +1317,18 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 // dnd-custom-ai.css HORS du bloc `.dnd-custom-ai` (les messages de chat vivent dans la barre
 // latérale, jamais imbriqués dans la fiche de personnage/PNJ) : jamais la couleur seule pour
 // distinguer les deux cas (icône différente), conformément aux règles RGAA/WCAG.
+// Style "parchemin déchiré" (demande explicite de l'utilisateur, 2026-09-04, cf.
+// maquettes/chat-roll-style/) sur toute carte de jet générée par CE système — jamais un jet
+// tapé à la main (`/r`). Flag posé une seule fois à la source par `sheetRollFlags()`
+// (helpers/rolls.js), sur quasiment tout `Roll#toMessage`/`RollTable#toMessage` du système :
+// jamais deviné ici depuis le speaker (un joueur peut très bien taper /r avec son personnage
+// sélectionné, le speaker seul ne prouve rien). Styles dans dnd-custom-ai.css (`.dnd-sheet-roll`,
+// hors du bloc `.dnd-custom-ai`, même raison que les critiques ci-dessous).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "sheetRoll")) return;
+  html.classList.add("dnd-sheet-roll");
+});
+
 Hooks.on("renderChatMessageHTML", (message, html) => {
   const isCriticalHit = message.getFlag(SYSTEM_ID, "criticalHit");
   const isCriticalFumble = message.getFlag(SYSTEM_ID, "criticalFumble");
@@ -1364,7 +1381,8 @@ async function checkConcentration(actor, damageAmount) {
       name: actor.name,
       spell: spellName,
       dc
-    })
+    }),
+    flags: sheetRollFlags()
   });
 }
 

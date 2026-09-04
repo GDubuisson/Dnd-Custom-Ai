@@ -7,6 +7,19 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Style "parchemin déchiré" sur les cartes de jet de dés générées par ce système, dans le chat
+(demande explicite de l'utilisateur, plusieurs itérations visuelles cf. `maquettes/chat-roll-style/`) :
+bord irrégulier, vraie texture parchemin (déjà livrée), libellé en serif, résultat souligné d'un
+trait de cire — distinct au premier coup d'œil d'un jet tapé à la main (`/r`, style Foundry
+inchangé). Marqué à la source par un nouveau helper `sheetRollFlags()` (`helpers/rolls.js`),
+posé sur la quasi-totalité des `Roll#toMessage`/`RollTable#toMessage` du système (jets de
+caractéristique/sauvegarde/compétence/attaque, dégâts, soins, jets de Capacité, tests opposés,
+sauvegarde de la mort, jet de concentration, relances Chanceux/Chance du Fiélon/Indomptable/
+Inspiration, tirage de Magie sauvage) — jamais deviné depuis le speaker, jamais posé sur un jet
+tapé à la main. Classe `.dnd-sheet-roll` posée par un hook `renderChatMessageHTML` dédié, stylée
+hors du bloc `.dnd-custom-ai` (même principe que le style existant des coups/échecs critiques).
+Nouveau test unitaire (`tests/unit/rolls.test.js`) pour `sheetRollFlags`. 879 tests verts.
+
 Infobulles de glossaire sur la fiche de personnage (demande explicite de l'utilisateur) : tous
 les libellés « techniques » de la fiche portent désormais un `data-tooltip` qui affiche, au
 survol, une définition tirée du glossaire (`scripts/data/glossary.json` — même source que la

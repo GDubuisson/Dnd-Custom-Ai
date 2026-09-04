@@ -6,6 +6,17 @@ function isActorInCombat(actor) {
   return Boolean(game.combat?.combatants.some((combatant) => combatant.actor?.id === actor.id));
 }
 
+/** Fusionne `sheetRoll: true` dans les flags `dnd-custom-ai` d'un message de jet, quels que
+ *  soient les autres flags déjà posés par l'appelant (`damageRoll`, `healRoll`, `luckRoll`...).
+ *  Marque TOUT jet généré par ce système (bouton de fiche, relance automatique d'un don, jet de
+ *  concentration...) — jamais un jet tapé à la main (`/r`) — pour lui donner un style de carte
+ *  de chat distinct (demande explicite de l'utilisateur, 2026-09-04). Repéré par le hook
+ *  `renderChatMessageHTML` (dnd-custom-ai.js), stylé en CSS via `.dnd-sheet-roll` (hors du bloc
+ *  `.dnd-custom-ai` : les cartes de chat vivent dans la barre latérale, jamais dans la fiche). */
+export function sheetRollFlags(extra = {}) {
+  return { "dnd-custom-ai": { ...extra, sheetRoll: true } };
+}
+
 /** Jet de d20 (test de caractéristique, sauvegarde, compétence, attaque) posté dans le chat.
  *  Avantage/désavantage : `2d20kh1`/`2d20kl1` (SRD 5e) au lieu d'un simple `1d20` ; les deux
  *  ensemble s'annulent (retombe sur `1d20`), conformément à la règle. `formula` est le
@@ -107,7 +118,7 @@ export async function rollCheck({
   // critique doit aussi se voir sur la carte de jet elle-même — ces deux flags sont repérés par
   // le hook renderChatMessageHTML (dnd-custom-ai.js) pour poser une bordure/halo + icône dédiés
   // sur `.dice-roll`, jamais la couleur seule (accessibilité).
-  const flags = { "dnd-custom-ai": {} };
+  const flags = sheetRollFlags();
   if (isCriticalHit) flags["dnd-custom-ai"].criticalHit = true;
   if (isCriticalFumble) flags["dnd-custom-ai"].criticalFumble = true;
   // Don "Chanceux" (SRD 5e) : tout jet de d20 passant par rollCheck (test de caractéristique/
@@ -200,16 +211,14 @@ export async function rollDamage({
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,
-    flags: {
-      "dnd-custom-ai": {
-        damageRoll: true,
-        damageType,
-        ...(critical ? { criticalHit: true } : {}),
-        ...(isSpellDamage ? { isSpellDamage: true } : {}),
-        ...(spellName ? { spellName } : {}),
-        ...(isMagicalSource ? { isMagicalSource: true } : {})
-      }
-    }
+    flags: sheetRollFlags({
+      damageRoll: true,
+      damageType,
+      ...(critical ? { criticalHit: true } : {}),
+      ...(isSpellDamage ? { isSpellDamage: true } : {}),
+      ...(spellName ? { spellName } : {}),
+      ...(isMagicalSource ? { isMagicalSource: true } : {})
+    })
   });
   return roll;
 }
@@ -227,7 +236,7 @@ export async function rollHeal({ actor, dice, formula, flavor }) {
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor,
-    flags: { "dnd-custom-ai": { healRoll: true } }
+    flags: sheetRollFlags({ healRoll: true })
   });
   return roll;
 }
