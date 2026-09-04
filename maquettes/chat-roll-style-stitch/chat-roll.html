@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-stone-950 text-stone-200" lang="fr"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Foundry VTT - Registre de Jets &amp; Journal de Chat</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: {
+                            50: '#FAF6EE',
+                            100: '#F4ECE1',
+                            200: '#E7D9C3',
+                            300: '#D5C1A1',
+                            400: '#BFA47E',
+                            500: '#9C7F59',
+                            800: '#3A2E1D',
+                            900: '#231A0F',
+                        },
+                        gilded: {
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        },
+                        crimson: {
+                            700: '#991B1B',
+                            800: '#7F1D1D',
+                            900: '#450A0A',
+                        },
+                        arcane: {
+                            400: '#C084FC',
+                            600: '#9333EA',
+                            900: '#3B0764',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'Palatino', 'Georgia', 'serif'],
+                        antique: ['Cinzel Decorative', 'Cinzel', 'serif'],
+                        body: ['IM Fell English', 'Georgia', 'serif'],
+                        mono: ['Courier New', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts for Medieval & Fantasy Styling -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&amp;family=Cinzel:wght@500;600;700;800;900&amp;family=IM+Fell+English:ital@0;1&amp;family=MedievalSharp&amp;display=swap" rel="stylesheet"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style data-purpose="custom-textures">
+        /* Parchment Background Texture & Vignette */
+        .bg-parchment-texture {
+            background-color: #f7edd8;
+            background-image:
+                    radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.45), transparent 70%),
+                    radial-gradient(circle at 10% 90%, rgba(139, 94, 43, 0.12), transparent 40%),
+                    radial-gradient(circle at 90% 10%, rgba(101, 67, 33, 0.15), transparent 45%),
+                    linear-gradient(180deg, #F6EEDB 0%, #EDE0C7 60%, #E3D1B4 100%);
+            box-shadow: inset 0 0 16px rgba(92, 64, 34, 0.3);
+        }
+
+        .bg-vtt-dark {
+            background-color: #121110;
+            background-image: radial-gradient(circle at top, #1a1714 0%, #0d0c0a 100%);
+        }
+
+        /* Metal & Filigree Emboss Styles */
+        .gilded-emboss {
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 -1px 1px rgba(74, 45, 10, 0.7);
+        }
+
+        .carved-numeral {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 -1px 1px rgba(255, 245, 200, 0.4);
+        }
+
+        /* Antique corner motifs */
+        .corner-filigree {
+            background-image: radial-gradient(circle at 100% 100%, transparent 4px, #a16207 5px, #a16207 6px, transparent 7px);
+        }
+    </style>
+</head>
+<body class="bg-vtt-dark min-h-screen flex justify-center items-start py-2 sm:py-6 px-2 sm:px-4 font-serif select-none antialiased">
+<!-- BEGIN: FoundryVttSidebarContainer -->
+<!-- Container mimicking Foundry VTT Chat Sidebar on iOS / Mobile & Desktop -->
+<main class="w-full max-w-md mx-auto flex flex-col gap-4" data-purpose="chat-sidebar-log">
+    <!-- Top Chat Notification Bar / Session Title -->
+    <header class="flex items-center justify-between px-3 py-2 bg-stone-900/90 border border-amber-900/40 rounded-lg shadow-md backdrop-blur-sm">
+        <div class="flex items-center space-x-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-900/80 animate-pulse"></div>
+            <span class="text-xs tracking-wider uppercase text-amber-200/90 font-bold">Session VTT • Table d'Aventure</span>
+        </div>
+        <div class="flex items-center space-x-3 text-stone-400">
+            <button class="hover:text-amber-300 transition-colors" title="Filtrer les jets">
+                <i class="w-4 h-4" data-lucide="filter"></i>
+            </button>
+            <button class="hover:text-amber-300 transition-colors" title="Options de dés">
+                <i class="w-4 h-4 text-amber-500" data-lucide="dices"></i>
+            </button>
+            <button class="hover:text-stone-200 transition-colors" title="Nettoyer le chat">
+                <i class="w-4 h-4" data-lucide="trash-2"></i>
+            </button>
+        </div>
+    </header>
+    <!-- BEGIN: ChatMessageLog -->
+    <div class="flex flex-col space-y-4" data-purpose="message-feed">
+        <!-- ============================================================ -->
+        <!-- CARD 1: PRIMARY USER REQUEST (Lyra Chanteprime - Persuasion) -->
+        <!-- ============================================================ -->
+        <!-- BEGIN: PrimaryRollCard -->
+        <article class="relative group rounded-xl overflow-hidden shadow-2xl transition-all duration-200 hover:ring-1 hover:ring-amber-500/40" data-purpose="card-persuasion-lyra">
+            <!-- Outer Ornate Medieval Border -->
+            <div class="bg-parchment-texture border-2 border-[#8B6B3D] p-3.5 relative text-stone-900 rounded-xl">
+                <!-- Ornate Corner Decorations -->
+                <span class="absolute top-1 left-1 text-amber-800/60 leading-none text-xs select-none">❖</span>
+                <span class="absolute top-1 right-1 text-amber-800/60 leading-none text-xs select-none">❖</span>
+                <span class="absolute bottom-1 left-1 text-amber-800/60 leading-none text-xs select-none">❖</span>
+                <span class="absolute bottom-1 right-1 text-amber-800/60 leading-none text-xs select-none">❖</span>
+                <!-- Header Section: Avatar, Character Name & Timestamp -->
+                <header class="flex items-center justify-between pb-2 mb-2 border-b border-[#c8b393] border-dashed">
+                    <div class="flex items-center space-x-2.5">
+                        <!-- Character Crest / Miniature Avatar -->
+                        <div class="relative flex-shrink-0">
+                            <div class="w-9 h-9 rounded-full bg-stone-900 ring-2 ring-[#a17a45] shadow-inner flex items-center justify-center overflow-hidden border border-amber-300/40">
+                                <!-- Elven Lute / Feather crest for Bard Lyra -->
+                                <i class="w-5 h-5 text-amber-300" data-lucide="feather"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 bg-amber-700 text-stone-100 rounded-full p-0.5 shadow">
+                                <i class="w-2.5 h-2.5" data-lucide="sparkles"></i>
+                            </div>
+                        </div>
+                        <!-- Character Identity -->
+                        <div>
+                            <div class="flex items-baseline space-x-1.5">
+                                <h2 class="font-bold text-base tracking-tight text-stone-900 leading-tight">Lyra Chanteprime</h2>
+                            </div>
+                            <p class="text-[11px] font-serif italic text-stone-600 leading-none">Barde demi-elfe • Niveau 5</p>
+                        </div>
+                    </div>
+                    <!-- Timestamp & Message Type Badge -->
+                    <div class="text-right flex flex-col items-end">
+                        <span class="text-[11px] text-stone-600 font-sans tracking-wide">à l'instant</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-amber-900/15 text-amber-900 border border-amber-800/20">
+                Jet Ouvert
+              </span>
+                    </div>
+                </header>
+                <!-- Action & Skill Flavor Banner -->
+                <section class="mb-2.5" data-purpose="roll-flavor">
+                    <div class="flex items-center justify-between bg-stone-900/5 px-2 py-1 rounded border border-[#dac7ab]">
+                        <div class="flex items-center space-x-1.5">
+                            <i class="w-3.5 h-3.5 text-amber-800" data-lucide="message-square"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-950">Jet de Compétence</span>
+                        </div>
+                        <span class="font-semibold text-xs italic text-stone-800">Persuasion (CHA)</span>
+                    </div>
+                </section>
+                <!-- Dice Formula & Calculation Section -->
+                <!-- Inspired by 1d20 + 7 bar in reference image -->
+                <section class="bg-[#eee2ca] rounded-md border border-[#c1aa86] p-2 shadow-inner mb-2.5" data-purpose="dice-formula-box">
+                    <div class="flex items-center justify-between text-xs text-stone-700 font-mono pb-1 border-b border-[#d8c3a1]">
+<span class="flex items-center space-x-1">
+<i class="w-3.5 h-3.5 text-amber-800" data-lucide="dice-5"></i>
+<span class="font-bold tracking-tight">1d20 + 7</span>
+</span>
+                        <span class="text-[11px] text-stone-500 italic font-serif">Détail : [14] + 7</span>
+                    </div>
+                    <!-- Large Hero Roll Result Badge -->
+                    <div class="pt-2 flex items-center justify-center">
+                        <div class="relative w-full text-center py-1 bg-gradient-to-b from-stone-100/90 to-amber-100/70 rounded border border-amber-800/20 shadow-sm flex items-center justify-around px-4">
+                            <!-- Left d20 Icon Decorator -->
+                            <div class="flex flex-col items-center">
+                                <div class="w-7 h-7 rounded bg-amber-900/10 flex items-center justify-center border border-amber-900/30">
+                                    <span class="text-xs font-bold text-amber-900">d20</span>
+                                </div>
+                                <span class="text-[9px] uppercase tracking-tighter text-stone-500 font-sans mt-0.5">Dé pur</span>
+                            </div>
+                            <!-- Central Result Number (Prominent '21' as in reference) -->
+                            <div class="flex flex-col items-center px-4">
+<span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 font-serif leading-none drop-shadow-sm">
+                    21
+                  </span>
+                                <span class="text-[10px] font-bold text-emerald-800 tracking-wider uppercase mt-1 bg-emerald-100/80 px-2 py-0.5 rounded-full border border-emerald-600/30">
+                    Succès Majeur (DD 15)
+                  </span>
+                            </div>
+                            <!-- Right Modifier Badge -->
+                            <div class="flex flex-col items-center">
+                                <div class="w-7 h-7 rounded bg-amber-900/10 flex items-center justify-center border border-amber-900/30 text-xs font-bold text-amber-900">
+                                    +7
+                                </div>
+                                <span class="text-[9px] uppercase tracking-tighter text-stone-500 font-sans mt-0.5">Mod. CHA</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Interactive Action Controls (Foundry VTT standard buttons) -->
+                <footer class="grid grid-cols-2 gap-1.5 pt-1">
+                    <button class="flex items-center justify-center space-x-1 py-1.5 px-2 text-[11px] font-medium bg-[#e4d3b6] hover:bg-[#d8c3a1] active:bg-[#c9b28d] text-stone-900 rounded border border-[#bfa57f] transition shadow-xs" type="button">
+                        <i class="w-3 h-3 text-stone-700" data-lucide="eye"></i>
+                        <span>Détails du jet</span>
+                    </button>
+                    <button class="flex items-center justify-center space-x-1 py-1.5 px-2 text-[11px] font-medium bg-[#dfceb0] hover:bg-[#d5bf9e] active:bg-[#c4ab88] text-amber-950 rounded border border-[#bfa57f] transition shadow-xs" type="button">
+                        <i class="w-3 h-3 text-amber-800" data-lucide="share-2"></i>
+                        <span>Diffuser au MJ</span>
+                    </button>
+                </footer>
+            </div>
+        </article>
+        <!-- END: PrimaryRollCard -->
+        <!-- ============================================================ -->
+        <!-- CARD 2: CRITICAL HIT ATTACK ROLL (Sire Alden - Épée longue) -->
+        <!-- ============================================================ -->
+        <!-- BEGIN: CriticalAttackCard -->
+        <article class="relative group rounded-xl overflow-hidden shadow-2xl transition-all" data-purpose="card-crit-attack">
+            <!-- Parchment with War/Golden Critical Aura -->
+            <div class="bg-parchment-texture border-2 border-amber-600/80 p-3.5 relative text-stone-900 rounded-xl ring-1 ring-amber-400/30">
+                <!-- Golden corner studs -->
+                <span class="absolute top-1 left-1 text-amber-700 leading-none text-xs">◈</span>
+                <span class="absolute top-1 right-1 text-amber-700 leading-none text-xs">◈</span>
+                <span class="absolute bottom-1 left-1 text-amber-700 leading-none text-xs">◈</span>
+                <span class="absolute bottom-1 right-1 text-amber-700 leading-none text-xs">◈</span>
+                <!-- Header -->
+                <header class="flex items-center justify-between pb-2 mb-2 border-b border-[#c8b393] border-dashed">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-full bg-stone-900 ring-2 ring-red-700 flex items-center justify-center text-red-400 border border-amber-500/50 shadow">
+                            <i class="w-5 h-5" data-lucide="swords"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-base tracking-tight text-stone-900 leading-tight">Sire Alden</h2>
+                            <p class="text-[11px] font-serif italic text-stone-600 leading-none">Paladin de Torm • Niveau 5</p>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col items-end">
+                        <span class="text-[11px] text-stone-600 font-sans">il y a 2 min</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider font-extrabold bg-red-900/20 text-red-900 border border-red-800/30">
+                Attaque
+              </span>
+                    </div>
+                </header>
+                <!-- Action Flavor -->
+                <div class="flex items-center justify-between bg-red-950/10 px-2 py-1 rounded border border-red-900/20 mb-2.5">
+                    <div class="flex items-center space-x-1.5 text-red-950">
+                        <i class="w-3.5 h-3.5 text-red-800" data-lucide="crosshair"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Épée bâtarde sacrée</span>
+                    </div>
+                    <span class="text-xs font-bold text-red-800 flex items-center gap-1">
+<i class="w-3 h-3 fill-amber-500 text-amber-600" data-lucide="flame"></i> Coup Critique !
+            </span>
+                </div>
+                <!-- Formula & Result -->
+                <section class="bg-[#ebd9bd] rounded-md border border-[#bfa67c] p-2 shadow-inner mb-2.5 relative overflow-hidden">
+                    <div class="flex items-center justify-between text-xs text-stone-700 font-mono pb-1 border-b border-[#ceb794]">
+                        <span>Formule : <strong>1d20 + 8</strong></span>
+                        <span class="text-red-900 font-bold bg-amber-300/60 px-1 rounded text-[10px]">NAT 20 !</span>
+                    </div>
+                    <!-- Result 28 -->
+                    <div class="pt-2 pb-1 flex items-center justify-center">
+                        <div class="relative w-full text-center py-1.5 bg-gradient-to-r from-amber-200/40 via-amber-100 to-amber-200/40 rounded border border-amber-600/40 shadow-xs flex items-center justify-around">
+                            <div class="text-left pl-3">
+                                <div class="text-[10px] uppercase font-bold text-amber-900">Jet Toucher</div>
+                                <div class="text-3xl sm:text-4xl font-black text-amber-950 font-serif leading-none">28</div>
+                            </div>
+                            <div class="h-8 w-px bg-amber-900/20"></div>
+                            <div class="text-right pr-3">
+                                <div class="text-[10px] uppercase font-bold text-red-900">Dégâts Critiques</div>
+                                <div class="text-lg font-bold text-red-900 font-mono leading-none">2d8 + 1d6 + 5</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Damage Roll Foundry Button -->
+                <footer>
+                    <button class="w-full flex items-center justify-center space-x-1.5 py-1.5 px-3 text-xs font-bold bg-gradient-to-b from-red-800 to-red-900 hover:from-red-700 hover:to-red-800 active:from-red-950 text-amber-100 rounded border border-red-950 shadow transition" type="button">
+                        <i class="w-3.5 h-3.5" data-lucide="shield-alert"></i>
+                        <span>Lancer les Dégâts (Critique Automatique)</span>
+                    </button>
+                </footer>
+            </div>
+        </article>
+        <!-- END: CriticalAttackCard -->
+        <!-- ============================================================ -->
+        <!-- CARD 3: ARCANE SAVING THROW (Magistère Vaelen - Rayon Affaiblissant) -->
+        <!-- ============================================================ -->
+        <!-- BEGIN: ArcaneRollCard -->
+        <article class="relative group rounded-xl overflow-hidden shadow-2xl transition-all" data-purpose="card-arcane-save">
+            <div class="bg-parchment-texture border-2 border-purple-900/50 p-3.5 relative text-stone-900 rounded-xl">
+                <span class="absolute top-1 left-1 text-purple-800 leading-none text-xs">✦</span>
+                <span class="absolute top-1 right-1 text-purple-800 leading-none text-xs">✦</span>
+                <span class="absolute bottom-1 left-1 text-purple-800 leading-none text-xs">✦</span>
+                <span class="absolute bottom-1 right-1 text-purple-800 leading-none text-xs">✦</span>
+                <!-- Header -->
+                <header class="flex items-center justify-between pb-2 mb-2 border-b border-[#c8b393] border-dashed">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-full bg-stone-900 ring-2 ring-purple-600 flex items-center justify-center text-purple-300 border border-purple-400/40 shadow">
+                            <i class="w-5 h-5" data-lucide="wand-2"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-base tracking-tight text-stone-900 leading-tight">Magistère Vaelen</h2>
+                            <p class="text-[11px] font-serif italic text-stone-600 leading-none">Sorcier de l'Ombre • Niveau 6</p>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col items-end">
+                        <span class="text-[11px] text-stone-600 font-sans">il y a 5 min</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-purple-900/20 text-purple-950 border border-purple-800/30">
+                Sort Niveau 3
+              </span>
+                    </div>
+                </header>
+                <!-- Spell Flavor -->
+                <div class="flex items-center justify-between bg-purple-950/10 px-2 py-1 rounded border border-purple-800/20 mb-2.5">
+                    <div class="flex items-center space-x-1.5 text-purple-950">
+                        <i class="w-3.5 h-3.5 text-purple-700" data-lucide="sparkle"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Rayon d'Énergie Nécromantique</span>
+                    </div>
+                    <span class="text-xs italic text-stone-700">Sauvegarde CON</span>
+                </div>
+                <!-- Formula & Result -->
+                <section class="bg-[#e7d7bd] rounded-md border border-[#bfa67c] p-2 shadow-inner mb-2.5">
+                    <div class="flex items-center justify-between text-xs text-stone-700 font-mono pb-1 border-b border-[#cfb998]">
+                        <span>Formule : <strong>DD Sortilège 16</strong></span>
+                        <span class="text-stone-600 text-[11px]">Cible : Chevalier Squelette</span>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between px-3">
+                        <div class="text-left">
+                            <span class="text-[10px] font-bold text-stone-600 uppercase">Jet Sauvegarde Cible</span>
+                            <div class="text-2xl font-bold font-mono text-stone-800">11 <span class="text-xs text-stone-500 font-sans font-normal">(1d20 + 2)</span></div>
+                        </div>
+                        <div class="bg-red-900/15 border border-red-700/40 text-red-900 font-bold px-2 py-1 rounded text-xs">
+                            Échec de Sauvegarde
+                        </div>
+                    </div>
+                </section>
+                <!-- Action Buttons -->
+                <footer class="grid grid-cols-2 gap-1.5">
+                    <button class="flex items-center justify-center space-x-1 py-1 px-2 text-[11px] font-medium bg-[#e4d3b6] hover:bg-[#d8c3a1] text-stone-900 rounded border border-[#bfa57f]" type="button">
+                        <i class="w-3 h-3 text-purple-900" data-lucide="skull"></i>
+                        <span>Appliquer Effet</span>
+                    </button>
+                    <button class="flex items-center justify-center space-x-1 py-1 px-2 text-[11px] font-medium bg-[#e4d3b6] hover:bg-[#d8c3a1] text-stone-900 rounded border border-[#bfa57f]" type="button">
+                        <i class="w-3 h-3 text-stone-700" data-lucide="book-open"></i>
+                        <span>Fiche du Sort</span>
+                    </button>
+                </footer>
+            </div>
+        </article>
+        <!-- END: ArcaneRollCard -->
+    </div>
+    <!-- END: ChatMessageLog -->
+    <!-- BEGIN: ChatInputDock -->
+    <!-- Mimicking mobile iOS chat composer for tabletop players -->
+    <footer class="sticky bottom-2 z-10 bg-stone-900/95 border border-amber-900/40 rounded-xl p-2 shadow-2xl backdrop-blur-md" data-purpose="chat-input-toolbar">
+        <div class="flex items-center space-x-2">
+            <!-- Fast d20 Roll Quick Action -->
+            <button class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-700 hover:bg-amber-600 text-stone-100 flex items-center justify-center shadow font-bold text-xs border border-amber-500/50" title="Lancer un d20" type="button">
+                d20
+            </button>
+            <!-- Command Input Field -->
+            <div class="relative flex-1">
+                <input class="w-full bg-stone-950 border border-stone-700/80 rounded-lg py-1.5 pl-3 pr-8 text-xs text-stone-200 placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono" placeholder="/r 1d20 + mod ou message..." type="text" value="/roll 1d20+7"/>
+                <span class="absolute right-2.5 top-2 text-[10px] text-stone-500 uppercase font-sans">CHA</span>
+            </div>
+            <!-- Send Roll Button -->
+            <button class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-600 hover:bg-amber-500 text-stone-950 flex items-center justify-center shadow font-bold transition" type="button">
+                <i class="w-4 h-4" data-lucide="send"></i>
+            </button>
+        </div>
+        <!-- Quick Roll Presets bar for iOS mobile thumb reach -->
+        <div class="flex items-center justify-between pt-2 px-1 text-[11px] text-stone-400">
+            <span class="text-[10px] uppercase font-bold text-stone-500">Raccourcis:</span>
+            <button class="hover:text-amber-300 font-mono bg-stone-800/60 px-1.5 py-0.5 rounded border border-stone-700">Persuasion</button>
+            <button class="hover:text-amber-300 font-mono bg-stone-800/60 px-1.5 py-0.5 rounded border border-stone-700">Tromperie</button>
+            <button class="hover:text-amber-300 font-mono bg-stone-800/60 px-1.5 py-0.5 rounded border border-stone-700">Initiative</button>
+            <button class="hover:text-amber-300 font-mono bg-stone-800/60 px-1.5 py-0.5 rounded border border-stone-700">1d4 Bless</button>
+        </div>
+    </footer>
+    <!-- END: ChatInputDock -->
+</main>
+<!-- END: FoundryVttSidebarContainer -->
+<!-- Icon Initialization Script -->
+<script data-purpose="icon-initialization">
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    });
+</script>
+</body></html>

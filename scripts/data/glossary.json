@@ -1,102 +1,217 @@
 [
   {
+    "key": "ca",
     "term": "Classe d'Armure (CA)",
     "definition": "Détermine la difficulté à toucher le personnage au combat. Un jet d'attaque doit égaler ou dépasser la CA de la cible pour la toucher."
   },
   {
+    "key": "caracteristique",
+    "term": "Caractéristique",
+    "definition": "L'une des 6 aptitudes de base : Force, Dextérité, Constitution, Intelligence, Sagesse, Charisme. Son score (typiquement 8 à 20) donne un modificateur ajouté à tous les jets qui en dépendent."
+  },
+  {
+    "key": "modificateur",
     "term": "Modificateur de caractéristique",
     "definition": "Valeur ajoutée aux jets liés à une caractéristique, calculée à partir de son score total : (score - 10) / 2, arrondi à l'inférieur. Exemple : 16 en Force donne +3."
   },
   {
+    "key": "bonus-maitrise",
     "term": "Bonus de maîtrise",
     "definition": "Bonus ajouté aux tests, sauvegardes ou jets d'attaque pour lesquels le personnage est maîtrisé. Augmente avec le niveau : +2 aux niveaux 1-4, jusqu'à +6 au niveau 17 et au-delà."
   },
   {
+    "key": "test-caracteristique",
     "term": "Test de caractéristique",
     "definition": "1d20 + modificateur de caractéristique, comparé à un Degré de Difficulté (DD) fixé par le Maître du Jeu."
   },
   {
+    "key": "test-competence",
     "term": "Test de compétence",
     "definition": "Un test de caractéristique appliqué à une compétence précise. Ajoute le bonus de maîtrise si la compétence est maîtrisée."
   },
   {
+    "key": "sauvegarde",
     "term": "Jet de sauvegarde",
     "definition": "1d20 + modificateur de caractéristique (+ bonus de maîtrise si la sauvegarde est maîtrisée), pour résister à un effet (piège, sort, poison...)."
   },
   {
+    "key": "avantage",
     "term": "Avantage / Désavantage",
     "definition": "On lance 2d20 au lieu d'un seul et on garde le meilleur résultat (avantage) ou le pire (désavantage). Plusieurs sources d'avantage (ou de désavantage) ne se cumulent jamais entre elles ; avantage et désavantage en même temps s'annulent."
   },
   {
+    "key": "pv",
     "term": "Points de Vie (PV)",
     "definition": "Réserve de vie du personnage. À 0 PV, il tombe inconscient et doit réussir des jets de sauvegarde de la mort pour survivre."
   },
   {
+    "key": "pv-temporaires",
     "term": "Points de vie temporaires",
     "definition": "Réserve de PV additionnelle et temporaire, absorbée en premier lors de dégâts subis. Ne s'additionne jamais aux PV normaux et disparaît si non utilisée avant le prochain repos long."
   },
   {
+    "key": "repos-court",
     "term": "Repos court",
     "definition": "Pause d'environ une heure : récupère la moitié des PV maximum et restaure les charges des Capacités qui se rechargent 'au repos court'."
   },
   {
+    "key": "repos-long",
     "term": "Repos long",
     "definition": "Nuit de repos complète : restaure tous les PV, tout le pool de Sorts et toutes les charges de Capacités."
   },
   {
+    "key": "exhaustion",
     "term": "Exhaustion",
     "definition": "Niveau d'épuisement cumulatif, de 0 à 6. Dès le niveau 1, désavantage aux tests de caractéristique. Dès le niveau 2, vitesse divisée par deux. Dès le niveau 3, désavantage aux jets d'attaque et de sauvegarde. Dès le niveau 4, PV maximum divisés par deux. Niveau 5, vitesse nulle. Niveau 6, mort."
   },
   {
+    "key": "concentration",
     "term": "Concentration",
     "definition": "Certains sorts exigent d'y rester concentré : subir des dégâts impose un jet de sauvegarde de Constitution (DD 10 ou la moitié des dégâts, le plus élevé) sous peine de perdre l'effet. Un personnage ne peut se concentrer que sur un seul sort à la fois."
   },
   {
+    "key": "origine",
     "term": "Origine",
     "definition": "Remplace la notion de race de D&D classique dans ce système : l'une des 6 régions culturelles (Fleuraine, Altenmark, Lucentia, Ravenmoor, Valdera, Azhar), donnant des bonus de caractéristiques, des avantages de compétence et un trait spécial."
   },
   {
+    "key": "capacite",
     "term": "Capacité",
     "definition": "Pouvoir spécial propre à une classe (ou à un don). Certaines nécessitent un jet de dé, d'autres ont un nombre limité d'utilisations récupérées au repos court ou long."
   },
   {
+    "key": "sort",
     "term": "Sort",
     "definition": "Effet magique lancé par une classe de lanceur de sorts. Consomme un Emplacement de sort de son niveau, ou d'un niveau supérieur en cas de Surclassement (sauf les tours de magie, niveau 0, illimités)."
   },
   {
+    "key": "tour-de-magie",
     "term": "Tour de magie",
     "definition": "Sort de niveau 0 : peut être lancé librement, sans jamais consommer d'emplacement de sort."
   },
   {
+    "key": "emplacement-de-sort",
     "term": "Emplacement de sort",
     "definition": "Charge de sort d'un niveau donné (1 à 9, comme le D&D classique), affichée par palier en haut de l'onglet Sorts. Un sort dépense un emplacement de son propre niveau ; l'Occultiste (Magie de Pacte) n'a qu'un seul palier actif à la fois, qui monte avec son niveau et se recharge aussi au repos court."
   },
   {
+    "key": "surclassement",
     "term": "Surclassement",
     "definition": "Si l'emplacement du niveau exact d'un sort est épuisé mais qu'un emplacement de niveau supérieur est disponible, le lanceur peut choisir de le dépenser à la place pour lancer le sort quand même (fenêtre de choix dédiée)."
   },
   {
+    "key": "rituel",
     "term": "Rituel",
     "definition": "Un sort marqué Rituel peut être lancé sans dépenser d'Emplacement de sort, à condition de posséder la Capacité d'Incantation rituelle correspondant à sa classe (Clerc, Druide) — appliqué automatiquement par la fiche, rien à cocher."
   },
   {
+    "key": "langue",
     "term": "Langue",
     "definition": "Un personnage connaît toujours la Commune et la langue de son Origine (octroyées automatiquement à la création). Les langues spéciales (Argot des rues, Jargon militaire...) s'ajoutent manuellement en les glissant depuis le compendium Langues vers l'onglet Journal."
   },
   {
+    "key": "charge",
     "term": "Poids porté / Capacité de charge",
     "definition": "Somme du poids de tous les objets transportés, comparée à la capacité de charge maximale du personnage (Force x 7,5 kg). Au-delà, le personnage est surchargé."
   },
   {
+    "key": "monnaie",
+    "term": "Monnaie",
+    "definition": "Pièces de cuivre (PC), d'argent (PA), d'or (PO) et de platine (PP). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. Le total équivalent en cuivre est indiqué à droite."
+  },
+  {
+    "key": "maitrise",
     "term": "Maîtrise",
     "definition": "Indique qu'un personnage ajoute son bonus de maîtrise aux tests concernés : une compétence, un jet de sauvegarde, une catégorie d'arme ou un outil."
   },
   {
+    "key": "emplacement-equipement",
     "term": "Emplacement d'équipement",
     "definition": "Main principale, Main secondaire, Armure ou Accessoire : chaque emplacement ne peut contenir qu'un seul objet équipé à la fois. Une arme à deux mains occupe Main principale ET Main secondaire."
   },
   {
+    "key": "affinite-degats",
     "term": "Résistance / Immunité / Vulnérabilité (dégâts)",
     "definition": "Une résistance divise par deux les dégâts d'un type donné subis, une immunité les annule totalement, une vulnérabilité les double. Résistance et vulnérabilité sur le même type s'annulent (dégâts normaux). Réglable sur la fiche Personnage/PNJ (MJ) et propre à chaque armure équipée."
+  },
+  {
+    "key": "classe",
+    "term": "Classe",
+    "definition": "Le métier d'aventurier du personnage (Guerrier, Magicien, Roublard...). Détermine ses points de vie, ses maîtrises, ses Capacités et son éventuelle magie. Choisie à la création, jamais modifiée ensuite."
+  },
+  {
+    "key": "sous-classe",
+    "term": "Sous-classe",
+    "definition": "Spécialisation d'une classe, choisie à un niveau qui lui est propre (1 pour Clerc, Ensorceleur et Occultiste ; plus tard pour les autres). Ajoute ses propres Capacités au fil des niveaux."
+  },
+  {
+    "key": "niveau",
+    "term": "Niveau",
+    "definition": "Mesure de la puissance du personnage, de 1 à 20. Chaque montée de niveau augmente les points de vie et débloque de nouvelles Capacités (et parfois une Amélioration de caractéristiques ou un Don)."
+  },
+  {
+    "key": "xp",
+    "term": "Points d'expérience (XP)",
+    "definition": "Points gagnés en surmontant des rencontres. Une fois le seuil du niveau suivant atteint, le personnage peut monter de niveau. La barre de la fiche ne montre au joueur que la progression relative, jamais le total."
+  },
+  {
+    "key": "initiative",
+    "term": "Initiative",
+    "definition": "Détermine l'ordre d'action en combat : 1d20 + modificateur de Dextérité (+ bonus éventuels comme le don Alerte). Le score le plus élevé agit en premier."
+  },
+  {
+    "key": "perception-passive",
+    "term": "Perception passive",
+    "definition": "Score de Perception utilisé sans lancer de dé (remarquer un danger discret, une créature cachée...) : 10 + modificateur de Sagesse (+ bonus de maîtrise si Perception est maîtrisée)."
+  },
+  {
+    "key": "vitesse",
+    "term": "Vitesse de déplacement",
+    "definition": "Distance que le personnage peut parcourir en un tour, en mètres. Se déplacer, se relever ou ramper puise dans cette réserve."
+  },
+  {
+    "key": "inspiration",
+    "term": "Points d'inspiration",
+    "definition": "Ressource libre accordée par le Maître du Jeu, distincte de l'Inspiration bardique. Dépensez-en un via le bouton sous un jet dans le chat pour relancer entièrement un test de caractéristique ou de compétence déjà résolu (jamais une sauvegarde ni une attaque) : le nouveau résultat est toujours conservé."
+  },
+  {
+    "key": "action",
+    "term": "Action",
+    "definition": "Une action principale par tour : attaquer, lancer la plupart des sorts, se Précipiter, se Désengager, se Cacher, aider... Un indicateur en en-tête de fiche la suit pendant un combat."
+  },
+  {
+    "key": "action-bonus",
+    "term": "Action bonus",
+    "definition": "Action supplémentaire par tour, disponible uniquement si une Capacité, un sort ou une règle en accorde une explicitement. Une seule action bonus par tour."
+  },
+  {
+    "key": "reaction",
+    "term": "Réaction",
+    "definition": "Une réponse instantanée par round, déclenchée par un évènement précis (attaque d'opportunité, sort de réaction...). Se régénère au début de votre tour tant qu'un combat est suivi. À vous de juger quand la situation se produit : le système ne la détecte jamais automatiquement."
+  },
+  {
+    "key": "etat",
+    "term": "État",
+    "definition": "Effet temporaire (Empoisonné, À terre, Aveuglé, Agrippé, Entravé...) qui modifie automatiquement les jets concernés — avantage, désavantage ou impossibilité — tant qu'il reste coché sur la fiche."
+  },
+  {
+    "key": "sauvegarde-mort",
+    "term": "Jet de sauvegarde de la mort",
+    "definition": "À 0 PV, au début de chaque tour : 1d20. 10 ou plus = une réussite, moins = un échec. Trois réussites stabilisent le personnage, trois échecs le tuent. Un 20 naturel rend 1 PV ; un 1 naturel compte comme deux échecs."
+  },
+  {
+    "key": "dd-sorts",
+    "term": "DD de sauvegarde des sorts",
+    "definition": "Difficulté que les cibles de vos sorts doivent égaler ou dépasser sur leur jet de sauvegarde pour résister : 8 + bonus de maîtrise + modificateur de la caractéristique d'incantation de la classe."
+  },
+  {
+    "key": "attaque-sorts",
+    "term": "Bonus d'attaque des sorts",
+    "definition": "Ajouté au 1d20 des sorts qui nécessitent un jet d'attaque (rayon, projectile...) : bonus de maîtrise + modificateur de la caractéristique d'incantation de la classe."
+  },
+  {
+    "key": "magie-de-pacte",
+    "term": "Magie de Pacte",
+    "definition": "Système d'emplacements de l'Occultiste : un seul palier de niveau actif à la fois, qui monte avec le niveau, en petit nombre, mais rechargé aussi bien au repos court qu'au repos long."
   }
 ]

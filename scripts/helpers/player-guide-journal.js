@@ -60,7 +60,8 @@ function buildRulesPage(glossary) {
 
     <h2>Points d'inspiration</h2>
     <p>Une ressource libre, distincte de l'Inspiration bardique, que votre Maître du Jeu vous
-    accorde en jeu (compteur visible en en-tête de fiche, à côté des PV). Dépensez-en un via le
+    accorde en jeu (compteur visible dans la bande de constantes de l'en-tête, avec les PV et la
+    CA). Dépensez-en un via le
     bouton qui apparaît sous un jet de caractéristique ou de compétence dans le chat : le jet
     d'origine disparaît, remplacé par un nouveau jet dont le résultat est toujours conservé — même
     s'il est pire. Ne s'applique jamais à une sauvegarde ni à un jet d'attaque.</p>

@@ -185,8 +185,8 @@ describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse",
 });
 
 describe("En-tête de fiche personnage — unité de Vitesse", () => {
-  test("le 'm' de formatSpeed ne s'affiche pas en majuscule (bug historique : uppercase hérité du label parent)", async () => {
-    // .dnd-custom-ai .header-row label est en text-transform: uppercase (libellés type
+  test("le 'm' de formatSpeed ne s'affiche pas en majuscule (bug historique : uppercase hérité du libellé parent)", async () => {
+    // .dnd-custom-ai .hdr-vitals .vital-label est en text-transform: uppercase (libellés type
     // "VITESSE") : propriété héritée par défaut, donc un test jsdom sur le textContent (cf.
     // tests/dom/templates.test.js) ne peut pas l'attraper — seul un vrai moteur de rendu calcule
     // .innerText en respectant les transformations CSS visuelles.
@@ -203,10 +203,75 @@ describe("En-tête de fiche personnage — unité de Vitesse", () => {
     });
     await page.setContent(buildPage(html));
 
-    // CA et Vitesse partagent tous deux .computed-value (cf. character-sheet.hbs) : Vitesse est
-    // le second des deux dans le DOM.
-    const speedValue = page.locator(".header-row .computed-value").last();
-    const text = await speedValue.innerText();
+    // CA, Vitesse, Init. et Perception passive partagent .computed-value dans .hdr-vitals (cf.
+    // character-sheet.hbs) : celle contenue dans le libellé "Vitesse".
+    const speedLabel = page.locator(".hdr-vitals .vital", { hasText: "Vitesse" });
+    const text = await speedLabel.locator(".computed-value").innerText();
     assert.equal(text, "9 m", `unité affichée en majuscule ou valeur inattendue : "${text}"`);
+  });
+});
+
+describe("En-tête compact de fiche personnage — tient dans 708 × 768", () => {
+  const fullContext = {
+    actor: { img: "img.webp", name: "Lyra Chanteprime la Ménestrelle" },
+    system: {
+      xp: 3400,
+      attributes: {
+        level: 5,
+        hp: { value: 27, max: 32, temp: 0 },
+        ac: { value: 15 },
+        speed: 30,
+        inspirationPoints: 1
+      }
+    },
+    isGM: true,
+    levelUpAvailable: true,
+    xpNextThreshold: 6500,
+    xpPercent: 45,
+    classLabel: "Barde",
+    originLabel: "Demi-elfe",
+    hpPercent: 84,
+    initiative: { modLabel: "+3" },
+    passivePerception: 14,
+    reactionAvailable: true,
+    actionAvailable: true,
+    bonusActionAvailable: true,
+    subclassAvailable: true,
+    subclassLabel: "Collège du Savoir",
+    subclassOptions: [{ key: "lore", label: "Collège du Savoir", selected: true }],
+    dying: { active: false },
+    showCreationWizardButton: false
+  };
+
+  test("l'en-tête ne dépasse pas ~40% de la hauteur de fenêtre (laisse la place à l'onglet)", async () => {
+    const html = renderTemplate("actor/character-sheet.hbs", fullContext);
+    await page.setViewportSize({ width: 708, height: 768 });
+    await page.setContent(buildPage(`<div class="dnd-custom-ai sheet actor character" style="width:708px;">${html}</div>`));
+
+    const header = page.locator(".sheet-header");
+    const box = await header.boundingBox();
+    assert.ok(box.width <= 708, `en-tête large de ${box.width}px, attendu <= 708`);
+    assert.ok(box.height < 300, `en-tête haut de ${box.height}px, attendu < 300px (l'onglet doit garder l'essentiel des 768px)`);
+  });
+
+  test("la bande de constantes ne se scinde pas en 2 lignes à 708px de large", async () => {
+    const html = renderTemplate("actor/character-sheet.hbs", fullContext);
+    await page.setViewportSize({ width: 708, height: 768 });
+    await page.setContent(buildPage(`<div class="dnd-custom-ai sheet actor character" style="width:708px;">${html}</div>`));
+
+    const vitals = page.locator(".hdr-vitals");
+    const vitalsBox = await vitals.boundingBox();
+    const cells = page.locator(".hdr-vitals .vital");
+    const count = await cells.count();
+    let firstTop = null;
+    for (let i = 0; i < count; i++) {
+      const cellBox = await cells.nth(i).boundingBox();
+      firstTop ??= cellBox.y;
+      assert.ok(
+        Math.abs(cellBox.y - firstTop) < 6,
+        `la case de constante ${i} est retombée sur une 2e ligne (y=${cellBox.y} vs ${firstTop})`
+      );
+    }
+    assert.ok(vitalsBox.height < 70, `bande de constantes haute de ${vitalsBox.height}px — probablement sur 2 lignes`);
   });
 });

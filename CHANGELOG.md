@@ -7,6 +7,71 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Enrichissement du style de jet de chat (retour d'une maquette externe fournie par l'utilisateur,
+`maquettes/chat-roll-style-stitch/`) — version "sobre" : ce qui sortait du cadre réel du chat
+Foundry (chrome de session, compositeur personnalisé, badge de DD affiché au joueur — contraire
+à un choix de conception déjà pris) a été écarté. Repris uniquement ce qui rentre dans la vraie
+structure du message :
+- **Médaillon d'icône de classe** en tête de carte, résolu depuis le `speaker` du message
+  (`DND_CUSTOM.classFlavorIcon`, déjà utilisé sur l'onglet Capacités) — rien pour un PNJ.
+- **Accent de couleur selon le type de jet** : ambre (attaque), violet (sauvegarde — y compris
+  sauvegarde de la mort et de concentration, désormais aussi marquées), rouille (dégâts), vert
+  (soin) ; un coup/échec critique garde son halo existant, jamais cumulé. Nouveau flag
+  `attackRoll` dans `rollCheck` (posé quand `compareToTargetAc` est vrai) ; `savingThrowRoll`
+  étendu aux jets de sauvegarde imposés à une cible (Capacité/sort) et au jet de concentration,
+  en plus des sauvegardes du personnage lui-même.
+- **Coins ornés**, discrets (4 petits repères "cire" en CSS pur, sans nouvel élément).
+- **Résultat du jet centré** (retour de test).
+
+Style "parchemin déchiré" sur les cartes de jet de dés générées par ce système, dans le chat
+(demande explicite de l'utilisateur, plusieurs itérations visuelles cf. `maquettes/chat-roll-style/`) :
+bord irrégulier, vraie texture parchemin (déjà livrée), libellé en serif, résultat souligné d'un
+trait de cire — distinct au premier coup d'œil d'un jet tapé à la main (`/r`, style Foundry
+inchangé). Marqué à la source par un nouveau helper `sheetRollFlags()` (`helpers/rolls.js`),
+posé sur la quasi-totalité des `Roll#toMessage`/`RollTable#toMessage` du système (jets de
+caractéristique/sauvegarde/compétence/attaque, dégâts, soins, jets de Capacité, tests opposés,
+sauvegarde de la mort, jet de concentration, relances Chanceux/Chance du Fiélon/Indomptable/
+Inspiration, tirage de Magie sauvage) — jamais deviné depuis le speaker, jamais posé sur un jet
+tapé à la main. Classe `.dnd-sheet-roll` posée par un hook `renderChatMessageHTML` dédié, stylée
+hors du bloc `.dnd-custom-ai` (même principe que le style existant des coups/échecs critiques).
+Nouveau test unitaire (`tests/unit/rolls.test.js`) pour `sheetRollFlags`. 879 tests verts.
+
+Infobulles de glossaire sur la fiche de personnage (demande explicite de l'utilisateur) : tous
+les libellés « techniques » de la fiche portent désormais un `data-tooltip` qui affiche, au
+survol, une définition tirée du glossaire (`scripts/data/glossary.json` — même source que la
+page « Glossaire » du Guide du Joueur, désormais indexée par un slug ASCII stable). Couverts :
+PV, PV temporaires, CA, Vitesse, Initiative, Perception passive, points d'inspiration, niveau,
+XP, classe, sous-classe, origine ; Action / Action bonus / Réaction, Repos court / long ;
+caractéristique, modificateur, jet de sauvegarde, bonus de maîtrise, épuisement, états,
+sauvegardes de la mort, compétences, avantage d'origine / désavantage d'armure / aptitudes
+multiples ; DD et bonus d'attaque des sorts, emplacements de sorts, tours de magie, Magie de
+Pacte, concentration, rituel ; monnaie, poids porté / capacité de charge, emplacements
+d'équipement, non-maîtrise. Le glossaire passe de 25 à 43 entrées. Nouveau helper Handlebars
+`glossaryTip`, glossaire chargé au `ready` sur `game.dndCustomAi.glossary`. Les infobulles
+manuelles redondantes de `lang/*.json` (10 clés `*Tooltip`) sont supprimées au profit du
+glossaire (source unique). Migration `title=` → `data-tooltip=` sur ces éléments (infobulle
+stylée Foundry au lieu de l'infobulle navigateur) ; jamais les deux sur un même élément.
+Garde-fous : `tests/dom/templates.test.js` (présence et contenu des infobulles, absence de
+double `title`/`data-tooltip`).
+
+Fiche de personnage joueur — en-tête compact tenant dans une fenêtre de 708 × 768 px (demande
+explicite de l'utilisateur, maquette `maquettes/fiche-708x768/`). L'en-tête passe des 3 colonnes
+de statistiques à 3 bandes fines empilées : identité (portrait réduit, classe/sous-classe/origine
+sur une ligne, niveau + jauge d'XP), constantes toujours visibles quel que soit l'onglet (PV, CA,
+Vitesse, Initiative, Perception passive, Inspiration) et économie d'action + repos. La fenêtre
+s'ouvre désormais à 708 × 768 (au lieu de 720 × 720) et reste librement redimensionnable au-delà.
+Aucun changement fonctionnel : tous les champs, jets et actions (`data-action`) sont conservés à
+l'identique ; la fiche PNJ n'est pas touchée (bloc CSS `.sheet-header-compact` scopé). Nouveau
+garde-fou visuel `tests/visual/layout.test.js` : l'en-tête reste sous ~300 px de haut et la bande
+de constantes ne se scinde pas en 2 lignes à 708 px de large.
+
+Onglet Statistiques resserré dans la foulée (retours utilisateur successifs) : les cases de
+caractéristiques ne gonflent plus (la valeur ne s'étire plus dans `.ability-main`, bloc
+MOD./SAUV. collé à droite) — la colonne se contente de ~284 px au lieu de 368 px ; et les
+gouttières latérales de cet onglet passent de 1,1 rem à 0,5 rem. La liste des compétences y
+gagne près de 100 px de large. La case à cocher de maîtrise de sauvegarde (session MJ) tient
+toujours dans chaque case.
+
 Refonte "Forme sauvage" (Druide, demande explicite de l'utilisateur : mécanique jugée trop
 compliquée à gérer) : le ciblage manuel d'un jeton préparé à l'avance par le MJ est remplacé par
 un dialogue de choix parmi les formes accessibles au niveau du personnage (`DND_CUSTOM.

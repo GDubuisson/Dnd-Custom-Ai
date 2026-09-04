@@ -1,3 +1,5 @@
+import { sheetRollFlags } from "./rolls.js";
+
 const SURGE_TABLES = {
   barbarian: {
     nameKey: "DND_CUSTOM.WildMagic.BarbarianTableName",
@@ -78,6 +80,6 @@ export async function rollWildSurge(actor, subclassKey) {
   const draw = await rollTable.roll();
   await rollTable.toMessage(draw.results, {
     roll: draw.roll,
-    messageOptions: { speaker: ChatMessage.getSpeaker({ actor }) }
+    messageOptions: { speaker: ChatMessage.getSpeaker({ actor }), flags: sheetRollFlags() }
   });
 }

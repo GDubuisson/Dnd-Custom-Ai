@@ -45,6 +45,7 @@ import {
 } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
 import { registerActorUpdateRelay, requestActorUpdate } from "./helpers/actor-relay.js";
+import { sheetRollFlags } from "./helpers/rolls.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -157,6 +158,11 @@ Hooks.once("init", async () => {
   game.dndCustomAi = {
     origins: await loadOrigins(),
     spellSlotTables: await loadSpellSlotTables(),
+    // Glossaire des termes de jeu (scripts/data/glossary.json) : même source que la page
+    // "Glossaire" du Guide du Joueur, réutilisée ici en infobulles sur la fiche via le helper
+    // Handlebars `glossaryTip` (cf. handlebars-helpers.js). Map terme -> définition pour un
+    // accès direct au rendu.
+    glossary: await loadGlossary(),
     openAwardXpDialog,
     importSystemContent,
     resyncControlledToken
@@ -1179,7 +1185,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     const kept = reroll.total > originalTotal ? reroll.total : originalTotal;
     await reroll.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.LuckyReroll", { name: actor.name, kept }),
+      flags: sheetRollFlags()
     });
     await luckyFeat.update({ "system.uses.value": luckyFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "luckApplied", true);
@@ -1216,7 +1223,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     const originalTotal = message.rolls?.[0]?.total ?? 0;
     await bonus.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.FiendLuckBonus", { name: actor.name, newTotal: originalTotal + bonus.total }),
+      flags: sheetRollFlags()
     });
     await fiendLuckFeat.update({ "system.uses.value": fiendLuckFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "fiendLuckApplied", true);
@@ -1251,7 +1259,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     await reroll.evaluate();
     await reroll.toMessage({
       speaker: message.speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.IndomitableReroll", { name: actor.name }),
+      flags: sheetRollFlags()
     });
     await indomitableFeat.update({ "system.uses.value": indomitableFeat.system.uses.value - 1 });
     await message.setFlag(SYSTEM_ID, "indomitableApplied", true);
@@ -1293,7 +1302,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     await reroll.evaluate();
     await reroll.toMessage({
       speaker,
-      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor })
+      flavor: game.i18n.format("DND_CUSTOM.Chat.InspirationReroll", { name: actor.name, flavor }),
+      flags: sheetRollFlags()
     });
     await actor.update({ "system.attributes.inspirationPoints": remaining - 1 });
   });
@@ -1307,6 +1317,44 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 // dnd-custom-ai.css HORS du bloc `.dnd-custom-ai` (les messages de chat vivent dans la barre
 // latérale, jamais imbriqués dans la fiche de personnage/PNJ) : jamais la couleur seule pour
 // distinguer les deux cas (icône différente), conformément aux règles RGAA/WCAG.
+// Style "parchemin déchiré" (demande explicite de l'utilisateur, 2026-09-04, cf.
+// maquettes/chat-roll-style/) sur toute carte de jet générée par CE système — jamais un jet
+// tapé à la main (`/r`). Flag posé une seule fois à la source par `sheetRollFlags()`
+// (helpers/rolls.js), sur quasiment tout `Roll#toMessage`/`RollTable#toMessage` du système :
+// jamais deviné ici depuis le speaker (un joueur peut très bien taper /r avec son personnage
+// sélectionné, le speaker seul ne prouve rien). Styles dans dnd-custom-ai.css (`.dnd-sheet-roll`,
+// hors du bloc `.dnd-custom-ai`, même raison que les critiques ci-dessous).
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  if (!message.getFlag(SYSTEM_ID, "sheetRoll")) return;
+  html.classList.add("dnd-sheet-roll");
+
+  // Icône de classe du personnage qui lance, en médaillon (retour visuel demandé par
+  // l'utilisateur sur inspiration d'une maquette externe, cf. maquettes/chat-roll-style-stitch/)
+  // — réutilise DND_CUSTOM.classFlavorIcon (même donnée que l'en-tête d'ambiance de classe de
+  // l'onglet Capacités, class-flavor.hbs), résolue depuis le `speaker` natif du message : aucune
+  // modification des ~19 sites Roll#toMessage/RollTable#toMessage nécessaire. Rien pour un PNJ
+  // (pas de `system.class`) ni une classe non reconnue.
+  const speakerActor = game.actors.get(message.speaker?.actor);
+  const classIcon =
+    speakerActor?.type === "character" ? DND_CUSTOM.classFlavorIcon[speakerActor.system.class] : null;
+  if (classIcon) {
+    const icon = document.createElement("i");
+    icon.className = `fa-solid ${classIcon} dnd-class-icon`;
+    icon.setAttribute("aria-hidden", "true");
+    html.querySelector(".message-header")?.prepend(icon);
+  }
+
+  // Accent de couleur selon le type de jet (cf. .dnd-roll-attack/-save/-damage/-heal,
+  // dnd-custom-ai.css) — jamais cumulé avec le halo de coup/échec critique (déjà géré à part,
+  // ci-dessous, et déjà visuellement distinct à lui seul).
+  if (!message.getFlag(SYSTEM_ID, "criticalHit") && !message.getFlag(SYSTEM_ID, "criticalFumble")) {
+    if (message.getFlag(SYSTEM_ID, "damageRoll")) html.classList.add("dnd-roll-damage");
+    else if (message.getFlag(SYSTEM_ID, "healRoll")) html.classList.add("dnd-roll-heal");
+    else if (message.getFlag(SYSTEM_ID, "attackRoll")) html.classList.add("dnd-roll-attack");
+    else if (message.getFlag(SYSTEM_ID, "savingThrowRoll")) html.classList.add("dnd-roll-save");
+  }
+});
+
 Hooks.on("renderChatMessageHTML", (message, html) => {
   const isCriticalHit = message.getFlag(SYSTEM_ID, "criticalHit");
   const isCriticalFumble = message.getFlag(SYSTEM_ID, "criticalFumble");
@@ -1359,7 +1407,8 @@ async function checkConcentration(actor, damageAmount) {
       name: actor.name,
       spell: spellName,
       dc
-    })
+    }),
+    flags: sheetRollFlags({ savingThrowRoll: true })
   });
 }
 
@@ -1371,4 +1420,12 @@ async function loadOrigins() {
 async function loadSpellSlotTables() {
   const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/spell-slots.json`);
   return response.json();
+}
+
+async function loadGlossary() {
+  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/glossary.json`);
+  const entries = await response.json();
+  // Indexé par `key` (slug ASCII stable, ex. "ca", "pv-temporaires") : les templates passent ce
+  // slug au helper `glossaryTip` sans avoir à échapper les apostrophes/parenthèses du `term`.
+  return new Map(entries.map((entry) => [entry.key, entry.definition]));
 }

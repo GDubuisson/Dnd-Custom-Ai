@@ -113,4 +113,20 @@ export function registerHandlebarsHelpers() {
     if (!text) return "";
     return text.length > maxLength ? `${text.slice(0, maxLength - 1).trimEnd()}…` : text;
   });
+
+  // Définition d'un terme de jeu depuis le glossaire (game.dndCustomAi.glossary, Map
+  // slug -> définition, chargée au hook "ready" depuis scripts/data/glossary.json — même source
+  // que la page "Glossaire" du Guide du Joueur). Utilisé comme valeur d'un attribut
+  // `data-tooltip` sur les libellés "techniques" de la fiche (PV, CA, Initiative, États,
+  // Concentration...) : Foundry affiche alors son infobulle stylée au survol. L'argument est le
+  // slug ASCII stable (`key` dans glossary.json, ex. "ca", "pv-temporaires") — évite d'avoir à
+  // échapper apostrophes/parenthèses du terme complet dans le template. Renvoie une chaîne vide
+  // si le slug est absent (jamais d'erreur de rendu pour une infobulle de confort manquante) ;
+  // passe par l'échappement Handlebars normal ({{}}) puisqu'elle atterrit dans une valeur
+  // d'attribut. `game` peut être absent (rendu de template hors Foundry, ex. tests) : garde
+  // `typeof`.
+  Handlebars.registerHelper("glossaryTip", (key) => {
+    const glossary = typeof game !== "undefined" ? game?.dndCustomAi?.glossary : null;
+    return glossary?.get?.(key) ?? "";
+  });
 }

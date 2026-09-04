@@ -65,12 +65,13 @@
   box-shadow: inset 0 0 70px rgba(43, 32, 17, 0.22);
 }
 
-/* Largeur plancher de la fiche de personnage (pas de plafond : librement agrandissable) — sous
-   ce seuil, l'en-tête (3 groupes de statistiques, cf. .header-stats plus bas) n'aurait plus la
-   place de reflouer sans tronquer son contenu. Foundry lit `computedStyle.minWidth` de cet
-   élément lui-même pour borner le redimensionnement (ApplicationV2#_onResizeMouseMove), donc ce
-   seul `min-width` suffit à empêcher physiquement de descendre en dessous, sans dépendre du CSS
-   interne de l'en-tête pour éviter un chevauchement. */
+/* Largeur plancher de la fiche de personnage (pas de plafond : librement agrandissable). La
+   fenêtre s'ouvre à 708 × 768 (cf. DEFAULT_OPTIONS.position, actor-sheet.js) et l'en-tête
+   compact (3 bandes fines : identité / constantes / économie d'action, cf. .sheet-header plus
+   bas) est pensé pour tenir à cette largeur ; sous ce plancher, la bande de constantes
+   (.hdr-vitals) commencerait à reflouer sur 2 lignes. Foundry lit `computedStyle.minWidth` de
+   cet élément lui-même pour borner le redimensionnement (ApplicationV2#_onResizeMouseMove),
+   donc ce seul `min-width` suffit à empêcher physiquement de descendre en dessous. */
 .dnd-custom-ai.sheet.actor.character {
   min-width: 640px;
 }
@@ -101,7 +102,9 @@
   border-radius: 4px;
 }
 
-/* ---------- En-tête ("poutre de bois") ---------- */
+/* ---------- En-tête ("poutre de bois") — disposition d'origine, utilisée telle quelle par la
+   fiche PNJ (npc-sheet.hbs : .header-fields / .header-row / .hp-field). La fiche personnage
+   ajoute `.sheet-header-compact` sur son <header> et redéfinit tout ce bloc plus bas. ---------- */
 
 .dnd-custom-ai .sheet-header {
   display: flex;
@@ -154,11 +157,8 @@
   opacity: 0.75;
 }
 
-/* 3 groupes de statistiques (progression, classe, origine), cf. images_test/img_6.png et
-   character-sheet.hbs > .header-stat-col. `flex-wrap` reflue les groupes entiers sur une
-   nouvelle ligne en dessous d'une certaine largeur plutôt que de comprimer leur contenu :
-   jamais de chevauchement, quelle que soit la largeur de fenêtre au-dessus du plancher
-   min-width posé sur .dnd-custom-ai.sheet.actor.character. */
+/* Groupes de statistiques de l'en-tête PNJ (créature type / taille / FP, puis PV / CA /
+   Vitesse / XP). `flex-wrap` reflue les groupes plutôt que de comprimer leur contenu. */
 .dnd-custom-ai .header-stats {
   display: flex;
   flex-wrap: wrap;
@@ -167,29 +167,11 @@
   width: 100%;
 }
 
-.dnd-custom-ai .header-stat-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  flex: 1 1 170px;
-  min-width: 150px;
-}
-
-/* Colonne Origine/Réaction : contenu plus court, n'a pas besoin de s'étirer autant que les deux
-   premières colonnes (progression/classe) quand la fiche s'élargit. */
-.dnd-custom-ai .header-stat-col-origin {
-  flex: 0 1 170px;
-}
-
 .dnd-custom-ai .header-row {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   width: 100%;
-}
-
-.dnd-custom-ai .header-stat-col .header-row {
-  gap: 0.6rem;
 }
 
 .dnd-custom-ai .header-row label {
@@ -226,6 +208,199 @@
 .dnd-custom-ai .header-row input[type="number"] {
   width: 3.5rem;
   text-align: center;
+}
+
+/* ========== En-tête compact de la FICHE PERSONNAGE (.sheet-header-compact) ==========
+   Maquette maquettes/fiche-708x768/ adoptée le 2026-09-04 : la fenêtre s'ouvre à 708 × 768
+   (cf. DEFAULT_OPTIONS.position, actor-sheet.js). L'en-tête tient en 3 bandes fines empilées
+   — identité / constantes / économie d'action — pour rendre la hauteur à l'onglet actif.
+   Chaque bande passe à la ligne (`flex-wrap`) sans jamais chevaucher au-dessus du plancher
+   min-width de la fiche. Bloc entièrement scopé : la fiche PNJ (ci-dessus) n'est pas touchée. */
+
+.dnd-custom-ai .sheet-header-compact {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 0.5rem 0.7rem;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .portrait {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  border-radius: 0.35rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-id-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .actor-name {
+  font-size: 1.2rem;
+  line-height: 1.1;
+  padding: 0.05rem 0;
+}
+
+/* Classe · Sous-classe · Origine sur une ligne (reflue si besoin). Chaque champ = petit
+   libellé + valeur cliquable (ouvre la fiche de description) ou <select> (sous-classe MJ). */
+.dnd-custom-ai .sheet-header-compact .hdr-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.7rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.72rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub-field {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub .fixed-field-value {
+  font-size: 0.8rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.05rem 0.1rem;
+  max-width: 9rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub select:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-sub .roll-btn i {
+  font-size: 0.7rem;
+}
+
+/* Niveau + bouton "monter" + jauge d'XP, calés à droite de la bande identité. */
+.dnd-custom-ai .sheet-header-compact .hdr-progression {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  min-width: 6.5rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-level-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-level-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-level-field input[type="number"] {
+  width: 2.6rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.05rem 0.1rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-level-field input[type="number"]:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
+}
+
+/* ---- Bande 2 : constantes (PV, CA, Vitesse, Init., Perc. passive, Inspiration) ---- */
+.dnd-custom-ai .sheet-header-compact .hdr-vitals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 1px;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(240, 223, 174, 0.18);
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital {
+  flex: 1 1 4.5rem;
+  min-width: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  padding: 0.25rem 0.4rem;
+  background: rgba(0, 0, 0, 0.08);
+  font-family: var(--dca-font-label);
+  /* Réinitialise le `text-transform: uppercase` que ces <label> pouvaient hériter
+     (cf. bug historique sur l'unité "m" de Vitesse). */
+  text-transform: none;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital-hp {
+  flex: 2 1 8rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital > input[type="number"] {
+  width: 2.2rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital > input[type="number"]:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
 }
 
 /* Classe/Origine : champs fixes (non éditables sur la fiche, cf. assistant de création),
@@ -277,6 +452,8 @@
   color: var(--dca-secondary-fixed-dim);
 }
 
+/* .hp-field : utilisé par l'en-tête PNJ (largeur plancher) et, en compact, comme case PV de
+   la bande de constantes (redéfini plus bas). */
 .dnd-custom-ai .hp-field {
   min-width: 8rem;
 }
@@ -298,6 +475,52 @@
 
 .dnd-custom-ai .hp-temp input[type="number"] {
   width: 2.2rem;
+}
+
+/* Case PV de la bande de constantes compacte (fiche personnage) : centrée, chiffres serrés,
+   jauge sur toute la largeur de la case. */
+.dnd-custom-ai .sheet-header-compact .hp-field {
+  min-width: 0;
+}
+
+.dnd-custom-ai .sheet-header-compact .hp-values {
+  justify-content: center;
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dca-secondary-fixed);
+}
+
+.dnd-custom-ai .sheet-header-compact .hp-values input[type="number"] {
+  width: 2.1rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--dca-secondary-fixed);
+  font-family: var(--dca-font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0;
+}
+
+.dnd-custom-ai .sheet-header-compact .hp-values input[type="number"]:focus {
+  outline: none;
+  border-bottom-color: var(--dca-secondary-fixed-dim);
+}
+
+.dnd-custom-ai .sheet-header-compact .hp-temp {
+  margin-left: 0.3rem;
+  font-size: 0.8em;
+}
+
+.dnd-custom-ai .sheet-header-compact .hp-temp input[type="number"] {
+  width: 1.7rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-vitals .vital-hp .hp-bar-track {
+  width: 100%;
+  margin-top: 0.15rem;
 }
 
 /* Retour de test : le badge "Monter de niveau" (pilule pleine largeur, images_test/
@@ -327,14 +550,14 @@
 .dnd-custom-ai .level-up-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   align-self: center;
-  padding: 0.3rem 0.6rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
   background: var(--dca-tertiary);
   color: var(--dca-surface-lowest);
   font-family: var(--dca-font-label);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -365,13 +588,13 @@
   align-items: center;
   gap: 0.3rem;
   align-self: center;
-  padding: 0.3rem 0.6rem;
+  padding: 0.2rem 0.55rem;
   border: none;
   border-radius: 999px;
   background: var(--dca-tertiary);
   color: var(--dca-surface-lowest);
   font-family: var(--dca-font-label);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   cursor: pointer;
@@ -399,17 +622,29 @@
 }
 
 /* Regroupe le libellé/chiffres MJ (.xp-gm-field, si MJ) au-dessus de la barre de XP plutôt que
-   côte à côte — retour de test, cf. images_test. */
+   côte à côte — retour de test, cf. images_test. Dans l'en-tête compact, la jauge est calée à
+   droite sous le niveau (cf. .hdr-progression). */
 .dnd-custom-ai .xp-field {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  flex: 1 1 0;
+  align-items: flex-end;
+  gap: 0.1rem;
+  width: 100%;
   min-width: 6rem;
+  font-family: var(--dca-font-label);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dca-secondary-fixed-dim);
 }
 
 .dnd-custom-ai .xp-field .xp-gm-field {
   gap: 0;
+  align-items: flex-end;
+}
+
+.dnd-custom-ai .xp-field .xp-gm-field .fixed-field-value {
+  font-size: 0.72rem;
 }
 
 /* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
@@ -468,6 +703,37 @@
 
 .dnd-custom-ai .header-actions button[data-action="restLong"]:hover {
   background: var(--dca-secondary-fixed);
+}
+
+/* ---- Bande 3 (fiche personnage compacte) : économie d'action + repos, calés à droite ---- */
+.dnd-custom-ai .sheet-header-compact .hdr-econ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dnd-custom-ai .sheet-header-compact .hdr-econ-spacer {
+  flex: 1 1 auto;
+}
+
+.dnd-custom-ai .sheet-header-compact .header-actions {
+  gap: 0.35rem;
+  margin-top: 0;
+}
+
+.dnd-custom-ai .sheet-header-compact .header-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.62rem;
+  padding: 0.25rem 0.5rem;
+  border-width: 1px;
+}
+
+.dnd-custom-ai .sheet-header-compact .header-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .dnd-custom-ai .death-panel {
@@ -586,6 +852,14 @@
   padding: 1rem 1.1rem 1.4rem;
 }
 
+/* Onglet Caractéristiques : marges latérales réduites (retour utilisateur — récupérer de la
+   largeur pour les cases de caractéristiques et la liste de compétences sur une fenêtre de
+   708px). Ne touche que cet onglet ; les autres gardent la gouttière d'origine. */
+.dnd-custom-ai .tab.stats {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .dnd-custom-ai .tab-title {
   display: flex;
   align-items: center;
@@ -614,6 +888,25 @@
   color: var(--dca-muted-text);
 }
 
+/* Infobulles de glossaire (data-tooltip -> infobulle stylée Foundry, cf. helper `glossaryTip`
+   et scripts/data/glossary.json) posées sur des libellés non cliquables : curseur "aide" pour
+   signaler qu'un survol donne une définition. Les éléments cliquables (button/a/input/select)
+   gardent leur propre curseur. */
+.dnd-custom-ai span[data-tooltip],
+.dnd-custom-ai label[data-tooltip],
+.dnd-custom-ai h3[data-tooltip],
+.dnd-custom-ai .vital[data-tooltip],
+.dnd-custom-ai .exhaustion-chip[data-tooltip],
+.dnd-custom-ai .proficiency-bonus[data-tooltip],
+.dnd-custom-ai .derived-stats[data-tooltip],
+.dnd-custom-ai .damage-affinity-summary[data-tooltip],
+.dnd-custom-ai .origin-trait-panel[data-tooltip],
+.dnd-custom-ai .concentration-banner[data-tooltip],
+.dnd-custom-ai .active-conditions-row[data-tooltip],
+.dnd-custom-ai .carrying-capacity[data-tooltip] {
+  cursor: help;
+}
+
 .dnd-custom-ai input[type="checkbox"] {
   accent-color: var(--dca-secondary);
   width: 0.9rem;
@@ -628,19 +921,18 @@
   cursor: not-allowed;
 }
 
-/* PV max / CA / Vitesse : valeurs calculées, jamais des champs de saisie (cf.
-   CharacterData#prepareDerivedData). Même rendu que les inputs qu'elles remplacent. */
-.dnd-custom-ai .header-row .computed-value,
+/* PV max / CA / Vitesse / Init. / Perception passive : valeurs calculées, jamais des champs de
+   saisie (cf. CharacterData#prepareDerivedData). Rendu homogène avec les inputs voisins. */
+.dnd-custom-ai .hdr-vitals .computed-value,
 .dnd-custom-ai .hp-max-value {
   font-family: var(--dca-font-headline);
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--dca-secondary-fixed);
-  padding: 0.05rem 0.1rem;
-  /* Le label parent (ex. "VITESSE") est en text-transform: uppercase (cf. .header-row label
-     ci-dessus), hérité par défaut : sans cette réinitialisation, l'unité "m" de formatSpeed
-     (handlebars-helpers.js) s'affichait "M" à l'écran malgré un textContent correct — bug
-     remonté par test. */
+  padding: 0;
+  /* Le libellé parent (ex. "VITESSE") est en text-transform: uppercase : hérité par défaut,
+     sans cette réinitialisation l'unité "m" de formatSpeed (handlebars-helpers.js) s'affichait
+     "M" à l'écran malgré un textContent correct — bug remonté par test. */
   text-transform: none;
 }
 
@@ -748,21 +1040,24 @@
 .dnd-custom-ai .stats-columns {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.7rem;
 }
 
 /* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
    les 6 cases ne tenaient plus toutes à l'écran sans défiler dès qu'une fenêtre de fiche assez
    basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne.
-   Largeur de colonne relevée à 176px (retour de test suivant, cf. images_test/img.png) : à
-   150px, le bloc MOD./SAUV. de chaque case (cf. .ability-side plus bas) n'avait plus assez de
-   place pour la case à cocher de maîtrise de sauvegarde (session MJ) sans se chevaucher avec le
-   reste de la case. */
+   Retour de test (2026-09-04, images_test/cellule_stat_plus_petite.png) : les cases prenaient
+   trop de largeur (la valeur, centrée dans `.ability-main` en `flex: 1 1 auto`, gonflait la
+   case) — `.ability-main` ne grandit plus (valeur collée à gauche, bloc MOD./SAUV. collé à
+   droite) et cette colonne se contente désormais de ~300px, laissant plus de place aux
+   Compétences sur une fenêtre de 708px de large. Le bloc MOD./SAUV. (`.ability-side`) garde sa
+   largeur naturelle : la case à cocher de maîtrise de sauvegarde (session MJ) ne peut plus se
+   faire écraser puisque plus rien ne se dispute l'espace horizontal dans la case. */
 .dnd-custom-ai .abilities-column {
   display: grid;
-  grid-template-columns: repeat(2, minmax(176px, 1fr));
+  grid-template-columns: repeat(2, minmax(132px, 1fr));
   gap: 0.4rem;
-  flex: 0 0 368px;
+  flex: 0 1 284px;
 }
 
 .dnd-custom-ai .skills-column {
@@ -806,11 +1101,12 @@
 .dnd-custom-ai .ability-card-row {
   display: flex;
   align-items: stretch;
+  justify-content: space-between;
   gap: 0.35rem;
 }
 
 .dnd-custom-ai .ability-main {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3000,4 +3296,158 @@
 
 .dice-roll.dnd-critical-fumble .dnd-critical-icon {
   color: #ba1a1a;
+}
+
+/* ---------- Style "parchemin déchiré" des jets issus de ce système ----------
+   Demande explicite de l'utilisateur (2026-09-04, cf. maquettes/chat-roll-style/) : distinguer
+   dans le chat les jets générés par la fiche (bouton d'attaque/compétence/sauvegarde, relance
+   automatique d'un don, jet de concentration...) d'un jet tapé à la main (/r). Marqué à la
+   source par `sheetRollFlags()` (helpers/rolls.js), posé sur QUASIMENT tout `Roll#toMessage`/
+   `RollTable#toMessage` du système (jamais deviné ici depuis le speaker : un joueur peut très
+   bien taper /r avec son personnage sélectionné, le speaker seul ne prouve rien) ; classe
+   `.dnd-sheet-roll` posée sur la racine du message par le hook renderChatMessageHTML
+   (dnd-custom-ai.js). Pas scopé `.dnd-custom-ai` (même raison que les critiques ci-dessus : les
+   cartes de chat vivent dans la barre latérale, jamais dans la fiche — couleurs en dur, texture
+   servie par le même chemin relatif que --dca-texture-parchment). `!important` sur les
+   propriétés qui doivent gagner sur le style de base `.chat-message` du cœur Foundry, dont on ne
+   connaît pas la spécificité exacte selon la version. */
+.dnd-sheet-roll {
+  /* 6 couches : voile crème + texture parchemin (déjà livrée) + 4 petits repères "cire" aux
+     coins (retour utilisateur : coins ornés, discrets pour ne pas concurrencer le bord
+     déchiré). Chaque propriété ci-dessous liste ses valeurs dans le même ordre que les couches. */
+  background-image:
+    linear-gradient(rgba(233, 220, 184, 0.88), rgba(227, 212, 169, 0.9)),
+    url("textures/parchment.jpg"),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%) !important;
+  background-size: 100% 100%, 300px 300px, 8px 8px, 8px 8px, 8px 8px, 8px 8px !important;
+  background-position:
+    0 0, 0 0,
+    12px 12px, calc(100% - 12px) 12px,
+    12px calc(100% - 12px), calc(100% - 12px) calc(100% - 12px) !important;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-color: #e3d4a9 !important;
+  border: none !important;
+  border-radius: 2px !important;
+  padding: 10px 14px 16px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  /* Bord irrégulier façon page déchirée : dents peu profondes (quelques px), donc lisible à
+     n'importe quelle hauteur de carte (contenu court ou long). */
+  clip-path: polygon(
+    0 4px, 3% 0, 10% 3px, 22% 0, 38% 4px, 55% 0, 72% 3px, 88% 0, 97% 4px, 100% 1px,
+    100% calc(100% - 5px), 96% 100%, 82% calc(100% - 4px), 64% 100%, 46% calc(100% - 3px),
+    28% 100%, 12% calc(100% - 4px), 2% 100%, 0 calc(100% - 3px)
+  );
+}
+
+/* Icône de classe du personnage en médaillon, en tête de carte (cf. hook renderChatMessageHTML,
+   dnd-custom-ai.js > DND_CUSTOM.classFlavorIcon). Absente pour un PNJ ou un jet sans acteur
+   reconnu (le hook n'injecte alors rien). */
+.dnd-sheet-roll .dnd-class-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 0.45em;
+  border-radius: 50%;
+  background: #3d2b17;
+  color: #d7b47f;
+  font-size: 0.8em;
+  box-shadow: 0 0 0 1px #7a5a35;
+  flex: 0 0 auto;
+}
+
+/* Accent de couleur selon le type de jet (cf. hook renderChatMessageHTML) : ne retouche que le
+   petit fleuron devant le libellé et la couleur du résultat — jamais le fond parchemin, pour
+   rester sobre et cohérent avec le style de base. Un coup/échec critique (halo doré/rouge déjà
+   existant) n'a jamais l'une de ces classes en plus (cf. garde dans le hook). */
+.dnd-sheet-roll.dnd-roll-attack .flavor-text::before {
+  color: #a16207;
+}
+
+.dnd-sheet-roll.dnd-roll-attack .dice-total {
+  color: #6b4415;
+}
+
+.dnd-sheet-roll.dnd-roll-save .flavor-text::before {
+  color: #5b3a8a;
+}
+
+.dnd-sheet-roll.dnd-roll-save .dice-total {
+  color: #43296b;
+}
+
+.dnd-sheet-roll.dnd-roll-damage .flavor-text::before {
+  color: #8a1f11;
+}
+
+.dnd-sheet-roll.dnd-roll-damage .dice-total {
+  color: #6b1a0e;
+}
+
+.dnd-sheet-roll.dnd-roll-heal .flavor-text::before {
+  color: #2f6b3a;
+}
+
+.dnd-sheet-roll.dnd-roll-heal .dice-total {
+  color: #1f4a28;
+}
+
+.dnd-sheet-roll .message-header {
+  color: #8a7a55;
+}
+
+.dnd-sheet-roll .message-sender {
+  color: #3d2b17;
+}
+
+/* Même pile de polices que --dca-font-headline (fiche) : cohérence visuelle entre fiche et
+   chat sans dépendre d'une variable CSS (hors du bloc .dnd-custom-ai ici). */
+.dnd-sheet-roll .flavor-text {
+  font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.05em;
+  color: #5c2c0d;
+  margin: 1px 0 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+}
+
+.dnd-sheet-roll .flavor-text::before {
+  content: "\2726";
+  color: #b3401f;
+  font-size: 0.7em;
+}
+
+.dnd-sheet-roll .dice-roll .dice-result,
+.dnd-sheet-roll .dice-tooltip {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dnd-sheet-roll .dice-formula {
+  background: transparent !important;
+  border: none !important;
+  color: #6b5330;
+  font-style: italic;
+  font-family: "Vollkorn", "Iowan Old Style", Palatino, Georgia, serif;
+  padding: 0 0 4px !important;
+}
+
+/* Retour de test : le trait de "cire" sous le résultat (::after, supprimé) ressortait comme un
+   simple trait rouge disgracieux plutôt qu'un soulignement discret — juste le chiffre en grand,
+   sans décoration en dessous. */
+.dnd-sheet-roll .dice-total {
+  display: block;
+  text-align: center;
+  padding: 0 !important;
+  font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  font-weight: 600;
+  font-size: 1.7em;
+  color: #2b2011;
 }

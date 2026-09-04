@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Styles de jets — chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Vollkorn:wght@400;600&family=Work+Sans:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ---- Reconstitution minimale du chat Foundry (thème sombre par défaut) ---- */
+body{margin:0;background:#1e1e22;padding:24px;display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;
+     font-family:"Signika","Segoe UI",sans-serif;color:#eee}
+.col{width:320px}
+.col h2{color:#c9b072;font-family:"Spectral",serif;font-size:15px;margin:0 0 4px}
+.col p.desc{color:#9a927f;font-size:11px;margin:0 0 12px;line-height:1.4}
+
+.chat-message{
+  background:#ededed;color:#191813;border:1px solid #999;border-radius:5px;
+  padding:8px;margin-bottom:14px;font-size:13px;box-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+.message-header{display:flex;justify-content:space-between;font-size:11px;color:#7a7971;margin-bottom:4px}
+.message-sender{font-weight:700;color:#4b4a44}
+.flavor-text{font-style:italic;color:#4b4a44;margin:2px 0 6px;font-size:12px}
+.dice-roll{margin-top:4px}
+.dice-result{background:#f5f5f5;border:1px solid #c9c7b8;border-radius:3px;overflow:hidden}
+.dice-formula{background:#e8e6d8;padding:4px 6px;font-family:monospace;font-size:12px;color:#4b4a44;border-bottom:1px solid #c9c7b8}
+.dice-total{padding:6px;text-align:center;font-size:20px;font-weight:700;color:#191813}
+
+/* ============================================================
+   3 propositions — appliquées via une classe sur .chat-message
+   ============================================================ */
+
+/* ---- A · Sceau de cire (discret : filet gauche + pastille + fond parchemin) ---- */
+.dca-roll-a{
+  border-color:#7a5a35;
+  border-left:4px solid #7a3712;
+  background:
+    linear-gradient(rgba(233,220,184,.55),rgba(233,220,184,.55)),
+    #ededed;
+}
+.dca-roll-a .flavor-text{
+  font-family:"Vollkorn",serif;color:#5c2c0d;font-style:normal;font-weight:600;
+  display:flex;align-items:center;gap:6px;
+}
+.dca-roll-a .flavor-text::before{
+  content:"";flex:0 0 14px;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#b3401f,#7a3712);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+}
+.dca-roll-a .dice-formula{background:#e3d4a9;border-color:#b99a63;color:#4a3820}
+.dca-roll-a .dice-result{border-color:#b99a63}
+
+/* ---- B · Carte parchemin (marquée : cadre bois + fond parchemin + titre serif) ---- */
+.dca-roll-b{
+  border:2px solid #5c4326;border-radius:6px;
+  background:
+    linear-gradient(rgba(233,220,184,.82),rgba(233,220,184,.82)),
+    #ddc994;
+  box-shadow:0 1px 4px rgba(43,32,17,.4), inset 0 0 22px rgba(122,90,53,.12);
+}
+.dca-roll-b .message-header{color:#6b5330;border-bottom:1px dashed #b99a63;padding-bottom:3px}
+.dca-roll-b .message-sender{color:#3d2b17}
+.dca-roll-b .flavor-text{
+  font-family:"Spectral",serif;font-style:normal;font-weight:600;font-size:13px;color:#5c2c0d;
+  text-align:center;border-bottom:1px solid #b99a63;padding-bottom:5px;margin-bottom:7px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.dca-roll-b .flavor-text::before{content:"\2726";color:#7a3712;font-size:11px}
+.dca-roll-b .flavor-text::after{content:"\2726";color:#7a3712;font-size:11px}
+.dca-roll-b .dice-formula{background:#e8c98a;border-color:#b99a63;color:#5c2c0d}
+.dca-roll-b .dice-result{border-color:#a9895b}
+.dca-roll-b .dice-total{color:#3d2b17}
+
+/* ---- C · Filet discret (minimal : liseré gauche + police serif, rien d'autre) ---- */
+.dca-roll-c{
+  border-left:3px solid #b3401f;
+}
+.dca-roll-c .flavor-text{
+  font-family:"Vollkorn",serif;font-style:normal;color:#3d2b17;
+  display:flex;align-items:center;gap:5px;
+}
+.dca-roll-c .flavor-text::before{
+  content:"\2680";font-size:14px;color:#7a3712;line-height:1;
+}
+</style>
+</head>
+<body>
+
+<div class="col">
+  <h2>Actuel (défaut Foundry)</h2>
+  <p class="desc">Aucun style propre au système — la carte de jet est indistincte d'un <code>/r</code> tapé à la main.</p>
+  <div class="chat-message">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Persuasion (CHA)</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d20 + 7</div>
+      <div class="dice-total">21</div>
+    </div></div>
+  </div>
+  <div class="chat-message">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Rapière — Dégâts</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d8 + 3</div>
+      <div class="dice-total">9</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="col">
+  <h2>A · Sceau de cire</h2>
+  <p class="desc">Filet gauche rouille + pastille « cire » avant le libellé + léger voile parchemin. Discret, lisible d'un coup d'œil.</p>
+  <div class="chat-message dca-roll-a">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Persuasion (CHA)</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d20 + 7</div>
+      <div class="dice-total">21</div>
+    </div></div>
+  </div>
+  <div class="chat-message dca-roll-a">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Rapière — Dégâts</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d8 + 3</div>
+      <div class="dice-total">9</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="col">
+  <h2>B · Carte parchemin</h2>
+  <p class="desc">Cadre bois complet, fond parchemin, libellé centré en serif entre deux fleurons. Le plus « signé », se démarque nettement.</p>
+  <div class="chat-message dca-roll-b">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Persuasion (CHA)</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d20 + 7</div>
+      <div class="dice-total">21</div>
+    </div></div>
+  </div>
+  <div class="chat-message dca-roll-b">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Rapière — Dégâts</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d8 + 3</div>
+      <div class="dice-total">9</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="col">
+  <h2>C · Filet discret</h2>
+  <p class="desc">Un liseré gauche + un petit dé + le libellé en serif. Le minimum pour distinguer sans alourdir le chat.</p>
+  <div class="chat-message dca-roll-c">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Persuasion (CHA)</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d20 + 7</div>
+      <div class="dice-total">21</div>
+    </div></div>
+  </div>
+  <div class="chat-message dca-roll-c">
+    <div class="message-header"><span class="message-sender">Lyra Chanteprime</span><span>à l'instant</span></div>
+    <div class="flavor-text">Rapière — Dégâts</div>
+    <div class="dice-roll"><div class="dice-result">
+      <div class="dice-formula">1d8 + 3</div>
+      <div class="dice-total">9</div>
+    </div></div>
+  </div>
+</div>
+
+</body>
+</html>
