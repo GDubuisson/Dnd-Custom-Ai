@@ -15,6 +15,10 @@ function buildOverviewPage() {
     <ul>
       <li>PV max, CA, Initiative, bonus de maîtrise, DD/bonus d'attaque des sorts : recalculés en
       permanence à partir des caractéristiques, de la classe et du niveau.</li>
+      <li>Coups et échecs critiques (jets d'attaque et de sauvegarde, uniquement pendant un combat
+      suivi) : un 20 naturel est toujours une réussite critique (dégâts doublés, touche
+      automatique sur cible sélectionnée) et un 1 naturel toujours un échec critique (rate
+      automatiquement), quels que soient les bonus — jamais hors combat.</li>
       <li>Défense sans armure du Barbare : bonus de Constitution ajouté automatiquement à la CA
       tant qu'aucune armure n'est équipée, sans rien à cocher.</li>
       <li>Aptitudes multiples (Barde) : pastille automatique sur une compétence non maîtrisée qui
@@ -210,7 +214,7 @@ async function buildProgressionPage() {
     niveau atteint :</p>
     <ul>
       <li><strong>Sous-classe</strong> (niveau propre à chaque classe, SRD 5e — 1 pour Clerc/
-      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 8 autres) : liste les sous-classes
+      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 7 autres) : liste les sous-classes
       de la classe du personnage, description complète affichée. Ne se propose plus une fois le
       choix fait (verrouillé) ; tant qu'il n'a pas encore été fait, la fenêtre revient à chaque
       montée de niveau suivante, et le sélecteur permanent de l'en-tête reste aussi disponible en

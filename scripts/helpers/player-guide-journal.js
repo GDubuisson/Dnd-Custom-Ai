@@ -49,6 +49,11 @@ function buildRulesPage(glossary) {
     <p>Cliquer sur une valeur de jet soulignée sur la fiche lance le d20 correspondant
     automatiquement. Maj-clic : ${abbr("Avantage / Désavantage", "avantage")}. Ctrl-clic :
     ${abbr("Avantage / Désavantage", "désavantage")}.</p>
+    <p><strong>Coups et échecs critiques</strong> : uniquement pendant un combat suivi par le
+    Maître du Jeu (jamais hors combat), un 20 naturel sur un jet d'attaque ou de sauvegarde est
+    toujours une réussite critique et un 1 naturel toujours un échec critique, quels que soient
+    les bonus. Sur une attaque avec cible sélectionnée, le coup critique touche automatiquement
+    (dégâts doublés) et l'échec critique rate automatiquement.</p>
 
     <h2>Agripper / Bousculer</h2>
     <p>Au lieu d'une attaque, vous pouvez tenter d'agripper ou de bousculer une seule créature à

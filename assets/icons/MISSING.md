@@ -32,7 +32,7 @@ concerné.
 | Origines | `world-items/origins.json` | `assets/icons/origins/` | 6/6 |
 | Langues | `world-items/languages.json` | `assets/icons/languages/` (+ blasons d'Origine) | 11/11 |
 | Sorts | `world-items/spells.json` | `assets/icons/spells/` | 42/42 |
-| Capacités | `world-items/features.json` | `assets/icons/features/` | 103/105 (2 placeholders ci-dessus) |
+| Capacités | `world-items/features.json` | `assets/icons/features/` | 117/119 (2 placeholders ci-dessus) — 101 fichiers, plusieurs entrées de capacités liées partagent parfois la même icône |
 | Dons | `world-items/feats.json` | `assets/icons/feats/` | 10/10 |
 | Adversaires | `world-items/npcs.json` | icônes core Foundry (`icons/creatures/`, `icons/svg/mystery-man.svg`) | 13/15 (2 placeholders ci-dessus) |
 
