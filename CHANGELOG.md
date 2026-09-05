@@ -7,6 +7,20 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), 2 chantiers
+traités sans changement de comportement :
+- Factorisation du pattern "relais socket vers le MJ actif", jusqu'ici tripliqué
+  indépendamment dans `actor-relay.js`/`companion.js`/`wild-shape-form.js`, dans un nouveau
+  `scripts/helpers/gm-relay.js` (`createGmRelay`).
+- Extraction de ~600 lignes de `scripts/dnd-custom-ai.js` (1431 → ~820 lignes) sans lien avec
+  son rôle de point d'entrée : résolution des dégâts/soins/résistances
+  (`scripts/helpers/damage-resolution.js`) et les 9 hooks `renderChatMessageHTML` du système
+  (`scripts/helpers/chat-message-hooks.js`).
+
+Les deux validés par des specs Cypress ciblées (wild-shape/sous-classe Rôdeur/mécaniques
+Niveau A/types de dégâts armure/interaction sauvegarde-résistance) en plus de la suite
+unitaire complète.
+
 **Documenté** — Point 3 de la revue "prêt pour la V1 ?" du 2026-09-04 : audit des licences
 des icônes tierces dans `assets/icons/`. Environ 166 fichiers sur 217 (sous-classes,
 capacités, dons, une partie des sorts) proviennent du wiki Baldur's Gate 3 (copyright
