@@ -7,6 +7,27 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Refactor** — Revue clean code demandée par l'utilisateur (2026-09-05), les 3 points identifiés
+traités sans changement de comportement :
+- Options d'avantage/désavantage/critique d'un jet d'attaque, dupliquées verbatim entre
+  `#onRollWeaponAttack` et `#onCastSpell`, factorisées dans `attackRollOptions()`
+  (`actor-sheet.js`).
+- Libellés `attackBonusLabel`/`damageLabel` d'un profil d'attaque, dupliqués entre `actor-sheet.js`
+  (Forme sauvage) et `npc-sheet.js`, factorisés dans `formatAttackLabels()` (`helpers/rules.js`).
+- `#onCastSpell` (~285 lignes, une dizaine de mécaniques mélangées) scindé en 5 méthodes privées
+  (`#resolveSpellSlotCost`/`#applySpellConcentration`/`#castAttackSpell`/`#castSaveSpell`/
+  `#castHealSpell`/`#applySpellCondition`), l'orchestrateur ne fait plus qu'enchaîner les étapes.
+
+Validé par des specs Cypress ciblées (onglet Capacités/Sorts, Métamagie, halfOnSave, sous-classes
+SRD génériques) en plus de la suite unitaire complète — a révélé au passage 2 tests obsolètes
+supplémentaires (même piège que `tab-abilities.cy.js`, cf. entrée suivante) et un bug de
+permission pré-existant sur Sculpteur de sorts (cf. `ANOMALIES_ACTIVES.md`).
+
+**Corrigé (tests)** — `cypress/e2e/metamagic-careful-heightened.cy.js` et
+`cypress/e2e/srd-generic-subclasses.cy.js` : même piège que `tab-abilities.cy.js` ci-dessous
+(bouton de sort caché par son `.spell-level-group` inactif) — nouveau helper `goToSpellLevel`
+ajouté dans chacun.
+
 **Corrigé (tests)** — `cypress/e2e/tab-abilities.cy.js` : 7 tests (T-ABIL-010/011/013/014/019/
 024/026) échouaient sur `cy.click()` d'un bouton de sort caché par son `.spell-level-group`
 parent (`display: none`). Diagnostic : test jamais mis à jour depuis l'ajout des onglets par
