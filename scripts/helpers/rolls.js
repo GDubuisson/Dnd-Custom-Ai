@@ -195,23 +195,24 @@ export async function rollDamage({
   // du même effet visuel que le jet d'attaque qui l'a déclenché (retour de test, lot 3 point 8).
   // `damageType` (clé brute DND_CUSTOM.damageTypes, ex. "fire" — chantier "8 sous-classes déjà à
   // ≥1 mécanique", 2026-08-23) : posé en flag pour que le bouton "Appliquer les dégâts" (hook
-  // renderChatMessageHTML, dnd-custom-ai.js > applyDamageToTargets) puisse résoudre une
-  // résistance éventuelle propre à CHAQUE cible ciblée (ex. Résilience draconique). Vide = type
-  // non renseigné à la source (ex. Capacité `dealsDamage`) : jamais de résistance appliquée.
+  // renderChatMessageHTML, helpers/chat-message-hooks.js > applyDamageToTargets,
+  // helpers/damage-resolution.js) puisse résoudre une résistance éventuelle propre à CHAQUE
+  // cible ciblée (ex. Résilience draconique). Vide = type non renseigné à la source (ex.
+  // Capacité `dealsDamage`) : jamais de résistance appliquée.
   // `isSpellDamage` (Voile des anciens, Paladin Anciens — Niveau C, 2026-08-24) : vrai UNIQUEMENT
   // pour un jet posé par #onRollSpellDamage (actor-sheet.js), jamais pour une arme/Capacité —
-  // seul moyen pour isResistantToDamageType (dnd-custom-ai.js) de savoir qu'un dégât vient d'un
-  // SORT plutôt que d'une source précise, indépendamment de son `damageType`.
+  // seul moyen pour damageTypeMultiplier (helpers/damage-resolution.js) de savoir qu'un dégât
+  // vient d'un SORT plutôt que d'une source précise, indépendamment de son `damageType`.
   // `spellName` (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
   // nom EXACT du Sort, posé uniquement par #onRollSpellDamage — permet à applyDamageToTargets
-  // (dnd-custom-ai.js) de vérifier que le résultat de sauvegarde stocké sur la cible
+  // (helpers/damage-resolution.js) de vérifier que le résultat de sauvegarde stocké sur la cible
   // (`pendingSpellSaveOutcome`, posé par #onCastSpell) correspond bien à CE sort précis avant
   // d'en réduire les dégâts, plutôt que d'appliquer aveuglément le dernier résultat connu.
   // `isMagicalSource` (chantier "types de dégâts", Phase 1, 2026-08-24) : vrai pour un sort
   // (toujours magique au SRD, posé par #onRollSpellDamage), ou selon WeaponData#magic/
   // NpcData#attack.magic pour une arme/attaque de PNJ — contourne la résistance/immunité
   // GÉNÉRIQUE (pas celle câblée en dur) aux 3 types de dégâts physiques, cf.
-  // damageTypeMultiplier (dnd-custom-ai.js).
+  // damageTypeMultiplier (helpers/damage-resolution.js).
   await roll.toMessage({
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label,

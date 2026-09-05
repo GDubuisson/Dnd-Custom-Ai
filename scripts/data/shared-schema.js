@@ -19,7 +19,7 @@ export function currencySchema() {
  *  Classe). Les 13 types SRD sont déjà proposés en choix (pas seulement les 3 physiques de la
  *  Phase 1 en cours) pour ne jamais avoir à retoucher ce schéma en Phase 2 (dégâts magiques) —
  *  seule la couverture de test/contenu progresse par phase, jamais le champ lui-même. Résolu par
- *  `damageTypeMultiplier` (dnd-custom-ai.js) : immunité > (résistance+vulnérabilité qui
+ *  `damageTypeMultiplier` (helpers/damage-resolution.js) : immunité > (résistance+vulnérabilité qui
  *  s'annulent) > résistance seule > vulnérabilité seule > normal, cf. son commentaire pour le
  *  détail (dont la nuance "contre les attaques non magiques" propre aux 3 types physiques). */
 export function damageAffinitySchema() {

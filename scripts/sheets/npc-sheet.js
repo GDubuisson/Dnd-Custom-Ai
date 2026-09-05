@@ -311,7 +311,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     // 2026-08-24 — ex. une morsure qui inflige perforant + poison) : 2e message de dégâts
     // DISTINCT, son propre type, jamais de modificateur de caractéristique ajouté (SRD 5e : dés
     // fixes) — résolu indépendamment du 1er contre les résistances de la cible (cf.
-    // damageTypeMultiplier, dnd-custom-ai.js). Même critique (dés doublés) que le composant
+    // damageTypeMultiplier, helpers/damage-resolution.js). Même critique (dés doublés) que le composant
     // principal, cf. #onRollWeaponDamage (actor-sheet.js) pour le même principe côté PJ.
     if (attack.secondaryDamage.dice) {
       const secondaryDamageTypeLabel = attack.secondaryDamage.type

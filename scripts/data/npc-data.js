@@ -40,7 +40,7 @@ export class NpcData extends foundry.abstract.TypeDataModel {
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
           max: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
           // Points de vie temporaires (même champ que CharacterData#hp.temp, absorbés en
-          // premier par `applyDamageToTargets`, dnd-custom-ai.js) — quasi toujours à 0 pour un
+          // premier par `applyDamageToTargets`, helpers/damage-resolution.js) — quasi toujours à 0 pour un
           // PNJ ordinaire, sert à "Forme sauvage de combat" (Cercle de la Lune, Druide 2) : la
           // réserve de PV d'un Actor "wildShapeForm" (même NpcData) sert de 2e réserve pendant
           // la transformation, cf. #onEnterWildShape (actor-sheet.js).

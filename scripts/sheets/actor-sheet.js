@@ -791,7 +791,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
     // ensemble), même pattern que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
     // (verrouillé côté Joueur, comme la fiche Origine), cf. damageAffinitySchema
-    // (shared-schema.js), damageTypeMultiplier (dnd-custom-ai.js).
+    // (shared-schema.js), damageTypeMultiplier (helpers/damage-resolution.js).
     const damageAffinityOptions = (setField) =>
       Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
     context.damageAffinityGroups = [
@@ -2151,7 +2151,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Dégâts BONUS d'une propriété magique (chantier "types de dégâts", Phase 3, 2026-08-24 —
     // ex. épée de feu = tranchant + feu) : 2e message de dégâts DISTINCT, son propre type, jamais
     // de modificateur de caractéristique/Rage ajouté (SRD 5e : dés fixes) — résolu indépendamment
-    // du 1er contre les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+    // du 1er contre les résistances de la cible (cf. damageTypeMultiplier, helpers/damage-resolution.js).
     // Même critique (dés doublés/triplés) que le composant principal, SRD 5e : "roll all of the
     // attack's damage dice twice" sur un coup critique, sans distinction de composant.
     if (item.system.secondaryDamage.dice) {
@@ -2329,7 +2329,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
       // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
       // pose sur la CIBLE le résultat du jet (réussite/échec) pour que #onRollSpellDamage +
-      // "Appliquer les dégâts" (dnd-custom-ai.js > applyDamageToTargets) puisse appliquer
+      // "Appliquer les dégâts" (helpers/damage-resolution.js > applyDamageToTargets) puisse appliquer
       // automatiquement la bonne fraction de dégâts plus tard — jamais fait jusqu'ici (le bouton
       // appliquait toujours le montant plein, quel que soit le résultat de CE jet). Un seul
       // exemplaire par cible (`setFlag` écrase le précédent) : lancer un 2e sort à sauvegarde sur
@@ -2504,7 +2504,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       spellName: item.name,
       // Chantier "types de dégâts" (Phase 1, 2026-08-24) : un sort est toujours considéré
       // magique au SRD 5e (contourne la résistance/immunité générique "contre les attaques non
-      // magiques", cf. damageTypeMultiplier, dnd-custom-ai.js).
+      // magiques", cf. damageTypeMultiplier, helpers/damage-resolution.js).
       isMagicalSource: true
     });
   }
