@@ -16,6 +16,16 @@ défaut, jamais mis à jour vers le palier réellement testé (≥1). Pas un bug
 nouveau helper `goToSpellLevel(level)`, appelé avant chaque interaction avec un sort de niveau
 ≥ 1. 25/25 désormais verts.
 
+**Corrigé (tests)** — `cypress/e2e/tier-a-mechanics.cy.js` : T-TIERA-MOONWILD-001 (PV
+temporaires de Forme sauvage de combat) attendait 0 au lieu de 2×niveau. Diagnostic : le
+personnage de fixture (Druide) restait au niveau 1 par défaut alors que
+`DND_CUSTOM.wildShapeForms` (config.js) exige le niveau 2 pour toute forme — `#onEnterWildShape`
+s'arrêtait donc silencieusement avant même d'ouvrir le dialogue de choix de forme (aucune forme
+"disponible"). Le test ciblait en plus un Actor `wildShapeForm` créé à la main au lieu du vrai
+résultat du choix de forme (`system.combat.wildShapeActorId`). Pas un bug applicatif. Fix :
+montée de niveau du personnage de fixture (même pattern que `wild-shape.cy.js`) + interaction
+réelle avec le dialogue de choix + lecture du bon Actor. 7/7 désormais verts.
+
 **Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), les 3 chantiers
 identifiés traités sans changement de comportement :
 - Factorisation du pattern "relais socket vers le MJ actif", jusqu'ici tripliqué
