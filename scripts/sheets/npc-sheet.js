@@ -1,5 +1,5 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { formatModifier } from "../helpers/rules.js";
+import { formatModifier, formatAttackLabels } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
@@ -122,7 +122,6 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
           selected: attack.ability === key
         })),
         bonus: attack.bonus,
-        attackBonusLabel: formatModifier(attackAbilityMod + attack.bonus),
         damageDice: attack.damage.dice,
         damageBonus: attack.damage.bonus,
         damageTypeOptions: [
@@ -133,7 +132,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
             selected: attack.damage.type === key
           }))
         ],
-        damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : "",
+        ...formatAttackLabels(attack, attackAbilityMod),
         // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. WeaponData#magic (item-data.js)
         // pour le détail — contourne la résistance/immunité GÉNÉRIQUE aux 3 types physiques.
         magic: attack.magic,

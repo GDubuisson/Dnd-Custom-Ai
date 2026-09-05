@@ -9,6 +9,7 @@ import {
   currencyTotalInCopper,
   equipmentSlots,
   formatModifier,
+  formatAttackLabels,
   isProficientWithWeapon,
   levelForXp,
   passivePerception,
@@ -103,6 +104,23 @@ function hasFavoredEnemyAdvantage(actor) {
  *  ci-dessus (les deux jets d'attaque partagent le même pipeline rollCheck). */
 function improvedCriticalThreshold(actor) {
   return hasFeature(actor.items.contents, "Critique amélioré") ? 19 : 20;
+}
+
+/** Options d'avantage/désavantage/critique communes à TOUT jet d'attaque contre la CA d'une
+ *  cible — arme (#onRollWeaponAttack) ou sort d'attaque (#onCastSpell), seule reste distincte
+ *  l'action économique consommée par l'appelant. Extrait le 2026-09-05 (chantier clean code) :
+ *  dupliqué verbatim entre les deux jusqu'ici — chaque nouvelle source d'avantage/désavantage
+ *  (Monture, Assassin, Traqueur...) devait être répétée aux deux endroits, avec un risque réel
+ *  d'en oublier un (ex. l'attaque de sort) et de désynchroniser silencieusement les règles. */
+function attackRollOptions(actor, event, cond) {
+  return {
+    advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(actor),
+    disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(actor),
+    compareToTargetAc: true,
+    criticalRules: true,
+    forceCriticalHit: hasAssassinAutoCritical(actor),
+    criticalThreshold: improvedCriticalThreshold(actor)
+  };
 }
 
 /** Destruction des morts-vivants (Clerc 5, SRD 5e — Niveau C, 2026-08-24) : seuil de FI (indice
@@ -459,12 +477,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.wildShapeAttacks = context.wildShapeForm
       ? context.wildShapeForm.system.attacks.map((attack, index) => {
           const abilityMod = context.wildShapeForm.system.abilities[attack.ability]?.mod ?? 0;
-          return {
-            index,
-            name: attack.name,
-            attackBonusLabel: formatModifier(abilityMod + attack.bonus),
-            damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(abilityMod + attack.damage.bonus)}` : ""
-          };
+          return { index, name: attack.name, ...formatAttackLabels(attack, abilityMod) };
         })
       : [];
   }
@@ -2137,12 +2150,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       actor: this.actor,
       formula: formatModifier(atk.attackBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.WeaponAttack", { weapon: item.name }),
-      advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
-      disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
-      compareToTargetAc: true,
-      criticalRules: true,
-      forceCriticalHit: hasAssassinAutoCritical(this.actor),
-      criticalThreshold: improvedCriticalThreshold(this.actor)
+      ...attackRollOptions(this.actor, event, cond)
     });
     if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
     await noteActionEconomyUsage(this.actor, "action", { isWeaponAttack: true });
@@ -2245,12 +2253,70 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  spellAttackBonus, comme #onRollWeaponAttack pour une arme) au lieu de simplement poster la
    *  description ; le jet de dégâts associé reste un bouton séparé (#onRollSpellDamage,
    *  affiché seulement si un hit est confirmé), sur le même principe que les armes — dégâts non
-   *  automatiques tant que le MJ n'a pas confirmé le jet d'attaque contre la CA de la cible. */
+   *  automatiques tant que le MJ n'a pas confirmé le jet d'attaque contre la CA de la cible.
+   *
+   *  Chantier clean code (2026-09-05) : orchestre désormais 4 étapes communes à tout sort
+   *  (coût en emplacement, concentration, lumière) puis délègue à une méthode dédiée par type de
+   *  sort (#castAttackSpell/#castSaveSpell/#castHealSpell/#applySpellCondition) — pur
+   *  déplacement de code, comportement inchangé. */
   static async #onCastSpell(event, target) {
     const item = this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
     if (!item || item.type !== "spell") return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
+    const effectiveSpellLevel = await this.#resolveSpellSlotCost(item);
+    if (effectiveSpellLevel === null) return;
+
+    await this.#applySpellConcentration(item);
+
+    // Sort émettant de la lumière (ex. Lumière, cf. SpellData#light dans item-data.js) : allume
+    // le(s) token(s) du lanceur, même principe qu'un objet `gear` "light" (#toggleLight) —
+    // retour de test, rien ne liait jusqu'ici les sorts de lumière au système de lumière des
+    // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
+    // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
+    // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
+    // `#setTokensLight` poste déjà son propre message "allume {sort}" : retour de test, un
+    // second message générique "lance {sort}" (plus bas) s'ajoutait en double pour la même
+    // action — sauté ici (sauf sort d'attaque, qui poste son propre jet de toute façon).
+    const hasLight = Boolean(item.system.light?.bright || item.system.light?.dim);
+    if (hasLight) {
+      await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
+      if (!item.system.attack) return;
+    }
+
+    if (item.system.attack) {
+      await this.#castAttackSpell(item, event);
+      return;
+    }
+
+    if (item.system.save?.ability) {
+      await this.#castSaveSpell(item, event);
+      return;
+    }
+
+    if (item.system.heal?.dice) {
+      await this.#castHealSpell(item, effectiveSpellLevel);
+      return;
+    }
+
+    if (item.system.grantsCondition) await this.#applySpellCondition(item);
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: game.i18n.format("DND_CUSTOM.Chat.CastSpell", { name: this.actor.name, spell: item.name })
+    });
+  }
+
+  /** Détermine le palier RÉELLEMENT dépensé pour lancer `item` (peut différer de son niveau
+   *  propre en cas de surclassement, cf. spell-slot-choice.js), et décompte l'emplacement/
+   *  déclenche Surtenance sauvage si le lancer n'est pas gratuit — ou consomme la charge dédiée
+   *  pour un sort choisi par Magie d'initié (cf. _prepareCharacterStatsContext... non, cf.
+   *  FeatureData#chosenLevelOneSpell, item-data.js). Incantation rituelle/Incantation mineure de
+   *  sous-classe : jamais décomptées d'un emplacement (cf. commentaires ci-dessous). Retourne
+   *  `null` si aucun emplacement n'est disponible (avertissement déjà posté) — l'appelant doit
+   *  alors abandonner le lancer sans rien d'autre à faire. Extrait de #onCastSpell (chantier
+   *  clean code, 2026-09-05). */
+  async #resolveSpellSlotCost(item) {
     // Incantation rituelle (Capacité, SRD 5e) : un sort marqué Rituel se lance sans dépenser de
     // charge dès que le personnage possède la Capacité "Incantation rituelle (<sa classe>)" —
     // appliqué automatiquement, sans case à cocher ni choix à faire pour le joueur. Seuls le
@@ -2278,7 +2344,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     );
     const castsAsFreeInitiateSpell = Boolean(initiateFeature && initiateFeature.system.uses.value > 0);
     // Palier RÉELLEMENT dépensé (peut différer de item.system.level en cas de surclassement) —
-    // sert au bonus de soin de Disciple de la vie (Life, Clerc) ci-dessous, cf. son commentaire.
+    // sert au bonus de soin de Disciple de la vie (Life, Clerc) dans #castHealSpell.
     let effectiveSpellLevel = item.system.level;
     if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell && !castsAsFreeInitiateSpell) {
       const slots = this.actor.system.spells.slots;
@@ -2288,7 +2354,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       const chosenLevel = await chooseSpellSlotLevel(item.name, item.system.level, slots);
       if (chosenLevel === null) {
         ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Spells.NoSlotAvailable"));
-        return;
+        return null;
       }
       effectiveSpellLevel = chosenLevel;
       await this.actor.update({ [`system.spells.slots.${chosenLevel}.value`]: slots[chosenLevel].value - 1 });
@@ -2302,227 +2368,207 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     } else if (castsAsFreeInitiateSpell) {
       await initiateFeature.update({ "system.uses.value": 0 });
     }
+    return effectiveSpellLevel;
+  }
 
-    // Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
-    // cours (pas de choix à faire, la règle est automatique).
-    if (item.system.concentration) {
-      const previous = this.actor.system.spells.concentratingOn;
-      await this.actor.update({ "system.spells.concentratingOn": item.name });
-      if (previous && previous !== item.name) {
-        await ChatMessage.create({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          content: game.i18n.format("DND_CUSTOM.Chat.ConcentrationBroken", { name: this.actor.name, spell: previous })
-        });
-      }
-    }
-
-    // Sort émettant de la lumière (ex. Lumière, cf. SpellData#light dans item-data.js) : allume
-    // le(s) token(s) du lanceur, même principe qu'un objet `gear` "light" (#toggleLight) —
-    // retour de test, rien ne liait jusqu'ici les sorts de lumière au système de lumière des
-    // tokens. Un sort n'a pas d'état "allumé/éteint" persistant à basculer (contrairement à un
-    // objet porté, réutilisable via le même bouton "Utiliser") : chaque lancer allume, sans
-    // interrupteur dédié — cohérent avec un effet magique que le MJ narrativise à sa fin.
-    // `#setTokensLight` poste déjà son propre message "allume {sort}" : retour de test, un
-    // second message générique "lance {sort}" (plus bas) s'ajoutait en double pour la même
-    // action — sauté ici (sauf sort d'attaque, qui poste son propre jet de toute façon).
-    const hasLight = Boolean(item.system.light?.bright || item.system.light?.dim);
-    if (hasLight) {
-      await DndCustomActorSheet.#setTokensLight(this.actor, item.name, item.system.light);
-      if (!item.system.attack) return;
-    }
-
-    if (item.system.attack) {
-      const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
-      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
-      const attackBonus = spellAttackBonus(proficiencyBonus(system.attributes.level), spellAbilityMod);
-      const cond = conditionRollEffects(this.actor, "attack");
-      // criticalRules/pendingCritical : même mécanique que #onRollWeaponAttack (cf. son
-      // commentaire) — flag posé sur CE sort précis, consommé par #onRollSpellDamage.
-      const { isCriticalHit } = await rollCheck({
-        actor: this.actor,
-        formula: formatModifier(attackBonus) + cond.bonus,
-        flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
-        advantage: event.shiftKey || cond.advantage || hasMountedSizeAdvantage(this.actor),
-        disadvantage: event.ctrlKey || cond.disadvantage || isDisadvantagedByHuntedTarget(this.actor),
-        compareToTargetAc: true,
-        criticalRules: true,
-        forceCriticalHit: hasAssassinAutoCritical(this.actor),
-        criticalThreshold: improvedCriticalThreshold(this.actor)
+  /** Concentration, SRD 5e : un seul sort à la fois — en lancer un nouveau remplace celui en
+   *  cours (pas de choix à faire, la règle est automatique). Extrait de #onCastSpell (chantier
+   *  clean code, 2026-09-05). */
+  async #applySpellConcentration(item) {
+    if (!item.system.concentration) return;
+    const previous = this.actor.system.spells.concentratingOn;
+    await this.actor.update({ "system.spells.concentratingOn": item.name });
+    if (previous && previous !== item.name) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.ConcentrationBroken", { name: this.actor.name, spell: previous })
       });
-      if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
-      await recordAttackOnTargets(this.actor);
+    }
+  }
+
+  /** Sort marqué "jet d'attaque" (cf. #onCastSpell) : jet d'attaque de sort (1d20 +
+   *  spellAttackBonus), même mécanique que #onRollWeaponAttack pour une arme (criticalRules/
+   *  pendingCritical, flag posé sur CE sort précis, consommé par #onRollSpellDamage). Extrait de
+   *  #onCastSpell (chantier clean code, 2026-09-05). */
+  async #castAttackSpell(item, event) {
+    const system = this.actor.system;
+    const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+    const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+    const attackBonus = spellAttackBonus(proficiencyBonus(system.attributes.level), spellAbilityMod);
+    const cond = conditionRollEffects(this.actor, "attack");
+    const { isCriticalHit } = await rollCheck({
+      actor: this.actor,
+      formula: formatModifier(attackBonus) + cond.bonus,
+      flavor: game.i18n.format("DND_CUSTOM.Roll.SpellAttack", { spell: item.name }),
+      ...attackRollOptions(this.actor, event, cond)
+    });
+    if (isCriticalHit) await item.setFlag(SYSTEM_ID, "pendingCritical", true);
+    await recordAttackOnTargets(this.actor);
+  }
+
+  /** Sort à jet de sauvegarde de la cible (ex. Boule de feu, cf. SpellData#save dans
+   *  item-data.js) : auto-jet POUR CHAQUE cible actuellement ciblée (1d20 + son propre
+   *  modificateur de sauvegarde, rules.js > targetSaveModifier), comparé au DD du lanceur —
+   *  même niveau d'automatisation que le jet d'attaque (compareToTargetAc), jamais une
+   *  interruption du client de la cible. Le dé de dégâts éventuel (system.damage.dice) se lance
+   *  séparément via le même bouton "Dégâts" que pour un sort d'attaque (#onRollSpellDamage,
+   *  déjà indifférent à attack/save) ; son application (pleine ou moitié selon halfOnSave) reste
+   *  manuelle via "Appliquer les dégâts", comme pour une attaque qui touche/rate déjà aujourd'hui.
+   *  Extrait de #onCastSpell (chantier clean code, 2026-09-05). */
+  async #castSaveSpell(item, event) {
+    const system = this.actor.system;
+    const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+    const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+    const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
+    const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.save.ability]);
+    const targets = Array.from(game.user.targets);
+
+    if (!targets.length) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
+      });
       return;
     }
 
-    // Sort à jet de sauvegarde de la cible (ex. Boule de feu, cf. SpellData#save dans
-    // item-data.js) : auto-jet POUR CHAQUE cible actuellement ciblée (1d20 + son propre
-    // modificateur de sauvegarde, rules.js > targetSaveModifier), comparé au DD du lanceur —
-    // même niveau d'automatisation que le jet d'attaque ci-dessus (compareToTargetAc), jamais
-    // une interruption du client de la cible. Le dé de dégâts éventuel (system.damage.dice) se
-    // lance séparément via le même bouton "Dégâts" que pour un sort d'attaque (#onRollSpellDamage
-    // ci-dessous, déjà indifférent à attack/save) ; son application (pleine ou moitié selon
-    // halfOnSave) reste manuelle via "Appliquer les dégâts", comme pour une attaque qui touche/
-    // rate déjà aujourd'hui.
-    if (item.system.save?.ability) {
-      const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
-      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
-      const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
-      const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.save.ability]);
-      const targets = Array.from(game.user.targets);
+    // Sort Prudent/Sort Élevé (Métamagie, Ensorceleur, cf. helpers/metamagic.js) : Maj/Ctrl-clic
+    // sur "Lancer" propose de dépenser 1 point de sorcellerie pour faire réussir automatiquement
+    // (Prudent) ou désavantager (Élevé) le jet d'UNE cible ciblée — aucune touche maintenue,
+    // aucune Capacité "Métamagie" ou aucun point restant : `null` immédiat, comportement
+    // inchangé, jamais de fenêtre popup pour le cas courant.
+    const metamagic = await chooseMetamagicOption(this.actor, targets, {
+      careful: event.shiftKey,
+      heightened: event.ctrlKey
+    });
+    // Sculpteur de sorts (Évocation, Magicien, cf. helpers/sculpt-spells.js) : même Maj-clic
+    // que Sort Prudent ci-dessus mais gratuit — jamais les deux à la fois en pratique (classes
+    // différentes), donc pas de conflit si les deux helpers sont interrogés systématiquement.
+    const sculptedTargetId = await chooseSculptSpellsTarget(this.actor, targets, { careful: event.shiftKey });
 
-      if (!targets.length) {
-        await ChatMessage.create({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          content: game.i18n.format("DND_CUSTOM.Chat.SaveSpellNoTarget", { spell: item.name, ability: abilityLabel, dc })
-        });
-        return;
-      }
-
-      // Sort Prudent/Sort Élevé (Métamagie, Ensorceleur, cf. helpers/metamagic.js) : Maj/Ctrl-clic
-      // sur "Lancer" propose de dépenser 1 point de sorcellerie pour faire réussir automatiquement
-      // (Prudent) ou désavantager (Élevé) le jet d'UNE cible ciblée — aucune touche maintenue,
-      // aucune Capacité "Métamagie" ou aucun point restant : `null` immédiat, comportement
-      // inchangé, jamais de fenêtre popup pour le cas courant.
-      const metamagic = await chooseMetamagicOption(this.actor, targets, {
-        careful: event.shiftKey,
-        heightened: event.ctrlKey
+    // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
+    // pose sur la CIBLE le résultat du jet (réussite/échec) pour que #onRollSpellDamage +
+    // "Appliquer les dégâts" (helpers/damage-resolution.js > applyDamageToTargets) puisse appliquer
+    // automatiquement la bonne fraction de dégâts plus tard — jamais fait jusqu'ici (le bouton
+    // appliquait toujours le montant plein, quel que soit le résultat de CE jet). Un seul
+    // exemplaire par cible (`setFlag` écrase le précédent) : lancer un 2e sort à sauvegarde sur
+    // la même cible sans avoir appliqué les dégâts du 1er perd silencieusement son résultat —
+    // simplification acceptée avec l'utilisateur, jamais de risque d'appliquer le MAUVAIS
+    // multiplicateur au mauvais sort (spellName revérifié à la consommation, dnd-custom-ai.js).
+    const setPendingSpellSaveOutcome = (targetActor, success) =>
+      targetActor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", {
+        success,
+        halfOnSave: item.system.save.halfOnSave,
+        ability: item.system.save.ability,
+        spellLevel: item.system.level,
+        spellName: item.name
       });
-      // Sculpteur de sorts (Évocation, Magicien, cf. helpers/sculpt-spells.js) : même Maj-clic
-      // que Sort Prudent ci-dessus mais gratuit — jamais les deux à la fois en pratique (classes
-      // différentes), donc pas de conflit si les deux helpers sont interrogés systématiquement.
-      const sculptedTargetId = await chooseSculptSpellsTarget(this.actor, targets, { careful: event.shiftKey });
 
-      // halfOnSave (chantier "prérequis Évasion/Tour de magie renforcé", Niveau C, 2026-08-24) :
-      // pose sur la CIBLE le résultat du jet (réussite/échec) pour que #onRollSpellDamage +
-      // "Appliquer les dégâts" (helpers/damage-resolution.js > applyDamageToTargets) puisse appliquer
-      // automatiquement la bonne fraction de dégâts plus tard — jamais fait jusqu'ici (le bouton
-      // appliquait toujours le montant plein, quel que soit le résultat de CE jet). Un seul
-      // exemplaire par cible (`setFlag` écrase le précédent) : lancer un 2e sort à sauvegarde sur
-      // la même cible sans avoir appliqué les dégâts du 1er perd silencieusement son résultat —
-      // simplification acceptée avec l'utilisateur, jamais de risque d'appliquer le MAUVAIS
-      // multiplicateur au mauvais sort (spellName revérifié à la consommation, dnd-custom-ai.js).
-      const setPendingSpellSaveOutcome = (targetActor, success) =>
-        targetActor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", {
-          success,
-          halfOnSave: item.system.save.halfOnSave,
-          ability: item.system.save.ability,
-          spellLevel: item.system.level,
-          spellName: item.name
-        });
+    for (const token of targets) {
+      const targetActor = token.actor;
+      if (!targetActor?.system?.abilities) continue;
 
-      for (const token of targets) {
-        const targetActor = token.actor;
-        if (!targetActor?.system?.abilities) continue;
-
-        if (metamagic?.targetActorId === targetActor.id && metamagic.option === "careful") {
-          await setPendingSpellSaveOutcome(targetActor, true);
-          await ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
-            content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
-          });
-          continue;
-        }
-        if (sculptedTargetId === targetActor.id) {
-          await setPendingSpellSaveOutcome(targetActor, true);
-          await ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({ actor: targetActor }),
-            content: game.i18n.format("DND_CUSTOM.Roll.SculptSpellsSuccess", { name: targetActor.name, spell: item.name })
-          });
-          continue;
-        }
-
-        const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
-        const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
-        // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier
-        // "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : avantage si CE lanceur a déjà
-        // attaqué la cible ce round. "Volonté de fer" (cf. hasSteadfastAdvantage) s'applique
-        // aussi depuis que les Sorts ont un `appliesCondition` (Niveau B, cf.
-        // ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) — ne se déclenche en pratique que si le sort
-        // pose Effrayé sur échec, aucun des sorts SRD actuellement automatisés ici. S'annule avec
-        // Sort Élevé (Métamagie) comme avantage/désavantage normalement (même logique que
-        // rollCheck, rolls.js).
-        const hasDefenseAdvantage =
-          (hasMultiattackDefenseAdvantage(targetActor, this.actor) ||
-            hasSteadfastAdvantage(targetActor, item.system.save.appliesCondition)) &&
-          !heightened;
-        const useDisadvantage = heightened && !hasMultiattackDefenseAdvantage(targetActor, this.actor);
-        const die = hasDefenseAdvantage ? "2d20kh1" : useDisadvantage ? "2d20kl1" : "1d20";
-        const roll = new Roll(`${die}${formatModifier(mod)}`);
-        await roll.evaluate();
-        const success = roll.total >= dc;
-        // Applique automatiquement la condition configurée sur échec (ex. paralysé pour
-        // Immobilisation de personne), même mécanisme que #onRollFeatureSave ci-dessus.
-        if (!success && item.system.save.appliesCondition) {
-          await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
-        }
-        await setPendingSpellSaveOutcome(targetActor, success);
-        const resultKey = success
-          ? item.system.save.halfOnSave
-            ? "DND_CUSTOM.Roll.SaveSuccessHalf"
-            : "DND_CUSTOM.Roll.SaveSuccess"
-          : "DND_CUSTOM.Roll.SaveFail";
-        await roll.toMessage({
+      if (metamagic?.targetActorId === targetActor.id && metamagic.option === "careful") {
+        await setPendingSpellSaveOutcome(targetActor, true);
+        await ChatMessage.create({
           speaker: ChatMessage.getSpeaker({ actor: targetActor }),
-          flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
-            hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
-          }`,
-          flags: sheetRollFlags({ savingThrowRoll: true })
+          content: game.i18n.format("DND_CUSTOM.Roll.MetamagicCarefulSuccess", { name: targetActor.name, spell: item.name })
         });
+        continue;
       }
-      return;
-    }
+      if (sculptedTargetId === targetActor.id) {
+        await setPendingSpellSaveOutcome(targetActor, true);
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+          content: game.i18n.format("DND_CUSTOM.Roll.SculptSpellsSuccess", { name: targetActor.name, spell: item.name })
+        });
+        continue;
+      }
 
-    // Sort de soin (ex. Mot de guérison, Soin des blessures, cf. SpellData#heal dans
-    // item-data.js) : lance le dé de soin + modificateur de caractéristique d'incantation
-    // immédiatement (contrairement aux dégâts d'un sort d'attaque, un soin n'a pas besoin de
-    // confirmation de touche) — retour de test, ces sorts ne lançaient jusqu'ici aucun dé et ne
-    // soignaient rien. Le bouton "Appliquer le soin" affiché sur ce message (dnd-custom-ai.js)
-    // applique le total aux cibles actuellement ciblées, même mécanique que les dégâts.
-    if (item.system.heal?.dice) {
-      const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
-      const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
-      // Disciple de la vie (Life, Clerc, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
-      // 2026-08-23) : +2 PV sur tout sort de niveau 1+ qui soigne, +1 de plus par palier
-      // au-delà du premier (surclassement inclus, cf. effectiveSpellLevel ci-dessus). Un tour de
-      // magie (niveau 0) n'en bénéficie jamais.
-      const disciplineOfLifeBonus =
-        effectiveSpellLevel >= 1 && hasFeature(this.actor.items.contents, "Disciple de la vie")
-          ? 2 + (effectiveSpellLevel - 1)
-          : 0;
-      await rollHeal({
-        actor: this.actor,
-        dice: item.system.heal.dice,
-        formula: formatModifier(spellAbilityMod + disciplineOfLifeBonus),
-        flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
+      const mod = targetSaveModifier(targetActor.system, item.system.save.ability);
+      const heightened = metamagic?.targetActorId === targetActor.id && metamagic.option === "heightened";
+      // Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter — chantier
+      // "8 sous-classes déjà à ≥1 mécanique", 2026-08-23) : avantage si CE lanceur a déjà
+      // attaqué la cible ce round. "Volonté de fer" (cf. hasSteadfastAdvantage) s'applique
+      // aussi depuis que les Sorts ont un `appliesCondition` (Niveau B, cf.
+      // ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) — ne se déclenche en pratique que si le sort
+      // pose Effrayé sur échec, aucun des sorts SRD actuellement automatisés ici. S'annule avec
+      // Sort Élevé (Métamagie) comme avantage/désavantage normalement (même logique que
+      // rollCheck, rolls.js).
+      const hasDefenseAdvantage =
+        (hasMultiattackDefenseAdvantage(targetActor, this.actor) ||
+          hasSteadfastAdvantage(targetActor, item.system.save.appliesCondition)) &&
+        !heightened;
+      const useDisadvantage = heightened && !hasMultiattackDefenseAdvantage(targetActor, this.actor);
+      const die = hasDefenseAdvantage ? "2d20kh1" : useDisadvantage ? "2d20kl1" : "1d20";
+      const roll = new Roll(`${die}${formatModifier(mod)}`);
+      await roll.evaluate();
+      const success = roll.total >= dc;
+      // Applique automatiquement la condition configurée sur échec (ex. paralysé pour
+      // Immobilisation de personne), même mécanisme que #onRollFeatureSave ci-dessus.
+      if (!success && item.system.save.appliesCondition) {
+        await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
+      }
+      await setPendingSpellSaveOutcome(targetActor, success);
+      const resultKey = success
+        ? item.system.save.halfOnSave
+          ? "DND_CUSTOM.Roll.SaveSuccessHalf"
+          : "DND_CUSTOM.Roll.SaveSuccess"
+        : "DND_CUSTOM.Roll.SaveFail";
+      await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        flavor: `${game.i18n.format(resultKey, { name: targetActor.name, spell: item.name, ability: abilityLabel, dc })}${
+          hasDefenseAdvantage ? ` (${game.i18n.localize("DND_CUSTOM.Roll.Advantage")})` : ""
+        }`,
+        flags: sheetRollFlags({ savingThrowRoll: true })
       });
-      return;
     }
+  }
 
-    // Sort qui pose un état sans jet associé (ex. Invisibilité, Invisibilité suprême, cf.
-    // SpellData#grantsCondition dans item-data.js) : bascule l'état configuré sur chaque cible
-    // actuellement ciblée (même convention de ciblage que save/heal ci-dessus — pour se rendre
-    // soi-même invisible, le lanceur doit se cibler lui-même). Pas de jet, donc pas de message
-    // dédié : tombe ensuite dans le message générique "lance {sort}" ci-dessous.
-    if (item.system.grantsCondition) {
-      const targets = Array.from(game.user.targets);
-      if (!targets.length) {
-        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
-      } else {
-        for (const token of targets) {
-          if (!token.actor) continue;
-          await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
-        }
-      }
-    }
-
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      content: game.i18n.format("DND_CUSTOM.Chat.CastSpell", { name: this.actor.name, spell: item.name })
+  /** Sort de soin (ex. Mot de guérison, Soin des blessures, cf. SpellData#heal dans
+   *  item-data.js) : lance le dé de soin + modificateur de caractéristique d'incantation
+   *  immédiatement (contrairement aux dégâts d'un sort d'attaque, un soin n'a pas besoin de
+   *  confirmation de touche) — retour de test, ces sorts ne lançaient jusqu'ici aucun dé et ne
+   *  soignaient rien. Le bouton "Appliquer le soin" affiché sur ce message (dnd-custom-ai.js)
+   *  applique le total aux cibles actuellement ciblées, même mécanique que les dégâts. Extrait
+   *  de #onCastSpell (chantier clean code, 2026-09-05). */
+  async #castHealSpell(item, effectiveSpellLevel) {
+    const system = this.actor.system;
+    const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+    const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
+    // Disciple de la vie (Life, Clerc, SRD 5e — chantier "8 sous-classes déjà à ≥1 mécanique",
+    // 2026-08-23) : +2 PV sur tout sort de niveau 1+ qui soigne, +1 de plus par palier
+    // au-delà du premier (surclassement inclus, cf. effectiveSpellLevel). Un tour de
+    // magie (niveau 0) n'en bénéficie jamais.
+    const disciplineOfLifeBonus =
+      effectiveSpellLevel >= 1 && hasFeature(this.actor.items.contents, "Disciple de la vie")
+        ? 2 + (effectiveSpellLevel - 1)
+        : 0;
+    await rollHeal({
+      actor: this.actor,
+      dice: item.system.heal.dice,
+      formula: formatModifier(spellAbilityMod + disciplineOfLifeBonus),
+      flavor: game.i18n.format("DND_CUSTOM.Roll.SpellHeal", { spell: item.name })
     });
   }
+
+  /** Sort qui pose un état sans jet associé (ex. Invisibilité, Invisibilité suprême, cf.
+   *  SpellData#grantsCondition dans item-data.js) : bascule l'état configuré sur chaque cible
+   *  actuellement ciblée (même convention de ciblage que save/heal — pour se rendre soi-même
+   *  invisible, le lanceur doit se cibler lui-même). Pas de jet, donc pas de message dédié :
+   *  l'appelant (#onCastSpell) enchaîne ensuite sur le message générique "lance {sort}". Extrait
+   *  de #onCastSpell (chantier clean code, 2026-09-05). */
+  async #applySpellCondition(item) {
+    const targets = Array.from(game.user.targets);
+    if (!targets.length) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoTarget"));
+      return;
+    }
+    for (const token of targets) {
+      if (!token.actor) continue;
+      await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+    }
+  }
+
 
   /** Jet de dégâts d'un sort d'attaque (cf. #onCastSpell) : juste le(s) dé(s) de dégâts
    *  configurés sur le sort, sans modificateur — contrairement à une arme, les dégâts d'un

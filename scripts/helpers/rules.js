@@ -130,6 +130,18 @@ export function formatModifier(mod) {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
+/** Libellés déjà formatés (bonus d'attaque, dégâts) d'un profil d'attaque simplifié
+ *  (NpcData#attacks — PNJ, Forme sauvage) pour affichage direct côté template, sans logique de
+ *  formatage dans le .hbs. Extrait le 2026-09-05 (chantier clean code) : dupliqué verbatim entre
+ *  npc-sheet.js (context.attacks) et actor-sheet.js (context.wildShapeAttacks). `damageLabel` vide
+ *  si l'attaque n'a pas de dé de dégâts renseigné (ex. profil incomplet). */
+export function formatAttackLabels(attack, abilityMod) {
+  return {
+    attackBonusLabel: formatModifier(abilityMod + attack.bonus),
+    damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(abilityMod + attack.damage.bonus)}` : ""
+  };
+}
+
 /** Perception passive, SRD 5e : 10 + mod Sagesse + bonus de maîtrise si Perception maîtrisée. */
 export function passivePerception(wisMod, perceptionProficient, proficiencyBonusValue) {
   return 10 + wisMod + (perceptionProficient ? proficiencyBonusValue : 0);
