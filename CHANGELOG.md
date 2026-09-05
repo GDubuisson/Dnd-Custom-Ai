@@ -7,6 +7,14 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Documenté** — Point 3 de la revue "prêt pour la V1 ?" du 2026-09-04 : audit des licences
+des icônes tierces dans `assets/icons/`. Environ 166 fichiers sur 217 (sous-classes,
+capacités, dons, une partie des sorts) proviennent du wiki Baldur's Gate 3 (copyright
+Larian/WotC) et de packs tiers ("Saethos Shared Icons", sprites génériques) à la licence non
+confirmée — détail par dossier ajouté à `assets/icons/MISSING.md`. Décision retenue : pas de
+remplacement icône par icône pour l'instant, le dépôt GitHub passera en privé à la fin du
+développement (après la dernière release publique).
+
 **Ajouté** — Fichier `LICENSE` à la racine (point 4 de la revue "prêt pour la V1 ?" du
 2026-09-04) : CC BY-NC-SA 4.0 pour le code et le contenu original du système (usage
 personnel/non commercial), plus une mention d'attribution CC-BY-4.0 pour le contenu adapté
