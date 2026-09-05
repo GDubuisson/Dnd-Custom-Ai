@@ -7,6 +7,12 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Ajouté** — Fichier `LICENSE` à la racine (point 4 de la revue "prêt pour la V1 ?" du
+2026-09-04) : CC BY-NC-SA 4.0 pour le code et le contenu original du système (usage
+personnel/non commercial), plus une mention d'attribution CC-BY-4.0 pour le contenu adapté
+du System Reference Document 5.1 (Wizards of the Coast). Fichier ajouté à l'archive de
+release (`.github/workflows/release.yml`) et référencé depuis `system.json` (`license`).
+
 **Corrigé** — Dette technique "les compendiums ne se remettent jamais à jour"
 (`ClaudeFiles/ANOMALIES_ACTIVES.md`) : `importSystemContent()` (`scripts/helpers/content-import.js`)
 ne se contentait jusqu'ici que d'ajouter les entrées absentes par nom — une entrée déjà présente
