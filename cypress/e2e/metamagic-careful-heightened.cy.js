@@ -29,6 +29,17 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
+// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
+// visible à la fois, le palier actif par défaut est toujours le premier palier non-vide — quasi
+// toujours 0 (tours de magie octroyés à la création par grantClassContent) pour cet Ensorceleur,
+// jamais le niveau 1 du sort de test créé ci-dessous. Sans ce clic, le bouton castSpell reste
+// caché (display:none sur son .spell-level-group parent) — même piège déjà rencontré et corrigé
+// dans tab-abilities.cy.js (cf. ANOMALIES_ACTIVES.md).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function updateActor(win, actor, data, options = {}) {
   return actor.update(win.JSON.parse(JSON.stringify(data)), options);
 }
@@ -138,6 +149,7 @@ describe("Métamagie — Sort Prudent (Maj-clic) et Sort Élevé (Ctrl-clic)", (
     cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
     sheetRoot().find('nav.tabs [data-tab="abilities"]').click();
+    goToSpellLevel(1);
     cy.then(() => {
       cy.get(`.application.character li[data-item-id="${spellId}"] button[data-action="castSpell"]`).click(clickOptions);
     });
@@ -190,6 +202,7 @@ describe("Métamagie — Sort Prudent (Maj-clic) et Sort Élevé (Ctrl-clic)", (
     cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
     sheetRoot().find('nav.tabs [data-tab="abilities"]').click();
+    goToSpellLevel(1);
     cy.forceD20(1);
     cy.then(() => {
       cy.get(`.application.character li[data-item-id="${spellId}"] button[data-action="castSpell"]`).click({ shiftKey: true });
