@@ -348,6 +348,30 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     context.system = system;
     context.config = DND_CUSTOM;
     context.isGM = game.user.isGM;
+
+    // Chantier clean architecture (2026-09-05) : _prepareContext faisait ~500 lignes mêlant une
+    // quinzaine de concerns indépendants (identité de classe, économie de combat, progression,
+    // caractéristiques/compétences, items, langues/sorts, inventaire, états/résistances,
+    // capacité de charge) — scindé en méthodes privées nommées, appelées dans le MÊME ordre
+    // qu'avant (certaines lisent un champ de contexte posé par la méthode précédente, ex.
+    // context.proficiencyBonus/context.origins/context.weapons — ne PAS réordonner ces appels).
+    this.#prepareClassOriginContext(context, system);
+    this.#prepareCombatEconomyContext(context, system);
+    this.#prepareProgressionContext(context, system);
+    this.#prepareCharacterStatsContext(context, system);
+    this.#prepareItemsContext(context, system);
+    this.#prepareLanguagesAndSpellsContext(context, system);
+    this.#prepareInventoryContext(context, system);
+    this.#prepareConditionsContext(context, system);
+    this.#prepareCarryingCapacityContext(context, system);
+
+    return context;
+  }
+
+  /** Identité de classe/Origine/sous-classe : labels, sélecteur de sous-classe, en-tête
+   *  d'ambiance de classe (cf. _prepareContext). Pose `context.origins`/`context.isSpellcaster`,
+   *  lus par plusieurs des méthodes suivantes. */
+  #prepareClassOriginContext(context, system) {
     // Chargées une fois au démarrage par le hook "init" (voir dnd-custom-ai.js).
     context.origins = game.dndCustomAi?.origins ?? {};
     // Classe/Origine : champs fixes sur la fiche (retour de test — ne sont plus des listes
@@ -398,6 +422,18 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       context.classFlavorTagline = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Tagline`);
     }
 
+    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
+    // (cf. CharacterData#prepareDerivedData) ; trait spécial purement informatif (pas de
+    // système de jet de dés automatisé sur cette fiche). Bonus de caractéristiques/avantages de
+    // compétences recalculés séparément dans #prepareCharacterStatsContext (dérivation pure et
+    // bon marché, évite de les faire transiter par le contexte).
+    const currentOrigin = context.origins[system.origin] ?? null;
+    context.originTrait = currentOrigin?.specialTrait ?? null;
+  }
+
+  /** Économie d'action de combat (réaction/action/action bonus), monture, Forme sauvage
+   *  (cf. _prepareContext). */
+  #prepareCombatEconomyContext(context, system) {
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
     // Capacités/Sorts (cf. #consumeActionEconomy ci-dessous, hooks updateCombat/deleteCombat).
@@ -431,15 +467,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           };
         })
       : [];
+  }
 
-    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
-    // (cf. CharacterData#prepareDerivedData) ; avantage de compétences et trait spécial sont
-    // purement informatifs (pas de système de jet de dés automatisé sur cette fiche).
-    const currentOrigin = context.origins[system.origin] ?? null;
-    const originAbilityBonuses = currentOrigin?.abilityBonuses ?? {};
-    const originSkillAdvantages = new Set(currentOrigin?.skillAdvantages ?? []);
-    context.originTrait = currentOrigin?.specialTrait ?? null;
-
+  /** PV/proficiencyBonus/montée de niveau/XP/Agonie (cf. _prepareContext). Pose
+   *  `context.proficiencyBonus`, lu par plusieurs des méthodes suivantes. */
+  #prepareProgressionContext(context, system) {
     const hp = system.attributes.hp;
     context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 
@@ -482,8 +514,12 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       successPips: [1, 2, 3].map((n) => death.successes >= n),
       failurePips: [1, 2, 3].map((n) => death.failures >= n)
     };
+  }
 
-    const dexMod = abilityModifier(system.abilities.dex.total);
+  /** Initiative, perception passive, incantation, caractéristiques et compétences
+   *  (cf. _prepareContext) — nécessite `context.proficiencyBonus`/`context.isSpellcaster`/
+   *  `context.origins` déjà posés par les méthodes précédentes. */
+  #prepareCharacterStatsContext(context, system) {
     // Bug retour de test (exposé par l'automatisation du don Alerte, ANOMALIES_ACTIVES.md
     // 2026-08-19) : recalculait le mod. d'Initiative à partir du seul mod. de Dex, ignorant tout
     // bonus dérivé (Traqueur des ténèbres +2, Alerte +5, cf. CharacterData#prepareDerivedData >
@@ -515,6 +551,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     }
 
     const items = this.actor.items.contents;
+    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
+    // (cf. CharacterData#prepareDerivedData) ; avantage de compétences ci-dessous — recalculés
+    // ici (dérivation pure et bon marché à partir de context.origins) plutôt que transmis
+    // depuis #prepareClassOriginContext (cf. context.originTrait, posé là-bas).
+    const currentOrigin = context.origins[system.origin] ?? null;
+    const originAbilityBonuses = currentOrigin?.abilityBonuses ?? {};
+    const originSkillAdvantages = new Set(currentOrigin?.skillAdvantages ?? []);
     // Aptitudes multiples (Barde, SRD 5e) : moitié du bonus de maîtrise (arrondi à
     // l'inférieur) sur les compétences non maîtrisées, appliqué automatiquement ci-dessous
     // (affichage) et dans #onRollSkill (jet réel) dès que le personnage possède la Capacité.
@@ -561,7 +604,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
+  }
 
+  /** Armes/armures/objets/Capacités possédés, en-têtes/réserves/choix de Capacité, Compagnon
+   *  animal (cf. _prepareContext). Pose `context.weapons`/`context.armors`, lus par
+   *  #prepareInventoryContext. */
+  #prepareItemsContext(context, system) {
+    const items = this.actor.items.contents;
     context.weapons = items.filter((item) => item.type === "weapon");
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
@@ -623,7 +672,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // Compagnon animal (Maître des bêtes, Rôdeur) : bouton "Invoquer" masqué une fois déjà
     // invoqué (cf. #onSummonCompanion ci-dessus/helpers/companion.js).
     context.companionAlreadySummoned = !!this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated");
+  }
 
+  /** Langues connues, Sorts groupés par niveau, emplacements de sorts (cf. _prepareContext). */
+  #prepareLanguagesAndSpellsContext(context, system) {
+    const items = this.actor.items.contents;
     // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
     // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
     // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
@@ -690,6 +743,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     })).filter((slot) => slot.max > 0);
     context.isPactMagic = Boolean(system.spells.isPactMagic);
     context.concentratingOn = system.spells.concentratingOn;
+  }
+
+  /** Emplacements d'équipement (main principale/secondaire, armure, accessoires), bonus
+   *  d'attaque/dégâts d'arme, bonus de CA d'armure (cf. _prepareContext) — nécessite
+   *  `context.weapons`/`context.armors`/`context.proficiencyBonus` déjà posés. */
+  #prepareInventoryContext(context, system) {
+    const items = this.actor.items.contents;
     // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
     // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
     context.weaponsAndArmor = items.filter((item) => ["weapon", "armor"].includes(item.type));
@@ -764,6 +824,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     // Bonus de CA apporté par chaque armure/bouclier/accessoire possédé pris isolément (même
     // affichage que les dégâts d'arme ci-dessus, cf. armorContribution dans rules.js).
+    const dexMod = abilityModifier(system.abilities.dex.total);
     context.armorStats = {};
     for (const armor of context.armors) {
       const contribution = armorContribution(armor.system, dexMod);
@@ -774,7 +835,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
         typeLabel: DND_CUSTOM.armorTypes[armor.system.armorType]
       };
     }
+  }
 
+  /** États SRD 5e actifs, résistances/immunités/vulnérabilités aux dégâts (cf.
+   *  _prepareContext). */
+  #prepareConditionsContext(context, system) {
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : actifs via
     // ActiveEffect (this.actor.statuses), Exhaustion à part (niveau 0-6, cf. character-data.js).
     context.conditions = CONFIG.statusEffects.map((status) => ({
@@ -823,7 +888,11 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
           .join(", ")
       }))
       .filter((group) => group.labelsText);
+  }
 
+  /** Poids porté/capacité de charge, richesse totale (cf. _prepareContext) — nécessite
+   *  `context.inventoryItems` déjà posé par #prepareInventoryContext. */
+  #prepareCarryingCapacityContext(context, system) {
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
       carryingCapacity(system.abilities.str.total, "kg") + carryingCapacityBonus(context.inventoryItems);
@@ -833,8 +902,6 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     );
     context.overCapacity = context.carriedWeight > context.carryingCapacity;
     context.currencyTotalCopper = currencyTotalInCopper(system.currency);
-
-    return context;
   }
 
   /** @override

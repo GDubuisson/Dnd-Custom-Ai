@@ -7,8 +7,8 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-**Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), 2 chantiers
-traités sans changement de comportement :
+**Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), les 3 chantiers
+identifiés traités sans changement de comportement :
 - Factorisation du pattern "relais socket vers le MJ actif", jusqu'ici tripliqué
   indépendamment dans `actor-relay.js`/`companion.js`/`wild-shape-form.js`, dans un nouveau
   `scripts/helpers/gm-relay.js` (`createGmRelay`).
@@ -16,10 +16,18 @@ traités sans changement de comportement :
   son rôle de point d'entrée : résolution des dégâts/soins/résistances
   (`scripts/helpers/damage-resolution.js`) et les 9 hooks `renderChatMessageHTML` du système
   (`scripts/helpers/chat-message-hooks.js`).
+- `DndCustomActorSheet#_prepareContext` (`actor-sheet.js`, ~500 lignes mêlant une quinzaine de
+  concerns) scindé en 9 méthodes privées `#prepareXContext`, une par domaine (identité de
+  classe/Origine, économie de combat, progression, caractéristiques/compétences, items,
+  langues/sorts, inventaire, états/résistances, capacité de charge) — pur déplacement de code,
+  ordre d'appel préservé (plusieurs méthodes lisent un champ de contexte posé par la
+  précédente).
 
-Les deux validés par des specs Cypress ciblées (wild-shape/sous-classe Rôdeur/mécaniques
-Niveau A/types de dégâts armure/interaction sauvegarde-résistance) en plus de la suite
-unitaire complète.
+Validés par des specs Cypress ciblées en plus de la suite unitaire complète — le dernier
+chantier (le plus large en surface, chaque onglet de la fiche personnage en dépend) par 6
+specs (`character-sheet`, `tab-stats`, `tab-abilities`, `tab-inventory`, `wizard`,
+`permissions` : 96/103, les 7 échecs restants prouvés pré-existants par un test de contrôle
+sur le code d'avant refactor).
 
 **Documenté** — Point 3 de la revue "prêt pour la V1 ?" du 2026-09-04 : audit des licences
 des icônes tierces dans `assets/icons/`. Environ 166 fichiers sur 217 (sous-classes,
