@@ -31,6 +31,18 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
+// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
+// visible à la fois (display:none CSS sur les autres, cf. dnd-custom-ai.css), le palier actif
+// par défaut à l'ouverture de la fiche est toujours le premier palier non-vide — quasi toujours
+// 0 (tours de magie) pour ce magicien de fixture qui a "Trait de feu" en permanence. Nécessaire
+// avant tout clic sur un bouton de sort de niveau ≥ 1, sans quoi Cypress refuse le clic
+// (élément caché par son .spell-level-group parent) — piège découvert le 2026-09-05 lors d'un
+// refactor sans rapport (7 tests en échec identique avant et après, cf. ANOMALIES_ACTIVES.md).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function updateActor(win, actor, data) {
   return actor.update(win.JSON.parse(win.JSON.stringify(data)));
 }
@@ -436,6 +448,7 @@ describe("Onglet Capacités/Sorts", () => {
     });
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
     resetMessageBaseline();
 
     withItemId(wizardId, "Projectile magique", (itemId) => {
@@ -465,6 +478,7 @@ describe("Onglet Capacités/Sorts", () => {
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
 
     let warned = false;
     cy.window().then((win) => {
@@ -499,6 +513,7 @@ describe("Onglet Capacités/Sorts", () => {
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
     resetMessageBaseline();
 
     withItemId(wizardId, "Projectile magique", (itemId) => {
@@ -551,6 +566,7 @@ describe("Onglet Capacités/Sorts", () => {
     cy.window().then((win) => updateActor(win, win.game.actors.get(wizardId), { "system.spells.slots.1.value": 0 }));
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
     resetMessageBaseline();
 
     withItemId(wizardId, "Parler aux animaux", (itemId) => {
@@ -581,6 +597,7 @@ describe("Onglet Capacités/Sorts", () => {
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
 
     withItemId(wizardId, "Bénédiction", (benedictionId) => {
       cy.get(`li[data-item-id="${benedictionId}"] button[data-action="castSpell"]`).click();
@@ -590,6 +607,7 @@ describe("Onglet Capacités/Sorts", () => {
     });
 
     resetMessageBaseline();
+    goToSpellLevel(2);
     withItemId(wizardId, "Invisibilité", (invisibiliteId) => {
       cy.get(`li[data-item-id="${invisibiliteId}"] button[data-action="castSpell"]`).click();
       cy.window().should((win) => {
@@ -727,6 +745,7 @@ describe("Onglet Capacités/Sorts", () => {
 
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
 
     withItemId(wizardId, "Mot de guérison", (itemId) => {
       resetMessageBaseline();
@@ -773,6 +792,7 @@ describe("Onglet Capacités/Sorts", () => {
     );
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
 
     withItemId(wizardId, "Bouclier", (shieldSpellId) => {
       cy.get(`li[data-item-id="${shieldSpellId}"] button[data-action="castSpell"]`).click();

@@ -7,6 +7,15 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Corrigé (tests)** — `cypress/e2e/tab-abilities.cy.js` : 7 tests (T-ABIL-010/011/013/014/019/
+024/026) échouaient sur `cy.click()` d'un bouton de sort caché par son `.spell-level-group`
+parent (`display: none`). Diagnostic : test jamais mis à jour depuis l'ajout des onglets par
+palier de sort (commit `7a1719d`, 2026-08-27, un seul palier visible à la fois) — le magicien
+de fixture a un tour de magie en permanence, donc le palier 0 reste toujours celui actif par
+défaut, jamais mis à jour vers le palier réellement testé (≥1). Pas un bug applicatif. Fix :
+nouveau helper `goToSpellLevel(level)`, appelé avant chaque interaction avec un sort de niveau
+≥ 1. 25/25 désormais verts.
+
 **Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), les 3 chantiers
 identifiés traités sans changement de comportement :
 - Factorisation du pattern "relais socket vers le MJ actif", jusqu'ici tripliqué
