@@ -24,12 +24,19 @@
         </div>
       </details>
 
+      {{! Épuisement : ajusté MANUELLEMENT par le MJ seul (état punitif, comme les PV et le niveau
+          — verrouillé mais visible côté Joueur). Gagné/perdu automatiquement par les repos
+          (cf. #onRestShort/#onRestLong, rest-and-leveling-mixin.js) sans passer par ces boutons. }}
       <div class="exhaustion-chip" data-tooltip="{{glossaryTip 'exhaustion'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
         <div class="ability-stepper">
+          {{#if isGM}}
           <button type="button" class="ability-btn" data-action="exhaustionDecrease" aria-label="-">−</button>
+          {{/if}}
           <span class="ability-value">{{system.attributes.exhaustion}}</span>
+          {{#if isGM}}
           <button type="button" class="ability-btn" data-action="exhaustionIncrease" aria-label="+">+</button>
+          {{/if}}
         </div>
       </div>
 
@@ -44,7 +51,7 @@
       </div>
       {{! Combat monté (don SRD 5e) : cible le token de la monture puis "Monter" — même
           convention que les Capacités à cible (game.user.targets) qu'ailleurs sur cette fiche. }}
-      <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.MountTooltip'}}">
+      <div class="mount-chip" data-tooltip="{{localize 'DND_CUSTOM.Actor.MountTooltip'}}">
         {{#if mount}}
         <span>{{localize "DND_CUSTOM.Actor.MountedOn"}} : {{mount.name}}</span>
         <button type="button" class="ability-btn-text" data-action="dismount">{{localize "DND_CUSTOM.Actor.Dismount"}}</button>
@@ -56,7 +63,7 @@
           (onglet Capacités, bouton dédié "Prendre forme") — ce chip n'affiche le statut/le
           retour manuel que si une forme est déjà active. }}
       {{#if wildShapeForm}}
-      <div class="mount-chip" title="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
+      <div class="mount-chip" data-tooltip="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
         <span>{{localize "DND_CUSTOM.Actor.WildShapeForm"}} : {{wildShapeForm.name}}
           ({{wildShapeForm.system.attributes.hp.value}}/{{wildShapeForm.system.attributes.hp.max}} {{localize "DND_CUSTOM.Actor.HP"}},
           {{localize "DND_CUSTOM.Actor.AC"}} {{wildShapeForm.system.attributes.ac.value}},
@@ -65,11 +72,11 @@
       </div>
       {{#each wildShapeAttacks}}
       <p class="item-stats-line equipment-roll-row">
-        <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWildShapeAttack" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+        <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWildShapeAttack" data-index="{{this.index}}" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
           <i class="fa-solid fa-dice-d20"></i> {{this.name}} {{this.attackBonusLabel}}
         </button>
         {{#if this.damageLabel}}
-        <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWildShapeAttackDamage" data-index="{{this.index}}" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
+        <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWildShapeAttackDamage" data-index="{{this.index}}" data-tooltip="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
           <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
         </button>
         {{/if}}
@@ -133,7 +140,7 @@
           <div class="ability-side">
             <div class="ability-side-item">
               <span class="ability-side-label" data-tooltip="{{glossaryTip 'modificateur'}}">{{localize "DND_CUSTOM.Actor.ModShort"}}</span>
-              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
+              <button type="button" class="ability-mod roll-btn" data-action="rollAbility" data-key="{{this.key}}" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
             </div>
             <div class="ability-side-item">
               {{#if ../isGM}}
@@ -150,7 +157,7 @@
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
               </span>
               {{/if}}
-              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.save.mod}}</button>
+              <button type="button" class="save-mod roll-btn" data-action="rollSave" data-key="{{this.key}}" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.save.mod}}</button>
             </div>
           </div>
         </div>
@@ -163,10 +170,18 @@
       <ul class="skills-list">
         {{#each skills}}
         <li class="skill {{#if this.proficient}}proficient{{/if}}">
+          {{#if ../isGM}}
           <label>
-            <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
+            <input type="checkbox" name="system.skills.{{this.key}}.proficient" {{#if this.proficient}}checked{{/if}}>
             {{this.label}}
           </label>
+          {{else}}
+          {{! Côté Joueur : la maîtrise de compétence ne dépend que de la classe (fixée à la
+              création), jamais éditable par lui — même traitement que la maîtrise de sauvegarde
+              ci-dessus, simple libellé plutôt qu'une case grisée qui a l'air interactive. La
+              classe `.proficient` du <li> reste l'indicateur visuel. }}
+          <span class="skill-name">{{this.label}}</span>
+          {{/if}}
           <span class="ability-tag">({{this.ability}})</span>
           {{#if this.originAdvantage}}
           <span class="origin-advantage-tag" data-tooltip="{{localize 'DND_CUSTOM.Actor.OriginAdvantageTooltip'}}">{{localize "DND_CUSTOM.Actor.OriginAdvantageShort"}}</span>
@@ -177,7 +192,7 @@
           {{#if this.jackOfAllTrades}}
           <span class="origin-advantage-tag" data-tooltip="{{localize 'DND_CUSTOM.Actor.JackOfAllTradesTooltip'}}">{{localize "DND_CUSTOM.Actor.JackOfAllTradesShort"}}</span>
           {{/if}}
-          <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
+          <button type="button" class="mod roll-btn" data-action="rollSkill" data-key="{{this.key}}" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"><i class="fa-solid fa-dice-d20"></i> {{this.modLabel}}</button>
         </li>
         {{/each}}
       </ul>

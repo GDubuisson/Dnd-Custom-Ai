@@ -13,9 +13,9 @@
       <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'langue'}}">{{localize "DND_CUSTOM.Journal.LanguagesTitle"}}</h3>
       <ul class="languages-list">
         {{#each languages}}
-        <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" title="{{htmlSnippet this.system.description}}">
+        <li class="language-chip language-chip-{{this.system.category}}" data-item-id="{{this.id}}" data-tooltip="{{htmlSnippet this.system.description}}">
           <a class="item-name-link" data-action="viewItem">{{this.name}}</a>
-          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+          <button type="button" class="delete-item-btn" data-action="deleteItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
             <i class="fa-solid fa-trash"></i>
           </button>
         </li>
@@ -79,13 +79,13 @@
           {{! Retour de test : ouvrir la fiche complète de l'Item juste pour lire sa description
               était trop lourd (fenêtre séparée) — un simple survol suffit désormais, cf. même
               convention déjà utilisée pour les langues ci-dessus (htmlSnippet). }}
-          <strong class="item-name-tooltip" title="{{htmlSnippet this.system.description}}">{{this.name}}</strong>
+          <strong class="item-name-tooltip" data-tooltip="{{htmlSnippet this.system.description}}">{{this.name}}</strong>
           {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
           {{#if (isReactionItem this)}}
-          <span class="reaction-badge" title="{{this.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
+          <span class="reaction-badge" data-tooltip="{{this.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
           {{/if}}
           {{#if this.system.uses.max}}
-          <span class="feature-uses" title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
+          <span class="feature-uses" data-tooltip="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
           {{/if}}
           {{#if this.system.recoversSpellSlots}}
           {{! Aucun bouton : récupération automatique proposée au premier repos court de la
@@ -93,7 +93,7 @@
               indiquer la charge restante. }}
           {{else if this.system.offersSpellChoice}}
             {{#unless this.system.chosenLevelOneSpell}}
-            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseInitiateMagic" title="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
+            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseInitiateMagic" data-tooltip="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
               <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
             </button>
             {{/unless}}
@@ -101,56 +101,56 @@
                 Sorts comme n'importe quel autre sort octroyé (cf. #onCastSpell) — la puce
                 "uses" ci-dessus indique la charge de cast gratuit restante. }}
           {{else if this.system.offersManeuverChoice}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}
           </button>
           {{else if this.system.offersOpenHandTechnique}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="useOpenHandTechnique" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useOpenHandTechnique" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-hand-fist"></i> {{this.name}}
           </button>
           {{else if this.system.requiresRoll}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}
           </button>
           {{else if this.system.savingThrow}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeatureSave" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollFeatureSave" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{this.name}}
           </button>
           {{else if this.system.grantsCondition}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="grantFeatureCondition" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="grantFeatureCondition" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-crosshairs"></i> {{this.name}}
           </button>
           {{else if this.system.opposedCheckType}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="rollOpposedCheck" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="rollOpposedCheck" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-hand-fist"></i> {{this.name}}
           </button>
           {{else if this.system.entersWildShape}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="enterWildShape" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{this.system.uses.value}}/{{this.system.uses.max}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="enterWildShape" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{this.system.uses.value}}/{{this.system.uses.max}}">
             <i class="fa-solid fa-paw"></i> {{localize "DND_CUSTOM.Abilities.EnterWildShape"}}
           </button>
           {{else if this.system.uses.max}}
-          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
+          <button type="button" class="roll-btn feature-roll-btn" data-action="useFeatureCharge" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">
             <i class="fa-solid fa-minus"></i>
           </button>
           {{else if this.system.requiresState}}
-          <button type="button" class="roll-btn feature-roll-btn conditional-feature-btn" data-action="useConditionalFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} title="{{localize 'DND_CUSTOM.Abilities.RequiresStateTooltip' state=(conditionLabel ../conditions this.system.requiresState)}}">
+          <button type="button" class="roll-btn feature-roll-btn conditional-feature-btn" data-action="useConditionalFeature" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Abilities.RequiresStateTooltip' state=(conditionLabel ../conditions this.system.requiresState)}}">
             <i class="fa-solid fa-bolt"></i> {{this.name}}
           </button>
           {{else if this.system.grantsChoice}}
             {{#unless (lookup ../featureChoiceMade this.id)}}
-            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseFeatureOption" title="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
+            <button type="button" class="roll-btn feature-roll-btn" data-action="chooseFeatureOption" data-tooltip="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
               <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
             </button>
             {{/unless}}
           {{else if this.system.summonsCompanion}}
             {{#unless ../companionAlreadySummoned}}
-            <button type="button" class="roll-btn feature-roll-btn" data-action="summonCompanion" title="{{localize 'DND_CUSTOM.Abilities.SummonCompanionTooltip'}}">
+            <button type="button" class="roll-btn feature-roll-btn" data-action="summonCompanion" data-tooltip="{{localize 'DND_CUSTOM.Abilities.SummonCompanionTooltip'}}">
               <i class="fa-solid fa-paw"></i> {{localize "DND_CUSTOM.Abilities.SummonCompanionConfirm"}}
             </button>
             {{/unless}}
           {{/if}}
           {{#with (lookup ../featureResourceState this.id)}}
-          <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} title="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
+          <button type="button" class="roll-btn feature-roll-btn resource-technique-btn" data-action="useResourceTechnique" {{#if (resourceTechniqueDisabled this .. ../../reactionAvailable)}}disabled{{/if}} data-tooltip="{{this.remaining}}/{{this.max}} {{this.resourceName}}">
             <i class="fa-solid fa-minus"></i> {{this.resourceName}} : {{this.techniqueName}}
           </button>
           {{/with}}
@@ -182,18 +182,18 @@
         <ul class="spells-list">
           {{#each this.spells}}
           <li data-item-id="{{this.item.id}}">
-            <strong class="item-name-tooltip" title="{{htmlSnippet this.item.system.description}}">{{this.item.name}}</strong>
+            <strong class="item-name-tooltip" data-tooltip="{{htmlSnippet this.item.system.description}}">{{this.item.name}}</strong>
             {{#if this.item.system.details}}<span class="spell-details">({{this.item.system.details}})</span>{{/if}}
             {{#if this.item.system.concentration}}<span class="spell-tag" data-tooltip="{{glossaryTip 'concentration'}}">C</span>{{/if}}
             {{#if this.item.system.ritual}}<span class="spell-tag" data-tooltip="{{glossaryTip 'rituel'}}">R</span>{{/if}}
             {{#if (isReactionItem this.item)}}
-            <span class="reaction-badge" title="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
+            <span class="reaction-badge" data-tooltip="{{this.item.system.reactionTrigger}}">{{localize "DND_CUSTOM.Item.ActivationTypes.reaction"}}</span>
             {{/if}}
-            <button type="button" class="roll-btn" data-action="castSpell" {{#if (reactionBlocked this.item ../../reactionAvailable)}}disabled{{/if}} {{#if this.item.system.attack}}title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Abilities.Cast"}}</button>
+            <button type="button" class="roll-btn" data-action="castSpell" {{#if (reactionBlocked this.item ../../reactionAvailable)}}disabled{{/if}} {{#if this.item.system.attack}}data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}"{{/if}}><i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Abilities.Cast"}}</button>
             {{#if this.showDamageButton}}
-            <button type="button" class="roll-btn" data-action="rollSpellDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}"><i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}}</button>
+            <button type="button" class="roll-btn" data-action="rollSpellDamage" data-tooltip="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}"><i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}}</button>
             {{/if}}
-            <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+            <button type="button" class="delete-item-btn" data-action="deleteItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
               <i class="fa-solid fa-trash"></i>
             </button>
           </li>
@@ -207,4 +207,6 @@
     </div>
     {{/if}}
   </div>
+
+  <p class="drop-hint">{{localize "DND_CUSTOM.Abilities.DropHint"}}</p>
 </section>

@@ -270,12 +270,17 @@ du nouveau jet toujours conservé (jamais le meilleur des deux).
   l'auto-ciblage (un Joueur ne peut plus s'appliquer de dégâts à lui-même — seul le MJ le peut,
   poison/chute/piège déclenchés à sa discrétion).
 - Bouton "Appliquer les dégâts" à usage unique, restreint à l'auteur du jet (ou au MJ).
-- `preUpdateActor` (`dnd-custom-ai.js`) bloque toute baisse directe de
+- `preUpdateActor` (`helpers/security-hooks.js`) bloque toute baisse directe de
   `system.attributes.hp.value` par un non-MJ, SAUF option `dndCustomDamageApply` (posée par
   `applyDamageToTargets`, le vrai bouton "Appliquer les dégâts", et par le correctif
   `dndCustomHpClamp` qui suit une hausse d'Exhaustion). **Piège pour toute future spec E2E** qui
   simule des dégâts déjà subis via un `actor.update()` direct : passer
   `{ dndCustomDamageApply: true }`, sinon la baisse est silencieusement annulée.
+- Même hook : `system.attributes.exhaustion` est ignoré pour un non-MJ SAUF option
+  `dndCustomExhaustionChange` (posée par `#onRestShort`/`#onRestLong`) — le pas-à-pas ± manuel de
+  l'onglet Statistiques est réservé au MJ côté template. **Même piège E2E** : une spec qui force
+  l'Épuisement via `actor.update()` en session Joueur doit passer
+  `{ dndCustomExhaustionChange: true }`.
 - Verrouillage MJ/Joueur des fiches d'Item de compendium : pattern uniforme
   `{{#unless isGM}}disabled{{/unless}}` posé sur CHAQUE champ (pas de verrou global JS), sur
   toutes les fiches `item/*.hbs` **et leurs partials `item/parts/*.hbs`** (qui héritent d'`isGM`
@@ -324,12 +329,15 @@ du nouveau jet toujours conservé (jamais le meilleur des deux).
   définition, utilisée comme valeur d'un attribut `data-tooltip` (jamais `title`). Le slug évite
   d'échapper les apostrophes/parenthèses du `term` dans les templates. Renvoie `""` si absent.
 - **`data-tooltip` vs `title`** : `data-tooltip` déclenche l'infobulle stylée de Foundry
-  (`TooltipManager`) ; `title` déclenche celle du navigateur (moche, lente). **Ne jamais mettre
-  les deux sur un même élément** (double infobulle) — test dédié dans `tests/dom/templates.test.js`.
-- **Portée** : posé sur les *libellés* de la fiche personnage (en-tête compact + onglets
-  Statistiques / Capacités / Équipement / Inventaire), pas sur le texte libre (descriptions
-  d'objets, biographie — cf. option B écartée : scan de texte fragile). `styles/dnd-custom-ai.css`
-  ajoute `cursor: help` sur les éléments non cliquables porteurs d'un `data-tooltip`.
+  (`TooltipManager`, instantanée) ; `title` déclenche celle du navigateur (moche, lente). **Tous
+  les éléments de la fiche personnage (libellés ET boutons/badges d'action) utilisent
+  `data-tooltip`** — `title` n'est plus utilisé (revue couche joueur 2026-09-06). **Ne jamais
+  mettre les deux sur un même élément** (double infobulle) — test dédié dans `tests/dom/templates.test.js`.
+- **Portée** : glossaire sur les *libellés* (en-tête + onglets Statistiques/Capacités/Équipement/
+  Inventaire) ; sur les *boutons d'action*, `data-tooltip` porte l'aide au geste (« cliquer :
+  jet normal, Maj : avantage… », déclencheur de réaction, description d'objet au survol via
+  `htmlSnippet`). Pas sur le texte libre (biographie). `styles/dnd-custom-ai.css` ajoute
+  `cursor: help` sur les éléments non cliquables porteurs d'un `data-tooltip`.
 - **i18n** : le glossaire est FR uniquement (comme les Journaux Guide Joueur/MJ). Le helper
   reçoit un slug littéral, jamais une clé `DND_CUSTOM.*` — donc invisible au test
   `i18n-coverage.test.js`, et aucune entrée `lang/*.json` requise.

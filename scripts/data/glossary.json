@@ -57,12 +57,12 @@
   {
     "key": "repos-long",
     "term": "Repos long",
-    "definition": "Nuit de repos complète : restaure tous les PV, tout le pool de Sorts et toutes les charges de Capacités."
+    "definition": "Nuit de repos complète : restaure tous les PV, tout le pool de Sorts et toutes les charges de Capacités, et retire un niveau d'Épuisement."
   },
   {
     "key": "exhaustion",
     "term": "Exhaustion",
-    "definition": "Niveau d'épuisement cumulatif, de 0 à 6. Dès le niveau 1, désavantage aux tests de caractéristique. Dès le niveau 2, vitesse divisée par deux. Dès le niveau 3, désavantage aux jets d'attaque et de sauvegarde. Dès le niveau 4, PV maximum divisés par deux. Niveau 5, vitesse nulle. Niveau 6, mort."
+    "definition": "Niveau d'épuisement cumulatif, de 0 à 6. Dès le niveau 1, désavantage aux tests de caractéristique. Dès le niveau 2, vitesse divisée par deux. Dès le niveau 3, désavantage aux jets d'attaque et de sauvegarde. Dès le niveau 4, PV maximum divisés par deux. Niveau 5, vitesse nulle. Niveau 6, mort. Un repos long retire un niveau ; l'ajustement manuel (onglet Statistiques) est réservé au MJ."
   },
   {
     "key": "concentration",

@@ -108,9 +108,11 @@ function buildRulesPage(glossary) {
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>
 
     <h2>Exhaustion</h2>
-    <p>${abbr("Exhaustion")} : niveau d'épuisement cumulatif de 0 à 6, réglable depuis l'onglet
-    Statistiques. Chaque palier ajoute son propre malus, cumulatif avec les précédents (détail
-    complet dans le Glossaire).</p>
+    <p>${abbr("Exhaustion")} : niveau d'épuisement cumulatif de 0 à 6 (compteur visible dans
+    l'onglet Statistiques). Chaque palier ajoute son propre malus, cumulatif avec les précédents
+    (détail complet dans le Glossaire). Un 4e repos court ou plus dans la même journée en ajoute
+    un niveau automatiquement ; un repos long en retire un. L'ajustement manuel est réservé au
+    Maître du Jeu.</p>
   `;
 }
 
@@ -217,8 +219,8 @@ async function buildLanguagesPage(glossary) {
   return `
     <p>Chaque personnage connaît toujours la ${abbr("Langue", "Commune")} et la langue de son
     Origine : octroyées automatiquement à la création, sans rien à faire. Les langues spéciales
-    ci-dessous s'ajoutent manuellement, en les glissant depuis le compendium Langues vers l'onglet
-    Journal de la fiche de personnage.</p>
+    ci-dessous s'ajoutent manuellement, en les glissant depuis le compendium Langues sur l'onglet
+    Capacités de la fiche de personnage (où elles s'affichent, en haut).</p>
     ${section("DND_CUSTOM.Item.LanguageCategories.common", byCategory("common"))}
     ${section("DND_CUSTOM.Item.LanguageCategories.origin", byCategory("origin"))}
     ${section("DND_CUSTOM.Item.LanguageCategories.special", byCategory("special"))}

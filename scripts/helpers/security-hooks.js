@@ -51,6 +51,13 @@ export function registerSecurityHooks() {
     // cet update (preUpdateActor), donc sûr à vérifier ici plutôt qu'une option dédiée.
     if (actor.system.subclass) delete sys.subclass;
     if (sys.attributes) delete sys.attributes.level;
+    // Épuisement : état punitif géré par le MJ (pas-à-pas manuel réservé au MJ côté template,
+    // cf. tab-stats.hbs). Seul un flux autorisé qui le marque explicitement (option
+    // `dndCustomExhaustionChange` — les repos, cf. #onRestShort/#onRestLong) laisse un Joueur le
+    // modifier ; tout autre update Joueur (macro, console) est ignoré.
+    if (!options.dndCustomExhaustionChange && sys.attributes?.exhaustion !== undefined) {
+      delete sys.attributes.exhaustion;
+    }
     // Retour de test (bug majeur, sécurité) : un Joueur pouvait s'appliquer lui-même des dégâts
     // en tapant directement une valeur dans le champ PV de l'en-tête (déjà `disabled` côté
     // template pour lui désormais, cf. character-sheet.hbs) — filet de sécurité côté données ici,

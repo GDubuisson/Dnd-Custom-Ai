@@ -7,6 +7,22 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Couche joueur** — Revue finale de la fiche, points de finition :
+- **Maîtrise de compétence** : côté Joueur, simple libellé au lieu d'une case à cocher grisée
+  (elle a l'air interactive sans l'être — même correctif que la maîtrise de sauvegarde).
+- **Épuisement** : le pas-à-pas ± est réservé au MJ (état punitif, comme les PV et le niveau —
+  valeur toujours visible du Joueur). Nouveau : un **repos long retire un niveau d'Épuisement**
+  (SRD 5e). Verrou `preUpdateActor` (`dndCustomExhaustionChange`) contre toute modification
+  Joueur hors repos.
+- **Infobulles** : les onglets Statistiques/Capacités/Équipement/Inventaire passent de `title`
+  (natif, ~1 s de délai) à `data-tooltip` (infobulle Foundry stylée, instantanée) — cohérent
+  avec l'en-tête.
+- **Glisser-déposer** : indication ajoutée sur l'onglet Capacités (glisser Sort/Capacité/Langue
+  depuis un compendium) ; texte du Guide du Joueur corrigé (les langues s'ajoutent sur l'onglet
+  Capacités, plus l'onglet Journal).
+- **Indicateurs Action / Action bonus / Réaction** : l'infobulle rappelle désormais « cliquer
+  pour basculer disponible / utilisé ».
+
 **Ajout** — Bouton « Guide du Joueur » (icône ?) dans l'en-tête de la fiche de personnage : ouvre
 directement le Journal éponyme, point d'entrée manquant vers la documentation en jeu à laquelle
 renvoient déjà les infobulles de glossaire. Couvert par `reference-sheets.cy.js` > T-REF-005 (joué

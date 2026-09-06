@@ -25,7 +25,7 @@
     <tbody>
       {{#each weaponsAndArmor}}
       <tr data-item-id="{{this.id}}">
-        <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
+        <td><a class="item-name-link" data-action="viewItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
         <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
         {{#with (lookup ../weaponStats this.id)}}
@@ -39,11 +39,11 @@
         <td><input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}}></td>
         <td class="inventory-actions">
           {{#if (isUsableItem this)}}
-          <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
+          <button type="button" class="use-item-btn" data-action="useItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
             <i class="fa-solid {{useItemIcon this}}"></i>
           </button>
           {{/if}}
-          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+          <button type="button" class="delete-item-btn" data-action="deleteItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
             <i class="fa-solid fa-trash"></i>
           </button>
         </td>
@@ -68,21 +68,21 @@
     <tbody>
       {{#each gearAndTools}}
       <tr data-item-id="{{this.id}}">
-        <td><a class="item-name-link" data-action="viewItem" title="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
+        <td><a class="item-name-link" data-action="viewItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.ViewItem'}}">{{this.name}}</a></td>
         <td><input type="number" class="item-quantity-input" data-item-quantity value="{{this.system.quantity}}" min="0"></td>
         <td>{{formatWeight this.system.weight}}</td>
         <td>
           {{#if this.system.capacityBonus}}
-          <input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}} title="{{localize 'DND_CUSTOM.Inventory.EquippedBagTooltip'}}">
+          <input type="checkbox" class="item-equipped-checkbox" data-item-equipped {{#if this.system.equipped}}checked{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Inventory.EquippedBagTooltip'}}">
           {{/if}}
         </td>
         <td class="inventory-actions">
           {{#if (isUsableItem this)}}
-          <button type="button" class="use-item-btn" data-action="useItem" title="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
+          <button type="button" class="use-item-btn" data-action="useItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.UseItem'}}">
             <i class="fa-solid {{useItemIcon this}}"></i>
           </button>
           {{/if}}
-          <button type="button" class="delete-item-btn" data-action="deleteItem" title="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
+          <button type="button" class="delete-item-btn" data-action="deleteItem" data-tooltip="{{localize 'DND_CUSTOM.Inventory.DeleteItem'}}">
             <i class="fa-solid fa-trash"></i>
           </button>
         </td>

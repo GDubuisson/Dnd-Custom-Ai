@@ -337,6 +337,29 @@ describe("tab-stats.hbs", () => {
     const arcana = [...doc.querySelectorAll(".skill")].find((li) => li.textContent.includes("Arcanes"));
     assert.ok(arcana.querySelector(".origin-advantage-tag"), "pastille Aptitudes multiples manquante");
   });
+
+  test("compétences côté MJ : case à cocher éditable reliée au bon champ", () => {
+    assert.ok(doc.querySelector('input[name="system.skills.athletics.proficient"]'));
+  });
+
+  test("compétences côté Joueur : pas de case (lecture seule), le <li> maîtrisé reste distingué", () => {
+    // Même correctif que pour les sauvegardes : la maîtrise de compétence ne dépend que de la
+    // classe (fixée à la création), la case grisée avait l'air interactive sans l'être.
+    const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
+    assert.equal(playerDoc.querySelector('input[name="system.skills.athletics.proficient"]'), null);
+    const athletics = [...playerDoc.querySelectorAll(".skill")].find((li) => li.textContent.includes("Athlétisme"));
+    assert.ok(athletics, "ligne Athlétisme introuvable côté Joueur");
+    assert.ok(athletics.classList.contains("proficient"), "indicateur de maîtrise manquant (Athlétisme maîtrisé dans ce fixture)");
+    assert.ok(athletics.querySelector(".skill-name"), "libellé de compétence manquant côté Joueur");
+  });
+
+  test("Épuisement : pas-à-pas ± réservé au MJ, valeur toujours visible", () => {
+    assert.ok(doc.querySelector('[data-action="exhaustionIncrease"]'), "boutons ± absents côté MJ");
+    const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
+    assert.equal(playerDoc.querySelector('[data-action="exhaustionIncrease"]'), null, "bouton + visible côté Joueur");
+    assert.equal(playerDoc.querySelector('[data-action="exhaustionDecrease"]'), null, "bouton − visible côté Joueur");
+    assert.ok(playerDoc.querySelector(".exhaustion-chip .ability-value"), "valeur d'Épuisement masquée côté Joueur");
+  });
 });
 
 // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
@@ -680,7 +703,7 @@ describe("tab-abilities.hbs — Capacité nécessitant un état actif (system.re
     const button = doc.querySelector('[data-action="useConditionalFeature"]');
     assert.ok(button, "bouton de Capacité conditionnelle introuvable");
     assert.ok(button.hasAttribute("disabled"), "devrait être grisé sans l'état requis actif");
-    assert.match(button.getAttribute("title"), /En Rage/, "le tooltip doit nommer l'état requis");
+    assert.match(button.getAttribute("data-tooltip"), /En Rage/, "le tooltip doit nommer l'état requis");
   });
 
   test("bouton dégrisé automatiquement dès que l'état requis est actif", () => {
@@ -741,7 +764,7 @@ describe("tab-abilities.hbs — économie de réaction (FeatureData/SpellData#ac
     const f1 = doc.querySelector('[data-item-id="f1"]');
     const f2 = doc.querySelector('[data-item-id="f2"]');
     assert.ok(f1.querySelector(".reaction-badge"), "badge Réaction manquant sur une Capacité réaction");
-    assert.equal(f1.querySelector(".reaction-badge").getAttribute("title"), "Une créature quitte votre portée");
+    assert.equal(f1.querySelector(".reaction-badge").getAttribute("data-tooltip"), "Une créature quitte votre portée");
     assert.equal(f2.querySelector(".reaction-badge"), null, "badge Réaction ne devrait pas apparaître sur une Capacité non-réaction");
   });
 

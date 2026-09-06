@@ -415,7 +415,7 @@ describe("Onglet Capacités/Sorts", () => {
 
     withItemId(fighterId, "Attaque d'opportunité", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] .reaction-badge`)
-        .invoke("attr", "title")
+        .invoke("attr", "data-tooltip")
         .should("not.include", "Sentinelle");
     });
 
@@ -426,7 +426,7 @@ describe("Onglet Capacités/Sorts", () => {
     goToTab("abilities");
     withItemId(fighterId, "Attaque d'opportunité", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] .reaction-badge`)
-        .invoke("attr", "title")
+        .invoke("attr", "data-tooltip")
         .should("include", "Sentinelle");
     });
 

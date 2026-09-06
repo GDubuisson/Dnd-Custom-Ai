@@ -53,7 +53,10 @@ export function RestAndLevelingSheetMixin(Base) {
         ...(gainsExhaustion ? { "system.attributes.exhaustion": Math.min(6, attributes.exhaustion + 1) } : {})
       };
       if (this.actor.system.class === "warlock") Object.assign(updates, this.#spellSlotResetUpdates());
-      await this.actor.update(updates);
+      // `dndCustomExhaustionChange` : le repos est le seul flux Joueur autorisé à toucher
+      // `system.attributes.exhaustion` (verrou preUpdateActor, security-hooks.js) — le pas-à-pas
+      // manuel de l'onglet Statistiques est réservé au MJ.
+      await this.actor.update(updates, { dndCustomExhaustionChange: true });
       await this.#resetFeatureUses(["shortRest"]);
       await ChatMessage.create({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -114,15 +117,26 @@ export function RestAndLevelingSheetMixin(Base) {
     /** Repos long : soigne intégralement et restaure tous les emplacements de sorts (SRD 5e). */
     static async #onRestLong() {
       if (this.#isDead()) return;
-      const hp = this.actor.system.attributes.hp;
+
+      // SRD 5e : un repos long réduit l'Épuisement d'un niveau (le pas-à-pas manuel de l'onglet
+      // Statistiques étant réservé au MJ, c'est le seul moyen pour un Joueur de le faire baisser).
+      // Appliqué EN PREMIER : à partir du niveau 4 l'Épuisement divise les PV max par deux, donc
+      // le plein de PV ci-dessous doit se calculer sur les PV max APRÈS réduction.
+      if (this.actor.system.attributes.exhaustion > 0) {
+        await this.actor.update(
+          { "system.attributes.exhaustion": this.actor.system.attributes.exhaustion - 1 },
+          { dndCustomExhaustionChange: true }
+        );
+      }
+
       const updates = {
-        "system.attributes.hp.value": hp.max,
+        "system.attributes.hp.value": this.actor.system.attributes.hp.max,
         // Remet à zéro le compteur de repos courts de la règle maison "Épuisement après le 4e
         // repos court" (cf. #onRestShort ci-dessus) — seul le repos long le réinitialise.
         "system.attributes.shortRestCount": 0,
         ...this.#spellSlotResetUpdates()
       };
-      await this.actor.update(updates);
+      await this.actor.update(updates, { dndCustomExhaustionChange: true });
       // Un repos long inclut les bénéfices d'un repos court (SRD 5e) : les deux types de
       // récupération de charges de Capacité sont donc restaurés ici.
       await this.#resetFeatureUses(["shortRest", "longRest"]);

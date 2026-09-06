@@ -111,12 +111,17 @@ la fiche personnage.
 ### Onglet "Statistiques"
 - 6 caractéristiques (Force, Dextérité, Constitution, Intelligence, Sagesse, Charisme) avec
   modificateurs — cases compactes (valeur à gauche, MOD./SAUV. à droite) en grille 2 × 3.
-- 18 compétences SRD (dont Perspicacité), triées alphabétiquement, sur 2 colonnes.
+- 18 compétences SRD (dont Perspicacité), triées alphabétiquement, sur 2 colonnes. La maîtrise
+  (cochée à la création) est éditable par le MJ seul — côté Joueur, simple indicateur visuel
+  (même traitement que la maîtrise de sauvegarde).
 - Jets de sauvegarde.
 - États/conditions actifs, via liste déroulante à cocher (`<details>`), impactant les mécaniques
   de jets (avantage/désavantage selon la condition).
 - Bonus de maîtrise, Initiative, Perception passive et Épuisement résumés en tête d'onglet
   (les deux valeurs dérivées y figurent en plus de la bande de constantes de l'en-tête).
+  L'Épuisement (0-6) : gagné automatiquement au 4e repos court+ sans repos long, retiré d'un
+  niveau par un repos long ; le pas-à-pas ± manuel est réservé au MJ (valeur toujours visible du
+  Joueur — état punitif, comme les PV et le niveau).
 - Gouttières latérales réduites sur cet onglet pour tenir la double colonne à 708 px de large.
 
 ### Onglet "Équipement"
