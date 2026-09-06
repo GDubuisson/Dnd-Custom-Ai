@@ -33,10 +33,11 @@ SRD génériques) en plus de la suite unitaire complète — a révélé au pass
 supplémentaires (même piège que `tab-abilities.cy.js`, cf. entrée suivante) et un bug de
 permission pré-existant sur Sculpteur de sorts (cf. `ANOMALIES_ACTIVES.md`).
 
-**Corrigé (tests)** — `cypress/e2e/metamagic-careful-heightened.cy.js` et
-`cypress/e2e/srd-generic-subclasses.cy.js` : même piège que `tab-abilities.cy.js` ci-dessous
-(bouton de sort caché par son `.spell-level-group` inactif) — nouveau helper `goToSpellLevel`
-ajouté dans chacun.
+**Corrigé (tests)** — `cypress/e2e/metamagic-careful-heightened.cy.js`,
+`cypress/e2e/srd-generic-subclasses.cy.js` et `cypress/e2e/deferred-rider-spells.cy.js` (2 tests :
+« Malédiction du sorcier », « Porte dimensionnelle ») : même piège que `tab-abilities.cy.js`
+ci-dessous (bouton de sort caché par son `.spell-level-group` inactif) — nouveau helper
+`goToSpellLevel` ajouté dans chacun.
 
 **Corrigé (tests)** — `cypress/e2e/tab-abilities.cy.js` : 7 tests (T-ABIL-010/011/013/014/019/
 024/026) échouaient sur `cy.click()` d'un bouton de sort caché par son `.spell-level-group`
