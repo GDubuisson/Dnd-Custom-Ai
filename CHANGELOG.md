@@ -7,6 +7,18 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Refactor** — Découpe pré-1.0 (le dépôt passant en privé après le tag, le code est figé dans son
+meilleur état). **Phase 1/3** : 3 helpers transverses de `actor-sheet.js` deviennent des fonctions
+de module, prérequis à la découpe de la fiche en mixins (un `#`-privé ne franchit pas une frontière
+de classe) :
+- `#itemFromTarget` → `itemFromTarget(actor, el)` (`helpers/sheet-items.js`) — 18 sites +
+  4 dans `InventoryDragDropMixin`, fin du doublon signalé au backlog.
+- `#consumeActionEconomy` → `consumeActionEconomy(actor, item)` (`helpers/action-economy.js`).
+- `#consumeFeatureCharge` → `consumeFeatureCharge(item)` (`helpers/feature-charges.js`).
+
+Zéro changement de comportement. Validé par `npm test` + specs Cypress ciblées (onglets
+Capacités/Sorts/Inventaire/Équipement, économie d'action, réserves de Capacité).
+
 **Dépôt** — `.idea/` (config IDE) et `maquettes/` (~8,6 Mo de maquettes HTML/PNG de conception)
 retirés du suivi git et ajoutés au `.gitignore`. Les fichiers restent en local (des commentaires
 de code y renvoient toujours comme rationale de conception) ; l'historique git n'est pas réécrit.

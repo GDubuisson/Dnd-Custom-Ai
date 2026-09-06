@@ -95,8 +95,13 @@ scripts/
                                  # d'opportunité (PNJ hostile qui s'éloigne d'un PJ) + Échappée de
                                  # la horde en sens inverse (Tactiques défensives)
     sentinel.js                 # checkSentinelReminder, appelé depuis npc-sheet.js#onRollAttack
-    action-economy.js           # noteActionEconomyUsage — suivi non-bloquant Action/Action bonus
-                                 # du tour, actif uniquement en combat (isActorInActiveCombat)
+    action-economy.js           # noteActionEconomyUsage (suivi non-bloquant Action/Action bonus
+                                 # du tour, actif uniquement en combat) + consumeActionEconomy
+                                 # (garde de réaction bloquante avant l'usage d'une Capacité/d'un Sort)
+    feature-charges.js          # consumeFeatureCharge — décrément d'une Capacité à charges limitées
+    sheet-items.js              # itemFromTarget(actor, el) — Item porté par une ligne DOM [data-item-id]
+    sheet-conditions.js         # conditionsContext(actor) — liste des états SRD + sous-ensemble actif
+    damage-affinity.js          # damageAffinityGroups / damageAffinitySummary (cases résist./immun./vuln.)
     hunters-defense.js          # recordAttackOnTargets, hasSteadfastAdvantage,
                                  # hasMultiattackDefenseAdvantage — options de Tactiques
                                  # défensives (Hunter, Rôdeur)

@@ -47,6 +47,7 @@ import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-
 import { conditionsContext } from "../helpers/sheet-conditions.js";
 import { damageAffinityGroups, damageAffinitySummary } from "../helpers/damage-affinity.js";
 import { itemFromTarget } from "../helpers/sheet-items.js";
+import { consumeFeatureCharge } from "../helpers/feature-charges.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import {
@@ -1241,7 +1242,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
     if (!(await consumeActionEconomy(this.actor, item))) return;
 
-    const remaining = await this.#consumeFeatureCharge(item);
+    const remaining = await consumeFeatureCharge(item);
     if (remaining === null) return;
 
     const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
@@ -1284,7 +1285,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       : item;
     if (!chargeHolder) return;
 
-    const remaining = await this.#consumeFeatureCharge(chargeHolder);
+    const remaining = await consumeFeatureCharge(chargeHolder);
     if (remaining === null) return;
 
     const system = this.actor.system;
@@ -1386,7 +1387,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       : item;
     if (!chargeHolder) return;
 
-    const remaining = await this.#consumeFeatureCharge(chargeHolder);
+    const remaining = await consumeFeatureCharge(chargeHolder);
     if (remaining === null) return;
 
     const targets = Array.from(game.user.targets);
@@ -1522,7 +1523,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
     if (!(await consumeActionEconomy(this.actor, item))) return;
 
-    const remaining = await this.#consumeFeatureCharge(item);
+    const remaining = await consumeFeatureCharge(item);
     if (remaining === null) return;
 
     await ChatMessage.create({
@@ -1536,21 +1537,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
   }
 
-  /** Décrémente system.uses.value d'une Capacité à charges limitées et renvoie le nombre de
-   *  charges restantes après l'opération. Renvoie `undefined` si la capacité n'a pas de suivi
-   *  de charges (uses.max === 0, action toujours permise), ou `null` si plus aucune charge
-   *  n'est disponible (l'appelant doit alors annuler l'action associée). */
-  async #consumeFeatureCharge(item) {
-    if (!item.system.uses.max) return undefined;
-    if (item.system.uses.value <= 0) {
-      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.NoChargesLeft", { feature: item.name }));
-      return null;
-    }
-    const remaining = item.system.uses.value - 1;
-    await item.update({ "system.uses.value": remaining });
-    return remaining;
-  }
-
+  // #consumeFeatureCharge : factorisé dans helpers/feature-charges.js (consumeFeatureCharge).
   // #consumeActionEconomy : factorisé dans helpers/action-economy.js (consumeActionEconomy).
 
   /** Rattrapage manuel de la réaction (MJ ou joueur) : capacité qui rend une réaction
@@ -1598,7 +1585,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  cf. offerWildShapeFormDialog, wild-shape-choice.js) : plus de ciblage de token, le joueur
    *  choisit directement parmi les formes disponibles à son niveau. Le dialogue s'affiche AVANT
    *  de consommer l'Action/Action bonus et la charge de Capacité (consumeActionEconomy,
-   *  helpers/action-economy.js / #consumeFeatureCharge, comme toute autre Capacité), pour ne rien décompter si le joueur
+   *  helpers/action-economy.js / consumeFeatureCharge, helpers/feature-charges.js, comme toute autre Capacité), pour ne rien décompter si le joueur
    *  ferme le dialogue sans choisir. `item` est la Capacité "Forme sauvage" elle-même
    *  (`system.entersWildShape`, item-data.js). La création/réutilisation de l'Actor de la forme
    *  et la pose des PV temporaires de "Forme sauvage de combat" (Cercle de la Lune) sont
@@ -1613,7 +1600,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
 
     if (!(await consumeActionEconomy(this.actor, item))) return;
 
-    const remaining = await this.#consumeFeatureCharge(item);
+    const remaining = await consumeFeatureCharge(item);
     if (remaining === null) return;
 
     // Forme sauvage de combat (Cercle de la Lune, Druide 2, SRD 5e) : PV temporaires égaux à 2×
@@ -1698,7 +1685,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   /** Utilisation d'une technique consommant la réserve d'une AUTRE Capacité (`system.
-   *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. #consumeFeatureCharge
+   *  costsResource`, ex. les techniques de Moine consommant du Ki, cf. consumeFeatureCharge (helpers/feature-charges.js)
    *  pour le cas d'une Capacité à charges qui lui sont propres) : décrémente `system.uses.value`
    *  de la Capacité réservoir (trouvée par nom exact sur l'Actor) et l'annonce dans le chat.
    *  Bouton grisé côté template (tab-abilities.hbs > featureResourceState) dès que la réserve
@@ -1713,7 +1700,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     );
     if (!resource) return;
 
-    const remaining = await this.#consumeFeatureCharge(resource);
+    const remaining = await consumeFeatureCharge(resource);
     if (remaining === null) return;
 
     await ChatMessage.create({
@@ -1864,7 +1851,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     });
     if (!chosenKey) return;
 
-    const remaining = await this.#consumeFeatureCharge(item);
+    const remaining = await consumeFeatureCharge(item);
     if (remaining === null) return;
 
     const roll = new Roll(item.system.rollFormula, this.actor.getRollData());
