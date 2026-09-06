@@ -46,6 +46,7 @@ import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
 import { conditionsContext } from "../helpers/sheet-conditions.js";
 import { damageAffinityGroups, damageAffinitySummary } from "../helpers/damage-affinity.js";
+import { itemFromTarget } from "../helpers/sheet-items.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import {
@@ -889,14 +890,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   }
 
   // _preparePartContext (expose context.tab par PART) : factorisé dans InventoryDragDropMixin.
-
-  /** L'Item de cet Actor porté par la ligne/le bloc DOM le plus proche de `target` (attribut
-   *  `data-item-id`), ou `undefined`. Résolution commune à tous les gestionnaires d'action
-   *  agissant sur une ligne d'objet/de capacité/de sort (chacun revalide ensuite `item.type`
-   *  et ses préconditions propres). */
-  #itemFromTarget(target) {
-    return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId);
-  }
+  // itemFromTarget (Item d'une ligne DOM) : factorisé dans helpers/sheet-items.js.
 
   /** Un personnage Mort (3 échecs de jet de sauvegarde contre la mort, cf. context.dying.dead)
    *  ne peut plus se reposer — filet de sécurité côté données, en complément du bouton masqué/
@@ -1243,7 +1237,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  Guérisseur — laissées à l'arbitrage du MJ, comme d'autres clauses partiellement automatisées
    *  ailleurs dans ce système (cf. Sentinelle/Alerte). */
   static async #onRollFeature(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1279,7 +1273,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  chaque Serment de Paladin partagent la même réserve "Canalisation divine (Paladin)",
    *  jamais leur propre charge) plutôt que sa propre `uses`. */
   static async #onRollFeatureSave(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.savingThrow) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1381,7 +1375,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  jets d'attaque (arme/sort PJ, attaque PNJ) pour exempter le Paladin du désavantage "toute
    *  créature autre que vous". */
   static async #onGrantFeatureCondition(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.grantsCondition) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1429,7 +1423,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "camp"), puis un 3e message de résolution. Une seule cible à la fois (test opposé 1 contre
    *  1, pas de zone). */
   static async #onRollOpposedCheck(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.opposedCheckType) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1524,7 +1518,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  mains) : décrémente le compteur et l'annonce dans le chat (pas de jet à afficher, donc
    *  pas de message automatique sinon comme pour #onRollFeature). */
   static async #onUseFeatureCharge(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1631,7 +1625,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  déléguées à requestWildShapeTransformation (wild-shape-form.js), qui gère aussi le relais
    *  MJ nécessaire pour créer un Actor (permission que le Joueur n'a pas). */
   static async #onEnterWildShape(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.entersWildShape) return;
 
     const chosenFormName = await offerWildShapeFormDialog(this.actor);
@@ -1730,7 +1724,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  Bouton grisé côté template (tab-abilities.hbs > featureResourceState) dès que la réserve
    *  est vide, mais revérifié ici au cas où plusieurs clients cliqueraient en même temps. */
   static async #onUseResourceTechnique(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.costsResource) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1761,7 +1755,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  featureDisabled) tant que l'état n'est pas actif, revérifié ici au cas où plusieurs clients
    *  cliqueraient en même temps ou que l'état ait changé entre le render et le clic. */
   static async #onUseConditionalFeature(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.requiresState) return;
     if (!this.actor.statuses.has(item.system.requiresState)) return;
     if (!(await this.#consumeActionEconomy(item))) return;
@@ -1784,7 +1778,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  est déjà fait (bouton déjà masqué côté template de toute façon, revérifié ici par
    *  sécurité). */
   static async #onChooseFeatureOption(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     const fieldKey = item?.system.grantsChoice;
     if (!fieldKey || this.actor.system.combat[fieldKey]) return;
 
@@ -1821,7 +1815,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  consommée dans #onCastSpell ci-dessous. Ne fait rien si déjà choisi (bouton déjà masqué
    *  côté template, revérifié ici par sécurité). */
   static async #onChooseInitiateMagic(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || !item.system.offersSpellChoice || item.system.chosenLevelOneSpell) return;
 
     const choice = await chooseInitiateMagicSpells();
@@ -1853,7 +1847,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  animal", Maître des bêtes/Rôdeur) : une seule fois par personnage (flag
    *  `beastCompanionCreated`, cf. helpers/companion.js), jamais recréé ensuite. */
   static async #onSummonCompanion(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || !item.system.summonsCompanion) return;
     if (this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated")) return;
 
@@ -1866,7 +1860,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  config.js) — même mécanique de dialogue que #offerEquipSlotDialog
    *  (sheets/inventory-drag-drop.js), juste rejouée à chaque utilisation plutôt qu'une fois. */
   static async #onUseManeuver(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || !item.system.offersManeuverChoice) return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -1915,7 +1909,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  reactionAvailable UNIQUEMENT pour un personnage joueur, une cible PNJ n'a pas ce suivi ;
    *  repoussée -> non automatisé, laissé au MJ, cf. commentaire de la Capacité). */
   static async #onUseOpenHandTechnique(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || !item.system.offersOpenHandTechnique) return;
 
     const options = DND_CUSTOM.openHandEffects;
@@ -2107,7 +2101,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  n'a pas de champ activation propre — un jet d'attaque à l'arme consomme toujours l'Action,
    *  `isWeaponAttack` exempte du rappel les personnages avec Attaque supplémentaire. */
   static async #onRollWeaponAttack(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "weapon") return;
     const proficient = isProficientWithWeapon(this.actor.system.class, item.system.weaponType);
     const atk = weaponAttackDamage(
@@ -2133,7 +2127,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  tab-equipment.hbs/tab-inventory.hbs) ; le bouton alternative (ou Maj-clic) force l'autre
    *  dé. Pas d'avantage/désavantage (ne concerne que les jets de d20). */
   static async #onRollWeaponDamage(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "weapon") return;
 
     const isVersatile = item.system.properties.versatile && Boolean(item.system.damageVersatile.dice);
@@ -2231,7 +2225,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  sort (#castAttackSpell/#castSaveSpell/#castHealSpell/#applySpellCondition) — pur
    *  déplacement de code, comportement inchangé. */
   static async #onCastSpell(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "spell") return;
     if (!(await this.#consumeActionEconomy(item))) return;
 
@@ -2556,7 +2550,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  Blast, Invocation occulte de l'Occultiste, qui ajoute le modificateur de Cha aux dégâts de
    *  "Décharge occulte" — cf. FeatureData#boostsSpellDamage, item-data.js). */
   static async #onRollSpellDamage(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "spell" || !item.system.damage.dice) return;
 
     const damageTypeLabel = item.system.damage.type
@@ -2626,7 +2620,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  "heal" rend (healBase + bonus de compétence) PV), ou objets `tool` avec
    *  `system.useEffect.skill` renseigné (test de compétence, cf. #onUseTool). */
   static async #onUseItem(event, target) {
-    const item = this.#itemFromTarget(target);
+    const item = itemFromTarget(this.actor, target);
     if (!item) return;
 
     if (item.type === "tool") return DndCustomActorSheet.#onUseTool(event, this.actor, item);

@@ -1,5 +1,6 @@
 import { carryingCapacity, carryingCapacityBonus, carriedWeight, isOffHandEligible } from "../helpers/rules.js";
 import { DND_CUSTOM } from "../helpers/config.js";
+import { itemFromTarget } from "../helpers/sheet-items.js";
 
 const { DialogV2 } = foundry.applications.api;
 
@@ -95,14 +96,6 @@ export function InventoryDragDropMixin(Base) {
       return context;
     }
 
-    /** L'Item de l'Actor porté par l'élément `[data-item-id]` le plus proche de `el` (l'élément
-     *  lui-même s'il porte l'attribut), ou `undefined`. Résolution commune aux actions de ligne
-     *  d'inventaire (glisser, éditer, supprimer, voir). Équivalent de `#itemFromTarget` de
-     *  `DndCustomActorSheet`, redéclaré ici car un `#`-privé n'est pas partageable entre classes. */
-    #itemFromTarget(el) {
-      return this.actor.items.get(el.closest("[data-item-id]")?.dataset.itemId);
-    }
-
     /** Glisser une ligne d'inventaire (dragstart) : Foundry ne gère nativement que les
      *  éléments matchant son sélecteur `.draggable` (cf. ActorSheetV2#_dragDrop), pas
      *  l'attribut HTML `draggable` posé ici — pas de doublon possible avec le sien.
@@ -115,7 +108,7 @@ export function InventoryDragDropMixin(Base) {
       root.querySelectorAll("[data-item-id]").forEach((row) => {
         row.setAttribute("draggable", "true");
         row.addEventListener("dragstart", (event) => {
-          const item = this.#itemFromTarget(row);
+          const item = itemFromTarget(this.actor, row);
           if (!item) return;
           event.dataTransfer.setData("text/plain", JSON.stringify({ type: "Item", uuid: item.uuid }));
         });
@@ -128,7 +121,7 @@ export function InventoryDragDropMixin(Base) {
 
     async #onInventoryFieldChange(event) {
       const target = event.target;
-      const item = this.#itemFromTarget(target);
+      const item = itemFromTarget(this.actor, target);
       if (!item) return;
 
       if (target.matches("[data-item-quantity]")) {
@@ -262,11 +255,11 @@ export function InventoryDragDropMixin(Base) {
     }
 
     static #onDeleteItem(event, target) {
-      this.#itemFromTarget(target)?.delete();
+      itemFromTarget(this.actor, target)?.delete();
     }
 
     static #onViewItem(event, target) {
-      this.#itemFromTarget(target)?.sheet.render(true);
+      itemFromTarget(this.actor, target)?.sheet.render(true);
     }
   };
 }
