@@ -44,6 +44,7 @@ import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
+import { conditionsContext } from "../helpers/sheet-conditions.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import {
@@ -857,16 +858,10 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   #prepareConditionsContext(context, system) {
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : actifs via
     // ActiveEffect (this.actor.statuses), Exhaustion à part (niveau 0-6, cf. character-data.js).
-    context.conditions = CONFIG.statusEffects.map((status) => ({
-      id: status.id,
-      label: game.i18n.localize(status.name),
-      img: status.img,
-      active: this.actor.statuses.has(status.id)
-    }));
-    // Retour de test : les états actifs n'étaient visibles que sur l'onglet Statistiques —
-    // ce résumé compact dans l'en-tête (partagé par tous les onglets, cf. character-sheet.hbs)
-    // les garde visibles "quelque part sur la fiche générale" quel que soit l'onglet ouvert.
-    context.activeConditions = context.conditions.filter((condition) => condition.active);
+    // `activeConditions` (sous-ensemble actif) alimente le résumé compact de l'en-tête, partagé
+    // par tous les onglets (cf. character-sheet.hbs) — retour de test, sans quoi les états actifs
+    // n'étaient visibles que sur l'onglet Statistiques.
+    Object.assign(context, conditionsContext(this.actor));
 
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
     // ensemble), même pattern que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement

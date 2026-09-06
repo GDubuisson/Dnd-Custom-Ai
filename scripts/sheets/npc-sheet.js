@@ -8,6 +8,7 @@ import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
 import { PENDING_OPPORTUNITY_DISADVANTAGE_FLAG } from "../helpers/opportunity-attack.js";
 import { isDisadvantagedByHuntedTarget } from "../helpers/relentless-hunter.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
+import { conditionsContext } from "../helpers/sheet-conditions.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -169,15 +170,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
 
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
     // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
-    context.conditions = CONFIG.statusEffects.map((status) => ({
-      id: status.id,
-      label: game.i18n.localize(status.name),
-      img: status.img,
-      active: this.actor.statuses.has(status.id)
-    }));
-    // Résumé affiché dans le libellé replié de la liste déroulante (cf. npc-tab-stats.hbs) sans
-    // avoir à ouvrir le menu — même principe que la fiche personnage (actor-sheet.js).
-    context.activeConditions = context.conditions.filter((condition) => condition.active);
+    // `activeConditions` alimente le résumé du libellé replié de la liste déroulante (cf.
+    // npc-tab-stats.hbs) — même helper que la fiche personnage (actor-sheet.js).
+    Object.assign(context, conditionsContext(this.actor));
 
     return context;
   }

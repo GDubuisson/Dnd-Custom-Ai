@@ -29,6 +29,9 @@ comportement :
   (identiques aux armes/armures) : nouveau `equippableItemFields()` partagé par les 4 types
   physiques, dont `physicalItemSchema()` (armes/armures/objets) qui y ajoute `description`.
   `ToolData` garde son `descriptionRP` distinct — aucun champ `description` ajouté.
+- Bloc `context.conditions` / `context.activeConditions` (liste des états SRD + sous-ensemble
+  actif) dupliqué verbatim entre la fiche personnage et la fiche PNJ → `conditionsContext(actor)`
+  (`helpers/sheet-conditions.js`).
 
 Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
 `npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
