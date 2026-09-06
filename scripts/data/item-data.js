@@ -9,14 +9,23 @@ const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField
  *  du module plutôt qu'à chaque définition de schéma. */
 const ALL_SUBCLASS_KEYS = Object.values(DND_CUSTOM.subclasses).flatMap((bySubclass) => Object.keys(bySubclass));
 
-/** Champs communs aux armes/armures : objets physiques qui peuvent être équipés dans un
- *  emplacement de la fiche de personnage (cf. onglet "Équipement"). Poids toujours en kg
- *  (cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item). */
-function physicalItemSchema() {
+/** Poids (toujours en kg, cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item), quantité
+ *  empilable et état "équipé" — trio commun à TOUS les Items physiques (arme, armure, objet,
+ *  outil). */
+function equippableItemFields() {
   return {
     weight: new NumberField({ required: true, min: 0, initial: 0 }),
     quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
-    equipped: new BooleanField({ required: true, initial: false }),
+    equipped: new BooleanField({ required: true, initial: false })
+  };
+}
+
+/** Champs communs aux armes/armures/objets : le trio ci-dessus + une description HTML.
+ *  ⚠️ Pas pour `ToolData`, qui a le trio mais `descriptionRP` (clé distincte) à la place de
+ *  `description` — il réutilise `equippableItemFields()` seul. */
+function physicalItemSchema() {
+  return {
+    ...equippableItemFields(),
     description: new HTMLField({ required: false, blank: true, initial: "" })
   };
 }
@@ -143,10 +152,11 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
 export class GearData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      weight: new NumberField({ required: true, min: 0, initial: 0 }),
-      quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+      // weight / quantity / equipped / description : mêmes champs que les armes/armures
+      // (cf. physicalItemSchema ci-dessus). ToolData a `weight`/`quantity`/`equipped`
+      // identiques mais PAS `description` (il a `descriptionRP`) — d'où pas de spread là-bas.
+      ...physicalItemSchema(),
       price: currencySchema(),
-      equipped: new BooleanField({ required: true, initial: false }),
       // Bonus de capacité de charge (kg) apporté à l'Actor lorsque cet objet est équipé
       // (ex. un sac à dos) — cf. rules.js > carryingCapacityBonus.
       capacityBonus: new NumberField({ required: true, min: 0, initial: 0 }),
@@ -171,8 +181,7 @@ export class GearData extends foundry.abstract.TypeDataModel {
       }),
       // État courant (objet allumé ou non) pour use.type === "light" ; pure donnée d'état
       // d'instance, pas de configuration (cf. #onUseItem).
-      lit: new BooleanField({ required: true, initial: false }),
-      description: new HTMLField({ required: false, blank: true, initial: "" })
+      lit: new BooleanField({ required: true, initial: false })
     };
   }
 }
@@ -487,9 +496,7 @@ export class ToolData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       price: currencySchema(),
-      weight: new NumberField({ required: true, min: 0, initial: 0 }),
-      quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
-      equipped: new BooleanField({ required: true, initial: false }),
+      ...equippableItemFields(),
       useEffect: new SchemaField({
         skill: new StringField({
           required: false,

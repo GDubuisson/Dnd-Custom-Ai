@@ -25,11 +25,16 @@ comportement :
   (`helpers/journal.js`), `buildPages` appelé après les gardes (pas de travail inutile hors MJ /
   Journal déjà présent). `ownership: { default: NONE }` du Guide du MJ toujours passé
   explicitement.
+- `GearData` / `ToolData` (`data/item-data.js`) réinventaient `weight`/`quantity`/`equipped`
+  (identiques aux armes/armures) : nouveau `equippableItemFields()` partagé par les 4 types
+  physiques, dont `physicalItemSchema()` (armes/armures/objets) qui y ajoute `description`.
+  `ToolData` garde son `descriptionRP` distinct — aucun champ `description` ajouté.
 
 Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
 `npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
-`tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`, + contrôle
-jetable de recréation des 3 Journaux via le hook `ready`) en plus de la suite unitaire (887 tests).
+`tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`,
+`item-sheets.cy.js`, + contrôles jetables : recréation des 3 Journaux via le hook `ready`, schéma
+des 4 types d'Item physique) en plus de la suite unitaire (887 tests).
 
 **Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
 possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
