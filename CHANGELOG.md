@@ -36,13 +36,17 @@ comportement :
   `damageAffinitySummary`, dupliqués entre la fiche personnage et la fiche PNJ (seule la source
   des `SetField` diffère : `system.combat` vs `system`) → `damageAffinityGroups(affinities)` /
   `damageAffinitySummary(groups)` (`helpers/damage-affinity.js`).
+- `InventoryDragDropMixin` : 4 résolutions `this.actor.items.get(…closest("[data-item-id]")…)`
+  (glisser, éditer une ligne, supprimer, voir) unifiées via une méthode privée `#itemFromTarget`
+  du mixin (pendant de celle de `DndCustomActorSheet`, un `#`-privé n'étant pas partageable
+  entre classes).
 
 Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
 `npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
 `tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`,
-`item-sheets.cy.js`, `damage-types-physical.cy.js`, `damage-types-magical.cy.js`, + contrôles
-jetables : recréation des 3 Journaux via le hook `ready`, schéma des 4 types d'Item physique) en
-plus de la suite unitaire (888 tests).
+`item-sheets.cy.js`, `damage-types-physical.cy.js`, `damage-types-magical.cy.js`, `drag-drop.cy.js`,
++ contrôles jetables : recréation des 3 Journaux via le hook `ready`, schéma des 4 types d'Item
+physique, suppression/ouverture d'une ligne d'inventaire) en plus de la suite unitaire (888 tests).
 
 **Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
 possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
