@@ -35,7 +35,7 @@ import { registerHandlebarsHelpers } from "./helpers/handlebars-helpers.js";
 import { isImmuneToCondition, suspendExistingImmunizedConditions } from "./helpers/condition-immunity.js";
 import { equipmentSlots, isOffHandEligible, SPELL_LEVELS } from "./helpers/rules.js";
 import { DND_CUSTOM } from "./helpers/config.js";
-import { registerActorUpdateRelay } from "./helpers/actor-relay.js";
+import { registerActorUpdateRelay, registerStatusEffectRelay } from "./helpers/actor-relay.js";
 import { registerChatMessageHooks } from "./helpers/chat-message-hooks.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -276,6 +276,7 @@ async function ensureNpcAttacksArray() {
 // des autres canaux dédiés — un seul enregistrement, au ready.
 Hooks.once("ready", () => {
   registerActorUpdateRelay();
+  registerStatusEffectRelay();
   ensureBeastCompanionRequestListener();
   registerWildShapeFormRequestListener();
   registerOpportunityAttackHooks();

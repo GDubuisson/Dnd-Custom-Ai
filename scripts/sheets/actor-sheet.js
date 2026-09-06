@@ -42,6 +42,7 @@ import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
+import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import {
@@ -2454,13 +2455,19 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     // la même cible sans avoir appliqué les dégâts du 1er perd silencieusement son résultat —
     // simplification acceptée avec l'utilisateur, jamais de risque d'appliquer le MAUVAIS
     // multiplicateur au mauvais sort (spellName revérifié à la consommation, dnd-custom-ai.js).
+    // `requestActorUpdate` plutôt qu'un `targetActor.setFlag` direct : la cible est souvent un PNJ
+    // non possédé par le joueur qui lance le sort — `setFlag` (donc `Actor#update`) lèverait alors
+    // "User lacks permission to update ActorDelta..." au lieu d'échouer silencieusement. Le relais
+    // délègue au MJ actif, comme `applyDamageToTargets` (helpers/damage-resolution.js).
     const setPendingSpellSaveOutcome = (targetActor, success) =>
-      targetActor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", {
-        success,
-        halfOnSave: item.system.save.halfOnSave,
-        ability: item.system.save.ability,
-        spellLevel: item.system.level,
-        spellName: item.name
+      requestActorUpdate(targetActor, {
+        [`flags.${SYSTEM_ID}.pendingSpellSaveOutcome`]: {
+          success,
+          halfOnSave: item.system.save.halfOnSave,
+          ability: item.system.save.ability,
+          spellLevel: item.system.level,
+          spellName: item.name
+        }
       });
 
     for (const token of targets) {
@@ -2506,7 +2513,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
       // Applique automatiquement la condition configurée sur échec (ex. paralysé pour
       // Immobilisation de personne), même mécanisme que #onRollFeatureSave ci-dessus.
       if (!success && item.system.save.appliesCondition) {
-        await targetActor.toggleStatusEffect(item.system.save.appliesCondition, { active: true });
+        await requestToggleStatusEffect(targetActor, item.system.save.appliesCondition, true);
       }
       await setPendingSpellSaveOutcome(targetActor, success);
       const resultKey = success
@@ -2565,7 +2572,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     }
     for (const token of targets) {
       if (!token.actor) continue;
-      await token.actor.toggleStatusEffect(item.system.grantsCondition, { active: true });
+      // Relais MJ (cf. #castSaveSpell) : la cible peut être un PNJ non possédé par le lanceur.
+      await requestToggleStatusEffect(token.actor, item.system.grantsCondition, true);
     }
   }
 

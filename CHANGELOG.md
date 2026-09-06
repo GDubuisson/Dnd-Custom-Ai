@@ -7,6 +7,16 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
+possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
+directement `targetActor.setFlag(...)` et `targetActor.toggleStatusEffect(...)` sur la cible,
+d'où "User lacks permission to update ActorDelta..." côté Joueur (bug pré-existant, révélé par le
+refactor de `#onCastSpell`). Les deux appels passent désormais par le relais vers le MJ actif :
+`requestActorUpdate` pour le flag `pendingSpellSaveOutcome`, nouveau `requestToggleStatusEffect`
+(+ `registerStatusEffectRelay`) dans `helpers/actor-relay.js` pour la condition — même mécanisme
+que `applyDamageToTargets`. Validé par `srd-generic-subclasses.cy.js` (« Sculpteur de sorts »),
+`metamagic-careful-heightened.cy.js` et `spell-grants-condition.cy.js`.
+
 **Refactor** — Revue clean code demandée par l'utilisateur (2026-09-05), les 3 points identifiés
 traités sans changement de comportement :
 - Options d'avantage/désavantage/critique d'un jet d'attaque, dupliquées verbatim entre
