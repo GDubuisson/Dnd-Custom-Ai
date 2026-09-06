@@ -235,6 +235,13 @@ export function spellSlotFillUpdates(actor) {
   return Object.fromEntries(SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max]));
 }
 
+/** Pourcentage de PV restants (0-100, arrondi), pour la barre de vie des fiches — `hp` est le
+ *  bloc `system.attributes.hp` (`{ value, max }`). `max` à 0/absent → traité comme 1 pour éviter
+ *  une division par zéro (barre à 0 %). Partagé par les 3 fiches d'Actor (perso, PNJ, véhicule). */
+export function hitPointsPercent(hp) {
+  return Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+}
+
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
  *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
 export function maxHitPoints(hitDie, level, conMod) {

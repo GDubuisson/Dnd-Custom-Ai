@@ -1,5 +1,5 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { formatModifier, formatAttackLabels } from "../helpers/rules.js";
+import { formatModifier, formatAttackLabels, hitPointsPercent } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
@@ -88,8 +88,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       selected: system.challengeRating === cr
     }));
 
-    const hp = system.attributes.hp;
-    context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+    context.hpPercent = hitPointsPercent(system.attributes.hp);
 
     // Sauvegarde = bonus de caractéristique (pas de score ni de maîtrise séparée pour un PNJ).
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => ({

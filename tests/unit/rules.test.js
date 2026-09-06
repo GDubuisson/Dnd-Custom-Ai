@@ -19,6 +19,7 @@ import {
   spellSlotFillUpdates,
   SPELL_LEVELS,
   maxHitPoints,
+  hitPointsPercent,
   armorClass,
   armorContribution,
   speedPenalty,
@@ -296,6 +297,17 @@ describe("maxHitPoints (méthode 'moyenne' SRD 5e)", () => {
     // d6, mod -5 : niveau 1 -> max(1, 6-5)=1 ; niveaux suivants -> max(1, floor(6/2)+1-5) = max(1,-1) = 1
     assert.equal(maxHitPoints(6, 4, -5), 1 + 1 + 1 + 1);
   });
+});
+
+describe("hitPointsPercent (barre de vie, 0-100 arrondi, partagée par les 3 fiches)", () => {
+  test("moitié des PV", () => assert.equal(hitPointsPercent({ value: 15, max: 30 }), 50));
+  test("PV pleins", () => assert.equal(hitPointsPercent({ value: 30, max: 30 }), 100));
+  test("0 PV", () => assert.equal(hitPointsPercent({ value: 0, max: 30 }), 0));
+  test("arrondi", () => assert.equal(hitPointsPercent({ value: 1, max: 3 }), 33));
+  test("max à 0 -> pas de division par zéro (0 %)", () =>
+    assert.equal(hitPointsPercent({ value: 0, max: 0 }), 0));
+  test("value > max (soins excédentaires) -> plafonné à 100", () =>
+    assert.equal(hitPointsPercent({ value: 40, max: 30 }), 100));
 });
 
 describe("armorClass / armorContribution", () => {

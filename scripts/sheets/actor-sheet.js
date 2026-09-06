@@ -10,6 +10,7 @@ import {
   equipmentSlots,
   formatModifier,
   formatAttackLabels,
+  hitPointsPercent,
   isProficientWithWeapon,
   levelForXp,
   passivePerception,
@@ -487,7 +488,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
    *  `context.proficiencyBonus`, lu par plusieurs des méthodes suivantes. */
   #prepareProgressionContext(context, system) {
     const hp = system.attributes.hp;
-    context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+    context.hpPercent = hitPointsPercent(hp);
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
