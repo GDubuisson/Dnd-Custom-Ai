@@ -84,6 +84,17 @@ export function InventoryDragDropMixin(Base) {
       this.#attachInventoryRowListeners();
     }
 
+    /** @override
+     *  Expose `context.tab` (l'onglet de CE part) aux templates de part : Foundry ne le fait
+     *  pas seul quand les onglets sont déclarés via `static TABS` plutôt que par un groupe de
+     *  navigation nommé. Sans effet sur une fiche sans onglets (véhicule). Identique dans les
+     *  3 fiches d'Actor avant extraction ici. */
+    async _preparePartContext(partId, context) {
+      context = await super._preparePartContext(partId, context);
+      if (context.tabs?.[partId]) context.tab = context.tabs[partId];
+      return context;
+    }
+
     /** Glisser une ligne d'inventaire (dragstart) : Foundry ne gère nativement que les
      *  éléments matchant son sélecteur `.draggable` (cf. ActorSheetV2#_dragDrop), pas
      *  l'attribut HTML `draggable` posé ici — pas de doublon possible avec le sien.

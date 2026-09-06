@@ -182,12 +182,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     return context;
   }
 
-  /** @override */
-  async _preparePartContext(partId, context) {
-    context = await super._preparePartContext(partId, context);
-    if (context.tabs?.[partId]) context.tab = context.tabs[partId];
-    return context;
-  }
+  // _preparePartContext (expose context.tab par PART) : factorisé dans InventoryDragDropMixin.
 
   /** Jet de caractéristique (1d20 + bonus) : sert aussi de jet de sauvegarde, identiques
    *  pour un PNJ (pas de maîtrise séparée, cf. commentaire de classe). */
