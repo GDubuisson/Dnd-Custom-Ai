@@ -19,6 +19,26 @@ de classe) :
 Zéro changement de comportement. Validé par `npm test` + specs Cypress ciblées (onglets
 Capacités/Sorts/Inventaire/Équipement, économie d'action, réserves de Capacité).
 
+**Refactor** — Découpe pré-1.0, **Phase 2/3** : `scripts/sheets/actor-sheet.js` passe de ~2800 à
+~1240 lignes, ses gestionnaires d'action éclatés en 4 mixins ApplicationV2 (même pattern que
+`InventoryDragDropMixin`, `DEFAULT_OPTIONS.actions` fusionné sur la chaîne) :
+- `WildShapeSheetMixin` — Combat monté + Forme sauvage.
+- `RestAndLevelingSheetMixin` — repos court/long, montée de niveau, ASI/sous-classe.
+- `FeatureActionsSheetMixin` — jet/sauvegarde/état/charges/manœuvres de Capacité, test opposé
+  Agripper/Bousculer, Magie d'initié, compagnon animal, toggles d'économie d'action.
+- `SpellcastingSheetMixin` — incantation (coût, concentration, lumière, délégation par type de
+  sort, jet de dégâts différé). `#onSelectSpellLevel` (état d'onglet) reste dans la classe.
+
+Helpers de module extraits au passage (partagés classe ↔ mixins) : `helpers/roll-modifiers.js`
+(`attackRollOptions`, `conditionRollEffects`), `helpers/turn-undead.js` (`isUndeadDestroyed`),
+`helpers/token-light.js` (`setTokensLight`), `helpers/sheet-items.js`, `helpers/feature-charges.js`,
+`consumeActionEconomy` dans `helpers/action-economy.js`.
+
+Zéro changement de comportement. Validé par `npm test` (894) + une large batterie de specs
+Cypress par mixin (wild-shape, level-up, tab-stats, tab-abilities, srd-generic-subclasses,
+turn-undead, tier-c-destroy-undead, metamagic, spell-saving-throws, deferred-rider-spells,
+damage-types-magical, combat-criticals, sentinel-mounted-combat, tier-c-rage…).
+
 **Dépôt** — `.idea/` (config IDE) et `maquettes/` (~8,6 Mo de maquettes HTML/PNG de conception)
 retirés du suivi git et ajoutés au `.gitignore`. Les fichiers restent en local (des commentaires
 de code y renvoient toujours comme rationale de conception) ; l'historique git n'est pas réécrit.

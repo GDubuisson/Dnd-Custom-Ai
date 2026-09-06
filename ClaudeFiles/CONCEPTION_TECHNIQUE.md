@@ -120,14 +120,21 @@ scripts/
                                  # de Forme sauvage (Druide), cf. section Combat automatisé
     token-sync.js                # macro MJ de resynchronisation manuelle d'un token désynchronisé
   sheets/
-    actor-sheet.js               # DndCustomActorSheet (character) — _prepareContext scindé en 9
-                                 # méthodes privées #prepareXContext (une par concern : identité de
-                                 # classe/Origine, économie de combat, progression, caractéristiques/
-                                 # compétences, items, langues/sorts, inventaire, états/résistances,
-                                 # capacité de charge), chantier clean architecture 2026-09-05 —
-                                 # appelées dans un ordre précis (certaines lisent un champ de
-                                 # contexte posé par la précédente, ex. context.proficiencyBonus/
-                                 # context.origins/context.weapons), à ne pas réordonner
+    actor-sheet.js               # DndCustomActorSheet (character) — ~1240 l. : _prepareContext
+                                 # scindé en 9 méthodes #prepareXContext (ordre précis, à ne pas
+                                 # réordonner) + jets de base (ability/save/skill/arme/mort/test
+                                 # opposé), états/exhaustion, objets/outils/lumière, fiches de
+                                 # référence, #onSelectSpellLevel. Le reste des gestionnaires
+                                 # d'action est éclaté en 5 mixins (chaîne : Spellcasting >
+                                 # FeatureActions > RestAndLeveling > WildShape > InventoryDragDrop
+                                 # > HandlebarsApplicationMixin > ActorSheetV2), chacun avec son
+                                 # static DEFAULT_OPTIONS.actions fusionné par ApplicationV2
+    wild-shape-mixin.js          # Combat monté + Forme sauvage
+    rest-and-leveling-mixin.js   # repos court/long, montée de niveau, ASI/sous-classe
+    feature-actions-mixin.js     # jet/sauvegarde/état/charges/manœuvres de Capacité, toggles
+                                 # d'économie d'action, Magie d'initié, compagnon animal
+    spellcasting-mixin.js        # incantation (coût/concentration/lumière, délégation par type
+                                 # de sort, jet de dégâts différé)
     npc-sheet.js                 # DndCustomNpcSheet
     vehicle-actor-sheet.js       # fiche Véhicule/Monture
     character-creation-wizard.js # assistant de création (ApplicationV2 à part, pas une ActorSheet)
