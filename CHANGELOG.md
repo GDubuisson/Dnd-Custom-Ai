@@ -7,6 +7,10 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Manifeste** — `system.json` : champs `readme` (vers `README.md` sur GitHub) et `media`
+(`type: "setup"` → `assets/media/cover.png`, capture de la fiche personnage) ajoutés pour la
+fiche du système dans le gestionnaire de packages Foundry.
+
 **Documentation** — Ajout d'un `README.md` à la racine (présentation, statut, index de
 documentation, mode opératoire des tests — dont la couche E2E Docker/Cypress/Quench —, CI et
 release, licence, route vers la 1.0.0). Il **renvoie** aux docs de conception pour la stack, les
