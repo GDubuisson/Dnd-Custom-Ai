@@ -32,16 +32,21 @@ concerné.
 | Origines | `world-items/origins.json` | `assets/icons/origins/` | 6/6 |
 | Langues | `world-items/languages.json` | `assets/icons/languages/` (+ blasons d'Origine) | 11/11 |
 | Sorts | `world-items/spells.json` | `assets/icons/spells/` | 42/42 |
-| Capacités | `world-items/features.json` | `assets/icons/features/` | 103/105 (2 placeholders ci-dessus) |
+| Capacités | `world-items/features.json` | `assets/icons/features/` | 117/119 (2 placeholders ci-dessus) — 101 fichiers, plusieurs entrées de capacités liées partagent parfois la même icône |
 | Dons | `world-items/feats.json` | `assets/icons/feats/` | 10/10 |
 | Adversaires | `world-items/npcs.json` | icônes core Foundry (`icons/creatures/`, `icons/svg/mystery-man.svg`) | 13/15 (2 placeholders ci-dessus) |
 
 ## À savoir pour la suite
 
-- Une partie des icônes (Sorts, Capacités, Action rusée, Sous-classes) provient de packs
-  tiers (wiki Baldur's Gate 3, pack perso "Saethos Shared Icons", pack de sprites génériques) —
-  origine et licence non confirmées libres de droit dans certains cas. À garder en tête si le
-  système est un jour redistribué publiquement.
+- Une partie des icônes (Sorts, Capacités, Action rusée, Sous-classes, Dons — environ 166
+  fichiers sur 217, voir détail par dossier ci-dessus) provient de packs tiers (wiki Baldur's
+  Gate 3 — copyright Larian/WotC, pack perso "Saethos Shared Icons", pack de sprites
+  génériques) : origine et licence non confirmées libres de droit.
+  **Décision de l'utilisateur (2026-09-05, revue "prêt pour la V1 ?")** : pas de remplacement
+  icône par icône pour l'instant. À la fin du développement du système, faire la dernière
+  release GitHub publique puis **passer le dépôt en privé** — ce qui règle le risque de
+  distribution sans toucher aux images. Tant que le dépôt reste public, ce risque de copyright
+  est assumé consciemment, pas oublié.
 - Quelques correspondances sont approximatives faute de meilleure icône disponible (ex. le sort
   "Ordre" utilise l'icône "Command Halt", le don "Alerte" utilise une icône de cloche d'alarme).
   Une meilleure icône peut toujours remplacer l'actuelle si trouvée.

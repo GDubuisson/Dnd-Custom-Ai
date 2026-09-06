@@ -1,0 +1,11 @@
+{{! Fieldset Prix (pp/po/pa/pc) commun aux 4 types physiques (weapon/armor/gear/tool). Hérite du
+    contexte de la fiche (`system`, `isGM`). }}
+<fieldset class="form-group">
+  <legend>{{localize "DND_CUSTOM.Item.Fields.Price"}}</legend>
+  <div class="price-row">
+    <label>{{localize "DND_CUSTOM.Currency.pp"}} <input type="number" name="system.price.pp" value="{{system.price.pp}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+    <label>{{localize "DND_CUSTOM.Currency.po"}} <input type="number" name="system.price.po" value="{{system.price.po}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+    <label>{{localize "DND_CUSTOM.Currency.pa"}} <input type="number" name="system.price.pa" value="{{system.price.pa}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+    <label>{{localize "DND_CUSTOM.Currency.pc"}} <input type="number" name="system.price.pc" value="{{system.price.pc}}" min="0" {{#unless isGM}}disabled{{/unless}}></label>
+  </div>
+</fieldset>

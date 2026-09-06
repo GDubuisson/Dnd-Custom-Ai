@@ -1,4 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
+import { canUseReaction } from "./rules.js";
 
 const EXTRA_ATTACK_PREFIX = "Attaque supplémentaire";
 
@@ -19,7 +20,7 @@ function isActorInActiveCombat(actor) {
 /** Suivi NON-bloquant de l'Action/Action bonus du tour, SRD 5e (cf. system.combat.actionAvailable/
  *  bonusActionAvailable, CharacterData ; régénérés au début du tour comme system.combat.
  *  reactionAvailable, hooks updateCombat/deleteCombat dans dnd-custom-ai.js). Contrairement à la
- *  réaction (#consumeActionEconomy, actor-sheet.js), ne bloque jamais le jet lui-même — décision
+ *  réaction (`consumeActionEconomy` ci-dessous), ne bloque jamais le jet lui-même — décision
  *  de cadrage du 2026-08-23 (chantier "Suivi de l'action/action bonus") pour ne jamais gêner un
  *  cas légitime non prévu par cette automatisation : seul un rappel de chat avertit si l'Action/
  *  Action bonus est déjà consommée ce tour. Actif UNIQUEMENT en combat (cf. isActorInActiveCombat
@@ -52,4 +53,27 @@ export async function noteActionEconomyUsage(actor, activation, { isWeaponAttack
       action: game.i18n.localize(DND_CUSTOM.activationTypes[activation])
     })
   });
+}
+
+/** Économie d'action de combat (SRD 5e) avant l'usage d'`item` (Capacité ou Sort) par `actor` :
+ *  - `activation === "reaction"` : vérifie que la réaction n'est pas déjà consommée ce round
+ *    (`system.combat.reactionAvailable`, cf. `canUseReaction`) et la marque utilisée — **bloquant**.
+ *  - `"action"` / `"bonusAction"` : suivi NON-bloquant délégué à `noteActionEconomyUsage`.
+ *
+ *  Renvoie `true` si l'action peut se poursuivre (item non-réaction, ou réaction disponible et
+ *  désormais consommée), `false` UNIQUEMENT si une réaction est bloquée (avertissement affiché) —
+ *  l'appelant doit alors abandonner sans avoir décompté de charge. Extrait de
+ *  l'ancienne méthode privée `DndCustomActorSheet#consumeActionEconomy` (fonction de module pour
+ *  rester appelable depuis les mixins de la fiche). */
+export async function consumeActionEconomy(actor, item) {
+  if (item.system.activation === "reaction") {
+    if (!canUseReaction(actor.system)) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
+      return false;
+    }
+    await actor.update({ "system.combat.reactionAvailable": false });
+    return true;
+  }
+  await noteActionEconomyUsage(actor, item.system.activation);
+  return true;
 }

@@ -1,5 +1,5 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { formatModifier } from "../helpers/rules.js";
+import { formatModifier, formatAttackLabels, hitPointsPercent } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
@@ -8,6 +8,8 @@ import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
 import { PENDING_OPPORTUNITY_DISADVANTAGE_FLAG } from "../helpers/opportunity-attack.js";
 import { isDisadvantagedByHuntedTarget } from "../helpers/relentless-hunter.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
+import { conditionsContext } from "../helpers/sheet-conditions.js";
+import { damageAffinityGroups } from "../helpers/damage-affinity.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -88,8 +90,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       selected: system.challengeRating === cr
     }));
 
-    const hp = system.attributes.hp;
-    context.hpPercent = Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
+    context.hpPercent = hitPointsPercent(system.attributes.hp);
 
     // Sauvegarde = bonus de caractéristique (pas de score ni de maîtrise séparée pour un PNJ).
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => ({
@@ -122,7 +123,6 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
           selected: attack.ability === key
         })),
         bonus: attack.bonus,
-        attackBonusLabel: formatModifier(attackAbilityMod + attack.bonus),
         damageDice: attack.damage.dice,
         damageBonus: attack.damage.bonus,
         damageTypeOptions: [
@@ -133,7 +133,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
             selected: attack.damage.type === key
           }))
         ],
-        damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(attackAbilityMod + attack.damage.bonus)}` : "",
+        ...formatAttackLabels(attack, attackAbilityMod),
         // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. WeaponData#magic (item-data.js)
         // pour le détail — contourne la résistance/immunité GÉNÉRIQUE aux 3 types physiques.
         magic: attack.magic,
@@ -154,42 +154,20 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     });
 
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
-    // ensemble), même pattern que weaponProficiencyOptions (class-sheet.hbs/item-sheets.js) —
-    // cf. damageAffinitySchema (shared-schema.js) pour le champ lui-même, damageTypeMultiplier
-    // (dnd-custom-ai.js) pour la résolution.
-    const damageAffinityOptions = (setField) =>
-      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
-    context.damageAffinityGroups = [
-      { field: "damageResistances", titleKey: "DND_CUSTOM.Npc.DamageResistances", options: damageAffinityOptions(system.damageResistances) },
-      { field: "damageImmunities", titleKey: "DND_CUSTOM.Npc.DamageImmunities", options: damageAffinityOptions(system.damageImmunities) },
-      {
-        field: "damageVulnerabilities",
-        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
-        options: damageAffinityOptions(system.damageVulnerabilities)
-      }
-    ];
+    // ensemble), même helper que la fiche personnage (actor-sheet.js). Pour un PNJ les SetField
+    // sont directement sous `system` (cf. damageAffinitySchema, shared-schema.js).
+    context.damageAffinityGroups = damageAffinityGroups(system);
 
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
     // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
-    context.conditions = CONFIG.statusEffects.map((status) => ({
-      id: status.id,
-      label: game.i18n.localize(status.name),
-      img: status.img,
-      active: this.actor.statuses.has(status.id)
-    }));
-    // Résumé affiché dans le libellé replié de la liste déroulante (cf. npc-tab-stats.hbs) sans
-    // avoir à ouvrir le menu — même principe que la fiche personnage (actor-sheet.js).
-    context.activeConditions = context.conditions.filter((condition) => condition.active);
+    // `activeConditions` alimente le résumé du libellé replié de la liste déroulante (cf.
+    // npc-tab-stats.hbs) — même helper que la fiche personnage (actor-sheet.js).
+    Object.assign(context, conditionsContext(this.actor));
 
     return context;
   }
 
-  /** @override */
-  async _preparePartContext(partId, context) {
-    context = await super._preparePartContext(partId, context);
-    if (context.tabs?.[partId]) context.tab = context.tabs[partId];
-    return context;
-  }
+  // _preparePartContext (expose context.tab par PART) : factorisé dans InventoryDragDropMixin.
 
   /** Jet de caractéristique (1d20 + bonus) : sert aussi de jet de sauvegarde, identiques
    *  pour un PNJ (pas de maîtrise séparée, cf. commentaire de classe). */
@@ -311,7 +289,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     // 2026-08-24 — ex. une morsure qui inflige perforant + poison) : 2e message de dégâts
     // DISTINCT, son propre type, jamais de modificateur de caractéristique ajouté (SRD 5e : dés
     // fixes) — résolu indépendamment du 1er contre les résistances de la cible (cf.
-    // damageTypeMultiplier, dnd-custom-ai.js). Même critique (dés doublés) que le composant
+    // damageTypeMultiplier, helpers/damage-resolution.js). Même critique (dés doublés) que le composant
     // principal, cf. #onRollWeaponDamage (actor-sheet.js) pour le même principe côté PJ.
     if (attack.secondaryDamage.dice) {
       const secondaryDamageTypeLabel = attack.secondaryDamage.type

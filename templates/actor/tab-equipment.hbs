@@ -11,10 +11,10 @@
             <span class="item-name-static">{{equipment.mainHand.name}}</span>
             {{#with (lookup weaponStats equipment.mainHand.id)}}
             <p class="item-stats-line equipment-roll-row">
-              <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+              <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWeaponAttack" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
                 <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}}
               </button>
-              <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
+              <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" data-tooltip="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
                 <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
               </button>
               {{#unless this.proficient}} <span class="not-proficient-tag" data-tooltip="{{glossaryTip 'maitrise'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}
@@ -41,10 +41,10 @@
             <span class="item-name-static">{{equipment.offHand.name}}</span>
             {{#with (lookup weaponStats equipment.offHand.id)}}
             <p class="item-stats-line equipment-roll-row">
-              <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWeaponAttack" title="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
+              <button type="button" class="equipment-roll-btn equipment-roll-btn-attack" data-action="rollWeaponAttack" data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
                 <i class="fa-solid fa-dice-d20"></i> {{localize "DND_CUSTOM.Inventory.Attack"}} {{this.attackLabel}}
               </button>
-              <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" title="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
+              <button type="button" class="equipment-roll-btn equipment-roll-btn-damage" data-action="rollWeaponDamage" data-tooltip="{{localize 'DND_CUSTOM.Roll.DamageTooltip'}}">
                 <i class="fa-solid fa-droplet"></i> {{localize "DND_CUSTOM.Inventory.Damage"}} {{this.damageLabel}}
               </button>
               {{#unless this.proficient}} <span class="not-proficient-tag" data-tooltip="{{glossaryTip 'maitrise'}}">{{localize "DND_CUSTOM.Inventory.NotProficient"}}</span>{{/unless}}

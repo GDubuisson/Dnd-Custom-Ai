@@ -255,12 +255,12 @@ describe("Onglet Statistiques — jets de dés", () => {
   });
 
   it("Exhaustion ≥ 1 — désavantage automatique sur les jets de caractéristique/compétence (T-STATS-017)", () => {
-    cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 1 }));
+    cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 1 }, { dndCustomExhaustionChange: true }));
     sheetRoot().find('button[data-action="rollAbility"][data-key="wis"]').click();
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("2d20kl1"));
 
     // Remet l'Exhaustion à zéro pour ne pas fausser les tests suivants de cette spec.
-    cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 0 }));
+    cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 0 }, { dndCustomExhaustionChange: true }));
   });
 
   // Retour de test (lot 3) : "Art de la Parole" (Lucentia) ne faisait rien au clic sur
@@ -555,7 +555,7 @@ describe("Onglet Statistiques — repos", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 0 });
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 0 }, { dndCustomExhaustionChange: true });
     });
 
     lastMessageCount().then((before) => {
@@ -584,7 +584,7 @@ describe("Onglet Statistiques — repos", () => {
     // Plafond SRD (6) jamais dépassé même après de nombreux repos courts supplémentaires.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 6 });
+      return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 6 }, { dndCustomExhaustionChange: true });
     });
     sheetRoot().find('button[data-action="restShort"]').click();
     cy.window().should((win) => {
@@ -604,7 +604,7 @@ describe("Onglet Statistiques — repos", () => {
     // suivants (T-STATS-016 notamment, qui manipule aussi ce champ).
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      return updateActor(win, actor, { "system.attributes.exhaustion": 0 });
+      return updateActor(win, actor, { "system.attributes.exhaustion": 0 }, { dndCustomExhaustionChange: true });
     });
   });
 });
@@ -938,7 +938,16 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
     sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').should("not.have.class", "active");
   });
 
-  it("Exhaustion +/- reste bornée entre 0 et 6 (T-STATS-016)", () => {
+  it("Exhaustion : pas-à-pas masqué côté Joueur, borné 0-6 côté MJ (T-STATS-016)", () => {
+    // Côté Joueur (beforeEach) : l'Épuisement est un état punitif géré par le MJ — la valeur
+    // reste visible mais les boutons ± n'existent pas (cf. tab-stats.hbs).
+    sheetRoot().find(".exhaustion-chip .ability-value").should("be.visible");
+    sheetRoot().find('.exhaustion-chip button[data-action="exhaustionIncrease"]').should("not.exist");
+    sheetRoot().find('.exhaustion-chip button[data-action="exhaustionDecrease"]').should("not.exist");
+
+    // Côté MJ : les boutons ± sont là et bornés entre 0 et 6.
+    cy.loginAsGM();
+    cy.openActorSheet(sharedActorId);
     for (let i = 0; i < 7; i += 1) {
       sheetRoot().find('button[data-action="exhaustionIncrease"]').click();
     }

@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { LOCALES, formatString } from "./i18n.js";
@@ -63,6 +63,18 @@ Handlebars.registerPartial(
   "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs",
   readFileSync(path.join(ROOT, "templates", "actor", "abilities", "class-flavor.hbs"), "utf8")
 );
+
+// Partials communs aux fiches d'Item (cf. scripts/dnd-custom-ai.js > loadTemplates) : enregistrés
+// sous le même chemin système complet qu'en jeu, pour que `{{> "systems/dnd-custom-ai/templates/
+// item/parts/xxx.hbs"}}` se résolve à l'identique dans les tests de rendu (tests/dom).
+const ITEM_PARTS_DIR = path.join(ROOT, "templates", "item", "parts");
+for (const entry of readdirSync(ITEM_PARTS_DIR)) {
+  if (!entry.endsWith(".hbs")) continue;
+  Handlebars.registerPartial(
+    `systems/dnd-custom-ai/templates/item/parts/${entry}`,
+    readFileSync(path.join(ITEM_PARTS_DIR, entry), "utf8")
+  );
+}
 
 /** Compile et rend un template .hbs du système (chemin relatif à `templates/`) avec `context`. */
 export function renderTemplate(relativePath, context) {

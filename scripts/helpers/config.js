@@ -382,8 +382,8 @@ DND_CUSTOM.conditions = [
   // Homebrew (comme "raging"/"blessed" ci-dessus, Niveau C, 2026-08-24) : bascule manuelle posée
   // par le Paladin lui-même à l'activation de "Voile des anciens" (Canalisation divine, Serment
   // des Anciens) — tant qu'active sur LUI, toute créature à 3 m (lui inclus) bénéficie d'une
-  // résistance aux dégâts de SORTS (pas un type précis, cf. isResistantToDamageType >
-  // isSpellDamage/isProtectedByAncientsVeil, dnd-custom-ai.js) — même mécanisme de portée que
+  // résistance aux dégâts de SORTS (pas un type précis, cf. damageTypeMultiplier >
+  // isSpellDamage/isProtectedByAncientsVeil, helpers/damage-resolution.js) — même mécanisme de portée que
   // isProtectedByDevotionAura (helpers/condition-immunity.js), la bascule remplaçant ici la
   // possession passive de la Capacité (activation temporaire, pas un trait permanent). Aucun
   // décompte de durée (1 min SRD) n'est suivi, comme le reste des conditions homebrew : à lever

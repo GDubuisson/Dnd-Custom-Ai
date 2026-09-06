@@ -44,6 +44,27 @@ function latestItemSheetTitle() {
   return cy.get(".application.sheet.item .window-title", { timeout: 10000 });
 }
 
+// Le hook "ready" (dnd-custom-ai.js) lance `importSystemContent({ notifyIfEmpty: false })` à
+// CHAQUE rechargement de page (donc à chaque `cy.loginAsGM()`), en tâche de fond non attendue.
+// Comme le ré-import est dédoublonné PAR NOM, s'il est encore en vol quand T-REF-004 supprime
+// "Fleuraine" du compendium, il la voit absente et la RECRÉE aussitôt — `#openReferenceItem`
+// rouvre alors la fiche au lieu d'avertir (flake ~1/3, préexistant, sans lien avec les partials).
+// Parade : supprimer puis re-vérifier jusqu'à ce que l'absence soit stable (l'import de fond a
+// fini), avec un plafond de tentatives.
+function ensureCompendiumEntryDeleted(win, packName, entryName, stableChecks = 0, attempts = 0) {
+  if (attempts > 40) throw new Error(`Impossible de garder '${entryName}' supprimé du compendium ${packName} (ré-import en boucle ?)`);
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  return win.game.packs
+    .get(`dnd-custom-ai.${packName}`)
+    .getDocuments()
+    .then((docs) => {
+      const doc = docs.find((candidate) => candidate.name === entryName);
+      if (doc) return doc.delete().then(() => wait(400)).then(() => ensureCompendiumEntryDeleted(win, packName, entryName, 0, attempts + 1));
+      if (stableChecks >= 3) return null;
+      return wait(400).then(() => ensureCompendiumEntryDeleted(win, packName, entryName, stableChecks + 1, attempts + 1));
+    });
+}
+
 before(() => {
   cy.loginAsPlayer();
   cy.createReadyCharacter({
@@ -81,15 +102,15 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
     openSheet(sharedActorId);
   });
 
-  // Referme toute fiche d'Item ouverte par le test qui vient de tourner : sans ça, les fenêtres
-  // s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario suivant
-  // (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un run
-  // combiné avec toute la suite, jamais isolément).
+  // Referme toute fiche d'Item / de Journal ouverte par le test qui vient de tourner : sans ça,
+  // les fenêtres s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario
+  // suivant (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un
+  // run combiné avec toute la suite, jamais isolément).
   afterEach(() => {
     cy.window().then((win) => {
       const closing = [];
       for (const app of win.foundry.applications.instances.values()) {
-        if (app.document?.documentName === "Item") closing.push(app.close());
+        if (["Item", "JournalEntry"].includes(app.document?.documentName)) closing.push(app.close());
       }
       return Promise.all(closing);
     });
@@ -130,6 +151,24 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
         latestItemSheetTitle().should("contain.text", originLabel);
       });
   });
+
+  // Le bouton « Guide du Joueur » de l'en-tête (#onOpenPlayerGuide) ouvre le Journal du même nom.
+  // Joué en session Joueur (cf. beforeEach) : vérifie aussi de bout en bout que le Journal est
+  // bien accessible aux joueurs (correctif ownership -> OBSERVER, cf. journal-visibility.cy.js).
+  it("ouvre le Journal « Guide du Joueur » depuis l'en-tête (T-REF-005)", () => {
+    cy.window()
+      .its("game.i18n")
+      .then((i18n) => i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"))
+      .then((guideName) => {
+        sheetRoot().find('button[data-action="openPlayerGuide"]').click();
+        cy.window({ timeout: 10000 }).should((win) => {
+          const open = [...win.foundry.applications.instances.values()].some(
+            (app) => app.document?.documentName === "JournalEntry" && app.document.name === guideName && app.rendered
+          );
+          expect(open, `le Journal « ${guideName} » est ouvert pour le joueur`).to.be.true;
+        });
+      });
+  });
 });
 
 describe("Fiches de référence — avertissement si introuvable, session MJ", () => {
@@ -147,11 +186,13 @@ describe("Fiches de référence — avertissement si introuvable, session MJ", (
     cy.window().then((win) => {
       const pack = win.game.packs.get("dnd-custom-ai.origines");
       return pack.getDocuments().then((docs) => {
-        const document = docs.find((candidate) => candidate.name === "Fleuraine");
-        expect(document, "prérequis : l'Item d'Origine 'Fleuraine' existe dans le compendium").to.exist;
-        return document.delete();
+        expect(
+          docs.find((candidate) => candidate.name === "Fleuraine"),
+          "prérequis : l'Item d'Origine 'Fleuraine' existe dans le compendium"
+        ).to.exist;
       });
     });
+    cy.window().then((win) => ensureCompendiumEntryDeleted(win, "origines", "Fleuraine"));
 
     openSheet(sharedActorId);
 

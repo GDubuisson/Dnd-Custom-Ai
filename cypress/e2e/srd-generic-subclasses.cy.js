@@ -30,6 +30,16 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
+// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
+// visible à la fois, le palier actif par défaut est toujours le premier palier non-vide — jamais
+// le niveau 1 du sort de test ci-dessous pour ce magicien qui a des tours de magie octroyés à la
+// création. Même piège déjà rencontré et corrigé dans tab-abilities.cy.js/
+// metamagic-careful-heightened.cy.js (cf. ANOMALIES_ACTIVES.md).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function equipmentSlotEl(index) {
   return sheetRoot().find(".equipment-slot").eq(index);
 }
@@ -290,6 +300,7 @@ describe("Evocation — Sculpteur de sorts (Maj-clic, réussite automatique grat
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).setTarget(true, { releaseOthers: true }));
     cy.openActorSheet(wizardId);
     goToTab("abilities");
+    goToSpellLevel(1);
     cy.window().should((win) => {
       const actor = win.game.actors.get(wizardId);
       expect(actor.items.find((i) => i.name === "Sculpteur de sorts"), "Capacité présente sur l'Actor").to.exist;

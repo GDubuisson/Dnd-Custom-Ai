@@ -13,6 +13,11 @@
 // spell-saving-throws.cy.js) plutôt que depuis le compendium Capacités : évite de dépendre de sa
 // resynchronisation (piège déjà documenté, importSystemContent n'importe que les entrées
 // absentes par nom) et fixe un rollFormula déterministe ("3", sans dé) pour un total prévisible.
+//
+// Le Magicien reçoit d'office "Récupération arcanique" (Capacité de classe niveau 1,
+// world-items/features.json), elle-même recoversSpellSlots : grantRecoveryFeature la retire donc
+// avant d'ajouter "Test Récupération", pour que #offerSpellSlotRecoveries n'ouvre qu'UNE fenêtre
+// (sinon deux à la suite, et l'assertion "fenêtre fermée" échoue sur la seconde).
 
 const createdActorIds = [];
 let actorId;
@@ -26,20 +31,29 @@ function updateActor(win, actor, data, options = {}) {
 }
 
 function grantRecoveryFeature(win, id) {
-  return win.game.actors.get(id).createEmbeddedDocuments("Item", [
-    win.JSON.parse(
-      JSON.stringify({
-        name: "Test Récupération",
-        type: "feature",
-        system: {
-          requiresRoll: true,
-          rollFormula: "3",
-          recoversSpellSlots: true,
-          uses: { max: 1, value: 1, recharge: "longRest" }
-        }
-      })
-    )
-  ]);
+  const actor = win.game.actors.get(id);
+  // Retire toute Capacité recoversSpellSlots déjà présente ("Récupération arcanique" du Magicien,
+  // ou un "Test Récupération" laissé par un test précédent — l'Actor est partagé) : "Test
+  // Récupération" doit rester la SEULE, sinon #offerSpellSlotRecoveries enchaîne plusieurs fenêtres.
+  const existing = actor.items
+    .filter((item) => item.type === "feature" && item.system.recoversSpellSlots)
+    .map((item) => item.id);
+  return actor.deleteEmbeddedDocuments("Item", existing).then(() =>
+    actor.createEmbeddedDocuments("Item", [
+      win.JSON.parse(
+        JSON.stringify({
+          name: "Test Récupération",
+          type: "feature",
+          system: {
+            requiresRoll: true,
+            rollFormula: "3",
+            recoversSpellSlots: true,
+            uses: { max: 1, value: 1, recharge: "longRest" }
+          }
+        })
+      )
+    ])
+  );
 }
 
 before(() => {
@@ -65,12 +79,6 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
 
   it("distribution confirmée : récupère les paliers choisis, consomme la charge, poste un message", () => {
     let featureId;
-    cy.window()
-      .then((win) => grantRecoveryFeature(win, actorId))
-      .then((items) => {
-        featureId = items[0].id;
-      });
-
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
       // Niveau 3 (magicien, lanceur complet) : table SRD (spell-slots.json) donne 4 emplacements
@@ -85,6 +93,15 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
       );
     });
 
+    // Après la montée de niveau (le hook d'octroi de contenu de classe re-vérifie les Capacités) :
+    // grantRecoveryFeature retire "Récupération arcanique" puis pose "Test Récupération" comme
+    // seule Capacité recoversSpellSlots.
+    cy.window()
+      .then((win) => grantRecoveryFeature(win, actorId))
+      .then((items) => {
+        featureId = items[0].id;
+      });
+
     cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 
@@ -94,13 +111,13 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
       .its("game.i18n")
       .then((i18n) => i18n.localize("DND_CUSTOM.Spells.RecoveryDialogTitle"))
       .then((title) => {
-        cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title);
+        cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", title);
       });
 
-    cy.get('dialog.application.dialog input[name="level1"]').clear().type("2");
-    cy.get('dialog.application.dialog input[name="level2"]').clear().type("1");
-    cy.get('dialog.application.dialog button[data-action="ok"]').click();
-    cy.get("dialog.application.dialog").should("not.exist");
+    cy.get('dialog.application.dialog[open] input[name="level1"]').clear().type("2");
+    cy.get('dialog.application.dialog[open] input[name="level2"]').clear().type("1");
+    cy.get('dialog.application.dialog[open] button[data-action="ok"]').click();
+    cy.get("dialog.application.dialog[open]").should("not.exist");
 
     cy.window().should((win) => {
       const actor = win.game.actors.get(actorId);
@@ -115,12 +132,6 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
 
   it("fenêtre annulée : aucune charge consommée, aucun emplacement modifié", () => {
     let featureId;
-    cy.window()
-      .then((win) => grantRecoveryFeature(win, actorId))
-      .then((items) => {
-        featureId = items[0].id;
-      });
-
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
       // Niveau déjà porté à 3 par le test précédent (même Actor partagé) : level1.max = 4
@@ -131,13 +142,19 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
       );
     });
 
+    cy.window()
+      .then((win) => grantRecoveryFeature(win, actorId))
+      .then((items) => {
+        featureId = items[0].id;
+      });
+
     cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 
     sheetRoot().find('button[data-action="restShort"]').click();
-    cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("exist");
-    cy.get('dialog.application.dialog button[data-action="close"]').click();
-    cy.get("dialog.application.dialog").should("not.exist");
+    cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("exist");
+    cy.get('dialog.application.dialog[open] button[data-action="close"]').click();
+    cy.get("dialog.application.dialog[open]").should("not.exist");
 
     cy.window().should((win) => {
       const actor = win.game.actors.get(actorId);

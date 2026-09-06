@@ -214,6 +214,9 @@
       "Dead": "Dead",
       "RestBlockedDeadTooltip": "Cannot rest: the character is dead",
       "OpenDescriptionTooltip": "Click to open the description sheet",
+      "OpenPlayerGuideTooltip": "Open the Player Guide (glossary, core rules, spells, classes, origins).",
+      "ToggleEconomyHint": "click to toggle available / used (manual fix-up)",
+      "PlayerGuideMissing": "The \"Player Guide\" journal was not found — ask your GM (it is created automatically when the world loads).",
       "ClassSheetMissing": "No description sheet found for class \"{name}\" (import/populate the Classes compendium, see world-items/README.md).",
       "OriginSheetMissing": "No description sheet found for Origin \"{name}\" (import/populate the Origins compendium, see world-items/README.md).",
       "SubclassSheetMissing": "No description sheet found for subclass \"{name}\" (import/populate the Subclasses compendium, see world-items/README.md).",
@@ -228,11 +231,13 @@
       "RestLong": "Long rest",
       "RollInitiative": "Initiative",
       "AwardXp": "Award XP",
-      "LevelUp": "Level up"
+      "LevelUp": "Level up",
+      "OpenPlayerGuide": "Player Guide"
     },
     "Macros": {
       "ImportContent": "Import system content",
       "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details).",
+      "ImportContentDoneWithUpdates": "Import complete: {updated} existing entry/entries resynced from the system's reference content (see console for details).",
       "ResyncToken": "Resync a token"
     },
     "TokenSync": {
@@ -431,6 +436,7 @@
       "PactMagicLabel": "Pact Magic",
       "Cast": "Cast",
       "NoSpells": "No spell recorded",
+      "DropHint": "Drag a Spell, Feature or Language here from a compendium (or another sheet) to add it.",
       "ConcentratingOn": "Concentrating on:",
       "DropConcentration": "Drop concentration",
       "RequiresStateTooltip": "Requires: {state}",
@@ -494,7 +500,6 @@
       "RecoveryDialogPrompt": "{feature}: {total} level(s) to distribute among the slots of your choice.",
       "RecoveryLevelLabel": "Level {level} ({remaining}/{max} used)",
       "RecoveryConfirm": "Recover",
-      "RecoveryInvalid": "Invalid distribution: the total exceeds what can be recovered, or exceeds a slot's capacity.",
       "RecoveryLevelResult": "level {level} (+{amount})",
       "MetamagicCarefulTitle": "Careful Spell — protected target",
       "MetamagicHeightenedTitle": "Heightened Spell — disadvantaged target",
@@ -761,8 +766,11 @@
   },
   "TYPES": {
     "Actor": {
-      "vehicle": "Vehicle",
-      "mount": "Mount"
+      "character": "Character",
+      "npc": "NPC",
+      "mount": "Mount",
+      "wildShapeForm": "Wild Shape Form",
+      "vehicle": "Vehicle"
     },
     "Item": {
       "weapon": "Weapon",
@@ -771,6 +779,7 @@
       "feature": "Feature",
       "origin": "Origin",
       "class": "Class",
+      "subclass": "Subclass",
       "tool": "Tool",
       "spell": "Spell",
       "language": "Language"

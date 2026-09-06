@@ -16,6 +16,14 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
+// Onglets par palier de sort (commit 7a1719d) : un seul .spell-level-group visible à la fois,
+// palier 0 (tours de magie du Chevalier occulte) actif par défaut — passer au palier 1 pour
+// atteindre le bouton "Lancer" de "Bouclier", sinon caché (display:none).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function withItemId(actorId, itemName, callback) {
   return cy
     .window()
@@ -143,6 +151,7 @@ describe("Sous-classes de Guerrier — Maître de guerre / Chevalier occulte", (
 
       cy.openActorSheet(actorId);
       goToTab("abilities");
+      goToSpellLevel(1);
 
       withItemId(actorId, "Bouclier", (itemId) => {
         resetMessageBaseline();

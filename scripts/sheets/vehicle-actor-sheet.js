@@ -1,4 +1,4 @@
-import { carriedWeight } from "../helpers/rules.js";
+import { carriedWeight, hitPointsPercent } from "../helpers/rules.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -30,7 +30,7 @@ export class VehicleActorSheet extends InventoryDragDropMixin(HandlebarsApplicat
     context.actor = this.actor;
     context.system = system;
 
-    context.hpPercent = Math.max(0, Math.min(100, Math.round((system.attributes.hp.value / (system.attributes.hp.max || 1)) * 100)));
+    context.hpPercent = hitPointsPercent(system.attributes.hp);
 
     context.inventoryItems = this.actor.items.filter((item) =>
       ["weapon", "armor", "gear", "tool"].includes(item.type)

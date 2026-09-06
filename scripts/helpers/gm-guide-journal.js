@@ -1,11 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
-
-const SYSTEM_ID = "dnd-custom-ai";
-
-async function loadJson(relativePath) {
-  const response = await fetch(`systems/${SYSTEM_ID}/${relativePath}`);
-  return response.json();
-}
+import { loadSystemJson } from "./system-json.js";
+import { ensureGmAuthoredJournal } from "./journal.js";
 
 function buildOverviewPage() {
   return `
@@ -15,6 +10,10 @@ function buildOverviewPage() {
     <ul>
       <li>PV max, CA, Initiative, bonus de maîtrise, DD/bonus d'attaque des sorts : recalculés en
       permanence à partir des caractéristiques, de la classe et du niveau.</li>
+      <li>Coups et échecs critiques (jets d'attaque et de sauvegarde, uniquement pendant un combat
+      suivi) : un 20 naturel est toujours une réussite critique (dégâts doublés, touche
+      automatique sur cible sélectionnée) et un 1 naturel toujours un échec critique (rate
+      automatiquement), quels que soient les bonus — jamais hors combat.</li>
       <li>Défense sans armure du Barbare : bonus de Constitution ajouté automatiquement à la CA
       tant qu'aucune armure n'est équipée, sans rien à cocher.</li>
       <li>Aptitudes multiples (Barde) : pastille automatique sur une compétence non maîtrisée qui
@@ -128,7 +127,7 @@ function buildOverviewPage() {
 }
 
 async function buildAdjudicationPage() {
-  const features = await loadJson("world-items/features.json");
+  const features = await loadSystemJson("world-items/features.json");
   const flagged = features.filter((feature) => /\bMJ\b|Simplifié/.test(feature.system.description));
   const rows = flagged
     .map(
@@ -210,7 +209,7 @@ async function buildProgressionPage() {
     niveau atteint :</p>
     <ul>
       <li><strong>Sous-classe</strong> (niveau propre à chaque classe, SRD 5e — 1 pour Clerc/
-      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 8 autres) : liste les sous-classes
+      Ensorceleur/Occultiste, 2 pour Druide/Magicien, 3 pour les 7 autres) : liste les sous-classes
       de la classe du personnage, description complète affichée. Ne se propose plus une fois le
       choix fait (verrouillé) ; tant qu'il n'a pas encore été fait, la fenêtre revient à chaque
       montée de niveau suivante, et le sélecteur permanent de l'en-tête reste aussi disponible en
@@ -232,27 +231,15 @@ async function buildProgressionPage() {
  *  existant du même nom, même principe que ensurePlayerGuideJournal/ensureOriginsJournal.
  *  Contenu partiellement dérivé de world-items/features.json et scripts/helpers/config.js :
  *  reste synchronisé si ces fichiers évoluent. */
-export async function ensureGmGuideJournal() {
-  if (!game.user.isGM) return;
-
-  const title = game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle");
-  if (game.journal.getName(title)) return;
-
-  const pages = [
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageOverview", content: buildOverviewPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageAdjudication", content: await buildAdjudicationPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageSimplifications", content: buildSimplificationsPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageProgression", content: await buildProgressionPage() }
-  ];
-
-  await JournalEntry.create({
-    name: title,
-    ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE },
-    pages: pages.map(({ titleKey, content }, index) => ({
-      name: game.i18n.localize(titleKey),
-      type: "text",
-      sort: (index + 1) * 100,
-      text: { format: 1, content }
-    }))
-  });
+export function ensureGmGuideJournal() {
+  return ensureGmAuthoredJournal(
+    game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle"),
+    async () => [
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageOverview", content: buildOverviewPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageAdjudication", content: await buildAdjudicationPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageSimplifications", content: buildSimplificationsPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageProgression", content: await buildProgressionPage() }
+    ].map(({ titleKey, content }) => ({ name: game.i18n.localize(titleKey), content })),
+    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE } }
+  );
 }

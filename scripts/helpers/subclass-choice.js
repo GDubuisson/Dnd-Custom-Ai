@@ -1,4 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
+import { radioListDialogContent } from "./dialog-content.js";
 
 const { DialogV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
@@ -23,21 +24,18 @@ export async function offerSubclassChoiceDialog(actor, classKey, level) {
   const pack = game.packs.get(`${SYSTEM_ID}.sous-classes`);
   const subclassItems = pack ? await pack.getDocuments() : [];
 
-  const rows = Object.entries(subclassChoices)
-    .map(([key, labelKey], index) => {
-      const label = game.i18n.localize(labelKey);
-      const description = subclassItems.find((candidate) => candidate.name === label)?.system.description ?? "";
-      return `
-        <label class="checkbox-row" style="align-items:flex-start;gap:0.5rem;">
-          <input type="radio" name="subclassKey" value="${key}" ${index === 0 ? "checked" : ""}>
-          <span><strong>${label}</strong><br>${description}</span>
-        </label>`;
-    })
-    .join("");
+  const options = Object.entries(subclassChoices).map(([key, labelKey]) => {
+    const label = game.i18n.localize(labelKey);
+    return {
+      value: key,
+      label,
+      description: subclassItems.find((candidate) => candidate.name === label)?.system.description ?? ""
+    };
+  });
 
   const chosenKey = await DialogV2.prompt({
     window: { title: game.i18n.localize("DND_CUSTOM.LevelUp.SubclassDialogTitle") },
-    content: `<div style="display:flex;flex-direction:column;gap:0.6rem;max-height:60vh;overflow-y:auto;">${rows}</div>`,
+    content: radioListDialogContent(options, "subclassKey"),
     ok: {
       label: game.i18n.localize("DND_CUSTOM.LevelUp.SubclassConfirm"),
       callback: (event, button) => button.form.elements.subclassKey?.value

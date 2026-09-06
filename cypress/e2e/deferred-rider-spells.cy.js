@@ -67,6 +67,16 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
+// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est visible
+// à la fois, le palier actif par défaut est le premier palier non-vide (ici le palier 0 : le
+// cleric a "Trait de feu"). Sans ça, le bouton d'un sort de palier ≥ 1 reste `display: none` et
+// `cy.click()` échoue ("not visible"). Même piège déjà corrigé dans tab-abilities.cy.js /
+// srd-generic-subclasses.cy.js / metamagic-careful-heightened.cy.js (cf. ANOMALIES_ACTIVES.md).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function updateActor(win, actor, data, options = {}) {
   return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
@@ -267,6 +277,7 @@ describe("Contenu réutilisant des mécanismes déjà existants", () => {
   it("Malédiction du sorcier : bouton 'Jet de dégâts' indépendant (1d6 nécrotique)", () => {
     cy.openActorSheet(clericId);
     goToTab("abilities");
+    goToSpellLevel(1);
     resetMessageBaseline();
 
     withItemId(clericId, "Malédiction du sorcier", (itemId) => {
@@ -281,6 +292,7 @@ describe("Contenu réutilisant des mécanismes déjà existants", () => {
   it("Porte dimensionnelle : bouton 'Jet de dégâts' disponible (4d6 force)", () => {
     cy.openActorSheet(clericId);
     goToTab("abilities");
+    goToSpellLevel(4);
     resetMessageBaseline();
 
     withItemId(clericId, "Porte dimensionnelle", (itemId) => {

@@ -368,8 +368,6 @@ describe("Affinité élémentaire — bonus de Charisme aux dégâts d'un sort d
 
 describe("Forme sauvage de combat — PV temporaires à la transformation", () => {
   let druidId;
-  let wolfFormId;
-  let wolfFormTokenId;
 
   before(() => {
     cy.loginAsPlayer();
@@ -377,9 +375,20 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
       druidId = id;
       createdActorIds.push(id);
     });
-    // "Forme sauvage"/"Forme sauvage de combat" requièrent le niveau 2 (grantClassContent) :
-    // Items créés directement plutôt que de faire monter de niveau ce personnage de test level 1
-    // (même pattern que wild-shape.cy.js).
+    // "Forme sauvage"/"Forme sauvage de combat" requièrent le niveau 2 : les Capacités elles-
+    // mêmes sont créées/octroyées directement (Items ci-dessous), mais offerWildShapeFormDialog
+    // (wild-shape-choice.js) revérifie INDÉPENDAMMENT actor.system.attributes.level contre
+    // DND_CUSTOM.wildShapeForms (config.js, minLevel 2 pour toute forme) avant même d'ouvrir son
+    // dialogue de choix — sans la montée de niveau ci-dessous, aucune forme n'est "disponible",
+    // le dialogue ne s'ouvre jamais (juste un avertissement) et #onEnterWildShape s'arrête tôt
+    // (chosenFormName vide), laissant les PV temporaires à 0 (bug découvert le 2026-09-05,
+    // T-TIERA-MOONWILD-001 : le personnage de test restait au niveau 1 par défaut, et ciblait en
+    // plus un Actor "wildShapeForm" créé à la main au lieu du VRAI Actor produit par le choix du
+    // dialogue — cf. wild-shape.cy.js > wildShapeActorId pour le bon pattern). Même pattern que
+    // wild-shape.cy.js (dndCustomWizard, bypass de grantClassContent).
+    cy.window().then((win) =>
+      updateActor(win, win.game.actors.get(druidId), { "system.attributes.level": 2 }, { dndCustomWizard: true })
+    );
     cy.window().then((win) =>
       Promise.all([
         createItem(win, druidId, {
@@ -390,22 +399,6 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
         grantCompendiumItem(win, druidId, "capacites", "Forme sauvage de combat")
       ])
     );
-
-    cy.loginAsGM();
-    cy.window()
-      .then((win) =>
-        win.Actor.create(
-          win.JSON.parse(win.JSON.stringify({ name: "Combat Wolf Form", type: "wildShapeForm", system: { size: "m", creatureType: "beast", attributes: { hp: { value: 11, max: 11 } } } }))
-        )
-      )
-      .then((actor) => {
-        wolfFormId = actor.id;
-        createdActorIds.push(actor.id);
-        return cy.window().then((win) => createToken(win, wolfFormId, 400, 400));
-      })
-      .then((tokenId) => {
-        wolfFormTokenId = tokenId;
-      });
   });
 
   // En session MJ (pas Joueur) : requestActorUpdate (helpers/actor-relay.js) relaie une mise à
@@ -419,16 +412,21 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
   it("prendre forme avec la Capacité : PV temporaires = 2×niveau posés sur la Forme (T-TIERA-MOONWILD-001)", () => {
     cy.openActorSheet(druidId);
     goToTab("abilities");
-    targetToken(wolfFormTokenId);
     withItemId(druidId, "Forme sauvage", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] button[data-action="enterWildShape"]`).click();
     });
-    // Token de Forme non lié (actorLink: false par défaut pour un type autre que "character") :
-    // son Actor SYNTHÉTIQUE (canvas.tokens.get(id).actor) est distinct de game.actors.get(id),
-    // même piège déjà documenté pour Repousser les morts-vivants/Tactiques défensives.
-    cy.window().should((win) => {
-      const level = win.game.actors.get(druidId).system.attributes.level;
-      expect(win.canvas.tokens.get(wolfFormTokenId).actor.system.attributes.hp.temp, "PV temporaires = 2×niveau").to.equal(2 * level);
+    // Choix du dialogue (offerWildShapeFormDialog, wild-shape-choice.js), même pattern que
+    // wild-shape.cy.js > chooseWildShapeForm : la forme réellement créée/liée est résolue via
+    // system.combat.wildShapeActorId APRÈS le choix, jamais un Actor créé à la main au préalable.
+    cy.get('dialog.application.dialog input[type="radio"][name="wildShapeFormName"][value="Loup"]', { timeout: 10000 }).check();
+    cy.get('dialog.application.dialog button[data-action="ok"]').click();
+
+    cy.window({ timeout: 10000 }).should((win) => {
+      const actor = win.game.actors.get(druidId);
+      const level = actor.system.attributes.level;
+      const formId = actor.system.combat.wildShapeActorId;
+      expect(formId, "forme liée après choix").to.not.equal("");
+      expect(win.game.actors.get(formId)?.system.attributes.hp.temp, "PV temporaires = 2×niveau").to.equal(2 * level);
     });
   });
 });

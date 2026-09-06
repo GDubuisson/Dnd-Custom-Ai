@@ -11,7 +11,7 @@ import {
   SPELL_LEVELS,
   hasFeature
 } from "../helpers/rules.js";
-import { currencySchema, damageAffinitySchema } from "./shared-schema.js";
+import { currencySchema, damageAffinitySchema, schemaFromKeys } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField } = foundry.data.fields;
 
@@ -57,10 +57,6 @@ function skillField(ability) {
     ability: new StringField({ required: true, initial: ability, choices: ABILITY_KEYS }),
     proficient: new BooleanField({ required: true, initial: false })
   });
-}
-
-function schemaFromKeys(keys, fieldFactory) {
-  return Object.fromEntries(keys.map((key) => [key, fieldFactory(key)]));
 }
 
 export class CharacterData extends foundry.abstract.TypeDataModel {

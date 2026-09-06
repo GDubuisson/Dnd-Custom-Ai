@@ -1,3 +1,5 @@
+import { createGmRelay } from "./gm-relay.js";
+
 const SYSTEM_ID = "dnd-custom-ai";
 const SOCKET_EVENT = `system.${SYSTEM_ID}.companion`;
 
@@ -43,27 +45,19 @@ async function createBeastCompanion(ownerActor) {
   });
 }
 
-/** Écoute du canal socket : un Joueur n'a pas la permission de créer un Actor (cf. Token, même
- *  restriction) — délègue au MJ actif, même mécanique que requestActorUpdate
- *  (dnd-custom-ai.js). */
-export function ensureBeastCompanionRequestListener() {
-  game.socket.on(SOCKET_EVENT, async ({ actorUuid } = {}) => {
-    if (game.users.activeGM?.id !== game.user.id) return;
-    const ownerActor = await fromUuid(actorUuid);
-    if (ownerActor) await createBeastCompanion(ownerActor);
-  });
+async function performCompanionRequest({ actorUuid } = {}) {
+  const ownerActor = await fromUuid(actorUuid);
+  if (ownerActor) await createBeastCompanion(ownerActor);
 }
+
+const relay = createGmRelay(SOCKET_EVENT, performCompanionRequest);
+
+/** Écoute du canal socket : un Joueur n'a pas la permission de créer un Actor (cf. Token, même
+ *  restriction) — délègue au MJ actif, cf. createGmRelay (gm-relay.js). */
+export const ensureBeastCompanionRequestListener = relay.register;
 
 /** Point d'entrée appelé par #onSummonCompanion (actor-sheet.js) : crée directement si le
  *  client a la permission (MJ), sinon relaie au MJ actif via socket. */
 export async function requestBeastCompanion(ownerActor) {
-  if (game.user.isGM) {
-    await createBeastCompanion(ownerActor);
-    return;
-  }
-  if (!game.users.activeGM) {
-    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
-    return;
-  }
-  game.socket.emit(SOCKET_EVENT, { actorUuid: ownerActor.uuid });
+  await relay.request({ actorUuid: ownerActor.uuid }, game.user.isGM);
 }

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -50,13 +50,13 @@ jobs:
         run: |
           mkdir -p dist
           FILES="system.json"
-          for path in template.json scripts styles templates lang assets packs world-items; do
+          for path in README.md LICENSE template.json scripts styles templates lang assets packs world-items; do
             if [ -e "$path" ]; then FILES="$FILES $path"; fi
           done
           zip -r dist/system.zip $FILES
 
       - name: Créer la Release GitHub
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: "v${{ env.VERSION }}"
           name: "v${{ env.VERSION }}"

@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS } from "./character-data.js";
-import { damageAffinitySchema } from "./shared-schema.js";
+import { damageAffinitySchema, schemaFromKeys } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, HTMLField, BooleanField, SetField, ArrayField } = foundry.data.fields;
 
@@ -9,10 +9,6 @@ function npcAbilityField() {
   return new SchemaField({
     mod: new NumberField({ required: true, integer: true, initial: 0 })
   });
-}
-
-function schemaFromKeys(keys, fieldFactory) {
-  return Object.fromEntries(keys.map((key) => [key, fieldFactory(key)]));
 }
 
 /** Fiche d'ennemi/PNJ générique : stats simplifiées, distincte de CharacterData. */
@@ -40,7 +36,7 @@ export class NpcData extends foundry.abstract.TypeDataModel {
           value: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
           max: new NumberField({ required: true, integer: true, min: 0, initial: 10 }),
           // Points de vie temporaires (même champ que CharacterData#hp.temp, absorbés en
-          // premier par `applyDamageToTargets`, dnd-custom-ai.js) — quasi toujours à 0 pour un
+          // premier par `applyDamageToTargets`, helpers/damage-resolution.js) — quasi toujours à 0 pour un
           // PNJ ordinaire, sert à "Forme sauvage de combat" (Cercle de la Lune, Druide 2) : la
           // réserve de PV d'un Actor "wildShapeForm" (même NpcData) sert de 2e réserve pendant
           // la transformation, cf. #onEnterWildShape (actor-sheet.js).

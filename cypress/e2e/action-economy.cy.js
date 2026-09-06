@@ -210,14 +210,15 @@ describe("Suivi de l'action du tour — jets d'attaque à l'arme", () => {
       targetToken(tokenId);
       equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
 
-      cy.window({ timeout: 10000 })
-        .should((win) => {
-          expect(win.game.messages.size, "le jet d'attaque poste un message").to.be.greaterThan(knownMessageCount);
-        })
-        .then((win) => {
-          expect(win.game.messages.size - knownMessageCount, "un seul message (le jet), aucun rappel").to.equal(1);
-          expect(win.game.actors.get(fighterId).system.combat.actionAvailable, "Action désormais consommée").to.be.false;
-        });
+      // Dans #onRollWeaponAttack, le message du jet est posté AVANT le `actor.update` qui décoche
+      // actionAvailable (noteActionEconomyUsage) : les deux assertions doivent donc être dans un
+      // même `should()` qui retente, sinon on lit actionAvailable avant que l'update ait abouti
+      // (flaky historique — passait au retry).
+      cy.window({ timeout: 10000 }).should((win) => {
+        expect(win.game.messages.size, "le jet d'attaque poste un message").to.be.greaterThan(knownMessageCount);
+        expect(win.game.messages.size - knownMessageCount, "un seul message (le jet), aucun rappel").to.equal(1);
+        expect(win.game.actors.get(fighterId).system.combat.actionAvailable, "Action désormais consommée").to.be.false;
+      });
     });
   });
 

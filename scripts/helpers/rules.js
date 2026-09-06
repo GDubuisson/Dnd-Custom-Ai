@@ -130,6 +130,18 @@ export function formatModifier(mod) {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
+/** Libellés déjà formatés (bonus d'attaque, dégâts) d'un profil d'attaque simplifié
+ *  (NpcData#attacks — PNJ, Forme sauvage) pour affichage direct côté template, sans logique de
+ *  formatage dans le .hbs. Extrait le 2026-09-05 (chantier clean code) : dupliqué verbatim entre
+ *  npc-sheet.js (context.attacks) et actor-sheet.js (context.wildShapeAttacks). `damageLabel` vide
+ *  si l'attaque n'a pas de dé de dégâts renseigné (ex. profil incomplet). */
+export function formatAttackLabels(attack, abilityMod) {
+  return {
+    attackBonusLabel: formatModifier(abilityMod + attack.bonus),
+    damageLabel: attack.damage.dice ? `${attack.damage.dice}${formatModifier(abilityMod + attack.damage.bonus)}` : ""
+  };
+}
+
 /** Perception passive, SRD 5e : 10 + mod Sagesse + bonus de maîtrise si Perception maîtrisée. */
 export function passivePerception(wisMod, perceptionProficient, proficiencyBonusValue) {
   return 10 + wisMod + (perceptionProficient ? proficiencyBonusValue : 0);
@@ -221,6 +233,13 @@ export function spellSlotsForClass(className, level, tables) {
 export function spellSlotFillUpdates(actor) {
   const slots = actor.system.spells.slots;
   return Object.fromEntries(SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max]));
+}
+
+/** Pourcentage de PV restants (0-100, arrondi), pour la barre de vie des fiches — `hp` est le
+ *  bloc `system.attributes.hp` (`{ value, max }`). `max` à 0/absent → traité comme 1 pour éviter
+ *  une division par zéro (barre à 0 %). Partagé par les 3 fiches d'Actor (perso, PNJ, véhicule). */
+export function hitPointsPercent(hp) {
+  return Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 }
 
 /** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis

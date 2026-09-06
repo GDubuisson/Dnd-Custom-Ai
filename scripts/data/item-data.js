@@ -9,14 +9,23 @@ const { SchemaField, NumberField, StringField, BooleanField, HTMLField, SetField
  *  du module plutôt qu'à chaque définition de schéma. */
 const ALL_SUBCLASS_KEYS = Object.values(DND_CUSTOM.subclasses).flatMap((bySubclass) => Object.keys(bySubclass));
 
-/** Champs communs aux armes/armures : objets physiques qui peuvent être équipés dans un
- *  emplacement de la fiche de personnage (cf. onglet "Équipement"). Poids toujours en kg
- *  (cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item). */
-function physicalItemSchema() {
+/** Poids (toujours en kg, cf. ClaudeFiles/CONCEPTION_FONCTIONNELLE.md > types d'Item), quantité
+ *  empilable et état "équipé" — trio commun à TOUS les Items physiques (arme, armure, objet,
+ *  outil). */
+function equippableItemFields() {
   return {
     weight: new NumberField({ required: true, min: 0, initial: 0 }),
     quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
-    equipped: new BooleanField({ required: true, initial: false }),
+    equipped: new BooleanField({ required: true, initial: false })
+  };
+}
+
+/** Champs communs aux armes/armures/objets : le trio ci-dessus + une description HTML.
+ *  ⚠️ Pas pour `ToolData`, qui a le trio mais `descriptionRP` (clé distincte) à la place de
+ *  `description` — il réutilise `equippableItemFields()` seul. */
+function physicalItemSchema() {
+  return {
+    ...equippableItemFields(),
     description: new HTMLField({ required: false, blank: true, initial: "" })
   };
 }
@@ -61,7 +70,7 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       // modificateur de caractéristique ajouté (SRD 5e : les dégâts bonus d'une propriété
       // magique sont des dés fixes) — cf. #onRollWeaponDamage (actor-sheet.js), qui poste un
       // 2e message de dégâts distinct pour ce composant, résolu indépendamment du premier contre
-      // les résistances de la cible (cf. damageTypeMultiplier, dnd-custom-ai.js).
+      // les résistances de la cible (cf. damageTypeMultiplier, helpers/damage-resolution.js).
       secondaryDamage: new SchemaField({
         dice: new StringField({ required: false, blank: true, initial: "" }),
         type: new StringField({
@@ -79,7 +88,7 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       // Chantier "types de dégâts" (Phase 1, 2026-08-24) : une arme magique (+1/+2/+3, ou tout
       // simplement enchantée) contourne la résistance/immunité aux dégâts contondants/
       // perforants/tranchants "contre les attaques non magiques" (nuance SRD 5e commune aux
-      // monstres) — cf. damageTypeMultiplier, dnd-custom-ai.js. S'applique aussi bien au
+      // monstres) — cf. damageTypeMultiplier, helpers/damage-resolution.js. S'applique aussi bien au
       // composant `damage` (physique) qu'à `secondaryDamage` ci-dessus si celui-ci est LUI-MÊME
       // d'un type physique (rare) — sans effet sur un type déjà magique (Phase 2 : la nuance ne
       // concerne que les 3 types physiques).
@@ -129,7 +138,7 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
       // PROPRE à cette armure (indépendante des cases génériques Personnage/PNJ de la Phase 1,
       // cf. damageAffinitySchema, shared-schema.js) — n'agit que si l'armure est équipée
       // (cf. `equipped`, physicalItemSchema ci-dessus) et se combine avec le générique dans
-      // damageTypeMultiplier (dnd-custom-ai.js) : la meilleure protection l'emporte, jamais de
+      // damageTypeMultiplier (helpers/damage-resolution.js) : la meilleure protection l'emporte, jamais de
       // cumul (règle SRD "les résistances multiples au même type ne se cumulent pas").
       ...damageAffinitySchema()
     };
@@ -143,10 +152,11 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
 export class GearData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      weight: new NumberField({ required: true, min: 0, initial: 0 }),
-      quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+      // weight / quantity / equipped / description : mêmes champs que les armes/armures
+      // (cf. physicalItemSchema ci-dessus). ToolData a `weight`/`quantity`/`equipped`
+      // identiques mais PAS `description` (il a `descriptionRP`) — d'où pas de spread là-bas.
+      ...physicalItemSchema(),
       price: currencySchema(),
-      equipped: new BooleanField({ required: true, initial: false }),
       // Bonus de capacité de charge (kg) apporté à l'Actor lorsque cet objet est équipé
       // (ex. un sac à dos) — cf. rules.js > carryingCapacityBonus.
       capacityBonus: new NumberField({ required: true, min: 0, initial: 0 }),
@@ -171,8 +181,7 @@ export class GearData extends foundry.abstract.TypeDataModel {
       }),
       // État courant (objet allumé ou non) pour use.type === "light" ; pure donnée d'état
       // d'instance, pas de configuration (cf. #onUseItem).
-      lit: new BooleanField({ required: true, initial: false }),
-      description: new HTMLField({ required: false, blank: true, initial: "" })
+      lit: new BooleanField({ required: true, initial: false })
     };
   }
 }
@@ -487,9 +496,7 @@ export class ToolData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       price: currencySchema(),
-      weight: new NumberField({ required: true, min: 0, initial: 0 }),
-      quantity: new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
-      equipped: new BooleanField({ required: true, initial: false }),
+      ...equippableItemFields(),
       useEffect: new SchemaField({
         skill: new StringField({
           required: false,

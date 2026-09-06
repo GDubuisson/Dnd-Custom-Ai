@@ -1,5 +1,6 @@
 import { carryingCapacity, carryingCapacityBonus, carriedWeight, isOffHandEligible } from "../helpers/rules.js";
 import { DND_CUSTOM } from "../helpers/config.js";
+import { itemFromTarget } from "../helpers/sheet-items.js";
 
 const { DialogV2 } = foundry.applications.api;
 
@@ -84,6 +85,17 @@ export function InventoryDragDropMixin(Base) {
       this.#attachInventoryRowListeners();
     }
 
+    /** @override
+     *  Expose `context.tab` (l'onglet de CE part) aux templates de part : Foundry ne le fait
+     *  pas seul quand les onglets sont déclarés via `static TABS` plutôt que par un groupe de
+     *  navigation nommé. Sans effet sur une fiche sans onglets (véhicule). Identique dans les
+     *  3 fiches d'Actor avant extraction ici. */
+    async _preparePartContext(partId, context) {
+      context = await super._preparePartContext(partId, context);
+      if (context.tabs?.[partId]) context.tab = context.tabs[partId];
+      return context;
+    }
+
     /** Glisser une ligne d'inventaire (dragstart) : Foundry ne gère nativement que les
      *  éléments matchant son sélecteur `.draggable` (cf. ActorSheetV2#_dragDrop), pas
      *  l'attribut HTML `draggable` posé ici — pas de doublon possible avec le sien.
@@ -96,7 +108,7 @@ export function InventoryDragDropMixin(Base) {
       root.querySelectorAll("[data-item-id]").forEach((row) => {
         row.setAttribute("draggable", "true");
         row.addEventListener("dragstart", (event) => {
-          const item = this.actor.items.get(row.dataset.itemId);
+          const item = itemFromTarget(this.actor, row);
           if (!item) return;
           event.dataTransfer.setData("text/plain", JSON.stringify({ type: "Item", uuid: item.uuid }));
         });
@@ -109,8 +121,7 @@ export function InventoryDragDropMixin(Base) {
 
     async #onInventoryFieldChange(event) {
       const target = event.target;
-      const itemId = target.closest("[data-item-id]")?.dataset.itemId;
-      const item = itemId ? this.actor.items.get(itemId) : null;
+      const item = itemFromTarget(this.actor, target);
       if (!item) return;
 
       if (target.matches("[data-item-quantity]")) {
@@ -244,13 +255,11 @@ export function InventoryDragDropMixin(Base) {
     }
 
     static #onDeleteItem(event, target) {
-      const itemId = target.closest("[data-item-id]")?.dataset.itemId;
-      this.actor.items.get(itemId)?.delete();
+      itemFromTarget(this.actor, target)?.delete();
     }
 
     static #onViewItem(event, target) {
-      const itemId = target.closest("[data-item-id]")?.dataset.itemId;
-      this.actor.items.get(itemId)?.sheet.render(true);
+      itemFromTarget(this.actor, target)?.sheet.render(true);
     }
   };
 }

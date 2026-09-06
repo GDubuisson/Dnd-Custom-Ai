@@ -205,6 +205,7 @@ deux champs de texte libre ci-dessous.
 | T-REF-002 | Ouvrir la fiche de Sous-classe | P2 | E2E | Sous-classe choisie, cliquer sur son nom | Fiche de l'Item Sous-classe ouverte |
 | T-REF-003 | Ouvrir la fiche d'Origine | P2 | E2E | Cliquer sur le nom de l'origine | Fiche de l'Item Origine ouverte |
 | T-REF-004 | Avertissement si introuvable | P2 | E2E | Retirer temporairement l'Item du monde correspondant, cliquer | Avertissement non bloquant (`ClassSheetMissing`/`SubclassSheetMissing`/`OriginSheetMissing`), pas d'erreur JS |
+| T-REF-005 | Ouvrir le Guide du Joueur depuis l'en-tête | P2 | E2E | Session Joueur, cliquer le bouton « Guide du Joueur » (`data-action="openPlayerGuide"`) | Le Journal « Guide du Joueur » s'ouvre (accessible au joueur, `ownership` = Observateur) |
 
 ---
 

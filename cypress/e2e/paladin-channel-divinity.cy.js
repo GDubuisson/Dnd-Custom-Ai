@@ -26,6 +26,28 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
+// Capture une baseline `game.messages.size` une fois le flux de chat au repos : le message du
+// jet de l'option A peut atterrir juste après son actor.update et fausser l'assertion "aucun
+// nouveau message" de l'option B (`=== messagesBefore`) — flaky historique de cette spec.
+function captureStableBaseline(assign) {
+  return cy
+    .window()
+    .its("game.messages.size")
+    .then((a) =>
+      cy
+        .wait(500)
+        .window()
+        .its("game.messages.size")
+        .then((b) =>
+          cy
+            .wait(b === a ? 0 : 500)
+            .window()
+            .its("game.messages.size")
+            .then((c) => assign(c))
+        )
+    );
+}
+
 function grantTestItems(win) {
   return win.game.actors.get(casterId).createEmbeddedDocuments("Item", [
     win.JSON.parse(
@@ -137,11 +159,10 @@ describe("Canalisation divine (Paladin) — 2 options partagent la même réserv
 
     // Option B : même réserve, déjà vide -> avertissement, aucun nouveau message posté.
     let messagesBefore;
-    cy.window()
-      .then((win) => (messagesBefore = win.game.messages.size))
-      .then(() => {
-        cy.get(`.application.character li[data-item-id="${optionBId}"] button[data-action="rollFeatureSave"]`).click();
-      });
+    captureStableBaseline((n) => (messagesBefore = n));
+    cy.then(() =>
+      cy.get(`.application.character li[data-item-id="${optionBId}"] button[data-action="rollFeatureSave"]`).click()
+    );
     cy.window().should((win) => {
       expect(win.game.messages.size, "option B refusée, réserve partagée déjà épuisée").to.equal(messagesBefore);
     });

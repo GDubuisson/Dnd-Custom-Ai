@@ -7,6 +7,297 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Couche joueur** — Revue finale de la fiche, points de finition :
+- **Maîtrise de compétence** : côté Joueur, simple libellé au lieu d'une case à cocher grisée
+  (elle a l'air interactive sans l'être — même correctif que la maîtrise de sauvegarde).
+- **Épuisement** : le pas-à-pas ± est réservé au MJ (état punitif, comme les PV et le niveau —
+  valeur toujours visible du Joueur). Nouveau : un **repos long retire un niveau d'Épuisement**
+  (SRD 5e). Verrou `preUpdateActor` (`dndCustomExhaustionChange`) contre toute modification
+  Joueur hors repos.
+- **Infobulles** : les onglets Statistiques/Capacités/Équipement/Inventaire passent de `title`
+  (natif, ~1 s de délai) à `data-tooltip` (infobulle Foundry stylée, instantanée) — cohérent
+  avec l'en-tête.
+- **Glisser-déposer** : indication ajoutée sur l'onglet Capacités (glisser Sort/Capacité/Langue
+  depuis un compendium) ; texte du Guide du Joueur corrigé (les langues s'ajoutent sur l'onglet
+  Capacités, plus l'onglet Journal).
+- **Indicateurs Action / Action bonus / Réaction** : l'infobulle rappelle désormais « cliquer
+  pour basculer disponible / utilisé ».
+
+**Ajout** — Bouton « Guide du Joueur » (icône ?) dans l'en-tête de la fiche de personnage : ouvre
+directement le Journal éponyme, point d'entrée manquant vers la documentation en jeu à laquelle
+renvoient déjà les infobulles de glossaire. Couvert par `reference-sheets.cy.js` > T-REF-005 (joué
+en session Joueur — vérifie aussi l'accès de bout en bout).
+
+**Correction** — Les Journaux « Guide du Joueur » et « Comparatif des Origines » étaient créés
+visibles du MJ seul (`ownership.default = 0`, défaut Foundry) : les joueurs, à qui cette
+documentation en jeu est pourtant destinée (la couche d'infobulles de la fiche y renvoie), ne
+pouvaient pas les ouvrir. Ils sont désormais créés en « Observateur » ; un monde créé avant ce
+correctif voit ces deux Journaux remontés automatiquement au chargement (jamais redescendus, les
+droits par utilisateur ne sont pas touchés — le « Guide du MJ » reste privé). Nouveau garde-fou
+E2E `journal-visibility.cy.js`.
+
+**Refactor** — Backlog de lisibilité :
+- Les blocs dupliqués des 9 fiches d'Item (`templates/item/*.hbs`) sont extraits en 4 partials
+  Handlebars communs (`templates/item/parts/` : `header.hbs`, `price.hbs`, `description.hbs`,
+  `reaction-trigger.hbs`), préchargés au hook `init`. −180 lignes de duplication.
+- Le contenu HTML « liste de boutons radio libellé + description » des fenêtres `DialogV2` de
+  choix (sous-classe, Don, forme de Forme sauvage) → `radioListDialogContent()`
+  (`helpers/dialog-content.js`), styles inline mutualisés.
+
+Zéro changement de rendu. Validé par `npm test` (900) + `item-sheets`, `reference-sheets`,
+`damage-types-armor`, `tab-equipment`, `tab-inventory`, `accessibility`, `level-up`, `wild-shape`
+(E2E). Au passage : `reference-sheets.cy.js` > T-REF-004 dé-flakisé (le ré-import de fond du hook
+`ready` recréait l'Origine supprimée juste avant le clic — flake ~1/3 préexistant).
+
+**Tests** — Correction des specs Cypress signalées « flaky / obsolètes » pendant la découpe
+pré-1.0 (aucune régression du refactor — vérifié par `git stash`/`checkout`) :
+- `spell-slot-recovery.cy.js` : le Magicien reçoit d'office « Récupération arcanique »
+  (elle-même `recoversSpellSlots`), donc `#offerSpellSlotRecoveries` enchaînait deux fenêtres et
+  l'assertion échouait sur la seconde — la spec retire les Capacités de récupération pré-existantes
+  pour n'en tester qu'une.
+- `action-economy.cy.js` (« premier jet d'attaque du tour ») : le message du jet est posté avant
+  l'`update` qui décoche `actionAvailable` — assertions regroupées dans un `should()` qui retente.
+- `spell-grants-condition.cy.js` : les 2 sorts de test sont « concentration » — le 2e postait un
+  message « concentration rompue » en plus ; reset de `concentratingOn` entre les tests.
+- `paladin-channel-divinity.cy.js`, `spell-grants-condition.cy.js` : baseline `game.messages.size`
+  capturée une fois le flux de chat au repos.
+- `initiate-magic-feat.cy.js`, `subclass-fighter.cy.js` : `goToSpellLevel(n)` manquant (onglets
+  de sort par palier, commit `7a1719d`).
+
+**Correction** — `chooseSpellSlotRecovery` (répartition d'une récupération d'emplacements) :
+une saisie qui dépasse le total ou la capacité d'un palier est désormais **bornée** au lieu
+d'être rejetée avec une erreur — le callback renvoie toujours un objet valide, ce qui évite un
+`Object.entries("ok")` sous Foundry v13+ (`DialogV2.wait` retombant sur la chaîne d'action quand
+le callback renvoie `null`). Clé i18n `DND_CUSTOM.Spells.RecoveryInvalid` devenue inutile, retirée.
+
+**Refactor** — Découpe pré-1.0 (le dépôt passant en privé après le tag, le code est figé dans son
+meilleur état). **Phase 1/3** : 3 helpers transverses de `actor-sheet.js` deviennent des fonctions
+de module, prérequis à la découpe de la fiche en mixins (un `#`-privé ne franchit pas une frontière
+de classe) :
+- `#itemFromTarget` → `itemFromTarget(actor, el)` (`helpers/sheet-items.js`) — 18 sites +
+  4 dans `InventoryDragDropMixin`, fin du doublon signalé au backlog.
+- `#consumeActionEconomy` → `consumeActionEconomy(actor, item)` (`helpers/action-economy.js`).
+- `#consumeFeatureCharge` → `consumeFeatureCharge(item)` (`helpers/feature-charges.js`).
+
+Zéro changement de comportement. Validé par `npm test` + specs Cypress ciblées (onglets
+Capacités/Sorts/Inventaire/Équipement, économie d'action, réserves de Capacité).
+
+**Refactor** — Découpe pré-1.0, **Phase 2/3** : `scripts/sheets/actor-sheet.js` passe de ~2800 à
+~1240 lignes, ses gestionnaires d'action éclatés en 4 mixins ApplicationV2 (même pattern que
+`InventoryDragDropMixin`, `DEFAULT_OPTIONS.actions` fusionné sur la chaîne) :
+- `WildShapeSheetMixin` — Combat monté + Forme sauvage.
+- `RestAndLevelingSheetMixin` — repos court/long, montée de niveau, ASI/sous-classe.
+- `FeatureActionsSheetMixin` — jet/sauvegarde/état/charges/manœuvres de Capacité, test opposé
+  Agripper/Bousculer, Magie d'initié, compagnon animal, toggles d'économie d'action.
+- `SpellcastingSheetMixin` — incantation (coût, concentration, lumière, délégation par type de
+  sort, jet de dégâts différé). `#onSelectSpellLevel` (état d'onglet) reste dans la classe.
+
+Helpers de module extraits au passage (partagés classe ↔ mixins) : `helpers/roll-modifiers.js`
+(`attackRollOptions`, `conditionRollEffects`), `helpers/turn-undead.js` (`isUndeadDestroyed`),
+`helpers/token-light.js` (`setTokensLight`), `helpers/sheet-items.js`, `helpers/feature-charges.js`,
+`consumeActionEconomy` dans `helpers/action-economy.js`.
+
+Zéro changement de comportement. Validé par `npm test` (894) + une large batterie de specs
+Cypress par mixin (wild-shape, level-up, tab-stats, tab-abilities, srd-generic-subclasses,
+turn-undead, tier-c-destroy-undead, metamagic, spell-saving-throws, deferred-rider-spells,
+damage-types-magical, combat-criticals, sentinel-mounted-combat, tier-c-rage…).
+
+**Refactor** — Découpe pré-1.0, **Phase 3/3** : `scripts/dnd-custom-ai.js` passe de **813 à
+~300 lignes**. Ses 21 hooks de règles sont regroupés en 5 modules `helpers/*-hooks.js`, chacun
+exposant un `registerXxxHooks()` appelé au chargement à la position historique du groupe (ordre
+d'enregistrement préservé — même pattern que `helpers/chat-message-hooks.js`) :
+`security-hooks.js` (verrous de champs non-MJ), `token-actor-hooks.js` (cycle de vie d'un Actor),
+`equipment-hooks.js` (règles d'équipement), `hit-point-hooks.js` (PV / mort / agonie / XP de PNJ,
+le `preUpdateActor` de snapshot des PV reste avant les `updateActor` qui le lisent),
+`combat-effect-hooks.js` (économie d'action, durée de Rage, immunités de condition, fin de combat).
+L'entry file ne garde plus que `init` / `ready` / les 3 loaders JSON.
+
+Zéro changement de comportement. Validé par `npm test` (897) + specs Cypress par module
+(permissions, npc-sheet, wizard, gm-token-sync, level-up, tab-equipment, tab-inventory, tab-stats,
+combat-tracker, wild-shape, tier-c-rage, condition-immunity-generalized, action-economy).
+
+**Dépôt** — `.idea/` (config IDE) et `maquettes/` (~8,6 Mo de maquettes HTML/PNG de conception)
+retirés du suivi git et ajoutés au `.gitignore`. Les fichiers restent en local (des commentaires
+de code y renvoient toujours comme rationale de conception) ; l'historique git n'est pas réécrit.
+
+**Compatibilité** — `system.json` : `compatibility.minimum` passe de `"13"` à `"14"`. La v13
+n'avait jamais été réellement testée (seule la v14 l'est) ; la déclarer compatible était
+optimiste. Docs alignées.
+
+**Manifeste** — `system.json` : champs `readme` (vers `README.md` sur GitHub) et `media`
+(`type: "setup"` → `assets/media/cover.png`, capture de la fiche personnage) ajoutés pour la
+fiche du système dans le gestionnaire de packages Foundry.
+
+**Documentation** — Ajout d'un `README.md` à la racine (présentation, statut, index de
+documentation, mode opératoire des tests — dont la couche E2E Docker/Cypress/Quench —, CI et
+release, licence, route vers la 1.0.0). Il **renvoie** aux docs de conception pour la stack, les
+invariants et l'arborescence plutôt que de les recopier. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`,
+`CONCEPTION_FONCTIONNELLE.md` et `ANOMALIES_ACTIVES.md` sortent du `.gitignore` et sont désormais
+versionnés.
+
+**Refactor** — Reprise du backlog de simplification du 2026-08-18 (items reportés faute de filet
+de test E2E, désormais validables), duplications verbatim supprimées, zéro changement de
+comportement :
+- Formule de la barre de vie (`hpPercent`) dupliquée dans les 3 fiches d'Actor →
+  `hitPointsPercent()` (`helpers/rules.js`, + 6 tests unitaires).
+- `schemaFromKeys()` dupliquée dans `character-data.js` / `npc-data.js` → `data/shared-schema.js`.
+- `loadJson()` / `fetch(...).json()` réécrit 6× (2 Journaux-guide, `content-import.js`,
+  `dnd-custom-ai.js`) → `loadSystemJson()` (`helpers/system-json.js`).
+- `_preparePartContext` (expose `context.tab` par PART) identique dans les 3 fiches d'Actor →
+  `InventoryDragDropMixin`.
+- Résolution `this.actor.items.get(target.closest("[data-item-id]")…)` réécrite ~18× dans
+  `actor-sheet.js` → méthode privée `#itemFromTarget(target)`.
+- Les 3 `ensure*Journal()` (Guide du MJ, Guide du Joueur, comparatif des Origines), quasi
+  identiques (garde MJ + « ne pas écraser un Journal du même nom » + `pages.map` avec `sort`
+  = (index + 1) × 100) → `ensureGmAuthoredJournal(title, buildPages, { ownership })`
+  (`helpers/journal.js`), `buildPages` appelé après les gardes (pas de travail inutile hors MJ /
+  Journal déjà présent). `ownership: { default: NONE }` du Guide du MJ toujours passé
+  explicitement.
+- `GearData` / `ToolData` (`data/item-data.js`) réinventaient `weight`/`quantity`/`equipped`
+  (identiques aux armes/armures) : nouveau `equippableItemFields()` partagé par les 4 types
+  physiques, dont `physicalItemSchema()` (armes/armures/objets) qui y ajoute `description`.
+  `ToolData` garde son `descriptionRP` distinct — aucun champ `description` ajouté.
+- Bloc `context.conditions` / `context.activeConditions` (liste des états SRD + sous-ensemble
+  actif) dupliqué verbatim entre la fiche personnage et la fiche PNJ → `conditionsContext(actor)`
+  (`helpers/sheet-conditions.js`).
+- Bloc `damageAffinityGroups` (3 groupes de cases résistances/immunités/vulnérabilités) +
+  `damageAffinitySummary`, dupliqués entre la fiche personnage et la fiche PNJ (seule la source
+  des `SetField` diffère : `system.combat` vs `system`) → `damageAffinityGroups(affinities)` /
+  `damageAffinitySummary(groups)` (`helpers/damage-affinity.js`).
+- `InventoryDragDropMixin` : 4 résolutions `this.actor.items.get(…closest("[data-item-id]")…)`
+  (glisser, éditer une ligne, supprimer, voir) unifiées via une méthode privée `#itemFromTarget`
+  du mixin (pendant de celle de `DndCustomActorSheet`, un `#`-privé n'étant pas partageable
+  entre classes).
+
+Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
+`npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
+`tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`,
+`item-sheets.cy.js`, `damage-types-physical.cy.js`, `damage-types-magical.cy.js`, `drag-drop.cy.js`,
++ contrôles jetables : recréation des 3 Journaux via le hook `ready`, schéma des 4 types d'Item
+physique, suppression/ouverture d'une ligne d'inventaire) en plus de la suite unitaire (888 tests).
+
+**Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
+possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
+directement `targetActor.setFlag(...)` et `targetActor.toggleStatusEffect(...)` sur la cible,
+d'où "User lacks permission to update ActorDelta..." côté Joueur (bug pré-existant, révélé par le
+refactor de `#onCastSpell`). Les deux appels passent désormais par le relais vers le MJ actif :
+`requestActorUpdate` pour le flag `pendingSpellSaveOutcome`, nouveau `requestToggleStatusEffect`
+(+ `registerStatusEffectRelay`) dans `helpers/actor-relay.js` pour la condition — même mécanisme
+que `applyDamageToTargets`. Validé par `srd-generic-subclasses.cy.js` (« Sculpteur de sorts »),
+`metamagic-careful-heightened.cy.js` et `spell-grants-condition.cy.js`.
+
+**Refactor** — Revue clean code demandée par l'utilisateur (2026-09-05), les 3 points identifiés
+traités sans changement de comportement :
+- Options d'avantage/désavantage/critique d'un jet d'attaque, dupliquées verbatim entre
+  `#onRollWeaponAttack` et `#onCastSpell`, factorisées dans `attackRollOptions()`
+  (`actor-sheet.js`).
+- Libellés `attackBonusLabel`/`damageLabel` d'un profil d'attaque, dupliqués entre `actor-sheet.js`
+  (Forme sauvage) et `npc-sheet.js`, factorisés dans `formatAttackLabels()` (`helpers/rules.js`).
+- `#onCastSpell` (~285 lignes, une dizaine de mécaniques mélangées) scindé en 5 méthodes privées
+  (`#resolveSpellSlotCost`/`#applySpellConcentration`/`#castAttackSpell`/`#castSaveSpell`/
+  `#castHealSpell`/`#applySpellCondition`), l'orchestrateur ne fait plus qu'enchaîner les étapes.
+
+Validé par des specs Cypress ciblées (onglet Capacités/Sorts, Métamagie, halfOnSave, sous-classes
+SRD génériques) en plus de la suite unitaire complète — a révélé au passage 2 tests obsolètes
+supplémentaires (même piège que `tab-abilities.cy.js`, cf. entrée suivante) et un bug de
+permission pré-existant sur Sculpteur de sorts (cf. `ANOMALIES_ACTIVES.md`).
+
+**Corrigé (tests)** — `cypress/e2e/metamagic-careful-heightened.cy.js`,
+`cypress/e2e/srd-generic-subclasses.cy.js` et `cypress/e2e/deferred-rider-spells.cy.js` (2 tests :
+« Malédiction du sorcier », « Porte dimensionnelle ») : même piège que `tab-abilities.cy.js`
+ci-dessous (bouton de sort caché par son `.spell-level-group` inactif) — nouveau helper
+`goToSpellLevel` ajouté dans chacun.
+
+**Corrigé (tests)** — `cypress/e2e/tab-abilities.cy.js` : 7 tests (T-ABIL-010/011/013/014/019/
+024/026) échouaient sur `cy.click()` d'un bouton de sort caché par son `.spell-level-group`
+parent (`display: none`). Diagnostic : test jamais mis à jour depuis l'ajout des onglets par
+palier de sort (commit `7a1719d`, 2026-08-27, un seul palier visible à la fois) — le magicien
+de fixture a un tour de magie en permanence, donc le palier 0 reste toujours celui actif par
+défaut, jamais mis à jour vers le palier réellement testé (≥1). Pas un bug applicatif. Fix :
+nouveau helper `goToSpellLevel(level)`, appelé avant chaque interaction avec un sort de niveau
+≥ 1. 25/25 désormais verts.
+
+**Corrigé (tests)** — `cypress/e2e/tier-a-mechanics.cy.js` : T-TIERA-MOONWILD-001 (PV
+temporaires de Forme sauvage de combat) attendait 0 au lieu de 2×niveau. Diagnostic : le
+personnage de fixture (Druide) restait au niveau 1 par défaut alors que
+`DND_CUSTOM.wildShapeForms` (config.js) exige le niveau 2 pour toute forme — `#onEnterWildShape`
+s'arrêtait donc silencieusement avant même d'ouvrir le dialogue de choix de forme (aucune forme
+"disponible"). Le test ciblait en plus un Actor `wildShapeForm` créé à la main au lieu du vrai
+résultat du choix de forme (`system.combat.wildShapeActorId`). Pas un bug applicatif. Fix :
+montée de niveau du personnage de fixture (même pattern que `wild-shape.cy.js`) + interaction
+réelle avec le dialogue de choix + lecture du bon Actor. 7/7 désormais verts.
+
+**Refactor** — Revue clean architecture demandée par l'utilisateur (2026-09-05), les 3 chantiers
+identifiés traités sans changement de comportement :
+- Factorisation du pattern "relais socket vers le MJ actif", jusqu'ici tripliqué
+  indépendamment dans `actor-relay.js`/`companion.js`/`wild-shape-form.js`, dans un nouveau
+  `scripts/helpers/gm-relay.js` (`createGmRelay`).
+- Extraction de ~600 lignes de `scripts/dnd-custom-ai.js` (1431 → ~820 lignes) sans lien avec
+  son rôle de point d'entrée : résolution des dégâts/soins/résistances
+  (`scripts/helpers/damage-resolution.js`) et les 9 hooks `renderChatMessageHTML` du système
+  (`scripts/helpers/chat-message-hooks.js`).
+- `DndCustomActorSheet#_prepareContext` (`actor-sheet.js`, ~500 lignes mêlant une quinzaine de
+  concerns) scindé en 9 méthodes privées `#prepareXContext`, une par domaine (identité de
+  classe/Origine, économie de combat, progression, caractéristiques/compétences, items,
+  langues/sorts, inventaire, états/résistances, capacité de charge) — pur déplacement de code,
+  ordre d'appel préservé (plusieurs méthodes lisent un champ de contexte posé par la
+  précédente).
+
+Validés par des specs Cypress ciblées en plus de la suite unitaire complète — le dernier
+chantier (le plus large en surface, chaque onglet de la fiche personnage en dépend) par 6
+specs (`character-sheet`, `tab-stats`, `tab-abilities`, `tab-inventory`, `wizard`,
+`permissions` : 96/103, les 7 échecs restants prouvés pré-existants par un test de contrôle
+sur le code d'avant refactor).
+
+**Documenté** — Point 3 de la revue "prêt pour la V1 ?" du 2026-09-04 : audit des licences
+des icônes tierces dans `assets/icons/`. Environ 166 fichiers sur 217 (sous-classes,
+capacités, dons, une partie des sorts) proviennent du wiki Baldur's Gate 3 (copyright
+Larian/WotC) et de packs tiers ("Saethos Shared Icons", sprites génériques) à la licence non
+confirmée — détail par dossier ajouté à `assets/icons/MISSING.md`. Décision retenue : pas de
+remplacement icône par icône pour l'instant, le dépôt GitHub passera en privé à la fin du
+développement (après la dernière release publique).
+
+**Ajouté** — Fichier `LICENSE` à la racine (point 4 de la revue "prêt pour la V1 ?" du
+2026-09-04) : CC BY-NC-SA 4.0 pour le code et le contenu original du système (usage
+personnel/non commercial), plus une mention d'attribution CC-BY-4.0 pour le contenu adapté
+du System Reference Document 5.1 (Wizards of the Coast). Fichier ajouté à l'archive de
+release (`.github/workflows/release.yml`) et référencé depuis `system.json` (`license`).
+
+**Corrigé** — Dette technique "les compendiums ne se remettent jamais à jour"
+(`ClaudeFiles/ANOMALIES_ACTIVES.md`) : `importSystemContent()` (`scripts/helpers/content-import.js`)
+ne se contentait jusqu'ici que d'ajouter les entrées absentes par nom — une entrée déjà présente
+(Item du monde ou document de compendium) restait figée dans son état d'import initial, même après
+une correction du JSON source. Ajout d'une seconde passe qui détecte et écrase (choix explicite :
+le JSON reste l'unique source de vérité pour ce contenu de règles) toute entrée déjà présente dont
+`img`/`system` diffère du JSON, en patch partiel (seuls les champs qui diffèrent sont réécrits, un
+seul `updateDocuments()` par catégorie). 3 nouveaux tests E2E (`content-resync.cy.js`) valident
+l'absence de faux positif sur tout le contenu existant, la resynchronisation d'un document de
+compendium modifié à la main, et celle d'un Item du monde. Corrigé au passage, découvert pendant la
+vérification en conditions réelles : `world-items/weapons.json` stockait des portées fractionnaires
+(Sarbacane, Filet) que le schéma d'Item (`NumberField({integer:true})`) a toujours arrondies
+silencieusement en écriture — sans correction, le nouveau mécanisme les aurait réécrites en boucle
+à chaque appel ; réalignées sur leur équivalent entier (cohérent avec les 13 autres armes).
+
+**Corrigé** — Bug "fiche visible pendant l'assistant de création" (5e signalement depuis
+2026-08-19, `ClaudeFiles/ANOMALIES_ACTIVES.md`) : root cause enfin identifiée grâce à une repro
+exacte fournie par l'utilisateur (bouton natif "Créer un Acteur" de la sidebar) puis confirmée
+par un traçage en direct sur une instance Foundry réelle. La boîte de dialogue "Créer un Acteur"
+(Foundry v13+, `DialogV2`) rend la fiche directement depuis le callback de son bouton "ok",
+indépendamment de `options.renderSheet` (mécanisme sur lequel comptaient les 4 correctifs
+précédents) et avant que l'assistant de création n'ait eu le temps de s'enregistrer dans le
+registre des fenêtres ouvertes de Foundry. Nouveau `openWizardActorIds` (Set synchrone,
+`character-creation-wizard.js`) ferme cette fenêtre de course sans dépendre d'aucune hypothèse de
+timing. Deux nouveaux tests E2E (T-WIZ-022/023, `wizard.cy.js`) pilotent pour la première fois la
+VRAIE boîte de dialogue native (au lieu d'une simulation via `Actor.create()`) — la seule façon
+de couvrir ce chemin, et la raison pour laquelle ce bug avait échappé à l'E2E jusqu'ici.
+
+**Corrigé** (repéré pendant l'investigation ci-dessus) : le titre de la fenêtre de la fiche
+personnage affichait la clé i18n brute non résolue (`TYPES.Actor.character: <nom>`) au lieu d'un
+libellé propre — `lang/en.json`/`lang/fr.json` ne déclaraient de libellé `TYPES.Actor`/`TYPES.Item`
+que pour une partie des types du système. Les 5 types d'Actor et 10 types d'Item ont maintenant
+tous un libellé dans les deux langues (visible aussi dans le menu déroulant "Type" de la boîte de
+dialogue "Créer un Acteur"/"Créer un Item").
+
 Enrichissement du style de jet de chat (retour d'une maquette externe fournie par l'utilisateur,
 `maquettes/chat-roll-style-stitch/`) — version "sobre" : ce qui sortait du cadre réel du chat
 Foundry (chrome de session, compositeur personnalisé, badge de DD affiché au joueur — contraire

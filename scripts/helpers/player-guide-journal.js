@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
-
-const SYSTEM_ID = "dnd-custom-ai";
+import { loadSystemJson } from "./system-json.js";
+import { ensureGmAuthoredJournal } from "./journal.js";
 
 /** Enrobe `text` dans un `<abbr title="...">` pointant vers la définition de `term` dans le
  *  glossaire (cf. scripts/data/glossary.json) : tooltip natif du navigateur, sans JS
@@ -11,11 +11,6 @@ function glossaryAbbr(glossary, term, text = term) {
   if (!entry) return text;
   const title = entry.definition.replace(/"/g, "&quot;");
   return `<abbr title="${title}">${text}</abbr>`;
-}
-
-async function loadJson(relativePath) {
-  const response = await fetch(`systems/${SYSTEM_ID}/${relativePath}`);
-  return response.json();
 }
 
 function buildGlossaryPage(glossary) {
@@ -49,6 +44,11 @@ function buildRulesPage(glossary) {
     <p>Cliquer sur une valeur de jet soulignée sur la fiche lance le d20 correspondant
     automatiquement. Maj-clic : ${abbr("Avantage / Désavantage", "avantage")}. Ctrl-clic :
     ${abbr("Avantage / Désavantage", "désavantage")}.</p>
+    <p><strong>Coups et échecs critiques</strong> : uniquement pendant un combat suivi par le
+    Maître du Jeu (jamais hors combat), un 20 naturel sur un jet d'attaque ou de sauvegarde est
+    toujours une réussite critique et un 1 naturel toujours un échec critique, quels que soient
+    les bonus. Sur une attaque avec cible sélectionnée, le coup critique touche automatiquement
+    (dégâts doublés) et l'échec critique rate automatiquement.</p>
 
     <h2>Agripper / Bousculer</h2>
     <p>Au lieu d'une attaque, vous pouvez tenter d'agripper ou de bousculer une seule créature à
@@ -108,9 +108,11 @@ function buildRulesPage(glossary) {
     la fiche de personnage. Un repos long comprend tous les bénéfices d'un repos court.</p>
 
     <h2>Exhaustion</h2>
-    <p>${abbr("Exhaustion")} : niveau d'épuisement cumulatif de 0 à 6, réglable depuis l'onglet
-    Statistiques. Chaque palier ajoute son propre malus, cumulatif avec les précédents (détail
-    complet dans le Glossaire).</p>
+    <p>${abbr("Exhaustion")} : niveau d'épuisement cumulatif de 0 à 6 (compteur visible dans
+    l'onglet Statistiques). Chaque palier ajoute son propre malus, cumulatif avec les précédents
+    (détail complet dans le Glossaire). Un 4e repos court ou plus dans la même journée en ajoute
+    un niveau automatiquement ; un repos long en retire un. L'ajustement manuel est réservé au
+    Maître du Jeu.</p>
   `;
 }
 
@@ -156,7 +158,7 @@ function buildSpellsPage(glossary) {
 }
 
 async function buildClassesPage() {
-  const classes = await loadJson("world-items/classes.json");
+  const classes = await loadSystemJson("world-items/classes.json");
   const sections = classes
     .map((entry) => {
       const system = entry.system;
@@ -181,7 +183,7 @@ async function buildClassesPage() {
 }
 
 async function buildOriginsPage(glossary) {
-  const origins = await loadJson("world-items/origins.json");
+  const origins = await loadSystemJson("world-items/origins.json");
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const sections = origins
     .map((entry) => {
@@ -204,7 +206,7 @@ async function buildOriginsPage(glossary) {
 }
 
 async function buildLanguagesPage(glossary) {
-  const languages = await loadJson("world-items/languages.json");
+  const languages = await loadSystemJson("world-items/languages.json");
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const byCategory = (category) => languages.filter((entry) => entry.system.category === category);
   const section = (titleKey, entries) =>
@@ -217,8 +219,8 @@ async function buildLanguagesPage(glossary) {
   return `
     <p>Chaque personnage connaît toujours la ${abbr("Langue", "Commune")} et la langue de son
     Origine : octroyées automatiquement à la création, sans rien à faire. Les langues spéciales
-    ci-dessous s'ajoutent manuellement, en les glissant depuis le compendium Langues vers l'onglet
-    Journal de la fiche de personnage.</p>
+    ci-dessous s'ajoutent manuellement, en les glissant depuis le compendium Langues sur l'onglet
+    Capacités de la fiche de personnage (où elles s'affichent, en haut).</p>
     ${section("DND_CUSTOM.Item.LanguageCategories.common", byCategory("common"))}
     ${section("DND_CUSTOM.Item.LanguageCategories.origin", byCategory("origin"))}
     ${section("DND_CUSTOM.Item.LanguageCategories.special", byCategory("special"))}
@@ -252,42 +254,36 @@ function buildEquipmentPage(glossary) {
 
 /** Crée (une seule fois, si absent) le Journal "Guide du Joueur" à plusieurs pages : glossaire,
  *  règles de base, système de sorts simplifié, classes, origines, langues, équipement/inventaire.
- *  N'écrase jamais un Journal existant du même nom (le MJ peut librement l'éditer ensuite sans
- *  craindre de le voir régénéré/écrasé au prochain chargement du monde) — même principe que
- *  ensureOriginsJournal (origins-journal.js). Contenu entièrement dérivé des fichiers de données
- *  du système (scripts/data/glossary.json, world-items/classes.json, world-items/origins.json,
+ *  **Visible de tous les joueurs** (`ownership.default: OBSERVER`) : c'est la documentation en jeu
+ *  destinée aux joueurs, la couche d'infobulles de la fiche y renvoie. N'écrase jamais un Journal
+ *  existant du même nom (le MJ peut librement l'éditer ensuite sans craindre de le voir régénéré/
+ *  écrasé au prochain chargement du monde) — même principe que ensureOriginsJournal
+ *  (origins-journal.js) ; un Journal créé « Aucun » avant ce correctif est remonté à OBSERVER, cf.
+ *  ensureGmAuthoredJournal. Contenu entièrement dérivé des fichiers de données du système
+ *  (scripts/data/glossary.json, world-items/classes.json, world-items/origins.json,
  *  world-items/languages.json, scripts/helpers/config.js) : reste synchronisé si ces fichiers
- *  évoluent, rien à maintenir en
- *  double. */
-export async function ensurePlayerGuideJournal() {
-  if (!game.user.isGM) return;
+ *  évoluent, rien à maintenir en double. */
+export function ensurePlayerGuideJournal() {
+  return ensureGmAuthoredJournal(
+    game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"),
+    async () => {
+      const glossary = await loadSystemJson("scripts/data/glossary.json");
 
-  const title = game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle");
-  if (game.journal.getName(title)) return;
-
-  const glossary = await loadJson("scripts/data/glossary.json");
-
-  // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
-  // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js), qui
-  // ne peut pas suivre une clé construite dynamiquement (ex. reconstituée à partir d'une
-  // variable) et laisserait alors passer une clé manquante sans avertissement.
-  const pages = [
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageGlossary", content: buildGlossaryPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageRules", content: buildRulesPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageSpells", content: buildSpellsPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageClasses", content: await buildClassesPage() },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageOrigins", content: await buildOriginsPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageLanguages", content: await buildLanguagesPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageEquipment", content: buildEquipmentPage(glossary) }
-  ];
-
-  await JournalEntry.create({
-    name: title,
-    pages: pages.map(({ titleKey, content }, index) => ({
-      name: game.i18n.localize(titleKey),
-      type: "text",
-      sort: (index + 1) * 100,
-      text: { format: 1, content }
-    }))
-  });
+      // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
+      // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js),
+      // qui ne peut pas suivre une clé construite dynamiquement (ex. reconstituée à partir d'une
+      // variable) et laisserait alors passer une clé manquante sans avertissement.
+      const pages = [
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageGlossary", content: buildGlossaryPage(glossary) },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageRules", content: buildRulesPage(glossary) },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageSpells", content: buildSpellsPage(glossary) },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageClasses", content: await buildClassesPage() },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageOrigins", content: await buildOriginsPage(glossary) },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageLanguages", content: await buildLanguagesPage(glossary) },
+        { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageEquipment", content: buildEquipmentPage(glossary) }
+      ];
+      return pages.map(({ titleKey, content }) => ({ name: game.i18n.localize(titleKey), content }));
+    },
+    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER } }
+  );
 }

@@ -1,3 +1,5 @@
+import { createGmRelay } from "./gm-relay.js";
+
 const SYSTEM_ID = "dnd-custom-ai";
 const SOCKET_EVENT = `system.${SYSTEM_ID}.wildShapeForm`;
 const FLAG_KEY = "wildShapeFormActors";
@@ -41,16 +43,12 @@ async function performWildShapeTransformation({ characterUuid, templateName, com
   await character.update({ "system.combat.wildShapeActorId": formActor.id });
 }
 
+const relay = createGmRelay(SOCKET_EVENT, performWildShapeTransformation);
+
 /** Écoute du canal socket (cf. requestWildShapeTransformation ci-dessous) : un Joueur n'a pas la
- *  permission de créer un Actor — délègue au MJ actif, même mécanique que
- *  ensureBeastCompanionRequestListener (companion.js) / registerActorUpdateRelay (actor-relay.js).
- *  Appelée une seule fois, depuis Hooks.once("ready", ...) (dnd-custom-ai.js). */
-export function registerWildShapeFormRequestListener() {
-  game.socket.on(SOCKET_EVENT, async (payload = {}) => {
-    if (game.users.activeGM?.id !== game.user.id) return;
-    await performWildShapeTransformation(payload);
-  });
-}
+ *  permission de créer un Actor — délègue au MJ actif, cf. createGmRelay (gm-relay.js). Appelée
+ *  une seule fois, depuis Hooks.once("ready", ...) (dnd-custom-ai.js). */
+export const registerWildShapeFormRequestListener = relay.register;
 
 /** Point d'entrée appelé par #onEnterWildShape (actor-sheet.js) : exécute directement si le
  *  client a la permission (MJ), sinon relaie au MJ actif via socket — celui-ci pose ensuite
@@ -58,13 +56,5 @@ export function registerWildShapeFormRequestListener() {
  *  (hook updateActor standard de Foundry), sans canal de retour nécessaire ici. */
 export async function requestWildShapeTransformation(character, templateName, combatWildShapeBonus) {
   const payload = { characterUuid: character.uuid, templateName, combatWildShapeBonus };
-  if (game.user.isGM) {
-    await performWildShapeTransformation(payload);
-    return;
-  }
-  if (!game.users.activeGM) {
-    ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Chat.NoGmOnline"));
-    return;
-  }
-  game.socket.emit(SOCKET_EVENT, payload);
+  await relay.request(payload, game.user.isGM);
 }

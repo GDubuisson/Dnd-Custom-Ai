@@ -1,0 +1,7 @@
+{{! Zone de description ProseMirror en bas de fiche. Paramètres : `field` (nom du champ système,
+    ex. "description" ou "descriptionRP"), `label` (clé i18n du libellé). La classe `content-sized`
+    laisse le champ grandir avec son contenu (cf. anomalie 2026-08-19, item-sheets.cy.js). }}
+<div class="form-row description-row">
+  <label>{{localize label}}</label>
+  <prose-mirror class="content-sized" name="system.{{field}}" value="{{lookup system field}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
+</div>

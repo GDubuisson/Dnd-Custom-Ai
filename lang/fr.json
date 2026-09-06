@@ -214,6 +214,9 @@
       "Dead": "Mort",
       "RestBlockedDeadTooltip": "Impossible de se reposer : le personnage est mort",
       "OpenDescriptionTooltip": "Cliquer pour ouvrir la fiche de description",
+      "OpenPlayerGuideTooltip": "Ouvrir le Guide du Joueur (glossaire, règles de base, sorts, classes, origines).",
+      "ToggleEconomyHint": "cliquer pour basculer disponible / utilisé (rattrapage manuel)",
+      "PlayerGuideMissing": "Le Journal « Guide du Joueur » est introuvable — demandez à votre MJ (il est créé automatiquement au chargement du monde).",
       "ClassSheetMissing": "Aucune fiche de description trouvée pour la classe \"{name}\" (importez/peuplez le compendium Classes, cf. world-items/README.md).",
       "OriginSheetMissing": "Aucune fiche de description trouvée pour l'Origine \"{name}\" (importez/peuplez le compendium Origines, cf. world-items/README.md).",
       "SubclassSheetMissing": "Aucune fiche de description trouvée pour la sous-classe \"{name}\" (importez/peuplez le compendium Sous-classes, cf. world-items/README.md).",
@@ -228,11 +231,13 @@
       "RestLong": "Repos long",
       "RollInitiative": "Initiative",
       "AwardXp": "Attribuer de l'XP",
-      "LevelUp": "Monter de niveau"
+      "LevelUp": "Monter de niveau",
+      "OpenPlayerGuide": "Guide du Joueur"
     },
     "Macros": {
       "ImportContent": "Importer le contenu du système",
       "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail).",
+      "ImportContentDoneWithUpdates": "Import terminé : {updated} entrée(s) existante(s) resynchronisée(s) depuis le contenu de référence du système (voir la console pour le détail).",
       "ResyncToken": "Resynchroniser un token"
     },
     "TokenSync": {
@@ -431,6 +436,7 @@
       "PactMagicLabel": "Magie de Pacte",
       "Cast": "Lancer",
       "NoSpells": "Aucun sort enregistré",
+      "DropHint": "Glissez un Sort, une Capacité ou une Langue ici depuis un compendium (ou une autre fiche) pour l'ajouter.",
       "ConcentratingOn": "Concentré sur :",
       "DropConcentration": "Rompre la concentration",
       "RequiresStateTooltip": "Nécessite : {state}",
@@ -494,7 +500,6 @@
       "RecoveryDialogPrompt": "{feature} : {total} niveau(x) à répartir entre les emplacements de votre choix.",
       "RecoveryLevelLabel": "Niveau {level} ({remaining}/{max} utilisés)",
       "RecoveryConfirm": "Récupérer",
-      "RecoveryInvalid": "Répartition invalide : le total dépasse ce qui est récupérable, ou dépasse la capacité d'un palier.",
       "RecoveryLevelResult": "niveau {level} (+{amount})",
       "MetamagicCarefulTitle": "Sort Prudent — cible protégée",
       "MetamagicHeightenedTitle": "Sort Élevé — cible désavantagée",
@@ -761,8 +766,11 @@
   },
   "TYPES": {
     "Actor": {
-      "vehicle": "Véhicule",
-      "mount": "Monture"
+      "character": "Personnage",
+      "npc": "PNJ",
+      "mount": "Monture",
+      "wildShapeForm": "Forme sauvage",
+      "vehicle": "Véhicule"
     },
     "Item": {
       "weapon": "Arme",
@@ -771,6 +779,7 @@
       "feature": "Capacité",
       "origin": "Origine",
       "class": "Classe",
+      "subclass": "Sous-classe",
       "tool": "Outil",
       "spell": "Sort",
       "language": "Langue"
