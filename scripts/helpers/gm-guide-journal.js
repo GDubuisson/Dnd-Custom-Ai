@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
 import { loadSystemJson } from "./system-json.js";
+import { ensureGmAuthoredJournal } from "./journal.js";
 
 function buildOverviewPage() {
   return `
@@ -230,27 +231,15 @@ async function buildProgressionPage() {
  *  existant du même nom, même principe que ensurePlayerGuideJournal/ensureOriginsJournal.
  *  Contenu partiellement dérivé de world-items/features.json et scripts/helpers/config.js :
  *  reste synchronisé si ces fichiers évoluent. */
-export async function ensureGmGuideJournal() {
-  if (!game.user.isGM) return;
-
-  const title = game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle");
-  if (game.journal.getName(title)) return;
-
-  const pages = [
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageOverview", content: buildOverviewPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageAdjudication", content: await buildAdjudicationPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageSimplifications", content: buildSimplificationsPage() },
-    { titleKey: "DND_CUSTOM.Journal.GmGuidePageProgression", content: await buildProgressionPage() }
-  ];
-
-  await JournalEntry.create({
-    name: title,
-    ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE },
-    pages: pages.map(({ titleKey, content }, index) => ({
-      name: game.i18n.localize(titleKey),
-      type: "text",
-      sort: (index + 1) * 100,
-      text: { format: 1, content }
-    }))
-  });
+export function ensureGmGuideJournal() {
+  return ensureGmAuthoredJournal(
+    game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle"),
+    async () => [
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageOverview", content: buildOverviewPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageAdjudication", content: await buildAdjudicationPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageSimplifications", content: buildSimplificationsPage() },
+      { titleKey: "DND_CUSTOM.Journal.GmGuidePageProgression", content: await buildProgressionPage() }
+    ].map(({ titleKey, content }) => ({ name: game.i18n.localize(titleKey), content })),
+    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE } }
+  );
 }

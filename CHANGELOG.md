@@ -19,11 +19,17 @@ comportement :
   `InventoryDragDropMixin`.
 - Résolution `this.actor.items.get(target.closest("[data-item-id]")…)` réécrite ~18× dans
   `actor-sheet.js` → méthode privée `#itemFromTarget(target)`.
+- Les 3 `ensure*Journal()` (Guide du MJ, Guide du Joueur, comparatif des Origines), quasi
+  identiques (garde MJ + « ne pas écraser un Journal du même nom » + `pages.map` avec `sort`
+  = (index + 1) × 100) → `ensureGmAuthoredJournal(title, buildPages, { ownership })`
+  (`helpers/journal.js`), `buildPages` appelé après les gardes (pas de travail inutile hors MJ /
+  Journal déjà présent). `ownership: { default: NONE }` du Guide du MJ toujours passé
+  explicitement.
 
 Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
 `npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
-`tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`) en plus de la
-suite unitaire (887 tests).
+`tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`, + contrôle
+jetable de recréation des 3 Journaux via le hook `ready`) en plus de la suite unitaire (887 tests).
 
 **Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
 possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient

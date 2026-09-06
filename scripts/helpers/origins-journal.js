@@ -1,26 +1,15 @@
 import { DND_CUSTOM } from "./config.js";
+import { ensureGmAuthoredJournal } from "./journal.js";
 
 /** Crée (une seule fois, si absent) un Journal récapitulant les différences entre les 6
  *  Origines, à partir de game.dndCustomAi.origins (cf. scripts/data/origins.json). N'écrase
  *  jamais un Journal existant du même nom, pour ne pas effacer les modifications du MJ. */
-export async function ensureOriginsJournal() {
-  if (!game.user.isGM) return;
-
+export function ensureOriginsJournal() {
   const title = game.i18n.localize("DND_CUSTOM.Journal.OriginsComparisonTitle");
-  if (game.journal.getName(title)) return;
-
-  const origins = game.dndCustomAi?.origins ?? {};
-  if (!Object.keys(origins).length) return;
-
-  await JournalEntry.create({
-    name: title,
-    pages: [
-      {
-        name: title,
-        type: "text",
-        text: { format: 1, content: buildOriginsTable(origins) }
-      }
-    ]
+  return ensureGmAuthoredJournal(title, () => {
+    const origins = game.dndCustomAi?.origins ?? {};
+    if (!Object.keys(origins).length) return [];
+    return [{ name: title, content: buildOriginsTable(origins) }];
   });
 }
 

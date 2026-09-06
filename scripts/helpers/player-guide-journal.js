@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
 import { loadSystemJson } from "./system-json.js";
+import { ensureGmAuthoredJournal } from "./journal.js";
 
 /** Enrobe `text` dans un `<abbr title="...">` pointant vers la définition de `term` dans le
  *  glossaire (cf. scripts/data/glossary.json) : tooltip natif du navigateur, sans JS
@@ -258,35 +259,23 @@ function buildEquipmentPage(glossary) {
  *  world-items/languages.json, scripts/helpers/config.js) : reste synchronisé si ces fichiers
  *  évoluent, rien à maintenir en
  *  double. */
-export async function ensurePlayerGuideJournal() {
-  if (!game.user.isGM) return;
+export function ensurePlayerGuideJournal() {
+  return ensureGmAuthoredJournal(game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"), async () => {
+    const glossary = await loadSystemJson("scripts/data/glossary.json");
 
-  const title = game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle");
-  if (game.journal.getName(title)) return;
-
-  const glossary = await loadSystemJson("scripts/data/glossary.json");
-
-  // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
-  // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js), qui
-  // ne peut pas suivre une clé construite dynamiquement (ex. reconstituée à partir d'une
-  // variable) et laisserait alors passer une clé manquante sans avertissement.
-  const pages = [
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageGlossary", content: buildGlossaryPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageRules", content: buildRulesPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageSpells", content: buildSpellsPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageClasses", content: await buildClassesPage() },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageOrigins", content: await buildOriginsPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageLanguages", content: await buildLanguagesPage(glossary) },
-    { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageEquipment", content: buildEquipmentPage(glossary) }
-  ];
-
-  await JournalEntry.create({
-    name: title,
-    pages: pages.map(({ titleKey, content }, index) => ({
-      name: game.i18n.localize(titleKey),
-      type: "text",
-      sort: (index + 1) * 100,
-      text: { format: 1, content }
-    }))
+    // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
+    // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js), qui
+    // ne peut pas suivre une clé construite dynamiquement (ex. reconstituée à partir d'une
+    // variable) et laisserait alors passer une clé manquante sans avertissement.
+    const pages = [
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageGlossary", content: buildGlossaryPage(glossary) },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageRules", content: buildRulesPage(glossary) },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageSpells", content: buildSpellsPage(glossary) },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageClasses", content: await buildClassesPage() },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageOrigins", content: await buildOriginsPage(glossary) },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageLanguages", content: await buildLanguagesPage(glossary) },
+      { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageEquipment", content: buildEquipmentPage(glossary) }
+    ];
+    return pages.map(({ titleKey, content }) => ({ name: game.i18n.localize(titleKey), content }));
   });
 }
