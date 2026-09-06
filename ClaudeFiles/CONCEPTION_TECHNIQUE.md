@@ -101,7 +101,10 @@ scripts/
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
     origins-journal.js, player-guide-journal.js, gm-guide-journal.js  # génération du contenu
                                  # de référence dans le Journal du monde ; création via
-                                 # ensureGmAuthoredJournal (journal.js, garde MJ + anti-écrasement)
+                                 # ensureGmAuthoredJournal (journal.js, garde MJ + anti-écrasement).
+                                 # Guide du Joueur + Comparatif des Origines : ownership.default =
+                                 # OBSERVER (visibles des joueurs) ; Guide du MJ : NONE. Un Journal
+                                 # créé « Aucun » avant ce param est remonté à OBSERVER au chargement.
     handlebars-helpers.js       # helpers Handlebars custom
     tactical-distance.js        # MELEE_REACH_METERS, tokenCenter, distanceBetweenPoints —
                                  # mesure de distance via canvas.grid.measurePath, base commune du

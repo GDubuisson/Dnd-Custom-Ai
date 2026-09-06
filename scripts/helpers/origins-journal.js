@@ -2,15 +2,22 @@ import { DND_CUSTOM } from "./config.js";
 import { ensureGmAuthoredJournal } from "./journal.js";
 
 /** Crée (une seule fois, si absent) un Journal récapitulant les différences entre les 6
- *  Origines, à partir de game.dndCustomAi.origins (cf. scripts/data/origins.json). N'écrase
- *  jamais un Journal existant du même nom, pour ne pas effacer les modifications du MJ. */
+ *  Origines, à partir de game.dndCustomAi.origins (cf. scripts/data/origins.json). **Visible de
+ *  tous les joueurs** (`ownership.default: OBSERVER`) : outil de choix d'Origine à la création,
+ *  destiné aux joueurs. N'écrase jamais un Journal existant du même nom, pour ne pas effacer les
+ *  modifications du MJ ; un Journal créé « Aucun » avant ce correctif est remonté à OBSERVER, cf.
+ *  ensureGmAuthoredJournal. */
 export function ensureOriginsJournal() {
   const title = game.i18n.localize("DND_CUSTOM.Journal.OriginsComparisonTitle");
-  return ensureGmAuthoredJournal(title, () => {
-    const origins = game.dndCustomAi?.origins ?? {};
-    if (!Object.keys(origins).length) return [];
-    return [{ name: title, content: buildOriginsTable(origins) }];
-  });
+  return ensureGmAuthoredJournal(
+    title,
+    () => {
+      const origins = game.dndCustomAi?.origins ?? {};
+      if (!Object.keys(origins).length) return [];
+      return [{ name: title, content: buildOriginsTable(origins) }];
+    },
+    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER } }
+  );
 }
 
 function buildOriginsTable(origins) {

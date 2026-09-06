@@ -157,6 +157,12 @@ affichent au survol une courte définition, tirée du même glossaire que la pag
 Guide du Joueur (`scripts/data/glossary.json`). Le texte libre (descriptions d'objets,
 biographie) n'est volontairement pas concerné.
 
+### Journaux générés dans le monde
+Trois Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
+librement) : **Guide du Joueur** (glossaire, règles de base, sorts, classes, origines, langues,
+équipement) et **Comparatif des Origines** sont visibles de tous les joueurs (`ownership` par
+défaut = Observateur) ; le **Guide du MJ** reste réservé au MJ.
+
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
 joueur** : uniquement la progression relative vers le niveau suivant (%), jamais le total ni les

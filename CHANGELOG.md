@@ -7,6 +7,14 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Correction** — Les Journaux « Guide du Joueur » et « Comparatif des Origines » étaient créés
+visibles du MJ seul (`ownership.default = 0`, défaut Foundry) : les joueurs, à qui cette
+documentation en jeu est pourtant destinée (la couche d'infobulles de la fiche y renvoie), ne
+pouvaient pas les ouvrir. Ils sont désormais créés en « Observateur » ; un monde créé avant ce
+correctif voit ces deux Journaux remontés automatiquement au chargement (jamais redescendus, les
+droits par utilisateur ne sont pas touchés — le « Guide du MJ » reste privé). Nouveau garde-fou
+E2E `journal-visibility.cy.js`.
+
 **Refactor** — Backlog de lisibilité :
 - Les blocs dupliqués des 9 fiches d'Item (`templates/item/*.hbs`) sont extraits en 4 partials
   Handlebars communs (`templates/item/parts/` : `header.hbs`, `price.hbs`, `description.hbs`,

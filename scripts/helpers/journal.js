@@ -8,14 +8,29 @@
  *  chargées, p. ex.), rien n'est créé.
  *
  *  `ownership` (optionnel) est passé tel quel à `JournalEntry.create` — ex.
- *  `{ default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE }` pour le Guide du MJ, jamais visible des
- *  joueurs même si le défaut de Foundry venait à changer.
+ *  `{ default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER }` pour le Guide du Joueur (visible de
+ *  tous), `{ default: NONE }` pour le Guide du MJ (jamais visible des joueurs).
+ *
+ *  **Rattrapage de visibilité** : si le Journal existe déjà mais qu'un `ownership.default`
+ *  strictement au-dessus de « Aucun » est demandé alors que l'existant est resté à « Aucun »
+ *  (défaut Foundry des mondes créés avant l'ajout du paramètre `ownership` ici — jamais un choix
+ *  explicite du MJ pour un Journal destiné aux joueurs), on le remonte à ce niveau. On ne
+ *  redescend jamais un niveau et on ne touche jamais aux droits par utilisateur.
  *
  *  Point d'entrée commun aux 3 `ensure*Journal` du système (Guide du MJ, Guide du Joueur,
  *  comparatif des Origines). */
 export async function ensureGmAuthoredJournal(title, buildPages, { ownership } = {}) {
   if (!game.user.isGM) return;
-  if (game.journal.getName(title)) return;
+
+  const existing = game.journal.getName(title);
+  if (existing) {
+    const wantedDefault = ownership?.default;
+    const none = CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE;
+    if (wantedDefault !== undefined && wantedDefault > none && existing.ownership.default === none) {
+      await existing.update({ "ownership.default": wantedDefault });
+    }
+    return;
+  }
 
   const pages = await buildPages();
   if (!pages?.length) return;
