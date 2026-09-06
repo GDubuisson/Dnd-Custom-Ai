@@ -1,6 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
-
-const SYSTEM_ID = "dnd-custom-ai";
+import { loadSystemJson } from "./system-json.js";
 
 /** Enrobe `text` dans un `<abbr title="...">` pointant vers la définition de `term` dans le
  *  glossaire (cf. scripts/data/glossary.json) : tooltip natif du navigateur, sans JS
@@ -11,11 +10,6 @@ function glossaryAbbr(glossary, term, text = term) {
   if (!entry) return text;
   const title = entry.definition.replace(/"/g, "&quot;");
   return `<abbr title="${title}">${text}</abbr>`;
-}
-
-async function loadJson(relativePath) {
-  const response = await fetch(`systems/${SYSTEM_ID}/${relativePath}`);
-  return response.json();
 }
 
 function buildGlossaryPage(glossary) {
@@ -161,7 +155,7 @@ function buildSpellsPage(glossary) {
 }
 
 async function buildClassesPage() {
-  const classes = await loadJson("world-items/classes.json");
+  const classes = await loadSystemJson("world-items/classes.json");
   const sections = classes
     .map((entry) => {
       const system = entry.system;
@@ -186,7 +180,7 @@ async function buildClassesPage() {
 }
 
 async function buildOriginsPage(glossary) {
-  const origins = await loadJson("world-items/origins.json");
+  const origins = await loadSystemJson("world-items/origins.json");
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const sections = origins
     .map((entry) => {
@@ -209,7 +203,7 @@ async function buildOriginsPage(glossary) {
 }
 
 async function buildLanguagesPage(glossary) {
-  const languages = await loadJson("world-items/languages.json");
+  const languages = await loadSystemJson("world-items/languages.json");
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const byCategory = (category) => languages.filter((entry) => entry.system.category === category);
   const section = (titleKey, entries) =>
@@ -270,7 +264,7 @@ export async function ensurePlayerGuideJournal() {
   const title = game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle");
   if (game.journal.getName(title)) return;
 
-  const glossary = await loadJson("scripts/data/glossary.json");
+  const glossary = await loadSystemJson("scripts/data/glossary.json");
 
   // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
   // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js), qui

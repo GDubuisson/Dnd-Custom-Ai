@@ -7,6 +7,19 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Refactor** — Reprise du backlog de simplification du 2026-08-18 (items reportés faute de filet
+de test E2E, désormais validables), 3 duplications verbatim supprimées, zéro changement de
+comportement :
+- Formule de la barre de vie (`hpPercent`) dupliquée dans les 3 fiches d'Actor →
+  `hitPointsPercent()` (`helpers/rules.js`, + 6 tests unitaires).
+- `schemaFromKeys()` dupliquée dans `character-data.js` / `npc-data.js` → `data/shared-schema.js`.
+- `loadJson()` / `fetch(...).json()` réécrit 6× (2 Journaux-guide, `content-import.js`,
+  `dnd-custom-ai.js`) → `loadSystemJson()` (`helpers/system-json.js`).
+
+Validé par des specs Cypress ciblées (`character-sheet.cy.js` T-SHEET-002, `vehicle-sheet.cy.js`
+T-VEH-002, `npc-sheet.cy.js`, `content-resync.cy.js` T-SYNC-*, `tab-journal.cy.js`) en plus de la
+suite unitaire (887 tests).
+
 **Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
 possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
 directement `targetActor.setFlag(...)` et `targetActor.toggleStatusEffect(...)` sur la cible,

@@ -1,11 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
-
-const SYSTEM_ID = "dnd-custom-ai";
-
-async function loadJson(relativePath) {
-  const response = await fetch(`systems/${SYSTEM_ID}/${relativePath}`);
-  return response.json();
-}
+import { loadSystemJson } from "./system-json.js";
 
 function buildOverviewPage() {
   return `
@@ -132,7 +126,7 @@ function buildOverviewPage() {
 }
 
 async function buildAdjudicationPage() {
-  const features = await loadJson("world-items/features.json");
+  const features = await loadSystemJson("world-items/features.json");
   const flagged = features.filter((feature) => /\bMJ\b|Simplifié/.test(feature.system.description));
   const rows = flagged
     .map(

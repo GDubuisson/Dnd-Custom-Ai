@@ -1,4 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
+import { loadSystemJson } from "./system-json.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -130,7 +131,7 @@ export async function importSystemContent({ notifyIfEmpty = true } = {}) {
     const topFolder = await ensureFolder(game.i18n.localize(folderKey));
     const subfolderCache = new Map();
 
-    const data = await fetch(`systems/${SYSTEM_ID}/world-items/${file}`).then((r) => r.json());
+    const data = await loadSystemJson(`world-items/${file}`);
     const existingByName = new Map(game.items.map((item) => [item.name, item]));
     const missing = data.filter((entry) => !existingByName.has(entry.name));
     for (const entry of missing) {
@@ -187,7 +188,7 @@ export async function importSystemContent({ notifyIfEmpty = true } = {}) {
       await compendium.configure({ locked: false });
       console.log(`${SYSTEM_ID} | Compendium ${packId} déverrouillé automatiquement avant import`);
     }
-    const data = await fetch(`systems/${SYSTEM_ID}/world-items/${file}`).then((r) => r.json());
+    const data = await loadSystemJson(`world-items/${file}`);
     // `await compendium.getIndex()` plutôt que le getter `compendium.index` brut : pour un pack
     // dont l'index n'a pas encore été chargé par ce client à ce point précis du hook `ready`
     // (retour de test — reproduit de façon fiable sur `adversaires`, tout juste ajouté à

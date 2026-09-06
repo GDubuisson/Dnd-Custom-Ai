@@ -37,6 +37,7 @@ import { equipmentSlots, isOffHandEligible, SPELL_LEVELS } from "./helpers/rules
 import { DND_CUSTOM } from "./helpers/config.js";
 import { registerActorUpdateRelay, registerStatusEffectRelay } from "./helpers/actor-relay.js";
 import { registerChatMessageHooks } from "./helpers/chat-message-hooks.js";
+import { loadSystemJson } from "./helpers/system-json.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -147,8 +148,8 @@ Hooks.once("init", async () => {
 
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").
   game.dndCustomAi = {
-    origins: await loadOrigins(),
-    spellSlotTables: await loadSpellSlotTables(),
+    origins: await loadSystemJson("scripts/data/origins.json"),
+    spellSlotTables: await loadSystemJson("scripts/data/spell-slots.json"),
     // Glossaire des termes de jeu (scripts/data/glossary.json) : même source que la page
     // "Glossaire" du Guide du Joueur, réutilisée ici en infobulles sur la fiche via le helper
     // Handlebars `glossaryTip` (cf. handlebars-helpers.js). Map terme -> définition pour un
@@ -804,19 +805,8 @@ Hooks.on("deleteCombat", async (combat) => {
 // qu'ils déclenchent (applyDamageToTargets/applyHealToTargets/damageTypeMultiplier).
 registerChatMessageHooks();
 
-async function loadOrigins() {
-  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/origins.json`);
-  return response.json();
-}
-
-async function loadSpellSlotTables() {
-  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/spell-slots.json`);
-  return response.json();
-}
-
 async function loadGlossary() {
-  const response = await fetch(`systems/${SYSTEM_ID}/scripts/data/glossary.json`);
-  const entries = await response.json();
+  const entries = await loadSystemJson("scripts/data/glossary.json");
   // Indexé par `key` (slug ASCII stable, ex. "ca", "pv-temporaires") : les templates passent ce
   // slug au helper `glossaryTip` sans avoir à échapper les apostrophes/parenthèses du `term`.
   return new Map(entries.map((entry) => [entry.key, entry.definition]));
