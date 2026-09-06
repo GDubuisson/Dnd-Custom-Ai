@@ -2,6 +2,13 @@ import { DND_CUSTOM } from "../helpers/config.js";
 
 const { SchemaField, NumberField, SetField, StringField } = foundry.data.fields;
 
+/** `{ [key]: fieldFactory(key), ... }` pour un jeu de clés — sucre pour construire un
+ *  `SchemaField` à colonnes homogènes (les 6 caractéristiques, etc.). Partagé par CharacterData
+ *  et NpcData. */
+export function schemaFromKeys(keys, fieldFactory) {
+  return Object.fromEntries(keys.map((key) => [key, fieldFactory(key)]));
+}
+
 /** Sous-schéma monnaie (PC/PA/PO/PP), réutilisé par la monnaie de l'Actor et par le prix
  *  de tout Item vendable (arme, armure, objet, outil, moyen de transport). */
 export function currencySchema() {

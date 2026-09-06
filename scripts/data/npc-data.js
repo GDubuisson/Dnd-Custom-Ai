@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "../helpers/config.js";
 import { ABILITY_KEYS } from "./character-data.js";
-import { damageAffinitySchema } from "./shared-schema.js";
+import { damageAffinitySchema, schemaFromKeys } from "./shared-schema.js";
 
 const { SchemaField, NumberField, StringField, HTMLField, BooleanField, SetField, ArrayField } = foundry.data.fields;
 
@@ -9,10 +9,6 @@ function npcAbilityField() {
   return new SchemaField({
     mod: new NumberField({ required: true, integer: true, initial: 0 })
   });
-}
-
-function schemaFromKeys(keys, fieldFactory) {
-  return Object.fromEntries(keys.map((key) => [key, fieldFactory(key)]));
 }
 
 /** Fiche d'ennemi/PNJ générique : stats simplifiées, distincte de CharacterData. */
