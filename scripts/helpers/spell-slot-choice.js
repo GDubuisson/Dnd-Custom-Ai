@@ -63,11 +63,10 @@ export async function chooseSpellSlotLevel(spellName, spellLevel, slots) {
  *  via `maxLevel`).
  *
  *  Renvoie un objet `{ [niveau]: montant }` (montants > 0 uniquement) si le joueur confirme une
- *  répartition valide, ou `null` si : aucun palier éligible n'a de charge manquante (rien à
- *  proposer, l'appelant ne consomme alors pas la charge de la Capacité), le joueur annule, ou la
- *  répartition saisie dépasse le total ou la capacité d'un palier (message d'erreur affiché,
- *  même convention que openAbilityScoreImprovementDialog qui ferme plutôt que de rester ouvert
- *  sur une saisie invalide).
+ *  répartition non vide, ou `null` si : aucun palier éligible n'a de charge manquante (rien à
+ *  proposer, l'appelant ne consomme alors pas la charge de la Capacité), le joueur annule, ou il
+ *  confirme sans rien répartir. Chaque montant saisi est borné (0 ≤ montant ≤ min(reste du total,
+ *  charges manquantes du palier)) plutôt que de rejeter une saisie invalide.
  *
  * @param {string} featureName
  * @param {number} total
@@ -82,21 +81,25 @@ export async function chooseSpellSlotRecovery(featureName, total, slots, maxLeve
   if (!eligible.length) return null;
 
   const rows = eligible
-    .map((level) => {
-      const cap = Math.min(total, slots[level].max - slots[level].value);
-      return `
+    .map(
+      (level) => `
         <div class="form-row">
           <label>${game.i18n.format("DND_CUSTOM.Spells.RecoveryLevelLabel", {
             level,
             remaining: slots[level].value,
             max: slots[level].max
           })}</label>
-          <input type="number" name="level${level}" value="0" min="0" max="${cap}">
-        </div>`;
-    })
+          <input type="number" name="level${level}" value="0" min="0" step="1">
+        </div>`
+    )
     .join("");
 
-  return DialogV2.wait({
+  // Chaque montant saisi est BORNÉ ici (0 ≤ montant ≤ min(reste du total, charges manquantes du
+  // palier)) plutôt que d'être rejeté : le callback renvoie donc TOUJOURS un objet `{ [niveau]:
+  // montant }` valide. Ne jamais renvoyer `null` depuis le callback — sous Foundry v13+,
+  // `DialogV2.wait` retombe alors sur la chaîne d'action ("ok") au lieu du retour du callback, ce
+  // qui cassait `#offerSpellSlotRecoveries` (`Object.entries("ok")`).
+  const distribution = await DialogV2.wait({
     window: { title: game.i18n.localize("DND_CUSTOM.Spells.RecoveryDialogTitle") },
     content: `
       <p>${game.i18n.format("DND_CUSTOM.Spells.RecoveryDialogPrompt", { feature: featureName, total })}</p>
@@ -108,25 +111,24 @@ export async function chooseSpellSlotRecovery(featureName, total, slots, maxLeve
         label: game.i18n.localize("DND_CUSTOM.Spells.RecoveryConfirm"),
         default: true,
         callback: (event, button) => {
-          const distribution = {};
-          let spent = 0;
+          const result = {};
+          let remaining = total;
           for (const level of eligible) {
-            const amount = Number(button.form.elements[`level${level}`]?.value) || 0;
-            const cap = Math.min(total, slots[level].max - slots[level].value);
-            if (amount < 0 || amount > cap) {
-              ui.notifications.error(game.i18n.localize("DND_CUSTOM.Spells.RecoveryInvalid"));
-              return null;
+            const cap = Math.min(remaining, slots[level].max - slots[level].value);
+            const amount = Math.max(0, Math.min(cap, Math.trunc(Number(button.form.elements[`level${level}`]?.value) || 0)));
+            if (amount > 0) {
+              result[level] = amount;
+              remaining -= amount;
             }
-            if (amount > 0) distribution[level] = amount;
-            spent += amount;
           }
-          if (spent > total) {
-            ui.notifications.error(game.i18n.localize("DND_CUSTOM.Spells.RecoveryInvalid"));
-            return null;
-          }
-          return spent > 0 ? distribution : null;
+          return result;
         }
       }
     ]
   });
+
+  // Fenêtre fermée (croix/Échap, rejectClose:false → `undefined` ou la chaîne d'action) ou
+  // confirmée sans rien répartir (objet vide) : `null`, l'appelant ne consomme pas la charge.
+  if (!distribution || typeof distribution !== "object" || !Object.keys(distribution).length) return null;
+  return distribution;
 }

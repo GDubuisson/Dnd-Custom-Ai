@@ -495,7 +495,6 @@
       "RecoveryDialogPrompt": "{feature}: {total} level(s) to distribute among the slots of your choice.",
       "RecoveryLevelLabel": "Level {level} ({remaining}/{max} used)",
       "RecoveryConfirm": "Recover",
-      "RecoveryInvalid": "Invalid distribution: the total exceeds what can be recovered, or exceeds a slot's capacity.",
       "RecoveryLevelResult": "level {level} (+{amount})",
       "MetamagicCarefulTitle": "Careful Spell — protected target",
       "MetamagicHeightenedTitle": "Heightened Spell — disadvantaged target",

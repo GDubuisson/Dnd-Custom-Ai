@@ -7,6 +7,27 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Tests** — Correction des specs Cypress signalées « flaky / obsolètes » pendant la découpe
+pré-1.0 (aucune régression du refactor — vérifié par `git stash`/`checkout`) :
+- `spell-slot-recovery.cy.js` : le Magicien reçoit d'office « Récupération arcanique »
+  (elle-même `recoversSpellSlots`), donc `#offerSpellSlotRecoveries` enchaînait deux fenêtres et
+  l'assertion échouait sur la seconde — la spec retire les Capacités de récupération pré-existantes
+  pour n'en tester qu'une.
+- `action-economy.cy.js` (« premier jet d'attaque du tour ») : le message du jet est posté avant
+  l'`update` qui décoche `actionAvailable` — assertions regroupées dans un `should()` qui retente.
+- `spell-grants-condition.cy.js` : les 2 sorts de test sont « concentration » — le 2e postait un
+  message « concentration rompue » en plus ; reset de `concentratingOn` entre les tests.
+- `paladin-channel-divinity.cy.js`, `spell-grants-condition.cy.js` : baseline `game.messages.size`
+  capturée une fois le flux de chat au repos.
+- `initiate-magic-feat.cy.js`, `subclass-fighter.cy.js` : `goToSpellLevel(n)` manquant (onglets
+  de sort par palier, commit `7a1719d`).
+
+**Correction** — `chooseSpellSlotRecovery` (répartition d'une récupération d'emplacements) :
+une saisie qui dépasse le total ou la capacité d'un palier est désormais **bornée** au lieu
+d'être rejetée avec une erreur — le callback renvoie toujours un objet valide, ce qui évite un
+`Object.entries("ok")` sous Foundry v13+ (`DialogV2.wait` retombant sur la chaîne d'action quand
+le callback renvoie `null`). Clé i18n `DND_CUSTOM.Spells.RecoveryInvalid` devenue inutile, retirée.
+
 **Refactor** — Découpe pré-1.0 (le dépôt passant en privé après le tag, le code est figé dans son
 meilleur état). **Phase 1/3** : 3 helpers transverses de `actor-sheet.js` deviennent des fonctions
 de module, prérequis à la découpe de la fiche en mixins (un `#`-privé ne franchit pas une frontière

@@ -25,6 +25,14 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
+// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group visible à
+// la fois, palier actif par défaut = premier palier non-vide (ici le palier 0, les 2 tours de
+// magie du don). Sans ça, le bouton du sort de niveau 1 reste display:none et cy.click() échoue.
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 before(() => {
   cy.loginAsGM();
   cy.createReadyCharacter({
@@ -118,6 +126,8 @@ describe("Don Magie d'initié — choix en 2 étapes puis cast gratuit du sort d
       expect(allZero, "prérequis : le Guerrier n'a aucun emplacement de sort").to.be.true;
     });
 
+    goToSpellLevel(1);
+
     let messagesBefore;
     cy.window()
       .then((win) => (messagesBefore = win.game.messages.size))
@@ -141,6 +151,7 @@ describe("Don Magie d'initié — choix en 2 étapes puis cast gratuit du sort d
     // Second cast : plus de charge gratuite, et toujours 0 emplacement -> échoue normalement
     // (avertissement, aucun nouveau message), comme n'importe quel autre sort de niveau 1 sans
     // emplacement disponible.
+    goToSpellLevel(1);
     cy.window()
       .then((win) => (messagesBefore = win.game.messages.size))
       .then(() => {

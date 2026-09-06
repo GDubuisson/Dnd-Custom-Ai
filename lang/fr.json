@@ -495,7 +495,6 @@
       "RecoveryDialogPrompt": "{feature} : {total} niveau(x) à répartir entre les emplacements de votre choix.",
       "RecoveryLevelLabel": "Niveau {level} ({remaining}/{max} utilisés)",
       "RecoveryConfirm": "Récupérer",
-      "RecoveryInvalid": "Répartition invalide : le total dépasse ce qui est récupérable, ou dépasse la capacité d'un palier.",
       "RecoveryLevelResult": "niveau {level} (+{amount})",
       "MetamagicCarefulTitle": "Sort Prudent — cible protégée",
       "MetamagicHeightenedTitle": "Sort Élevé — cible désavantagée",

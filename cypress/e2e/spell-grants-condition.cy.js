@@ -13,6 +13,29 @@ let casterId;
 let targetId;
 let targetTokenId;
 
+// Capture une baseline `game.messages.size` seulement une fois le flux de chat au repos : un
+// message d'un test/hook précédent peut arriver via socket avec un léger retard et fausser une
+// assertion de décompte exact (`=== baseline + 1`) — ces deux tests passaient isolément mais
+// échouaient par intermittence en suite complète (flaky historique).
+function captureStableBaseline(assign) {
+  return cy
+    .window()
+    .its("game.messages.size")
+    .then((a) =>
+      cy
+        .wait(500)
+        .window()
+        .its("game.messages.size")
+        .then((b) =>
+          cy
+            .wait(b === a ? 0 : 500)
+            .window()
+            .its("game.messages.size")
+            .then((c) => assign(c))
+        )
+    );
+}
+
 function grantGrantsConditionSpell(win, actorId, { grantsCondition, name = "Test Invisibility" }) {
   return win.game.actors.get(actorId).createEmbeddedDocuments("Item", [
     win.JSON.parse(
@@ -84,12 +107,16 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
   it("cible sélectionnée : l'état configuré est basculé sur la cible, pas de jet", () => {
     cy.window().then((win) => grantGrantsConditionSpell(win, casterId, { grantsCondition: "invisible" }));
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("invisible", { active: false }));
+    // Les deux sorts de test sont "concentration" : sans reset, lancer le 2e alors que le 1er est
+    // encore en cours poste un message "concentration rompue" en plus du message de lancer et
+    // fausse le décompte exact (flaky selon l'ordre des tests).
+    cy.window().then((win) =>
+      win.game.actors.get(casterId).update(win.JSON.parse(JSON.stringify({ "system.spells.concentratingOn": "" })))
+    );
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).setTarget(true, { releaseOthers: true }));
 
     let knownMessageCount;
-    cy.window().then((win) => {
-      knownMessageCount = win.game.messages.size;
-    });
+    captureStableBaseline((n) => (knownMessageCount = n));
 
     cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
@@ -115,8 +142,12 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
     cy.window().then((win) =>
       grantGrantsConditionSpell(win, casterId, { grantsCondition: "invisible", name: "Test Invisibility No Target" })
     );
-    // Repart d'un état propre : le test précédent a laissé cette même cible invisible.
+    // Repart d'un état propre : le test précédent a laissé cette même cible invisible et le
+    // lanceur concentré sur "Test Invisibility" (sinon message "concentration rompue" en plus).
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("invisible", { active: false }));
+    cy.window().then((win) =>
+      win.game.actors.get(casterId).update(win.JSON.parse(JSON.stringify({ "system.spells.concentratingOn": "" })))
+    );
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).setTarget(false, { releaseOthers: true }));
 
     let warned = false;
@@ -129,9 +160,7 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
     });
 
     let knownMessageCount;
-    cy.window().then((win) => {
-      knownMessageCount = win.game.messages.size;
-    });
+    captureStableBaseline((n) => (knownMessageCount = n));
 
     cy.window().then((win) => win.game.actors.get(casterId).sheet.render(true));
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
