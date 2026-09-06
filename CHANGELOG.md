@@ -7,6 +7,10 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Dépôt** — `.idea/` (config IDE) et `maquettes/` (~8,6 Mo de maquettes HTML/PNG de conception)
+retirés du suivi git et ajoutés au `.gitignore`. Les fichiers restent en local (des commentaires
+de code y renvoient toujours comme rationale de conception) ; l'historique git n'est pas réécrit.
+
 **Compatibilité** — `system.json` : `compatibility.minimum` passe de `"13"` à `"14"`. La v13
 n'avait jamais été réellement testée (seule la v14 l'est) ; la déclarer compatible était
 optimiste. Docs alignées.

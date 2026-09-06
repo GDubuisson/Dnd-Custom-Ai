@@ -2,7 +2,8 @@ node_modules/
 dist/
 *.zip
 .DS_Store
-.idea/**
+.idea/
+maquettes/
 .claude/*
 ClaudeFiles/*
 # Documentation de conception versionnée (cf. README.md) — le reste de ClaudeFiles/ reste ignoré
