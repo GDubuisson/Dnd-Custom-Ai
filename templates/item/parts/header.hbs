@@ -1,0 +1,15 @@
+{{! En-tête commun à toutes les fiches d'Item (templates/item/*.hbs) : conteneur racine, image +
+    champ nom, ouverture du corps et note « MJ uniquement » affichée aux non-MJ. Les fiches
+    ferment elles-mêmes les deux <div> ouverts ici (</div></div> en fin de fichier).
+    Paramètres : `placeholder` (clé i18n du type, ex. "TYPES.Item.weapon"), `notice` (clé i18n de
+    la note MJ, ex. "DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"). }}
+<div class="item-sheet-root">
+<header class="item-sheet-header">
+  <img src="{{item.img}}" alt="{{item.name}}">
+  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize placeholder}}" {{#unless isGM}}disabled{{/unless}}>
+</header>
+
+<div class="item-sheet-body">
+  {{#unless isGM}}
+  <p class="field-note">{{localize notice}}</p>
+  {{/unless}}

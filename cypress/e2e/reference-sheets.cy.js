@@ -44,6 +44,27 @@ function latestItemSheetTitle() {
   return cy.get(".application.sheet.item .window-title", { timeout: 10000 });
 }
 
+// Le hook "ready" (dnd-custom-ai.js) lance `importSystemContent({ notifyIfEmpty: false })` à
+// CHAQUE rechargement de page (donc à chaque `cy.loginAsGM()`), en tâche de fond non attendue.
+// Comme le ré-import est dédoublonné PAR NOM, s'il est encore en vol quand T-REF-004 supprime
+// "Fleuraine" du compendium, il la voit absente et la RECRÉE aussitôt — `#openReferenceItem`
+// rouvre alors la fiche au lieu d'avertir (flake ~1/3, préexistant, sans lien avec les partials).
+// Parade : supprimer puis re-vérifier jusqu'à ce que l'absence soit stable (l'import de fond a
+// fini), avec un plafond de tentatives.
+function ensureCompendiumEntryDeleted(win, packName, entryName, stableChecks = 0, attempts = 0) {
+  if (attempts > 40) throw new Error(`Impossible de garder '${entryName}' supprimé du compendium ${packName} (ré-import en boucle ?)`);
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  return win.game.packs
+    .get(`dnd-custom-ai.${packName}`)
+    .getDocuments()
+    .then((docs) => {
+      const doc = docs.find((candidate) => candidate.name === entryName);
+      if (doc) return doc.delete().then(() => wait(400)).then(() => ensureCompendiumEntryDeleted(win, packName, entryName, 0, attempts + 1));
+      if (stableChecks >= 3) return null;
+      return wait(400).then(() => ensureCompendiumEntryDeleted(win, packName, entryName, stableChecks + 1, attempts + 1));
+    });
+}
+
 before(() => {
   cy.loginAsPlayer();
   cy.createReadyCharacter({
@@ -147,11 +168,13 @@ describe("Fiches de référence — avertissement si introuvable, session MJ", (
     cy.window().then((win) => {
       const pack = win.game.packs.get("dnd-custom-ai.origines");
       return pack.getDocuments().then((docs) => {
-        const document = docs.find((candidate) => candidate.name === "Fleuraine");
-        expect(document, "prérequis : l'Item d'Origine 'Fleuraine' existe dans le compendium").to.exist;
-        return document.delete();
+        expect(
+          docs.find((candidate) => candidate.name === "Fleuraine"),
+          "prérequis : l'Item d'Origine 'Fleuraine' existe dans le compendium"
+        ).to.exist;
       });
     });
+    cy.window().then((win) => ensureCompendiumEntryDeleted(win, "origines", "Fleuraine"));
 
     openSheet(sharedActorId);
 

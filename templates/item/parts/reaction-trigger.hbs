@@ -1,0 +1,10 @@
+{{! Déclencheur de réaction (Capacité/Sort à activation "reaction", cf. isReaction dans
+    item-sheets.js) : champ texte + aide, affiché seulement si l'activation est une réaction.
+    Hérite du contexte de la fiche (`isReaction`, `system`, `isGM`). }}
+{{#if isReaction}}
+<div class="form-row">
+  <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
+  <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}" {{#unless isGM}}disabled{{/unless}}>
+</div>
+<p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
+{{/if}}

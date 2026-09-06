@@ -1,13 +1,4 @@
-<div class="item-sheet-root">
-<header class="item-sheet-header">
-  <img src="{{item.img}}" alt="{{item.name}}">
-  <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'TYPES.Item.spell'}}" {{#unless isGM}}disabled{{/unless}}>
-</header>
-
-<div class="item-sheet-body">
-  {{#unless isGM}}
-  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.CompendiumGmOnlyNotice"}}</p>
-  {{/unless}}
+{{> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.spell" notice="DND_CUSTOM.Item.Fields.CompendiumGmOnlyNotice"}}
 
   <fieldset class="form-group">
     <legend>{{localize "DND_CUSTOM.Item.Fields.SpellClasses"}}</legend>
@@ -34,13 +25,7 @@
     <select name="system.activation" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.activationTypes selected=system.activation localize=true}}</select>
   </div>
 
-  {{#if isReaction}}
-  <div class="form-row">
-    <label>{{localize "DND_CUSTOM.Item.Fields.ReactionTrigger"}}</label>
-    <input type="text" name="system.reactionTrigger" value="{{system.reactionTrigger}}" {{#unless isGM}}disabled{{/unless}}>
-  </div>
-  <p class="field-note">{{localize "DND_CUSTOM.Item.Fields.ReactionTriggerHelp"}}</p>
-  {{/if}}
+  {{> "systems/dnd-custom-ai/templates/item/parts/reaction-trigger.hbs"}}
 
   <label class="checkbox-row"><input type="checkbox" name="system.concentration" {{#if system.concentration}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Concentration"}}</label>
   <label class="checkbox-row"><input type="checkbox" name="system.ritual" {{#if system.ritual}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Ritual"}}</label>
@@ -102,9 +87,6 @@
     </div>
   </fieldset>
 
-  <div class="form-row description-row">
-    <label>{{localize "DND_CUSTOM.Item.Fields.Description"}}</label>
-    <prose-mirror class="content-sized" name="system.description" value="{{system.description}}" {{#unless isGM}}disabled{{/unless}}></prose-mirror>
-  </div>
+  {{> "systems/dnd-custom-ai/templates/item/parts/description.hbs" field="description" label="DND_CUSTOM.Item.Fields.Description"}}
 </div>
 </div>

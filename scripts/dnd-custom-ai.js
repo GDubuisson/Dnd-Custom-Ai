@@ -133,8 +133,15 @@ Hooks.once("init", async () => {
   // PART (cf. static PARTS ci-dessus) donc jamais chargé automatiquement par
   // HandlebarsApplicationMixin — il faut le précharger explicitement pour que
   // {{> (lookup this "classTabPartial")}} le trouve dès le premier rendu.
+  // Idem pour les partials communs aux fiches d'Item (templates/item/parts/*.hbs) : référencés
+  // par `{{> "systems/dnd-custom-ai/templates/item/parts/xxx.hbs"}}` dans templates/item/*.hbs,
+  // jamais des PARTS, donc à précharger explicitement sous leur chemin système complet.
   await foundry.applications.handlebars.loadTemplates([
-    `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`
+    `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/parts/header.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/parts/price.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/parts/description.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/parts/reaction-trigger.hbs`
   ]);
 
   // Données de jeu externalisées en JSON (cf. convention "pas en dur dans le JS").

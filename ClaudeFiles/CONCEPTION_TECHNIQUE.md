@@ -163,7 +163,11 @@ templates/
                           # accroche/couleur par classe, cf. context.classFlavorKey), résolu via
                           # {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs
   apps/                  # character-creation-wizard.hbs
-  item/                  # un .hbs par type d'Item
+  item/                  # un .hbs par type d'Item (9)
+  item/parts/            # partials communs aux fiches d'Item : header.hbs (racine + image/nom +
+                         #   note MJ, params `placeholder`/`notice`), price.hbs (fieldset Prix),
+                         #   description.hbs (zone ProseMirror, params `field`/`label`),
+                         #   reaction-trigger.hbs — préchargés au hook init (loadTemplates)
 lang/fr.json, lang/en.json   # toutes les clés DND_CUSTOM.* utilisées par JS/templates DOIVENT
                               # exister dans les deux fichiers (vérifié par tests/data)
 packs/                  # compendiums Foundry (LevelDB), remplis via importSystemContent()
@@ -269,9 +273,10 @@ du nouveau jet toujours conservé (jamais le meilleur des deux).
   `{ dndCustomDamageApply: true }`, sinon la baisse est silencieusement annulée.
 - Verrouillage MJ/Joueur des fiches d'Item de compendium : pattern uniforme
   `{{#unless isGM}}disabled{{/unless}}` posé sur CHAQUE champ (pas de verrou global JS), sur
-  toutes les fiches `item/*.hbs`. Notes dédiées : `DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice`
-  (objets avec Quantité/Équipé gérés depuis l'onglet Inventaire) vs `CompendiumGmOnlyNotice`
-  (contenu pur, sans ces champs).
+  toutes les fiches `item/*.hbs` **et leurs partials `item/parts/*.hbs`** (qui héritent d'`isGM`
+  du contexte de la fiche). Notes dédiées, passées en paramètre `notice` au partial `header.hbs` :
+  `DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice` (objets avec Quantité/Équipé gérés depuis l'onglet
+  Inventaire), `CompendiumGmOnlyNotice` (contenu pur), `GmOnlyNotice` (Capacités de classe).
 - Champs Classe/Origine non éditables directement sur la fiche (seul l'assistant, ou le MJ en
   édition directe, peut les changer).
 - Exception `dndCustomLevelUp` (hook de restriction des champs verrouillés) : ne laisse passer
