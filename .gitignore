@@ -5,6 +5,10 @@ dist/
 .idea/**
 .claude/*
 ClaudeFiles/*
+# Documentation de conception versionnée (cf. README.md) — le reste de ClaudeFiles/ reste ignoré
+!ClaudeFiles/CONCEPTION_TECHNIQUE.md
+!ClaudeFiles/CONCEPTION_FONCTIONNELLE.md
+!ClaudeFiles/ANOMALIES_ACTIVES.md
 images_test/
 
 # Tests E2E "au réel" (Docker/Cypress/Quench, cf. tests/README.md)

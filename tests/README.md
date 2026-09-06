@@ -2,9 +2,9 @@
 
 Suite de tests pour le système `dnd-custom-ai`. Usage développement uniquement : `package.json`,
 `node_modules/` et `tests/` ne sont jamais inclus dans l'archive livrée (cf.
-`.github/workflows/release.yml`, qui ne zippe que `system.json scripts styles templates lang
-assets packs`) — le système reste 100% vanilla JS chargé directement par Foundry, sans étape de
-build (cf. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`).
+`.github/workflows/release.yml`, qui ne zippe que `system.json README.md LICENSE scripts styles
+templates lang assets packs world-items`) — le système reste 100% vanilla JS chargé directement
+par Foundry, sans étape de build (cf. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`).
 
 ## Installation (une fois)
 

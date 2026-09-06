@@ -7,6 +7,13 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Documentation** — Ajout d'un `README.md` à la racine (présentation, statut, index de
+documentation, mode opératoire des tests — dont la couche E2E Docker/Cypress/Quench —, CI et
+release, licence, route vers la 1.0.0). Il **renvoie** aux docs de conception pour la stack, les
+invariants et l'arborescence plutôt que de les recopier. `ClaudeFiles/CONCEPTION_TECHNIQUE.md`,
+`CONCEPTION_FONCTIONNELLE.md` et `ANOMALIES_ACTIVES.md` sortent du `.gitignore` et sont désormais
+versionnés.
+
 **Refactor** — Reprise du backlog de simplification du 2026-08-18 (items reportés faute de filet
 de test E2E, désormais validables), duplications verbatim supprimées, zéro changement de
 comportement :
