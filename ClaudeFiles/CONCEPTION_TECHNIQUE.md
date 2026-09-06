@@ -35,8 +35,21 @@ le "quoi" et `ClaudeFiles/ANOMALIES_ACTIVES.md` pour ce qui reste à corriger.
 
 ```
 scripts/
-  dnd-custom-ai.js              # point d'entrée, Hooks.once("init"/"ready"), enregistrement
-                                 # des DataModels/fiches, migrations
+  dnd-custom-ai.js              # point d'entrée (~300 l.) : Hooks.once("init"/"ready")
+                                 # (enregistrement DataModels/fiches, préchargement templates,
+                                 # game.dndCustomAi, importSystemContent, migrations), 3 loaders
+                                 # JSON, et les appels register*Hooks() (dans l'ordre historique :
+                                 # security > token-actor > equipment > hit-point > combat-effect
+                                 # > chat-message). Les hooks de règles eux-mêmes sont dans
+                                 # helpers/*-hooks.js
+  helpers/*-hooks.js            # security-hooks (verrous champs non-MJ), token-actor-hooks (cycle
+                                 # de vie Actor : lien token, entrée assistant, contenu sous-classe),
+                                 # equipment-hooks (contenants, collisions d'emplacement),
+                                 # hit-point-hooks (PV/mort/agonie/XP PNJ — le preUpdateActor de
+                                 # snapshot PV DOIT rester avant les updateActor qui le lisent),
+                                 # combat-effect-hooks (économie d'action, durée de Rage, immunités
+                                 # de condition, fin de combat), chat-message-hooks
+                                 # (renderChatMessageHTML). Chacun : export registerXxxHooks()
   data/                         # DataModels (schéma de données Actor/Item)
     character-data.js, npc-data.js, vehicle-actor-data.js
     class-data.js, item-data.js, origin-data.js, shared-schema.js

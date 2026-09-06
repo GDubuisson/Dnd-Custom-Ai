@@ -39,6 +39,20 @@ Cypress par mixin (wild-shape, level-up, tab-stats, tab-abilities, srd-generic-s
 turn-undead, tier-c-destroy-undead, metamagic, spell-saving-throws, deferred-rider-spells,
 damage-types-magical, combat-criticals, sentinel-mounted-combat, tier-c-rage…).
 
+**Refactor** — Découpe pré-1.0, **Phase 3/3** : `scripts/dnd-custom-ai.js` passe de **813 à
+~300 lignes**. Ses 21 hooks de règles sont regroupés en 5 modules `helpers/*-hooks.js`, chacun
+exposant un `registerXxxHooks()` appelé au chargement à la position historique du groupe (ordre
+d'enregistrement préservé — même pattern que `helpers/chat-message-hooks.js`) :
+`security-hooks.js` (verrous de champs non-MJ), `token-actor-hooks.js` (cycle de vie d'un Actor),
+`equipment-hooks.js` (règles d'équipement), `hit-point-hooks.js` (PV / mort / agonie / XP de PNJ,
+le `preUpdateActor` de snapshot des PV reste avant les `updateActor` qui le lisent),
+`combat-effect-hooks.js` (économie d'action, durée de Rage, immunités de condition, fin de combat).
+L'entry file ne garde plus que `init` / `ready` / les 3 loaders JSON.
+
+Zéro changement de comportement. Validé par `npm test` (897) + specs Cypress par module
+(permissions, npc-sheet, wizard, gm-token-sync, level-up, tab-equipment, tab-inventory, tab-stats,
+combat-tracker, wild-shape, tier-c-rage, condition-immunity-generalized, action-economy).
+
 **Dépôt** — `.idea/` (config IDE) et `maquettes/` (~8,6 Mo de maquettes HTML/PNG de conception)
 retirés du suivi git et ajoutés au `.gitignore`. Les fichiers restent en local (des commentaires
 de code y renvoient toujours comme rationale de conception) ; l'historique git n'est pas réécrit.

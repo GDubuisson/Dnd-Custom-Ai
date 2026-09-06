@@ -129,6 +129,5 @@ release.
       (décision prise) ; c'est cet événement qui règle la question, pas un remplacement des icônes.
 - [ ] `[Non publié]` → `[1.0.0]` dans le `CHANGELOG` au moment du tag.
 - [x] `README.md` à la racine · champs `readme` / `media` dans `system.json` · `compatibility.minimum` = `"14"` · `.idea/` et `maquettes/` sortis du suivi git.
-
-Pistes de refactor post-1.0 (non bloquantes) : découpe de `scripts/sheets/actor-sheet.js` en
-mixins ; découpe des hooks de règles de `scripts/dnd-custom-ai.js`.
+- [x] Découpe de `scripts/sheets/actor-sheet.js` (2801 → ~1240 l.) en 5 mixins et de
+      `scripts/dnd-custom-ai.js` (813 → ~300 l.) en 5 modules de hooks.
