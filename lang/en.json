@@ -214,6 +214,8 @@
       "Dead": "Dead",
       "RestBlockedDeadTooltip": "Cannot rest: the character is dead",
       "OpenDescriptionTooltip": "Click to open the description sheet",
+      "OpenPlayerGuideTooltip": "Open the Player Guide (glossary, core rules, spells, classes, origins).",
+      "PlayerGuideMissing": "The \"Player Guide\" journal was not found — ask your GM (it is created automatically when the world loads).",
       "ClassSheetMissing": "No description sheet found for class \"{name}\" (import/populate the Classes compendium, see world-items/README.md).",
       "OriginSheetMissing": "No description sheet found for Origin \"{name}\" (import/populate the Origins compendium, see world-items/README.md).",
       "SubclassSheetMissing": "No description sheet found for subclass \"{name}\" (import/populate the Subclasses compendium, see world-items/README.md).",
@@ -228,7 +230,8 @@
       "RestLong": "Long rest",
       "RollInitiative": "Initiative",
       "AwardXp": "Award XP",
-      "LevelUp": "Level up"
+      "LevelUp": "Level up",
+      "OpenPlayerGuide": "Player Guide"
     },
     "Macros": {
       "ImportContent": "Import system content",

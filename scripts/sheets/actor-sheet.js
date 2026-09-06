@@ -100,6 +100,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       openClassSheet: DndCustomActorSheet.#onOpenClassSheet,
       openSubclassSheet: DndCustomActorSheet.#onOpenSubclassSheet,
       openOriginSheet: DndCustomActorSheet.#onOpenOriginSheet,
+      openPlayerGuide: DndCustomActorSheet.#onOpenPlayerGuide,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       selectSpellLevel: DndCustomActorSheet.#onSelectSpellLevel
       // FeatureActionsSheetMixin : rollFeature/rollFeatureSave/grantFeatureCondition/
@@ -760,6 +761,21 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       "DND_CUSTOM.Actor.OriginSheetMissing",
       origin.label
     );
+  }
+
+  /** Ouvre le Journal « Guide du Joueur » (glossaire, règles de base, sorts, classes, origines —
+   *  généré au chargement du monde et rendu visible des joueurs, cf.
+   *  helpers/player-guide-journal.js). Point d'entrée depuis la fiche vers la documentation en
+   *  jeu à laquelle renvoient les infobulles de glossaire. Avertit sans bloquer si le MJ l'a
+   *  supprimé. Recherche par nom LOCALISÉ (le Journal est créé sous le nom de la langue active du
+   *  monde). */
+  static #onOpenPlayerGuide() {
+    const guide = game.journal.getName(game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"));
+    if (!guide) {
+      ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Actor.PlayerGuideMissing"));
+      return;
+    }
+    guide.sheet.render(true);
   }
 
   /** Ouvre la fiche de description d'une Classe/Sous-classe/Origine correspondant à `predicate` :

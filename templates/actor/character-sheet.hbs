@@ -178,6 +178,9 @@
     <span class="hdr-econ-spacer"></span>
 
     <div class="header-actions">
+      <button type="button" class="header-action-icon" data-action="openPlayerGuide" data-tooltip="{{localize 'DND_CUSTOM.Actor.OpenPlayerGuideTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actions.OpenPlayerGuide'}}">
+        <i class="fa-solid fa-circle-question"></i> <span class="header-action-label">{{localize "DND_CUSTOM.Actions.OpenPlayerGuide"}}</span>
+      </button>
       {{#if showCreationWizardButton}}
       <button type="button" data-action="openCreationWizard" data-tooltip="{{localize 'DND_CUSTOM.Wizard.OpenTooltip'}}">
         <i class="fa-solid fa-hat-wizard"></i> {{localize "DND_CUSTOM.Wizard.OpenButton"}}

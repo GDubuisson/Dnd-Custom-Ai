@@ -7,6 +7,11 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Ajout** — Bouton « Guide du Joueur » (icône ?) dans l'en-tête de la fiche de personnage : ouvre
+directement le Journal éponyme, point d'entrée manquant vers la documentation en jeu à laquelle
+renvoient déjà les infobulles de glossaire. Couvert par `reference-sheets.cy.js` > T-REF-005 (joué
+en session Joueur — vérifie aussi l'accès de bout en bout).
+
 **Correction** — Les Journaux « Guide du Joueur » et « Comparatif des Origines » étaient créés
 visibles du MJ seul (`ownership.default = 0`, défaut Foundry) : les joueurs, à qui cette
 documentation en jeu est pourtant destinée (la couche d'infobulles de la fiche y renvoie), ne

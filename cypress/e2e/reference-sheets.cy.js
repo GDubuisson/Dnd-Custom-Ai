@@ -102,15 +102,15 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
     openSheet(sharedActorId);
   });
 
-  // Referme toute fiche d'Item ouverte par le test qui vient de tourner : sans ça, les fenêtres
-  // s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario suivant
-  // (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un run
-  // combiné avec toute la suite, jamais isolément).
+  // Referme toute fiche d'Item / de Journal ouverte par le test qui vient de tourner : sans ça,
+  // les fenêtres s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario
+  // suivant (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un
+  // run combiné avec toute la suite, jamais isolément).
   afterEach(() => {
     cy.window().then((win) => {
       const closing = [];
       for (const app of win.foundry.applications.instances.values()) {
-        if (app.document?.documentName === "Item") closing.push(app.close());
+        if (["Item", "JournalEntry"].includes(app.document?.documentName)) closing.push(app.close());
       }
       return Promise.all(closing);
     });
@@ -149,6 +149,24 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
       .then((originLabel) => {
         sheetRoot().find('button[data-action="openOriginSheet"]').click();
         latestItemSheetTitle().should("contain.text", originLabel);
+      });
+  });
+
+  // Le bouton « Guide du Joueur » de l'en-tête (#onOpenPlayerGuide) ouvre le Journal du même nom.
+  // Joué en session Joueur (cf. beforeEach) : vérifie aussi de bout en bout que le Journal est
+  // bien accessible aux joueurs (correctif ownership -> OBSERVER, cf. journal-visibility.cy.js).
+  it("ouvre le Journal « Guide du Joueur » depuis l'en-tête (T-REF-005)", () => {
+    cy.window()
+      .its("game.i18n")
+      .then((i18n) => i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"))
+      .then((guideName) => {
+        sheetRoot().find('button[data-action="openPlayerGuide"]').click();
+        cy.window({ timeout: 10000 }).should((win) => {
+          const open = [...win.foundry.applications.instances.values()].some(
+            (app) => app.document?.documentName === "JournalEntry" && app.document.name === guideName && app.rendered
+          );
+          expect(open, `le Journal « ${guideName} » est ouvert pour le joueur`).to.be.true;
+        });
       });
   });
 });

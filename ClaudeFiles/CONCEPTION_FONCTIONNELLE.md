@@ -161,7 +161,8 @@ biographie) n'est volontairement pas concerné.
 Trois Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
 librement) : **Guide du Joueur** (glossaire, règles de base, sorts, classes, origines, langues,
 équipement) et **Comparatif des Origines** sont visibles de tous les joueurs (`ownership` par
-défaut = Observateur) ; le **Guide du MJ** reste réservé au MJ.
+défaut = Observateur) ; le **Guide du MJ** reste réservé au MJ. L'en-tête de la fiche de
+personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
