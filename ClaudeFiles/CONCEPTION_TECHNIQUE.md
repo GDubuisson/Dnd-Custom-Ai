@@ -8,8 +8,9 @@ le "quoi" et `ClaudeFiles/ANOMALIES_ACTIVES.md` pour ce qui reste à corriger.
 
 ## Stack et bornes strictes
 
-- **Plateforme** : Foundry VTT **v14** (vérifié), compatible minimum v13. Documentation API de
-  référence : https://foundryvtt.com/api/ — aucune API dépréciée ou non documentée.
+- **Plateforme** : Foundry VTT **v14** (`compatibility.minimum` et `verified` — la v13 n'est plus
+  déclarée compatible faute d'y avoir été réellement testée). Documentation API de référence :
+  https://foundryvtt.com/api/ — aucune API dépréciée ou non documentée.
 - **Aucun système de build** : JavaScript vanilla (ES modules), chargé directement via
   `system.json` (`esmodules`). Pas de npm/webpack/bundler pour le système livré.
 - **Pas de framework front** (React/Vue...) : Handlebars natif Foundry uniquement.

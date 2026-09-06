@@ -7,6 +7,10 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Compatibilité** — `system.json` : `compatibility.minimum` passe de `"13"` à `"14"`. La v13
+n'avait jamais été réellement testée (seule la v14 l'est) ; la déclarer compatible était
+optimiste. Docs alignées.
+
 **Manifeste** — `system.json` : champs `readme` (vers `README.md` sur GitHub) et `media`
 (`type: "setup"` → `assets/media/cover.png`, capture de la fiche personnage) ajoutés pour la
 fiche du système dans le gestionnaire de packages Foundry.

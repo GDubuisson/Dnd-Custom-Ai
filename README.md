@@ -15,7 +15,7 @@ géographiques inspirées de nations réelles — à la place des races classiqu
 | | |
 |---|---|
 | Version | `0.64.x` — pré-1.0, voir [`CHANGELOG.md`](CHANGELOG.md) |
-| Compatibilité | Foundry VTT **v14** (vérifié), **v13** minimum déclaré |
+| Compatibilité | Foundry VTT **v14** (minimum et vérifié) |
 | Périmètre fonctionnel | complet — aucune anomalie ouverte (cf. [`ClaudeFiles/ANOMALIES_ACTIVES.md`](ClaudeFiles/ANOMALIES_ACTIVES.md)) |
 | Tests | `npm test` (≈ 890 tests unitaire / données / DOM) au vert · couche E2E « au réel » (Docker + Cypress + Quench), une spec par mécanique de jeu |
 | Langues | Français, Anglais (parité de clés i18n vérifiée en test) |
@@ -127,10 +127,9 @@ release.
 
 - [ ] **Licence des icônes tierces** — le dépôt passe **privé** après la release publique finale
       (décision prise) ; c'est cet événement qui règle la question, pas un remplacement des icônes.
-- [ ] Trancher `compatibility.minimum` : vérifier réellement la v13 ou la passer à `"14"`.
 - [ ] `[Non publié]` → `[1.0.0]` dans le `CHANGELOG` au moment du tag.
 - [ ] Ignorer `.idea/`, sortir `maquettes/` du dépôt.
-- [x] `README.md` à la racine · champs `readme` / `media` dans `system.json`.
+- [x] `README.md` à la racine · champs `readme` / `media` dans `system.json` · `compatibility.minimum` = `"14"`.
 
 Pistes de refactor post-1.0 (non bloquantes) : découpe de `scripts/sheets/actor-sheet.js` en
 mixins ; découpe des hooks de règles de `scripts/dnd-custom-ai.js`.
