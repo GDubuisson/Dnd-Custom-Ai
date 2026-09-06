@@ -95,6 +95,8 @@ scripts/
                                  # → compendiums packs/*
     ability-score-improvement.js, level-up-choice.js, subclass-choice.js  # fenêtres de choix à
                                  # la montée de niveau (ASI/Don, sous-classe)
+    dialog-content.js           # radioListDialogContent() — HTML « liste radio libellé+desc »
+                                 # partagé par les DialogV2 de choix (sous-classe/Don/Forme sauvage)
     death.js                    # agonie/mort, stabilisation
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
     origins-journal.js, player-guide-journal.js, gm-guide-journal.js  # génération du contenu

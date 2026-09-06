@@ -7,14 +7,18 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-**Refactor** — Backlog de lisibilité : les blocs dupliqués des 9 fiches d'Item
-(`templates/item/*.hbs`) sont extraits en 4 partials Handlebars communs
-(`templates/item/parts/` : `header.hbs`, `price.hbs`, `description.hbs`, `reaction-trigger.hbs`),
-préchargés au hook `init`. −180 lignes de duplication, zéro changement de rendu. Validé par
-`npm test` (900) + `item-sheets`, `reference-sheets`, `damage-types-armor`, `tab-equipment`,
-`tab-inventory`, `accessibility` (E2E). Au passage : `reference-sheets.cy.js` > T-REF-004
-dé-flakisé (le ré-import de fond du hook `ready` recréait l'Origine supprimée juste avant le clic
-— flake ~1/3 préexistant).
+**Refactor** — Backlog de lisibilité :
+- Les blocs dupliqués des 9 fiches d'Item (`templates/item/*.hbs`) sont extraits en 4 partials
+  Handlebars communs (`templates/item/parts/` : `header.hbs`, `price.hbs`, `description.hbs`,
+  `reaction-trigger.hbs`), préchargés au hook `init`. −180 lignes de duplication.
+- Le contenu HTML « liste de boutons radio libellé + description » des fenêtres `DialogV2` de
+  choix (sous-classe, Don, forme de Forme sauvage) → `radioListDialogContent()`
+  (`helpers/dialog-content.js`), styles inline mutualisés.
+
+Zéro changement de rendu. Validé par `npm test` (900) + `item-sheets`, `reference-sheets`,
+`damage-types-armor`, `tab-equipment`, `tab-inventory`, `accessibility`, `level-up`, `wild-shape`
+(E2E). Au passage : `reference-sheets.cy.js` > T-REF-004 dé-flakisé (le ré-import de fond du hook
+`ready` recréait l'Origine supprimée juste avant le clic — flake ~1/3 préexistant).
 
 **Tests** — Correction des specs Cypress signalées « flaky / obsolètes » pendant la découpe
 pré-1.0 (aucune régression du refactor — vérifié par `git stash`/`checkout`) :

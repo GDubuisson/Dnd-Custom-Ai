@@ -1,4 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
+import { radioListDialogContent } from "./dialog-content.js";
 
 const { DialogV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
@@ -35,23 +36,16 @@ export async function offerWildShapeFormDialog(actor) {
     return undefined;
   }
 
-  const rows = available
-    .map((npc, index) => {
-      const hp = npc.system.attributes.hp.max;
-      const ac = npc.system.attributes.ac.value;
-      const attacks = summarizeAttacks(npc.system.attacks);
-      return `
-        <label class="checkbox-row" style="align-items:flex-start;gap:0.5rem;">
-          <input type="radio" name="wildShapeFormName" value="${npc.name}" ${index === 0 ? "checked" : ""}>
-          <span><strong>${npc.name}</strong> (${game.i18n.localize("DND_CUSTOM.Actor.HP")} ${hp},
-            ${game.i18n.localize("DND_CUSTOM.Actor.AC")} ${ac})<br>${attacks}</span>
-        </label>`;
-    })
-    .join("");
+  const options = available.map((npc) => ({
+    value: npc.name,
+    label: npc.name,
+    meta: ` (${game.i18n.localize("DND_CUSTOM.Actor.HP")} ${npc.system.attributes.hp.max}, ${game.i18n.localize("DND_CUSTOM.Actor.AC")} ${npc.system.attributes.ac.value})`,
+    description: summarizeAttacks(npc.system.attacks)
+  }));
 
   return DialogV2.prompt({
     window: { title: game.i18n.localize("DND_CUSTOM.WildShape.DialogTitle") },
-    content: `<div style="display:flex;flex-direction:column;gap:0.6rem;max-height:60vh;overflow-y:auto;">${rows}</div>`,
+    content: radioListDialogContent(options, "wildShapeFormName"),
     ok: {
       label: game.i18n.localize("DND_CUSTOM.WildShape.Confirm"),
       callback: (event, button) => button.form.elements.wildShapeFormName?.value

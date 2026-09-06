@@ -1,4 +1,5 @@
 import { openAbilityScoreImprovementDialog } from "./ability-score-improvement.js";
+import { radioListDialogContent } from "./dialog-content.js";
 
 const { DialogV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
@@ -65,19 +66,11 @@ async function openFeatChoiceDialog(actor) {
     return null;
   }
 
-  const rows = available
-    .map(
-      (feat, index) => `
-        <label class="checkbox-row" style="align-items:flex-start;gap:0.5rem;">
-          <input type="radio" name="featId" value="${feat.id}" ${index === 0 ? "checked" : ""}>
-          <span><strong>${feat.name}</strong><br>${feat.system.description}</span>
-        </label>`
-    )
-    .join("");
+  const options = available.map((feat) => ({ value: feat.id, label: feat.name, description: feat.system.description }));
 
   return DialogV2.wait({
     window: { title: game.i18n.localize("DND_CUSTOM.LevelUp.FeatDialogTitle") },
-    content: `<div style="display:flex;flex-direction:column;gap:0.6rem;max-height:60vh;overflow-y:auto;">${rows}</div>`,
+    content: radioListDialogContent(options, "featId"),
     rejectClose: false,
     buttons: [
       {
