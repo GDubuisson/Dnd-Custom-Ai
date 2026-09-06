@@ -9,6 +9,7 @@ import { PENDING_OPPORTUNITY_DISADVANTAGE_FLAG } from "../helpers/opportunity-at
 import { isDisadvantagedByHuntedTarget } from "../helpers/relentless-hunter.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
 import { conditionsContext } from "../helpers/sheet-conditions.js";
+import { damageAffinityGroups } from "../helpers/damage-affinity.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -153,20 +154,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     });
 
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
-    // ensemble), même pattern que weaponProficiencyOptions (class-sheet.hbs/item-sheets.js) —
-    // cf. damageAffinitySchema (shared-schema.js) pour le champ lui-même, damageTypeMultiplier
-    // (dnd-custom-ai.js) pour la résolution.
-    const damageAffinityOptions = (setField) =>
-      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
-    context.damageAffinityGroups = [
-      { field: "damageResistances", titleKey: "DND_CUSTOM.Npc.DamageResistances", options: damageAffinityOptions(system.damageResistances) },
-      { field: "damageImmunities", titleKey: "DND_CUSTOM.Npc.DamageImmunities", options: damageAffinityOptions(system.damageImmunities) },
-      {
-        field: "damageVulnerabilities",
-        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
-        options: damageAffinityOptions(system.damageVulnerabilities)
-      }
-    ];
+    // ensemble), même helper que la fiche personnage (actor-sheet.js). Pour un PNJ les SetField
+    // sont directement sous `system` (cf. damageAffinitySchema, shared-schema.js).
+    context.damageAffinityGroups = damageAffinityGroups(system);
 
     // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
     // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).

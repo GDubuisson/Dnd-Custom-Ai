@@ -45,6 +45,7 @@ import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
 import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
 import { conditionsContext } from "../helpers/sheet-conditions.js";
+import { damageAffinityGroups, damageAffinitySummary } from "../helpers/damage-affinity.js";
 import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
 import { rollWildSurge } from "../helpers/wild-magic-tables.js";
 import {
@@ -864,40 +865,13 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     Object.assign(context, conditionsContext(this.actor));
 
     // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
-    // ensemble), même pattern que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
-    // (verrouillé côté Joueur, comme la fiche Origine), cf. damageAffinitySchema
-    // (shared-schema.js), damageTypeMultiplier (helpers/damage-resolution.js).
-    const damageAffinityOptions = (setField) =>
-      Object.entries(DND_CUSTOM.damageTypes).map(([key, label]) => ({ key, label, checked: setField.has(key) }));
-    context.damageAffinityGroups = [
-      {
-        field: "damageResistances",
-        titleKey: "DND_CUSTOM.Npc.DamageResistances",
-        options: damageAffinityOptions(system.combat.damageResistances)
-      },
-      {
-        field: "damageImmunities",
-        titleKey: "DND_CUSTOM.Npc.DamageImmunities",
-        options: damageAffinityOptions(system.combat.damageImmunities)
-      },
-      {
-        field: "damageVulnerabilities",
-        titleKey: "DND_CUSTOM.Npc.DamageVulnerabilities",
-        options: damageAffinityOptions(system.combat.damageVulnerabilities)
-      }
-    ];
-    // Retour de test : côté Joueur, le tableau complet (une case par type de dégât, réservé au
-    // MJ) n'a aucune valeur — seules les entrées déjà actives comptent. Résumé filtré, affiché
-    // à la place du tableau pour tout non-MJ (cf. damage-affinity-panel, tab-stats.hbs).
-    context.damageAffinitySummary = context.damageAffinityGroups
-      .map((group) => ({
-        titleKey: group.titleKey,
-        labelsText: group.options
-          .filter((option) => option.checked)
-          .map((option) => game.i18n.localize(option.label))
-          .join(", ")
-      }))
-      .filter((group) => group.labelsText);
+    // ensemble), même helper que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
+    // (verrouillé côté Joueur, comme la fiche Origine). Pour un personnage, les SetField sont
+    // sous `system.combat` (sous `system` directement pour un PNJ).
+    context.damageAffinityGroups = damageAffinityGroups(system.combat);
+    // Retour de test : côté Joueur, le tableau complet (réservé au MJ) n'a aucune valeur —
+    // résumé filtré affiché à la place pour tout non-MJ (cf. damage-affinity-panel, tab-stats.hbs).
+    context.damageAffinitySummary = damageAffinitySummary(context.damageAffinityGroups);
   }
 
   /** Poids porté/capacité de charge, richesse totale (cf. _prepareContext) — nécessite

@@ -32,12 +32,17 @@ comportement :
 - Bloc `context.conditions` / `context.activeConditions` (liste des états SRD + sous-ensemble
   actif) dupliqué verbatim entre la fiche personnage et la fiche PNJ → `conditionsContext(actor)`
   (`helpers/sheet-conditions.js`).
+- Bloc `damageAffinityGroups` (3 groupes de cases résistances/immunités/vulnérabilités) +
+  `damageAffinitySummary`, dupliqués entre la fiche personnage et la fiche PNJ (seule la source
+  des `SetField` diffère : `system.combat` vs `system`) → `damageAffinityGroups(affinities)` /
+  `damageAffinitySummary(groups)` (`helpers/damage-affinity.js`).
 
 Validé par des specs Cypress ciblées (`character-sheet.cy.js`, `vehicle-sheet.cy.js`,
 `npc-sheet.cy.js`, `content-resync.cy.js`, `tab-journal.cy.js`, `tab-abilities.cy.js`,
 `tab-equipment.cy.js`, `tab-inventory.cy.js`, `tab-stats.cy.js`, `wild-shape.cy.js`,
-`item-sheets.cy.js`, + contrôles jetables : recréation des 3 Journaux via le hook `ready`, schéma
-des 4 types d'Item physique) en plus de la suite unitaire (887 tests).
+`item-sheets.cy.js`, `damage-types-physical.cy.js`, `damage-types-magical.cy.js`, + contrôles
+jetables : recréation des 3 Journaux via le hook `ready`, schéma des 4 types d'Item physique) en
+plus de la suite unitaire (888 tests).
 
 **Corrigé** — Sculpteur de sorts / sort à sauvegarde lancé par un Joueur sur un PNJ qu'il ne
 possède pas : `#castSaveSpell` et `#applySpellCondition` (`actor-sheet.js`) appelaient
