@@ -42,7 +42,7 @@ import { requestWildShapeTransformation } from "../helpers/wild-shape-form.js";
 import { chooseInitiateMagicSpells } from "../helpers/initiate-magic-choice.js";
 import { chooseMetamagicOption } from "../helpers/metamagic.js";
 import { chooseSculptSpellsTarget } from "../helpers/sculpt-spells.js";
-import { noteActionEconomyUsage } from "../helpers/action-economy.js";
+import { noteActionEconomyUsage, consumeActionEconomy } from "../helpers/action-economy.js";
 import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
 import { conditionsContext } from "../helpers/sheet-conditions.js";
 import { damageAffinityGroups, damageAffinitySummary } from "../helpers/damage-affinity.js";
@@ -459,7 +459,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   #prepareCombatEconomyContext(context, system) {
     // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
     // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
-    // Capacités/Sorts (cf. #consumeActionEconomy ci-dessous, hooks updateCombat/deleteCombat).
+    // Capacités/Sorts (cf. consumeActionEconomy, helpers/action-economy.js ; hooks updateCombat/deleteCombat).
     // Action/Action bonus (chantier "Suivi de l'action/action bonus", 2026-08-23) : mêmes
     // indicateurs en en-tête, mais suivi non-bloquant (cf. helpers/action-economy.js) — jamais
     // utilisés pour griser un bouton de Capacité/Sort.
@@ -1239,7 +1239,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeature(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.requiresRoll || !item.system.rollFormula) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -1275,7 +1275,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollFeatureSave(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.savingThrow) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const chargeHolder = item.system.costsResource
       ? this.actor.items.contents.find(
@@ -1377,7 +1377,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onGrantFeatureCondition(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.grantsCondition) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const chargeHolder = item.system.costsResource
       ? this.actor.items.contents.find(
@@ -1425,7 +1425,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onRollOpposedCheck(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.opposedCheckType) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const targets = Array.from(game.user.targets);
     if (targets.length !== 1) {
@@ -1520,7 +1520,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseFeatureCharge(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.uses.max) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -1551,27 +1551,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     return remaining;
   }
 
-  /** Économie d'action de combat (SRD 5e) : si `item` (Capacité ou Sort) est de type
-   *  "reaction", vérifie que la réaction n'est pas déjà consommée ce round-ci
-   *  (system.combat.reactionAvailable, cf. canUseReaction, rules.js) et la marque utilisée —
-   *  bloquant, comme avant. Pour "action"/"bonusAction" (chantier "Suivi de l'action/action
-   *  bonus", 2026-08-23) : suivi NON-bloquant délégué à noteActionEconomyUsage
-   *  (helpers/action-economy.js). Renvoie `true` si l'action associée peut se poursuivre (item
-   *  non-réaction, ou réaction disponible et désormais consommée), `false` UNIQUEMENT si une
-   *  réaction est bloquée (avec avertissement) — l'appelant doit alors annuler l'action, sans
-   *  avoir encore décompté de charge. */
-  async #consumeActionEconomy(item) {
-    if (item.system.activation === "reaction") {
-      if (!canUseReaction(this.actor.system)) {
-        ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.ReactionUnavailable", { name: item.name }));
-        return false;
-      }
-      await this.actor.update({ "system.combat.reactionAvailable": false });
-      return true;
-    }
-    await noteActionEconomyUsage(this.actor, item.system.activation);
-    return true;
-  }
+  // #consumeActionEconomy : factorisé dans helpers/action-economy.js (consumeActionEconomy).
 
   /** Rattrapage manuel de la réaction (MJ ou joueur) : capacité qui rend une réaction
    *  supplémentaire, correction d'un clic malencontreux... Bascule simplement l'état, sans
@@ -1617,8 +1597,8 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   /** Prend une forme choisie dans un dialogue (Forme sauvage, Druide — refonte 2026-09-04,
    *  cf. offerWildShapeFormDialog, wild-shape-choice.js) : plus de ciblage de token, le joueur
    *  choisit directement parmi les formes disponibles à son niveau. Le dialogue s'affiche AVANT
-   *  de consommer l'Action/Action bonus et la charge de Capacité (#consumeActionEconomy/
-   *  #consumeFeatureCharge, comme toute autre Capacité), pour ne rien décompter si le joueur
+   *  de consommer l'Action/Action bonus et la charge de Capacité (consumeActionEconomy,
+   *  helpers/action-economy.js / #consumeFeatureCharge, comme toute autre Capacité), pour ne rien décompter si le joueur
    *  ferme le dialogue sans choisir. `item` est la Capacité "Forme sauvage" elle-même
    *  (`system.entersWildShape`, item-data.js). La création/réutilisation de l'Actor de la forme
    *  et la pose des PV temporaires de "Forme sauvage de combat" (Cercle de la Lune) sont
@@ -1631,7 +1611,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const chosenFormName = await offerWildShapeFormDialog(this.actor);
     if (!chosenFormName) return;
 
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const remaining = await this.#consumeFeatureCharge(item);
     if (remaining === null) return;
@@ -1726,7 +1706,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseResourceTechnique(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.costsResource) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const resource = this.actor.items.contents.find(
       (candidate) => candidate.type === "feature" && candidate.name === item.system.costsResource
@@ -1758,7 +1738,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "feature" || !item.system.requiresState) return;
     if (!this.actor.statuses.has(item.system.requiresState)) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -1862,7 +1842,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onUseManeuver(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || !item.system.offersManeuverChoice) return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const options = DND_CUSTOM.maneuvers;
     const rows = Object.entries(options)
@@ -2227,7 +2207,7 @@ export class DndCustomActorSheet extends InventoryDragDropMixin(HandlebarsApplic
   static async #onCastSpell(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item || item.type !== "spell") return;
-    if (!(await this.#consumeActionEconomy(item))) return;
+    if (!(await consumeActionEconomy(this.actor, item))) return;
 
     const effectiveSpellLevel = await this.#resolveSpellSlotCost(item);
     if (effectiveSpellLevel === null) return;
