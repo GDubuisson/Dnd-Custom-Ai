@@ -13,6 +13,13 @@ et l'URL `media` de `system.json` est mise à jour en conséquence. La couvertur
 que depuis `raw.githubusercontent.com` sur `master` : elle n'apparaît qu'après un push, avec un
 délai de cache CDN GitHub (~5 min) et le cache média de Foundry (redémarrage conseillé).
 
+**Dépréciations Foundry v13/v14** — deux accès à des API dépréciées, signalés dans la console
+au chargement du monde, sont corrigés :
+- `foundry.utils.objectsEqual` → `foundry.utils.equals` (renommé en v14 ; seul site de prod :
+  `diffPatch()` dans la resynchronisation du contenu de référence).
+- `DocumentSheetConfig` global → `foundry.applications.apps.DocumentSheetConfig` (namespacé
+  depuis la v13 ; enregistrement des 13 fiches Actor/Item au `init`).
+
 **Couche joueur** — Revue finale de la fiche, points de finition :
 - **Maîtrise de compétence** : côté Joueur, simple libellé au lieu d'une case à cocher grisée
   (elle a l'air interactive sans l'être — même correctif que la maîtrise de sauvegarde).
