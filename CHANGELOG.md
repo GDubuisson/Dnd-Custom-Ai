@@ -7,6 +7,12 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Média** — L'illustration de couverture (`type: "setup"`) passe de PNG à JPEG :
+`assets/media/cover.png` (3,7 Mo) → `assets/media/cover.jpg` (~560 Ko, qualité 90),
+et l'URL `media` de `system.json` est mise à jour en conséquence. La couverture n'est servie
+que depuis `raw.githubusercontent.com` sur `master` : elle n'apparaît qu'après un push, avec un
+délai de cache CDN GitHub (~5 min) et le cache média de Foundry (redémarrage conseillé).
+
 **Couche joueur** — Revue finale de la fiche, points de finition :
 - **Maîtrise de compétence** : côté Joueur, simple libellé au lieu d'une case à cocher grisée
   (elle a l'air interactive sans l'être — même correctif que la maîtrise de sauvegarde).
