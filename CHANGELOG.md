@@ -7,6 +7,24 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+**Média** — L'illustration de couverture (`type: "setup"`) passe de PNG à JPEG :
+`assets/media/cover.png` (3,7 Mo) → `assets/media/cover.jpg` (~560 Ko, qualité 90),
+et l'URL `media` de `system.json` est mise à jour en conséquence. La couverture n'est servie
+que depuis `raw.githubusercontent.com` sur `master` : elle n'apparaît qu'après un push, avec un
+délai de cache CDN GitHub (~5 min) et le cache média de Foundry (redémarrage conseillé).
+
+**Dépréciations Foundry v13/v14** — deux accès à des API dépréciées, signalés dans la console
+au chargement du monde, sont corrigés :
+- `foundry.utils.objectsEqual` → `foundry.utils.equals` (renommé en v14 ; seul site de prod :
+  `diffPatch()` dans la resynchronisation du contenu de référence).
+- `DocumentSheetConfig` global → `foundry.applications.apps.DocumentSheetConfig` (namespacé
+  depuis la v13 ; enregistrement des 13 fiches Actor/Item au `init`).
+
+**Correction** — Onglet Équipement : les boutons Attaque/Dégâts d'une arme équipée passaient
+en pleine largeur et s'empilaient (le reset `button { width: 100% }` du cœur Foundry l'emportait,
+`.equipment-roll-btn` ne fixant pas sa largeur) — `width: auto` explicite, même correctif que
+`.roll-btn`. Couvert par `tests/visual/layout.test.js`.
+
 **Couche joueur** — Revue finale de la fiche, points de finition :
 - **Maîtrise de compétence** : côté Joueur, simple libellé au lieu d'une case à cocher grisée
   (elle a l'air interactive sans l'être — même correctif que la maîtrise de sauvegarde).

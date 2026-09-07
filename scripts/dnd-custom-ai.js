@@ -41,6 +41,10 @@ import { loadSystemJson } from "./helpers/system-json.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
+// Namespacé sous foundry.applications.apps depuis la V13 (l'accès au global est déprécié),
+// même convention que les autres modules de fiches (cf. foundry.applications.api/sheets).
+const { DocumentSheetConfig } = foundry.applications.apps;
+
 Hooks.once("init", async () => {
   console.log(`${SYSTEM_ID} | Initialisation du système`);
 

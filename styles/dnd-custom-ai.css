@@ -1798,7 +1798,11 @@
 }
 
 .dnd-custom-ai .equipment-roll-btn {
+  /* width:auto explicite : sans ça, le reset `button { width: 100% }` du cœur Foundry
+     l'emporte (on ne fixe pas la largeur ici), chaque bouton prend toute la ligne et
+     Attaque/Dégâts se retrouvent l'un sous l'autre — même piège que .roll-btn plus haut. */
   display: inline-flex;
+  width: auto;
   align-items: center;
   gap: 0.35rem;
   padding: 0.3rem 0.6rem;
