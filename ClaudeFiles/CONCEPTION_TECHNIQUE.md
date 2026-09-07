@@ -473,7 +473,7 @@ function diffPatch(entry, existing) {
   if (entry.system) {
     const currentSystem = existing.toObject().system ?? {};
     const mergedSystem = foundry.utils.mergeObject(currentSystem, entry.system, { inplace: false });
-    if (!foundry.utils.objectsEqual(mergedSystem, currentSystem)) patch.system = entry.system;
+    if (!foundry.utils.equals(mergedSystem, currentSystem)) patch.system = entry.system;
   }
   if (!Object.keys(patch).length) return null;
   return { _id: existing.id ?? existing._id, ...patch };
@@ -488,7 +488,7 @@ par entrée) — `Item.updateDocuments()` pour les Items du monde,
 ci-dessous) : une première version comparait `entry.system` (JSON brut, forcément partiel — ne
 contient que les champs que l'auteur du JSON a explicitement renseignés) directement à
 `existing.system` (DataModel Foundry déjà préparé : valeurs par défaut du schéma + champs dérivés
-calculés) via `foundry.utils.objectsEqual`. Résultat : **quasiment chaque entrée de tout le
+calculés) via `foundry.utils.equals`. Résultat : **quasiment chaque entrée de tout le
 système** remontait comme "modifiée", JSON identique ou pas, à chaque appel — les valeurs par
 défaut/dérivées absentes du JSON brut créaient un écart systématique et illusoire. Corrigé en
 comparant plutôt à `existing.toObject().system` (données brutes réellement stockées, sans

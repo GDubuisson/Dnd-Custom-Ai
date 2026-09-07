@@ -76,7 +76,7 @@ describe("Resynchronisation du contenu de référence — importSystemContent()"
           const existing = byName.get(entry.name);
           if (!existing) return false;
           const merged = win.foundry.utils.mergeObject(existing.toObject().system ?? {}, entry.system, { inplace: false });
-          return !win.foundry.utils.objectsEqual(merged, existing.toObject().system ?? {});
+          return !win.foundry.utils.equals(merged, existing.toObject().system ?? {});
         });
         if (stale.length) staleCounts[packId] = stale.map((e) => e.name);
       }

@@ -93,7 +93,7 @@ function diffPatch(entry, existing) {
   if (entry.system) {
     const currentSystem = existing.toObject().system ?? {};
     const mergedSystem = foundry.utils.mergeObject(currentSystem, entry.system, { inplace: false });
-    if (!foundry.utils.objectsEqual(mergedSystem, currentSystem)) patch.system = entry.system;
+    if (!foundry.utils.equals(mergedSystem, currentSystem)) patch.system = entry.system;
   }
   if (!Object.keys(patch).length) return null;
   return { _id: existing.id ?? existing._id, ...patch };
