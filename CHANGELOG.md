@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [1.0.0] - 2026-09-08
 
 **Média** — L'illustration de couverture (`type: "setup"`) passe de PNG à JPEG :
 `assets/media/cover.png` (3,7 Mo) → `assets/media/cover.jpg` (~560 Ko, qualité 90),
