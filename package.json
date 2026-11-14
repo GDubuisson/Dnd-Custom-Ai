@@ -30,5 +30,12 @@
   },
   "allowScripts": {
     "cypress@16.3.0": true
+  },
+  "overrides": {
+    "@ethaks/fvtt-quench": {
+      "fvtt-types": {
+        "tinymce": "^8.10.2"
+      }
+    }
   }
 }

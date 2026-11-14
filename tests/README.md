@@ -13,6 +13,16 @@ npm install
 npx playwright install chromium   # nécessaire uniquement pour les tests visuels
 ```
 
+`package.json > overrides` force la version de `tinymce` sous `@ethaks/fvtt-quench > fvtt-types`
+(types TS uniquement, jamais exécutés — cf. plus bas) à une version sans faille connue
+(`npm audit` propre). Effet de bord accepté : `fvtt-types` (déclarations TS pour l'autocomplétion
+éditeur sur l'API Quench) ne s'installe alors plus du tout — `@league-of-foundry-developers/
+foundry-vtt-types` n'a, à ce jour, aucune version qui s'en sorte autrement (son propre
+`showdown` est non corrigé en amont, aucune version publiée ne le corrige). Sans impact sur les
+tests : rien dans ce projet ne référence `fvtt-types` (pas de `tsconfig.json`, pas d'étape
+`tsc`), et le vrai module Foundry Quench utilisé par les tests vient des releases GitHub (cf.
+`tests/fetch-quench-module.sh`), jamais du paquet npm.
+
 ## Lancer les tests
 
 ```

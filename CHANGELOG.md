@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+**Outillage de test uniquement.** `npm audit` propre (0 vulnérabilité, contre 3 avant :
+2 XSS TinyMCE + 1 ReDoS/XSS Showdown). Ces deux paquets n'étaient jamais exécutés par le projet
+(aucun `tsconfig.json`, aucune étape `tsc`) — ils arrivaient uniquement comme dépendances de
+`fvtt-types` (déclarations TypeScript pour l'API Quench), lui-même peer-dependency de
+`@ethaks/fvtt-quench`. `package.json > overrides` force désormais la version de `tinymce` sous
+cette branche à `^8.10.2` (corrigée) ; effet de bord accepté : `fvtt-types` ne s'installe plus du
+tout, npm ne trouvant alors plus de résolution satisfaisant à la fois l'override et le reste de
+sa propre arborescence (`showdown`, lui, n'a aucune version corrigée publiée en amont — aucun
+override n'aurait pu le sauver). Sans impact fonctionnel : le vrai module Foundry Quench utilisé
+par les tests vient des releases GitHub (`tests/fetch-quench-module.sh`), jamais du paquet npm.
+
 ## [1.0.1] - 2026-11-14
 
 **Outillage de test uniquement — aucun fichier livré du système n'est modifié** (`system.json`
