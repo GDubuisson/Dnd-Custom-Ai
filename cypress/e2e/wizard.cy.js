@@ -9,7 +9,7 @@
 // rôle MJ (décrit dans son propre describe, connexion Gamemaster dédiée).
 //
 // Prérequis d'infrastructure (au-delà de ceux déjà documentés dans tests/README.md) :
-//   - Un utilisateur Joueur "Player1" (cf. Cypress.env("testPlayerName")) existant dans le
+//   - Un utilisateur Joueur "Player1" (cf. Cypress.expose("testPlayerName")) existant dans le
 //     monde de test, avec la permission "Créer des acteurs" accordée (Configuration du monde >
 //     Permissions) — sans quoi Actor.create() côté client échoue pour ce rôle et T-WIZ-001 (et
 //     tout le reste, qui en dépend) ne peut pas s'exécuter.

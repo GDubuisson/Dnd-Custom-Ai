@@ -17,7 +17,7 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
   cy.window({ timeout: 20000 })
     .its("game.system.version")
     .should((actual) => {
-      const expected = Cypress.env("expectedSystemVersion");
+      const expected = Cypress.expose("expectedSystemVersion");
       expect(
         actual,
         `game.system.version ("${actual}") ne correspond pas à system.json local ("${expected}") — ` +
@@ -27,7 +27,7 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
     });
 });
 
-// Connexion en tant qu'utilisateur Joueur (cf. Cypress.env("testPlayerName"), cypress.config.js)
+// Connexion en tant qu'utilisateur Joueur (cf. Cypress.expose("testPlayerName"), cypress.config.js)
 // plutôt que Gamemaster : la majorité des scénarios de tests/E2E_TEST_PLAN.md s'exécutent
 // délibérément côté Joueur propriétaire (cf. sa section "Conventions"), pas MJ — seuls les
 // scénarios dont le comportement dépend explicitement du rôle (ex. T-WIZ-013) utilisent une
@@ -53,33 +53,64 @@ Cypress.Commands.add("dismissPermanentNotifications", () => {
   });
 });
 
-Cypress.Commands.add("loginAsGM", () => {
-  cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-  cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
+// Connecte la session au monde de test sous l'utilisateur nommé, puis charge /game et attend
+// que le client Foundry soit prêt. Brique commune à cy.loginAsGM()/cy.loginAsPlayer() et aux
+// specs qui pilotent leur propre connexion (quench.cy.js, system-load.cy.js).
+//
+// Pourquoi ne PAS cliquer simplement le bouton du formulaire de connexion : Foundry rejette
+// toute requête de DOCUMENT vers /game, /join, /setup... dont l'en-tête `Sec-Fetch-Dest` vaut
+// autre chose que "document"/"empty" (View.assertDocumentDestination, protection
+// anti-clickjacking côté serveur), et Cypress charge l'application testée dans une iframe —
+// donc la navigation que la page déclenche ELLE-MÊME vers /game après le submit arrive en
+// "iframe" et renvoie la page "The /game route does not accept this type of request". Les
+// navigations pilotées par `cy.visit()` ne sont pas concernées (vérifié : un cy.visit("/game")
+// explicite charge bien le jeu), seules celles déclenchées par la page le sont.
+//
+// Jusqu'à Cypress 15, la parade était `cy.intercept(..., (req) => delete
+// req.headers["sec-fetch-dest"])` dans chaque spec. Elle ne fonctionne PLUS en Cypress 16 : le
+// handler est appelé, mais l'en-tête n'y est même pas visible (`req.headers["sec-fetch-dest"]`
+// undefined) alors que le serveur le reçoit toujours — Chrome le pose après la couche
+// d'interception, qui n'a donc plus prise dessus. Un flag Chrome
+// (`--disable-features=FetchMetadataDestination`) a aussi été testé : sans effet, ces features
+// sont stabilisées et leur flag retiré.
+//
+// La parade actuelle supprime le problème à la racine : on soumet la connexion en POST hors
+// navigateur (`cy.request`, qui partage les cookies de session avec lui), puis on charge /game
+// via `cy.visit()`. Le POST /join n'est pas une requête de document, il n'est donc pas soumis à
+// la protection ci-dessus — mais il doit prouver son origine depuis Foundry 14.370 (middleware
+// CSRF, cf. l'en-tête Sec-Fetch-Site ci-dessous, obligatoire car cy.request part du process
+// Node de Cypress et ne pose aucun en-tête Sec-Fetch-* de lui-même).
+Cypress.Commands.add("joinWorldAs", (userName) => {
+  cy.visit("/join", { timeout: 30000 });
 
-  cy.visit("/", { timeout: 30000 });
-  cy.url({ timeout: 15000 }).should("include", "/join");
-  cy.get('input[name="username"]').type("Gamemaster");
-  cy.get('#join-game-form button[type="submit"]').click();
+  // L'identifiant de l'utilisateur (pas son nom) est ce qu'attend POST /join : on le lit dans
+  // le vrai formulaire de connexion plutôt que de le coder en dur, un id Foundry étant
+  // régénéré à chaque recréation du monde de test.
+  cy.get('select[name="userId"] option', { timeout: 20000 }).then(($options) => {
+    const option = [...$options].find((o) => o.textContent.trim() === userName);
+    expect(option, `utilisateur "${userName}" proposé par l'écran /join du monde de test`).to.exist;
 
+    cy.request({
+      method: "POST",
+      url: "/join",
+      headers: { "Content-Type": "application/json", "Sec-Fetch-Site": "same-origin" },
+      body: { action: "join", userId: option.value, password: "" },
+    });
+  });
+
+  cy.visit("/game", { timeout: 30000 });
   cy.get("#interface", { timeout: 30000 }).should("be.visible");
   cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
+});
+
+Cypress.Commands.add("loginAsGM", () => {
+  cy.joinWorldAs("Gamemaster");
   cy.assertSystemVersionMatches();
   cy.dismissPermanentNotifications();
 });
 
 Cypress.Commands.add("loginAsPlayer", () => {
-  cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-  cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-
-  cy.visit("/", { timeout: 30000 });
-  cy.url({ timeout: 15000 }).should("include", "/join");
-
-  cy.get('input[name="username"]').type(Cypress.env("testPlayerName"));
-  cy.get('#join-game-form button[type="submit"]').click();
-
-  cy.get("#interface", { timeout: 30000 }).should("be.visible");
-  cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
+  cy.joinWorldAs(Cypress.expose("testPlayerName"));
   cy.assertSystemVersionMatches();
   cy.dismissPermanentNotifications();
 

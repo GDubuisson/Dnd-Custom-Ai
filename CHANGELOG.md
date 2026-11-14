@@ -5,6 +5,38 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.0.1] - 2026-11-14
+
+**Outillage de test uniquement — aucun fichier livré du système n'est modifié** (`system.json`
+ne référence ni `package.json` ni `node_modules/`, cf. `.github/workflows/release.yml`).
+
+**Foundry VTT de test : 14.367 → 14.370** (`FOUNDRY_VERSION` dans `.env`, image
+`felddy/foundryvtt` alignée en v14.370.0). Deux changements du cœur Foundry cassaient toute la
+suite E2E, corrigés :
+- **Nouveau middleware CSRF** (`dist/server/express.mjs`) : tout POST qui ne prouve pas son
+  origine (`Sec-Fetch-Site: same-origin`, ou un `Origin` égal à `<protocole>://<Host>`) est
+  rejeté en 400 `{"error":"The request could not be processed."}`. Impacte les `cy.request`
+  POST, qui partent du process Node de Cypress et ne posent aucun en-tête `Sec-Fetch-*` :
+  l'en-tête est désormais explicite dans `cypress/support/e2e.js` et `system-load.cy.js`.
+- **Écran `/join` entièrement rendu côté client** et retour à un `select[name="userId"]`
+  (14.367 l'avait remplacé par un `input[name="username"]`), dont les `<option>` portent l'id
+  de l'utilisateur en valeur et son nom en libellé.
+
+**Cypress 15 → 16** — deux ruptures traitées :
+- `Cypress.env()` a été **supprimé** : les 6 valeurs de configuration du harnais passent par
+  `expose` / `Cypress.expose()` (aucune n'est un secret, elles sont en clair dans
+  `cypress.config.js`) ; `cy.env()` reste la voie des vraies valeurs sensibles.
+- La parade historique à la protection anti-clickjacking de Foundry (`cy.intercept` qui
+  supprimait l'en-tête `Sec-Fetch-Dest`) **ne fonctionne plus** : Chrome pose ces en-têtes après
+  la couche d'interception. La connexion passe donc par un `POST /join` hors navigateur puis un
+  `cy.visit("/game")` — nouvelle commande `cy.joinWorldAs(nom)`, dont `cy.loginAsGM()` et
+  `cy.loginAsPlayer()` dérivent. Piste écartée en cours de route : le flag Chrome
+  `--disable-features=FetchMetadataDestination` (sans effet, feature stabilisée et flag retiré).
+
+**Autres dépendances de développement** : jsdom 25 → 29, Playwright 1.48 → 1.65, axe-core 4.13 →
+4.14, Handlebars 4.7.8 → 4.7.10, wait-on 9.1 → 9.5. **CI** : Node 20 → 24
+(`.github/workflows/test.yml`), Cypress 16 exigeant Node ≥ 22.
+
 ## [1.0.0] - 2026-09-08
 
 **Média** — L'illustration de couverture (`type: "setup"`) passe de PNG à JPEG :

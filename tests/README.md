@@ -73,7 +73,7 @@ dans Docker et teste le vrai client (E2E via Cypress) et le vrai pipeline Docume
    main dans l'instance (`http://localhost:30001` après `npm run docker:up`) — persiste ensuite
    dans `./data` (gitignored). Foundry ne propose pas de création de monde via une simple
    requête HTTP (formulaire multi-étapes), donc ce n'est pas scriptable simplement.
-5. Un utilisateur **Joueur** (nommé "Player1" par défaut, cf. `Cypress.env("testPlayerName")`
+5. Un utilisateur **Joueur** (nommé "Player1" par défaut, cf. `Cypress.expose("testPlayerName")`
    dans `cypress.config.js`) créé une fois dans ce monde (Configurer les joueurs), avec la
    permission **"Créer des acteurs"** accordée (Configuration du monde > Permissions) — requis
    par `cypress/e2e/wizard.cy.js`, qui teste l'assistant de création en tant que Joueur
@@ -176,7 +176,9 @@ npm run docker:down        # arrête l'instance
   de dégâts doublés sur un coup critique (`Roll#alter(2, 0)`, jamais le modificateur). Preuve
   "même avec des bonus" par CA délibérément extrême (999/1) combinée à `cy.forceD20` — pas
   utilisés ensemble jusque-là dans la suite. `cypress/
-  support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()`,
+  support/e2e.js` fournit `cy.loginAsPlayer()`/`cy.loginAsGM()` (tous deux bâtis sur
+  `cy.joinWorldAs(nom)`, qui porte le contournement de la protection anti-clickjacking de
+  Foundry — lire son commentaire avant de piloter une connexion autrement),
   `cy.createReadyCharacter()` (crée un Actor et termine l'assistant pour lui — réutilisable
   par toute future spec de section n'ayant pas besoin de tester l'assistant lui-même),
   `cy.openActorSheet()` et `cy.forceD20(face)` (force le résultat du PROCHAIN d20, via

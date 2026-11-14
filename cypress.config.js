@@ -65,7 +65,13 @@ export default defineConfig({
     defaultCommandTimeout: 10000, // Foundry peut être lent à charger
     requestTimeout: 10000,
     responseTimeout: 30000,
-    env: {
+    // Cypress 16 a supprimé `Cypress.env()` : les valeurs de configuration non sensibles
+    // passent par `expose` (lues via `Cypress.expose("clé")` dans les specs), les vraies
+    // valeurs sensibles par `env` + `cy.env([...])` (chaînable, jamais journalisée). Toutes les
+    // valeurs ci-dessous sont des constantes de configuration en clair dans ce fichier suivi par
+    // git (y compris adminKey, qui est la clé du conteneur de test local, pas un secret) : elles
+    // relèvent donc de `expose`.
+    expose: {
       adminKey: "test-admin-key", // Doit correspondre à FOUNDRY_ADMIN_KEY dans docker-compose.yml
       systemId: "dnd-custom-ai",
       testWorld: "Test World",
@@ -79,8 +85,16 @@ export default defineConfig({
       // pour ce rôle — nouveau prérequis, cf. tests/README.md.
       testPlayerName: "Player1",
     },
-    setupNodeEvents(on, config) {
-      // Rien à brancher pour l'instant (pas de plugin/tâche custom nécessaire).
+    setupNodeEvents() {
+      // Rien à brancher ici (pas de plugin/tâche custom nécessaire).
+      //
+      // Piste testée et ÉCARTÉE, pour ne pas la reprendre : neutraliser l'en-tête
+      // `Sec-Fetch-Dest` (que Foundry utilise pour rejeter les requêtes de document venant
+      // d'une iframe, cf. cy.joinWorldAs() dans cypress/support/e2e.js) via un flag Chrome en
+      // `before:browser:launch` — `launchOptions.args.push("--disable-features=
+      // FetchMetadataDestination")`. SANS EFFET : cette feature Chrome est stabilisée depuis
+      // longtemps et son flag a été retiré, l'en-tête est toujours envoyé. Le contournement
+      // retenu vit dans cy.joinWorldAs().
     },
   },
 });

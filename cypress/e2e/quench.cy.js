@@ -12,15 +12,11 @@
 // et laisser le temps au rendu avant de lancer les tests.
 describe("Tests d'intégration Quench (vrai pipeline Document)", () => {
   it("exécute les batches dndCustomAi.actorCreation, dndCustomAi.wizard et dndCustomAi.combatReaction sans échec", () => {
-    cy.intercept({ url: "**/game" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-    cy.intercept({ url: "**/join" }, (req) => { delete req.headers["sec-fetch-dest"]; });
-
-    cy.visit("/", { timeout: 30000 });
-    cy.url({ timeout: 15000 }).should("include", "/join");
-    cy.get('input[name="username"]').type("Gamemaster");
-    cy.get('#join-game-form button[type="submit"]').click();
-    cy.get("#interface", { timeout: 30000 }).should("be.visible");
-    cy.window({ timeout: 20000 }).its("game.ready").should("eq", true);
+    // Connexion MJ (et non Joueur comme la majorité des specs) : les batches Quench créent des
+    // Documents et touchent au pipeline complet. La séquence de connexion elle-même vit dans
+    // cy.joinWorldAs() (cypress/support/e2e.js), qui porte le contournement de la protection
+    // anti-clickjacking de Foundry.
+    cy.joinWorldAs("Gamemaster");
     // Garde-fou obligatoire : échoue explicitement si le monde testé charge une version du
     // système différente de system.json local (cf. cypress/support/e2e.js pour le pourquoi) —
     // sinon les tests Quench ci-dessous pourraient valider un pipeline Document périmé.
