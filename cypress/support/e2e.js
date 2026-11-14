@@ -5,6 +5,30 @@ import "@testing-library/cypress/add-commands";
 // lot 3 point 9 "Accessibilité" (RGAA/WCAG).
 import "cypress-axe";
 
+// Bug du CŒUR Foundry 14.370 (pas du système testé) : cibler un token via `token.setTarget()`
+// (API standard, ex. `canvas.tokens.get(id).setTarget(true)`) plante l'animation de la flèche de
+// ciblage avec `TypeError: Cannot read properties of undefined (reading 'clear')` dans
+// `Token#_drawTargetArrows` (scripts/foundry.mjs, minifié) — reproductible en jeu réel, pas
+// spécifique à Cypress/au canvas headless. Cypress fait échouer le test courant sur TOUTE
+// exception non interceptée côté page, donc sans ce filtre, les 7 specs qui ciblent un token
+// (damage-types-*, opposed-check-grapple-shove, spell-save-damage-resistance-interaction,
+// tier-c-destroy-undead, tier-c-half-on-save) échouaient systématiquement SUR LE RENDU, avant
+// même d'atteindre les assertions métier qu'elles vérifient réellement (résolution des dégâts,
+// jets opposés...). Vérifié : la mise à jour du modèle (`user.targets`, flag sur le Token
+// Document) a bien lieu malgré le crash de rendu — tout le flux testé ensuite (jets, dégâts
+// appliqués) fonctionne normalement une fois cette seule exception filtrée.
+// Filtre volontairement NARROW (message ET pile d'appel) : toute autre exception non interceptée
+// continue de faire échouer le test normalement, pour ne jamais masquer une vraie régression.
+Cypress.on("uncaught:exception", (err) => {
+  if (
+    err.message.includes("Cannot read properties of undefined (reading 'clear')") &&
+    err.stack?.includes("_drawTargetArrows")
+  ) {
+    return false; // Ignore cette exception précise, laisse le test continuer.
+  }
+  return true; // Tout le reste : comportement par défaut (échec du test).
+});
+
 // Garde-fou obligatoire : à appeler dans CHAQUE spec juste après avoir confirmé `game.ready`
 // (avant toute assertion métier), sur le modèle de system-load.cy.js/quench.cy.js. Vérifie que
 // le système chargé dans l'instance Foundry testée correspond à la version locale de

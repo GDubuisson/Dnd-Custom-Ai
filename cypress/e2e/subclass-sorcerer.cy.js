@@ -17,6 +17,14 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
+// Onglets par palier de sort (commit 7a1719d) : un seul .spell-level-group visible à la fois,
+// palier 0 (tours de magie) actif par défaut — passer au palier du sort visé, sinon son bouton
+// "Lancer" reste caché (display:none).
+function goToSpellLevel(level) {
+  sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
+  sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
+}
+
 function withItemId(actorId, itemName, callback) {
   return cy
     .window()
@@ -66,16 +74,22 @@ describe("Sous-classes d'Ensorceleur — Magie sauvage / Sorcellerie des tempêt
       });
 
       let leveledSpellId;
+      let leveledSpellLevel;
       cy.window().should((win) => {
         const actor = win.game.actors.get(actorId);
         expect(actor.items.find((i) => i.name === "Surtenance sauvage (Ensorceleur)"), "Capacité octroyée").to.exist;
         const leveledSpell = actor.items.find((i) => i.type === "spell" && i.system.level > 0);
         expect(leveledSpell, "un sort de niveau > 0 doit être connu au niveau 3").to.exist;
         leveledSpellId = leveledSpell.id;
+        leveledSpellLevel = leveledSpell.system.level;
       });
 
       cy.openActorSheet(actorId);
       goToTab("abilities");
+      // `leveledSpellLevel` n'est affecté que lorsque la commande `cy.window().should(...)`
+      // ci-dessus s'exécute réellement — le lire ici nécessite donc un `.then()` différé
+      // (toute lecture directe au moment de l'enfilement de la commande verrait `undefined`).
+      cy.window().then(() => goToSpellLevel(leveledSpellLevel));
 
       cy.window().its("game.messages.size").then((before) => {
         cy.get(`li[data-item-id="${leveledSpellId}"] button[data-action="castSpell"]`).click();

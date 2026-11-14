@@ -5,7 +5,25 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [1.0.2] - 2026-11-14
+
+**Bug corrigé (code livré)** — `Document#unsetFlag()` ne persiste jamais un flag posé sur
+l'acteur SYNTHÉTIQUE d'un token non lié (`actorLink: false`, cas de loin le plus fréquent pour
+les PNJ) : la clé supprimée reste lue avec son ancienne valeur juste après, un comportement du
+moteur Foundry vérifié indépendamment du code de ce système (`setFlag(clé, false)` fonctionne
+normalement sur le même acteur ; `unsetFlag` sur un Item embarqué fonctionne aussi — seule la
+suppression d'une clé de `flags` sur l'Actor racine d'un token non lié est concernée). Affectait
+2 flags à usage unique :
+- `pendingOpportunityDisadvantage` (Échappée de la horde, Tactiques défensives Rôdeur) : sans ce
+  correctif, le désavantage posé sur un PNJ ciblé restait actif indéfiniment sur tous ses jets
+  d'attaque suivants, au lieu d'un seul comme prévu (`scripts/sheets/npc-sheet.js`).
+- `pendingSpellSaveOutcome` (réduction de dégâts `halfOnSave`/Tour de magie renforcé) : risquait
+  d'appliquer le multiplicateur d'un jet de sauvegarde PASSÉ à un dégât ultérieur sans rapport
+  contre la même cible avec un sort du même nom (`scripts/helpers/damage-resolution.js`).
+
+Les deux sites passent désormais par `setFlag(clé, false)`, équivalent fonctionnel exact
+(`Boolean(...)`/vérité logique partout où ces flags sont lus). Détecté en creusant l'échec
+préexistant de `cypress/e2e/hunters-defense-automation.cy.js` > T-MOBILE-001.
 
 **Outillage de test uniquement.** `npm audit` propre (0 vulnérabilité, contre 3 avant :
 2 XSS TinyMCE + 1 ReDoS/XSS Showdown). Ces deux paquets n'étaient jamais exécutés par le projet
@@ -17,6 +35,29 @@ tout, npm ne trouvant alors plus de résolution satisfaisant à la fois l'overri
 sa propre arborescence (`showdown`, lui, n'a aucune version corrigée publiée en amont — aucun
 override n'aurait pu le sauver). Sans impact fonctionnel : le vrai module Foundry Quench utilisé
 par les tests vient des releases GitHub (`tests/fetch-quench-module.sh`), jamais du paquet npm.
+
+**13 specs E2E préexistantes corrigées** (hors scope de l'upgrade Foundry/Cypress ci-dessus,
+accumulées faute de run E2E complet depuis avant la 1.0.0) :
+- **7 specs** (`damage-types-combined/magical/physical`, `opposed-check-grapple-shove`,
+  `spell-save-damage-resistance-interaction`, `tier-c-destroy-undead`, `tier-c-half-on-save`) :
+  bug du CŒUR Foundry 14.370, reproductible en jeu réel — cibler un token (`setTarget()`, API
+  standard) plante l'animation de la flèche de ciblage (`TypeError` dans
+  `Token#_drawTargetArrows`), faisant échouer Cypress sur le rendu avant même d'atteindre les
+  assertions métier. `cypress/support/e2e.js` filtre désormais spécifiquement cette seule
+  exception (message + pile d'appel) ; toute autre exception continue de faire échouer le test
+  normalement. Vérifié : le modèle (cible, flags) est bien mis à jour malgré le crash de rendu.
+- **4 specs** (`subclass-cleric`, `subclass-paladin` ×2, `subclass-warlock`) : sélecteur de test
+  générique `useFeatureCharge` alors que l'Item testé a une vraie mécanique distincte
+  (`requiresRoll`/jet, `savingThrow`, réserve `costsResource` partagée, `grantsCondition`) qui
+  emprunte une autre branche du gabarit — bouton et assertions corrigés pour chacun.
+- **1 spec** (`subclass-sorcerer`) : même famille que `goToSpellLevel` manquant (onglets de sort
+  par palier, commit `7a1719d`) déjà connue sur d'autres specs — palier résolu dynamiquement
+  (le sort octroyé peut être de niveau 1 ou 2 selon la création).
+- **1 spec** (`initiate-magic-feat`) : aucun changement — confirmé contamination d'un run
+  concurrent antérieur (piège déjà documenté), repasse au vert isolément sans modification.
+- **1 spec** (`hunters-defense-automation`) : révélait en fait le vrai bug `unsetFlag` ci-dessus
+  — assertion mise à jour (`.to.be.false`, pas `.to.be.undefined`) pour refléter la valeur
+  réellement persistée par le correctif.
 
 ## [1.0.1] - 2026-11-14
 

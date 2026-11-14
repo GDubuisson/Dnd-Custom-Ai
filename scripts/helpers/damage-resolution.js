@@ -231,7 +231,14 @@ export async function applyDamageToTargets(
     const pendingSaveOutcome = isSpellDamage ? actor.getFlag(SYSTEM_ID, "pendingSpellSaveOutcome") : null;
     const matchesPendingSave = pendingSaveOutcome && pendingSaveOutcome.spellName === spellName;
     const saveMultiplier = matchesPendingSave ? spellSaveDamageMultiplier(actor, sourceActor, pendingSaveOutcome) : 1;
-    if (matchesPendingSave) await actor.unsetFlag(SYSTEM_ID, "pendingSpellSaveOutcome");
+    // `setFlag(..., false)`, PAS `unsetFlag` : sur l'acteur SYNTHÉTIQUE d'un token non lié (la
+    // cible d'un sort à sauvegarde est très souvent un PNJ, actorLink: false par défaut),
+    // `unsetFlag` sur une clé de `flags` de l'Actor lui-même ne persiste jamais (vérifié par un
+    // test isolé — cf. même correctif et sa justification complète dans #onRollAttack,
+    // npc-sheet.js). Sans ça, ce flag resterait disponible indéfiniment au lieu d'être à usage
+    // unique, risquant d'appliquer le multiplicateur d'un sort à sauvegarde PASSÉ à un dégât
+    // ultérieur sans rapport, même nom de sort.
+    if (matchesPendingSave) await actor.setFlag(SYSTEM_ID, "pendingSpellSaveOutcome", false);
 
     // Résistance/immunité/vulnérabilité de type (cf. damageTypeMultiplier ci-dessus) appliquée
     // APRÈS la réduction de sauvegarde ci-dessus, chacune arrondie à l'inférieur séparément —

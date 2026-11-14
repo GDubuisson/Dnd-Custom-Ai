@@ -361,11 +361,17 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
       expect(roll.formula, "désavantage : 2d20kl1").to.include("2d20kl1");
     });
 
+    // `.to.be.false`, pas `.to.be.undefined` : #onRollAttack consomme ce flag via
+    // `setFlag(..., false)`, pas `unsetFlag` — sur l'acteur synthétique d'un token non lié
+    // (ce PNJ), `unsetFlag` sur une clé de `flags` de l'Actor lui-même ne persiste jamais
+    // (bug Foundry vérifié indépendamment du code de ce système, cf. le commentaire du fix dans
+    // npc-sheet.js). `false` est l'équivalent fonctionnel exact d'"absent" pour ce flag, lu par
+    // `Boolean(...)` partout où il compte.
     cy.window().should((win) => {
       expect(
         win.canvas.tokens.get(enemyTokenId).actor.getFlag("dnd-custom-ai", "pendingOpportunityDisadvantage"),
         "flag consommé après le jet"
-      ).to.be.undefined;
+      ).to.be.false;
     });
   });
 });

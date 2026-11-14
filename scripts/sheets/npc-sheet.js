@@ -234,7 +234,17 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     if (!attack) return;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
     const hasPendingOpportunityDisadvantage = Boolean(this.actor.getFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG));
-    if (hasPendingOpportunityDisadvantage) await this.actor.unsetFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG);
+    // `setFlag(..., false)`, PAS `unsetFlag` : sur l'acteur SYNTHÉTIQUE d'un token PNJ non lié
+    // (actorLink: false, cas de loin le plus fréquent), `unsetFlag` sur une clé de `flags` de
+    // l'Actor lui-même (pas d'un Item embarqué, où ça fonctionne normalement) ne persiste
+    // jamais — le mécanisme de delta du token semble perdre l'opération de suppression de clé
+    // à la fusion. Vérifié par un test isolé : `getFlag` renvoie encore `true` juste après un
+    // `unsetFlag` attendu sur un tel acteur, alors que `setFlag(clé, false)` fonctionne
+    // normalement (lu comme faux par `Boolean(...)` ci-dessus, donc équivalent fonctionnel).
+    // Retour de test (T-MOBILE-001, cypress/e2e/hunters-defense-automation.cy.js) : sans ce
+    // correctif, le désavantage posé par "Échappée de la horde" ne se consomme jamais sur un
+    // PNJ non lié, restant indéfiniment au lieu d'un seul prochain jet d'attaque comme prévu.
+    if (hasPendingOpportunityDisadvantage) await this.actor.setFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG, false);
     const { isCriticalHit } = await rollCheck({
       actor: this.actor,
       formula: formatModifier(abilityMod + attack.bonus),
