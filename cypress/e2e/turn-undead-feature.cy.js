@@ -1,17 +1,5 @@
-// Implémente "Repousser les morts-vivants" (Canalisation divine, Clerc) — une des 4 Capacités
-// à choix identifiées dans la revue de conception du 2026-08-22 (ANOMALIES_ACTIVES.md), la seule
-// des 4 réellement mécanisable avec l'existant : en SRD 5e, Repousser les morts-vivants est
-// universel à TOUS les Clercs (indépendant du Domaine choisi), contrairement à ce que laissait
-// entendre le texte précédent ("propre à votre Domaine divin").
-//
-// Modèle retenu (cf. FeatureData#savingThrow/appliesCondition/requiresCreatureTypes,
-// item-data.js ; #onRollFeatureSave, actor-sheet.js) : même mécanisme que le jet de sauvegarde
-// de cible des sorts (SpellData#save) mais pour une Capacité — le Clerc ne roule jamais
-// lui-même, seul le DD (spellSaveDC) compte face au jet de CHAQUE cible ciblée ; échec ET bon
-// type de créature (undead) = Effrayé appliqué automatiquement (Actor#toggleStatusEffect).
-//
-// Capacité de test créée directement via createEmbeddedDocuments (comme les autres specs de ce
-// lot) plutôt que depuis le compendium, pour un DD/uses déterministes.
+// Repousser les morts-vivants : sauvegarde de chaque cible ciblée contre le DD du Clerc ;
+// échec d'un mort-vivant = Effrayé. Capacité de test créée sur l'Actor.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -106,12 +94,7 @@ describe("Repousser les morts-vivants — jet de sauvegarde de Sagesse, Effrayé
   beforeEach(() => cy.loginAsGM());
 
   function castOn(tokenId) {
-    // Un nouvel Item "Test Canalisation divine" par appel (jamais supprimé, plusieurs coexistent
-    // sur le même personnage au fil des tests) : ciblage du bouton par data-item-id (featureId),
-    // jamais par nom — `.contains("li", ...)` prendrait le premier trouvé, potentiellement un
-    // exemplaire déjà épuisé d'un test précédent (piège rencontré en écrivant ce test : le clic
-    // atterrissait silencieusement sur l'Item épuisé, `#consumeFeatureCharge` renvoyait `null`
-    // avant tout jet, laissant croire à tort que le mécanisme fonctionnait).
+    // Nouvel Item à chaque appel : bouton ciblé par data-item-id.
     let featureId;
     cy.window()
       .then((win) => grantTurnUndead(win, casterId))
@@ -133,10 +116,7 @@ describe("Repousser les morts-vivants — jet de sauvegarde de Sagesse, Effrayé
     cy.forceD20(1);
     castOn(undeadTokenId).then((featureId) => {
       cy.window().should((win) => {
-        // Token NPC non lié (actorLink: false par défaut) : l'effet est appliqué à l'acteur
-        // SYNTHÉTIQUE propre à ce token (win.canvas.tokens.get(id).actor), pas à l'acteur
-        // "prototype" du monde (win.game.actors.get(id)) — comportement Foundry normal, chaque
-        // token d'un même Actor doit pouvoir avoir son propre état.
+        // Acteur synthétique du token non lié.
         const undead = win.canvas.tokens.get(undeadTokenId).actor;
         expect(undead.statuses.has("frightened"), "Effrayé appliqué à la cible").to.be.true;
         const feature = win.game.actors.get(casterId).items.get(featureId);
@@ -148,7 +128,7 @@ describe("Repousser les morts-vivants — jet de sauvegarde de Sagesse, Effrayé
   });
 
   it("mort-vivant, réussite du jet (20 naturel) : aucun effet appliqué", () => {
-    // Repart d'un état propre : le test précédent a pu laisser cette même cible Effrayée.
+    // Retire Effrayé laissé par le test précédent.
     cy.window().then((win) => win.canvas.tokens.get(undeadTokenId).actor.toggleStatusEffect("frightened", { active: false }));
     cy.forceD20(20);
     castOn(undeadTokenId).then(() => {

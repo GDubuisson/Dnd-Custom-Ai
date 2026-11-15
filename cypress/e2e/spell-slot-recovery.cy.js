@@ -1,23 +1,5 @@
-// Implémente le point "Récupération arcanique/naturelle : recharge + fenêtre de répartition"
-// d'ANOMALIES_ACTIVES.md (lot testeur 2026-08-19), cadré avec l'utilisateur le 2026-08-22 :
-// le texte SRD de ces deux Capacités ("une fois par jour, LORS D'UN REPOS COURT") n'était suivi
-// par aucun code (bouton de jet manuel cliquable à tout moment, aucune fenêtre de répartition).
-//
-// Modèle retenu (cf. FeatureData#recoversSpellSlots, item-data.js ; #onRestShort/
-// #offerSpellSlotRecoveries, actor-sheet.js) : au clic sur "Repos court", toute Capacité de ce
-// type encore chargée calcule son total de niveaux récupérables (rollFormula) et ouvre une
-// fenêtre de répartition (chooseSpellSlotRecovery, spell-slot-choice.js) — la charge n'est
-// consommée QUE si le joueur confirme une répartition non vide.
-//
-// Capacité de test créée directement via createEmbeddedDocuments (comme "Test Fireball" dans
-// spell-saving-throws.cy.js) plutôt que depuis le compendium Capacités : évite de dépendre de sa
-// resynchronisation (piège déjà documenté, importSystemContent n'importe que les entrées
-// absentes par nom) et fixe un rollFormula déterministe ("3", sans dé) pour un total prévisible.
-//
-// Le Magicien reçoit d'office "Récupération arcanique" (Capacité de classe niveau 1,
-// world-items/features.json), elle-même recoversSpellSlots : grantRecoveryFeature la retire donc
-// avant d'ajouter "Test Récupération", pour que #offerSpellSlotRecoveries n'ouvre qu'UNE fenêtre
-// (sinon deux à la suite, et l'assertion "fenêtre fermée" échoue sur la seconde).
+// Récupération arcanique/naturelle au repos court : fenêtre de répartition, charge consommée seulement
+// si une répartition est validée. Capacité de test à formule fixe ("3"), seule récupératrice de l'Actor.
 
 const createdActorIds = [];
 let actorId;
@@ -32,9 +14,7 @@ function updateActor(win, actor, data, options = {}) {
 
 function grantRecoveryFeature(win, id) {
   const actor = win.game.actors.get(id);
-  // Retire toute Capacité recoversSpellSlots déjà présente ("Récupération arcanique" du Magicien,
-  // ou un "Test Récupération" laissé par un test précédent — l'Actor est partagé) : "Test
-  // Récupération" doit rester la SEULE, sinon #offerSpellSlotRecoveries enchaîne plusieurs fenêtres.
+  // Retire les autres Capacités de récupération (une seule fenêtre attendue).
   const existing = actor.items
     .filter((item) => item.type === "feature" && item.system.recoversSpellSlots)
     .map((item) => item.id);
@@ -81,10 +61,7 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
     let featureId;
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
-      // Niveau 3 (magicien, lanceur complet) : table SRD (spell-slots.json) donne 4 emplacements
-      // de niveau 1 et 2 de niveau 2 — `slots.<n>.max` est une donnée DÉRIVÉE recalculée depuis
-      // cette table à chaque prepareDerivedData (character-data.js), impossible à forcer
-      // directement par update ; seul `.value` (charges consommées) est un champ persisté.
+      // Niveau 3 : 4 emplacements de niveau 1 et 2 de niveau 2 (`max` dérivé).
       return updateActor(win, actor, { "system.attributes.level": 3 }).then(() =>
         updateActor(win, actor, {
           "system.spells.slots.1.value": 2,
@@ -93,9 +70,7 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
       );
     });
 
-    // Après la montée de niveau (le hook d'octroi de contenu de classe re-vérifie les Capacités) :
-    // grantRecoveryFeature retire "Récupération arcanique" puis pose "Test Récupération" comme
-    // seule Capacité recoversSpellSlots.
+    // Après la montée de niveau, « Test Récupération » est la seule Capacité de récupération.
     cy.window()
       .then((win) => grantRecoveryFeature(win, actorId))
       .then((items) => {
@@ -134,9 +109,7 @@ describe("Récupération arcanique/naturelle — auto au repos court, fenêtre d
     let featureId;
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
-      // Niveau déjà porté à 3 par le test précédent (même Actor partagé) : level1.max = 4
-      // (table SRD) — un `.value` en dessous suffit à recréer un déficit sans redépendre de
-      // l'ordre d'exécution des tests (redondant mais inoffensif si déjà à 3).
+      // Niveau 3 garanti, quel que soit l'ordre des tests.
       return updateActor(win, actor, { "system.attributes.level": 3 }).then(() =>
         updateActor(win, actor, { "system.spells.slots.1.value": 2 })
       );

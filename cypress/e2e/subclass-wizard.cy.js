@@ -1,9 +1,5 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Magicien : 2 nouvelles
-// sous-classes ajoutées (École de nécromancie/necromancy, École d'illusion/illusion), en plus de
-// l'École d'évocation déjà existante. Vérifie l'octroi des Capacités liées ET le scénario minimal
-// de chaque mécanique propre : jet de dégâts bonus à charges limitées (nécromancie) et réaction
-// à charge limitée (illusion).
+// Sous-classes du Magicien (Nécromancie, Illusion) : octroi des Capacités, jet de dégâts bonus
+// à charges et réaction à charge.
 
 const createdActorIds = [];
 

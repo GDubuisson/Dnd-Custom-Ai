@@ -1,11 +1,5 @@
-// Niveau B, cf. ClaudeFiles/MECANIQUES_A_AUTOMATISER.md (2026-08-24) : SpellData#grantsCondition —
-// un sort qui pose un état SANS jet associé (ex. Invisibilité, Invisibilité suprême) bascule cet
-// état sur chaque cible actuellement ciblée au moment du lancer (#onCastSpell, actor-sheet.js),
-// contrairement à save.appliesCondition qui dépend du résultat d'un jet de sauvegarde (cf.
-// spell-saving-throws.cy.js).
-//
-// Spell "Test Invisibility" créé directement via createEmbeddedDocuments (pas depuis le
-// compendium sorts), sur le même modèle que spell-saving-throws.cy.js.
+// SpellData#grantsCondition : le sort pose son état sur chaque cible ciblée, sans jet.
+// Sort de test créé sur l'Actor.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -13,10 +7,7 @@ let casterId;
 let targetId;
 let targetTokenId;
 
-// Capture une baseline `game.messages.size` seulement une fois le flux de chat au repos : un
-// message d'un test/hook précédent peut arriver via socket avec un léger retard et fausser une
-// assertion de décompte exact (`=== baseline + 1`) — ces deux tests passaient isolément mais
-// échouaient par intermittence en suite complète (flaky historique).
+// Mémorise `game.messages.size` une fois le chat stable.
 function captureStableBaseline(assign) {
   return cy
     .window()
@@ -65,9 +56,7 @@ before(() => {
     casterId = id;
     createdActorIds.push(id);
   });
-  // Ferme la fiche du personnage qui vient d'être créé (rouverte automatiquement à la fin de
-  // l'assistant) avant d'en créer un second : sinon les deux fiches se recouvrent (piège déjà
-  // documenté, cf. spell-saving-throws.cy.js/tab-stats.cy.js).
+  // Ferme la fiche avant d'en créer une seconde.
   cy.window().then((win) => win.game.actors.get(casterId).sheet.close());
   cy.createReadyCharacter({
     name: "Invisibility Target",
@@ -107,9 +96,7 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
   it("cible sélectionnée : l'état configuré est basculé sur la cible, pas de jet", () => {
     cy.window().then((win) => grantGrantsConditionSpell(win, casterId, { grantsCondition: "invisible" }));
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("invisible", { active: false }));
-    // Les deux sorts de test sont "concentration" : sans reset, lancer le 2e alors que le 1er est
-    // encore en cours poste un message "concentration rompue" en plus du message de lancer et
-    // fausse le décompte exact (flaky selon l'ordre des tests).
+    // Réinitialise la concentration pour un décompte exact des messages.
     cy.window().then((win) =>
       win.game.actors.get(casterId).update(win.JSON.parse(JSON.stringify({ "system.spells.concentratingOn": "" })))
     );
@@ -142,8 +129,7 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
     cy.window().then((win) =>
       grantGrantsConditionSpell(win, casterId, { grantsCondition: "invisible", name: "Test Invisibility No Target" })
     );
-    // Repart d'un état propre : le test précédent a laissé cette même cible invisible et le
-    // lanceur concentré sur "Test Invisibility" (sinon message "concentration rompue" en plus).
+    // Repart d'une cible visible et d'un lanceur sans concentration.
     cy.window().then((win) => win.canvas.tokens.get(targetTokenId).actor.toggleStatusEffect("invisible", { active: false }));
     cy.window().then((win) =>
       win.game.actors.get(casterId).update(win.JSON.parse(JSON.stringify({ "system.spells.concentratingOn": "" })))
@@ -174,9 +160,7 @@ describe("Sort qui pose un état sans jet associé — SpellData#grantsCondition
       expect(warned, "avertissement NoTarget attendu").to.be.true;
       const target = win.canvas.tokens.get(targetTokenId).actor;
       expect(target.statuses.has("invisible"), "aucun état basculé sans cible").to.be.false;
-      // Le message générique de lancer reste posté même sans cible (comportement inchangé pour
-      // les autres sorts sans mécanisme, ex. tour de magie narratif) — seule la bascule d'état
-      // est sautée.
+      // Sans cible, le message de lancer est posté, sans bascule d'état.
       expect(win.game.messages.size, "message générique de lancer quand même posté").to.equal(knownMessageCount + 1);
     });
   });

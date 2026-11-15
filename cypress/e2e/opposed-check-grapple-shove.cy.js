@@ -1,20 +1,6 @@
-// Chantier "mécaniques jamais modélisées" (2026-08-25, point 1/6, cadré avec l'utilisateur avant
-// implémentation) : Agripper/Bousculer, SRD 5e — premier TEST OPPOSÉ de ce système (les deux
-// camps lancent un d20, comparés entre eux, contrairement au reste du système qui compare
-// toujours un jet à un DD/une CA fixe). Décisions actées avec l'utilisateur :
-// - Défense de la cible = MEILLEUR des jets d'Athlétisme/Acrobaties (approximation assumée, le
-//   SRD laisse la cible choisir en direct — impossible à interroger depuis ce système).
-// - Bousculer "repoussé de 1,50 m" : JAMAIS de déplacement automatique de token, simple mention
-//   dans le message de résolution (cohérent avec "jamais de grille tactique/pathfinding
-//   reconstruit", déjà exclu ailleurs).
-// - Égalité = statu quo (règle générale des tests opposés SRD 5e) : l'attaquant doit ressortir
-//   STRICTEMENT supérieur.
-//
-// Pas de forceD20 utilisable ici (2 jets successifs dans le même clic, forceD20 ne fixe que le
-// TOUT PROCHAIN jet — se restaure après un seul usage) : les scénarios "succès"/"échec" rigent
-// plutôt les MODIFICATEURS (écart énorme,>19) pour que le résultat soit garanti quel que soit le
-// d20 réellement tiré des deux côtés — même technique que combat-criticals.cy.js ("CA délibérément
-// extrême 999/1").
+// Agripper/Bousculer : test opposé contre le meilleur Athlétisme/Acrobaties de la cible,
+// égalité = statu quo, recul seulement mentionné. Résultats garantis par des modificateurs extrêmes
+// (deux jets par clic, forceD20 inutilisable).
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -80,7 +66,7 @@ function messagesSince() {
   });
 }
 
-function createGrappler(win, { strAthletics = 0, extraSystem = {} } = {}) {
+function createGrappler(win, { extraSystem = {} } = {}) {
   return createActor(win, {
     name: "Opposed Check PC",
     type: "character",
@@ -123,7 +109,7 @@ describe("Agripper — test opposé (Athlétisme vs meilleur Athlétisme/Acrobat
 
   it("écart de modificateurs énorme en faveur de l'attaquant : succès garanti, cible Agrippée (T-OPPOSED-001)", () => {
     cy.window()
-      // Force 30 (mod +10) + Athlétisme maîtrisé (niveau 1, +2) = +12 minimum garanti.
+      // Force 30 + Athlétisme maîtrisé : +12 minimum.
       .then((win) =>
         createGrappler(win, { extraSystem: { abilities: { str: { value: 30 } }, skills: { athletics: { proficient: true } } } })
       )
@@ -152,7 +138,7 @@ describe("Agripper — test opposé (Athlétisme vs meilleur Athlétisme/Acrobat
 
   it("écart de modificateurs énorme en faveur de la cible : échec garanti, cible PAS Agrippée (T-OPPOSED-002)", () => {
     cy.window()
-      // Force 1 (mod -5), Athlétisme non maîtrisé = -5 au mieux.
+      // Force 1, Athlétisme non maîtrisé : -5 au mieux.
       .then((win) => createGrappler(win, { extraSystem: { abilities: { str: { value: 1 } } } }))
       .then((pc) => {
         cy.window()
@@ -178,8 +164,7 @@ describe("Agripper — test opposé (Athlétisme vs meilleur Athlétisme/Acrobat
   });
 
   it("la défense retient le MEILLEUR des deux compétences, pas seulement Athlétisme (T-OPPOSED-005)", () => {
-    // Athlétisme catastrophique (-10) mais Acrobaties excellente (+20) : si la défense ne retenait
-    // QUE l'Athlétisme (bug), l'attaquant l'emporterait à tort malgré son propre score faible.
+    // Athlétisme -10 mais Acrobaties +20 : la défense doit retenir le meilleur des deux.
     cy.window()
       .then((win) => createGrappler(win, { extraSystem: { abilities: { str: { value: 1 } } } }))
       .then((pc) => {

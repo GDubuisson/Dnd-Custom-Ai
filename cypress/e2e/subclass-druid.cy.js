@@ -1,9 +1,5 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Druide : 2 nouvelles sous-classes
-// ajoutées (Cercle de la Lune/moon, Cercle des Spores/spores), en plus du Cercle de la Terre déjà
-// existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque mécanique
-// propre : bouton grisé/dégrisé selon l'état "En Forme sauvage" (Cercle de la Lune) et jet de
-// dégâts à charges limitées (Cercle des Spores).
+// Sous-classes du Druide (Cercle de la Lune, des Spores) : octroi des Capacités, bouton lié à
+// l'état « En Forme sauvage » et jet de dégâts à charges.
 
 const createdActorIds = [];
 

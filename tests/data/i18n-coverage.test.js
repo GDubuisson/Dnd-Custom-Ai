@@ -1,8 +1,4 @@
-// Ce test rejoue exactement la classe de bug trouvée en revue de code sur ClassContentGranted
-// (scripts/sheets/actor-sheet.js appelait "DND_CUSTOM.Chat.ClassContentGranted", clé qui
-// n'existait que sous "Wizard" dans lang/*.json — jamais détecté avant l'exécution en jeu).
-// Scanne tout le JS/.hbs du système à la recherche de littéraux "DND_CUSTOM.X.Y" utilisés comme
-// clé de traduction, et vérifie que chacun résout bien dans lang/en.json ET lang/fr.json.
+// Vérifie que chaque littéral "DND_CUSTOM.X.Y" du JS et des .hbs existe dans lang/en.json et lang/fr.json.
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -25,18 +21,11 @@ function collectFiles(dir, extensions) {
   return out;
 }
 
-// Capture "DND_CUSTOM.Xxx.Yyy(.Zzz...)" uniquement lorsqu'il forme un littéral de chaîne
-// COMPLET entre guillemets (doubles, simples ou template) — ex. `{{localize "DND_CUSTOM.Actor.Level"}}`,
-// `game.i18n.format('DND_CUSTOM.Chat.LevelUp', ...)`. Exclut délibérément les accès de
-// propriété JS bruts type `DND_CUSTOM.abilities[key]` ou `DND_CUSTOM.skills[skillKey]` : ce
-// ne sont pas des clés de traduction mais des lectures directes de l'objet de config
-// (scripts/helpers/config.js), résolues dynamiquement puis passées à `localize()` séparément —
-// une regex statique ne peut de toute façon pas suivre la valeur d'une variable.
+// Capture les littéraux complets "DND_CUSTOM.X.Y" entre guillemets ; ignore les accès de propriété
+// (ex. `DND_CUSTOM.skills[key]`) qui lisent la config.
 const KEY_PATTERN = /["'`](DND_CUSTOM(?:\.[A-Za-z0-9_]+)+)["'`]/g;
 
-// Préfixes de clé (pas des clés complètes) : convention Foundry `TABS.primary.labelPrefix`,
-// qui complète elle-même la clé avec `.${tabId}` (ex. "DND_CUSTOM.Tabs" + ".stats") avant de
-// la résoudre — jamais utilisé tel quel comme clé de traduction directe.
+// Préfixes complétés par Foundry (`TABS.primary.labelPrefix`), pas des clés.
 const KEY_PREFIXES_NOT_KEYS = new Set(["DND_CUSTOM.Tabs"]);
 
 function extractKeys(source) {
@@ -70,13 +59,7 @@ describe("Couverture i18n — toute clé DND_CUSTOM.* référencée dans le code
   }
 });
 
-// Ce bloc n'a plus rien à scanner dans le describe ci-dessus depuis que
-// scripts/sheets/actor-sheet.js construit la clé DND_CUSTOM.Abilities.ClassFlavor.<classe>.Title/
-// Tagline dynamiquement (template string interpolée, cf. context.classFlavorTitle) : KEY_PATTERN
-// exige un littéral complet entre guillemets, donc ne peut plus la détecter — exactement le même
-// cas que Classes.*/Skills.*/Abilities.* ci-dessous. Test dédié pour ne pas perdre la couverture
-// que ce fichier avait avant la fusion des 12 partials templates/actor/abilities/*.hbs en un seul
-// class-flavor.hbs (chacune posait littéralement sa propre clé, détectée par KEY_PATTERN).
+// Clés DND_CUSTOM.Abilities.ClassFlavor.<classe>.Title/Tagline, construites dynamiquement.
 describe("Couverture i18n — DND_CUSTOM.Abilities.ClassFlavor.<classe> (clé construite dynamiquement)", () => {
   for (const classKey of Object.keys(DND_CUSTOM.classes)) {
     test(`${classKey} : Title/Tagline présents dans les 2 langues, icône déclarée`, () => {
@@ -104,9 +87,7 @@ describe("Couverture i18n — aucune clé orpheline évidente (hygiène, non blo
     if (unused.length) {
       console.log(`[info] ${unused.length} clé(s) lang/fr.json jamais référencée(s) littéralement (probablement construites dynamiquement, ex. DND_CUSTOM.Classes.*) :\n  - ${unused.slice(0, 20).join("\n  - ")}${unused.length > 20 ? "\n  - ..." : ""}`);
     }
-    // Informatif uniquement : beaucoup de clés (Classes.*, Skills.*, Abilities.*) sont
-    // référencées dynamiquement via `DND_CUSTOM.classes[key]` puis `localize()`, jamais comme
-    // littéral "DND_CUSTOM.Classes.xxx" dans le source — un vrai faux-positif attendu ici.
-    assert.ok(true);
+    // Informatif : clés référencées dynamiquement (Classes.*, Skills.*…), faux positifs attendus.
+    assert.ok(allReferencedKeys.size > 0, "aucune clé i18n détectée dans le code : scanner cassé ?");
   });
 });

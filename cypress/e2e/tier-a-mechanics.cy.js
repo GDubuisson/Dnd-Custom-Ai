@@ -1,21 +1,5 @@
-// Chantier "Niveau A" (2026-08-24, sur demande explicite de l'utilisateur suite à la revue des
-// mécaniques encore en texte brut) : automatise 6 Capacités isolées, chacune réutilisant un
-// mécanisme déjà en place ailleurs dans ce système —
-// - Indomptable (Guerrier 9) : relance de sauvegarde, même famille que Chanceux/Chance du
-//   Fiélon (flags luckRoll/luckActorId, rolls.js) mais réservée aux sauvegardes
-//   (flag savingThrowRoll) et résultat obligatoirement conservé.
-// - Critique brutal (Barbare 9) : dé de dégâts supplémentaire sur un critique à l'arme de corps
-//   à corps (rollDamage#criticalMultiplier, 3 au lieu de 2).
-// - Instinct sauvage (Barbare 7) : avantage à l'Initiative, via un nouveau
-//   character-data.js#attributes.initiativeDice consommé par la formule d'initiative de
-//   system.json (2 = avantage, 1 = normal — kh1 sur un seul dé étant un no-op).
-// - Affinité de la tempête (Ensorceleur Tempête 1) : résistance passive foudre/tonnerre,
-//   généralisation de isResistantToDamageType (dnd-custom-ai.js), même mécanisme que Résilience
-//   draconique.
-// - Affinité élémentaire (Ensorceleur Draconique 6) : modificateur de Charisme ajouté au jet de
-//   dégâts d'un sort dont le type correspond au lignage choisi (#onRollSpellDamage).
-// - Forme sauvage de combat (Cercle de la Lune, Druide 2) : PV temporaires (2×niveau) posés sur
-//   la Forme à l'entrée en Forme sauvage — nouveau NpcData#attributes.hp.temp.
+// Indomptable, Critique brutal, Instinct sauvage, Affinité de la tempête, Affinité élémentaire
+// et Forme sauvage de combat (PV temporaires de la forme).
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -262,11 +246,7 @@ describe("Affinité de la tempête — résistance passive foudre/tonnerre", () 
     );
     cy.window().then((win) => grantCompendiumItem(win, sorcererId, "capacites", "Affinité de la tempête"));
 
-    // PNJ (pas un second "character") : dnd-custom-ai.js > applyDamageToTargets bloque
-    // volontairement tout dégât d'un "character" vers un AUTRE "character" (PvP bloqué,
-    // toujours actif, y compris pour le MJ) — piège rencontré en testant avec un attaquant
-    // "character", les dégâts n'étaient jamais appliqués. Un PNJ n'est jamais concerné par ce
-    // blocage.
+    // Attaquant PNJ : les dégâts entre personnages joueurs sont bloqués.
     cy.loginAsGM();
     cy.window()
       .then((win) =>
@@ -375,17 +355,7 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
       druidId = id;
       createdActorIds.push(id);
     });
-    // "Forme sauvage"/"Forme sauvage de combat" requièrent le niveau 2 : les Capacités elles-
-    // mêmes sont créées/octroyées directement (Items ci-dessous), mais offerWildShapeFormDialog
-    // (wild-shape-choice.js) revérifie INDÉPENDAMMENT actor.system.attributes.level contre
-    // DND_CUSTOM.wildShapeForms (config.js, minLevel 2 pour toute forme) avant même d'ouvrir son
-    // dialogue de choix — sans la montée de niveau ci-dessous, aucune forme n'est "disponible",
-    // le dialogue ne s'ouvre jamais (juste un avertissement) et #onEnterWildShape s'arrête tôt
-    // (chosenFormName vide), laissant les PV temporaires à 0 (bug découvert le 2026-09-05,
-    // T-TIERA-MOONWILD-001 : le personnage de test restait au niveau 1 par défaut, et ciblait en
-    // plus un Actor "wildShapeForm" créé à la main au lieu du VRAI Actor produit par le choix du
-    // dialogue — cf. wild-shape.cy.js > wildShapeActorId pour le bon pattern). Même pattern que
-    // wild-shape.cy.js (dndCustomWizard, bypass de grantClassContent).
+    // Niveau 2 requis pour qu'une forme sauvage soit proposée.
     cy.window().then((win) =>
       updateActor(win, win.game.actors.get(druidId), { "system.attributes.level": 2 }, { dndCustomWizard: true })
     );
@@ -401,12 +371,7 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
     );
   });
 
-  // En session MJ (pas Joueur) : requestActorUpdate (helpers/actor-relay.js) relaie une mise à
-  // jour non autorisée au MJ ACTIF via socket, qui suppose un vrai second client MJ connecté en
-  // parallèle — impossible à simuler avec le navigateur Cypress unique de cette suite (cy.
-  // loginAsPlayer()/loginAsGM() rechargent la page, une seule session à la fois). En session MJ,
-  // requestActorUpdate emprunte son chemin direct (actor.isOwner toujours vrai) : valide la
-  // logique/le calcul, pas le relais socket lui-même (déjà utilisé ailleurs dans ce système).
+  // Session MJ : le relais socket vers un autre MJ n'est pas testable avec un seul navigateur.
   beforeEach(() => cy.loginAsGM());
 
   it("prendre forme avec la Capacité : PV temporaires = 2×niveau posés sur la Forme (T-TIERA-MOONWILD-001)", () => {
@@ -415,9 +380,7 @@ describe("Forme sauvage de combat — PV temporaires à la transformation", () =
     withItemId(druidId, "Forme sauvage", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] button[data-action="enterWildShape"]`).click();
     });
-    // Choix du dialogue (offerWildShapeFormDialog, wild-shape-choice.js), même pattern que
-    // wild-shape.cy.js > chooseWildShapeForm : la forme réellement créée/liée est résolue via
-    // system.combat.wildShapeActorId APRÈS le choix, jamais un Actor créé à la main au préalable.
+    // Forme choisie dans le dialogue, Actor lié relu via wildShapeActorId.
     cy.get('dialog.application.dialog input[type="radio"][name="wildShapeFormName"][value="Loup"]', { timeout: 10000 }).check();
     cy.get('dialog.application.dialog button[data-action="ok"]').click();
 

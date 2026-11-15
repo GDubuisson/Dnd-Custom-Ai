@@ -1,14 +1,5 @@
-// Chantier "types de dégâts" — Phase 2 (magique, 2026-08-24, cadrée avec l'utilisateur après la
-// Phase 1) : PAS de nouveau mécanisme à coder — le champ générique damageResistances/Immunities/
-// Vulnerabilities (damageAffinitySchema, shared-schema.js) et sa résolution (damageTypeMultiplier,
-// dnd-custom-ai.js) fonctionnent DÉJÀ sans condition pour les 10 types magiques : la nuance
-// "contourné par une source magique" (WeaponData#magic/NpcData#attack.magic) ne s'applique QU'aux
-// 3 types physiques (cf. PHYSICAL_DAMAGE_TYPES.has(damageType) dans damageTypeMultiplier), fidèle
-// au SRD (aucun monstre n'a de résistance "au feu sauf source non magique"). Cette spec couvre
-// donc uniquement la VALIDATION E2E des cas magiques courants (immunité poison/psychique
-// morts-vivants/constructs, vulnérabilité radiant...), jamais testés en Phase 1, plus la
-// confirmation explicite que la case "Magique" reste sans effet sur un type magique, et qu'un
-// sort à zone (plusieurs cibles) résout bien la résistance de CHAQUE cible indépendamment.
+// Affinités aux dégâts magiques (immunités poison/psychique, vulnérabilité radiant…) :
+// la case « Magique » est sans effet, et chaque cible d'un sort de zone est résolue séparément.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -91,8 +82,7 @@ function lastMessage() {
 
 function applyDamageFromMessage(messageId) {
   cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
-  // .first() : Foundry affiche aussi une notification "toast" éphémère du même message, avec son
-  // propre bouton (même data-message-id) — retour de test déjà documenté (tier-c-rage.cy.js).
+  // .first() : la notification éphémère du même message porte aussi le bouton.
   cy.get(`[data-message-id="${messageId}"]`, { timeout: 10000 }).first().find("button.dnd-apply-damage-btn").click();
 }
 
@@ -238,8 +228,7 @@ describe("La case 'Magique' reste sans effet sur un type de dégâts magique (at
 
   before(() => {
     cy.loginAsGM();
-    // `attack.magic: true` délibérément — doit rester sans effet sur un type magique (feu), la
-    // nuance "contourne la résistance générique" étant réservée aux 3 types PHYSIQUES.
+    // `attack.magic` sans effet sur un type magique.
     cy.window()
       .then((win) =>
         createActor(win, {

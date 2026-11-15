@@ -1,65 +1,8 @@
-// Implémente la section 1 (T-WIZ-001 à T-WIZ-018) de tests/E2E_TEST_PLAN.md — assistant de
-// création de personnage (character-creation-wizard.js). Stratégie de fixtures retenue pour
-// toute la suite (cf. discussion de session, plan > "Prérequis d'infrastructure") : chaque test
-// crée un Actor "character" vierge puis rejoue l'assistant comme un vrai joueur, plutôt que des
-// fixtures JSON pré-importées — plus lent mais c'est justement ce module qui est testé ici.
-//
-// Session utilisée : Joueur (cf. cy.loginAsPlayer(), cypress/support/e2e.js), conformément à la
-// convention par défaut du plan — sauf T-WIZ-013 dont le comportement dépend explicitement du
-// rôle MJ (décrit dans son propre describe, connexion Gamemaster dédiée).
-//
-// Prérequis d'infrastructure (au-delà de ceux déjà documentés dans tests/README.md) :
-//   - Un utilisateur Joueur "Player1" (cf. Cypress.expose("testPlayerName")) existant dans le
-//     monde de test, avec la permission "Créer des acteurs" accordée (Configuration du monde >
-//     Permissions) — sans quoi Actor.create() côté client échoue pour ce rôle et T-WIZ-001 (et
-//     tout le reste, qui en dépend) ne peut pas s'exécuter.
-//   - Les Items du monde (armes/armures) sont importés automatiquement au premier chargement du
-//     monde (hook "ready", cf. scripts/helpers/content-import.js, world-items/README.md) : rien
-//     à faire à la main tant que le monde de test a déjà tourné une fois.
-//
-// Vérifié au réel le 2026-08-15 (14/14, Chrome headless, cf. package.json > test:e2e:run) contre
-// une vraie instance Docker. Pièges rencontrés et corrigés au passage, à connaître avant de
-// copier ces patterns dans une future spec :
-//   - Un objet littéral `{...}` écrit dans le code de la spec appartient à la réalité JS de
-//     Cypress, pas à celle de la page Foundry testée : Foundry le rejette ("Actor must be
-//     constructed with a DataModel or Object") dès qu'on le passe à une méthode Foundry
-//     (Actor.create...) — cf. toAutObject ci-dessous.
-//   - Foundry ouvre automatiquement la fenêtre "User Configuration" pour un Joueur sans
-//     personnage assigné ; elle reste ouverte et entre en collision avec des sélecteurs
-//     génériques (`input[name="name"]`) — fermée systématiquement dans cy.loginAsPlayer().
-//   - Le monde de test peut tourner dans une langue différente de celle supposée à l'écriture
-//     (ici : anglais) — les chaînes localisées sont donc chargées dynamiquement depuis
-//     `game.i18n.lang`, jamais depuis lang/fr.json en dur (cf. loadStringsForActiveLocale).
-//   - Viewport Cypress par défaut (1000x660) sous le minimum exigé par Foundry (1024x768) :
-//     déclenche une notification d'erreur permanente qui finit par recouvrir des boutons —
-//     cf. viewportWidth/Height, cypress.config.js.
-//
-// Actor.create() est appelé directement via cy.window() (plutôt qu'en pilotant le dialogue natif
-// "Créer un acteur" de la sidebar) pour la MAJORITÉ des scénarios ci-dessous : ce qui est testé
-// est le comportement déclenché par la création (hook createActor, dnd-custom-ai.js), pas ce
-// formulaire natif lui-même — même approche que tests/quench/quench-tests.js.
-//
-// ATTENTION — cette approximation a laissé passer le bug "fiche visible pendant l'assistant"
-// pendant 5 signalements testeur (2026-08-19 à 2026-09-05, cf. ClaudeFiles/ANOMALIES_ACTIVES.md) :
-// `createBlankCharacter(..., { renderSheet: true })` (T-WIZ-010 ci-dessous) simule le chemin
-// SUPPOSÉ du bouton natif "Créer un Acteur" — `Document.create(data, {renderSheet: true})` — mais
-// la vraie boîte de dialogue (v13+, `DialogV2`) appelle en réalité `doc.sheet.render(true)`
-// **directement dans le callback de son bouton "ok"**, un chemin que `{renderSheet: true}` passé
-// à `Actor.create()` ne déclenche PAS du tout. Root cause confirmée le 2026-09-05 par un traçage
-// en direct (Hooks.callAll/render instrumentés) après une repro exacte enfin obtenue de
-// l'utilisateur — cf. docstring d'`openWizardActorIds`, character-creation-wizard.js. T-WIZ-022/
-// T-WIZ-023 ci-dessous pilotent donc la VRAIE boîte de dialogue (clic sur le bouton de la
-// sidebar, formulaire réel), seule façon de couvrir ce chemin précis — les autres scénarios
-// (T-WIZ-010, T-WIZ-020, T-WIZ-021) restent des approximations utiles pour le reste du
-// comportement de l'assistant, mais jamais suffisantes seules pour ce bug précis.
+// T-WIZ-001 à 023 : assistant de création, rejoué comme un joueur sur un Actor vierge (session Joueur,
+// sauf section MJ). Prérequis : Joueur « Player1 » autorisé à créer des acteurs. T-WIZ-022/023 pilotent
+// la vraie boîte de dialogue native « Créer un Acteur », seule à appeler `doc.sheet.render(true)`.
 
-// Chaînes localisées (DND_CUSTOM.* de lang/<langue active>.json) et langue active elle-même :
-// déterminées dynamiquement par session plutôt que fixées à "fr" à l'écriture de ce fichier —
-// le monde de test s'est avéré tourner en anglais au premier run réel (2026-08-15), ce que rien
-// n'imposait de deviner à l'avance. origins.json (scripts/data/origins.json), lui, n'est PAS
-// localisé (buildOriginInfoText affiche `specialTrait.name` tel quel, cf.
-// character-creation-wizard.js) : ses valeurs restent valides quelle que soit la langue active,
-// pas besoin de le recharger par langue.
+// Chaînes localisées de la langue active du monde (origins.json n'est pas localisé).
 let strings;
 let activeLang;
 let origins;
@@ -84,25 +27,15 @@ function loadStringsForActiveLocale() {
 }
 
 function format(template, vars = {}) {
-  return template.replace(/\{(\w+)\}/g, (_, key) => String(vars[key] ?? ""));
+  return template.replace(/\{(\w+)}/g, (_, key) => String(vars[key] ?? ""));
 }
 
-// Un objet littéral `{...}` créé dans le code de la spec appartient à la réalité JS de Cypress
-// (bundle du test runner), pas à celle de la page Foundry testée : Foundry rejette ces objets
-// "d'un autre monde" ("Actor must be constructed with a DataModel or Object", découvert au
-// premier run réel de ce fichier) car leur chaîne de prototypes ne remonte pas au `Object` du
-// contexte AUT. `win.Object.assign(new win.Object(), data)` reconstruit un objet appartenant à
-// la bonne réalité avant de le passer à une méthode Foundry (Actor.create, etc.).
+// Recrée `data` dans la réalité JS de la page, exigé par les API Foundry.
 function toAutObject(win, data) {
   return win.Object.assign(new win.Object(), data);
 }
 
-// `renderSheet` : par défaut absent (comportement d'un appel programmatique classique, ex.
-// macro/script). Le vrai déclencheur du bug T-WIZ-010 est le bouton natif "Créer un Acteur" de
-// la sidebar, qui appelle en interne `Document.create(data, {renderSheet: true})` (cf.
-// `Document#createDialog()` du core Foundry) — un `Actor.create()` sans options ne l'exerce
-// jamais. Passer `{ renderSheet: true }` ici reproduit fidèlement ce chemin sans dépendre d'une
-// interaction UI avec la boîte de dialogue native elle-même.
+// Crée un personnage vierge ; `renderSheet` simule `Document.create(data, { renderSheet: true })`.
 function createBlankCharacter(name, { renderSheet = false } = {}) {
   return cy
     .window()
@@ -117,10 +50,7 @@ function getWizardForm() {
   return cy.get("form.character-wizard", { timeout: 15000 });
 }
 
-// Échantillonne en continu (toutes les 50ms par défaut) plutôt qu'un contrôle ponctuel avant/
-// après : capable de repérer un flash isolé qu'une vérification à un seul instant manquerait.
-// Hissé à la portée du module (au lieu d'être local à la section Joueur) : réutilisé par la
-// section MJ ci-dessous (T-WIZ-023).
+// Vérifie toutes les 50ms que la fiche ne chevauche jamais l'assistant.
 function pollNoOverlap(times = 30, intervalMs = 50) {
   const overlaps = [];
   for (let i = 0; i < times; i += 1) {
@@ -138,16 +68,9 @@ function pollNoOverlap(times = 30, intervalMs = 50) {
   });
 }
 
-// Pilote la VRAIE boîte de dialogue native "Créer un Acteur" de la sidebar (clic sur le bouton,
-// remplissage du formulaire, soumission) — PAS une simulation via Actor.create(). Sélecteurs
-// relevés en direct sur l'instance Docker de test (v13+, dialogue `DialogV2`) : bouton
-// `#actors button.create-entry[data-action="createEntry"]`, champ `input[name="name"]`, select
-// `select[name="type"]` (déjà sur "character" par défaut — sélectionné explicitement quand même,
-// pour rester correct si cet ordre changeait), soumission via le bouton du footer. Ne pousse PAS
-// l'id créé dans createdActorIds (l'appelant le récupère par nom une fois l'Actor visible côté
-// jeu, cf. T-WIZ-022/023) : au moment de cet appel, l'Actor n'existe pas encore côté client.
+// Crée un personnage via la vraie boîte de dialogue native de la sidebar ; l'id est relu par nom ensuite.
 function createCharacterViaNativeDialog(name) {
-  cy.get('[data-tab="actors"]').first().click({ force: true });
+  cy.get('[data-tab="actors"]').first().click({ force: true }); // NOSONAR : simple activation de l'onglet, quel que soit l'état de la sidebar
   cy.get('#actors button.create-entry[data-action="createEntry"]').click();
   cy.get("dialog.application.dialog input[name=\"name\"]", { timeout: 10000 }).type(name);
   cy.get('dialog.application.dialog select[name="type"]').select("character");
@@ -158,17 +81,10 @@ before(() => {
   cy.readFile("scripts/data/origins.json").then((json) => { origins = json; });
 });
 
-// Nettoyage global plutôt que par test : chaque test recharge une session complète (cf.
-// cy.loginAsPlayer() dans beforeEach), donc un afterEach par test ajouterait une reconnexion
-// supplémentaire pour rien — les Actors créés persistent côté serveur entre les tests d'une
-// même session Cypress, un seul nettoyage final suffit (même principe que le `after` de
-// tests/quench/quench-tests.js).
+// Nettoyage unique en fin de spec.
 after(() => {
   if (!createdActorIds.length) return;
-  // Session MJ, pas Joueur : T-WIZ-013 crée son Actor sous la session MJ (c'est justement ce
-  // rôle que ce scénario teste), et un Joueur n'a pas le droit de supprimer un Actor dont il
-  // n'est pas propriétaire (`User Player1 lacks permission to delete Actor`, découvert au
-  // premier run réel) — le MJ, lui, peut toujours tout supprimer.
+  // Suppression en session MJ (Actors créés par le MJ inclus).
   cy.loginAsGM();
   cy.window().then((win) => win.Actor.deleteDocuments(createdActorIds));
 });
@@ -185,11 +101,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get("input.actor-name").should("not.exist");
   });
 
-  // Retour de test (2026-08-16) : par défaut Foundry n'affiche ni le nom ni la barre de vie
-  // d'un token (DISPLAY_MODES.NONE) — corrigé via un hook `preCreateActor` générique
-  // (dnd-custom-ai.js, indépendant du type d'Actor, cf. aussi ensureTokenDisplayDefaults pour
-  // la migration des Actors déjà existants). Testé ici sur un Actor "character" nu, sans passer
-  // par l'assistant : le hook agit à la création, avant même que l'assistant n'intervienne.
+  // Nom et PV toujours visibles sur le token dès la création.
   it("configure le token (nom/PV toujours visibles) dès la création de l'Actor (T-WIZ-019)", () => {
     createBlankCharacter("Wizard T-WIZ-019").then((id) => {
       cy.window().should((win) => {
@@ -214,7 +126,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
       expect(labels).to.deep.equal(sorted);
     });
 
-    // 12 classes SRD 5e (cf. DND_CUSTOM.classes, scripts/helpers/config.js) + l'option vide "—".
+    // 12 classes + option vide.
     cy.get('select[name="classKey"] option').should("have.length", 13);
     cy.get('select[name="classKey"] option').then(($options) => {
       const labels = [...$options].slice(1).map((option) => option.textContent.trim());
@@ -249,7 +161,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     createBlankCharacter("Wizard T-WIZ-004");
     getWizardForm().should("be.visible");
 
-    // fighter : non lanceur de sorts, sauvegardes Force/Constitution (SRD 5e).
+    // Guerrier : non lanceur, sauvegardes For/Con.
     cy.get('select[name="classKey"]').select("fighter");
     cy.get("[data-class-info]").invoke("text").then((textFighter) => {
       expect(textFighter).to.include(strings.Abilities.str);
@@ -258,7 +170,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
         format(strings.Wizard.ClassInfoSpellcasting, { ability: "" }).split("(")[0].trim()
       );
 
-      // wizard (magicien) : lanceur de sorts (Intelligence), sauvegardes Intelligence/Sagesse.
+      // Magicien : lanceur (Int), sauvegardes Int/Sag.
       cy.get('select[name="classKey"]').select("wizard");
       cy.get("[data-class-info]").invoke("text").should((textWizard) => {
         expect(textWizard, "le résumé doit changer avec la sélection").to.not.equal(textFighter);
@@ -304,8 +216,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     createBlankCharacter("Wizard T-WIZ-007");
     getWizardForm().should("be.visible");
 
-    // Répartition de départ (cf. STANDARD_ARRAY, character-creation-wizard.js) :
-    // str=15, dex=14, con=13, int=12, wis=10, cha=8.
+    // Répartition par défaut : 15/14/13/12/10/8.
     cy.get('select[name="abilities.str"]').should("have.value", "15");
     cy.get('select[name="abilities.int"]').should("have.value", "12");
 
@@ -324,10 +235,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     createBlankCharacter("Gareth le Preux").then((id) => { actorId = id; });
     getWizardForm().should("be.visible");
 
-    // .clear() puis .type() séparément (pas chaîné) : un re-render de l'assistant entre les deux
-    // détachait parfois le champ du DOM ("The subject is no longer attached to the DOM"),
-    // découvert en flake au 4e run réel (2026-08-15) — chaque commande indépendante requery le
-    // DOM à son propre déclenchement plutôt que de réutiliser un sujet potentiellement périmé.
+    // .clear() et .type() séparés : le champ peut être recréé entre les deux.
     cy.get('input[name="name"]').clear();
     cy.get('input[name="name"]').type("Gareth le Preux");
     cy.get('select[name="origin"]').select("ravenmoor");
@@ -382,14 +290,12 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.window().should((win) => {
       const actor = win.game.actors.get(actorId);
       expect(actor.system.class).to.equal("wizard");
-      // Magicien niveau 1 (fullCaster[1] = [2,0,...], scripts/data/spell-slots.json) : au moins
-      // un emplacement de niveau 1 disponible dès la création — prérequis du test lui-même.
+      // Magicien niveau 1 : au moins un emplacement de niveau 1.
       expect(
         actor.system.spells.slots[1].max,
         "prérequis : magicien niveau 1 a des emplacements de niveau 1"
       ).to.be.greaterThan(0);
-      // Le bug corrigé laissait `value` à 0 malgré un `max` > 0 tant qu'aucun repos long n'avait
-      // eu lieu (cf. ANOMALIES_ACTIVES.md, character-creation-wizard.js > spellSlotFillUpdates).
+      // Emplacements remplis dès la création.
       expect(
         actor.system.spells.slots[1].value,
         "emplacements remplis au max dès la création, pas laissés à 0"
@@ -406,10 +312,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get('input[type="checkbox"][name="skills.athletics"]').check();
     cy.get('input[type="checkbox"][name="skills.intimidation"]').check();
 
-    // Force un doublon dans le tableau standard sans passer par un clic : #syncAbilitySelects
-    // n'échange les valeurs qu'en réaction à l'évènement "change", donc écrire .value
-    // directement en JS le contourne (cf. plan, T-WIZ-009 : "modifier le DOM autrement qu'au
-    // clic"). str reste à 15 (valeur par défaut), on pose dex à 15 aussi.
+    // Doublon dans le tableau standard posé directement en JS (sans « change »).
     cy.get('select[name="abilities.dex"]').then(($select) => { $select[0].value = "15"; });
 
     cy.get('form.character-wizard button[type="submit"]').click();
@@ -421,24 +324,8 @@ describe("Assistant de création de personnage — session Joueur", () => {
     });
   });
 
-  // Régression connue historiquement (cf. [[project_souci1_wizard_sheet_race]],
-  // tests/E2E_TEST_PLAN.md > "Prérequis d'infrastructure") : la fiche native flashait par-dessus
-  // l'assistant malgré 3 correctifs antérieurs. Corrigée le 2026-08-16 par un override de
-  // `render()` dans DndCustomActorSheet (scripts/sheets/actor-sheet.js) qui court-circuite tout
-  // rendu tant que l'assistant est ouvert pour ce même Actor (comparaison par référence via
-  // `foundry.applications.instances`), plutôt que de dépendre du seul flag `options.renderSheet`
-  // du hook `preCreateActor` (best-effort, insuffisant seul).
-  //
-  // `{ renderSheet: true }` ci-dessous est essentiel : c'est le vrai déclencheur du bug (celui
-  // qu'utilise en interne le bouton natif "Créer un Acteur" de la sidebar). Un `Actor.create()`
-  // sans options n'exerce jamais ce chemin — utiliser createBlankCharacter() sans cette option
-  // ferait passer ce test trivialement, qu'il y ait bug ou non.
-  //
-  // Limite connue de cette vérification : Cypress observe des points discrets dans le temps
-  // (les deux cy.get ci-dessous), pas un flux continu — un flash isolé entre deux vérifications
-  // pourrait échapper à ce test. Insuffisant pour prouver l'absence totale du bug, suffisant
-  // pour détecter le cas déjà observé (fiche visible juste après la création, avant que
-  // l'assistant ne prenne l'écran).
+  // La fiche n'apparaît jamais par-dessus l'assistant (`renderSheet: true` indispensable).
+  // Contrôles ponctuels : un flash isolé peut échapper à ce test.
   it("ne laisse jamais apparaître la fiche native pendant que l'assistant est ouvert (T-WIZ-010)", () => {
     createBlankCharacter("Wizard T-WIZ-010", { renderSheet: true });
     cy.get("input.actor-name").should("not.exist");
@@ -446,31 +333,11 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get("input.actor-name").should("not.exist");
   });
 
-  // Retour de test (lot 3, point 10 "Assistant de création") : 4e signalement du même bug
-  // ("la fiche s'affiche derrière/devant l'assistant") malgré le correctif de T-WIZ-010 ci-dessus
-  // — réinvestigation complète plutôt que reconfirmation du correctif existant. Les 3 chemins
-  // possibles de rendu de la fiche (cf. grep `.sheet.render`/`new CharacterCreationWizard` dans
-  // scripts/) ont été retestés : création native (T-WIZ-010 ci-dessus, déjà couvert), soumission
-  // de l'assistant -> réouverture de la fiche (T-WIZ-020), et bouton "Assistant" depuis une fiche
-  // déjà ouverte (T-WIZ-021). Aucun chevauchement reproduit sur les trois — `DndCustomActorSheet
-  // #render` (actor-sheet.js) bloque bien à la source, et `ApplicationV2#close()` (cœur Foundry)
-  // attend réellement la fin de l'animation de fermeture (jusqu'à 1000ms) avant de retirer
-  // l'instance de `foundry.applications.instances`, donc avant que `render()` ne puisse s'y fier.
-  // Contrairement à T-WIZ-010 (2 points de contrôle discrets, limite documentée dans son propre
-  // commentaire), ces deux tests échantillonnent en continu (toutes les 50ms) sur toute la
-  // transition — capable de repérer un flash isolé qu'une vérification ponctuelle manquerait.
-  // (`pollNoOverlap` : hissée à la portée du module, cf. plus haut dans ce fichier.)
+    // Soumission de l'assistant (T-WIZ-020) et bouton « Assistant » d'une fiche ouverte (T-WIZ-021) :
+    // aucun chevauchement, échantillonné en continu (pollNoOverlap).
 
-  // 5e signalement testeur (2026-08-19 à 2026-09-05, cf. ClaudeFiles/ANOMALIES_ACTIVES.md) : le
-  // bug persistait malgré T-WIZ-010/020/021 ci-dessus/dessous, tous VERTS — parce qu'aucun ne
-  // pilotait la VRAIE boîte de dialogue native, cf. l'avertissement en tête de fichier. Root
-  // cause confirmée le 2026-09-05 (repro exacte enfin obtenue + traçage en direct) : la boîte de
-  // dialogue `DialogV2` "Créer un Acteur" appelle `doc.sheet.render(true)` dans le callback de
-  // son bouton "ok", un chemin qu'aucune des simulations ci-dessus n'exerce. Corrigé par
-  // `openWizardActorIds` (Set synchrone, character-creation-wizard.js) — ce test aurait échoué
-  // avant ce correctif (vérifié en conditions réelles) et sert de garde-fou contre toute
-  // régression future sur ce chemin précis.
-  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue) : jamais de chevauchement, échantillonné en continu (T-WIZ-022)", () => {
+  // Vraie boîte de dialogue native : aucun chevauchement (protégé par `openWizardActorIds`).
+  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue) : jamais de chevauchement, échantillonné en continu (T-WIZ-022)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     createCharacterViaNativeDialog("Wizard T-WIZ-022");
     pollNoOverlap();
     getWizardForm().should("be.visible");
@@ -492,8 +359,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     cy.get('form.character-wizard button[type="submit"]').click();
 
     pollNoOverlap();
-    // La fiche doit bien finir par apparaître (pas juste "jamais de chevauchement" par absence
-    // totale de rendu) : preuve que le blocage ne s'est pas simplement mué en blocage permanent.
+    // La fiche finit par apparaître.
     cy.get("input.actor-name", { timeout: 10000 }).should("be.visible");
   });
 
@@ -503,9 +369,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
       actorId = id;
     });
     getWizardForm().should("be.visible");
-    // Ferme l'assistant auto-ouvert sans soumettre (Actor vierge, sans classe/origine) : le
-    // bouton "Assistant" n'est visible sur la fiche que dans cet état (cf. showCreationWizardButton,
-    // actor-sheet.js).
+    // Ferme l'assistant : le bouton « Assistant » n'apparaît que sur un Actor vierge.
     cy.get("form.character-wizard .window-header [data-action=\"close\"]").click();
     getWizardForm().should("not.exist");
 
@@ -562,9 +426,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
     getWizardForm().should("be.visible");
 
     cy.get('select[name="origin"]').select("ashar"); // saisie non soumise
-    // Bouton de fermeture de fenêtre AppV2 standard (cf. caveat de sélecteurs en tête de
-    // fichier) plutôt qu'un raccourci clavier, pour rester au plus près d'une vraie
-    // interaction utilisateur.
+    // Bouton de fermeture de la fenêtre.
     cy.get("form.character-wizard .window-header [data-action=\"close\"]").click();
     getWizardForm().should("not.exist");
 
@@ -580,9 +442,7 @@ describe("Assistant de création de personnage — session Joueur", () => {
   });
 });
 
-// T-WIZ-013 : seul scénario de cette section dont le comportement dépend explicitement du rôle
-// (cf. tests/E2E_TEST_PLAN.md > Conventions) — connexion Gamemaster dédiée, même séquence que
-// cypress/e2e/system-load.cy.js plutôt que cy.loginAsPlayer().
+// T-WIZ-013 et T-WIZ-023 : scénarios dépendant du rôle MJ.
 describe("Assistant de création de personnage — session MJ", () => {
   it("ne lie pas automatiquement le personnage créé au MJ (T-WIZ-013)", () => {
     cy.loginAsGM();
@@ -613,11 +473,8 @@ describe("Assistant de création de personnage — session MJ", () => {
     });
   });
 
-  // Pendant MJ de T-WIZ-022 (session Joueur ci-dessus) : même bug, même correctif, mais le
-  // repro utilisateur d'origine (2026-09-05) couvrait explicitement les DEUX rôles — cf.
-  // l'avertissement en tête de fichier pour pourquoi seule la vraie boîte de dialogue native
-  // (pas Actor.create() simulé) exerce ce chemin.
-  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue), session MJ : jamais de chevauchement (T-WIZ-023)", () => {
+  // Équivalent MJ de T-WIZ-022.
+  it("bouton natif 'Créer un Acteur' de la sidebar (vraie boîte de dialogue), session MJ : jamais de chevauchement (T-WIZ-023)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.loginAsGM();
     createCharacterViaNativeDialog("Wizard T-WIZ-023 GM");
     pollNoOverlap();

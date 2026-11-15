@@ -3,9 +3,7 @@ import { findClassContentCandidates } from "./class-content.js";
 
 const { DialogV2 } = foundry.applications.api;
 
-/** Classes proposées par le don "Magie d'initié" (texte du don, SRD 5e) : sous-ensemble des
- *  classes lanceuses de config.js (DND_CUSTOM spellcastingClasses) — exclut le Paladin, qui
- *  n'est PAS une option valide pour ce don précis en RAW (contrairement aux 6 autres). */
+// Classes proposées par le don « Magie d'initié » (Paladin exclu).
 const INITIATE_MAGIC_CLASSES = ["bard", "cleric", "druid", "sorcerer", "warlock", "wizard"];
 
 async function promptClass() {
@@ -78,17 +76,10 @@ async function promptSpells(cantrips, levelOneSpells) {
   });
 }
 
-/** Boîte de dialogue en 2 étapes du don "Magie d'initié" (SRD 5e) : (1) choix d'une classe
- *  lanceuse parmi les 6 proposées par le texte du don, (2) choix de 2 tours de magie DIFFÉRENTS
- *  et d'1 sort de niveau 1, tous trois pris dans la liste de cette classe (Items monde +
- *  compendium `packs/sorts`, cf. findClassContentCandidates réutilisé de class-content.js).
- *
- *  Renvoie `{ classKey, cantripItems: [Item, Item], levelOneSpellItem: Item }` si le joueur va
- *  au bout des deux étapes avec une sélection valide, ou `null` si : la liste de sorts de la
- *  classe choisie est vide (compendium pas encore importé, avertissement affiché), une étape est
- *  annulée, ou la sélection est invalide (même convention que openAbilityScoreImprovementDialog
- *  — ferme plutôt que de rester ouvert, à l'appelant de laisser le bouton "Choisir" disponible
- *  pour réessayer). */
+/**
+ * Dialogue « Magie d'initié » : choix d'une classe, puis de 2 tours de magie et d'1 sort de niveau 1.
+ * @returns {Promise<{classKey: string, cantripItems: Item[], levelOneSpellItem: Item}|null>}
+ */
 export async function chooseInitiateMagicSpells() {
   const classKey = await promptClass();
   if (!classKey) return null;

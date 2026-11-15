@@ -1,10 +1,4 @@
-// Retour de test (lot 3, point 9 "Accessibilité") : audit RGAA/WCAG des couleurs et styles du
-// système, contraste texte/fond en particulier. axe-core (via cypress-axe) sonde le DOM RÉELLEMENT
-// rendu (Chrome, cf. cypress.config.js > --browser chrome) plutôt qu'une matrice de contrastes
-// calculée à la main sur les jetons --dca-* : plus fiable, tient compte des dégradés/textures de
-// fond (styles/dnd-custom-ai.css > --dca-texture-parchment/wood) qu'un simple calcul hex ne
-// capturerait pas. Scope volontairement restreint à la règle "color-contrast" (WCAG 1.4.3/1.4.11)
-// — le reste d'axe-core (structure ARIA, labels...) est hors demande explicite du testeur.
+// Contraste des couleurs (règle axe-core « color-contrast ») sur le DOM réellement rendu.
 
 const createdActorIds = [];
 
@@ -59,7 +53,7 @@ describe("Accessibilité — contraste texte/fond (RGAA/WCAG)", () => {
   });
 
   ["stats", "equipment", "inventory", "abilities", "journal"].forEach((tab) => {
-    it(`fiche personnage — onglet ${tab}`, () => {
+    it(`fiche personnage — onglet ${tab}`, () => { // NOSONAR : audit, violations consignées dans cypress/a11y-violations.json
       goToTab(tab);
       checkContrast(".application.character", `character:${tab}`);
     });
@@ -98,16 +92,7 @@ describe("Accessibilité — fiches d'Item (contraste texte/fond)", () => {
   function fetchWorldItem(name) {
     return cy.window().then((win) => win.game.items.find((candidate) => candidate.name === name));
   }
-  // Retry (jusqu'à 10 x 500ms) plutôt qu'une seule lecture : cette spec est la première de la
-  // suite complète par ordre alphabétique (`npm run test:e2e:run`), donc la première à se
-  // connecter en MJ — l'auto-import des compendiums (hook "ready", content-import.js) est
-  // encore EN COURS à ce moment-là pour les paquets traités tard dans sa boucle séquentielle
-  // (features puis feats puis languages, cf. COMPENDIUM_FILES) : `getDocuments()` peut renvoyer
-  // un index incomplet si interrogé trop tôt (piège rencontré au premier run complet — "feature"
-  // et "language" échouaient, "origin"/"class"/"spell", traités plus tôt dans la boucle,
-  // passaient déjà). D'autres specs qui lisent aussi les compendiums (tab-abilities.cy.js,
-  // item-sheets.cy.js) n'ont jamais eu besoin de ce retry : elles tournent après cette spec dans
-  // l'ordre alphabétique, l'import a alors eu tout le temps de se terminer.
+  // Réessaie (10 × 500ms) : l'import des compendiums peut être encore en cours au premier login MJ.
   function fetchCompendiumItem(pack, name, attempt = 0) {
     return cy
       .window()
@@ -143,7 +128,7 @@ describe("Accessibilité — fiches d'Item (contraste texte/fond)", () => {
   ];
 
   worldItemCases.forEach(({ type, name }) => {
-    it(`fiche d'Item '${type}'`, () => {
+    it(`fiche d'Item '${type}'`, () => { // NOSONAR : assertion via latestItemSheet().should, contraste en audit
       fetchWorldItem(name).then((item) => item.sheet.render(true));
       latestItemSheet().should("be.visible");
       checkContrast(".application.sheet.item", `item:${type}`);
@@ -151,7 +136,7 @@ describe("Accessibilité — fiches d'Item (contraste texte/fond)", () => {
   });
 
   compendiumItemCases.forEach(({ type, pack, name }) => {
-    it(`fiche d'Item '${type}' (compendium)`, () => {
+    it(`fiche d'Item '${type}' (compendium)`, () => { // NOSONAR : assertion via latestItemSheet().should, contraste en audit
       fetchCompendiumItem(pack, name).then((item) => item.sheet.render(true));
       latestItemSheet().should("be.visible");
       checkContrast(".application.sheet.item", `item:${type}`);

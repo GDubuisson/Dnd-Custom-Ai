@@ -3,14 +3,7 @@ import { createGmRelay } from "./gm-relay.js";
 const SYSTEM_ID = "dnd-custom-ai";
 const SOCKET_EVENT = `system.${SYSTEM_ID}.companion`;
 
-/** Profil de compagnon simplifié (Maître des bêtes, Rôdeur — cf. world-items/features.json >
- *  "Compagnon animal") : un Loup SRD 5e, réduit aux champs de NpcData (scripts/data/npc-data.js).
- *  Un seul profil pour l'instant, pas de choix proposé au joueur (contrairement à l'esprit
- *  totem du Barbare) — cohérent avec la simplification déjà assumée ailleurs (équipement de
- *  départ unique par classe, etc.). `attacks` (LISTE, pas `attack` singulier) : bug de régression
- *  corrigé (2026-08-25) — le compagnon se retrouvait sans aucune attaque depuis le passage de
- *  NpcData#attack à #attacks (chantier "Profil d'attaque PNJ", cf. CHANGELOG), Foundry ignorant
- *  silencieusement une clé `attack` absente du schéma au lieu de lever une erreur. */
+// Profil du compagnon animal du Maître des bêtes (Loup SRD).
 const WOLF_PROFILE = {
   type: "npc",
   system: {
@@ -31,10 +24,7 @@ const WOLF_PROFILE = {
   }
 };
 
-/** Crée le compagnon animal de `ownerActor` (Actor `npc` autonome, profil ci-dessus) — le MJ le
- *  place ensuite sur la scène comme n'importe quel PNJ, aucune IA/automatisation de combat
- *  (hors scope, cf. CONCEPTION_FONCTIONNELLE.md). Pose un flag sur `ownerActor` pour ne jamais
- *  recréer de second compagnon par la suite, même si celui-ci est supprimé par le MJ ensuite. */
+/** Crée une seule fois le compagnon animal de `ownerActor` (PNJ autonome). */
 async function createBeastCompanion(ownerActor) {
   const name = game.i18n.format("DND_CUSTOM.Companion.Name", { owner: ownerActor.name });
   await Actor.create({ name, ...WOLF_PROFILE });
@@ -52,12 +42,10 @@ async function performCompanionRequest({ actorUuid } = {}) {
 
 const relay = createGmRelay(SOCKET_EVENT, performCompanionRequest);
 
-/** Écoute du canal socket : un Joueur n'a pas la permission de créer un Actor (cf. Token, même
- *  restriction) — délègue au MJ actif, cf. createGmRelay (gm-relay.js). */
+/** Écoute socket du relais MJ de création du compagnon. */
 export const ensureBeastCompanionRequestListener = relay.register;
 
-/** Point d'entrée appelé par #onSummonCompanion (actor-sheet.js) : crée directement si le
- *  client a la permission (MJ), sinon relaie au MJ actif via socket. */
+/** Crée le compagnon, directement ou via le MJ actif. */
 export async function requestBeastCompanion(ownerActor) {
   await relay.request({ actorUuid: ownerActor.uuid }, game.user.isGM);
 }

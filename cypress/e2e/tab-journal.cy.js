@@ -1,9 +1,4 @@
-// Implémente la section 7 (T-JOURNAL-001, T-JOURNAL-002) de tests/E2E_TEST_PLAN.md — onglet
-// Journal (tab-journal.hbs) : Biographie et Notes (deux champs ProseMirror libres, propriété du
-// Joueur). Les langues connues (ex T-JOURNAL-001/002, "liste + glisser-déposer") ont été
-// déplacées vers l'onglet Capacités le 2026-08-16 (retour de test — cf. tab-abilities.cy.js >
-// "Onglet Capacités/Sorts — langues connues", T-ABIL-022/023) ; le Journal ne contient donc plus
-// que ces deux champs de texte libre.
+// T-JOURNAL-001/002 : onglet Journal, champs Biographie et Notes (ProseMirror).
 
 const createdActorIds = [];
 let sharedActorId;
@@ -50,11 +45,7 @@ describe("Onglet Journal, session Joueur", () => {
 
   it("le champ Biographie est éditable et la valeur persiste (T-JOURNAL-001)", () => {
     sheetRoot().find('prose-mirror[name="system.biography"] [contenteditable="true"]').click().type("Née à Fleuraine.");
-    // Un simple blur (perte de focus, ex. cliquer ailleurs) ne suffit PAS à sauvegarder : le
-    // `<prose-mirror>` de Foundry ne déclenche aucun évènement natif "change" sur un
-    // contenteditable au blur (limitation connue des navigateurs) — vérifié en conditions
-    // réelles (blur explicite + 2s d'attente, toujours rien en base). La sauvegarde passe par le
-    // bouton dédié de la barre d'outils, `data-action="save"` (menu du haut de l'éditeur).
+    // La sauvegarde passe par le bouton `data-action="save"` (un blur ne suffit pas).
     sheetRoot().find('prose-mirror[name="system.biography"] button[data-action="save"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(sharedActorId).system.biography).to.include("Née à Fleuraine.");
@@ -70,10 +61,7 @@ describe("Onglet Journal, session Joueur", () => {
   });
 
   it("le champ Biographie grandit avec un texte long, sans défilement interne (anomalie 2026-08-19)", () => {
-    // 20 paragraphes : dépasse largement le plancher de 8rem (~128px) posé par
-    // .journal-block prose-mirror (styles/dnd-custom-ai.css) — avant le correctif (resize:
-    // vertical retiré), ce contenu défilait à l'intérieur du champ au lieu de s'afficher en
-    // entier.
+    // Contenu dépassant largement les 8rem minimum : le champ doit grandir.
     const longText = Array.from(
       { length: 20 },
       (_, i) => `<p>Ligne ${i + 1} d'un texte volontairement long pour dépasser la hauteur minimale du champ.</p>`

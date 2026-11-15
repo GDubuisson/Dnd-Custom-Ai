@@ -1,8 +1,5 @@
-// Rend les VRAIS templates .hbs du système (Handlebars réel + nos vrais helpers, cf.
-// tests/support/handlebars-env.js) et vérifie la structure du HTML produit via jsdom :
-// présence/absence des bons éléments, attributs `name=`/`data-action=`, etc. Ne vérifie PAS le
-// rendu visuel (positionnement, chevauchement...) — cf. tests/visual pour cette partie, qui a
-// besoin d'un vrai moteur de layout (navigateur).
+// Rend les vrais templates .hbs (vrais helpers) et vérifie la structure HTML via jsdom.
+// Le rendu visuel est couvert par tests/visual.
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
@@ -147,9 +144,7 @@ describe("character-sheet.hbs (en-tête) — sous-classe", () => {
     );
   }
 
-  // Retour de test (lot 3) : une fois choisie, la sous-classe s'affichait côté Joueur comme une
-  // liste déroulante désactivée (visuellement trompeuse, a l'air cliquable) plutôt qu'un champ
-  // classique — la liste déroulante reste réservée au MJ (correction possible à tout moment).
+  // Joueur : sous-classe choisie en champ texte.
   test("sous-classe déjà choisie, côté Joueur : champ texte, pas de <select>", () => {
     const doc = render({ isGM: false, subclassLabel: "Champion" });
     assert.equal(doc.querySelector('select[name="system.subclass"]'), null, "aucun <select> ne devrait être rendu côté Joueur");
@@ -221,9 +216,7 @@ describe("character-sheet.hbs (en-tête) — infobulles de glossaire", () => {
   };
   const doc = parse(renderTemplate("actor/character-sheet.hbs", context));
 
-  // Le helper `glossaryTip` est résolu contre le VRAI scripts/data/glossary.json dans
-  // l'environnement de test (cf. tests/support/handlebars-env.js) — ces assertions vérifient
-  // donc les infobulles réellement rendues, pas une chaîne vide.
+  // `glossaryTip` est résolu contre le vrai glossary.json.
   test("les libellés de constantes portent un data-tooltip non vide (PV, CA, Vitesse, Initiative, Perception passive, Inspiration)", () => {
     const vitalTips = [...doc.querySelectorAll(".hdr-vitals .vital")].map((el) => el.getAttribute("data-tooltip"));
     assert.equal(vitalTips.length, 6, "6 cases de constantes attendues");
@@ -323,9 +316,7 @@ describe("tab-stats.hbs", () => {
   });
 
   test("côté Joueur : pas de case à cocher (lecture seule), juste un indicateur visuel si maîtrisée", () => {
-    // Retour de test : la case à cocher restait affichée pour un Joueur alors qu'elle était
-    // toujours désactivée (la maîtrise ne dépend que de la classe, non éditable par lui) —
-    // remplacée par un simple libellé, sans input du tout.
+    // Joueur : libellé de maîtrise de sauvegarde, sans case à cocher.
     const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
     assert.equal(playerDoc.querySelector('input[name="system.saves.str.proficient"]'), null);
     const label = [...playerDoc.querySelectorAll(".ability-side-label")].find((el) => el.textContent.trim().startsWith("Sauv"));
@@ -343,8 +334,7 @@ describe("tab-stats.hbs", () => {
   });
 
   test("compétences côté Joueur : pas de case (lecture seule), le <li> maîtrisé reste distingué", () => {
-    // Même correctif que pour les sauvegardes : la maîtrise de compétence ne dépend que de la
-    // classe (fixée à la création), la case grisée avait l'air interactive sans l'être.
+    // Joueur : libellé de maîtrise de compétence, sans case à cocher.
     const playerDoc = parse(renderTemplate("actor/tab-stats.hbs", { ...context, isGM: false }));
     assert.equal(playerDoc.querySelector('input[name="system.skills.athletics.proficient"]'), null);
     const athletics = [...playerDoc.querySelectorAll(".skill")].find((li) => li.textContent.includes("Athlétisme"));
@@ -362,11 +352,7 @@ describe("tab-stats.hbs", () => {
   });
 });
 
-// Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
-// profils d'attaque simplifiés (NpcData#attacks, npc-data.js), LISTE depuis le chantier
-// "mécaniques jamais modélisées" point 4/6 (2026-08-25) — un vrai bloc de statistiques SRD 5e a
-// souvent plusieurs attaques distinctes (ex. "Morsure. ... Griffe. ..."), au lieu d'un système
-// d'armes/inventaire complet.
+// Profils d'attaque multiples des PNJ (NpcData#attacks).
 describe("npc-tab-stats.hbs — profils d'attaque (NpcData#attacks)", () => {
   function render(attackOverrides = {}) {
     return parse(
@@ -557,8 +543,7 @@ describe("tab-abilities.hbs — emplacements de sorts par niveau (1-9)", () => {
     assert.equal(details.textContent.trim(), "(1 action, 36 m, Instantanée)");
   });
 
-  // Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared) — purement
-  // informatif, jamais utilisé par aucune règle, source de confusion pour les testeurs.
+  // Pas de case « Préparé ».
   test("aucune case 'Préparé' (concept retiré, cf. system.prepared)", () => {
     const doc = render([{ level: 1, value: 2, max: 4 }]);
     assert.equal(doc.querySelector("[data-item-prepared]"), null, "case Préparé encore présente");
@@ -566,10 +551,7 @@ describe("tab-abilities.hbs — emplacements de sorts par niveau (1-9)", () => {
   });
 });
 
-// Retour de test : liste de Sorts triée par niveau imposait de scroller jusqu'aux paliers hauts
-// — un onglet par niveau (context.spellsByLevel[].active/shortLabel, cf. actor-sheet.js) affiche
-// un seul palier à la fois, cf. #onSelectSpellLevel pour la bascule côté JS (non testée ici,
-// jsdom.parse ne charge pas la fiche ApplicationV2 — seule la structure HTML est vérifiée).
+// Un onglet par palier de sorts, un seul affiché (structure HTML seulement).
 describe("tab-abilities.hbs — onglets par niveau de sort", () => {
   function render(spellsByLevel) {
     return parse(
@@ -675,10 +657,7 @@ describe("tab-abilities.hbs — technique consommant la réserve d'une autre Cap
   });
 });
 
-// Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
-// dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage, cf. system.requiresState
-// dans item-data.js) doit être grisée par défaut et se dégriser automatiquement dès que l'état
-// correspondant est actif sur l'Actor — pas de contrôle manuel séparé à faire par le joueur.
+// Capacité exigeant un état : désactivée tant que l'état est inactif.
 describe("tab-abilities.hbs — Capacité nécessitant un état actif (system.requiresState)", () => {
   function render(activeStatuses) {
     return parse(
@@ -859,10 +838,7 @@ describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/acto
       "barbarian", "bard", "cleric", "druid", "fighter", "monk",
       "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"
     ]) {
-      // Reproduit exactement ce que pose actor-sheet.js pour une classe valide (cf.
-      // context.classFlavorIcon/Title/Tagline) plutôt que de dupliquer les valeurs attendues à
-      // la main : une régression sur la map DND_CUSTOM.classFlavorIcon ou sur les clés i18n se
-      // reflète alors identiquement des deux côtés (le calcul, pas juste sa non-vacuité).
+      // Contexte calculé comme dans actor-sheet.js, pas en dur.
       const doc = render({
         classTabPartial: CLASS_FLAVOR_PARTIAL,
         classFlavorIcon: DND_CUSTOM.classFlavorIcon[key],
@@ -894,9 +870,7 @@ describe("tab-abilities.hbs — en-tête spécialisé par classe (templates/acto
 describe("item/spell-sheet.hbs — schéma simplifié", () => {
   const context = {
     item: { img: "spell.webp", name: "Boule de feu" },
-    // classOptions : cases à cocher pré-calculées par SpellItemSheet#_prepareContext (item-
-    // sheets.js), pas un texte libre séparé par virgules — cf. SpellData#classes, item-data.js,
-    // et le bug historique documenté dans tests/README.md > "Bug connu".
+    // classOptions : cases précalculées par SpellItemSheet#_prepareContext.
     classOptions: [
       { key: "sorcerer", label: "Ensorceleur", checked: true },
       { key: "wizard", label: "Magicien", checked: true }
@@ -935,10 +909,7 @@ describe("item/spell-sheet.hbs — schéma simplifié", () => {
     assert.equal(doc.querySelector('input[name="system.reactionTrigger"]'), null);
   });
 
-  // Retour de test (lot 3) : "Mot de guérison"/"Soin des blessures" ne soignaient rien et ne
-  // lançaient aucun dé — system.heal.dice (cf. SpellData, item-data.js) permet désormais de
-  // configurer un dé de soin sur n'importe quel sort, toujours visible (pas de case à cocher
-  // séparée, contrairement à system.attack/damage).
+  // Champ Dé de soin toujours présent.
   test("champ Dé de soin (system.heal.dice) toujours présent", () => {
     const healInput = doc.querySelector('input[name="system.heal.dice"]');
     assert.ok(healInput, "champ Dé de soin introuvable");
@@ -1199,12 +1170,7 @@ describe("item/class-sheet.hbs — champs structurés (sauvegardes, compétences
   });
 });
 
-// Retour de test (lot 3) : les zones de texte (ProseMirror) des fiches d'Item de compendium
-// restaient pleinement éditables (barre d'outils complète) même pour un Joueur sans droit
-// d'édition réel — verrouillées au même niveau que item/feature-sheet.hbs (déjà correct avant ce
-// lot). Un seul template représentatif ici (Origine, cf. images_test/img_4.png) plutôt qu'une
-// couverture exhaustive des 6 fiches concernées (armor/gear/tool/language/class/spell partagent
-// le même pattern `{{#unless isGM}}disabled{{/unless}}`, déjà vérifié visuellement).
+// Verrouillage MJ/Joueur des fiches d'Item, testé sur la fiche Origine.
 describe("item/origin-sheet.hbs — verrouillage MJ/Joueur", () => {
   function render(isGM) {
     return parse(
@@ -1241,4 +1207,22 @@ describe("item/origin-sheet.hbs — verrouillage MJ/Joueur", () => {
       assert.ok(!el.hasAttribute("disabled"), `${el.tagName}[name="${el.getAttribute("name")}"] ne devrait pas être désactivé côté MJ`);
     }
   });
+});
+
+// Cadre commun `parts/header.hbs` (partial à bloc) : une racine qui contient en-tête puis corps.
+describe("fiches d'Item — cadre commun header.hbs", () => {
+  const ITEM_TYPES = ["armor", "class", "feature", "gear", "language", "origin", "spell", "tool", "weapon"];
+  for (const type of ITEM_TYPES) {
+    test(`${type}-sheet.hbs : racine unique, en-tête puis corps contenant la description`, () => {
+      const doc = parse(
+        renderTemplate(`item/${type}-sheet.hbs`, { item: { img: "i.webp", name: "Objet", type }, isGM: false, system: {}, config: DND_CUSTOM })
+      );
+      const roots = doc.querySelectorAll("body > .item-sheet-root");
+      assert.equal(roots.length, 1, "une seule racine, rien hors du cadre");
+      assert.deepEqual([...roots[0].children].map((child) => child.className), ["item-sheet-header", "item-sheet-body"]);
+      const body = roots[0].querySelector(":scope > .item-sheet-body");
+      assert.ok(body.querySelector(":scope > .field-note"), "note MJ en tête du corps côté Joueur");
+      assert.ok(body.querySelector(".description-row"), "description rendue dans le corps");
+    });
+  }
 });

@@ -1,4 +1,4 @@
-{{> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.weapon" notice="DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}
+{{#> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.weapon" notice="DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.WeaponType"}}</label>
@@ -33,6 +33,10 @@
       </select>
     </div>
     <label class="checkbox-row"><input type="checkbox" name="system.magic" {{#if system.magic}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}> {{localize "DND_CUSTOM.Item.Fields.Magic"}}</label>
+    <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.Enhancement"}}</label>
+      <input type="number" name="system.enhancement" value="{{system.enhancement}}" min="0" max="3" {{#unless isGM}}disabled{{/unless}}>
+    </div>
     {{#if system.properties.versatile}}
     <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.DamageVersatile"}}</label>
@@ -112,6 +116,7 @@
     </div>
   </fieldset>
 
+  {{> "systems/dnd-custom-ai/templates/item/parts/damage-affinities.hbs"}}
+
   {{> "systems/dnd-custom-ai/templates/item/parts/description.hbs" field="description" label="DND_CUSTOM.Item.Fields.Description"}}
-</div>
-</div>
+{{/"systems/dnd-custom-ai/templates/item/parts/header.hbs"}}

@@ -1,11 +1,5 @@
-// Chantier "types de dégâts" — Phase 3 (armes/attaques à dégâts combinés, 2026-08-24, cadrée
-// avec l'utilisateur après les Phases 1/2) : une arme (WeaponData#secondaryDamage, item-data.js)
-// ou une attaque de PNJ (NpcData#attacks[].secondaryDamage, npc-data.js) peut désormais infliger un
-// SECOND type de dégâts bonus (ex. épée de feu = tranchant + feu), résolu INDÉPENDAMMENT du
-// premier contre les résistances de la cible — un seul clic sur "Dégâts" poste 2 messages de
-// chat distincts, chacun avec son propre bouton "Appliquer les dégâts". Jamais de modificateur
-// de caractéristique/bonus de Rage sur le composant secondaire (SRD 5e : dés fixes). Le critique
-// double les dés des DEUX composants (SRD 5e : "roll all of the attack's damage dice twice").
+// Dégâts secondaires d'une arme ou d'une attaque de PNJ : second message résolu séparément,
+// sans modificateur, dés doublés sur un critique.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -85,9 +79,7 @@ function lastMessage() {
       return { id: message.id, total: message.rolls?.[0]?.total, formula: (message.rolls?.[0]?.formula ?? "").replace(/\s+/g, "") };
     });
 }
-// Un seul clic sur "Dégâts" poste maintenant potentiellement 2 messages (principal + secondaire)
-// dans cet ORDRE (le composant principal est toujours roulé/posté en premier, cf.
-// #onRollWeaponDamage/#onRollAttackDamage) : les 2 DERNIERS messages, dans l'ordre chronologique.
+// Les 2 derniers messages : principal puis secondaire.
 function lastTwoMessages() {
   return cy
     .window()
@@ -108,11 +100,7 @@ function lastTwoMessages() {
 
 function applyDamageFromMessage(messageId) {
   cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
-  // Foundry affiche aussi une notification "toast" éphémère du même message, avec son propre
-  // bouton (même data-message-id) — retour de test déjà documenté (tier-c-rage.cy.js). Avec 2
-  // messages postés coup sur coup (composant principal + secondaire), l'ordre DOM toast/log
-  // n'est pas garanti et un `.first()` AVANT `.find()` peut sélectionner l'exemplaire encore
-  // sans bouton monté : on cherche donc le bouton directement parmi TOUS les exemplaires.
+  // Bouton cherché parmi tous les exemplaires du message (journal et notification).
   cy.get(`[data-message-id="${messageId}"]`, { timeout: 10000 }).find("button.dnd-apply-damage-btn").first().click();
 }
 
@@ -139,10 +127,7 @@ describe("Arme à dégâts combinés (épée de feu = tranchant + feu)", () => {
           createItem(win, casterId, {
             name: "Test Flaming Sword",
             type: "weapon",
-            // Vrais dés (pas une valeur fixe "10") : nécessaire pour T-DMGTYPE-021 (critique) —
-            // `Roll#alter` (rollDamage, rolls.js) ne double QUE les termes de dé, jamais un terme
-            // numérique fixe. Les autres tests lisent toujours `roll.total` dynamiquement (jamais
-            // une valeur codée en dur), donc indifférents à ce choix.
+            // Vrais dés : un critique ne double que les termes de dé.
             system: {
               equipped: true,
               weaponType: "meleeMartial",
@@ -210,8 +195,7 @@ describe("Arme à dégâts combinés (épée de feu = tranchant + feu)", () => {
       .then((win) => createNpcTarget(win, { name: "Critical Combined Target" }))
       .then(({ tokenId }) => {
         rollWeaponDamage(tokenId).then(([primary, secondary]) => {
-          // 2 dés au lieu d'1 (Roll#alter double les DiceTerm, jamais un terme numérique fixe —
-          // même vérification par préfixe que Critique brutal, tier-a-mechanics.cy.js).
+          // 2 dés au lieu d'1.
           expect(primary.formula, "composant principal : dés doublés").to.match(/^2d10/);
           expect(secondary.formula, "composant secondaire : dés doublés aussi").to.equal("2d10");
         });
@@ -219,8 +203,7 @@ describe("Arme à dégâts combinés (épée de feu = tranchant + feu)", () => {
   });
 
   it("aucun composant secondaire configuré (arme normale) : un seul message posté, comportement inchangé (T-DMGTYPE-022)", () => {
-    // Acteur DÉDIÉ (pas casterId, déjà équipé de "Test Flaming Sword" en Main principale) : une
-    // arme équipée à la fois, même convention que le reste de ce système.
+    // Acteur dédié sans arme équipée.
     let plainCasterId;
     cy.window()
       .then((win) => createActor(win, { name: "Plain Sword Fighter", type: "character", system: { class: "fighter" } }))
@@ -239,9 +222,7 @@ describe("Arme à dégâts combinés (épée de feu = tranchant + feu)", () => {
     resetMessageBaseline();
     cy.get(".equipment-slot").eq(0).find(".equipment-roll-btn-damage").click();
     lastMessage().then(() => {
-      // Attente réelle avant de revérifier l'absence de croissance : sans elle, un 2e jet
-      // (bug hypothétique) posté de façon asynchrone pourrait ne pas encore être visible au
-      // moment du check, donnant un faux positif.
+      // Attente avant de vérifier qu'aucun second message n'arrive.
       cy.wait(500);
       cy.window().should((win) => {
         expect(win.game.messages.size, "un seul message, pas de composant secondaire").to.equal(knownMessageCount);
@@ -292,10 +273,7 @@ describe("Attaque de PNJ à dégâts combinés (morsure = perforant + poison)", 
         targetToken(tokenId);
         resetMessageBaseline();
         cy.get('button[data-action="rollAttack"]').click();
-        // Remise à zéro APRÈS le jet de touche (message #1, sans bouton "Appliquer") : sinon
-        // lastTwoMessages() peut se déclencher dès que 2 nouveaux messages existent (touche +
-        // principal) et prendre le jet de touche pour le composant "primary" à tort — bug
-        // constaté en test (bouton "Appliquer les dégâts" introuvable sur le jet de touche).
+        // Référence prise après le jet de touche.
         cy.window().should((win) => {
           expect(win.game.messages.size, "jet de touche posté").to.be.greaterThan(knownMessageCount);
         });
@@ -333,10 +311,7 @@ describe("UI — les nouveaux champs 'Dégâts secondaires' soumettent réelleme
         weaponId = items[0].id;
         cy.window().then((win) => win.game.actors.get(casterId).items.get(weaponId).sheet.render(true));
       });
-    // Le dé est soumis (blur) et RECONFIRMÉ persisté avant de toucher le select : sinon les 2
-    // soumissions "change" quasi simultanées (blur du dé + change du select) peuvent partir en
-    // parallèle contre le même Item et celle capturée en premier (dé seul, type encore vide)
-    // peut résoudre APRÈS l'autre et écraser le type tout juste choisi — bug constaté en test.
+    // Dé confirmé persisté avant de choisir le type (évite deux soumissions concurrentes).
     cy.get(".application.sheet.item", { timeout: 10000 }).find('input[name="system.secondaryDamage.dice"]').type("1d6").blur();
     cy.window().should((win) => {
       expect(win.game.actors.get(casterId).items.get(weaponId).system.secondaryDamage.dice, "dé secondaire persisté").to.equal("1d6");
@@ -359,11 +334,10 @@ describe("UI — les nouveaux champs 'Dégâts secondaires' soumettent réelleme
         cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
       });
     cy.get(".application.npc input.actor-name", { timeout: 15000 }).should("be.visible");
-    // NpcData#attacks démarre vide (`initial: []`, cf. npc-data.js) : pose un premier profil
-    // d'attaque avant de pouvoir remplir ses champs de dégâts secondaires.
+    // Ajoute un premier profil d'attaque.
     cy.get(".application.npc button[data-action=\"addNpcAttack\"]").click();
     cy.get(".application.npc input[name=\"system.attacks.0.secondaryDamage.dice\"]", { timeout: 10000 }).should("exist");
-    // Même précaution anti-race que T-DMGTYPE-024 (dé confirmé persisté avant le select).
+    // Dé confirmé persisté avant de choisir le type.
     cy.get(".application.npc input[name=\"system.attacks.0.secondaryDamage.dice\"]").type("1d4").blur();
     cy.window().should((win) => {
       expect(win.game.actors.get(npcId).system.attacks[0].secondaryDamage.dice, "dé secondaire persisté (PNJ)").to.equal("1d4");

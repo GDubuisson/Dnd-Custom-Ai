@@ -1,8 +1,5 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Barbare : 2 nouvelles sous-classes
-// ajoutées (Voie du Cœur sauvage/wildheart, Voie de la Magie sauvage/wildMagic), en plus de la
-// Voie du Berserker déjà existante. Vérifie l'octroi des Capacités liées ET le scénario minimal
-// de chaque mécanique propre (choix d'esprit totem, tirage automatique de Surtenance sauvage).
+// Sous-classes du Barbare (Cœur sauvage, Magie sauvage) : octroi des Capacités, choix d'esprit
+// totem et Surtenance sauvage automatique.
 
 const createdActorIds = [];
 
@@ -71,7 +68,7 @@ describe("Sous-classes de Barbare — Voie du Cœur sauvage / Voie de la Magie s
           expect(win.game.actors.get(actorId).system.combat.totemSpirit, "esprit totem persisté").to.equal("eagle");
         });
 
-        // Choix verrouillé : le bouton "Choisir" ne doit plus jamais réapparaître.
+        // Choix verrouillé : plus de bouton « Choisir ».
         sheetRoot().find('li[data-item-id] button[data-action="chooseFeatureOption"]').should("not.exist");
       });
     });
@@ -100,9 +97,7 @@ describe("Sous-classes de Barbare — Voie du Cœur sauvage / Voie de la Magie s
         expect(actor.items.find((i) => i.name === "Surtenance sauvage"), "Surtenance sauvage octroyée").to.exist;
       });
 
-      // Le hook createActiveEffect (dnd-custom-ai.js) ne traite l'activation de Rage que côté
-      // MJ actif (game.users.activeGM), même garde que le décompte de durée existant — bascule
-      // donc en session MJ ici, comme les tests "raging" existants (combat-tracker.cy.js).
+      // L'activation de Rage est traitée par le MJ actif : session MJ.
       cy.loginAsGM();
 
       cy.window().its("game.messages.size").then((before) => {

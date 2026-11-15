@@ -1,15 +1,5 @@
-// Implémente "Réduction de dégâts REÇUS" (Déviation de projectiles, Flamme protectrice),
-// restriction de conception levée le 2026-08-22 (revue ANOMALIES_ACTIVES.md) : la mécanique de
-// base (rollFormula + bouton "Lancer") existait déjà pour d'autres Capacités, il ne manquait que
-// l'application du résultat à une cible. Nouveau flag `FeatureData#reducesDamage`
-// (item-data.js) : réutilise directement `applyHealToTargets` (dnd-custom-ai.js) — même effet
-// mécanique qu'un soin (ajoute des PV à la cible ciblée, plafonné au max), seul le libellé du
-// bouton diffère ("Appliquer la réduction").
-//
-// Capacité de test créée directement via createEmbeddedDocuments (comme "Test Fireball" dans
-// spell-saving-throws.cy.js) avec un rollFormula fixe ("5", sans dé) pour un total prévisible, et
-// `activation: "action"` (plutôt que "reaction" comme les 2 vraies Capacités) : la garde-fou de
-// réaction a sa propre couverture ailleurs, hors sujet ici.
+// Capacités réduisant les dégâts reçus (`reducesDamage`) : bouton « Appliquer la réduction ».
+// Capacité de test à formule fixe ("5") et activation « action ».
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -73,10 +63,7 @@ describe("Réduction de dégâts reçus — jet puis application à la cible cib
   beforeEach(() => cy.loginAsGM());
 
   it("réduit les PV manquants de la cible, plafonné au max, non ré-applicable deux fois", () => {
-    // Garde-fou : le monde de test partagé entre toutes les specs peut rester en pause (overlay
-    // "Game Paused" qui bloque toute interaction), résidu d'une session précédente sans rapport
-    // avec ce test — jamais observé comme intentionnel, on lève la pause si besoin avant de
-    // continuer.
+    // Lève la pause éventuelle du monde de test.
     cy.window().then((win) => (win.game.paused ? win.game.togglePause(false, { broadcast: true }) : null));
 
     cy.window()
@@ -105,9 +92,7 @@ describe("Réduction de dégâts reçus — jet puis application à la cible cib
     cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
     sheetRoot().find('nav.tabs [data-tab="abilities"]').click();
     sheetRoot().contains("li", "Test Réduction").find('button[data-action="rollFeature"]').click();
-    // Ferme la fiche : elle recouvre le journal de chat en résolution d'écran réduite (headless),
-    // même piège déjà documenté ailleurs (spell-saving-throws.cy.js) pour deux fiches ouvertes
-    // en même temps.
+    // Ferme la fiche, qui recouvre le chat.
     cy.window().then((win) => win.game.actors.get(reactorId).sheet.close());
 
     cy.window()
@@ -117,10 +102,8 @@ describe("Réduction de dégâts reçus — jet puis application à la cible cib
         cy.get(".chat-message .dnd-apply-heal-btn", { timeout: 10000 }).last().should("contain.text", buttonLabel);
       });
 
-    // `{force: true}` : le canvas peut afficher un voile de chargement plein écran juste après
-    // la fermeture de la fiche (retour de test), qui recouvre visuellement la sidebar sans
-    // empêcher réellement le bouton de recevoir le clic.
-    cy.get(".chat-message .dnd-apply-heal-btn").last().click({ force: true });
+    // `force` : un voile de chargement du canvas peut recouvrir la sidebar.
+    cy.get(".chat-message .dnd-apply-heal-btn").last().click({ force: true }); // NOSONAR : voile de chargement (cf. ci-dessus)
 
     cy.window().should((win) => {
       const target = win.game.actors.get(targetId);

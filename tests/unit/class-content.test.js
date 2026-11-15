@@ -5,11 +5,7 @@ import { setGameStub } from "../support/foundry-stub.js";
 import { WORLD_FEATURES, WORLD_SPELLS, WORLD_LANGUAGES, ORIGINS } from "../support/fixtures.js";
 import { grantClassContent, grantLanguages } from "../../scripts/helpers/class-content.js";
 
-/** Enrobe une entrée JSON brute (world-items/*.json) en simili-Item Foundry : seuls `name`,
- *  `type`, `system` et `toObject()` sont lus par class-content.js. `system.classes` (SpellData,
- *  cf. item-data.js > SetField) est un vrai `Set` une fois passé par le pipeline DataModel réel
- *  de Foundry, jamais un tableau brut — reconstruit ici pour que `.has()` (grantClassContent)
- *  se comporte comme en conditions réelles, ce stub ne rejouant pas ce pipeline. */
+/** Simili-Item depuis une entrée JSON brute ; `system.classes` converti en Set. */
 function asItem(raw) {
   const system =
     raw.type === "spell" && Array.isArray(raw.system.classes)
@@ -18,9 +14,7 @@ function asItem(raw) {
   return { name: raw.name, type: raw.type, system, toObject: () => ({ ...raw }) };
 }
 
-/** Fausse Actor : seuls `items.contents` et `createEmbeddedDocuments` sont lus/appelés par
- *  grantClassContent. `createEmbeddedDocuments` pousse réellement dans `items.contents` pour
- *  pouvoir tester l'idempotence (un deuxième appel ne doit rien ré-octroyer). */
+/** Faux Actor dont `createEmbeddedDocuments` alimente `items.contents`. */
 function makeActor({ level = 1, class: classKey = "wizard", subclass = "", maxLevel = 0, owned = [] } = {}) {
   const items = owned.map(asItem);
   return {
@@ -37,8 +31,7 @@ function makeActor({ level = 1, class: classKey = "wizard", subclass = "", maxLe
   };
 }
 
-/** Fausse compendium collection : `packId` -> tableau d'entrées brutes (cf. world-items/*.json),
- *  exposant `getDocuments()` (async) et `index.size`, seule API utilisée par class-content.js. */
+/** Faux compendiums : `getDocuments()` et `index.size`. */
 function makePacks(byPackId) {
   return {
     get: (packId) => {
@@ -137,10 +130,7 @@ describe("grantClassContent — Capacités universelles (FeatureData#universal)"
 });
 
 describe("grantClassContent — Capacités de sous-classe", () => {
-  // Jeu de données synthétique (pas WORLD_FEATURES) : une Capacité de classe de base et deux
-  // Capacités de sous-classe (Voie du Berserker, niveaux 3 et 6) pour le Barbare, plus une
-  // Capacité d'une autre sous-classe (Collège du Savoir, Barde) — teste le mécanisme
-  // indépendamment du contenu réel écrit dans world-items/features.json.
+  // Données synthétiques : une Capacité de base, deux de Berserker, une d'une autre sous-classe.
   const SUBCLASS_FEATURES = [
     { name: "Rage", type: "feature", system: { class: "barbarian", subclass: "", level: 1 } },
     { name: "Frénésie", type: "feature", system: { class: "barbarian", subclass: "berserker", level: 3 } },
@@ -239,8 +229,7 @@ describe("grantClassContent — avertissement compendium vide", () => {
   });
 
   test("compendium peuplé mais rien de nouveau à ce niveau précis -> pas d'avertissement", async () => {
-    // Barbare niveau 1 a déjà tout reçu ; relancer au même niveau ne doit pas avertir (cf. test
-    // d'idempotence ci-dessus) même si granted.length === 0, puisque le compendium n'est pas vide.
+    // Relancer au même niveau ne doit pas avertir, le compendium n'étant pas vide.
     const actor = makeActor({ class: "barbarian", level: 1 });
     await grantClassContent(actor, "barbarian", 1);
     await grantClassContent(actor, "barbarian", 1);

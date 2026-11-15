@@ -7,16 +7,10 @@ import { LOCALES, formatString } from "./i18n.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..", "..");
 
-// `registerHandlebarsHelpers()` (scripts/helpers/handlebars-helpers.js) référence l'identifiant
-// global `Handlebars`, tel que Foundry l'expose côté client — on le pose ici avant de l'appeler
-// pour réutiliser mot pour mot le même code que le système en production, pas une réécriture.
+// Global `Handlebars`, comme côté client Foundry.
 globalThis.Handlebars = Handlebars;
 
-// `localize`/`selectOptions` : deux helpers fournis nativement par le cœur Foundry (pas par ce
-// système), utilisés partout dans les templates (cf. grep sur templates/**/*.hbs). Réimplémentés
-// ici a minima pour les tests de rendu — résolus contre les VRAIS fichiers lang/*.json (pas un
-// simple echo de la clé) pour que le rendu produise du texte réaliste et que toute clé i18n
-// manquante saute aux yeux dans le HTML généré (elle apparaît alors telle quelle, non résolue).
+// Helpers natifs Foundry `localize` et `selectOptions`, résolus contre les vrais lang/*.json.
 const locale = LOCALES.fr;
 
 Handlebars.registerHelper("localize", function (value, options) {
@@ -43,10 +37,7 @@ Handlebars.registerHelper("selectOptions", function (choices, options) {
 const { registerHandlebarsHelpers } = await import("../../scripts/helpers/handlebars-helpers.js");
 registerHandlebarsHelpers();
 
-// `glossaryTip` (handlebars-helpers.js) lit `game.dndCustomAi.glossary`, une Map peuplée au
-// hook "ready" en jeu — absente ici. Ré-enregistré contre le VRAI scripts/data/glossary.json
-// (même principe que `localize`/`selectOptions` ci-dessus, résolus contre les vrais fichiers) :
-// les tests de rendu vérifient ainsi les infobulles réelles, pas une chaîne vide.
+// `glossaryTip` résolu contre le vrai glossary.json.
 const GLOSSARY = new Map(
   JSON.parse(readFileSync(path.join(ROOT, "scripts", "data", "glossary.json"), "utf8")).map((e) => [
     e.key,
@@ -55,18 +46,13 @@ const GLOSSARY = new Map(
 );
 Handlebars.registerHelper("glossaryTip", (key) => GLOSSARY.get(key) ?? "");
 
-// En-tête d'onglet Capacités/Sorts spécialisé par classe (cf. scripts/dnd-custom-ai.js >
-// loadTemplates au hook "init") : même clé de partial (chemin système complet) que
-// context.classTabPartial (actor-sheet.js), pour que {{> (lookup this "classTabPartial")}}
-// se résolve à l'identique en test et en jeu.
+// Partial d'en-tête de classe, sous son chemin système complet.
 Handlebars.registerPartial(
   "systems/dnd-custom-ai/templates/actor/abilities/class-flavor.hbs",
   readFileSync(path.join(ROOT, "templates", "actor", "abilities", "class-flavor.hbs"), "utf8")
 );
 
-// Partials communs aux fiches d'Item (cf. scripts/dnd-custom-ai.js > loadTemplates) : enregistrés
-// sous le même chemin système complet qu'en jeu, pour que `{{> "systems/dnd-custom-ai/templates/
-// item/parts/xxx.hbs"}}` se résolve à l'identique dans les tests de rendu (tests/dom).
+// Partials communs des fiches d'Item, sous leur chemin système complet.
 const ITEM_PARTS_DIR = path.join(ROOT, "templates", "item", "parts");
 for (const entry of readdirSync(ITEM_PARTS_DIR)) {
   if (!entry.endsWith(".hbs")) continue;

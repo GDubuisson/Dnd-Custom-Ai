@@ -1,10 +1,4 @@
-// Points d'inspiration (PI, règle maison — 2026-08-25, sur demande explicite de l'utilisateur) :
-// ressource libre accordée manuellement par le MJ (system.attributes.inspirationPoints,
-// CharacterData uniquement), dépensée pour relancer intégralement un test de caractéristique ou
-// de compétence déjà lancé. Contrairement à Chanceux/Chance du Fiélon/Indomptable
-// (cf. tier-a-mechanics.cy.js) qui gardent le message d'origine et postent une relance à la
-// suite, ce mécanisme SUPPRIME le message d'origine du chat (`message.delete()`) — seul le
-// nouveau jet reste visible, résultat toujours conservé.
+// Points d'inspiration : relance d'un test qui remplace le message d'origine dans le chat.
 
 const createdActorIds = [];
 
@@ -123,7 +117,7 @@ describe("Points d'inspiration — jet de compétence", () => {
       expect(win.game.actors.get(charId).system.attributes.inspirationPoints, "dernier point consommé").to.equal(0);
     });
 
-    // Plus aucun point : un second jet ne doit plus proposer le bouton.
+    // Plus aucun point : plus de bouton au jet suivant.
     cy.window().then((win) => win.game.actors.get(charId).sheet.render(true));
     goToTab("stats");
     cy.window().its("game.messages.size").then((sizeBefore) => {
@@ -148,7 +142,7 @@ describe("Points d'inspiration — hors-scope (sauvegarde, aucun point)", () => 
         createdActorIds.push(id);
       }
     );
-    // inspirationPoints reste à sa valeur par défaut (0), aucun octroi du MJ.
+    // Aucun point accordé par le MJ.
   });
 
   beforeEach(() => cy.loginAsPlayer());

@@ -22,9 +22,11 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 
 | Fichier | Contenu | Type d'Item | Destination |
 |---|---|---|---|
-| `armors.json` | 13 armures SRD 5e (dont le bouclier) | `armor` | Items du monde |
-| `weapons.json` | 37 armes SRD 5e (courantes et de guerre) | `weapon` | Items du monde |
-| `gear.json` | 15 objets d'aventurier courants | `gear` | Items du monde |
+| `armors.json` | 13 armures SRD 5e (dont le bouclier) + 26 ouvrages rituels et pièces rares : armures et bouclier +1/+2, mithral, armures de résistance, accessoires (Anneau et Cape de protection, Bracelets de défense, 10 Anneaux de résistance) | `armor` | Items du monde |
+| `weapons.json` | 37 armes SRD 5e (courantes et de guerre) + 10 ouvrages rituels (+1/+2) | `weapon` | Items du monde |
+| `gear.json` | 52 objets d'aventurier SRD 5e (dont munitions et contenants) + 4 préparations rituelles et 3 préparations d'herboriste | `gear` | Items du monde |
+| `regional.json` | 46 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
+| `historical.json` | 15 pièces historiques uniques, sans pouvoir ni bonus | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
@@ -57,15 +59,42 @@ await game.dndCustomAi.importSystemContent();
 
 ## Note sur les outils
 
-Les outils (`tools.json`) sont importés avec `useEffect.skill`/`useEffect.bonus` vides pour
-la plupart : en SRD 5e, un outil confère la **maîtrise** (le bonus de maîtrise du personnage
-s'applique aux tests concernés), pas un bonus fixe propre à l'objet. Quand `useEffect.skill`
-est renseigné, un bouton "Utiliser" apparaît sur l'inventaire de la fiche de personnage et
-lance automatiquement 1d20 + modificateur de la caractéristique liée + bonus de maîtrise
-(toujours appliqué, indépendamment de la maîtrise de la compétence elle-même) +
-`useEffect.bonus` s'il est renseigné. Seuls les "Outils de voleur" ont une compétence
-pré-remplie (`sleightOfHand`) à titre d'exemple ; laissez `useEffect.skill` vide pour un outil
-sans automatisation (le bonus de maîtrise reste alors à appliquer manuellement en jeu).
+Chaque outil (`tools.json`) est lié à une compétence (`useEffect.skill`), choisie parmi celles
+que le *Xanathar's Guide to Everything* associe à cet outil (ex. Kit d'herboristerie → Nature,
+Kit de déguisement → Tromperie). Le bouton "Utiliser" de l'inventaire lance 1d20 + modificateur
+de la caractéristique liée + bonus de maîtrise (l'outil confère sa propre maîtrise) +
+`useEffect.bonus`, et consomme une unité de l'outil.
+
+## Note sur les objets magiques
+
+Le monde est à magie faible : la magie relève d'artisans ritualistes, lents et coûteux. Les
+objets magiques sont donc présentés comme des **ouvrages rituels**, plafonnés à +2 (les objets +3
+et les armes à effets spéciaux reviendront si l'univers évolue vers la haute fantasy). Ils suivent
+le SRD 5.1 ; leurs prix (absents du SRD) reprennent les fourchettes par rareté du Guide du Maître
+(peu courant 500 po, rare 5 000 po, très rare 20 000 po). Effets automatisés : bonus d'arme +X
+(`enhancement`, attaque et dégâts), CA et bonus de sauvegarde des armures et accessoires équipés
+(`saveBonus`, `unarmoredOnly` pour les Bracelets de défense), résistances accordées par une armure,
+un accessoire ou une arme équipés, soin à dés (`use.healDice`, `use.consumable`).
+L'harmonisation n'est pas suivie par le système : au MJ de la faire respecter.
+
+Deux familles de préparations de guérison : les **préparations rituelles** des guildes de
+ritualistes (2d4+2 à 10d4+20, de 50 à 1 350 po) et les **préparations d'herboriste**, bon marché et
+peu efficaces (1d4 à 2d4, de 5 pa à 5 po).
+
+## Note sur les objets régionaux et historiques
+
+`regional.json` et `historical.json` mélangent les types d'objets ; chaque entrée porte sa région
+dans `flags["dnd-custom-ai"].region` (clé de `DND_CUSTOM.regions`), qui sert à la ranger dans le
+sous-dossier de sa région. Ce sont des créations propres à l'univers, calibrées sur un objet SRD
+ou dérivées de ses calculs (dérogation validée par l'auteur du monde). Les pièces historiques
+reprennent exactement les caractéristiques de leur objet de base, sans bonus ni effet : leur
+valeur tient à leur histoire.
+
+Leur description reste neutre, avec un indice ; leur histoire vit dans
+`scripts/data/item-lore.json` et alimente le Journal **« Chroniques des objets »**, créé au
+chargement et réservé au MJ (une page par région). Le MJ choisit ce qu'il partage. Comme les
+autres Items du monde, ces objets ne sont pas visibles des joueurs tant que le MJ ne les leur
+donne pas.
 
 ## Note sur les sorts
 

@@ -1,11 +1,5 @@
-// Refonte "Forme sauvage" (Druide, 2026-09-04) : remplace le ciblage manuel d'un jeton MJ par
-// un dialogue de choix (DND_CUSTOM.wildShapeForms, config.js), filtré par niveau via le CR déjà
-// présent sur chaque PNJ du compendium "adversaires" (world-items/npcs.json). L'Actor de la
-// forme est créé/réutilisé automatiquement par personnage ET par forme (flag
-// wildShapeFormActors, cf. scripts/helpers/wild-shape-form.js) — plus besoin que le MJ prépare
-// un jeton à l'avance. Le mécanisme de PV séparés (2e réserve, retour auto à 0 PV) reste
-// inchangé (cf. cypress/e2e/subclass-druid.cy.js pour "Forme sauvage de combat", indépendant de
-// ce fichier).
+// Forme sauvage : choix de la forme dans un dialogue filtré par niveau, Actor de forme créé ou
+// réutilisé par personnage et par forme, PV de la forme en 2e réserve.
 
 const createdActorIds = [];
 
@@ -49,10 +43,7 @@ before(() => {
       createdActorIds.push(id);
     }
   );
-  // "Forme sauvage" requiert le niveau 2 (grantClassContent) : plutôt que de faire monter de
-  // niveau ce personnage de test via un réimport de compendium, le niveau est posé directement
-  // ET l'Item est créé DIRECTEMENT avec les données actuelles de world-items/features.json (même
-  // pattern que deferred-rider-spells.cy.js pour un contenu modifié cette session).
+  // Niveau 2 et Capacité créée directement depuis les données actuelles.
   cy.window().then((win) => updateActor(win, win.game.actors.get(druidId), { "system.attributes.level": 2 }, { dndCustomWizard: true }));
   cy.window().then((win) =>
     win.game.actors.get(druidId).createEmbeddedDocuments(
@@ -80,9 +71,7 @@ before(() => {
 
 after(() => {
   cy.loginAsGM();
-  // Inclut les Actors de forme créés en cours de test (flag wildShapeFormActors, cf.
-  // wild-shape-form.js) : sans ça, "Loup (Wild Shape Druid)" resterait orphelin dans le monde
-  // (même piège que déjà documenté pour le Compagnon animal, cf. subclass-ranger.cy.js).
+  // Supprime aussi les Actors de forme créés.
   cy.window().then((win) => {
     const formActorIds = Object.values(win.game.actors.get(druidId)?.getFlag("dnd-custom-ai", "wildShapeFormActors") ?? {});
     return win.Actor.deleteDocuments([...createdActorIds, ...formActorIds]);
@@ -90,11 +79,7 @@ after(() => {
 });
 
 describe("Forme sauvage — dialogue de choix, chip de statut, attaques, retour volontaire", () => {
-  // Session MJ (pas Joueur) pour déclencher la transformation : la création/réutilisation de
-  // l'Actor de la forme passe par requestWildShapeTransformation (wild-shape-form.js), qui exige
-  // soit d'être MJ, soit un relais socket vers un MJ actif RÉELLEMENT connecté en parallèle —
-  // Cypress ne pilote qu'une seule session à la fois, donc le relais n'est pas exerçable en E2E,
-  // même limitation/même convention que #onSummonCompanion (cf. cypress/e2e/subclass-ranger.cy.js).
+  // Session MJ : la création de l'Actor de forme exige le MJ (relais non testable).
   beforeEach(() => {
     cy.loginAsGM();
   });
@@ -112,7 +97,7 @@ describe("Forme sauvage — dialogue de choix, chip de statut, attaques, retour 
       .then((title) => cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title));
 
     cy.get('dialog.application.dialog input[type="radio"][name="wildShapeFormName"][value="Loup"]').should("exist");
-    // Ours brun (CR 1, minLevel 8, cf. DND_CUSTOM.wildShapeForms) : absent pour ce druide niveau 2.
+    // Ours brun (niveau 8 minimum) absent au niveau 2.
     cy.get('dialog.application.dialog input[type="radio"][name="wildShapeFormName"][value="Ours brun"]').should("not.exist");
 
     cy.get('dialog.application.dialog button[data-action="close"]').click();

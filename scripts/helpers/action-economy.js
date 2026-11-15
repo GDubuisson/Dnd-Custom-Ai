@@ -8,29 +8,15 @@ const FIELD_BY_ACTIVATION = {
   bonusAction: "bonusActionAvailable"
 };
 
-/** Même garde que criticalRules (cf. isActorInCombat, rolls.js) : ce suivi n'a de sens que
- *  pendant un VRAI tour (retour de l'utilisateur, 2026-08-23) — un personnage doit être
- *  Combattant d'un combat existant, pas juste "une scène a un combat quelque part". Hors combat,
- *  l'Action/l'Action bonus ne sont ni consommées ni rappelées : aucun tour n'existe pour les
- *  régénérer. */
+/** Indique si `actor` est Combattant d'un combat démarré. */
 function isActorInActiveCombat(actor) {
   return Boolean(game.combat?.combatants.some((combatant) => combatant.actor?.id === actor.id));
 }
 
-/** Suivi NON-bloquant de l'Action/Action bonus du tour, SRD 5e (cf. system.combat.actionAvailable/
- *  bonusActionAvailable, CharacterData ; régénérés au début du tour comme system.combat.
- *  reactionAvailable, hooks updateCombat/deleteCombat dans dnd-custom-ai.js). Contrairement à la
- *  réaction (`consumeActionEconomy` ci-dessous), ne bloque jamais le jet lui-même — décision
- *  de cadrage du 2026-08-23 (chantier "Suivi de l'action/action bonus") pour ne jamais gêner un
- *  cas légitime non prévu par cette automatisation : seul un rappel de chat avertit si l'Action/
- *  Action bonus est déjà consommée ce tour. Actif UNIQUEMENT en combat (cf. isActorInActiveCombat
- *  ci-dessus) — hors combat, ni consommation ni rappel.
- *
- *  `isWeaponAttack` : les personnages avec une Capacité "Attaque supplémentaire" (Barbare/
- *  Guerrier/Moine/Paladin/Rôdeur) enchaînent légitimement plusieurs jets d'attaque à l'arme pour
- *  une seule Action — le rappel est supprimé pour eux sur ces jets précis (l'Action reste tout de
- *  même marquée consommée dès le premier jet, pour continuer à avertir sur un Sort/Capacité qui
- *  suivrait ensuite). */
+/**
+ * Suivi non bloquant de l'Action / Action bonus du tour : rappel en chat si déjà consommée.
+ * `isWeaponAttack` évite le rappel aux personnages dotés d'Attaque supplémentaire.
+ */
 export async function noteActionEconomyUsage(actor, activation, { isWeaponAttack = false } = {}) {
   const field = FIELD_BY_ACTIVATION[activation];
   if (!field || actor.type !== "character" || !isActorInActiveCombat(actor)) return;
@@ -55,16 +41,10 @@ export async function noteActionEconomyUsage(actor, activation, { isWeaponAttack
   });
 }
 
-/** Économie d'action de combat (SRD 5e) avant l'usage d'`item` (Capacité ou Sort) par `actor` :
- *  - `activation === "reaction"` : vérifie que la réaction n'est pas déjà consommée ce round
- *    (`system.combat.reactionAvailable`, cf. `canUseReaction`) et la marque utilisée — **bloquant**.
- *  - `"action"` / `"bonusAction"` : suivi NON-bloquant délégué à `noteActionEconomyUsage`.
- *
- *  Renvoie `true` si l'action peut se poursuivre (item non-réaction, ou réaction disponible et
- *  désormais consommée), `false` UNIQUEMENT si une réaction est bloquée (avertissement affiché) —
- *  l'appelant doit alors abandonner sans avoir décompté de charge. Extrait de
- *  l'ancienne méthode privée `DndCustomActorSheet#consumeActionEconomy` (fonction de module pour
- *  rester appelable depuis les mixins de la fiche). */
+/**
+ * Applique l'économie d'action avant l'usage d'`item` ; seule la réaction est bloquante.
+ * @returns {Promise<boolean>} `false` si la réaction est déjà consommée
+ */
 export async function consumeActionEconomy(actor, item) {
   if (item.system.activation === "reaction") {
     if (!canUseReaction(actor.system)) {

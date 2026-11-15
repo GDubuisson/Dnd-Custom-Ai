@@ -1,6 +1,4 @@
-// L'ordre des imports compte : foundry-stub.js DOIT être importé (pour son effet de bord sur
-// globalThis.foundry) avant character-data.js, sans quoi `class CharacterData extends
-// foundry.abstract.TypeDataModel` lève une ReferenceError au chargement du module.
+// foundry-stub.js doit être importé avant character-data.js (définit globalThis.foundry).
 import "../support/foundry-stub.js";
 import { test, describe, beforeEach } from "node:test";
 import assert from "node:assert/strict";
@@ -8,9 +6,7 @@ import { setGameStub } from "../support/foundry-stub.js";
 import { buildCharacterFixture, buildEquippedItem, ORIGINS, SPELL_SLOT_TABLES } from "../support/fixtures.js";
 import { CharacterData } from "../../scripts/data/character-data.js";
 
-/** Exécute la VRAIE méthode de calcul dérivé du système (jamais une réécriture) sur un objet
- *  brut au format du schéma, sans passer par le pipeline Document/DataModel complet de Foundry
- *  (cf. tests/support/foundry-stub.js pour pourquoi c'est possible/suffisant ici). */
+/** Exécute le vrai `prepareDerivedData` sur un objet brut. */
 function prepare(fixture) {
   CharacterData.prototype.prepareDerivedData.call(fixture);
   return fixture;
@@ -302,6 +298,15 @@ describe("CharacterData#prepareDerivedData — dérivés non persistés", () => 
     const fixture = buildCharacterFixture({});
     prepare(fixture);
     assert.equal(fixture.stealthDisadvantage, false);
+  });
+  test("saveBonus cumule les objets équipés et ignore les objets rangés", () => {
+    const cloak = buildEquippedItem("armor", { slot: "accessory", baseAC: 1, saveBonus: 1 });
+    const ring = buildEquippedItem("armor", { slot: "accessory", baseAC: 1, saveBonus: 1 });
+    const stored = { type: "armor", system: { slot: "accessory", baseAC: 1, saveBonus: 1, equipped: false } };
+    const fixture = buildCharacterFixture({ items: [cloak, ring, stored] });
+    prepare(fixture);
+    assert.equal(fixture.attributes.saveBonus, 2);
+    assert.equal(fixture.attributes.ac.value, 10 + 0 + 2);
   });
   test("initiativeMod = mod Dex", () => {
     const fixture = buildCharacterFixture({ abilities: { dex: { value: 18, total: 18 } } });

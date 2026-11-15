@@ -1,12 +1,5 @@
-// Chantier "types de dégâts" — Phase 1 (physique, 2026-08-24, cadré avec l'utilisateur avant
-// implémentation) : résistance/immunité/vulnérabilité GÉNÉRIQUES aux dégâts (nouveau champ
-// damageAffinitySchema, shared-schema.js, partagé NpcData/CharacterData) réglables librement par
-// le MJ, pour les 3 types physiques (bludgeoning/piercing/slashing). Nuance SRD "contre les
-// attaques non magiques" propre à ces 3 types : une arme/attaque de PNJ magique (nouveau champ
-// WeaponData#magic/NpcData#attack.magic) contourne UNIQUEMENT ce champ générique — les
-// résistances déjà câblées en dur ailleurs (Rage notamment) n'ont pas cette nuance au SRD et
-// restent donc toujours actives, testé explicitement ci-dessous (non-régression).
-// cf. damageTypeMultiplier (dnd-custom-ai.js) pour la résolution complète.
+// Affinités génériques aux dégâts physiques : une source magique les ignore,
+// mais pas les résistances propres aux Capacités (Rage).
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -89,8 +82,7 @@ function lastMessage() {
 
 function applyDamageFromMessage(messageId) {
   cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
-  // .first() : Foundry affiche aussi une notification "toast" éphémère du même message, avec son
-  // propre bouton (même data-message-id) — retour de test déjà documenté (tier-c-rage.cy.js).
+  // .first() : la notification éphémère du même message porte aussi le bouton.
   cy.get(`[data-message-id="${messageId}"]`, { timeout: 10000 }).first().find("button.dnd-apply-damage-btn").click();
 }
 
@@ -380,9 +372,7 @@ describe("Non-régression — Rage (résistance câblée en dur) reste active m�
 });
 
 describe("UI — les nouvelles cases à cocher soumettent réellement le formulaire natif Foundry", () => {
-  // Vérifie le binding SetField (plusieurs cases partageant le même `name`) via un vrai clic,
-  // pas seulement via une donnée posée directement — risque réel non couvert par les describes
-  // ci-dessus (qui posent damageResistances/magic par données, jamais par clic).
+  // Cases d'affinité cochées par un vrai clic (SetField à `name` partagé).
   it("fiche PNJ : cocher une résistance/immunité/vulnérabilité met bien à jour l'Actor (T-DMGTYPE-010)", () => {
     cy.loginAsGM();
     let npcId;

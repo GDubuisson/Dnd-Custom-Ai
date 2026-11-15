@@ -163,10 +163,11 @@ Guide du Joueur (`scripts/data/glossary.json`). Le texte libre (descriptions d'o
 biographie) n'est volontairement pas concerné.
 
 ### Journaux générés dans le monde
-Trois Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
+Quatre Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
 librement) : **Guide du Joueur** (glossaire, règles de base, sorts, classes, origines, langues,
 équipement) et **Comparatif des Origines** sont visibles de tous les joueurs (`ownership` par
-défaut = Observateur) ; le **Guide du MJ** reste réservé au MJ. L'en-tête de la fiche de
+défaut = Observateur) ; le **Guide du MJ** et les **Chroniques des objets** (histoire des objets
+régionaux et historiques, une page par région) restent réservés au MJ, qui en partage ce qu'il veut. L'en-tête de la fiche de
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
 ### Progression (XP, niveau)
@@ -228,9 +229,9 @@ interne en kg**.
 
 | Type | Champs clés | Notes |
 |---|---|---|
-| `weapon` | type d'arme (CAC courante/de guerre, distance courante/de guerre), prix, `damage`/`damageVersatile` (dé + type), case "Magique", second type de dégâts bonus optionnel (`secondaryDamage`), poids, propriétés (une/deux mains, polyvalente, finesse, légère, lancer, portée, rechargement, lourde, allonge, spéciale) | `damageVersatile` affiché seulement si "Polyvalente" cochée ; "Magique" contourne la résistance/immunité générique aux 3 types physiques (nuance SRD) ; `secondaryDamage` = 2 messages de dégâts distincts pour 1 clic (ex. épée de feu) |
-| `armor` | type (légère/intermédiaire/lourde), prix, `baseAC`, Force requise, désavantage Discrétion, poids, résistance/immunité/vulnérabilité aux dégâts PROPRE (13 types, comme la fiche Personnage/PNJ) | CA légère = baseAC + Dex complet ; intermédiaire = baseAC + Dex plafonné à +2 ; lourde = baseAC seul (jamais de Dex) ; la résistance/immunité/vulnérabilité de l'armure n'agit QUE si elle est équipée, et n'a jamais la nuance "contourné par une source magique" (contrairement au champ générique) |
-| `gear` (objet générique) | nom, quantité, poids unitaire, prix unitaire, description | poids total = quantité × poids unitaire (calculé) |
+| `weapon` | type d'arme (CAC courante/de guerre, distance courante/de guerre), prix, `damage`/`damageVersatile` (dé + type), case "Magique", bonus magique +0 à +3 (`enhancement`, ajouté à l'attaque et aux dégâts), second type de dégâts bonus optionnel (`secondaryDamage`), résistance/immunité/vulnérabilité accordée tant qu'elle est équipée, poids, propriétés (une/deux mains, polyvalente, finesse, légère, lancer, portée, rechargement, lourde, allonge, spéciale) | `damageVersatile` affiché seulement si "Polyvalente" cochée ; "Magique" contourne la résistance/immunité générique aux 3 types physiques (nuance SRD) ; `secondaryDamage` = 2 messages de dégâts distincts pour 1 clic (ex. épée de feu) |
+| `armor` | type (légère/intermédiaire/lourde), emplacement (armure, main secondaire, accessoire), prix, `baseAC`, Force requise, désavantage Discrétion, bonus aux jets de sauvegarde (`saveBonus`), bonus de CA seulement sans armure ni bouclier (`unarmoredOnly`), poids, résistance/immunité/vulnérabilité aux dégâts PROPRE (13 types, comme la fiche Personnage/PNJ) | CA légère = baseAC + Dex complet ; intermédiaire = baseAC + Dex plafonné à +2 ; lourde = baseAC seul (jamais de Dex) ; la résistance/immunité/vulnérabilité de l'armure n'agit QUE si elle est équipée, et n'a jamais la nuance "contourné par une source magique" (contrairement au champ générique) |
+| `gear` (objet générique) | nom, quantité, poids unitaire, prix unitaire, description, bonus de capacité de charge (contenant), effet d'utilisation (lumière, soin : dés + base + compétence facultative), consommable | poids total = quantité × poids unitaire (calculé) ; un objet consommable perd une unité à chaque utilisation |
 | `feature` (capacité) | nom, classe, sous-classe (si propre à une sous-classe), niveau d'acquisition, description, formule de jet optionnelle | capacités "universelles" (ex. Attaque d'opportunité) octroyées à toute classe indépendamment de `system.class` |
 | `origin` | nom, gentilé, langue, description, image, bonus de caractéristiques, compétences avantagées, trait spécial | champs mécaniques indispensables — appliqués à l'Actor à l'attribution |
 | `class`/`subclass` | nom, description (flavor uniquement), sauvegardes maîtrisées, quota de compétences, maîtrises d'armes | la donnée mécanique réelle (capacités par niveau) vit dans `CONFIG.DND_CUSTOM` + `world-items/features.json`, pas sur cet Item |

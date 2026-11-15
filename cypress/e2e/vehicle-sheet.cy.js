@@ -1,8 +1,4 @@
-// Implémente la section 11 (T-VEH-001 à T-VEH-003) de tests/E2E_TEST_PLAN.md — fiche Véhicule
-// (vehicle-actor-sheet.js, vehicle-sheet.hbs). Fiche minimale (pas d'onglets, un seul template
-// "form"), testée en session MJ : un véhicule n'a normalement pas de propriétaire Joueur non
-// plus (comme la fiche PNJ, section 10) et son formulaire ne distingue de toute façon pas les
-// rôles (pas de `{{#if isGM}}` dans vehicle-sheet.hbs).
+// T-VEH-001 à 003 : fiche Véhicule (formulaire unique, sans distinction de rôle), en session MJ.
 
 const createdActorIds = [];
 
@@ -42,14 +38,14 @@ describe("Fiche Véhicule, session MJ", () => {
     openSheet(sharedActorId);
   });
 
-  it("s'ouvre sans erreur, champs de base présents (T-VEH-001)", () => {
+  it("s'ouvre sans erreur, champs de base présents (T-VEH-001)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     sheetRoot().find('input[name="name"]').should("have.value", "Recon Chariot");
     sheetRoot().find('input[name="system.attributes.speed"]').should("exist");
     sheetRoot().find('input[name="system.attributes.hp.value"]').should("exist");
     sheetRoot().find('input[name="system.carryCapacity"]').should("exist");
   });
 
-  it("la barre de PV se recalcule, bornée entre 0 et 100% (T-VEH-002)", () => {
+  it("la barre de PV se recalcule, bornée entre 0 et 100% (T-VEH-002)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.hp.max": 20, "system.attributes.hp.value": 10 });

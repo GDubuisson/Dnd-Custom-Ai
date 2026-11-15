@@ -5,6 +5,93 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.2.3] - 2026-11-15
+
+**Qualité de code (SonarQube, troisième lot).** Aucun changement de règle de jeu.
+- 17 fonctions ramenées sous le seuil de complexité cognitive (15) par extraction de fonctions nommées :
+  verrous de sécurité, attaque d'opportunité, Rage, import du contenu, résolution des dégâts, agonie,
+  choix Amélioration/Don, jets de d20, dérivés du personnage, statistiques d'armes, sauvegardes de
+  Capacités et de sorts, Agripper/Bousculer.
+- Sentinelle, Tueur de géants et Attaque d'opportunité partagent un module `reaction-reminders.js`.
+- Aperçu de description : expression régulière de retrait des balises sans retour arrière coûteux.
+- Tests Cypress : assertions en forme d'appel (`.to.equal(true)`), reconnues par Sonar.
+- Fiches d'Item : `parts/header.hbs` devient un partial à bloc qui referme lui-même ses `<div>`
+  (les 9 fiches ne referment plus le cadre à la main) ; test DOM de la structure des 9 fiches.
+- Inspections WebStorm : imports et paramètres inutilisés retirés, JSDoc complétées, `if` simplifié,
+  attribut `lang` de la page de test visuel, échappements de regex superflus.
+
+## [1.2.2] - 2026-11-14
+
+**Qualité de code (SonarQube, second lot).** Aucun changement de règle de jeu.
+- Chaînage optionnel (`item?.type`) dans les gardes des actions de fiche.
+- Ternaires imbriqués aplatis ; le choix du dé d'avantage/désavantage est factorisé (`d20Die`).
+- Template literals imbriqués remplacés par le helper `parenthesized` (« (type de dégâts) »).
+- `includes`, `Math.max` et `.some` là où ils suffisent ; fusions inutiles retirées des fixtures de test.
+- Formules de dés affichées : expression régulière sans retour arrière coûteux ; promesse d'application des
+  états explicitement ignorée (`void`) dans l'écouteur de la liste déroulante.
+- Faux positifs SonarQube annotés `NOSONAR` avec leur raison (boucles séquentielles voulues, surcharges
+  CSS du cœur Foundry, interactions Cypress forcées, assertions via helpers) ; convention décrite dans
+  la conception technique.
+
+## [1.2.1] - 2026-11-14
+
+**Qualité de code (SonarQube, premier lot).** Aucun changement de règle de jeu.
+- Les formules de dés affichées sur la fiche sont évaluées par un petit analyseur arithmétique au lieu de
+  `new Function`.
+- Promesses d'affichage de fiche et de dialogue désormais attendues ; imports inutilisés retirés.
+- Glisser-déposer d'inventaire : types d'objets en `Set`, branche de création en double fusionnée.
+- CSS : règles en double fusionnées (onglets, puces de langue).
+
+## [1.2.0] - 2026-11-14
+
+**Équipement ancré dans l'univers.**
+- **46 objets régionaux** propres aux six nations et au Saint-siège (armes, armures, outils de qualité,
+  objets du quotidien), rangés dans le dossier « Objets régionaux » par région.
+- **15 pièces historiques uniques** (Lame des Bannières, Épée d'Inés la Brûlante, Rôles de Monteluz...),
+  sans pouvoir ni bonus, rangées dans « Objets historiques ».
+- Journal **« Chroniques des objets »**, réservé au MJ : l'histoire de chaque objet, une page par région.
+  Les descriptions visibles des joueurs restent neutres, avec un indice.
+
+**Magie faible.** Les objets magiques sont plafonnés à +2 et présentés comme des ouvrages rituels ; les
+objets +3 et la Marque du givre sont retirés. Les potions deviennent des préparations rituelles de
+guérison, complétées par trois préparations d'herboriste bon marché et peu efficaces.
+
+## [1.1.1] - 2026-11-14
+
+**Correction de données (code livré).** Les noms « Cotte de mailles » et « Broigne » étaient inversés
+par rapport au SRD 5.1 et à la traduction française officielle. La Cotte de mailles (chain mail) a
+désormais CA 16, Force 13, 75 po, 24,9 kg ; la Broigne (ring mail) CA 14, 30 po, 18,1 kg. L'armure de
+départ du Guerrier et du Paladin passe donc de CA 14 à CA 16. Les objets du monde sont resynchronisés au
+chargement ; les armures déjà portées par des personnages existants ne changent pas.
+
+## [1.1.0] - 2026-11-14
+
+**Équipement enrichi (SRD 5.1).**
+- **Outils** : les 24 outils sont liés à une compétence ; leur bouton « Utiliser » lance un vrai test.
+- **Équipement d'aventurier** : 37 objets ajoutés (pied-de-biche, menottes, longue-vue, munitions, carquois,
+  bourse, panier, lampe, vêtements...) et 4 potions de guérison (2d4+2 à 10d4+20).
+- **Armures et accessoires magiques** : armures et bouclier +1/+2/+3, mithral, armures de résistance,
+  Anneau et Cape de protection, Bracelets de défense, 10 Anneaux de résistance.
+- **Armes magiques** : armes +1/+2/+3 (dague, rapière, épée longue, grande hache, arc long) et Marque du givre.
+
+**Règles automatisées** : bonus magique d'arme (attaque et dégâts), bonus aux jets de sauvegarde des objets
+équipés (sauvegardes contre la mort comprises), bonus de CA réservé au combat sans armure ni bouclier,
+affinités aux dégâts accordées par une arme équipée, soin à dés et objets consommables.
+
+## [1.0.4] - 2026-11-14
+
+**Outillage de test uniquement.** `cypress/e2e/combat-tracker.cy.js` (T-COMBAT-004/005) n'ignore plus
+toutes les erreurs JS : seule l'erreur intermittente du cœur Foundry « Combat id […] does not exist in
+the CombatEncounters collection » (toujours présente en 14.370) est filtrée. Indentation des
+commentaires réécrits en 1.0.3 rétablie dans les tests, les specs Cypress et le CSS.
+
+## [1.0.3] - 2026-11-14
+
+**Maintenance (aucun changement de comportement).** Commentaires de tout le projet (scripts, styles,
+templates, tests unitaires et E2E, configuration) réécrits : 3 lignes maximum, centrés sur l'utilité
+finale, sans historique des choix passés, en syntaxe JSDoc pour les fonctions et classes. Aucune ligne
+de code modifiée.
+
 ## [1.0.2] - 2026-11-14
 
 **Bug corrigé (code livré)** — `Document#unsetFlag()` ne persiste jamais un flag posé sur

@@ -15,12 +15,14 @@ import {
   WORLD_ORIGIN_ITEMS,
   WORLD_LANGUAGES,
   WORLD_NPCS,
+  WORLD_REGIONAL,
+  WORLD_HISTORICAL,
+  ITEM_LORE,
   GLOSSARY
 } from "../support/fixtures.js";
 import { LOCALES } from "../support/i18n.js";
 
 const CLASS_KEYS = Object.keys(DND_CUSTOM.classes);
-const CLASS_LABELS_FR = new Set(CLASS_KEYS.map((key) => LOCALES.fr[DND_CUSTOM.classes[key]]));
 const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"];
 const SKILL_KEYS = Object.keys(DND_CUSTOM.skills);
 
@@ -66,10 +68,7 @@ describe("config.js — XP et niveaux", () => {
     assert.deepEqual(DND_CUSTOM.abilityScoreImprovementLevels, sorted);
   });
   test("challengeRatingXp a exactement les mêmes clés que challengeRatings", () => {
-    // Comparaison en ensemble, pas en ordre de tableau : Object.keys() réordonne les clés
-    // "numériques" (ex. "1".."30") avant les autres ("1/8" etc.) quel que soit l'ordre
-    // d'écriture dans le fichier source — un artefact du moteur JS, pas une incohérence de
-    // données (l'ordre n'a de toute façon aucune importance pour une table de correspondance).
+    // Comparaison d'ensembles : Object.keys() réordonne les clés numériques.
     assert.deepEqual(new Set(Object.keys(DND_CUSTOM.challengeRatingXp)), new Set(DND_CUSTOM.challengeRatings));
   });
 });
@@ -90,11 +89,7 @@ describe("scripts/data/origins.json", () => {
       assert.ok(origin.specialTrait?.name?.length > 0);
       assert.ok(origin.specialTrait?.description?.length > 0);
     });
-    // Retour de test (lot 3) : "Art de la Parole"/"Sagesse Ancienne" décrivaient un bonus de
-    // compétence dans leur texte mais rien ne l'appliquait — conditionalBonus (facultatif,
-    // cf. #onRollSkill, actor-sheet.js) référence une compétence + caractéristique réelles
-    // quand un trait accorde ce genre de bonus optionnel (proposé au joueur au moment du jet,
-    // jamais automatique).
+    // conditionalBonus référence une compétence et une caractéristique réelles.
     if (origin.specialTrait?.conditionalBonus) {
       test(`${key} : conditionalBonus référence une compétence/caractéristique valides`, () => {
         const { skill, ability } = origin.specialTrait.conditionalBonus;
@@ -145,10 +140,7 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
     });
     test(`${spell.name} : niveau 0-9, classes non vide, ne référence que des clés de classe réelles`, () => {
       assert.ok(spell.system.level >= 0 && spell.system.level <= 9);
-      // system.classes : ensemble de CLÉS stables (ex. "wizard"), pas des libellés localisés/
-      // traduits — cf. SpellData#classes, item-data.js, et le bug historique documenté dans
-      // tests/README.md > "Bug connu". En JSON brut (pas encore passé par le pipeline DataModel
-      // de Foundry), c'est un simple tableau.
+      // system.classes : clés de classe stables (tableau brut en JSON).
       assert.ok(spell.system.classes.length > 0, `"${spell.name}" ne liste aucune classe`);
       for (const key of spell.system.classes) {
         assert.ok(CLASS_KEYS.includes(key), `"${spell.name}" référence une clé de classe inconnue : "${key}"`);
@@ -157,12 +149,7 @@ describe("world-items/spells.json — cohérence avec le schéma simplifié (Spe
   }
 });
 
-// Retour de test (lot 3) : "Mot de guérison" et "Soin des blessures" décrivaient un soin en dés
-// dans leur texte mais ne lançaient réellement aucun dé (system.heal.dice absent du schéma à
-// l'époque) — la consigne du testeur ("vérifier plus largement TOUS les sorts censés lancer des
-// dés") va au-delà de ces deux sorts nommés : la deuxième vérification ci-dessous détecte tout
-// sort dont la description mentionne un soin en PV sans dé de soin réellement configuré, pas
-// seulement les deux noms cités.
+// Tout sort dont la description mentionne un soin en PV doit avoir un dé de soin.
 describe("world-items/spells.json — sorts de soin (system.heal)", () => {
   const HEAL_DESCRIPTION_PATTERN = /récupère.*points? de vie/i;
 
@@ -190,11 +177,7 @@ describe("world-items/features.json — cohérence (FeatureData)", () => {
   const ALL_SUBCLASS_KEYS = new Set(Object.values(DND_CUSTOM.subclasses).flatMap((byKey) => Object.keys(byKey)));
   for (const feature of WORLD_FEATURES) {
     test(`${feature.name} : clé de classe réelle (ou universelle), niveau >= 1`, () => {
-      // system.class : CLÉ stable (ex. "fighter"), pas un libellé localisé/traduit — cf.
-      // FeatureData#class, item-data.js, et le bug historique documenté dans
-      // tests/README.md > "Bug connu". Une Capacité universelle (system.universal, ex. Attaque
-      // d'opportunité) n'a volontairement pas de classe propre — octroyée à toutes (cf.
-      // grantClassContent).
+      // system.class : clé stable ; une Capacité universelle n'a pas de classe.
       if (feature.system.universal) {
         assert.equal(feature.system.class, "", `"${feature.name}" est universelle : le champ classe devrait rester vide`);
       } else {
@@ -223,12 +206,7 @@ describe("world-items/features.json et spells.json — activation valide si rens
   }
 });
 
-// Retour de test (lot 3, point 5 "Capacités à ressource") : les Capacités qui ne fonctionnent
-// que dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doivent référencer
-// un état réel (cf. DND_CUSTOM.conditions, config.js) pour que le grisage automatique
-// (featureDisabled, handlebars-helpers.js) fonctionne — une faute de frappe silencieuse
-// laisserait le bouton en permanence grisé (id introuvable dans activeStatuses) sans jamais
-// lever d'erreur ailleurs.
+// requiresState doit référencer un état existant (sinon bouton désactivé en permanence).
 describe("world-items/features.json — requiresState référence un état réel (FeatureData)", () => {
   const CONDITION_IDS = new Set(DND_CUSTOM.conditions.map((condition) => condition.id));
   for (const feature of WORLD_FEATURES) {
@@ -264,11 +242,112 @@ describe("world-items/*.json — objets physiques (armes/armures/objets/outils)"
   });
 });
 
-// Chantier "Adversaires" (2026-08-25, demande explicite de l'utilisateur) : bestiaire prêt à
-// l'emploi (humanoïdes + bêtes sauvages réelles), importé directement dans le compendium Actor
-// "adversaires" (cf. content-import.js). Valide le schéma NpcData/WeaponData/ArmorData/
-// GearData/ToolData sur chaque entrée + butin embarqué, même esprit que les blocs
-// features.json/spells.json ci-dessus.
+// Champs mécaniques des objets physiques : valeurs cohérentes avec leur schéma.
+describe("world-items — champs mécaniques des armes, armures et objets", () => {
+  const damageTypes = Object.keys(DND_CUSTOM.damageTypes);
+  const affinityFields = ["damageResistances", "damageImmunities", "damageVulnerabilities"];
+  const checkAffinities = (entry) => {
+    for (const field of affinityFields) {
+      for (const type of entry.system[field] ?? []) assert.ok(damageTypes.includes(type), `${entry.name} : ${field} "${type}"`);
+    }
+  };
+
+  const extra = [...WORLD_REGIONAL, ...WORLD_HISTORICAL];
+  for (const weapon of [...WORLD_WEAPONS, ...extra.filter((entry) => entry.type === "weapon")]) {
+    test(`${weapon.name} : bonus magique 0-3, magique si bonus, dégâts secondaires et affinités valides`, () => {
+      const enhancement = weapon.system.enhancement ?? 0;
+      assert.ok(Number.isInteger(enhancement) && enhancement >= 0 && enhancement <= 3);
+      if (enhancement > 0) assert.equal(weapon.system.magic, true);
+      if (weapon.system.secondaryDamage?.dice) assert.ok(damageTypes.includes(weapon.system.secondaryDamage.type));
+      checkAffinities(weapon);
+    });
+  }
+  for (const armor of [...WORLD_ARMORS, ...extra.filter((entry) => entry.type === "armor")]) {
+    test(`${armor.name} : emplacement, bonus de sauvegarde et affinités valides`, () => {
+      assert.ok(["armor", "offHand", "accessory"].includes(armor.system.slot));
+      const saveBonus = armor.system.saveBonus ?? 0;
+      assert.ok(Number.isInteger(saveBonus) && saveBonus >= 0);
+      if (armor.system.unarmoredOnly) assert.equal(armor.system.slot, "accessory");
+      checkAffinities(armor);
+    });
+  }
+  for (const gear of [...WORLD_GEAR, ...extra].filter((entry) => entry.type === "gear" && entry.system.use?.type === "heal")) {
+    test(`${gear.name} : soin bien formé (dés NdM, compétence valide ou vide)`, () => {
+      const use = gear.system.use;
+      if (use.healDice) assert.match(use.healDice, /^\d+d\d+$/);
+      if (use.healSkill) assert.ok(Object.hasOwn(DND_CUSTOM.skills, use.healSkill));
+    });
+  }
+});
+
+// Armures lourdes SRD 5.1 : CA, Force requise et prix de référence (Broigne = ring mail, Cotte de mailles = chain mail).
+describe("world-items/armors.json — armures lourdes conformes au SRD", () => {
+  const expected = {
+    Broigne: { baseAC: 14, strengthRequired: 0, po: 30 },
+    "Cotte de mailles": { baseAC: 16, strengthRequired: 13, po: 75 },
+    Plates: { baseAC: 17, strengthRequired: 15, po: 200 },
+    Harnois: { baseAC: 18, strengthRequired: 15, po: 1500 }
+  };
+  for (const [name, ref] of Object.entries(expected)) {
+    test(`${name} : CA ${ref.baseAC}, Force ${ref.strengthRequired}, ${ref.po} po`, () => {
+      const armor = WORLD_ARMORS.find((entry) => entry.name === name);
+      assert.ok(armor, `${name} introuvable`);
+      assert.equal(armor.system.baseAC, ref.baseAC);
+      assert.equal(armor.system.strengthRequired, ref.strengthRequired);
+      assert.equal(armor.system.price.po, ref.po);
+    });
+  }
+});
+
+// Objets régionaux et pièces historiques : région, absence d'effet pour l'historique, histoire au journal.
+describe("world-items/regional.json et historical.json — régions, pièces historiques, histoires", () => {
+  const physicalTypes = ["weapon", "armor", "gear", "tool"];
+  const all = [...WORLD_REGIONAL, ...WORLD_HISTORICAL];
+  const loreNames = new Set(ITEM_LORE.map((entry) => entry.name));
+
+  test("aucun nom en double, tous fichiers d'objets du monde confondus", () => {
+    const names = [...WORLD_WEAPONS, ...WORLD_ARMORS, ...WORLD_GEAR, ...WORLD_TOOLS, ...all].map((entry) => entry.name);
+    const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
+    assert.deepEqual(duplicates, []);
+  });
+  for (const entry of all) {
+    test(`${entry.name} : type physique, région valide, histoire au journal`, () => {
+      assert.ok(physicalTypes.includes(entry.type));
+      assert.ok(Object.hasOwn(DND_CUSTOM.regions, entry.flags?.["dnd-custom-ai"]?.region));
+      assert.ok(loreNames.has(entry.name), `aucune histoire pour ${entry.name}`);
+    });
+  }
+  for (const entry of WORLD_HISTORICAL) {
+    test(`${entry.name} : pièce historique sans bonus ni effet`, () => {
+      const system = entry.system;
+      assert.ok(!system.magic && !system.enhancement && !system.secondaryDamage?.dice);
+      assert.ok(!system.saveBonus && !system.useEffect?.bonus);
+      assert.ok(!system.use || system.use.type === "none");
+      for (const field of ["damageResistances", "damageImmunities", "damageVulnerabilities"]) {
+        assert.equal((system[field] ?? []).length, 0);
+      }
+    });
+  }
+  test("chaque histoire correspond à un objet et n'est pas vide", () => {
+    const itemNames = new Set(all.map((entry) => entry.name));
+    for (const entry of ITEM_LORE) {
+      assert.ok(itemNames.has(entry.name), `histoire orpheline : ${entry.name}`);
+      assert.ok(entry.lore.trim().length > 0);
+    }
+  });
+});
+
+// Chaque outil est lié à une compétence réelle, sans quoi son bouton « Utiliser » ne fait rien.
+describe("world-items/tools.json — compétence liée (ToolData#useEffect)", () => {
+  const allTools = [...WORLD_TOOLS, ...WORLD_REGIONAL, ...WORLD_HISTORICAL].filter((entry) => entry.type === "tool");
+  for (const tool of allTools) {
+    test(`${tool.name} : compétence "${tool.system.useEffect.skill}" valide`, () => {
+      assert.ok(Object.hasOwn(DND_CUSTOM.skills, tool.system.useEffect.skill));
+    });
+  }
+});
+
+// Bestiaire (compendium « adversaires ») : schéma NpcData et butin embarqué valides.
 describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () => {
   const CREATURE_TYPE_KEYS = new Set(Object.keys(DND_CUSTOM.creatureTypes));
   const SIZE_KEYS = new Set(Object.keys(DND_CUSTOM.sizes));
@@ -281,9 +360,7 @@ describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () 
     assert.equal(new Set(names).size, names.length, "doublon de nom détecté dans npcs.json");
   });
 
-  // Demande explicite de l'utilisateur : bestiaire volontairement limité aux humanoïdes et aux
-  // bêtes sauvages RÉELLES, aucune créature légendaire/mythique/fantastique (pas de dragon,
-  // mort-vivant, céleste, fiélon...).
+  // Bestiaire limité aux humanoïdes et aux bêtes réelles.
   test("seuls les types de créature \"humanoid\" et \"beast\" sont présents (aucune créature fantastique)", () => {
     for (const npc of WORLD_NPCS) {
       assert.ok(
@@ -343,11 +420,7 @@ describe("classStartingEquipment — les noms référencés existent dans world-
     test(`${classKey} : arme "${kit.weapon}" existe`, () => {
       assert.ok(weaponsByName.has(kit.weapon), `arme "${kit.weapon}" introuvable dans world-items/weapons.json`);
     });
-    // Retour de test (lot 3) : l'arme de départ de 3 classes (Barde/Rapière, Druide/Cimeterre,
-    // Roublard/Rapière) était de type martial alors que ces 3 classes ne maîtrisent QUE les
-    // armes simples (cf. DND_CUSTOM.classWeaponProficiencies) — un Joueur démarrait avec une
-    // arme qu'il ne savait pas manier. Corrigé (Dague/Faucille, toutes deux `meleeSimple`), et
-    // gardé ici pour ne pas régresser sur une future arme de départ mal choisie.
+    // L'arme de départ doit être d'une catégorie maîtrisée par la classe.
     test(`${classKey} : l'arme de départ "${kit.weapon}" est d'un type maîtrisé par la classe`, () => {
       const weapon = weaponsByName.get(kit.weapon);
       if (!weapon) return; // déjà signalé par le test précédent, évite un échec en cascade illisible
@@ -395,10 +468,7 @@ describe("world-items/classes.json — une entrée par classe de config.js, cont
 });
 
 describe("world-items/classes.json — champs structurés cohérents avec config.js (duplication assumée, cf. ClassData)", () => {
-  // classKeyByLabel (nom d'Item français -> clé) sert uniquement à VÉRIFIER que system.classKey
-  // correspond bien au nom porté par l'Item — pas à le déduire (cf. test dédié ci-dessous) :
-  // system.classKey est la source de vérité utilisée par #onOpenClassSheet (actor-sheet.js),
-  // indépendante du nom localisé/traduit de l'Item (cf. tests/README.md > "Bug connu").
+  // Vérifie que system.classKey correspond au nom français de l'Item.
   const classKeyByLabel = new Map(CLASS_KEYS.map((key) => [LOCALES.fr[DND_CUSTOM.classes[key]], key]));
   for (const entry of WORLD_CLASSES) {
     const classKey = entry.system.classKey;

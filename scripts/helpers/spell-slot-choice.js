@@ -2,25 +2,12 @@ import { SPELL_LEVELS } from "./rules.js";
 
 const { DialogV2 } = foundry.applications.api;
 
-/** Détermine quel palier d'emplacement de sort dépenser pour lancer un sort de niveau
- *  `spellLevel`, avec surclassement possible (SRD 5e : un sort peut toujours être lancé avec un
- *  emplacement de niveau supérieur au sien, sans effet de jeu supplémentaire ici — les sorts
- *  n'ont pas de texte "aux niveaux supérieurs" modélisé dans ce système, cf. spell-slots.json).
- *
- *  - Le palier exact du sort a une charge disponible : le renvoie directement, **sans ouvrir de
- *    fenêtre** (cas courant, préserve le clic unique existant sur le bouton "Lancer").
- *  - Seuls des paliers supérieurs ont des charges : ouvre une petite fenêtre de choix (même
- *    famille que offerSubclassChoiceDialog, subclass-choice.js) pour que le joueur choisisse
- *    explicitement le palier à surclasser (ou annule) — dépenser un emplacement rare doit rester
- *    une décision visible, jamais automatique.
- *  - Aucun palier (exact ou supérieur) n'a de charge : renvoie `null`, à charge de l'appelant
- *    d'afficher l'avertissement "aucun emplacement disponible" (cf. DndCustomActorSheet#onCastSpell).
- *
- * `slots` : `actor.system.spells.slots`, forme `{ "1": {value, max}, ..., "9": {value, max} }`.
+/**
+ * Choisit le palier d'emplacement à dépenser ; dialogue de surclassement si le palier exact est vide.
  * @param {string} spellName
- * @param {number} spellLevel
- * @param {object} slots
- * @returns {Promise<number|null>}
+ * @param {number} spellLevel - niveau de base du sort
+ * @param {object} slots - `actor.system.spells.slots`
+ * @returns {Promise<number|null>} `null` si aucun emplacement disponible ou annulation
  */
 export async function chooseSpellSlotLevel(spellName, spellLevel, slots) {
   const available = SPELL_LEVELS.filter((level) => level >= spellLevel && slots[level]?.value > 0);
@@ -56,22 +43,12 @@ export async function chooseSpellSlotLevel(spellName, spellLevel, slots) {
   return chosenLevel ?? null;
 }
 
-/** Boîte de dialogue de répartition d'une récupération d'emplacements de sorts (ex.
- *  Récupération arcanique/naturelle, cf. FeatureData#recoversSpellSlots, item-data.js) : le
- *  joueur reçoit `total` NIVEAUX à répartir librement entre les paliers de son choix (SRD 5e :
- *  jamais de palier 6 ou plus pour ces deux Capacités précises, plafond appliqué par l'appelant
- *  via `maxLevel`).
- *
- *  Renvoie un objet `{ [niveau]: montant }` (montants > 0 uniquement) si le joueur confirme une
- *  répartition non vide, ou `null` si : aucun palier éligible n'a de charge manquante (rien à
- *  proposer, l'appelant ne consomme alors pas la charge de la Capacité), le joueur annule, ou il
- *  confirme sans rien répartir. Chaque montant saisi est borné (0 ≤ montant ≤ min(reste du total,
- *  charges manquantes du palier)) plutôt que de rejeter une saisie invalide.
- *
- * @param {string} featureName
- * @param {number} total
- * @param {object} slots `actor.system.spells.slots`
- * @param {number} [maxLevel=5]
+/**
+ * Dialogue de répartition de `total` niveaux d'emplacements à récupérer, jusqu'à `maxLevel`.
+ * @param {string} featureName - Capacité nommée dans le dialogue
+ * @param {number} total - niveaux d'emplacements à répartir
+ * @param {object} slots - `actor.system.spells.slots`
+ * @param {number} [maxLevel] - palier maximal récupérable
  * @returns {Promise<Record<number, number>|null>}
  */
 export async function chooseSpellSlotRecovery(featureName, total, slots, maxLevel = 5) {
@@ -94,11 +71,8 @@ export async function chooseSpellSlotRecovery(featureName, total, slots, maxLeve
     )
     .join("");
 
-  // Chaque montant saisi est BORNÉ ici (0 ≤ montant ≤ min(reste du total, charges manquantes du
-  // palier)) plutôt que d'être rejeté : le callback renvoie donc TOUJOURS un objet `{ [niveau]:
-  // montant }` valide. Ne jamais renvoyer `null` depuis le callback — sous Foundry v13+,
-  // `DialogV2.wait` retombe alors sur la chaîne d'action ("ok") au lieu du retour du callback, ce
-  // qui cassait `#offerSpellSlotRecoveries` (`Object.entries("ok")`).
+  // Montants bornés plutôt que rejetés ; le callback doit toujours renvoyer un objet
+  // (un `null` ferait renvoyer l'action « ok » par `DialogV2.wait`).
   const distribution = await DialogV2.wait({
     window: { title: game.i18n.localize("DND_CUSTOM.Spells.RecoveryDialogTitle") },
     content: `
@@ -127,8 +101,7 @@ export async function chooseSpellSlotRecovery(featureName, total, slots, maxLeve
     ]
   });
 
-  // Fenêtre fermée (croix/Échap, rejectClose:false → `undefined` ou la chaîne d'action) ou
-  // confirmée sans rien répartir (objet vide) : `null`, l'appelant ne consomme pas la charge.
+  // Fermé ou rien réparti : `null`, aucune charge consommée.
   if (!distribution || typeof distribution !== "object" || !Object.keys(distribution).length) return null;
   return distribution;
 }

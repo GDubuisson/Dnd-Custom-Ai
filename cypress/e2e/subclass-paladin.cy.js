@@ -1,8 +1,4 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Paladin : 2 nouvelles sous-classes
-// ajoutées (Serment des Anciens/ancients, Serment de Vengeance/vengeance), en plus du Serment de
-// Dévotion déjà existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque
-// mécanique active (charge à usage limité décomptée).
+// Sous-classes du Paladin (Anciens, Vengeance) : octroi des Capacités et charges consommées.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -88,11 +84,7 @@ describe("Sous-classes de Paladin — Serment des Anciens / Serment de Vengeance
       cy.openActorSheet(actorId);
       goToTab("abilities");
 
-      // "Voile des anciens" n'a pas ses propres charges (`system.uses` absent) : elle consomme
-      // la réserve PARTAGÉE "Canalisation divine (Paladin)" (`system.costsResource`, cf.
-      // world-items/features.json) — bouton réel "useResourceTechnique" (pas
-      // "useFeatureCharge"), qui décompte `uses.value` de la réserve partagée, pas de la
-      // Capacité elle-même (cf. #onUseResourceTechnique, feature-actions-mixin.js).
+      // Consomme la réserve partagée via « useResourceTechnique ».
       withItemId(actorId, "Voile des anciens", (itemId) => {
         cy.window().its("game.messages.size").then((before) => {
           cy.get(`li[data-item-id="${itemId}"] button[data-action="useResourceTechnique"]`).click();
@@ -130,15 +122,7 @@ describe("Sous-classes de Paladin — Serment des Anciens / Serment de Vengeance
         expect(actor.items.find((i) => i.name === "Traque implacable"), "Capacité octroyée").to.exist;
       });
 
-      // "Traque implacable" a `grantsCondition: "hunted"` (pose l'état "Traqué" sur une cible,
-      // cf. world-items/features.json) : son bouton réel est "grantFeatureCondition" (pas
-      // "useFeatureCharge"), et #onGrantFeatureCondition exige une cible ciblée (game.user.
-      // targets) pour poster son message — sans cible, il se contente d'un avertissement UI sans
-      // toucher au chat. Comme "Voile des anciens" ci-dessus, consomme la réserve PARTAGÉE
-      // "Canalisation divine (Paladin)" (`costsResource`), pas sa propre charge. Joueur n'a pas
-      // la permission de créer un Token sur la scène (cf. T-TIERC-HUNT-* qui vérifie déjà cette
-      // mécanique en détail côté MJ) : bascule en session MJ pour la créature cible ET
-      // l'interaction (MJ a accès à toute fiche quel que soit son propriétaire).
+      // « grantFeatureCondition » exige une cible ; session MJ pour créer le token cible.
       cy.loginAsGM();
       cy.window()
         .then((win) => createActor(win, { name: "Quarry Vengeance", type: "npc", system: { attributes: { hp: { value: 10, max: 10 } } } }))

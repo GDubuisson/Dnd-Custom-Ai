@@ -5,8 +5,7 @@ import path from "node:path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..", "..");
 
-/** Aplati un objet de traduction imbriqué (lang/*.json) en `{ "DND_CUSTOM.Actor.Level": "Niveau" }`,
- *  même format que celui attendu par `game.i18n.localize` côté Foundry. */
+/** Aplatit un fichier de traduction en `{ "DND_CUSTOM.Actor.Level": "Niveau" }`. */
 function flatten(obj, prefix = "", out = {}) {
   for (const [key, value] of Object.entries(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -24,9 +23,7 @@ function loadLangFile(locale) {
   return flatten(JSON.parse(raw));
 }
 
-/** Les deux fichiers de langue du système, aplatis. Chargés une seule fois (module-level) :
- *  réutilisés à la fois par le test de couverture i18n et par le stub `localize` des tests de
- *  rendu de templates (cf. handlebars-env.js). */
+/** Fichiers de langue aplatis. */
 export const LOCALES = {
   en: loadLangFile("en"),
   fr: loadLangFile("fr")
@@ -34,5 +31,5 @@ export const LOCALES = {
 
 /** Remplace `{placeholder}` par les valeurs de `data`, même convention que game.i18n.format. */
 export function formatString(template, data = {}) {
-  return template.replace(/\{(\w+)\}/g, (match, token) => (token in data ? String(data[token]) : match));
+  return template.replace(/\{(\w+)}/g, (match, token) => (token in data ? String(data[token]) : match));
 }

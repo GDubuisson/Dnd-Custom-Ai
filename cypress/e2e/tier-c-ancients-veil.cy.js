@@ -1,12 +1,4 @@
-// Chantier "Niveau C" (2026-08-24, sur demande explicite après revue de
-// ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : Voile des anciens (Paladin, Serment des Anciens) —
-// résistance aux dégâts de SORTS (pas un type précis, contrairement à Rage/Affinité de la
-// tempête) en zone de 3 m autour du Paladin qui l'a activée (bascule homebrew "ancientsVeil",
-// config.js), tant qu'il ne s'agit pas d'un décompte de durée automatique (aucune conditions
-// homebrew de ce système n'en a). Réutilise le mécanisme de zone déjà existant d'Aura de
-// dévotion (isProtectedByDevotionAura, condition-immunity.js) — cf.
-// isProtectedByAncientsVeil/isResistantToDamageType (dnd-custom-ai.js), rollDamage#isSpellDamage
-// (rolls.js), #onRollSpellDamage (actor-sheet.js).
+// Voile des anciens : résistance aux dégâts des sorts à 3 m du Paladin qui l'a activé.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -118,9 +110,7 @@ describe("Voile des anciens — résistance aux dégâts de sorts, en zone", () 
       .then((actor) => {
         warderId = actor.id;
       });
-    // PNJ, PV élevés fixes (pas de PV dérivé classe/niveau côté NpcData, contrairement à
-    // CharacterData — cf. le piège déjà documenté dans tier-c-rage.cy.js) : cible des dégâts,
-    // jamais bloquée par le garde-fou PvP (réservé aux "character" des deux côtés).
+    // PNJ cible aux PV fixes élevés.
     cy.window()
       .then((win) =>
         createActor(win, {
@@ -228,7 +218,7 @@ describe("Voile des anciens — résistance aux dégâts de sorts, en zone", () 
       .then((tokenId) => {
         warderTokenId = tokenId;
       });
-    // toggleVeil jamais appelé ici : Voile explicitement inactif.
+    // Voile inactif.
 
     let hpBefore;
     cy.window().then((win) => {

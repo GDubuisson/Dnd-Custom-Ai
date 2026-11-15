@@ -1,42 +1,18 @@
-// Support file Cypress, chargé automatiquement avant chaque spec e2e (cf. cypress.config.js >
-// e2e.supportFile).
+// Support Cypress chargé avant chaque spec e2e.
 import "@testing-library/cypress/add-commands";
-// Enregistre cy.injectAxe()/cy.checkA11y() (axe-core) — cf. cypress/e2e/accessibility.cy.js,
-// lot 3 point 9 "Accessibilité" (RGAA/WCAG).
+// Commandes axe-core cy.injectAxe() / cy.checkA11y() (tests d'accessibilité).
 import "cypress-axe";
 
-// Bug du CŒUR Foundry 14.370 (pas du système testé) : cibler un token via `token.setTarget()`
-// (API standard, ex. `canvas.tokens.get(id).setTarget(true)`) plante l'animation de la flèche de
-// ciblage avec `TypeError: Cannot read properties of undefined (reading 'clear')` dans
-// `Token#_drawTargetArrows` (scripts/foundry.mjs, minifié) — reproductible en jeu réel, pas
-// spécifique à Cypress/au canvas headless. Cypress fait échouer le test courant sur TOUTE
-// exception non interceptée côté page, donc sans ce filtre, les 7 specs qui ciblent un token
-// (damage-types-*, opposed-check-grapple-shove, spell-save-damage-resistance-interaction,
-// tier-c-destroy-undead, tier-c-half-on-save) échouaient systématiquement SUR LE RENDU, avant
-// même d'atteindre les assertions métier qu'elles vérifient réellement (résolution des dégâts,
-// jets opposés...). Vérifié : la mise à jour du modèle (`user.targets`, flag sur le Token
-// Document) a bien lieu malgré le crash de rendu — tout le flux testé ensuite (jets, dégâts
-// appliqués) fonctionne normalement une fois cette seule exception filtrée.
-// Filtre volontairement NARROW (message ET pile d'appel) : toute autre exception non interceptée
-// continue de faire échouer le test normalement, pour ne jamais masquer une vraie régression.
-Cypress.on("uncaught:exception", (err) => {
-  if (
-    err.message.includes("Cannot read properties of undefined (reading 'clear')") &&
-    err.stack?.includes("_drawTargetArrows")
-  ) {
-    return false; // Ignore cette exception précise, laisse le test continuer.
-  }
-  return true; // Tout le reste : comportement par défaut (échec du test).
-});
+// Ignore uniquement l'exception du cœur Foundry levée par `Token#_drawTargetArrows` lors d'un ciblage ;
+// le ciblage est appliqué malgré tout. Toute autre exception fait échouer le test.
+Cypress.on(
+  "uncaught:exception",
+  (err) =>
+    !(err.message.includes("Cannot read properties of undefined (reading 'clear')") && err.stack?.includes("_drawTargetArrows"))
+);
 
-// Garde-fou obligatoire : à appeler dans CHAQUE spec juste après avoir confirmé `game.ready`
-// (avant toute assertion métier), sur le modèle de system-load.cy.js/quench.cy.js. Vérifie que
-// le système chargé dans l'instance Foundry testée correspond à la version locale de
-// system.json — sans ce contrôle, un mauvais montage Docker (ou un système jamais reconstruit/
-// rechargé après une modif locale) fait tourner toute la suite contre du code périmé sans que
-// rien ne le signale (incident réel, cf. [[project_docker_e2e_testing_setup]]). Échec volontaire
-// et explicite plutôt qu'un faux vert : à l'utilisateur de corriger (relancer le monde, vérifier
-// les montages docker-compose.yml), pas à Cypress de deviner quoi faire.
+// À appeler dans chaque spec après `game.ready` : échoue si la version du système chargé
+// diffère de system.json local (montage Docker ou monde non rechargé).
 Cypress.Commands.add("assertSystemVersionMatches", () => {
   cy.window({ timeout: 20000 })
     .its("game.system.version")
@@ -51,25 +27,7 @@ Cypress.Commands.add("assertSystemVersionMatches", () => {
     });
 });
 
-// Connexion en tant qu'utilisateur Joueur (cf. Cypress.expose("testPlayerName"), cypress.config.js)
-// plutôt que Gamemaster : la majorité des scénarios de tests/E2E_TEST_PLAN.md s'exécutent
-// délibérément côté Joueur propriétaire (cf. sa section "Conventions"), pas MJ — seuls les
-// scénarios dont le comportement dépend explicitement du rôle (ex. T-WIZ-013) utilisent une
-// connexion Gamemaster dédiée, comme dans system-load.cy.js/quench.cy.js. Même séquence
-// join/garde-fous que ces deux specs (iframe Sec-Fetch-Dest, vérification de version).
-// Même séquence que system-load.cy.js/quench.cy.js, factorisée ici pour être réutilisable par
-// toute nouvelle spec (cf. wizard.cy.js > T-WIZ-013 et son nettoyage final, seul scénario de la
-// section 1 dont le comportement dépend explicitement du rôle MJ).
-// Ferme les notifications "permanentes" que Foundry peut poster à la connexion (ex. "You are
-// using an older version of the Foundry Virtual Tabletop Electron client..." — avertissement
-// générique du cœur Foundry sur la version du client détecté, sans rapport avec ce système ni
-// avec la garde-fou de version ci-dessus). Apparu le 2026-08-19 sans changement de code
-// applicatif de notre côté : ces notifications sont en position fixe en haut à gauche
-// (`#notifications`) et recouvrent `input.actor-name`, faisant échouer `cy.openActorSheet` sur
-// TOUTE spec (pas seulement les nouvelles) avec "expected <input.actor-name> to be visible".
-// Suppression DOM directe (pas de clic sur un bouton de fermeture, dont le sélecteur exact varie
-// selon la version du cœur Foundry) : robuste et suffisant, ces notifications ne reviennent pas
-// spontanément pendant la durée d'un test.
+// Supprime les notifications permanentes de Foundry qui masquent la fiche.
 Cypress.Commands.add("dismissPermanentNotifications", () => {
   cy.get("body").then(($body) => {
     const notifications = $body.find("#notifications li.permanent");
@@ -77,42 +35,15 @@ Cypress.Commands.add("dismissPermanentNotifications", () => {
   });
 });
 
-// Connecte la session au monde de test sous l'utilisateur nommé, puis charge /game et attend
-// que le client Foundry soit prêt. Brique commune à cy.loginAsGM()/cy.loginAsPlayer() et aux
-// specs qui pilotent leur propre connexion (quench.cy.js, system-load.cy.js).
-//
-// Pourquoi ne PAS cliquer simplement le bouton du formulaire de connexion : Foundry rejette
-// toute requête de DOCUMENT vers /game, /join, /setup... dont l'en-tête `Sec-Fetch-Dest` vaut
-// autre chose que "document"/"empty" (View.assertDocumentDestination, protection
-// anti-clickjacking côté serveur), et Cypress charge l'application testée dans une iframe —
-// donc la navigation que la page déclenche ELLE-MÊME vers /game après le submit arrive en
-// "iframe" et renvoie la page "The /game route does not accept this type of request". Les
-// navigations pilotées par `cy.visit()` ne sont pas concernées (vérifié : un cy.visit("/game")
-// explicite charge bien le jeu), seules celles déclenchées par la page le sont.
-//
-// Jusqu'à Cypress 15, la parade était `cy.intercept(..., (req) => delete
-// req.headers["sec-fetch-dest"])` dans chaque spec. Elle ne fonctionne PLUS en Cypress 16 : le
-// handler est appelé, mais l'en-tête n'y est même pas visible (`req.headers["sec-fetch-dest"]`
-// undefined) alors que le serveur le reçoit toujours — Chrome le pose après la couche
-// d'interception, qui n'a donc plus prise dessus. Un flag Chrome
-// (`--disable-features=FetchMetadataDestination`) a aussi été testé : sans effet, ces features
-// sont stabilisées et leur flag retiré.
-//
-// La parade actuelle supprime le problème à la racine : on soumet la connexion en POST hors
-// navigateur (`cy.request`, qui partage les cookies de session avec lui), puis on charge /game
-// via `cy.visit()`. Le POST /join n'est pas une requête de document, il n'est donc pas soumis à
-// la protection ci-dessus — mais il doit prouver son origine depuis Foundry 14.370 (middleware
-// CSRF, cf. l'en-tête Sec-Fetch-Site ci-dessous, obligatoire car cy.request part du process
-// Node de Cypress et ne pose aucun en-tête Sec-Fetch-* de lui-même).
+// Connecte la session sous `userName` puis charge /game prêt. Connexion en POST via `cy.request`
+// (en-tête Sec-Fetch-Site requis par le CSRF), car Foundry refuse /game chargé depuis l'iframe Cypress.
 Cypress.Commands.add("joinWorldAs", (userName) => {
   cy.visit("/join", { timeout: 30000 });
 
-  // L'identifiant de l'utilisateur (pas son nom) est ce qu'attend POST /join : on le lit dans
-  // le vrai formulaire de connexion plutôt que de le coder en dur, un id Foundry étant
-  // régénéré à chaque recréation du monde de test.
+  // POST /join attend l'id de l'utilisateur, lu dans le formulaire.
   cy.get('select[name="userId"] option', { timeout: 20000 }).then(($options) => {
     const option = [...$options].find((o) => o.textContent.trim() === userName);
-    expect(option, `utilisateur "${userName}" proposé par l'écran /join du monde de test`).to.exist;
+    expect(option, `utilisateur "${userName}" proposé par l'écran /join du monde de test`).to.exist; // NOSONAR : userName est une chaîne
 
     cy.request({
       method: "POST",
@@ -138,15 +69,7 @@ Cypress.Commands.add("loginAsPlayer", () => {
   cy.assertSystemVersionMatches();
   cy.dismissPermanentNotifications();
 
-  // Foundry ouvre automatiquement la fenêtre "User Configuration" pour un Joueur qui n'a pas
-  // encore de personnage assigné (`game.user.character` vide) — comportement du cœur Foundry,
-  // rien à voir avec ce système. Découvert au premier run réel (2026-08-15) : cette fenêtre
-  // reste ouverte pendant tout le test, entre en collision avec des sélecteurs génériques
-  // (`input[name="name"]` matchait son champ à elle plutôt que celui de l'assistant, cf.
-  // wizard.cy.js > T-WIZ-008) et peut recouvrir d'autres éléments. On la ferme systématiquement
-  // ici plutôt que dans chaque spec. `{force: true}` : son bouton de fermeture peut lui-même
-  // être recouvert par une notification au moment de ce clic (cf. viewportWidth/Height,
-  // cypress.config.js).
+  // Ferme la fenêtre « Configuration utilisateur » ouverte pour un Joueur sans personnage.
   cy.get("body").then(($body) => {
     const userConfig = $body.find('[id^="UserConfig-"]');
     if (userConfig.length) {
@@ -155,24 +78,11 @@ Cypress.Commands.add("loginAsPlayer", () => {
   });
 });
 
-// Un objet littéral `{...}` créé dans le code de la spec appartient à la réalité JS de Cypress,
-// pas à celle de la page Foundry testée : Foundry le rejette dès qu'on le passe à une méthode
-// comme Actor.create() ("Actor must be constructed with a DataModel or Object", découvert au
-// premier run réel de wizard.cy.js, 2026-08-15). Aller-retour JSON (pas juste
-// `win.Object.assign(new win.Object(), data)`, une surface suffisante pour un objet plat mais
-// pas pour un objet imbriqué comme `{system: {attributes: {...}}}`) : reconstruit l'objet dans
-// la bonne réalité à toute profondeur.
+// Recrée `data` dans la réalité JS de la page (aller-retour JSON), exigé par les API Foundry.
 Cypress.Commands.add("toAutObject", (win, data) => win.JSON.parse(win.JSON.stringify(data)));
 
-// Crée un Actor "character" et termine l'assistant de création pour lui (stratégie de fixtures
-// retenue pour toute la suite E2E, cf. wizard.cy.js : Actor.create + assistant rejoué à chaque
-// fois, pas de fixtures JSON pré-importées). Réutilisable par toute spec ayant besoin d'un
-// personnage prêt sans tester l'assistant lui-même (sections 2+ de tests/E2E_TEST_PLAN.md).
-// `skills` doit correspondre exactement au quota de la classe choisie (DND_CUSTOM.classSkillChoices,
-// scripts/helpers/config.js) — l'appelant est responsable de l'accord, cf. wizard.cy.js > T-WIZ-011
-// pour ce qui se passe sinon (assistant non soumis). Suppose une session déjà connectée
-// (cy.loginAsPlayer()/cy.loginAsGM() déjà appelé) : ne se logge pas lui-même, pour rester
-// utilisable aussi bien en session Joueur que MJ.
+// Crée un personnage et termine son assistant de création (session déjà connectée) ;
+// `skills` doit respecter le quota de la classe.
 Cypress.Commands.add(
   "createReadyCharacter",
   ({ name = "Test Character", origin = "fleuraine", classKey = "fighter", skills = ["athletics", "intimidation"] } = {}) => {
@@ -191,27 +101,14 @@ Cypress.Commands.add(
   }
 );
 
-// Ouvre (ou réaffiche) la fiche d'un Actor déjà créé, sans repasser par l'assistant — pour les
-// specs qui testent la fiche elle-même sur un personnage déjà prêt (cf. cy.createReadyCharacter).
-// Suppose une session déjà connectée, comme cy.createReadyCharacter.
+// Ouvre la fiche d'un Actor existant (session déjà connectée).
 Cypress.Commands.add("openActorSheet", (actorId) => {
   cy.window().then((win) => win.game.actors.get(actorId).sheet.render(true));
   return cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 });
 
-// Force le résultat du PROCHAIN d20 lancé (une seule face de dé, une seule fois) sans dépendre
-// de Math.random : Foundry n'utilise PAS Math.random pour ses jets (vérifié dans le bundle
-// client, scripts/foundry.mjs) mais `CONFIG.Dice.randomUniform` (par défaut
-// `MersenneTwister.random`), un point d'extension officiel documenté par Foundry lui-même —
-// c'est donc lui qu'il faut remplacer, pas Math.random. `DiceTerm#mapRandomFace` calcule
-// `Math.ceil((1 - randomUniform) * faces)` : pour obtenir la face `face` avec certitude (pas
-// seulement en probabilité, cf. arrondi flottant sur les bornes exactes), on vise le milieu de
-// l'intervalle qui y correspond plutôt que sa borne. Se restaure tout seul après le premier
-// appel (pas de fuite vers les jets suivants ni besoin d'un `cy.restoreDice()` séparé à ne pas
-// oublier) — utiliser une fois par d20 à forcer (ex. jet de sauvegarde de la mort, `1d20` sans
-// modificateur, cf. tab-stats.cy.js > T-STATS-019). Ne convient pas à une formule à plusieurs
-// dés (ex. avantage `2d20kh1`) dont on voudrait fixer chaque dé indépendamment — pas nécessaire
-// dans cette suite (l'avantage/désavantage y est vérifié via la formule du jet, pas son résultat).
+// Force la face du prochain d20 via `CONFIG.Dice.randomUniform`, restauré après un appel.
+// Un seul dé par appel (pas pour `2d20kh1`).
 Cypress.Commands.add("forceD20", (face) => {
   return cy.window().then((win) => {
     const original = win.CONFIG.Dice.randomUniform;

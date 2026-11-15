@@ -11,11 +11,7 @@ function abilityBonusesSchema() {
   );
 }
 
-/** Type d'Item "origin" : une des 6 nations géographiques remplaçant les races classiques
- *  (cf. system.json > documentTypes.Item.origin). Destiné à être rangé dans le compendium
- *  "Origines" (system.json > packs), à la place des données jusqu'ici externalisées dans
- *  scripts/data/origins.json. L'illustration (ITEMS.md > champ "image") réutilise le champ
- *  natif `img` de l'Item, pas de champ dédié. */
+/** Données d'une Origine, nation remplaçant les races classiques. */
 export class OriginData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {

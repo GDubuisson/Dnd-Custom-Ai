@@ -1,5 +1,5 @@
 import { DND_CUSTOM } from "../helpers/config.js";
-import { formatModifier, formatAttackLabels, hitPointsPercent } from "../helpers/rules.js";
+import { formatModifier, formatAttackLabels, hitPointsPercent, parenthesized } from "../helpers/rules.js";
 import { rollCheck, rollDamage } from "../helpers/rolls.js";
 import { openAwardXpDialog } from "../helpers/xp.js";
 import { checkSentinelReminder } from "../helpers/sentinel.js";
@@ -16,11 +16,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Feuille d'ennemi/PNJ : ApplicationV2/ActorSheetV2, stats simplifiées (bonus direct,
- *  sauvegarde = bonus). Réutilisée telle quelle pour les types "mount" (montures vivantes) et
- *  "wildShapeForm" (formes de Forme sauvage, Druide, cf. dnd-custom-ai.js) : même fiche, juste
- *  un type d'Actor et un libellé différents. Le glisser-déposer (InventoryDragDropMixin) permet
- *  d'ajouter/retirer du butin ou de la sellerie via l'onglet "Butin". */
+/** Fiche de PNJ (stats simplifiées), aussi utilisée pour les montures et formes sauvages ; onglet Butin. */
 export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "npc"],
@@ -60,10 +56,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     }
   };
 
-  /** @override
-   * Contexte partagé par tous les onglets : options des listes SRD (type, taille, FI)
-   * et bonus de caractéristiques déjà formatés, pour garder les templates .hbs sans logique.
-   */
+  /** @override Contexte commun : options SRD (type, taille, FI) et bonus déjà formatés. */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const system = this.actor.system;
@@ -92,7 +85,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
 
     context.hpPercent = hitPointsPercent(system.attributes.hp);
 
-    // Sauvegarde = bonus de caractéristique (pas de score ni de maîtrise séparée pour un PNJ).
+    // La sauvegarde vaut le bonus de caractéristique.
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => ({
       key,
       label: DND_CUSTOM.abilities[key],
@@ -103,14 +96,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     const items = this.actor.items.contents;
     context.lootItems = items.filter((item) => ["weapon", "armor", "gear", "tool"].includes(item.type));
 
-    // Profils d'attaque simplifiés (cf. NpcData#attacks, npc-data.js — retour de test : un PNJ ne
-    // pouvait pas attaquer du tout ; liste depuis le chantier "mécaniques jamais modélisées"
-    // point 4/6, 2026-08-25). `index` posé sur chaque entrée : consommé par les boutons
-    // Attaque/Dégâts/Retirer (data-index) et par les `name` de formulaire indexés
-    // (`system.attacks.{{index}}...`, expansion native Foundry des chemins pointés en tableau).
-    // `abilityMod` : celle des deux (Force/Dextérité) choisie par le MJ POUR CETTE attaque,
-    // pilote à la fois le bonus d'attaque et de dégâts affichés (labels déjà formatés, template
-    // sans logique). `damageTypeOptions` inclut une option vide en tête (type facultatif).
+    // Profils d'attaque avec `index` (boutons, champs `system.attacks.N`) et libellés formatés.
     context.attacks = system.attacks.map((attack, index) => {
       const attackAbilityMod = system.abilities[attack.ability]?.mod ?? 0;
       return {
@@ -134,13 +120,9 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
           }))
         ],
         ...formatAttackLabels(attack, attackAbilityMod),
-        // Chantier "types de dégâts" (Phase 1, 2026-08-24) : cf. WeaponData#magic (item-data.js)
-        // pour le détail — contourne la résistance/immunité GÉNÉRIQUE aux 3 types physiques.
+        // Attaque magique.
         magic: attack.magic,
-        // Chantier "types de dégâts" (Phase 3, 2026-08-24) : cf. NpcData#attacks[].secondaryDamage
-        // (npc-data.js) pour le détail — dégâts bonus optionnels d'un second type (ex. morsure
-        // perforant + poison), jamais de modificateur ajouté (dés fixes, contrairement à
-        // damageLabel ci-dessus qui inclut le modificateur du profil principal).
+        // Dégâts secondaires optionnels (dés fixes).
         secondaryDamageDice: attack.secondaryDamage.dice,
         secondaryDamageTypeOptions: [
           { key: "", label: "", selected: !attack.secondaryDamage.type },
@@ -153,24 +135,16 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       };
     });
 
-    // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
-    // ensemble), même helper que la fiche personnage (actor-sheet.js). Pour un PNJ les SetField
-    // sont directement sous `system` (cf. damageAffinitySchema, shared-schema.js).
+    // Cases d'affinités aux dégâts (champs à la racine de `system`).
     context.damageAffinityGroups = damageAffinityGroups(system);
 
-    // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : pas d'Exhaustion à
-    // paliers pour un PNJ (stats déjà simplifiées, cf. commentaire de classe ci-dessus).
-    // `activeConditions` alimente le résumé du libellé replié de la liste déroulante (cf.
-    // npc-tab-stats.hbs) — même helper que la fiche personnage (actor-sheet.js).
+    // États, et résumé des états actifs du libellé replié.
     Object.assign(context, conditionsContext(this.actor));
 
     return context;
   }
 
-  // _preparePartContext (expose context.tab par PART) : factorisé dans InventoryDragDropMixin.
-
-  /** Jet de caractéristique (1d20 + bonus) : sert aussi de jet de sauvegarde, identiques
-   *  pour un PNJ (pas de maîtrise séparée, cf. commentaire de classe). */
+  /** Jet de caractéristique (1d20 + bonus), qui sert aussi de sauvegarde. */
   static async #onRollAbility(event, target) {
     const key = target.dataset.key;
     const mod = this.actor.system.abilities[key].mod;
@@ -185,65 +159,27 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     });
   }
 
-  /** Bascule un état (cf. CONFIG.statusEffects) : Actor#toggleStatusEffect crée/retire
-   *  l'ActiveEffect correspondante (méthode native Foundry). */
+  /** Bascule un état via `Actor#toggleStatusEffect`. */
   static async #onToggleCondition(event, target) {
     await this.actor.toggleStatusEffect(target.dataset.key);
   }
 
-  /** Jet d'Initiative : cf. DndCustomActorSheet#onRollInitiative (même mécanisme natif Foundry). */
+  /** Jet d'initiative natif. */
   static async #onRollInitiative() {
     await this.actor.rollInitiative({ createCombatants: true });
   }
 
-  /** Jet d'attaque d'UN des profils simplifiés (`target.dataset.index`, cf. NpcData#attacks,
-   *  npc-data.js — liste depuis le chantier "mécaniques jamais modélisées" point 4/6,
-   *  2026-08-25) : 1d20 + modificateur de la caractéristique choisie par le MJ pour CETTE
-   *  attaque + bonus fixe. Même mécanique que #onRollWeaponAttack (actor-sheet.js) —
-   *  comparaison automatique à la CA des cibles ciblées, coups/échecs critiques en combat
-   *  (1/20 naturel) : un coup critique pose un flag transitoire sur l'ACTOR, INDEXÉ par attaque
-   *  (`pendingAttackCritical: {[index]: true}` — plusieurs attaques peuvent être "en attente de
-   *  dégâts" simultanément si le MJ clique Attaque sur chacune avant de rouler leurs dégâts,
-   *  contrairement à l'ancien profil unique où l'ambiguïté n'existait pas), consommé par le
-   *  prochain jet de dégâts de CETTE MÊME attaque (#onRollAttackDamage) pour doubler ses dés.
-   *
-   *  `checkSentinelReminder` (helpers/sentinel.js, chantier "Combat automatisé avancé", cadrage
-   *  du 2026-08-23) : après le jet, si ce PNJ est hostile et attaque une cible autre qu'un
-   *  Combattant PJ à 1,50 m possédant Sentinelle avec réaction disponible, poste un rappel de
-   *  chat — jamais d'interruption, le MJ/joueur reste libre d'agir ensuite.
-   *
-   *  `checkGiantKillerReminder` (helpers/giant-killer.js, chantier "8 sous-classes déjà à ≥1
-   *  mécanique", 2026-08-23) : même principe, mais pour le Rôdeur LUI-MÊME quand il est touché
-   *  ou manqué par un PNJ hostile de taille Grande ou plus à 1,50 m.
-   *
-   *  `recordAttackOnTargets` (helpers/hunters-defense.js, même chantier) : enregistre ce PNJ
-   *  comme ayant attaqué CHAQUE cible ciblée qui est un personnage joueur — suivi générique SRD,
-   *  consulté par Défense contre les attaques multiples (Tactiques défensives, Rôdeur Hunter).
-   *
-   *  `PENDING_OPPORTUNITY_DISADVANTAGE_FLAG` (helpers/opportunity-attack.js, même chantier) :
-   *  "Échappée de la horde" (Tactiques défensives) — désavantage consommé sur CE jet si un
-   *  Rôdeur avec ce choix vient de s'éloigner de ce PNJ précis, approximation assumée.
-   *
-   *  `isDisadvantagedByHuntedTarget` (helpers/relentless-hunter.js, Niveau C, 2026-08-25) : Traque
-   *  implacable (Paladin, Serment de Vengeance) — désavantage si la cible actuellement ciblée
-   *  porte l'état "Traqué" posé par un AUTRE Actor que ce PNJ (SRD : "toute créature autre que
-   *  vous"), un PNJ attaquant étant concerné au même titre qu'un PJ. */
+  /**
+   * Jet d'attaque du profil `target.dataset.index` contre la CA des cibles, avec avantage/désavantage
+   * (Échappée de la horde, Traque implacable), critique mémorisé par attaque et rappels de réaction.
+   */
   static async #onRollAttack(event, target) {
     const index = Number(target.dataset.index);
     const attack = this.actor.system.attacks[index];
     if (!attack) return;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
     const hasPendingOpportunityDisadvantage = Boolean(this.actor.getFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG));
-    // `setFlag(..., false)`, PAS `unsetFlag` : sur l'acteur SYNTHÉTIQUE d'un token PNJ non lié
-    // (actorLink: false, cas de loin le plus fréquent), `unsetFlag` sur une clé de `flags` de
-    // l'Actor lui-même (pas d'un Item embarqué, où ça fonctionne normalement) ne persiste
-    // jamais — le mécanisme de delta du token semble perdre l'opération de suppression de clé
-    // à la fusion. Vérifié par un test isolé : `getFlag` renvoie encore `true` juste après un
-    // `unsetFlag` attendu sur un tel acteur, alors que `setFlag(clé, false)` fonctionne
-    // normalement (lu comme faux par `Boolean(...)` ci-dessus, donc équivalent fonctionnel).
-    // Retour de test (T-MOBILE-001, cypress/e2e/hunters-defense-automation.cy.js) : sans ce
-    // correctif, le désavantage posé par "Échappée de la horde" ne se consomme jamais sur un
-    // PNJ non lié, restant indéfiniment au lieu d'un seul prochain jet d'attaque comme prévu.
+    // `setFlag(false)` car `unsetFlag` ne persiste pas sur un token non lié.
     if (hasPendingOpportunityDisadvantage) await this.actor.setFlag(SYSTEM_ID, PENDING_OPPORTUNITY_DISADVANTAGE_FLAG, false);
     const { isCriticalHit } = await rollCheck({
       actor: this.actor,
@@ -265,22 +201,17 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     await recordAttackOnTargets(this.actor);
   }
 
-  /** Jet de dégâts d'UN des profils simplifiés (`target.dataset.index`) : dé(s) configuré(s) +
-   *  modificateur de la même caractéristique que l'attaque (SRD 5e) + bonus fixe. Pas de bouton
-   *  affiché tant qu'aucun dé n'est configuré (cf. npc-tab-stats.hbs > attacks[].damageDice). */
+  /** Jet de dégâts du profil `target.dataset.index` : dés + modificateur + bonus fixe. */
   static async #onRollAttackDamage(event, target) {
     const index = Number(target.dataset.index);
     const attack = this.actor.system.attacks[index];
-    if (!attack || !attack.damage.dice) return;
+    if (!attack?.damage.dice) return;
     const abilityMod = this.actor.system.abilities[attack.ability]?.mod ?? 0;
     const damageTypeLabel = attack.damage.type ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage.type]) : "";
     const pending = this.actor.getFlag(SYSTEM_ID, "pendingAttackCritical") ?? {};
     const critical = Boolean(pending[index]);
     if (critical) {
-      // Syntaxe de suppression de clé Foundry (`-=`) plutôt qu'un simple setFlag avec un objet
-      // plus petit : Actor#update fusionne les objets imbriqués (flags compris) au lieu de les
-      // REMPLACER — passer `{}`/un objet sans cette clé laisserait l'ancienne valeur intacte
-      // après fusion, retour de test (l'index retiré côté client restait "true" côté serveur).
+      // Suppression de clé `-=` : une fusion d'objet ne retirerait pas l'index.
       await this.actor.update({ [`flags.${SYSTEM_ID}.pendingAttackCritical.-=${index}`]: null });
     }
     await rollDamage({
@@ -289,18 +220,13 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
       formula: formatModifier(abilityMod + attack.damage.bonus),
       flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", {
         weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
-      })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      })}${parenthesized(damageTypeLabel)}`,
       critical,
       damageType: attack.damage.type,
       isMagicalSource: attack.magic
     });
 
-    // Dégâts BONUS d'une attaque aux propriétés magiques (chantier "types de dégâts", Phase 3,
-    // 2026-08-24 — ex. une morsure qui inflige perforant + poison) : 2e message de dégâts
-    // DISTINCT, son propre type, jamais de modificateur de caractéristique ajouté (SRD 5e : dés
-    // fixes) — résolu indépendamment du 1er contre les résistances de la cible (cf.
-    // damageTypeMultiplier, helpers/damage-resolution.js). Même critique (dés doublés) que le composant
-    // principal, cf. #onRollWeaponDamage (actor-sheet.js) pour le même principe côté PJ.
+    // Dégâts secondaires : message distinct, sans modificateur, critique appliqué.
     if (attack.secondaryDamage.dice) {
       const secondaryDamageTypeLabel = attack.secondaryDamage.type
         ? game.i18n.localize(DND_CUSTOM.damageTypes[attack.secondaryDamage.type])
@@ -311,7 +237,7 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
         formula: "",
         flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", {
           weapon: attack.name || game.i18n.localize("DND_CUSTOM.Npc.AttackDefaultName")
-        })}${secondaryDamageTypeLabel ? ` (${secondaryDamageTypeLabel})` : ""}`,
+        })}${parenthesized(secondaryDamageTypeLabel)}`,
         critical,
         damageType: attack.secondaryDamage.type,
         isMagicalSource: attack.magic
@@ -319,23 +245,19 @@ export class DndCustomNpcSheet extends InventoryDragDropMixin(HandlebarsApplicat
     }
   }
 
-  /** Ajoute un profil d'attaque vierge (cf. NpcData#attacks, npc-data.js) — même schéma par
-   *  défaut que le premier profil d'un PNJ neuf (`initial: [{}]`). */
+  /** Ajoute un profil d'attaque vierge. */
   static async #onAddNpcAttack() {
     await this.actor.update({ "system.attacks": [...this.actor.system.attacks, {}] });
   }
 
-  /** Retire le profil d'attaque à `target.dataset.index` (cf. NpcData#attacks). Aucun minimum
-   *  requis : un PNJ peut se retrouver sans aucune attaque configurée (aucun bouton affiché sur
-   *  la fiche dans ce cas, cf. npc-tab-stats.hbs). */
+  /** Retire le profil d'attaque `target.dataset.index`. */
   static async #onRemoveNpcAttack(event, target) {
     const index = Number(target.dataset.index);
     const attacks = this.actor.system.attacks.filter((_, i) => i !== index);
     await this.actor.update({ "system.attacks": attacks });
   }
 
-  /** Ouvre la boîte de dialogue de distribution d'XP, montant pré-rempli avec le XP rapporté
-   *  de ce PNJ (cf. scripts/helpers/xp.js). */
+  /** Ouvre le dialogue d'XP pré-rempli avec l'XP rapporté du PNJ. */
   static async #onAwardXp() {
     await openAwardXpDialog({ defaultAmount: this.actor.system.xpReward });
   }

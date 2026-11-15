@@ -1,8 +1,5 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Barde : 2 nouvelles sous-classes
-// ajoutées (Collège des Lames/swords, Collège de la Vaillance/valour), en plus du Collège du
-// Savoir déjà existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de la
-// mécanique active du Collège des Lames (jet de dégâts bonus à charges limitées).
+// Sous-classes du Barde (Collège des Lames, de la Vaillance) : octroi des Capacités
+// et jet de dégâts bonus à charges du Collège des Lames.
 
 const createdActorIds = [];
 

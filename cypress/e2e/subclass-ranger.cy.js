@@ -1,9 +1,4 @@
-// Couvre le lot Rôdeur du chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") : 2 nouvelles sous-classes ajoutées
-// (Maître des bêtes/beastmaster, Traqueur des ténèbres/gloomStalker), en plus du Chasseur déjà
-// existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque mécanique
-// propre — en particulier la primitive P3 (compagnon animal, cf. helpers/companion.js)
-// construite ici pour la première fois.
+// Sous-classes du Rôdeur (Maître des bêtes, Traqueur des ténèbres) : octroi des Capacités et compagnon animal.
 
 const createdActorIds = [];
 
@@ -30,11 +25,7 @@ function withItemId(actorId, itemName, callback) {
 after(() => {
   cy.loginAsGM();
   cy.window().then((win) => {
-    // Piège locale rencontré (retour de test, 2026-08-25) : filtrer par le préfixe FRANÇAIS
-    // "Loup (" (DND_CUSTOM.Companion.Name) laissait le compagnon orphelin dans le monde dès que
-    // la locale active était l'anglais ("Wolf (..." ne matchait jamais) — 3 doublons accumulés
-    // en conditions réelles avant d'être repéré. `game.i18n.format` reconstruit le nom EXACT
-    // attendu quelle que soit la locale active, au lieu de deviner un préfixe en dur.
+    // Nom exact du compagnon dans la locale active.
     const companionName = win.game.i18n.format("DND_CUSTOM.Companion.Name", { owner: "Sub Ranger Beastmaster" });
     const companions = win.game.actors.filter((a) => a.name === companionName);
     const ids = [...createdActorIds, ...companions.map((a) => a.id)];
@@ -66,8 +57,7 @@ describe("Sous-classes de Rôdeur — Maître des bêtes / Traqueur des ténèbr
         expect(actor.items.find((i) => i.name === "Compagnon animal"), "Compagnon animal octroyée").to.exist;
       });
 
-      // Invocation réservée au MJ (permission de création d'Actor, même restriction que la
-      // création de Token — cf. combat-criticals.cy.js > createTarget).
+      // Invocation par le MJ (création d'Actor).
       cy.loginAsGM();
       cy.openActorSheet(actorId);
       goToTab("abilities");
@@ -81,23 +71,16 @@ describe("Sous-classes de Rôdeur — Maître des bêtes / Traqueur des ténèbr
             expect(win.game.actors.get(actorId).getFlag("dnd-custom-ai", "beastCompanionCreated"), "flag posé").to.be.true;
           });
 
-          // Retour de test (régression réelle rencontrée, 2026-08-25) : le compagnon utilisait
-          // encore l'ancien champ singulier `system.attack`, silencieusement ignoré par le
-          // DataModel depuis le passage à `attacks` (liste) — le Loup invoqué se retrouvait sans
-          // aucune attaque, sans qu'aucune erreur ne le signale. Vérifie explicitement qu'une
-          // vraie attaque est bien présente sur le compagnon créé.
+          // Le compagnon doit avoir au moins une attaque.
           cy.window().then((win) => {
-            // `type: "npc"` en plus du nom : le Personnage Joueur lui-même s'appelle aussi "Sub
-            // Ranger Beastmaster" (piège rencontré — .find() sans ce filtre retombait sur le PJ,
-            // dont system.attacks n'existe même pas, CharacterData n'ayant pas ce champ).
+            // Filtre `npc` : le PJ porte le même nom.
             const wolf = [...win.game.actors].find((actor) => actor.type === "npc" && actor.name.includes("Sub Ranger Beastmaster"));
             expect(wolf, "compagnon Loup introuvable parmi les Actors").to.exist;
             expect(wolf.system.attacks, "le compagnon doit avoir au moins une attaque configurée").to.have.length.greaterThan(0);
             expect(wolf.system.attacks[0].name).to.equal("Morsure");
           });
 
-          // Bouton disparu après invocation (déjà invoqué) : ré-affiche la fiche pour repartir
-          // d'un rendu à jour plutôt que de dépendre d'un re-render implicite.
+          // Réaffiche la fiche après invocation.
           cy.openActorSheet(actorId);
           goToTab("abilities");
           cy.get(`li[data-item-id="${itemId}"] button[data-action="summonCompanion"]`).should("not.exist");

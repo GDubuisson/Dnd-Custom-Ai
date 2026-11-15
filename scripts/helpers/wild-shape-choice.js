@@ -4,23 +4,21 @@ import { radioListDialogContent } from "./dialog-content.js";
 const { DialogV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Résume les attaques d'un PNJ du compendium (NpcData#attacks) en une ligne lisible pour le
- *  dialogue de choix ci-dessous, ex. "Morsure (2d4 perforant), Griffe (2d6 tranchant)". */
+/** Résume les attaques d'un PNJ en une ligne, ex. « Morsure (2d4 perforant) ». */
 function summarizeAttacks(attacks) {
   return (attacks ?? [])
     .map((attack) => {
       const typeLabel = game.i18n.localize(DND_CUSTOM.damageTypes[attack.damage?.type] ?? "");
-      return `${attack.name} (${attack.damage?.dice}${typeLabel ? ` ${typeLabel}` : ""})`;
+      const details = [attack.damage?.dice, typeLabel].filter(Boolean).join(" ");
+      return `${attack.name} (${details})`;
     })
     .join(", ");
 }
 
-/** Propose au Druide, au clic sur "Prendre forme" (cf. #onEnterWildShape, actor-sheet.js), un
- *  choix parmi les formes de DND_CUSTOM.wildShapeForms (config.js) dont le niveau minimum est
- *  atteint — même pattern que offerSubclassChoiceDialog (subclass-choice.js) : DialogV2.prompt
- *  avec une ligne à cocher par option, tirée du compendium "adversaires" (PNJ prêts à l'emploi,
- *  world-items/npcs.json). Retourne le nom de la forme choisie, ou undefined si aucune forme
- *  n'est disponible au niveau du personnage ou si le dialogue est fermé sans choix. */
+/**
+ * Propose au Druide les formes sauvages accessibles à son niveau.
+ * @returns {Promise<string|undefined>} nom de la forme choisie
+ */
 export async function offerWildShapeFormDialog(actor) {
   const pack = game.packs.get(`${SYSTEM_ID}.adversaires`);
   const npcDocuments = pack ? await pack.getDocuments() : [];

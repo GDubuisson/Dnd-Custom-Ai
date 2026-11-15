@@ -1,27 +1,6 @@
-// Chantier "8 sous-classes déjà à ≥1 mécanique" (2026-08-23) — cadrage au cas par cas avec
-// l'utilisateur (ANOMALIES_ACTIVES.md). Couvre les 6 mécaniques neuves de ce chantier (Fiend
-// était déjà complète, Sorts de cercle laissé en texte) :
-// - Disciple de la vie (Life, Clerc) : bonus de soin automatique.
-// - Résilience draconique (Draconic, Ensorceleur) : CA sans armure + choix + résistance aux
-//   dégâts (première résistance modélisée dans ce système).
-// - Tueur de géants (Hunter, Rôdeur) : rappel de réaction (même schéma que Sentinelle).
-// - Rage sans esprit (Berserker, Barbare) : immunité Charmé/Effrayé en Rage (première immunité
-//   à une condition modélisée dans ce système).
-// - Aura de dévotion (Devotion, Paladin) : même immunité, en zone (3 m).
-// - Technique de la Main Ouverte (Open Hand, Moine) : choix d'effet + jet de sauvegarde.
-// - Tactiques défensives (Hunter, Rôdeur) : choix ponctuel enregistré, bonus PAS appliqué
-//   automatiquement (limite d'architecture assumée, cf. sa description) — seul l'enregistrement
-//   du choix est testé ici.
-//
-// Tout géré en session MJ de bout en bout (même convention que sentinel-mounted-combat.cy.js) :
-// aucune de ces mécaniques ne dépend d'une session Joueur spécifique. Actors créés directement
-// (`Actor.create`, jamais l'assistant de création) avec juste les champs system.* nécessaires —
-// plus léger, pas besoin d'un personnage "prêt" complet pour ces tests ciblés. Les 3 Items de
-// Capacité touchés par un champ neuf ce chantier (grantsChoice sur Résilience draconique/
-// Tactiques défensives, offersOpenHandTechnique sur Technique de la Main Ouverte) sont créés
-// DIRECTEMENT plutôt que depuis le compendium, qui resterait périmé pour eux (piège déjà
-// documenté, cf. deferred-rider-spells.cy.js). Les 3 autres (Disciple de la vie/Tueur de géants/
-// Rage sans esprit) n'ont reçu aucun champ neuf : accessibles via le compendium réel.
+// Disciple de la vie, Résilience draconique, Tueur de géants, Rage sans esprit, Aura de dévotion,
+// Technique de la Main ouverte et choix de Tactiques défensives, en session MJ.
+// Les Capacités à champs spécifiques sont créées directement, les autres viennent du compendium.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -157,9 +136,7 @@ describe("Disciple de la vie (Life, Clerc) — bonus de soin automatique", () =>
         );
       })
       .then(() => {
-        // `spells.slots.<n>.max` est dérivé automatiquement (classe/niveau), mais `.value` (charges
-        // restantes) reste à son initial (0) tant qu'aucun repos ne l'a réglé — sans ce réglage,
-        // #onCastSpell annule silencieusement (aucun emplacement disponible), aucun message posté.
+        // Emplacement de niveau 1 disponible pour lancer.
         cy.window().then((win) => updateActor(win, win.game.actors.get(actorId), { "system.spells.slots.1.value": 1 }, { dndCustomWizard: true }));
         cy.openActorSheet(actorId);
         goToTab("abilities");
@@ -416,9 +393,7 @@ describe("Aura de dévotion (Devotion, Paladin) — immunité Charmé en zone (3
     cy.window().should((win) => {
       expect(win.game.actors.get(allyId).statuses.has("charmed"), "Charmé bloqué, allié protégé par l'aura").to.be.false;
     });
-    // Retiré aussi de createdSceneItemIds (pas seulement supprimé du canvas) : sinon le nettoyage
-    // final (after() global) tenterait de le supprimer une 2e fois, "id introuvable" — piège déjà
-    // documenté ailleurs (cf. createdCombatIds.splice(0) dans d'autres specs de cette suite).
+    // Retiré aussi de createdSceneItemIds pour éviter une double suppression.
     cy.window().then((win) => {
       const index = createdSceneItemIds.indexOf(allyTokenId);
       if (index !== -1) createdSceneItemIds.splice(index, 1);
@@ -490,11 +465,7 @@ describe("Technique de la Main Ouverte (Open Hand, Moine) — choix d'effet + je
     lastMessage().then((roll) => {
       expect(roll.flavor, "sauvegarde ratée (1 naturel forcé), effet 'à terre' choisi").to.include("Knocked prone");
     });
-    // "Open Hand Target" est un PNJ (token NON lié à son Actor, cf. dnd-custom-ai.js >
-    // preCreateActor — seuls les personnages joueurs sont liés) : `#onUseOpenHandTechnique`
-    // applique l'état sur `token.actor` (l'Actor SYNTHÉTIQUE propre à CE token), jamais reflété
-    // sur `game.actors.get(targetActorId)` (l'Actor "monde" jamais touché pour un token délié) —
-    // vérifier via le token, pas l'Actor de la sidebar.
+    // État vérifié sur l'acteur synthétique du token non lié.
     cy.window().should((win) => {
       expect(win.canvas.tokens.get(targetTokenId).actor.statuses.has("prone"), "cible mise à terre").to.be.true;
     });

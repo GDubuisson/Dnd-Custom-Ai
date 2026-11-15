@@ -1,17 +1,5 @@
-// Garde-fou : les Journaux générés automatiquement par le système (hook `ready`,
-// dnd-custom-ai.js) ont la bonne visibilité.
-//
-// Contexte : `JournalEntry.create()` sans `ownership` explicite crée un Journal visible du MJ
-// SEUL (`ownership.default = 0`). Le Guide du Joueur et le Comparatif des Origines sont pourtant
-// la documentation en jeu DESTINÉE aux joueurs (la couche d'infobulles de la fiche y renvoie) —
-// ils passaient inaperçus faute d'être partagés. `ensurePlayerGuideJournal`/`ensureOriginsJournal`
-// forcent désormais `ownership.default = OBSERVER` à la création, et `ensureGmAuthoredJournal`
-// remonte un Journal resté « Aucun » (mondes créés avant ce correctif). Le Guide du MJ reste
-// explicitement « Aucun ».
-//
-// Le test remet volontairement les 2 Journaux joueur en « Aucun » puis recharge, pour exercer le
-// rattrapage à chaque exécution (indépendamment de l'état du monde de test) — et les laisse donc
-// dans le bon état final, aucune trace à nettoyer.
+// Visibilité des Journaux générés : Guide du Joueur et Comparatif des Origines en Observateur,
+// Guide du MJ en Aucun. Les Journaux joueur sont repassés en « Aucun » puis rattrapés au rechargement.
 
 const PLAYER_JOURNAL_KEYS = ["DND_CUSTOM.Journal.PlayerGuideTitle", "DND_CUSTOM.Journal.OriginsComparisonTitle"];
 const GM_JOURNAL_KEY = "DND_CUSTOM.Journal.GmGuideTitle";
@@ -26,7 +14,7 @@ describe("Visibilité des Journaux générés par le système", () => {
   it("le rattrapage rend le Guide du Joueur et le Comparatif des Origines visibles des joueurs, jamais le Guide du MJ (T-JOURNAL-001)", () => {
     cy.loginAsGM();
 
-    // Simule un monde créé avant le correctif : les 2 Journaux joueur repassent en « Aucun ».
+    // Journaux joueur remis en « Aucun ».
     cy.window().then((win) =>
       Promise.all(
         PLAYER_JOURNAL_KEYS.map((key) => {
@@ -42,8 +30,7 @@ describe("Visibilité des Journaux générés par le système", () => {
       }
     });
 
-    // Rechargement → hook `ready` → rattrapage de visibilité (asynchrone et détaché : `should()`
-    // retente le temps qu'il aboutisse).
+    // Rechargement : le hook `ready` rattrape la visibilité (asynchrone, `should()` réessaie).
     cy.loginAsGM();
     cy.window({ timeout: 25000 }).should((win) => {
       const player = win.game.users.find((user) => !user.isGM);
@@ -59,6 +46,24 @@ describe("Visibilité des Journaux générés par le système", () => {
       expect(gmGuide, "Guide du MJ présent").to.exist;
       expect(gmGuide.ownership.default, "Guide du MJ resté Aucun").to.equal(NONE);
       expect(gmGuide.testUserPermission(player, "OBSERVER"), "Guide du MJ invisible du joueur").to.be.false;
+    });
+  });
+
+  it("les Chroniques des objets sont réservées au MJ, une page par région (T-JOURNAL-003)", () => {
+    cy.loginAsGM();
+    cy.window({ timeout: 25000 }).should((win) => {
+      const player = win.game.users.find((user) => !user.isGM);
+      const chronicles = journalByKey(win, "DND_CUSTOM.Journal.ItemLoreTitle");
+      expect(chronicles, "Chroniques des objets présentes").to.exist;
+      expect(chronicles.ownership.default, "réservées au MJ").to.equal(NONE);
+      expect(chronicles.testUserPermission(player, "OBSERVER"), "invisibles du joueur").to.be.false;
+
+      const regions = ["fleuraine", "altenmark", "lucentia", "ravenmoor", "valdera", "azhar", "saintSiege"].map((key) =>
+        win.game.i18n.localize(`DND_CUSTOM.Regions.${key}`)
+      );
+      expect(chronicles.pages.map((page) => page.name)).to.have.members(regions);
+      const fleuraine = chronicles.pages.getName(win.game.i18n.localize("DND_CUSTOM.Regions.fleuraine"));
+      expect(fleuraine.text.content).to.include("La Lame des Bannières");
     });
   });
 });

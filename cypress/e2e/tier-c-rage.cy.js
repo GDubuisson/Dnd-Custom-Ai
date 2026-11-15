@@ -1,17 +1,5 @@
-// Chantier "Niveau C" (2026-08-24, sur demande explicite après revue de
-// ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : première mécanique automatisée du Niveau C — Rage
-// (Barbare, SRD 5e). L'état "raging" existait déjà (décompte de durée par round, Frénésie/Rage
-// sans esprit/Instincts du totem déjà branchés dessus, cf. tier-a-mechanics.cy.js et
-// hunter-subclasses-extra-mechanics.cy.js) ; ce chantier ajoute les 3 effets qui manquaient tant
-// que l'état est actif, sans dépendre de la possession de la Capacité "Rage" elle-même (même
-// philosophie que les autres bascules homebrew comme "blessed"/"guided" — l'automatisation lit
-// l'état, pas la Capacité qui l'a posé) :
-// - avantage aux tests ET sauvegardes de Force (conditionRollEffects, actor-sheet.js)
-// - +2 dégâts aux attaques d'arme de CORPS À CORPS utilisant la Force (#onRollWeaponDamage) —
-//   comparé à strMod (et non simplement "arme de corps à corps") pour exclure le cas d'une arme
-//   Finesse effectivement jouée en Dextérité, cf. commentaire du code
-// - résistance aux dégâts contondants/perforants/tranchants (isResistantToDamageType,
-//   dnd-custom-ai.js)
+// Effets de l'état « En Rage » : avantage aux tests et sauvegardes de Force, +2 dégâts en mêlée
+// avec la Force, résistance aux dégâts physiques.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -212,9 +200,7 @@ describe("Rage — résistance aux dégâts contondants/perforants/tranchants", 
 
   before(() => {
     cy.loginAsGM();
-    // PNJ (pas un second "character") : dnd-custom-ai.js > applyDamageToTargets bloque tout
-    // dégât d'un "character" vers un AUTRE "character" (PvP bloqué) — même contournement que
-    // "Affinité de la tempête" (tier-a-mechanics.cy.js).
+    // Attaquant PNJ : les dégâts entre personnages joueurs sont bloqués.
     cy.window()
       .then((win) =>
         win.Actor.create(
@@ -235,14 +221,7 @@ describe("Rage — résistance aux dégâts contondants/perforants/tranchants", 
 
   beforeEach(() => cy.loginAsGM());
 
-  // Un acteur DIFFÉRENT par test, sans PV forcés à la création (retour de test) :
-  // `system.attributes.hp.max` est DÉRIVÉ de classe/niveau (CharacterData#prepareDerivedData,
-  // maxHitPoints) et se recalcule à CHAQUE update — un override manuel de `hp.value`/`hp.max` à
-  // la création survit jusqu'au premier `Actor#update` quelconque, puis se fait silencieusement
-  // écraser par le vrai max dérivé (12 pour un Barbare niveau 1, dé de vie d12) : le garde-fou
-  // `dndCustomHpClamp` (dnd-custom-ai.js) clampe alors `hp.value` dessus, faussant tout calcul
-  // basé sur un PV de départ imaginaire. Un acteur frais par test (PV par défaut, 10, sous le
-  // max réel de 12) évite complètement ce piège plutôt que de forcer un total artificiel.
+  // Acteur neuf par test sans PV forcés (`hp.max` dérivé recalculé à chaque update).
   function createResistBarbarian(win) {
     return createActor(win, { name: "Rage Resist Barbarian", type: "character", system: { class: "barbarian" } }).then(
       (actor) => createToken(win, actor.id, 100, 100).then((tokenId) => ({ actorId: actor.id, tokenId }))
@@ -270,11 +249,7 @@ describe("Rage — résistance aux dégâts contondants/perforants/tranchants", 
       const rolledTotal = roll.total;
       cy.window().then((win) => win.game.actors.get(attackerId).sheet.close());
       cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
-      // Ciblage par data-message-id + .first() (pas .last() sur .chat-message) : Foundry affiche
-      // aussi une notification "toast" éphémère du même message, avec son propre bouton (même
-      // data-message-id sur les deux) — seule l'entrée du journal (la première dans le DOM)
-      // reste après coup, .last() sur .chat-message peut aussi résoudre vers un ancien message
-      // d'un run précédent (le monde de test est persistant entre les runs).
+      // Message ciblé par data-message-id + .first() (la notification éphémère porte aussi le bouton).
       cy.get(`[data-message-id="${roll.id}"]`, { timeout: 10000 }).first().find("button.dnd-apply-damage-btn").click();
       cy.window().should((win) => {
         expect(win.game.actors.get(barbarianId).system.attributes.hp.value, "hors Rage : dégâts intégraux").to.equal(

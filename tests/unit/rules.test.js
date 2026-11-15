@@ -11,6 +11,7 @@ import {
   toolCheckModifier,
   currencyTotalInCopper,
   formatModifier,
+  parenthesized,
   passivePerception,
   spellSaveDC,
   spellAttackBonus,
@@ -159,6 +160,11 @@ describe("formatModifier", () => {
   test("négatif tel quel", () => assert.equal(formatModifier(-2), "-2"));
 });
 
+describe("parenthesized", () => {
+  test("libellé entre parenthèses, précédé d'une espace", () => assert.equal(parenthesized("feu"), " (feu)"));
+  test("libellé vide : chaîne vide", () => assert.equal(parenthesized(""), ""));
+});
+
 describe("passivePerception (10 + mod Sag + maîtrise si maîtrisé)", () => {
   test("non maîtrisé", () => assert.equal(passivePerception(2, false, 3), 12));
   test("maîtrisé", () => assert.equal(passivePerception(2, true, 3), 15));
@@ -189,6 +195,11 @@ describe("targetSaveModifier (mod. de sauvegarde d'une CIBLE, sort/capacité à 
   });
   test("modificateur négatif possible (caractéristique faible)", () => {
     assert.equal(targetSaveModifier(targetSystem({ dexTotal: 6 }), "dex"), -2);
+  });
+  test("bonus de sauvegarde d'équipement (Cape de protection) ajouté", () => {
+    const system = targetSystem({ dexTotal: 16 });
+    system.attributes.saveBonus = 1;
+    assert.equal(targetSaveModifier(system, "dex"), 4);
   });
 
   test("cible PNJ (NpcData, forme simplifiée sans .total ni saves) -> mod direct, pas de crash", () => {
@@ -332,6 +343,18 @@ describe("armorClass / armorContribution", () => {
     const accessories = [{ system: { baseAC: 1 } }, { system: { baseAC: 1 } }];
     assert.equal(armorClass(0, null, null, accessories), 10 + 0 + 2);
   });
+  describe("accessoire `unarmoredOnly` (Bracelets de défense)", () => {
+    const bracers = { system: { baseAC: 2, unarmoredOnly: true } };
+    test("sans armure ni bouclier : bonus appliqué", () => {
+      assert.equal(armorClass(1, null, null, [bracers]), 10 + 1 + 2);
+    });
+    test("avec une armure : bonus ignoré", () => {
+      assert.equal(armorClass(1, { system: { baseAC: 11, armorType: "light" } }, null, [bracers]), 11 + 1);
+    });
+    test("avec un bouclier : bonus ignoré", () => {
+      assert.equal(armorClass(1, null, { system: { baseAC: 2 } }, [bracers]), 10 + 1 + 2);
+    });
+  });
   test("armorContribution armure du corps = CA de base + dex plafonné", () => {
     assert.equal(armorContribution({ slot: "armor", armorType: "medium", baseAC: 13 }, 5), 15);
   });
@@ -425,24 +448,28 @@ describe("isProficientWithWeapon / weaponAttackDamage", () => {
   const abilities = { str: { total: 16 }, dex: { total: 14 } }; // str +3, dex +2
   test("arme de corps à corps non-Finesse -> Force", () => {
     const weapon = { weaponType: "meleeMartial", properties: {} };
-    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 3, attackBonus: 5 });
+    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 3, damageMod: 3, attackBonus: 5 });
   });
   test("arme à distance -> toujours Dextérité", () => {
     const weapon = { weaponType: "rangedMartial", properties: {} };
-    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 2, attackBonus: 4 });
+    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 2, damageMod: 2, attackBonus: 4 });
   });
   test("arme Finesse -> le meilleur de Force/Dextérité", () => {
     const weapon = { weaponType: "meleeMartial", properties: { finesse: true } };
-    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 3, attackBonus: 5 });
+    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 3, damageMod: 3, attackBonus: 5 });
     const dexHigher = { str: { total: 10 }, dex: { total: 18 } };
-    assert.deepEqual(weaponAttackDamage(weapon, dexHigher, 2, true), { abilityMod: 4, attackBonus: 6 });
+    assert.deepEqual(weaponAttackDamage(weapon, dexHigher, 2, true), { abilityMod: 4, damageMod: 4, attackBonus: 6 });
   });
   test("non maîtrisé -> bonus de maîtrise non appliqué", () => {
     const weapon = { weaponType: "meleeMartial", properties: {} };
-    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, false), { abilityMod: 3, attackBonus: 3 });
+    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, false), { abilityMod: 3, damageMod: 3, attackBonus: 3 });
   });
   test("isProficient par défaut = true si omis", () => {
     const weapon = { weaponType: "meleeMartial", properties: {} };
     assert.equal(weaponAttackDamage(weapon, abilities, 2).attackBonus, 5);
+  });
+  test("arme +2 -> bonus magique ajouté à l'attaque et aux dégâts, pas au modificateur brut", () => {
+    const weapon = { weaponType: "meleeMartial", properties: {}, enhancement: 2 };
+    assert.deepEqual(weaponAttackDamage(weapon, abilities, 2, true), { abilityMod: 3, damageMod: 5, attackBonus: 7 });
   });
 });

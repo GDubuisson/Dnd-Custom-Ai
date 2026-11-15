@@ -6,9 +6,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Fiche de véhicule (charrette, bateau...) : le minimum (nom, vitesse, PV, capacité de
- *  charge) + un inventaire partagé qu'on peut peupler par glisser-déposer depuis une fiche
- *  de personnage ouverte (ou vider de même) — cf. InventoryDragDropMixin. */
+/** Fiche de véhicule avec inventaire partagé alimenté par glisser-déposer. */
 export class VehicleActorSheet extends InventoryDragDropMixin(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "vehicle"],

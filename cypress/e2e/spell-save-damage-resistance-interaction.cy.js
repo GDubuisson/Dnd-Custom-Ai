@@ -1,14 +1,5 @@
-// Chantier "tests plus profonds" (2026-08-25, demande explicite de l'utilisateur après revue de
-// couverture) : les 2 mécaniques les plus récentes de ce système — halfOnSave (chantier "Niveau
-// C", tier-c-half-on-save.cy.js) et résistance/immunité aux dégâts (chantier "types de dégâts",
-// damage-types-*.cy.js) — sont chacune testées en profondeur ISOLÉMENT, mais jamais COMBINÉES,
-// alors que `applyDamageToTargets` (dnd-custom-ai.js) les applique bien l'une APRÈS l'autre,
-// séparément arrondies :
-//   targetAmount = floor(amount * saveMultiplier)   // halfOnSave, cf. spellSaveDamageMultiplier
-//   targetAmount = floor(targetAmount * typeMultiplier) // résistance/immunité, cf. damageTypeMultiplier
-// Cette spec vérifie que les 2 réductions s'appliquent bien ENSEMBLE (arrondis séparés), pas
-// qu'une seule des deux écrase l'autre — même patron que tier-c-half-on-save.cy.js
-// (castSaveSpellAndRollDamage, cy.forceD20), réutilisé tel quel.
+// Réduction de sauvegarde (halfOnSave) puis affinité de type cumulées, chacune arrondie séparément :
+// floor(floor(montant × sauvegarde) × type).
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -81,8 +72,7 @@ function lastMessage() {
     });
 }
 
-// Même séquencement que tier-c-half-on-save.cy.js > castSaveSpellAndRollDamage : cast (jet de
-// sauvegarde forcé) puis jet de dégâts séparé du même Sort.
+// Lance le sort (sauvegarde forcée) puis son jet de dégâts.
 function castSaveSpellAndRollDamage(casterId, itemName, targetTokenId, forcedFace) {
   targetToken(targetTokenId);
   cy.openActorSheet(casterId);
@@ -91,8 +81,7 @@ function castSaveSpellAndRollDamage(casterId, itemName, targetTokenId, forcedFac
   withItemId(casterId, itemName, (itemId) => {
     cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
   });
-  // Attente réelle (cf. tier-c-half-on-save.cy.js) : #onCastSpell (branche sauvegarde) est
-  // asynchrone, Cypress ne patiente pas la fin de la chaîne interne après un simple .click().
+  // Laisse #onCastSpell (asynchrone) terminer.
   cy.wait(1000);
   return withItemId(casterId, itemName, (itemId) => {
     resetMessageBaseline();

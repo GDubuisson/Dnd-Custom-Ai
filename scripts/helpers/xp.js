@@ -1,9 +1,6 @@
 const { DialogV2 } = foundry.applications.api;
 
-/** Crée (une seule fois, si absente) une Macro monde "Attribuer de l'XP" pour que le MJ
- *  puisse ouvrir la boîte de dialogue sans passer par une fiche PNJ (même principe que
- *  ensureOriginsJournal dans origins-journal.js — jamais écrasée si elle existe déjà, pour
- *  ne pas effacer une personnalisation du MJ). */
+/** Crée la macro monde « Attribuer de l'XP » si elle n'existe pas encore. */
 export async function ensureAwardXpMacro() {
   if (!game.user.isGM) return;
 
@@ -19,12 +16,11 @@ export async function ensureAwardXpMacro() {
   });
 }
 
-/** Attribue `amount` XP à CHAQUE Actor `character` fourni (pas de répartition/division du
- *  montant entre eux — retour de test : tout personnage ayant participé au combat doit
- *  recevoir le même montant plein, pas une part) et l'ajoute à leur `system.xp` (compteur
- *  interne, jamais affiché au joueur — cf. PROJECT.md > "Système de progression"). Confirmation
- *  postée en chuchotement MJ uniquement, pour ne jamais exposer de chiffre d'XP aux joueurs via
- *  le chat. */
+/**
+ * Attribue le montant complet d'XP à chaque personnage et le confirme au MJ seul.
+ * @param {number} amount
+ * @param {Actor[]} actors
+ */
 export async function awardXp(amount, actors) {
   const recipients = actors.filter((actor) => actor.type === "character");
   if (!recipients.length || amount <= 0) {
@@ -33,7 +29,7 @@ export async function awardXp(amount, actors) {
   }
 
   for (const actor of recipients) {
-    await actor.update({ "system.xp": actor.system.xp + amount });
+    await actor.update({ "system.xp": actor.system.xp + amount }); // NOSONAR : séquentiel voulu
   }
 
   const gmIds = game.users.filter((user) => user.isGM).map((user) => user.id);
@@ -46,10 +42,7 @@ export async function awardXp(amount, actors) {
   });
 }
 
-/** Boîte de dialogue MJ : montant d'XP + case à cocher par personnage joueur du monde,
- *  toutes cochées par défaut. Utilisée à la fois par le bouton "Distribuer l'XP" d'une fiche
- *  PNJ (montant pré-rempli avec `xpReward`) et par la macro "Attribuer de l'XP" (cf.
- *  ensureAwardXpMacro dans dnd-custom-ai.js). */
+/** Ouvre le dialogue MJ d'attribution d'XP (montant + personnages cochés). */
 export async function openAwardXpDialog({ defaultAmount = 0 } = {}) {
   const characters = game.actors.filter((actor) => actor.type === "character");
   if (!characters.length) {
@@ -57,9 +50,7 @@ export async function openAwardXpDialog({ defaultAmount = 0 } = {}) {
     return;
   }
 
-  // Dialogue générique Foundry (DialogV2), pas nichée dans une fiche du système : mise en
-  // page en style inline plutôt que dépendante des classes .form-row/.checkbox-row scopées
-  // à .dnd-custom-ai, qui ne s'appliqueraient pas ici.
+  // Styles inline : le dialogue est hors du conteneur .dnd-custom-ai.
   const rows = characters
     .map(
       (actor) =>

@@ -169,5 +169,502 @@
       "use": { "type": "light", "light": { "bright": 0, "dim": 1.5 } },
       "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
     }
+  },
+  {
+    "name": "Pied-de-biche",
+    "type": "gear",
+    "img": "icons/tools/hand/pry-bar-steel.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Accorde un avantage aux tests de Force lorsqu'un levier peut s'appliquer (porte coincée, coffre...)."
+    }
+  },
+  {
+    "name": "Pelle",
+    "type": "gear",
+    "img": "icons/tools/hand/shovel-spade-steel-brown-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Pour creuser une tranchée, déterrer un coffre ou ensevelir un feu de camp."
+    }
+  },
+  {
+    "name": "Pioche de mineur",
+    "type": "gear",
+    "img": "icons/tools/hand/pickaxe-steel-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Pour briser la roche ou dégager un passage éboulé."
+    }
+  },
+  {
+    "name": "Échelle (3 m)",
+    "type": "gear",
+    "img": "icons/tools/hand/ladder-common-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 11.3,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": "Échelle de bois de 3 mètres."
+    }
+  },
+  {
+    "name": "Perche (3 m)",
+    "type": "gear",
+    "img": "icons/weapons/staves/staff-simple-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 3.2,
+      "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Pour sonder le sol devant soi, tâter l'eau ou déclencher un piège à distance."
+    }
+  },
+  {
+    "name": "Pitons (10)",
+    "type": "gear",
+    "img": "icons/tools/fasteners/nails-steel-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.1,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Pointes de fer à planter dans la roche ou le bois pour assurer une corde."
+    }
+  },
+  {
+    "name": "Matériel d'escalade",
+    "type": "gear",
+    "img": "icons/tools/hand/claws-climbing.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 5.4,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Pitons, crampons, gants et harnais. Une action permet de s'ancrer : impossible de chuter de plus de 7,50 m de ce point, ni de s'en éloigner de plus de 7,50 m sans se détacher."
+    }
+  },
+  {
+    "name": "Chaîne (3 m)",
+    "type": "gear",
+    "img": "icons/equipment/neck/choker-chain-thick-silver.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Chaîne de fer de 3 mètres (10 points de vie). Se brise sur un test de Force DD 20 réussi."
+    }
+  },
+  {
+    "name": "Chausse-trappes (sac de 20)",
+    "type": "gear",
+    "img": "icons/environment/traps/metal-spikes.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Répandues par une action sur un carré de 1,50 m. Une créature qui y entre doit réussir une sauvegarde de Dextérité DD 15 ou subir 1 dégât perforant et voir sa vitesse réduite."
+    }
+  },
+  {
+    "name": "Billes (sac de 1000)",
+    "type": "gear",
+    "img": "icons/containers/bags/pouch-gold-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Répandues par une action sur un carré de 3 m. Une créature qui y entre doit réussir une sauvegarde de Dextérité DD 10 ou tomber à terre."
+    }
+  },
+  {
+    "name": "Piège à mâchoires",
+    "type": "gear",
+    "img": "icons/environment/traps/trap-jaw-steel.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 11.3,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Une créature qui marche dessus doit réussir une sauvegarde de Dextérité DD 13 ou subir 1d4 dégâts perforants et être entravée (test de Force DD 13 pour se libérer)."
+    }
+  },
+  {
+    "name": "Menottes",
+    "type": "gear",
+    "img": "icons/sundries/survival/cuffs-shackles-steel.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.7,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Entravent une créature de taille Petite ou Moyenne. S'échapper : Dextérité DD 20 ; les briser : Force DD 20. Fournies avec leur clé."
+    }
+  },
+  {
+    "name": "Cadenas",
+    "type": "gear",
+    "img": "icons/sundries/misc/lock-steel-blue.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Fourni avec sa clé. Sans la clé, il faut réussir un test DD 15 avec des outils de voleur."
+    }
+  },
+  {
+    "name": "Miroir en acier",
+    "type": "gear",
+    "img": "icons/sundries/survival/mirror-plain.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Petit miroir poli, pratique pour regarder à l'angle d'un couloir."
+    }
+  },
+  {
+    "name": "Longue-vue",
+    "type": "gear",
+    "img": "icons/tools/navigation/spyglass-telescope-brass.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 1000, "pp": 0 },
+      "description": "Les objets observés paraissent deux fois plus proches."
+    }
+  },
+  {
+    "name": "Loupe",
+    "type": "gear",
+    "img": "icons/tools/scribal/magnifying-glass.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 100, "pp": 0 },
+      "description": "Avantage aux tests pour estimer ou inspecter un petit objet très détaillé. Permet aussi d'allumer un feu par une journée ensoleillée."
+    }
+  },
+  {
+    "name": "Sifflet",
+    "type": "gear",
+    "img": "icons/tools/instruments/whistle-copper.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Sifflet de signal, audible de loin."
+    }
+  },
+  {
+    "name": "Clochette",
+    "type": "gear",
+    "img": "icons/tools/instruments/bell-brass.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Pour donner l'alerte ou piéger un passage avec un fil tendu."
+    }
+  },
+  {
+    "name": "Encre (fiole de 30 ml)",
+    "type": "gear",
+    "img": "icons/tools/scribal/ink-quill-pink.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "De quoi écrire une cinquantaine de pages."
+    }
+  },
+  {
+    "name": "Plume d'écriture",
+    "type": "gear",
+    "img": "icons/skills/trades/academics-scribe-quill-gray.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 2, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Plume taillée pour l'écriture."
+    }
+  },
+  {
+    "name": "Parchemin (feuille)",
+    "type": "gear",
+    "img": "icons/sundries/documents/parchment-plain-tan.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": "Une feuille de parchemin."
+    }
+  },
+  {
+    "name": "Livre",
+    "type": "gear",
+    "img": "icons/sundries/books/book-worn-purple.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Recueil de poésie, chronique historique, traité de botanique... au choix du MJ."
+    }
+  },
+  {
+    "name": "Flèches (20)",
+    "type": "gear",
+    "img": "icons/weapons/ammunition/arrows-war-white.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Munitions pour arc court et arc long."
+    }
+  },
+  {
+    "name": "Carreaux d'arbalète (20)",
+    "type": "gear",
+    "img": "icons/weapons/ammunition/arrows-war-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.7,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Munitions pour arbalètes légère, lourde et de poing."
+    }
+  },
+  {
+    "name": "Billes de fronde (20)",
+    "type": "gear",
+    "img": "icons/weapons/ammunition/shot-round-lead.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.7,
+      "price": { "pc": 4, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Munitions pour fronde."
+    }
+  },
+  {
+    "name": "Aiguilles de sarbacane (50)",
+    "type": "gear",
+    "img": "icons/tools/hand/needle-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Munitions pour sarbacane."
+    }
+  },
+  {
+    "name": "Carquois",
+    "type": "gear",
+    "img": "icons/containers/ammunition/quiver-simple-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Contient jusqu'à 20 flèches."
+    }
+  },
+  {
+    "name": "Étui à carreaux",
+    "type": "gear",
+    "img": "icons/containers/bags/case-simple-leather-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Contient jusqu'à 20 carreaux d'arbalète."
+    }
+  },
+  {
+    "name": "Bourse",
+    "type": "gear",
+    "img": "icons/containers/bags/coinpouch-leather-orange.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "capacityBonus": 2.7,
+      "description": "Petite bourse de cuir. Équipez-la pour augmenter votre capacité de charge de 2,7 kg (un seul contenant équipable à la fois)."
+    }
+  },
+  {
+    "name": "Panier",
+    "type": "gear",
+    "img": "icons/containers/misc/basket-simple-green.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 4, "po": 0, "pp": 0 },
+      "capacityBonus": 18.1,
+      "description": "Panier tressé à anse. Équipez-le pour augmenter votre capacité de charge de 18,1 kg (un seul contenant équipable à la fois)."
+    }
+  },
+  {
+    "name": "Coffre",
+    "type": "gear",
+    "img": "icons/containers/chest/chest-simple-oak-steel-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 11.3,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Coffre de bois cerclé de fer, pouvant contenir jusqu'à 136 kg. Fait pour être stocké ou transporté sur un véhicule plutôt que porté."
+    }
+  },
+  {
+    "name": "Lampe",
+    "type": "gear",
+    "img": "icons/sundries/lights/lantern-steel.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "use": {
+        "type": "light",
+        "light": { "bright": 4.5, "dim": 9 }
+      },
+      "description": "Brûle 6 heures avec un flacon d'huile : lumière vive sur 4,50 m et lumière faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+    }
+  },
+  {
+    "name": "Couverture",
+    "type": "gear",
+    "img": "icons/sundries/survival/bedroll-worn-beige.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Couverture de laine épaisse."
+    }
+  },
+  {
+    "name": "Savon",
+    "type": "gear",
+    "img": "icons/sundries/survival/soap.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 2, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Pain de savon."
+    }
+  },
+  {
+    "name": "Vêtements communs",
+    "type": "gear",
+    "img": "icons/equipment/chest/shirt-simple-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Tenue simple d'artisan ou de paysan."
+    }
+  },
+  {
+    "name": "Vêtements de voyageur",
+    "type": "gear",
+    "img": "icons/equipment/back/cloak-hooded-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Bottes, cape à capuche et vêtements résistants, adaptés au voyage."
+    }
+  },
+  {
+    "name": "Vêtements fins",
+    "type": "gear",
+    "img": "icons/equipment/chest/robe-layered-purple.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.7,
+      "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+      "description": "Tenue de qualité, adaptée à la cour ou aux réceptions."
+    }
+  },
+  {
+    "name": "Préparation rituelle de guérison",
+    "type": "gear",
+    "img": "icons/consumables/potions/potion-flask-stopped-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "use": { "type": "heal", "healDice": "2d4", "healBase": 2, "healSkill": "", "consumable": true },
+      "description": "Préparation rituelle courante, vendue à prix d'or par les guildes de ritualistes : des jours de travail pour une seule fiole. La boire rend 2d4 + 2 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la fiole est consommée."
+    }
+  },
+  {
+    "name": "Préparation rituelle de guérison supérieure",
+    "type": "gear",
+    "img": "icons/consumables/potions/potion-bottle-corked-labeled-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 150, "pp": 0 },
+      "use": { "type": "heal", "healDice": "4d4", "healBase": 4, "healSkill": "", "consumable": true },
+      "description": "Préparation rituelle peu courante, vendue à prix d'or par les guildes de ritualistes : des jours de travail pour une seule fiole. La boire rend 4d4 + 4 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la fiole est consommée."
+    }
+  },
+  {
+    "name": "Préparation rituelle de guérison majeure",
+    "type": "gear",
+    "img": "icons/consumables/potions/potion-jar-corked-labeled-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 450, "pp": 0 },
+      "use": { "type": "heal", "healDice": "8d4", "healBase": 8, "healSkill": "", "consumable": true },
+      "description": "Préparation rituelle rare, vendue à prix d'or par les guildes de ritualistes : des jours de travail pour une seule fiole. La boire rend 8d4 + 8 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la fiole est consommée."
+    }
+  },
+  {
+    "name": "Préparation rituelle de guérison suprême",
+    "type": "gear",
+    "img": "icons/consumables/potions/potion-tube-corked-glowing-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 1350, "pp": 0 },
+      "use": { "type": "heal", "healDice": "10d4", "healBase": 20, "healSkill": "", "consumable": true },
+      "description": "Préparation rituelle très rare, vendue à prix d'or par les guildes de ritualistes : des jours de travail pour une seule fiole. La boire rend 10d4 + 20 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la fiole est consommée."
+    }
+  },
+  {
+    "name": "Tisane reconstituante",
+    "type": "gear",
+    "img": "icons/consumables/plants/herb-tied-bundle-green.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "use": { "type": "heal", "healDice": "1d4", "healBase": 0, "healSkill": "", "consumable": true },
+      "description": "Préparation d'herboriste. Infusion de plantes amères qui calme la douleur et redonne un peu de force. Rend 1d4 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
+    }
+  },
+  {
+    "name": "Cataplasme d'herboriste",
+    "type": "gear",
+    "img": "icons/consumables/plants/herb-bunch-dried-leaf-green.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "use": { "type": "heal", "healDice": "1d4", "healBase": 1, "healSkill": "", "consumable": true },
+      "description": "Préparation d'herboriste. Feuilles broyées appliquées sur une plaie et maintenues par un linge. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
+    }
+  },
+  {
+    "name": "Onguent cicatrisant",
+    "type": "gear",
+    "img": "icons/consumables/plants/dried-herbs-leaves-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "use": { "type": "heal", "healDice": "2d4", "healBase": 0, "healSkill": "", "consumable": true },
+      "description": "Préparation d'herboriste. Pot de graisse et d'herbes qui referme les coupures en quelques heures. Rend 2d4 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
+    }
   }
 ]

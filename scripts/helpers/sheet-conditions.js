@@ -1,7 +1,7 @@
-/** `{ conditions, activeConditions }` pour une fiche d'Actor : la liste complète des états
- *  (`CONFIG.statusEffects` — remplacé par la liste du système au `init`, cf. helpers/config.js)
- *  avec leur état actif sur `actor`, plus le sous-ensemble actif seul (résumé compact de
- *  l'en-tête / du libellé replié). Identique entre la fiche personnage et la fiche PNJ. */
+/**
+ * Prépare la liste des états d'un Actor pour sa fiche.
+ * @returns {{conditions: object[], activeConditions: object[]}}
+ */
 export function conditionsContext(actor) {
   const conditions = CONFIG.statusEffects.map((status) => ({
     id: status.id,

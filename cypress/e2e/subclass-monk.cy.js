@@ -1,9 +1,5 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Moine : 2 nouvelles sous-classes
-// ajoutées (Voie de l'Ombre/shadow, Voie des Quatre Éléments/fourElements), en plus de la Voie
-// de la Main Ouverte déjà existante. Vérifie l'octroi des Capacités liées ET le scénario minimal
-// de chaque mécanique propre : réutilisation de la réserve de Ki existante (system.costsResource,
-// primitive déjà construite pour Rafale de coups/Défense patiente/Pas du vent).
+// Sous-classes du Moine (Voie de l'Ombre, des Quatre Éléments) : octroi des Capacités et
+// consommation de la réserve de Ki.
 
 const createdActorIds = [];
 

@@ -1,21 +1,23 @@
-/** Applique `light` (déjà au format `TokenDocument#light`, rayons totaux) à tous les tokens
- *  actifs de `actor` sur la scène courante. Renvoie `false` (et prévient) sans rien modifier si
- *  l'Actor n'a aucun token sur la scène active. */
+/**
+ * Applique `light` aux tokens de `actor` sur la scène active.
+ * @returns {Promise<boolean>} `false` si l'Actor n'a aucun token sur la scène
+ */
 export async function applyTokensLight(actor, light) {
   const tokens = actor.getActiveTokens();
   if (!tokens.length) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.NoTokenOnScene"));
     return false;
   }
-  for (const token of tokens) await token.document.update({ light });
+  for (const token of tokens) await token.document.update({ light }); // NOSONAR : séquentiel voulu
   return true;
 }
 
-/** Allume la source de lumière du/des token(s) de `actor` sur la scène active (objet `gear`
- *  "light" allumé, ou sort émettant de la lumière) et l'annonce dans le chat. `light` :
- *  `{ bright, dim }`, `dim` stocké comme rayon SUPPLÉMENTAIRE au-delà de `bright` (formulation
- *  SRD) — converti ici en rayon total depuis le token, attendu par `TokenDocument#light.dim`.
- *  Partagé par la fiche (objet lumineux) et le mixin d'incantation (sort de lumière). */
+/**
+ * Allume la lumière des tokens de `actor` et l'annonce dans le chat.
+ * @param {Actor} actor
+ * @param {string} itemName - source de lumière, nommée dans le chat
+ * @param {{bright: number, dim: number}} light - `dim` est un rayon additionnel à `bright`
+ */
 export async function setTokensLight(actor, itemName, light) {
   const applied = await applyTokensLight(actor, {
     bright: light.bright,

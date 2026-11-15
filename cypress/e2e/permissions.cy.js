@@ -1,14 +1,5 @@
-// Implémente la section 15 (T-PERM-001 à T-PERM-004) de tests/E2E_TEST_PLAN.md — permissions et
-// champs verrouillés (hooks preUpdateActor, dnd-custom-ai.js).
-//
-// Marqués "Quench" dans le plan (sauf T-PERM-004), mais implémentés ici en E2E plutôt que dans
-// tests/quench/quench-tests.js : les batches Quench de cette suite tournent tous en session MJ
-// (cf. quench.cy.js), or preUpdateActor ne restreint QUE les updates d'un non-MJ
-// (`if (game.users.get(userId)?.isGM) return;`) — un test Quench GM ne pourrait jamais exercer
-// la branche restrictive elle-même. `cy.loginAsPlayer()` + un appel direct `actor.update(...)`
-// depuis la fenêtre du navigateur (pas de clic UI nécessaire, le formulaire de la fiche reste de
-// toute façon `disabled` pour ces champs côté Joueur) est le seul moyen de tester la vraie
-// restriction still du point de vue du hook.
+// T-PERM-001 à 004 : champs verrouillés pour un Joueur, testés par `actor.update` direct en session Joueur
+// (les verrous `preUpdateActor` ne s'appliquent pas au MJ).
 
 const createdActorIds = [];
 let sharedActorId;
@@ -66,7 +57,7 @@ describe("Permissions — champs verrouillés MJ, session Joueur", () => {
       });
     });
 
-    // Remet l'Origine d'origine pour ne pas fausser un futur run de cette spec.
+    // Restaure l'Origine.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.origin": "fleuraine" }, { dndCustomWizard: true });
@@ -90,17 +81,14 @@ describe("Permissions — champs verrouillés MJ, session Joueur", () => {
       });
     });
 
-    // Remet le niveau d'origine.
+    // Restaure le niveau.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.level": 1 }, { dndCustomLevelUp: true });
     });
   });
 
-  // Retour de test (bug majeur, sécurité) : un Joueur pouvait s'appliquer lui-même des dégâts
-  // en tapant une valeur dans le champ PV de l'en-tête (désormais `disabled` côté Joueur, cf.
-  // character-sheet.hbs) — filet de sécurité côté données ici (preUpdateActor, dnd-custom-ai.js),
-  // au cas où l'update viendrait d'ailleurs qu'un vrai clic (macro, console).
+  // Un Joueur ne peut pas baisser ses propres PV par update direct.
   it("un Joueur ne peut pas BAISSER ses propres PV via un update direct (T-PERM-005)", () => {
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
@@ -130,7 +118,7 @@ describe("Permissions — champs verrouillés MJ, session Joueur", () => {
       );
     });
 
-    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    // PV remis au maximum.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
@@ -150,7 +138,7 @@ describe("Permissions — champs verrouillés MJ, session Joueur", () => {
       });
     });
 
-    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    // PV remis au maximum.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
@@ -172,7 +160,7 @@ describe("Permissions — accès à la fiche, session Joueur", () => {
     cy.loginAsPlayer();
     cy.window().then((win) => {
       const actor = win.game.actors.get(gmOnlyActorId);
-      expect(actor.testUserPermission(win.game.user, "OBSERVER"), "prérequis : aucun accès pour ce Joueur").to.be.false;
+      expect(actor.testUserPermission(win.game.user, "OBSERVER"), "prérequis : aucun accès pour ce Joueur").to.equal(false);
 
       let warned = false;
       const original = win.ui.notifications.warn.bind(win.ui.notifications);
@@ -184,7 +172,7 @@ describe("Permissions — accès à la fiche, session Joueur", () => {
       actor.sheet.render(true);
 
       return cy.wait(1000).then(() => {
-        expect(warned, "un avertissement de permission refusée doit être affiché").to.be.true;
+        expect(warned, "un avertissement de permission refusée doit être affiché").to.equal(true);
         expect(
           win.document.querySelector(`[id*="${gmOnlyActorId}"].application`),
           "aucune fiche ne doit s'être ouverte pour cet Actor"
@@ -194,12 +182,7 @@ describe("Permissions — accès à la fiche, session Joueur", () => {
   });
 });
 
-// Retour de test (ANOMALIES_ACTIVES.md, "Sécurité/Combat") : un Joueur pouvait contourner le
-// blocage PvP en se ciblant lui-même avant de cliquer "Appliquer les dégâts" (mécanisme partagé
-// avec le blocage PvP, cf. applyDamageToTargets dans dnd-custom-ai.js) — seul le MJ peut
-// désormais s'appliquer des dégâts à soi-même (poison, chute, piège... à sa discrétion). Actor
-// dédié (magicien avec "Trait de feu", qui poste un jet de dégâts sans nécessiter d'arme
-// équipée) + un token sur la scène active pour pouvoir se cibler soi-même via game.user.targets.
+// Seul le MJ peut s'appliquer des dégâts à lui-même (magicien avec Trait de feu et token sur la scène).
 describe("Permissions — auto-dégâts (se cibler soi-même)", () => {
   let mageId;
   let tokenId;
@@ -254,9 +237,7 @@ describe("Permissions — auto-dégâts (se cibler soi-même)", () => {
     });
   }
 
-  // Cible le token (lui-même), ferme la fiche (elle recouvre le chat) et clique le bouton
-  // "Appliquer les dégâts" du DERNIER message de chat — même geste que tab-abilities.cy.js >
-  // T-ABIL-024 (soin), pour les dégâts.
+  // Se cible, ferme la fiche et clique « Appliquer les dégâts » du dernier message.
   function applyLastDamageMessage() {
     cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
     cy.window().then((win) => win.game.actors.get(mageId).sheet.close());
@@ -303,7 +284,7 @@ describe("Permissions — auto-dégâts (se cibler soi-même)", () => {
       );
     });
 
-    // Remonte les PV au max : état propre pour un futur run de cette spec.
+    // PV remis au maximum.
     cy.window().then((win) => {
       const actor = win.game.actors.get(mageId);
       return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));

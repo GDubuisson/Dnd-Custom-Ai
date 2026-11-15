@@ -1,9 +1,5 @@
-// Couvre le lot Roublard du chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") : 2 nouvelles sous-classes ajoutées
-// (Bretteur/swashbuckler, Assassin/assassin), en plus du Voleur déjà existant. Vérifie l'octroi
-// des Capacités liées ET le scénario minimal de chaque mécanique propre — en particulier la
-// primitive P4 (critique automatique conditionnel, cf. rollCheck > forceCriticalHit, rolls.js)
-// construite ici pour la première fois : Assassinat contre une cible marquée "Surprise".
+// Sous-classes du Roublard (Bretteur, Assassin) : octroi des Capacités, critique automatique
+// d'Assassinat contre une cible Surprise.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -35,8 +31,7 @@ function withItemId(actorId, itemName, callback) {
     .then(callback);
 }
 
-// Même pattern que combat-criticals.cy.js (cf. son en-tête) : cible créée par le MJ, token placé
-// sur la scène active.
+// Cible créée par le MJ, token placé sur la scène active.
 function createTarget(name, ac) {
   let tokenId;
   cy.loginAsGM();
@@ -176,8 +171,7 @@ describe("Sous-classes de Roublard — Bretteur / Assassin", () => {
         cy.openActorSheet(actorId);
         goToTab("equipment");
         resetMessageBaseline();
-        // Volontairement PAS un 20 naturel : la preuve que le critique vient d'Assassinat, pas
-        // du dé (même technique que combat-criticals.cy.js > T-CRIT-001, CA extrême inversée).
+        // Pas un 20 naturel : le critique doit venir d'Assassinat.
         cy.forceD20(2);
         targetToken(tokenId);
         equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
@@ -223,7 +217,7 @@ describe("Sous-classes de Roublard — Bretteur / Assassin", () => {
 
       cy.openActorSheet(actorId);
       resetMessageBaseline();
-      // Pas de Maj-clic : l'avantage doit venir uniquement d'Infiltration.
+      // Sans Maj-clic : l'avantage vient d'Infiltration.
       sheetRoot().find('button[data-action="rollSkill"][data-key="stealth"]').click();
       lastMessageRoll().then((roll) => {
         expect(roll.formula, "avantage automatique (2d20kh1) sans Maj-clic").to.match(/^2d20kh1/);

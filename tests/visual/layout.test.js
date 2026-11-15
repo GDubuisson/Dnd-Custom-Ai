@@ -1,11 +1,5 @@
-// Tests visuels : seule couche de cette suite capable d'attraper les bugs de CSS/layout
-// (éléments qui retombent à la ligne, cases qui se chevauchent, défilement qui ne s'active
-// pas) — exactement la classe de bugs trouvée et corrigée manuellement plus tôt sur ce système
-// (boutons Attaque/Dégâts, cases de monnaie, fiche d'Arme non scrollable). Utilise un vrai
-// moteur de rendu (Chromium via Playwright) : jsdom (cf. tests/dom) ne calcule pas de layout
-// réel et ne peut pas détecter ces régressions-là.
-//
-// Nécessite `npx playwright install chromium` une fois (cf. package.json > test:visual:install).
+// Tests de layout CSS dans un vrai moteur (Chromium via Playwright) : retours à la ligne, chevauchements, défilement.
+// Prérequis : `npx playwright install chromium` (cf. package.json > test:visual:install).
 import { test, describe, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
@@ -50,11 +44,9 @@ describe("Onglet Équipement — Attaque/Dégâts sur la même ligne que leur va
       damageButton.boundingBox()
     ]);
 
-    // Une seule ligne de texte : hauteur du <p> nettement sous 2 lignes (marge large pour la
-    // police de secours utilisée en environnement headless sans les polices du thème).
+    // Une seule ligne de texte (marge pour la police de secours).
     assert.ok(lineBox.height < 30, `hauteur de la ligne = ${lineBox.height}px, attendu < 30px (une seule ligne)`);
-    // Les deux boutons doivent partager (à peu près) le même axe vertical que le texte qui les
-    // précède : un bouton "tombé" sur sa propre ligne aurait un `top` décalé vers le bas.
+    // Boutons alignés verticalement sur le texte qui précède.
     assert.ok(
       Math.abs(attackBox.y - lineBox.y) < 8,
       `bouton Attaque décalé verticalement (y=${attackBox.y} vs ligne y=${lineBox.y}) — probablement retombé à la ligne`
@@ -95,8 +87,7 @@ describe("Onglet Inventaire — les 4 cases de monnaie ne se chevauchent pas", (
       assert.ok(box.width > 10, `champ de monnaie écrasé à ${box.width}px de large (bug historique : chevauchement)`);
     }
 
-    // Triées par position horizontale : chaque case doit se terminer avant que la suivante
-    // commence (tolérance de 1px pour l'arrondi sous-pixel du navigateur).
+    // Chaque case se termine avant la suivante (tolérance 1px).
     const sorted = [...boxes].sort((a, b) => a.x - b.x);
     for (let i = 1; i < sorted.length; i++) {
       assert.ok(
@@ -107,19 +98,11 @@ describe("Onglet Inventaire — les 4 cases de monnaie ne se chevauchent pas", (
   });
 });
 
-// ATTENTION — ce test ne couvre que le filet CSS (.dnd-custom-ai.sheet.item { max-height;
-// overflow-y }), pas le VRAI correctif : celui-ci vit désormais dans item-sheets.js
-// (DndCustomItemSheet#_onRender), qui force le style inline sur le vrai conteneur de
-// défilement de Foundry (.window-content) une fois la fiche rendue par une ApplicationV2 réelle
-// — un test jsdom/Playwright autonome (sans .window-header/.window-content, sans this.element/
-// setPosition d'une vraie ApplicationV2) ne peut pas l'exercer. Une première version du
-// correctif (position.height plafonnée via setPosition) s'est révélée sans effet en conditions
-// réelles malgré ce test qui passait déjà à l'époque : retour de test avec capture d'écran,
-// donc à revérifier manuellement en jeu après tout changement ici.
+// Couvre seulement le filet CSS (max-height, overflow-y) ; le défilement de `.window-content`
+// posé par DndCustomItemSheet#_onRender se vérifie en jeu.
 describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse", () => {
   test("le contenu déborde et devient scrollable plutôt que coupé sans accès (bug historique, filet CSS uniquement)", async () => {
-    // Contexte "maximal" : active tous les champs optionnels (portée, rechargement...) pour
-    // forcer le débordement, comme une vraie arme à distance rechargeable complètement remplie.
+    // Tous les champs optionnels actifs pour forcer le débordement.
     const html = renderTemplate("item/weapon-sheet.hbs", {
       item: { img: "", name: "Arbalète lourde" },
       system: {
@@ -159,9 +142,7 @@ describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse",
       showReloadValue: true
     });
 
-    // Fenêtre volontairement basse (comme une petite fenêtre Foundry) : 600px de haut, donc
-    // max-height:85vh (cf. styles/dnd-custom-ai.css > .dnd-custom-ai.sheet.item) plafonne le
-    // panneau à 510px, bien en dessous du contenu réel du formulaire ci-dessus.
+    // Fenêtre de 600px : max-height 85vh plafonne le panneau à 510px.
     await page.setViewportSize({ width: 480, height: 600 });
     await page.setContent(buildPage(wrapItemSheet(html)));
 
@@ -186,10 +167,7 @@ describe("Fiche d'objet Arme — défilement interne quand le contenu dépasse",
 
 describe("En-tête de fiche personnage — unité de Vitesse", () => {
   test("le 'm' de formatSpeed ne s'affiche pas en majuscule (bug historique : uppercase hérité du libellé parent)", async () => {
-    // .dnd-custom-ai .hdr-vitals .vital-label est en text-transform: uppercase (libellés type
-    // "VITESSE") : propriété héritée par défaut, donc un test jsdom sur le textContent (cf.
-    // tests/dom/templates.test.js) ne peut pas l'attraper — seul un vrai moteur de rendu calcule
-    // .innerText en respectant les transformations CSS visuelles.
+    // innerText respecte text-transform, contrairement au textContent de jsdom.
     const html = renderTemplate("actor/character-sheet.hbs", {
       actor: { img: "img.webp", name: "Aldric" },
       system: { xp: 0, attributes: { level: 1, hp: { value: 10, max: 10, temp: 0 }, ac: { value: 10 }, speed: 30 } },
@@ -203,8 +181,7 @@ describe("En-tête de fiche personnage — unité de Vitesse", () => {
     });
     await page.setContent(buildPage(html));
 
-    // CA, Vitesse, Init. et Perception passive partagent .computed-value dans .hdr-vitals (cf.
-    // character-sheet.hbs) : celle contenue dans le libellé "Vitesse".
+    // Valeur calculée du libellé « Vitesse ».
     const speedLabel = page.locator(".hdr-vitals .vital", { hasText: "Vitesse" });
     const text = await speedLabel.locator(".computed-value").innerText();
     assert.equal(text, "9 m", `unité affichée en majuscule ou valeur inattendue : "${text}"`);

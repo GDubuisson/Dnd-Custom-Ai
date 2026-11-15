@@ -1,12 +1,5 @@
-// Chantier "types de dégâts" — Phase 4 (armures avec résistance/immunité/vulnérabilité PROPRE,
-// 2026-08-25, cadré avec l'utilisateur avant implémentation) : ArmorData porte désormais le même
-// damageAffinitySchema que Personnage/PNJ (Phase 1), mais réglé sur l'armure elle-même et actif
-// UNIQUEMENT si elle est équipée (cf. hasArmorDamageAffinity, dnd-custom-ai.js). Contrairement au
-// champ générique, la résistance/immunité/vulnérabilité d'armure N'A PAS la nuance SRD "contre les
-// attaques non magiques" (une armure qui protège du feu protège du feu, source magique ou non) —
-// testé explicitement ci-dessous (T-DMGTYPE-016). Se combine avec le champ générique déjà existant
-// selon la même règle déjà en place (immunité prioritaire, résistance+vulnérabilité sur le même
-// type s'annulent), testé en T-DMGTYPE-017.
+// Affinités aux dégâts propres à une armure, actives si équipée, sans nuance « non magique »,
+// combinées avec les affinités génériques (immunité prioritaire, résistance + vulnérabilité s'annulent).
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -61,8 +54,7 @@ function lastMessage() {
 
 function applyDamageFromMessage(messageId) {
   cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
-  // .first() : Foundry affiche aussi une notification "toast" éphémère du même message, avec son
-  // propre bouton (même data-message-id) — retour de test déjà documenté (tier-c-rage.cy.js).
+  // .first() : la notification éphémère du même message porte aussi le bouton.
   cy.get(`[data-message-id="${messageId}"]`, { timeout: 10000 }).first().find("button.dnd-apply-damage-btn").click();
 }
 
@@ -76,9 +68,7 @@ after(() => {
 });
 
 describe("Résistance/immunité/vulnérabilité PROPRE à une armure équipée (attaque de PNJ contre un PJ)", () => {
-  // PNJ (pas un second "character") : dnd-custom-ai.js > applyDamageToTargets bloque tout dégât
-  // d'un "character" vers un AUTRE "character" (PvP bloqué), même contournement que
-  // tier-c-rage.cy.js/damage-types-physical.cy.js.
+  // Attaquant PNJ : les dégâts entre personnages joueurs sont bloqués.
   function createAttacker(win, { damageType, magic = false }) {
     return createActor(win, {
       name: `Armor Test Attacker (${damageType}${magic ? " magique" : ""})`,
@@ -87,9 +77,7 @@ describe("Résistance/immunité/vulnérabilité PROPRE à une armure équipée (
     });
   }
 
-  // Un PJ frais par test, sans PV forcés à la création (même piège déjà documenté dans
-  // tier-c-rage.cy.js : `hp.max` est DÉRIVÉ classe/niveau et se recalcule à chaque update, un
-  // override manuel se fait silencieusement écraser) — `hpBefore` relu juste avant l'attaque.
+  // PJ neuf par test ; `hp.max` étant dérivé, `hpBefore` est relu avant l'attaque.
   function createArmoredPc(win, armorSystem) {
     return createActor(win, { name: "Armor Damage Types PC", type: "character", system: { class: "fighter" } }).then(
       (actor) =>
@@ -248,9 +236,7 @@ describe("Résistance/immunité/vulnérabilité PROPRE à une armure équipée (
       })
       .then((roll) => {
         cy.window().should((win) => {
-          // Les PV sont plafonnés à 0 côté serveur (Math.max(0, ...), dnd-custom-ai.js) : un jet
-          // doublé (d10×2, jusqu'à 20) peut dépasser les PV par défaut d'un Guerrier niveau 1,
-          // d'où le Math.max ici aussi plutôt qu'une simple soustraction.
+          // PV plafonnés à 0.
           expect(win.game.actors.get(pcId).system.attributes.hp.value, "vulnérabilité d'armure : dégâts doublés").to.equal(
             Math.max(0, hpBefore - roll.total * 2)
           );

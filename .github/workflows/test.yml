@@ -1,15 +1,7 @@
 name: System Tests
 
-# Suite unitaire/data/dom (cf. tests/README.md, `npm test`) — isolée de Foundry, rapide et
-# fiable en CI. Complète .github/workflows/release.yml, ne le remplace pas.
-#
-# Les tests E2E "au réel" (vrai client Foundry via Docker + Cypress, cf. docker-compose.yml)
-# restent volontairement une couche manuelle/locale uniquement : ils dépendent d'un monde de
-# test déjà provisionné (utilisateurs, licence Foundry acceptée) qui n'existe pas dans un
-# environnement CI éphémère, et retélécharger + réinstaller Foundry en entier à chaque run
-# dépasserait largement des délais raisonnables de CI. Décision explicite (2026-08-19) plutôt
-# que de maintenir un job systématiquement rouge — cf. tests/README.md pour lancer cette suite
-# en local.
+# Suite unitaire/data/dom (`npm test`), isolée de Foundry ; complète release.yml.
+# Les tests E2E Docker + Cypress se lancent en local (cf. tests/README.md).
 on:
   push:
   pull_request:

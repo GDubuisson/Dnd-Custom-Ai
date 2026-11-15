@@ -1,21 +1,11 @@
-// Chantier "Niveau C" (2026-08-24, sur demande explicite après revue de
-// ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : étend "Repousser les morts-vivants"
-// (turn-undead-feature.cy.js, déjà mécanisé) avec "Destruction des morts-vivants" (Clerc 5,
-// SRD 5e) — quand la cible (mort-vivant) échoue son jet ET que sa FI est sous le seuil du
-// niveau du Clerc (table SRD : 1/2 au niv. 5, 1 au niv. 8, 2 au niv. 11, 3 au niv. 14, 4 au
-// niv. 17), elle est DÉTRUITE (PV à 0, état "dead") au lieu d'être seulement repoussée (Effrayé).
-// cf. #onRollFeatureSave > destroysUndead (actor-sheet.js), isUndeadDestroyed/
-// destroyUndeadThreshold (mêmes fichier).
+// Destruction des morts-vivants : sur échec, un mort-vivant de FI sous le seuil du Clerc est détruit
+// (PV 0, « mort ») au lieu d'être Effrayé.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
 let casterId;
 
-// Chaînes localisées chargées dynamiquement depuis game.i18n.lang (le monde de test tourne en
-// anglais, pas en français — jamais de chaîne DND_CUSTOM.* codée en dur ici, même patron que
-// loadStringsForActiveLocale dans wizard.cy.js). Seul le texte FIXE après le dernier `{...}`
-// du gabarit ("and is destroyed (Destroy Undead).") sert de marqueur — évite de recalculer le DD
-// exact juste pour vérifier QUEL des deux gabarits (SaveFail/SaveFailUndeadDestroyed) a été posté.
+// Marqueur de fin du message « détruit », lu dans la locale active.
 let destroyedFlavorMarker;
 function loadDestroyedFlavorMarker() {
   return cy
@@ -83,7 +73,7 @@ before(() => {
     createdActorIds.push(id);
   });
   cy.window().then((win) => win.game.actors.get(casterId).sheet.close());
-  // Niveau 5 : seuil de FI "1/2" (destroyUndeadThreshold, actor-sheet.js).
+  // Niveau 5 : seuil de FI 1/2.
   cy.window().then((win) =>
     win.game.actors
       .get(casterId)
@@ -105,9 +95,7 @@ after(() => {
 describe("Destruction des morts-vivants — Clerc 5, seuil de FI par niveau", () => {
   beforeEach(() => cy.loginAsGM());
 
-  // Un nouvel Item "Test Canalisation divine" par appel (jamais supprimé) : ciblage du bouton
-  // par data-item-id, jamais par nom — même piège déjà documenté dans turn-undead-feature.cy.js
-  // (un exemplaire épuisé d'un test précédent serait sinon silencieusement re-ciblé).
+  // Nouvel Item à chaque appel : bouton ciblé par data-item-id.
   function castOn(tokenId) {
     let featureId;
     cy.window()
@@ -136,8 +124,7 @@ describe("Destruction des morts-vivants — Clerc 5, seuil de FI par niveau", ()
         cy.forceD20(1);
         castOn(tokenId).then(() => {
           cy.window().should((win) => {
-            // Token NPC non lié (actorLink: false par défaut) : l'acteur SYNTHÉTIQUE du token,
-            // pas le "prototype" du monde — même piège déjà documenté (turn-undead-feature.cy.js).
+            // Acteur synthétique du token non lié.
             const undead = win.canvas.tokens.get(tokenId).actor;
             expect(undead.system.attributes.hp.value, "PV à 0").to.equal(0);
             expect(undead.statuses.has("dead"), "état 'dead' appliqué").to.be.true;
@@ -176,10 +163,7 @@ describe("Destruction des morts-vivants — Clerc 5, seuil de FI par niveau", ()
       .then(({ actorId, tokenId }) => {
         createdActorIds.push(actorId);
         createdSceneItemIds.push(tokenId);
-        // Retire TOUS les exemplaires de "Destruction des morts-vivants" (T-TIERC-DESTROY-001/002
-        // en ont chacun accordé un, jamais supprimé — hasFeature ne teste QUE la présence d'AU
-        // MOINS un exemplaire, en laisser un seul suffirait à fausser ce test) : vérifie
-        // explicitement le comportement SANS cette Capacité.
+        // Retire tous les exemplaires de Destruction des morts-vivants.
         cy.window().then((win) => {
           const ids = win.game.actors
             .get(casterId)

@@ -10,8 +10,7 @@ export function proficiencyBonus(level) {
   return Math.ceil(level / 4) + 1;
 }
 
-/** Niveau correspondant à un total d'XP cumulé, SRD 5e (table "Character Advancement", cf.
- *  DND_CUSTOM.xpThresholds) : le plus haut niveau dont le seuil est atteint, plafonné à 20. */
+/** Niveau atteint pour un total d'XP (cf. DND_CUSTOM.xpThresholds), plafonné à 20. */
 export function levelForXp(xp) {
   const thresholds = DND_CUSTOM.xpThresholds;
   let level = 1;
@@ -29,7 +28,7 @@ export function carryingCapacity(strengthScore, unit = "lb") {
   return strengthScore * DND_CUSTOM.carryCapacityPerStrength[unit];
 }
 
-/** Poids total transporté : somme(quantité x poids unitaire) sur tous les objets physiques de l'Actor. */
+/** Poids total transporté : somme(quantité × poids unitaire) des objets physiques. */
 export function carriedWeight(items) {
   return items.reduce((total, item) => {
     const weight = item.system?.weight ?? 0;
@@ -38,8 +37,7 @@ export function carriedWeight(items) {
   }, 0);
 }
 
-/** Bonus de capacité de charge (kg) apporté par les contenants (sacs...) équipés,
- *  s'ajoutant à la capacité de base (cf. carryingCapacity). */
+/** Bonus de capacité de charge (kg) des contenants équipés. */
 export function carryingCapacityBonus(items) {
   return items.reduce((total, item) => {
     if (item.type !== "gear" || !item.system.equipped) return total;
@@ -47,12 +45,7 @@ export function carryingCapacityBonus(items) {
   }, 0);
 }
 
-/** Le don Sentinelle (SRD 5e, world-items/feats.json) modifie le déclencheur de la Capacité
- *  universelle "Attaque d'opportunité" (fonctionne même contre le désengagement, se déclenche
- *  aussi quand une créature proche attaque quelqu'un d'autre que vous) : recalculé ici à
- *  l'affichage si le personnage possède les deux Capacités, jamais persisté sur l'Item
- *  "Attaque d'opportunité" lui-même (cf. actor-sheet.js > context.features) — reste à jour
- *  automatiquement si Sentinelle est ajoutée/retirée, sans logique de "annulation" à maintenir. */
+/** Déclencheur affiché de l'Attaque d'opportunité, étendu par le don Sentinelle. */
 export function opportunityAttackTrigger(baseTrigger, hasSentinel) {
   if (!hasSentinel) return baseTrigger;
   return "Une créature que vous voyez quitte votre portée d'attaque au corps à corps — "
@@ -61,18 +54,15 @@ export function opportunityAttackTrigger(baseTrigger, hasSentinel) {
     + "touchée voit sa vitesse tomber à 0 jusqu'à la fin du tour).";
 }
 
-/** Économie d'action de combat, SRD 5e : une réaction n'est utilisable que si elle n'a pas déjà
- *  été consommée ce round-ci (cf. system.combat.reactionAvailable, CharacterData ; régénérée au
- *  début de son propre tour par le hook updateCombat, dnd-custom-ai.js). */
+/** Indique si la réaction du round est encore disponible. */
 export function canUseReaction(system) {
   return system.combat?.reactionAvailable ?? true;
 }
 
-/** Bonus total d'un test de compétence : modificateur de la caractéristique liée + bonus
- *  de maîtrise si la compétence est maîtrisée (même formule que l'onglet Statistiques,
- *  cf. actor-sheet.js > context.skills). `jackOfAllTrades` (Capacité "Aptitudes multiples" du
- *  Barde, SRD 5e) ajoute la moitié du bonus de maîtrise (arrondi à l'inférieur) aux
- *  compétences NON maîtrisées, jamais cumulé avec la maîtrise elle-même. */
+/**
+ * Bonus total d'un test de compétence (caractéristique + maîtrise).
+ * `jackOfAllTrades` ajoute la moitié de la maîtrise aux compétences non maîtrisées.
+ */
 export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAllTrades = false) {
   const skill = system.skills[skillKey];
   if (!skill) return 0;
@@ -81,37 +71,24 @@ export function skillModifier(system, skillKey, proficiencyBonusValue, jackOfAll
   return mod + (jackOfAllTrades ? Math.floor(proficiencyBonusValue / 2) : 0);
 }
 
-/** Modificateur de compétence pour un test OPPOSÉ (Agripper/Bousculer, SRD 5e — chantier
- *  "mécaniques jamais modélisées", 2026-08-25, cadré avec l'utilisateur avant implémentation) :
- *  `system` peut être un Personnage (`skillModifier` ci-dessus, maîtrise incluse) ou un PNJ
- *  (`NpcData`, pas de `system.skills` du tout — bonus DIRECT de la caractéristique liée, même
- *  détection "pas de `.total` sur l'entrée `abilities`" que `targetSaveModifier` ci-dessous).
- *  `ability` doit être résolu par l'appelant (`SKILL_ABILITIES[skillKey]`, character-data.js) —
- *  jamais importé ici pour éviter un cycle d'import (`character-data.js` importe déjà ce
- *  fichier). */
+/**
+ * Modificateur de compétence d'un test opposé, pour un personnage ou un PNJ.
+ * @param {object} system - `actor.system` du personnage ou du PNJ
+ * @param {string} skillKey
+ * @param {string} ability - caractéristique liée (`SKILL_ABILITIES[skillKey]`)
+ */
 export function opposedCheckModifier(system, skillKey, ability) {
   const abilityData = system.abilities[ability];
   if (!("total" in abilityData)) return abilityData.mod;
   return skillModifier(system, skillKey, proficiencyBonus(system.attributes.level));
 }
 
-/** Le personnage possède-t-il une Capacité (Item type "feature") d'un nom exact donné ? Sert à
- *  déclencher automatiquement les quelques Capacités passives dont l'effet est mécanique et
- *  sans ambiguïté (cf. character-data.js > Défense sans armure du Barbare, actor-sheet.js >
- *  Aptitudes multiples du Barde, Incantation rituelle du Clerc) — pour que le joueur/MJ n'ait
- *  pas à s'en souvenir/l'appliquer à la main. Les Capacités dont l'effet dépend d'un choix du
- *  joueur (Domaine divin, Métamagie...) restent volontairement du texte descriptif, non
- *  automatisées — à l'exception de la seule Invocation occulte "Salve implacable", mécanisée via
- *  FeatureData#boostsSpellDamage (item-data.js) plutôt que ce helper, le reste des Invocations
- *  restant du texte descriptif. */
+/** Indique si `items` contient une Capacité nommée exactement `name`. */
 export function hasFeature(items, name) {
   return items.some((item) => item.type === "feature" && item.name === name);
 }
 
-/** Bonus total d'un test effectué avec un outil (ToolData#useEffect, cf. ITEMS.md) : modificateur
- *  de la caractéristique liée à la compétence visée + bonus de maîtrise TOUJOURS appliqué (un
- *  outil confère sa propre maîtrise, indépendante de celle de la compétence elle-même, SRD 5e —
- *  contrairement à skillModifier ci-dessus) + bonus fixe éventuel de l'objet. */
+/** Bonus d'un test avec outil : caractéristique + maîtrise toujours appliquée + bonus de l'objet. */
 export function toolCheckModifier(system, skillKey, proficiencyBonusValue, itemBonus = 0) {
   const skill = system.skills[skillKey];
   if (!skill) return 0;
@@ -130,11 +107,12 @@ export function formatModifier(mod) {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
-/** Libellés déjà formatés (bonus d'attaque, dégâts) d'un profil d'attaque simplifié
- *  (NpcData#attacks — PNJ, Forme sauvage) pour affichage direct côté template, sans logique de
- *  formatage dans le .hbs. Extrait le 2026-09-05 (chantier clean code) : dupliqué verbatim entre
- *  npc-sheet.js (context.attacks) et actor-sheet.js (context.wildShapeAttacks). `damageLabel` vide
- *  si l'attaque n'a pas de dé de dégâts renseigné (ex. profil incomplet). */
+/** ` (label)` à accoler à un libellé, ou chaîne vide si `label` est vide. */
+export function parenthesized(label) {
+  return label ? ` (${label})` : "";
+}
+
+/** Libellés formatés (attaque, dégâts) d'un profil d'attaque de PNJ ; `damageLabel` vide sans dé. */
 export function formatAttackLabels(attack, abilityMod) {
   return {
     attackBonusLabel: formatModifier(abilityMod + attack.bonus),
@@ -152,24 +130,17 @@ export function spellSaveDC(proficiencyBonusValue, spellcastingAbilityMod) {
   return 8 + proficiencyBonusValue + spellcastingAbilityMod;
 }
 
-/** Modificateur de sauvegarde d'une CIBLE pour une caractéristique donnée (mod. + bonus de
- *  maîtrise si la cible est maîtrisée de cette sauvegarde), SRD 5e — sert à l'auto-jet de
- *  sauvegarde d'un sort à sauvegarde (cf. SpellData#save, item-data.js ; #onCastSpell,
- *  actor-sheet.js), même niveau d'automatisation que compareToTargetAc pour un jet d'attaque :
- *  une simple lecture des stats déjà exposées de la cible, jamais une interruption de son
- *  client. `targetSystem` = `actor.system` de la cible (pas l'Actor entier), pour rester
- *  testable sans mock complet d'un Document Foundry.
- *
- *  PNJ (`NpcData`, forme volontairement simplifiée, cf. npc-data.js) : pas de score/maîtrise
- *  séparée, `abilities[ability].mod` EST déjà le bonus de sauvegarde (même convention que le
- *  bouton "Sauv" manuel de la fiche PNJ) — détecté par l'absence de `.total` sur l'entrée
- *  d'`abilities` (forme `CharacterData`). */
+/**
+ * Modificateur de sauvegarde d'une cible (mod. + maîtrise + bonus d'équipement), ou bonus direct pour un PNJ.
+ * @param {object} targetSystem - `actor.system` de la cible
+ * @param {string} ability - caractéristique de la sauvegarde
+ */
 export function targetSaveModifier(targetSystem, ability) {
   const abilityData = targetSystem.abilities[ability];
   if (!("total" in abilityData)) return abilityData.mod;
   const mod = abilityModifier(abilityData.total);
   const profBonus = targetSystem.saves[ability].proficient ? proficiencyBonus(targetSystem.attributes.level) : 0;
-  return mod + profBonus;
+  return mod + profBonus + (targetSystem.attributes.saveBonus ?? 0);
 }
 
 /** Bonus d'attaque des sorts, SRD 5e : bonus de maîtrise + mod de la caractéristique d'incantation. */
@@ -177,27 +148,18 @@ export function spellAttackBonus(proficiencyBonusValue, spellcastingAbilityMod) 
   return proficiencyBonusValue + spellcastingAbilityMod;
 }
 
-/** Paliers de sorts SRD 5e (1 à 9, hors tours de magie qui restent gratuits/illimités). Partagé
- *  entre le DataModel (CharacterData#spells.slots), rules.js et les tests. */
+/** Paliers de sorts 1 à 9 (les tours de magie sont illimités). */
 export const SPELL_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-/** Emplacements de sorts vides (tous paliers à 0), forme de base renvoyée par
- *  spellSlotsForClass ci-dessous pour une classe non lanceuse/niveau sans table. */
+/** Emplacements de sorts tous à 0. */
 export function emptySpellSlots() {
   return Object.fromEntries(SPELL_LEVELS.map((level) => [level, 0]));
 }
 
-/** Emplacements de sorts par niveau (1 à 9), SRD 5e, dérivés de la table complète
- *  (cf. scripts/data/spell-slots.json, chargée une fois au démarrage dans
- *  game.dndCustomAi.spellSlotTables) : `slots[n]` = nombre d'emplacements du palier n à ce
- *  niveau de personnage, `maxSpellLevel` = plus haut palier accessible (dernier non nul),
- *  utilisé pour limiter les Sorts octroyés automatiquement à la classe/au niveau (cf.
- *  helpers/class-content.js). Toutes les classes lanceuses utilisent la table "pleine" sauf le
- *  Paladin (demi-lanceur, `halfCaster`) et l'Occultiste (Magie de Pacte, `warlockPact`) :
- *  emplacements limités, un seul palier actif à la fois (celui de `pact.level`), qui monte avec
- *  le niveau — `isPactMagic` signale ce cas particulier (récupéré au repos court ET long,
- *  contrairement aux autres classes, cf. DndCustomActorSheet#onRestShort). Renvoie des
- *  emplacements tous à 0 (`isPactMagic: false`) pour une classe non lanceuse ou sans table. */
+/**
+ * Emplacements de sorts par palier pour une classe et un niveau (table pleine, demi-lanceur ou Pacte).
+ * @returns {{slots: object, maxSpellLevel: number, isPactMagic: boolean}}
+ */
 export function spellSlotsForClass(className, level, tables) {
   if (!tables || !DND_CUSTOM.spellcastingClasses.includes(className)) {
     return { slots: emptySpellSlots(), maxSpellLevel: 0, isPactMagic: false };
@@ -224,26 +186,18 @@ export function spellSlotsForClass(className, level, tables) {
   return { slots, maxSpellLevel, isPactMagic: false };
 }
 
-/** Objet d'update `system.spells.slots.<n>.value` -> max, un par palier (1-9), pour topper au
- *  maximum les emplacements de sorts actuellement dérivés de `actor.system.spells.slots` (déjà
- *  recalculés par CharacterData#prepareDerivedData au moment de l'appel). Partagé entre repos
- *  court/long (DndCustomActorSheet#onRestShort/Long), montée de niveau (#onLevelUp) et création
- *  de personnage (CharacterCreationWizard) : mêmes emplacements à remplir, seul le moment
- *  d'appel change. */
+/** Update remettant chaque palier d'emplacement de sort à son maximum. */
 export function spellSlotFillUpdates(actor) {
   const slots = actor.system.spells.slots;
   return Object.fromEntries(SPELL_LEVELS.map((level) => [`system.spells.slots.${level}.value`, slots[level].max]));
 }
 
-/** Pourcentage de PV restants (0-100, arrondi), pour la barre de vie des fiches — `hp` est le
- *  bloc `system.attributes.hp` (`{ value, max }`). `max` à 0/absent → traité comme 1 pour éviter
- *  une division par zéro (barre à 0 %). Partagé par les 3 fiches d'Actor (perso, PNJ, véhicule). */
+/** Pourcentage de PV restants (0-100) pour la barre de vie. */
 export function hitPointsPercent(hp) {
   return Math.max(0, Math.min(100, Math.round((hp.value / (hp.max || 1)) * 100)));
 }
 
-/** PV max, SRD 5e (méthode "moyenne") : dé de vie max + CON au niveau 1, puis
- *  floor(dé/2) + 1 + CON par niveau suivant (mini 1 par niveau, mini 1 au total). */
+/** PV max (méthode moyenne) : dé max + CON au niveau 1, puis dé/2 + 1 + CON par niveau (mini 1). */
 export function maxHitPoints(hitDie, level, conMod) {
   let total = hitDie + conMod;
   for (let lvl = 2; lvl <= level; lvl++) {
@@ -252,33 +206,30 @@ export function maxHitPoints(hitDie, level, conMod) {
   return Math.max(1, total);
 }
 
-/** Bonus de Dex sur la CA selon le type d'armure, SRD 5e : illimité (légère),
- *  plafonné à +2 (intermédiaire), aucun (lourde, même si le modificateur est négatif). */
+/** Bonus de Dex à la CA selon l'armure : illimité (légère), max +2 (intermédiaire), aucun (lourde). */
 function dexBonusForArmorType(armorType, dexMod) {
   if (armorType === "medium") return Math.min(dexMod, 2);
   if (armorType === "heavy") return 0;
   return dexMod;
 }
 
-/** Classe d'Armure, SRD 5e : 10 + Dex sans armure ; sinon CA de base de l'armure +
- *  bonus de Dex plafonné selon son type, + bonus plat du bouclier équipé le cas échéant,
- *  + bonus plat des accessoires équipés (anneau/amulette de protection, etc.), le cas échéant.
- *  `unarmoredBonus` (0 par défaut) : bonus supplémentaire à la formule "sans armure" uniquement
- *  (ex. modificateur de Constitution pour la Défense sans armure du Barbare, cf.
- *  character-data.js) — sans effet si une armure est équipée, comme le veut cette Capacité. */
+/**
+ * Classe d'Armure : 10 + Dex (+ `unarmoredBonus`) sans armure, sinon CA de l'armure + Dex plafonnée,
+ * plus bouclier et accessoires équipés (sauf accessoires `unarmoredOnly` si armure ou bouclier).
+ */
 export function armorClass(dexMod, equippedArmor, equippedShield, equippedAccessories = [], unarmoredBonus = 0) {
   const base = equippedArmor
     ? equippedArmor.system.baseAC + dexBonusForArmorType(equippedArmor.system.armorType, dexMod)
     : 10 + dexMod + unarmoredBonus;
   const shieldBonus = equippedShield ? equippedShield.system.baseAC : 0;
-  const accessoriesBonus = equippedAccessories.reduce((total, item) => total + item.system.baseAC, 0);
+  const armored = Boolean(equippedArmor || equippedShield);
+  const accessoriesBonus = equippedAccessories
+    .filter((item) => !(item.system.unarmoredOnly && armored))
+    .reduce((total, item) => total + item.system.baseAC, 0);
   return base + shieldBonus + accessoriesBonus;
 }
 
-/** Bonus de CA apporté par UNE pièce d'armure/bouclier/accessoire prise isolément (à afficher
- *  sur sa ligne d'inventaire ou son emplacement d'équipement) : armure du corps → CA de base +
- *  bonus de Dex plafonné selon son type (même règle que armorClass) ; bouclier/accessoire →
- *  bonus plat (leur `baseAC` s'additionne tel quel, pas de composante Dex). */
+/** Bonus de CA d'une seule pièce d'armure, de bouclier ou d'accessoire. */
 export function armorContribution(armorSystem, dexMod) {
   if (armorSystem.slot === "armor") {
     return armorSystem.baseAC + dexBonusForArmorType(armorSystem.armorType, dexMod);
@@ -286,16 +237,12 @@ export function armorContribution(armorSystem, dexMod) {
   return armorSystem.baseAC;
 }
 
-/** Malus de vitesse SRD 5e si la Force du personnage est inférieure à la Force minimale
- *  requise par l'armure équipée : -10 pieds (-3 m), sinon aucun malus. */
+/** Malus de vitesse (-10 pieds) si la Force est inférieure à celle requise par l'armure. */
 export function speedPenalty(strengthRequired, strengthTotal) {
   return strengthRequired > 0 && strengthTotal < strengthRequired ? 10 : 0;
 }
 
-/** Bonus de vitesse de classe, SRD 5e (même convention numérique que speedPenalty/baseSpeed
- *  ci-dessus, cf. leurs commentaires). Barbare "Célérité" (niveau 5+) : +10, sauf armure
- *  lourde. Moine "Déplacement sans armure" (niveau 2+, paliers 6/10/14/18) : +10 à +30,
- *  seulement sans armure ni bouclier équipé. */
+/** Bonus de vitesse de classe : Célérité du Barbare, Déplacement sans armure du Moine. */
 export function classSpeedBonus(className, level, isHeavyArmor, hasArmorOrShield) {
   if (className === "barbarian" && level >= 5 && !isHeavyArmor) return 10;
   if (className === "monk" && level >= 2 && !hasArmorOrShield) {
@@ -308,30 +255,20 @@ export function classSpeedBonus(className, level, isHeavyArmor, hasArmorOrShield
   return 0;
 }
 
-/** Effet de l'Exhaustion sur la vitesse, SRD 5e (table complète, niveau 6 = mort géré
- *  séparément) : vitesse divisée par deux dès le niveau 2, nulle dès le niveau 5. Appliqué
- *  après les autres malus de vitesse (armure...). */
+/** Vitesse sous Épuisement : moitié dès le niveau 2, nulle dès le niveau 5. */
 export function exhaustionSpeed(speed, exhaustionLevel) {
   if (exhaustionLevel >= 5) return 0;
   if (exhaustionLevel >= 2) return Math.floor(speed / 2);
   return speed;
 }
 
-/** Effet de l'Exhaustion sur les PV max, SRD 5e : PV max divisés par deux dès le niveau 4. */
+/** PV max sous Épuisement : moitié dès le niveau 4. */
 export function exhaustionMaxHp(maxHp, exhaustionLevel) {
   return exhaustionLevel >= 4 ? Math.max(1, Math.floor(maxHp / 2)) : maxHp;
 }
 
-/** Emplacement(s) d'équipement occupé(s) par une arme/armure une fois équipée : une arme à
- *  deux mains occupe TOUJOURS Main principale + Main secondaire (SRD 5e, "nécessite les deux
- *  mains"), quel que soit son champ `slot` (ignoré dans ce cas) ; sinon un seul emplacement,
- *  celui choisi (`slot`). Utilisé à la fois pour répartir l'équipement sur l'onglet
- *  "Équipement" et pour empêcher d'équiper deux objets sur le même emplacement (cf.
- *  dnd-custom-ai.js > hook `preUpdateItem`). `system` accepte un DataModel réel ou un objet
- *  partiel `{ slot, properties: { handedness } }` (état "après changement" pas encore
- *  persisté).
- * @param {"weapon"|"armor"} type
- * @param {object} system
+/**
+ * Emplacements occupés par une arme ou armure équipée (les deux mains pour une arme à deux mains).
  * @returns {string[]}
  */
 export function equipmentSlots(type, system) {
@@ -343,35 +280,31 @@ export function equipmentSlots(type, system) {
   return [];
 }
 
-/** Une arme ne peut être équipée en Main secondaire que si elle est Légère (SRD 5e, combat à
- *  deux armes : l'attaque de bonus avec l'arme de la main secondaire exige une arme Légère).
- *  Une arme à deux mains n'est de toute façon jamais éligible (elle occupe les deux mains,
- *  cf. equipmentSlots) ; ce garde-fou concerne les armes à une main non-Légères (ex. Rapière,
- *  Épée longue) qui ne doivent pas pouvoir être choisies comme arme de main secondaire. */
+/** Indique si l'arme peut aller en main secondaire (arme Légère). */
 export function isOffHandEligible(weaponSystem) {
   return weaponSystem.properties?.handedness !== "twoHanded" && Boolean(weaponSystem.properties?.light);
 }
 
-/** Un personnage est-il maîtrisé de la catégorie d'arme (weaponType) équipée, selon sa
- *  classe (cf. DND_CUSTOM.classWeaponProficiencies) ? Classe vide/inconnue (PNJ, personnage
- *  pas encore configuré) : considéré maîtrisé par défaut, pour ne pas pénaliser avant qu'une
- *  classe soit choisie. */
+/** Indique si la classe maîtrise la catégorie d'arme ; vrai par défaut sans classe. */
 export function isProficientWithWeapon(className, weaponType) {
   const categories = DND_CUSTOM.classWeaponProficiencies[className];
   return categories ? categories.includes(weaponType) : true;
 }
 
-/** Modificateur de caractéristique et bonus d'attaque d'une arme équipée, SRD 5e : Dextérité
- *  pour les armes à distance, meilleur de Force/Dextérité si Finesse, Force sinon. Bonus de
- *  maîtrise appliqué uniquement si `isProficient` (cf. isProficientWithWeapon ci-dessus). */
+/**
+ * Modificateurs d'une arme : Dex à distance, meilleur For/Dex si Finesse, For sinon, plus son bonus magique.
+ * @returns {{abilityMod: number, damageMod: number, attackBonus: number}}
+ */
 export function weaponAttackDamage(weaponSystem, abilities, proficiencyBonusValue, isProficient = true) {
   const isRanged = weaponSystem.weaponType.startsWith("ranged");
   const strMod = abilityModifier(abilities.str.total);
   const dexMod = abilityModifier(abilities.dex.total);
-  const abilityMod = isRanged
-    ? dexMod
-    : weaponSystem.properties.finesse
-      ? Math.max(strMod, dexMod)
-      : strMod;
-  return { abilityMod, attackBonus: abilityMod + (isProficient ? proficiencyBonusValue : 0) };
+  const meleeMod = weaponSystem.properties.finesse ? Math.max(strMod, dexMod) : strMod;
+  const abilityMod = isRanged ? dexMod : meleeMod;
+  const enhancement = weaponSystem.enhancement ?? 0;
+  return {
+    abilityMod,
+    damageMod: abilityMod + enhancement,
+    attackBonus: abilityMod + (isProficient ? proficiencyBonusValue : 0) + enhancement
+  };
 }

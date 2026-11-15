@@ -1,21 +1,5 @@
-// Implémente le don "Magie d'initié", dernier des 10 dons sans automatisation mécanique
-// (ANOMALIES_ACTIVES.md) : choix en 2 étapes (classe lanceuse, puis 2 tours de magie + 1 sort de
-// niveau 1 de cette classe), plutôt qu'un simple bonus dérivé — cf. chooseInitiateMagicSpells
-// (helpers/initiate-magic-choice.js), #onChooseInitiateMagic/#onCastSpell (actor-sheet.js).
-// Cadré avec l'utilisateur le 2026-08-22 : automatise aussi la règle SRD annexe (le sort de
-// niveau 1 se lance GRATUITEMENT une fois par repos long, sans dépenser d'emplacement — au-delà,
-// redevient un sort normal).
-//
-// Personnage Guerrier (aucun emplacement de sort propre, jamais 0/0 pour aucun palier) : preuve
-// déterministe que le premier cast du sort de niveau 1 réussit malgré ça (bonus du don), et que
-// le second cast échoue normalement (plus de charge gratuite, aucun emplacement à dépenser).
-//
-// "Protection contre le mal et le bien" choisi explicitement comme sort de niveau 1 (plutôt que
-// le 1er par défaut) : ni attaque/sauvegarde/dégâts/soin NI réaction (contrairement à "Bouclier",
-// écarté ici — sa propre garde-fou de réaction/round aurait bloqué le second cast de ce test pour
-// une raison totalement différente de celle testée), il tombe dans la branche générique
-// d'#onCastSpell (message "lance {sort}" simple) — assertion la plus simple possible,
-// structurelle (i18n), jamais de texte localisé en dur.
+// Don Magie d'initié : choix en 2 étapes ; le sort de niveau 1 se lance gratuitement une fois,
+// puis échoue faute d'emplacement (Guerrier). Sort choisi sans attaque, sauvegarde ni réaction.
 
 const createdActorIds = [];
 let actorId;
@@ -25,9 +9,7 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
-// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group visible à
-// la fois, palier actif par défaut = premier palier non-vide (ici le palier 0, les 2 tours de
-// magie du don). Sans ça, le bouton du sort de niveau 1 reste display:none et cy.click() échoue.
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -92,8 +74,7 @@ describe("Don Magie d'initié — choix en 2 étapes puis cast gratuit du sort d
       .then((title) => {
         cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", title);
       });
-    // Cantrips laissés à leur valeur par défaut (déjà distincts, cf. chooseInitiateMagicSpells) ;
-    // sort de niveau 1 choisi explicitement (cf. commentaire d'en-tête).
+    // Tours de magie par défaut ; sort de niveau 1 choisi explicitement.
     cy.get('dialog.application.dialog[open] select[name="levelOneSpell"]').select("Protection contre le mal et le bien");
     cy.get('dialog.application.dialog[open] button[data-action="ok"]').click();
     cy.get("dialog.application.dialog[open]").should("not.exist");
@@ -118,8 +99,7 @@ describe("Don Magie d'initié — choix en 2 étapes puis cast gratuit du sort d
       }
     });
 
-    // Premier cast : gratuit malgré 0 emplacement de sort (Guerrier) — preuve que le
-    // contournement d'#onCastSpell fonctionne, pas juste que le sort existe sur la fiche.
+    // Premier lancer gratuit malgré 0 emplacement.
     cy.window().then((win) => {
       const actor = win.game.actors.get(actorId);
       const allZero = Object.values(actor.system.spells.slots).every((slot) => slot.value === 0 && slot.max === 0);
@@ -148,9 +128,7 @@ describe("Don Magie d'initié — choix en 2 étapes puis cast gratuit du sort d
         });
       });
 
-    // Second cast : plus de charge gratuite, et toujours 0 emplacement -> échoue normalement
-    // (avertissement, aucun nouveau message), comme n'importe quel autre sort de niveau 1 sans
-    // emplacement disponible.
+    // Second lancer : avertissement, aucun message.
     goToSpellLevel(1);
     cy.window()
       .then((win) => (messagesBefore = win.game.messages.size))

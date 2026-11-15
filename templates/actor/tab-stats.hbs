@@ -24,9 +24,7 @@
         </div>
       </details>
 
-      {{! Épuisement : ajusté MANUELLEMENT par le MJ seul (état punitif, comme les PV et le niveau
-          — verrouillé mais visible côté Joueur). Gagné/perdu automatiquement par les repos
-          (cf. #onRestShort/#onRestLong, rest-and-leveling-mixin.js) sans passer par ces boutons. }}
+      {{! Épuisement : boutons réservés au MJ, également modifié par les repos. }}
       <div class="exhaustion-chip" data-tooltip="{{glossaryTip 'exhaustion'}}">
         <span>{{localize "DND_CUSTOM.Conditions.Exhaustion"}}</span>
         <div class="ability-stepper">
@@ -40,8 +38,7 @@
         </div>
       </div>
 
-      {{! Bonus de maîtrise/Initiative/Perception passive : sur la même ligne que Liste d'état/
-          Épuisement plutôt que sous la liste de Compétences, cf. retour de test. }}
+      {{! Bonus de maîtrise, Initiative et Perception passive sur la ligne des états. }}
       <div class="proficiency-bonus" data-tooltip="{{glossaryTip 'bonus-maitrise'}}">
         {{localize "DND_CUSTOM.Actor.ProficiencyBonus"}} : {{proficiencyBonus}}
       </div>
@@ -49,8 +46,7 @@
         <span data-tooltip="{{glossaryTip 'initiative'}}">{{localize "DND_CUSTOM.Actor.Initiative"}} : {{initiative.modLabel}}</span>
         <span data-tooltip="{{glossaryTip 'perception-passive'}}">{{localize "DND_CUSTOM.Actor.PassivePerception"}} : {{passivePerception}}</span>
       </div>
-      {{! Combat monté (don SRD 5e) : cible le token de la monture puis "Monter" — même
-          convention que les Capacités à cible (game.user.targets) qu'ailleurs sur cette fiche. }}
+      {{! Combat monté : cibler le token de la monture puis « Monter ». }}
       <div class="mount-chip" data-tooltip="{{localize 'DND_CUSTOM.Actor.MountTooltip'}}">
         {{#if mount}}
         <span>{{localize "DND_CUSTOM.Actor.MountedOn"}} : {{mount.name}}</span>
@@ -59,9 +55,7 @@
         <button type="button" class="ability-btn-text" data-action="mount">{{localize "DND_CUSTOM.Actor.Mount"}}</button>
         {{/if}}
       </div>
-      {{! Forme sauvage (don SRD 5e) : la prise de forme se fait depuis la Capacité elle-même
-          (onglet Capacités, bouton dédié "Prendre forme") — ce chip n'affiche le statut/le
-          retour manuel que si une forme est déjà active. }}
+      {{! Forme sauvage active : statut et retour à la forme normale. }}
       {{#if wildShapeForm}}
       <div class="mount-chip" data-tooltip="{{localize 'DND_CUSTOM.Actor.WildShapeTooltip'}}">
         <span>{{localize "DND_CUSTOM.Actor.WildShapeForm"}} : {{wildShapeForm.name}}
@@ -86,12 +80,7 @@
     </div>
   </div>
 
-  {{! Chantier "types de dégâts" (Phase 1, 2026-08-24) : réglage réservé au MJ, comme la fiche
-      Origine (verrouillage MJ/Joueur) — coexiste avec les résistances déjà câblées en dur par
-      Capacité (Rage, Résilience draconique...). Retour de test : le tableau complet (une case
-      par type de dégât, la plupart jamais cochées) n'a aucune valeur côté Joueur — remplacé par
-      un résumé listant uniquement les entrées déjà actives (context.damageAffinitySummary,
-      actor-sheet.js), rien du tout si aucune n'est active. }}
+  {{! Affinités aux dégâts : tableau réglable par le MJ, résumé des entrées actives pour les autres. }}
   {{#if isGM}}
   <div class="damage-affinity-panel">
     {{#each damageAffinityGroups}}
@@ -149,10 +138,7 @@
                 <input type="checkbox" name="system.saves.{{this.key}}.proficient" {{#if this.save.proficient}}checked{{/if}}>
               </label>
               {{else}}
-              {{! Retour de test : la case à cocher était toujours désactivée pour un Joueur (lecture
-                  seule, la maîtrise de sauvegarde découle uniquement de la classe) — affichée comme
-                  interactive alors qu'elle ne servait à rien pour lui. Simple indicateur visuel côté
-                  Joueur (classe .proficient posée sur le libellé), l'édition reste réservée au MJ. }}
+              {{! Joueur : indicateur de maîtrise de sauvegarde en lecture seule. }}
               <span class="ability-side-label {{#if this.save.proficient}}proficient{{/if}}" data-tooltip="{{glossaryTip 'sauvegarde'}}">
                 {{localize "DND_CUSTOM.Actor.SaveShort"}}
               </span>
@@ -176,10 +162,7 @@
             {{this.label}}
           </label>
           {{else}}
-          {{! Côté Joueur : la maîtrise de compétence ne dépend que de la classe (fixée à la
-              création), jamais éditable par lui — même traitement que la maîtrise de sauvegarde
-              ci-dessus, simple libellé plutôt qu'une case grisée qui a l'air interactive. La
-              classe `.proficient` du <li> reste l'indicateur visuel. }}
+          {{! Joueur : maîtrise de compétence en lecture seule (classe `.proficient` du <li>). }}
           <span class="skill-name">{{this.label}}</span>
           {{/if}}
           <span class="ability-tag">({{this.ability}})</span>

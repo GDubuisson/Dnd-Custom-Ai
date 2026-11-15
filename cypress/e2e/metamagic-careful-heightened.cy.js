@@ -1,20 +1,5 @@
-// Implémente Sort Prudent/Sort Élevé (Métamagie, Ensorceleur) — 2 des 8 options SRD de
-// Métamagie, seules automatisables avec l'existant (revue de conception du 2026-08-22,
-// ANOMALIES_ACTIVES.md, périmètre choisi explicitement avec l'utilisateur : les 6 autres
-// modifient portée/durée/composantes/économie d'action, non trackées ici).
-//
-// Modèle retenu (cf. helpers/metamagic.js > chooseMetamagicOption, branche `save?.ability` de
-// #onCastSpell dans actor-sheet.js) : même convention Maj/Ctrl-clic que l'avantage/désavantage
-// des jets d'attaque (rollCheck) — Maj-clic sur "Lancer" = Sort Prudent (réussite automatique
-// d'UNE cible ciblée), Ctrl-clic = Sort Élevé (désavantage sur le jet d'UNE cible ciblée),
-// aucune touche = comportement inchangé (aucune fenêtre, aucun point dépensé). Coûte 1 point de
-// "Sorcellerie innée" à chaque activation ; choix de la cible seulement si plusieurs sont
-// ciblées.
-//
-// "Métamagie"/"Sorcellerie innée" créées UNE SEULE FOIS (before), réserve remise à 1 point au
-// début de chaque test (piège déjà rencontré sur d'autres specs de ce lot : recréer ces Items à
-// chaque test laisserait des doublons épuisés, et `.find(name)` retomberait sur le mauvais) — un
-// nouveau sort de test est en revanche créé à chaque fois, toujours ciblé par son propre id.
+// Sort Prudent (Maj-clic) et Sort Élevé (Ctrl-clic) : 1 point de Sorcellerie innée, une cible choisie.
+// Capacités créées une fois, réserve remise à 1 au début de chaque test.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -29,12 +14,7 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
-// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
-// visible à la fois, le palier actif par défaut est toujours le premier palier non-vide — quasi
-// toujours 0 (tours de magie octroyés à la création par grantClassContent) pour cet Ensorceleur,
-// jamais le niveau 1 du sort de test créé ci-dessous. Sans ce clic, le bouton castSpell reste
-// caché (display:none sur son .spell-level-group parent) — même piège déjà rencontré et corrigé
-// dans tab-abilities.cy.js (cf. ANOMALIES_ACTIVES.md).
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -80,8 +60,7 @@ before(() => {
     casterId = id;
     createdActorIds.push(id);
   });
-  // Emplacements de niveau 1 largement suffisants pour tous les casts de cette spec, sans
-  // dépendre du remplissage réel à la création (hors-sujet ici).
+  // Emplacements de niveau 1 en quantité suffisante.
   cy.window().then((win) => updateActor(win, win.game.actors.get(casterId), { "system.spells.slots.1.value": 10 }));
   cy.window()
     .then((win) =>
@@ -131,10 +110,7 @@ describe("Métamagie — Sort Prudent (Maj-clic) et Sort Élevé (Ctrl-clic)", (
   beforeEach(() => {
     cy.loginAsGM();
     cy.window().then((win) => updateActor(win, win.game.actors.get(casterId).items.get(sorceryId), { "system.uses.value": 1 }));
-    // Toujours remis à une valeur large avant chaque test : le niveau 1 (Ensorceleur, lanceur
-    // complet) n'a que 2 emplacements réels, tout juste suffisants pour 1-2 casts — sans ce
-    // reset, les tests suivants échouent avec "aucun emplacement disponible" plutôt que de
-    // tester la Métamagie elle-même.
+    // Emplacements remis à 10 avant chaque test.
     cy.window().then((win) => updateActor(win, win.game.actors.get(casterId), { "system.spells.slots.1.value": 10 }));
   });
 
@@ -219,8 +195,7 @@ describe("Métamagie — Sort Prudent (Maj-clic) et Sort Élevé (Ctrl-clic)", (
     cy.get("dialog.application.dialog[open]").should("not.exist");
 
     cy.window().should((win) => {
-      // 2 messages postés (un par cible) : celui de la cible B (choisie pour le Sort Prudent)
-      // doit être une réussite automatique, celui de A un jet normal (1 naturel forcé -> échec).
+      // Cible B (Sort Prudent) réussit automatiquement, A échoue sur 1 forcé.
       const messages = win.game.messages.contents.slice(-2);
       const forB = messages.find((m) => m.speaker.actor === targetBId);
       const forA = messages.find((m) => m.speaker.actor === targetAId);

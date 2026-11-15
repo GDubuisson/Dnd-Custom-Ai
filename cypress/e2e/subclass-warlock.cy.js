@@ -1,8 +1,4 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour l'Occultiste : 2 nouvelles
-// sous-classes ajoutées (Le Grand Ancien/greatOldOne, L'Archifée/archfey), en plus du Fiélon déjà
-// existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque mécanique
-// active (charge à usage limité décomptée).
+// Sous-classes de l'Occultiste (Grand Ancien, Archifée) : octroi des Capacités et charges consommées.
 
 const createdActorIds = [];
 
@@ -58,10 +54,7 @@ describe("Sous-classes d'Occultiste — Le Grand Ancien / L'Archifée", () => {
       cy.openActorSheet(actorId);
       goToTab("abilities");
 
-      // "Effroi psychique" a `savingThrow: "wis"` (jet de sauvegarde de cible, cf.
-      // world-items/features.json) : son bouton réel est "rollFeatureSave", pas
-      // "useFeatureCharge" — #onRollFeatureSave décompte la charge et poste un message même sans
-      // cible ciblée (message "pas de cible" à la place du résultat du jet).
+      // Capacité à sauvegarde : bouton « rollFeatureSave », qui consomme la charge même sans cible.
       withItemId(actorId, "Effroi psychique", (itemId) => {
         cy.window().its("game.messages.size").then((before) => {
           cy.get(`li[data-item-id="${itemId}"] button[data-action="rollFeatureSave"]`).click();

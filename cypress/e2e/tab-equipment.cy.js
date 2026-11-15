@@ -1,21 +1,5 @@
-// Implémente la section 4 (T-EQUIP-001 à T-EQUIP-005) de tests/E2E_TEST_PLAN.md — onglet
-// Équipement (tab-equipment.hbs). Tous les scénarios sont marqués "E2E" seul dans le plan (pas
-// de volet Quench).
-//
-// Personnage partagé fighter (comme dans character-sheet.cy.js/tab-stats.cy.js), dont
-// l'équipement de départ (classStartingEquipment.fighter, character-creation-wizard.js) donne
-// déjà "Épée longue" (arme Polyvalente à une main, pratique pour T-EQUIP-001/003) et "Cotte de
-// mailles" (armure de corps, T-EQUIP-004), les deux auto-équipées. "Grande hache" (arme à deux
-// mains, T-EQUIP-002) et "Bouclier" (armure de slot "offHand", sert de remplisseur de main
-// secondaire pour T-EQUIP-003) sont dupliquées depuis les Items du monde une fois en before().
-// L'emplacement "accessory" (T-EQUIP-005) n'est utilisé par AUCUN Item livré avec le système
-// (vérifié : world-items/armors.json n'a que "armor"/"offHand", cf. ArmorData.slot,
-// scripts/data/item-data.js) — un Item de test minimal est créé pour l'exercer.
-//
-// Chaque test pose explicitement l'état d'équipement dont IL a besoin en début de scénario
-// (plutôt que de supposer l'état laissé par le précédent) : les items partagés (arme à deux
-// mains, bouclier) sont réutilisés d'un test à l'autre, donc l'ordre d'exécution ne doit pas
-// pouvoir changer le résultat.
+// T-EQUIP-001 à 007 : onglet Équipement sur un Guerrier partagé ; chaque test pose l'équipement
+// dont il a besoin. Un Item « accessory » de test est créé (aucun n'est livré).
 
 const createdActorIds = [];
 let sharedActorId;
@@ -38,9 +22,7 @@ function equipmentSlotEl(index) {
   return sheetRoot().find(".equipment-slot").eq(index);
 }
 
-// Résout l'id d'un Item par son nom AVANT de construire un sélecteur qui en dépend : un id
-// interpolé dans un sélecteur construit hors d'un `.then()` serait figé au moment où le test se
-// construit (avant que la commande qui le calcule n'ait tourné), pas au moment où il s'exécute.
+// Résout l'id d'un Item par son nom avant de construire le sélecteur.
 function withItemId(actorId, itemName, callback) {
   return cy
     .window()
@@ -55,13 +37,9 @@ function withItemId(actorId, itemName, callback) {
 function setEquipped(itemId, checked) {
   const checkbox = () => cy.get(`tr[data-item-id="${itemId}"] input[data-item-equipped]`);
   goToTab("inventory");
-  // `{force: true}` : Cypress signale parfois cette case native comme couverte par
-  // `.window-content` juste après un changement d'onglet (le tableau Armes/Armures défile,
-  // rendu AppV2 encore en train de s'installer) alors qu'elle est bien cliquable pour un
-  // utilisateur réel — aucun style personnalisé de ce système ne la sort du flux normal
-  // (vérifié dans styles/dnd-custom-ai.css), donc rien d'autre à corriger côté template ici.
-  if (checked) checkbox().check({ force: true });
-  else checkbox().uncheck({ force: true });
+  // `force` : la case peut être signalée couverte juste après un changement d'onglet.
+  if (checked) checkbox().check({ force: true }); // NOSONAR : case couverte (cf. ci-dessus)
+  else checkbox().uncheck({ force: true }); // NOSONAR : case couverte (cf. ci-dessus)
 }
 
 before(() => {
@@ -88,15 +66,13 @@ before(() => {
         .createEmbeddedDocuments("Item", [
           win.JSON.parse(win.JSON.stringify(greataxe.toObject())),
           win.JSON.parse(win.JSON.stringify(shield.toObject())),
-          // Arme à une main Légère (seul cas déclenchant la fenêtre de choix d'emplacement, cf.
-          // T-EQUIP-006/007), désarmée au départ.
+          // Arme à une main Légère, non équipée.
           (() => {
             const data = win.JSON.parse(win.JSON.stringify(dagger.toObject()));
             data.system.equipped = false;
             return data;
           })(),
-          // Emplacement "accessory" : aucun Item livré avec le système ne l'utilise (armures =
-          // "armor"/"offHand" seulement, cf. commentaire d'en-tête) — fixture minimale dédiée.
+          // Item d'emplacement « accessory ».
           win.JSON.parse(
             win.JSON.stringify({
               name: "Tab Equipment Test Ring",
@@ -121,7 +97,7 @@ describe("Onglet Équipement", () => {
     cy.openActorSheet(sharedActorId);
   });
 
-  it("emplacement main principale — équiper une arme à une main (T-EQUIP-001)", () => {
+  it("emplacement main principale — équiper une arme à une main (T-EQUIP-001)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     withItemId(sharedActorId, "Épée longue", (weaponId) => {
       setEquipped(weaponId, false);
       goToTab("equipment");
@@ -134,7 +110,7 @@ describe("Onglet Équipement", () => {
     });
   });
 
-  it("une arme à deux mains occupe les deux emplacements (T-EQUIP-002)", () => {
+  it("une arme à deux mains occupe les deux emplacements (T-EQUIP-002)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     withItemId(sharedActorId, "Épée longue", (longswordId) => setEquipped(longswordId, false));
     withItemId(sharedActorId, "Bouclier", (shieldId) => setEquipped(shieldId, false));
 
@@ -143,7 +119,7 @@ describe("Onglet Équipement", () => {
       goToTab("equipment");
       equipmentSlotEl(MAIN_HAND).find(`.equipped-item-line[data-item-id="${greataxeId}"]`).should("exist");
 
-      // La main secondaire n'affiche pas un doublon de l'objet, mais une mention dédiée.
+      // Main secondaire : mention dédiée, pas de doublon.
       equipmentSlotEl(OFF_HAND).find(`[data-item-id="${greataxeId}"]`).should("not.exist");
       cy.window()
         .its("game.i18n")
@@ -152,20 +128,19 @@ describe("Onglet Équipement", () => {
           equipmentSlotEl(OFF_HAND).find(".empty-slot").should("contain.text", label);
         });
 
-      // Désarme pour ne pas fausser les tests suivants (le fighter n'a alors plus d'arme
-      // équipée, ce qui n'affecte aucun des scénarios restants de cette spec).
+      // Déséquipe l'arme.
       setEquipped(greataxeId, false);
     });
   });
 
-  it("arme Polyvalente — les dégâts affichés suivent la main secondaire (T-EQUIP-003)", () => {
+  it("arme Polyvalente — les dégâts affichés suivent la main secondaire (T-EQUIP-003)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     withItemId(sharedActorId, "Bouclier", (shieldId) => setEquipped(shieldId, false));
     withItemId(sharedActorId, "Grande hache", (greataxeId) => setEquipped(greataxeId, false));
 
     withItemId(sharedActorId, "Épée longue", (longswordId) => {
       setEquipped(longswordId, true);
       goToTab("equipment");
-      // Main secondaire libre : dé à deux mains (1d10, cf. world-items/weapons.json).
+      // Main secondaire libre : dé à deux mains (1d10).
       equipmentSlotEl(MAIN_HAND)
         .find(".equipment-roll-btn-damage")
         .should("contain.text", "1d10");
@@ -173,7 +148,7 @@ describe("Onglet Équipement", () => {
       withItemId(sharedActorId, "Bouclier", (shieldId) => {
         setEquipped(shieldId, true);
         goToTab("equipment");
-        // Main secondaire occupée (par un objet autre que l'épée elle-même) : dé à une main (1d8).
+        // Main secondaire occupée : dé à une main (1d8).
         equipmentSlotEl(MAIN_HAND)
           .find(".equipment-roll-btn-damage")
           .should("contain.text", "1d8");
@@ -193,7 +168,7 @@ describe("Onglet Équipement", () => {
       goToTab("equipment");
       cy.window().then((win) => {
         const armor = win.game.actors.get(sharedActorId).items.get(armorId);
-        // CA absolue (pas un bonus signé) : cf. armorContribution, rules.js — slot "armor".
+        // Armure de corps : CA absolue.
         expect(armor.system.baseAC, "prérequis : la CA de base sert de référence pour l'assertion").to.be.greaterThan(
           0
         );
@@ -209,7 +184,7 @@ describe("Onglet Équipement", () => {
     });
   });
 
-  it("accessoire équipé — bonus affiché avec son signe, pas en CA absolue (T-EQUIP-005)", () => {
+  it("accessoire équipé — bonus affiché avec son signe, pas en CA absolue (T-EQUIP-005)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     withItemId(sharedActorId, "Tab Equipment Test Ring", (ringId) => {
       setEquipped(ringId, true);
       goToTab("equipment");
@@ -222,19 +197,14 @@ describe("Onglet Équipement", () => {
     });
   });
 
-  // Retour de test (ANOMALIES_ACTIVES.md, "Équipement/Inventaire") : le champ Emplacement
-  // (system.slot) est verrouillé au MJ sur la fiche d'Item elle-même (contenu de règles), donc
-  // un Joueur ne pouvait plus du tout choisir main principale vs secondaire pour une arme à une
-  // main Légère. Fenêtre de choix (DialogV2) désormais présentée au moment de cocher "Équipé"
-  // dans l'Inventaire — structure DOM capturée en conditions réelles, même convention que
-  // level-up.cy.js (dialog.application.dialog, input radio + button[data-action="ok"/"close"]).
+  // Choix d'emplacement proposé en équipant une arme à une main Légère.
   it("arme à une main Légère — fenêtre de choix d'emplacement, Main secondaire choisie (T-EQUIP-006)", () => {
     withItemId(sharedActorId, "Épée longue", (longswordId) => setEquipped(longswordId, false));
     withItemId(sharedActorId, "Bouclier", (shieldId) => setEquipped(shieldId, false));
 
     withItemId(sharedActorId, "Dague", (daggerId) => {
       goToTab("inventory");
-      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true });
+      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
 
       cy.window()
         .its("game.i18n")
@@ -262,7 +232,7 @@ describe("Onglet Équipement", () => {
   it("fenêtre de choix d'emplacement annulée — l'arme reste non équipée (T-EQUIP-007)", () => {
     withItemId(sharedActorId, "Dague", (daggerId) => {
       goToTab("inventory");
-      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true });
+      cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
 
       cy.get("dialog.application.dialog", { timeout: 10000 }).should("exist");
       cy.get('dialog.application.dialog button[data-action="close"]').click();
@@ -273,8 +243,7 @@ describe("Onglet Équipement", () => {
           "toujours non équipée après annulation de la fenêtre"
         ).to.be.false;
       });
-      // La case s'était cochée visuellement au clic (avant l'ouverture de la fenêtre) : doit
-      // revenir décochée pour refléter l'état réel une fois la fenêtre fermée sans validation.
+      // Dialogue fermé : la case redevient décochée.
       cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).should("not.be.checked");
     });
   });

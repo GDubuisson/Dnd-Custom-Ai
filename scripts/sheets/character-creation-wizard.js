@@ -9,45 +9,22 @@ const { ApplicationV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
-/** Ensemble SYNCHRONE des `Actor.id` pour lesquels un assistant de création est actuellement
- *  ouvert (ou en train de s'ouvrir) — cf. `DndCustomActorSheet#render()`, actor-sheet.js.
- *
- *  Root cause du bug "fiche visible pendant l'assistant" (5e signalement, 2026-08-19,
- *  ClaudeFiles/ANOMALIES_ACTIVES.md), confirmée le 2026-09-05 par une repro exacte de
- *  l'utilisateur puis un traçage en direct (Hooks.callAll/render instrumentés sur l'instance
- *  Docker de test) : la boîte de dialogue "Créer un Acteur" native de la sidebar (v13+,
- *  `DialogV2`) appelle `doc.sheet.render(true)` **directement dans le callback de son propre
- *  bouton "ok"**, juste après la résolution de `Actor.create()` — un chemin totalement
- *  indépendant de `options.renderSheet` (qui ne concernait qu'un ancien mécanisme de
- *  `Document#createDialog()`, cf. commentaire `preCreateActor` dans dnd-custom-ai.js, best-effort
- *  mais plus la vraie protection). Ce rendu de fiche survient synchrones-ment APRÈS le hook
- *  `createActor` (qui construit l'assistant) mais AVANT que l'assistant n'ait eu le temps
- *  d'apparaître dans `foundry.applications.instances` (son propre pipeline de rendu — chargement
- *  de template, etc. — prend, mesuré en conditions réelles, plusieurs centaines de ms) :
- *  l'ancien garde-fou de `DndCustomActorSheet#render()`, qui scannait ce registre, perdait
- *  donc systématiquement cette course. Un `Set` synchrone, rempli au constructeur de l'assistant
- *  (avant tout appel à `.render()`) et vidé à sa fermeture (`_onClose` ci-dessous), ne dépend
- *  d'aucune hypothèse de timing sur le pipeline de rendu de Foundry. */
+/**
+ * Ids des Actors dont l'assistant de création est ouvert, rempli de façon synchrone au constructeur
+ * pour que la fiche refuse de s'afficher par-dessus (cf. DndCustomActorSheet#render).
+ */
 export const openWizardActorIds = new Set();
 
-/** Échappement minimal pour insérer `text` sans risque dans un attribut HTML entre guillemets
- *  doubles (cf. même convention que glossaryAbbr, player-guide-journal.js) : ce résumé est
- *  injecté via `.innerHTML` (cf. #syncSelectionInfo) pour porter le nom du trait spécial en
- *  infobulle, donc `text` doit être sûr aussi bien en position de texte qu'en attribut. */
+/** Échappe `text` pour un contenu ou un attribut HTML. */
 function escapeHtml(text) {
   return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
-/** Résumé HTML (une ligne, affiché sous le select Origine) des bonus de caractéristiques/
- *  compétences avantagées/trait spécial de `origin` (cf. origins.json) — retour de test : rien
- *  n'indiquait ces effets avant de valider le personnage, obligeant à ouvrir le Journal des
- *  Origines à côté pour comparer. Le nom du trait spécial porte sa description complète en
- *  infobulle (`title`, cf. #syncSelectionInfo qui l'injecte via innerHTML) plutôt que de
- *  l'afficher en clair et alourdir la ligne — retour de test. */
+/** Résumé HTML des bonus, compétences et trait spécial (en infobulle) d'une Origine. */
 function buildOriginInfoText(origin) {
   const bonuses = ABILITY_KEYS.filter((key) => origin.abilityBonuses?.[key])
     .map((key) => `${game.i18n.localize(DND_CUSTOM.abilities[key])} +${origin.abilityBonuses[key]}`)
@@ -66,12 +43,7 @@ function buildOriginInfoText(origin) {
   return parts.join(" · ");
 }
 
-/** Même principe que buildOriginInfoText, pour le select Classe : sauvegardes maîtrisées
- *  (fixées par la classe, pas un choix, cf. #onSubmit), nombre de compétences au choix (déjà
- *  indiqué séparément par #syncSkillCountHint, répété ici pour tout avoir au même endroit) et
- *  caractéristique d'incantation si classe lanceuse. Pas de dé de vie affiché : ce système n'en
- *  utilise pas côté joueur (PV max calculés automatiquement, jamais de dé à lancer/dépenser —
- *  cf. DND_CUSTOM.classHitDice, un détail de calcul interne uniquement, jamais affiché). */
+/** Résumé HTML d'une classe : sauvegardes, nombre de compétences, caractéristique d'incantation. */
 function buildClassInfoText(classKey) {
   const saves = (DND_CUSTOM.classSavingThrows[classKey] ?? [])
     .map((key) => game.i18n.localize(DND_CUSTOM.abilities[key]))
@@ -88,13 +60,10 @@ function buildClassInfoText(classKey) {
   return parts.join(" · ");
 }
 
-/** Assistant de création de personnage : Origine, Classe, répartition du tableau standard
- *  (15/14/13/12/10/8, SRD 5e) sur les 6 caractéristiques, maîtrises de compétences (nombre
- *  fixé par la classe, cf. DND_CUSTOM.classSkillChoices). Les jets de sauvegarde maîtrisés
- *  sont déduits automatiquement de la classe (SRD 5e, pas un choix). N'importe quel joueur
- *  propriétaire de l'Actor peut l'utiliser : c'est le seul flux autorisé à modifier ces
- *  champs normalement verrouillés MJ (cf. hook preUpdateActor, dnd-custom-ai.js), via
- *  l'option `{ dndCustomWizard: true }` posée explicitement sur l'update. */
+/**
+ * Assistant de création : Origine, Classe, tableau standard, compétences.
+ * Seul flux joueur autorisé à écrire ces champs, via l'option `dndCustomWizard`.
+ */
 export class CharacterCreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "character-wizard"],
@@ -111,8 +80,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
-    // Synchrone, AVANT tout `.render()` — cf. docstring de `openWizardActorIds` ci-dessus pour
-    // la course que ça referme.
+    // Synchrone, avant tout rendu.
     openWizardActorIds.add(actor.id);
   }
 
@@ -125,19 +93,13 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     this.#syncSelectionInfo();
   }
 
-  /** @override
-   *  Retire l'Actor de `openWizardActorIds` à la fermeture de l'assistant, qu'il ait été soumis
-   *  (cf. #onSubmit ci-dessous, qui appelle `this.close()`) ou fermé sans avoir terminé (bouton
-   *  natif "Fermer la fenêtre") — dans les deux cas, `DndCustomActorSheet` doit redevenir
-   *  normalement accessible pour cet Actor (cf. T-WIZ-018, wizard.cy.js). */
+  /** @override Libère l'Actor de `openWizardActorIds`, soumis ou non. */
   _onClose(options) {
     super._onClose(options);
     openWizardActorIds.delete(this.actor.id);
   }
 
-  /** Affiche sous chaque select (Origine/Classe) un résumé de ses bonus de caractéristiques/
-   *  compétences/dé de vie (cf. buildOriginInfoText/buildClassInfoText ci-dessus), mis à jour
-   *  dès le changement de sélection — retour de test, cf. commentaire de buildOriginInfoText. */
+  /** Met à jour les résumés sous les selects Origine et Classe. */
   #syncSelectionInfo() {
     const root = this.element;
     const originSelect = root.querySelector('select[name="origin"]');
@@ -146,9 +108,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     const classPanel = root.querySelector("[data-class-info]");
     if (!originSelect || !classSelect || !originPanel || !classPanel) return;
 
-    // .innerHTML (pas .textContent) côté Origine : buildOriginInfoText y injecte le nom du
-    // trait spécial dans un <abbr title="..."> portant sa description en infobulle (retour de
-    // test), échappé en amont (cf. escapeHtml) donc sûr à insérer tel quel.
+    // `innerHTML` pour l'infobulle du trait spécial, contenu échappé.
     const updateOrigin = () => {
       const info = originSelect.selectedOptions[0]?.dataset.info;
       if (info) originPanel.innerHTML = info;
@@ -167,9 +127,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     classSelect.addEventListener("change", updateClass);
   }
 
-  /** Affiche le nombre de compétences à choisir pour la classe actuellement sélectionnée
-   *  (retour de test — rien n'indiquait ce nombre dans le formulaire), mis à jour dès que le
-   *  joueur change de classe, avant même de soumettre. */
+  /** Affiche le nombre de compétences à choisir pour la classe sélectionnée. */
   #syncSkillCountHint() {
     const root = this.element;
     const classSelect = root.querySelector('select[name="classKey"]');
@@ -189,10 +147,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     classSelect.addEventListener("change", updateHint);
   }
 
-  /** Désactive les cases de compétence non cochées dès que le quota de la classe (cf.
-   *  #syncSkillCountHint) est atteint : sans ça, rien n'empêchait de cocher plus de
-   *  compétences que permis avant de se le faire refuser à la soumission (#onSubmit) — retour
-   *  de test. Recalculé à chaque case cochée/décochée et à chaque changement de classe. */
+  /** Désactive les cases de compétence restantes une fois le quota atteint. */
   #syncSkillLimit() {
     const root = this.element;
     const classSelect = root.querySelector('select[name="classKey"]');
@@ -216,13 +171,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     });
   }
 
-  /** Empêche deux select de caractéristique d'afficher la même valeur du tableau standard :
-   *  c'est la cause du bug remonté en test ("Chaque valeur... doit être utilisée exactement
-   *  une fois" apparaissait systématiquement) — rien n'empêchait par ex. de mettre 15 en
-   *  Intelligence sans remarquer que Force affichait encore 15 par défaut. Au lieu de se
-   *  reposer uniquement sur la validation finale, on échange automatiquement l'ancienne
-   *  valeur du champ modifié vers le select qui détenait la nouvelle valeur : l'ensemble
-   *  reste toujours une permutation valide du tableau standard pendant la saisie. */
+  /** Échange les valeurs entre selects pour garder une permutation du tableau standard. */
   #syncAbilitySelects() {
     const root = this.element;
     const abilitySelects = () => root.querySelectorAll('select[name^="abilities."]');
@@ -263,8 +212,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       abilities: ABILITY_KEYS.map((key, index) => ({
         key,
         label: DND_CUSTOM.abilities[key],
-        // Chaque case propose les 6 valeurs du tableau standard, celle du même rang
-        // pré-sélectionnée (répartition de départ arbitraire mais valide, à réarranger).
+        // Répartition initiale : valeur du même rang.
         options: STANDARD_ARRAY.map((value) => ({ value, selected: value === STANDARD_ARRAY[index] }))
       })),
       skills: Object.keys(SKILL_ABILITIES)
@@ -273,19 +221,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     };
   }
 
-  /** Valide (tableau standard respecté, bon nombre de compétences pour la classe choisie)
-   *  puis applique les choix à l'Actor. Sauvegardes déduites de la classe (SRD 5e). PV
-   *  initialisés au maximum une fois les caractéristiques/la classe/l'Origine posées (leur
-   *  effet sur PV max n'est connu qu'après ce premier update, cf. CharacterData#prepareDerivedData).
-   *
-   *  Lit directement les éléments du DOM (`form`) plutôt que `formData.object` : retour de
-   *  test répété — l'erreur de validation du tableau standard apparaissait systématiquement,
-   *  y compris après correction de l'échange automatique de valeurs (cf. #syncAbilitySelects),
-   *  ce qui pointait vers l'extraction des données elle-même plutôt que vers leur contenu.
-   *  `formData.object`/FormDataExtended expanse les noms à points ("abilities.str") en objet
-   *  imbriqué en théorie, mais ce formulaire n'est pas lié à un Document (pas de préfixe
-   *  "system.") ; lire `form.elements` directement supprime toute incertitude sur ce mécanisme
-   *  intermédiaire — c'est déjà l'approche utilisée par ability-score-improvement.js. */
+  /** Valide puis applique les choix à l'Actor, PV et emplacements au maximum, contenu de départ octroyé. */
   static async #onSubmit(event, form) {
     const abilityValues = ABILITY_KEYS.map(
       (key) => Number(form.elements[`abilities.${key}`]?.value)
@@ -316,10 +252,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       updates[`system.abilities.${key}.value`] = abilityValues[index];
     });
 
-    // Lie la fiche au joueur qui vient de la créer pour lui-même (retour de test) : le MJ
-    // reste exclu de cette liaison automatique, l'assistant pouvant aussi servir à préparer
-    // un personnage pour quelqu'un d'autre (assignation manuelle alors laissée au MJ, comme
-    // avant, via la fenêtre "Configurer les joueurs").
+    // Un joueur devient propriétaire du personnage qu'il crée.
     if (!game.user.isGM) {
       updates[`ownership.${game.user.id}`] = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
     }
@@ -332,11 +265,7 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     }
 
     await this.actor.update(updates, { dndCustomWizard: true });
-    // PV max/emplacements de sorts recalculés par prepareDerivedData après le premier update
-    // ci-dessus : on les lit maintenant pour démarrer le personnage à pleine santé et, pour une
-    // classe lanceuse, avec tous ses emplacements de sorts disponibles (même logique que
-    // rules.js > spellSlotFillUpdates pour les boutons de repos/la montée de niveau — sans quoi
-    // un lanceur fraîchement créé reste à `value: 0` jusqu'à son premier repos long).
+    // PV et emplacements de sorts au maximum, une fois les valeurs dérivées recalculées.
     await this.actor.update(
       {
         "system.attributes.hp.value": this.actor.system.attributes.hp.max,
@@ -346,32 +275,21 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     );
 
     await CharacterCreationWizard.#grantStartingEquipment(this.actor, classKey);
-    // Capacités de classe (niveau 1) + tours de magie/sorts de niveau 1 pour une classe
-    // lanceuse, cf. helpers/class-content.js.
+    // Capacités et sorts du niveau 1.
     await grantClassContent(this.actor, classKey, this.actor.system.attributes.level);
-    // Commune + langue d'Origine (cf. helpers/class-content.js) : les langues spéciales restent
-    // un ajout manuel, jamais octroyées automatiquement.
+    // Commun et langue d'Origine.
     await grantLanguages(this.actor, origin);
 
-    // Devient le "personnage joueur" assigné à cet utilisateur (cf. ownership ci-dessus, même
-    // exclusion du MJ). Un utilisateur ne peut mettre à jour que son propre User (droit natif
-    // Foundry), donc pas besoin d'être GM pour ceci.
+    // Personnage assigné à l'utilisateur joueur.
     if (!game.user.isGM) await game.user.update({ character: this.actor.id });
 
     ui.notifications.info(game.i18n.format("DND_CUSTOM.Wizard.Created", { name: updates.name }));
     await this.close();
-    // La fiche avait été fermée à l'ouverture de l'assistant (cf. dnd-custom-ai.js et
-    // actor-sheet.js > #onOpenCreationWizard, retour de test — affichées en même temps) :
-    // la rouvrir maintenant que le personnage est prêt, plutôt que de laisser le joueur sans
-    // rien à l'écran.
+    // Rouvre la fiche une fois le personnage prêt.
     this.actor.sheet.render(true);
   }
 
-  /** Équipement de départ simplifié (une arme + une armure typiques, cf.
-   *  DND_CUSTOM.classStartingEquipment) : cherché par nom dans les Items du monde
-   *  (importés via world-items/README.md) et dupliqué, équipé, sur l'Actor. Silencieusement
-   *  ignoré si le nom n'est pas trouvé (macro d'import pas encore exécutée) plutôt que
-   *  bloquer la création du personnage pour ça. */
+  /** Équipement de départ de la classe, copié depuis les Items du monde s'ils existent. */
   static async #grantStartingEquipment(actor, classKey) {
     const kit = DND_CUSTOM.classStartingEquipment[classKey];
     if (!kit) return;

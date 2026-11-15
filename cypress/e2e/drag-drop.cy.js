@@ -1,9 +1,5 @@
-// Implémente la section 13 (T-DND-001 à T-DND-003) de tests/E2E_TEST_PLAN.md — glisser-déposer
-// entre fiches (inventory-drag-drop.js). Même technique que tab-journal.cy.js > T-JOURNAL-002 :
-// un vrai DragEvent avec un DataTransfer contenant {type:"Item", uuid} dispatché directement sur
-// la racine de la fiche cible, sans repasser par le DOM d'une ligne source réelle — fidèle à ce
-// que Foundry lit lui-même côté récepteur (_onDropItem, cf. son commentaire), sans dépendre du
-// moteur HTML5 natif du navigateur qu'un vrai drag utilisateur engagerait.
+// T-DND-001 à 003 : glisser-déposer entre fiches, via un DragEvent {type: "Item", uuid}
+// dispatché sur la fiche cible.
 
 const createdActorIds = [];
 
@@ -84,7 +80,7 @@ describe("Glisser-déposer entre fiches, session MJ", () => {
       expect(moved, "l'objet doit apparaître sur la fiche destination").to.exist;
     });
 
-    // Nettoyage : retire l'objet transféré pour ne pas fausser un futur run de cette spec.
+    // Retire l'objet transféré.
     cy.window().then((win) => {
       const moved = win.game.actors.get(vehicleActorId).items.find((candidate) => candidate.name === "Gourdin");
       return moved?.delete();
@@ -105,7 +101,7 @@ describe("Glisser-déposer entre fiches, session MJ", () => {
 
     cy.window().should((win) => {
       expect(jsErrorFired, "aucune erreur JS ne doit avoir été levée").to.be.false;
-      // "body" n'est câblé à aucun DragDrop de fiche : rien ne doit avoir été créé nulle part.
+      // Drop hors fiche : rien n'est créé.
       const onCharacter = win.game.actors.get(characterActorId).items.find((i) => i.name === "Gourdin");
       const onVehicle = win.game.actors.get(vehicleActorId).items.find((i) => i.name === "Gourdin");
       expect(onCharacter, "rien ne doit avoir été créé sur le personnage").to.not.exist;
@@ -133,9 +129,7 @@ describe("Glisser-déposer entre fiches, session MJ", () => {
       expect(imported, "le Don doit être dupliqué localement sur l'Actor").to.exist;
     });
 
-    // La source du compendium ne doit jamais être affectée par un import (copie, pas déplacement
-    // — cf. commentaire de _onDropItem, inventory-drag-drop.js : `item.actor` reste vide pour un
-    // document de compendium, donc jamais supprimé).
+    // Un import depuis un compendium copie sans toucher la source.
     cy.window().then((win) => win.game.packs.get("dnd-custom-ai.dons").getDocuments()).should((docs) => {
       expect(docs.find((candidate) => candidate.name === "Alerte"), "le Don reste dans le compendium").to.exist;
     });

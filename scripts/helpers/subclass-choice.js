@@ -4,17 +4,7 @@ import { radioListDialogContent } from "./dialog-content.js";
 const { DialogV2 } = foundry.applications.api;
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Au niveau où le personnage obtient sa sous-classe (SRD 5e, cf. DND_CUSTOM.subclassLevel,
- *  config.js), propose une petite fenêtre de choix parmi les sous-classes de sa classe (une
- *  seule par classe pour l'instant, cf. DND_CUSTOM.subclasses) avec leur description complète
- *  (compendium "Sous-classes") — jusqu'ici seul le sélecteur permanent de l'en-tête de la fiche
- *  (character-sheet.hbs) permettait ce choix, sans jamais être proposé au moment précis de la
- *  montée de niveau (même lacune que pour le choix Don, cf. level-up-choice.js). N'affiche rien
- *  si le personnage a déjà choisi (verrouillé, cf. hook preUpdateActor, dnd-custom-ai.js), si
- *  sa classe n'a pas de sous-classe modélisée, ou si le niveau requis n'est pas encore atteint.
- *  Le sélecteur d'en-tête reste disponible en secours (ex. fenêtre fermée sans choisir) — même
- *  update `system.subclass`, donc même octroi automatique des Capacités de sous-classe à la clé
- *  (hook updateActor, dnd-custom-ai.js) qu'on passe par l'un ou l'autre chemin. */
+/** Propose le choix de sous-classe lorsque le personnage atteint le niveau requis. */
 export async function offerSubclassChoiceDialog(actor, classKey, level) {
   if (actor.system.subclass) return;
   const subclassChoices = DND_CUSTOM.subclasses[classKey];

@@ -1,22 +1,5 @@
-// Implémente la section 9 (T-REF-001 à T-REF-004) de tests/E2E_TEST_PLAN.md — fiches de
-// référence Classe/Sous-classe/Origine, ouvertes depuis les boutons de l'en-tête de la fiche
-// personnage (`data-action="openClassSheet"/"openSubclassSheet"/"openOriginSheet"`,
-// #openReferenceItem dans actor-sheet.js).
-//
-// #openReferenceItem cherche d'abord par NOM exact dans les Items du monde
-// (`game.items.getName`), puis dans le compendium correspondant (classes/sous-classes/
-// origines) — sous ce monde de test, ces Items vivent uniquement en compendium (importés par
-// content-import.js, jamais dans les Items du monde), donc T-REF-001/002/003 exercent
-// systématiquement le second chemin (lookup par pack.index puis pack.getDocument).
-//
-// T-REF-004 (avertissement si introuvable) est le seul scénario à devoir être joué en session
-// MJ : reproduire "introuvable" exige de supprimer temporairement l'Item de référence du
-// compendium (packs/origines), une opération que l'ownership du pack (PLAYER: OBSERVER, cf.
-// system.json) refuse à un Joueur. Restauré dans un `afterEach` (pas à la fin du `it` lui-même)
-// via `game.dndCustomAi.importSystemContent({ notifyIfEmpty: false })` — ré-import idempotent,
-// dédoublonné par nom (content-import.js) — pour que la restauration ait lieu même si
-// l'assertion du test échoue, et ne pas laisser le compendium partagé entre toutes les specs de
-// cette session dans un état amputé.
+// T-REF-001 à 005 : fiches de référence Classe/Sous-classe/Origine et Guide du Joueur depuis l'en-tête.
+// T-REF-004 (introuvable) en session MJ : l'entrée supprimée est réimportée dans afterEach.
 
 const createdActorIds = [];
 let sharedActorId;
@@ -34,23 +17,12 @@ function updateActor(win, actor, data, options = {}) {
   return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
 
-// Titre de la dernière fiche d'Item ouverte (pas la fiche personnage elle-même, scopée par
-// `.application.sheet.item`, cf. classes CSS posées par DocumentSheetV2/ItemSheetV2 — jamais
-// utilisé ailleurs dans cette suite jusqu'ici, aucune spec n'avait encore ouvert de fiche
-// d'Item). Le titre affiché peut inclure un préfixe de type non localisé (clé `TYPES.Item.*`
-// brute si absente des fichiers de langue, même comportement déjà observé sur la fiche
-// personnage) : on vérifie seulement qu'il CONTIENT le nom attendu, pas l'égalité stricte.
+// Titre de la dernière fiche d'Item ouverte (comparé par inclusion).
 function latestItemSheetTitle() {
   return cy.get(".application.sheet.item .window-title", { timeout: 10000 });
 }
 
-// Le hook "ready" (dnd-custom-ai.js) lance `importSystemContent({ notifyIfEmpty: false })` à
-// CHAQUE rechargement de page (donc à chaque `cy.loginAsGM()`), en tâche de fond non attendue.
-// Comme le ré-import est dédoublonné PAR NOM, s'il est encore en vol quand T-REF-004 supprime
-// "Fleuraine" du compendium, il la voit absente et la RECRÉE aussitôt — `#openReferenceItem`
-// rouvre alors la fiche au lieu d'avertir (flake ~1/3, préexistant, sans lien avec les partials).
-// Parade : supprimer puis re-vérifier jusqu'à ce que l'absence soit stable (l'import de fond a
-// fini), avec un plafond de tentatives.
+// Supprime l'entrée jusqu'à ce que son absence soit stable (l'import de fond peut la recréer).
 function ensureCompendiumEntryDeleted(win, packName, entryName, stableChecks = 0, attempts = 0) {
   if (attempts > 40) throw new Error(`Impossible de garder '${entryName}' supprimé du compendium ${packName} (ré-import en boucle ?)`);
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -77,9 +49,7 @@ before(() => {
     createdActorIds.push(id);
     return cy.window().then((win) => {
       const actor = win.game.actors.get(id);
-      // subclassAvailable (actor-sheet.js > getData, condition du bouton openSubclassSheet dans
-      // character-sheet.hbs) exige `system.attributes.level >= DND_CUSTOM.subclassLevel[classe]`
-      // (fighter = 3, config.js) — sans ce niveau, le bouton n'existe simplement pas dans le DOM.
+      // Niveau de sous-classe requis pour afficher le bouton.
       return updateActor(
         win,
         actor,
@@ -102,10 +72,7 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
     openSheet(sharedActorId);
   });
 
-  // Referme toute fiche d'Item / de Journal ouverte par le test qui vient de tourner : sans ça,
-  // les fenêtres s'accumulent d'un test à l'autre dans la même spec et peuvent gêner un scénario
-  // suivant (retour de test réel — T-REF-004, section suivante, flake constaté une fois lors d'un
-  // run combiné avec toute la suite, jamais isolément).
+  // Referme les fiches d'Item et de Journal ouvertes.
   afterEach(() => {
     cy.window().then((win) => {
       const closing = [];
@@ -116,24 +83,19 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
     });
   });
 
-  // Corrigé (cf. tests/README.md > "Bug connu — CORRIGÉ") : #onOpenClassSheet (actor-sheet.js)
-  // recherche désormais l'Item de référence par `system.classKey` (clé stable, ex. "fighter"),
-  // jamais par un nom déduit d'un libellé localisé/traduit — indépendant de la langue active du
-  // monde. Le TITRE affiché reste néanmoins le vrai nom français de l'Item ("Guerrier", jamais
-  // traduit, cf. ClassData/#openReferenceItem) : on vérifie donc que la fiche OUVERTE est la
-  // bonne (son nom exact), pas un libellé anglais qui n'a jamais existé sur cet Item.
+  // La fiche de Classe est trouvée par `system.classKey`, son titre reste le nom français.
   it("ouvre la fiche de Classe correspondant à la clé de classe de l'Actor (T-REF-001)", () => {
     cy.window()
       .then((win) => win.game.packs.get("dnd-custom-ai.classes").getDocuments())
       .then((docs) => docs.find((item) => item.system.classKey === "fighter"))
       .then((expected) => {
-        expect(expected, "prérequis : un Item 'class' avec classKey='fighter' existe").to.exist;
+        expect(expected, "prérequis : un Item 'class' avec classKey='fighter' existe").to.not.equal(undefined);
         sheetRoot().find('button[data-action="openClassSheet"]').click();
         latestItemSheetTitle().should("contain.text", expected.name);
       });
   });
 
-  it("ouvre la fiche de Sous-classe (T-REF-002)", () => {
+  it("ouvre la fiche de Sous-classe (T-REF-002)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.window()
       .its("game.i18n")
       .then((i18n) => i18n.localize("DND_CUSTOM.Subclasses.fighter.champion"))
@@ -143,7 +105,7 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
       });
   });
 
-  it("ouvre la fiche d'Origine (T-REF-003)", () => {
+  it("ouvre la fiche d'Origine (T-REF-003)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.window()
       .then((win) => win.game.dndCustomAi.origins.fleuraine.label)
       .then((originLabel) => {
@@ -152,9 +114,7 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
       });
   });
 
-  // Le bouton « Guide du Joueur » de l'en-tête (#onOpenPlayerGuide) ouvre le Journal du même nom.
-  // Joué en session Joueur (cf. beforeEach) : vérifie aussi de bout en bout que le Journal est
-  // bien accessible aux joueurs (correctif ownership -> OBSERVER, cf. journal-visibility.cy.js).
+  // Bouton « Guide du Joueur », en session Joueur.
   it("ouvre le Journal « Guide du Joueur » depuis l'en-tête (T-REF-005)", () => {
     cy.window()
       .its("game.i18n")
@@ -165,7 +125,7 @@ describe("Fiches de référence — ouverture depuis la fiche personnage", () =>
           const open = [...win.foundry.applications.instances.values()].some(
             (app) => app.document?.documentName === "JournalEntry" && app.document.name === guideName && app.rendered
           );
-          expect(open, `le Journal « ${guideName} » est ouvert pour le joueur`).to.be.true;
+          expect(open, `le Journal « ${guideName} » est ouvert pour le joueur`).to.equal(true);
         });
       });
   });

@@ -1,12 +1,4 @@
-// Implémente la section 10 (T-NPC-001 à T-NPC-005) de tests/E2E_TEST_PLAN.md — fiche PNJ
-// (npc-sheet.js, npc-*.hbs). Réutilisée telle quelle pour le type "mount" (cf. commentaire de
-// classe DndCustomNpcSheet) : pas testé séparément ici, même fiche/mêmes handlers.
-//
-// Toutes les interactions de fiche PNJ (jets, bascule d'état, Initiative, XP) sont réservées au
-// MJ dans ce système — contrairement à la fiche personnage, un PNJ n'a normalement pas de
-// propriétaire Joueur (cf. npc-sheet.hbs > `{{#if isGM}}` pour le bouton XP). Toute la section
-// tourne donc en session MJ, sans déroger à la convention "Joueur par défaut" du plan (qui ne
-// s'applique qu'aux scénarios où le rôle a un sens).
+// T-NPC-001 à 007 : fiche PNJ (aussi utilisée par les montures), en session MJ.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -47,7 +39,7 @@ describe("Fiche PNJ, session MJ", () => {
     openSheet(npcActorId);
   });
 
-  it("navigue entre les 3 onglets Statistiques/Capacités/Butin (T-NPC-001)", () => {
+  it("navigue entre les 3 onglets Statistiques/Capacités/Butin (T-NPC-001)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     const tabs = ["stats", "abilities", "loot"];
     sheetRoot().find('section.tab[data-tab="stats"]').should("have.class", "active");
 
@@ -77,8 +69,7 @@ describe("Fiche PNJ, session MJ", () => {
   });
 
   it("bascule d'un état : l'ActiveEffect est créée puis retirée (T-NPC-003)", () => {
-    // Liste déroulante repliée par défaut (retour de test, cf. tab-stats.cy.js > T-STATS-015) :
-    // rouverte avant chaque clic, un re-render complet suivant chaque bascule.
+    // Liste rouverte avant chaque clic.
     sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleCondition"][data-key="poisoned"]').click();
     cy.window().should((win) => {
@@ -133,8 +124,7 @@ describe("Fiche PNJ, session MJ", () => {
     sheetRoot().find('button[data-action="awardXp"]').click();
 
     cy.get('dialog.application.dialog input[name="amount"]', { timeout: 10000 }).should("have.value", "50");
-    // Assure que le personnage créé pour ce test est bien coché (déjà le cas par défaut, cf.
-    // openAwardXpDialog > `checked` posé sur chaque ligne) et confirme.
+    // Personnage coché par défaut, puis confirmation.
     cy.window()
       .then((win) => win.document.querySelector(`dialog.application.dialog input[name="actor"][value="${playerActorId}"]`))
       .should("exist");
@@ -146,10 +136,7 @@ describe("Fiche PNJ, session MJ", () => {
     });
   });
 
-  // Retour de test (2026-08-16) : nom/PV toujours visibles par défaut, "quels que soient les
-  // tokens" (dixit le retour) — pas seulement les personnages joueurs. Le hook `preCreateActor`
-  // qui pose ces valeurs (dnd-custom-ai.js) n'est pas restreint par type d'Actor, contrairement
-  // à `prototypeToken.actorLink` (cf. commentaire du hook) qui ne concerne que les PJ.
+  // Nom et PV toujours visibles sur le token PNJ.
   it("configure le token PNJ (nom/PV toujours visibles) dès sa création (T-NPC-006)", () => {
     cy.window().should((win) => {
       const actor = win.game.actors.get(npcActorId);
@@ -159,12 +146,7 @@ describe("Fiche PNJ, session MJ", () => {
     });
   });
 
-  // Retour de test (lot 3, point 6 "Fiche PNJ") : impossible d'attaquer avec un PNJ jusqu'ici —
-  // profils d'attaque simplifiés (NpcData#attacks, npc-data.js — LISTE depuis le chantier
-  // "mécaniques jamais modélisées" point 4/6, 2026-08-25), configurés ici par le MJ (Force,
-  // bonus +2, dégâts 1d6+1 tranchant), vérifie le jet d'attaque (1d20 + mod Force + bonus) et de
-  // dégâts (dé + mod Force + bonus), même mécanique que #onRollWeaponAttack/#onRollWeaponDamage
-  // côté fiche personnage (rollCheck/rollDamage, rolls.js).
+  // Profil d'attaque (Force, +2, 1d6+1 tranchant) : jets d'attaque et de dégâts.
   it("jet d'attaque et de dégâts du profil simplifié, dégâts doublés sur coup critique (T-NPC-007)", () => {
     cy.window().then((win) =>
       win.game.actors.get(npcActorId).update(
@@ -210,10 +192,7 @@ describe("Fiche PNJ, session MJ", () => {
       });
     });
 
-    // Coup critique posé directement (plutôt que d'attendre un 20 naturel aléatoire) : vérifie
-    // seulement le branchement du flag transitoire sur l'Actor (cf. #onRollAttack/
-    // #onRollAttackDamage, npc-sheet.js) — le doublement des dés lui-même (Roll#alter) est déjà
-    // couvert ailleurs (combat-criticals.cy.js) pour la mécanique partagée rollDamage.
+    // Critique posé directement sur le flag.
     cy.window().then((win) =>
       win.game.actors.get(npcActorId).setFlag("dnd-custom-ai", "pendingAttackCritical", win.JSON.parse(win.JSON.stringify({ 0: true })))
     );
@@ -231,7 +210,7 @@ describe("Fiche PNJ, session MJ", () => {
       });
     });
 
-    // Remet le profil d'attaque à vide pour ne pas fausser un futur run de cette spec.
+    // Profils d'attaque vidés.
     cy.window().then((win) =>
       win.game.actors.get(npcActorId).update(
         win.JSON.parse(

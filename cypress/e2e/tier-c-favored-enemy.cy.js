@@ -1,11 +1,5 @@
-// Chantier "Niveau C" (2026-08-24, sur demande explicite après revue de
-// ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : Ennemi juré (Rôdeur 1, SRD 5e) — choix ponctuel et
-// définitif d'un type de créature favori (même mécanisme générique que "Aspect de la bête"/
-// Résilience draconique/Tactiques défensives, FeatureData#grantsChoice + CHOICE_OPTIONS_TABLES,
-// actor-sheet.js — nouvelle entrée "favoredEnemyType" réutilisant DND_CUSTOM.creatureTypes,
-// aucune table dédiée). Avantage aux tests de Sagesse (Survie) ET d'Intelligence brute contre une
-// cible actuellement ciblée du type choisi — cf. hasFavoredEnemyAdvantage (actor-sheet.js), même
-// mécanisme de lecture de cible que hasAssassinAutoCritical.
+// Ennemi juré : choix définitif d'un type de créature, avantage en Survie et aux tests
+// d'Intelligence contre une cible ciblée de ce type.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -113,10 +107,7 @@ describe("Ennemi juré — choix de type, avantage Survie/Intelligence contre la
         createdSceneItemIds.push(tokenId);
       });
 
-    // cy.then() : force l'attente du drainage des commandes ci-dessus (création des Actors) avant
-    // de lire rangerId — sans ce point de jonction, rangerId serait encore `undefined` ici (les
-    // .then() de création ne se sont pas encore exécutés au moment où CETTE ligne s'évalue).
-    // Choix ponctuel et définitif : type "beast", même flux que T-SUB-BARB-001 (subclass-barbarian.cy.js).
+    // cy.then() attend la création des Actors avant de lire rangerId ; choix du type « beast ».
     cy.then(() => cy.openActorSheet(rangerId));
     goToTab("abilities");
     cy.window().then((win) => {
@@ -181,8 +172,7 @@ describe("Ennemi juré — choix de type, avantage Survie/Intelligence contre la
       expect(roll.formula, "aucune cible : aucun avantage").to.match(/^1d20/);
     });
 
-    // Régression : Perception (autre compétence liée à Sagesse) ne doit jamais bénéficier de
-    // l'avantage d'Ennemi juré, même en ciblant le type favori (réservé à Survie/Intelligence).
+    // Perception ne bénéficie pas d'Ennemi juré.
     targetToken(beastTokenId);
     resetMessageBaseline();
     sheetRoot().find('button[data-action="rollSkill"][data-key="perception"]').click();

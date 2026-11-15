@@ -1,16 +1,6 @@
 <header class="dnd-custom-ai sheet-header sheet-header-compact">
-  {{! En-tête « compact » (maquette maquettes/fiche-708x768/, adoptée le 2026-09-04) : la fenêtre
-      de fiche est désormais plafonnée à 708 × 768 (cf. DEFAULT_OPTIONS.position, actor-sheet.js).
-      L'en-tête tient en 3 bandes fines — identité, constantes, économie d'action — pour laisser
-      la hauteur restante à l'onglet actif. Tous les sélecteurs testés (.xp-gm-field, .xp-bar-fill,
-      .level-up-btn, .fixed-field-value, .computed-value, [data-action="toggleReaction"], champs
-      `name="system.attributes.*"`, libellé « Vitesse » + .computed-value « 9 m »…) sont conservés
-      à l'identique — cf. tests/dom/templates.test.js et tests/visual/layout.test.js.
-
-      Infobulles de glossaire : les libellés « techniques » portent un `data-tooltip` alimenté par
-      le helper `glossaryTip` (slug -> définition, scripts/data/glossary.json, même source que la
-      page Glossaire du Guide du Joueur). `data-tooltip` (et non `title`) => infobulle stylée
-      Foundry ; ne jamais cumuler les deux sur un même élément (double infobulle). }}
+  {{! En-tête compact en 3 bandes (identité, constantes, économie d'action).
+      Infobulles de glossaire via `data-tooltip` + helper `glossaryTip`, jamais cumulées avec `title`. }}
 
   {{! ---- Bande 1 : identité (portrait, nom, classe/sous-classe/origine, niveau + XP) ---- }}
   <div class="hdr-identity">
@@ -35,9 +25,7 @@
           <span class="hdr-sub-label" data-tooltip="{{glossaryTip 'sous-classe'}}">{{localize "DND_CUSTOM.Actor.Subclass"}}</span>
           {{#if subclassLabel}}
             {{#if isGM}}
-            {{! Retour de test (lot 3) : la liste déroulante reste réservée au MJ une fois la
-                sous-classe déjà choisie (correction possible à tout moment), cf. le champ texte
-                simple ci-dessous côté Joueur. }}
+            {{! MJ : sous-classe toujours modifiable. }}
             <select name="system.subclass">
               <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
               {{#each subclassOptions}}
@@ -45,18 +33,14 @@
               {{/each}}
             </select>
             {{else}}
-            {{! Côté Joueur, une fois choisie : champ classique (texte), pas une liste déroulante
-                désactivée qui reste visuellement trompeuse (a l'air cliquable) — même pattern que
-                le champ Classe ci-dessus. }}
+            {{! Joueur : sous-classe choisie en lecture seule. }}
             <span class="fixed-field-value">{{subclassLabel}}</span>
             {{/if}}
             <button type="button" class="roll-btn" data-action="openSubclassSheet" data-tooltip="{{localize 'DND_CUSTOM.Actor.OpenDescriptionTooltip'}}">
               <i class="fa-solid fa-book"></i>
             </button>
           {{else}}
-          {{! Pas encore choisie : liste déroulante fonctionnelle pour tout propriétaire (MJ ou
-              Joueur) — secours du choix normalement fait via la boîte de dialogue de montée de
-              niveau, cf. #onLevelUp/actor-sheet.js et T-LVL-008. }}
+          {{! Pas encore choisie : sélecteur ouvert à tout propriétaire. }}
           <select name="system.subclass">
             <option value="">{{localize "DND_CUSTOM.Actor.NoSubclass"}}</option>
             {{#each subclassOptions}}
@@ -88,8 +72,7 @@
         <label class="hdr-level-field" data-tooltip="{{glossaryTip 'niveau'}}">{{localize "DND_CUSTOM.Actor.Level"}}
           <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" min="1" {{#unless isGM}}disabled{{/unless}}>
         </label>
-        {{! Retour de test : bouton "Monter de niveau" trop imposant (pilule pleine largeur) —
-            simple bouton rond entre le niveau et la barre d'XP. }}
+        {{! Bouton rond « Monter de niveau ». }}
         {{#if levelUpAvailable}}
         <button type="button" class="level-up-btn" data-action="levelUp" data-tooltip="{{localize 'DND_CUSTOM.Chat.LevelUpTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actions.LevelUp'}}">
           <i class="fa-solid fa-arrow-up"></i>
@@ -105,8 +88,7 @@
           </span>
         </div>
         {{else}}
-        {{! Côté Joueur, la jauge n'a qu'un libellé discret — les chiffres exacts restent
-            réservés au MJ (cf. XpBarTooltip/XpGmTooltip). }}
+        {{! Joueur : jauge sans chiffres, réservés au MJ. }}
         <span class="fixed-field-label" data-tooltip="{{glossaryTip 'xp'}}">{{localize "DND_CUSTOM.Actor.XpLabel"}}</span>
         {{/if}}
         <span class="xp-bar" data-tooltip="{{localize 'DND_CUSTOM.Actor.XpBarTooltip'}}">
@@ -163,8 +145,7 @@
     </span>
     {{/if}}
 
-    {{! `data-tooltip` = définition de glossaire + rappel du clic ; la disponibilité (dispo/
-        consommée) reste signalée visuellement par la classe `.used` (barré/grisé). }}
+    {{! Infobulle de glossaire ; la classe `.used` signale une ressource consommée. }}
     <button type="button" class="reaction-indicator {{#unless actionAvailable}}used{{/unless}}" data-action="toggleAction" data-tooltip="{{glossaryTip 'action'}} — {{localize 'DND_CUSTOM.Actor.ToggleEconomyHint'}}">
       <i class="fa-solid fa-hand-fist"></i> {{localize "DND_CUSTOM.Actor.Action"}}
     </button>

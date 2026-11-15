@@ -1,16 +1,5 @@
-// Coups et échecs critiques sur 1/20 naturel (retour de test explicite, 2026-08-16, cf.
-// ClaudeFiles/CONCEPTION_TECHNIQUE.md section "Jets de dés") — UNIQUEMENT pendant un combat
-// actif (`rollCheck` > `criticalRules`, scripts/helpers/rolls.js), sur les jets d'attaque (arme/sort) et de
-// sauvegarde. Pas de section dédiée dans tests/E2E_TEST_PLAN.md au moment de l'écriture (plan
-// déjà "chantier terminé" avant ce retour) — IDs T-CRIT-001 et suivants, à ajouter au plan si
-// une future relecture globale a lieu.
-//
-// Preuve "même s'il y a des bonus" (dixit le retour) : les tests d'attaque ciblent une CA
-// délibérément hors de portée dans le sens INVERSE de ce qu'on force — CA=1 (touché garanti par
-// n'importe quel bonus réaliste) avec un 1 naturel forcé doit quand même RATER ; CA=999 (raté
-// garanti par n'importe quel bonus réaliste) avec un 20 naturel forcé doit quand même TOUCHER.
-// Même technique de CA extrême que tab-inventory.cy.js > T-INV-004, combinée à cy.forceD20 (pas
-// utilisé ensemble jusqu'ici) pour contrôler à la fois le dé ET rendre la preuve rigoureuse.
+// Critiques sur 1/20 naturel en combat actif (attaques, sauvegardes) : un 1 rate une CA de 1,
+// un 20 touche une CA de 999.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -53,8 +42,7 @@ function grantCompendiumItem(win, actorId, packName, itemName) {
   });
 }
 
-// Même piège/même fix que tab-inventory.cy.js/tab-stats.cy.js (cf. leur en-tête) : attend un
-// message réellement NOUVEAU, pas juste "un message existe".
+// Attend un message réellement nouveau.
 let knownMessageCount = null;
 function resetMessageBaseline() {
   return cy.window().its("game.messages.size").then((size) => {
@@ -77,9 +65,7 @@ function lastMessageRoll() {
     });
 }
 
-// Création d'Actor/Token réservée au MJ (permission Foundry, même piège que
-// tab-inventory.cy.js > T-INV-004) : bascule la session, laisse l'appelant repasser en Joueur
-// une fois la cible prête.
+// Cible créée en session MJ (Actor et Token).
 function createTarget(name, ac) {
   let tokenId;
   cy.loginAsGM();
@@ -106,12 +92,7 @@ function targetToken(tokenId) {
   return cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
 }
 
-// Chantier "Suivi de l'action/action bonus" (2026-08-23, helpers/action-economy.js) : un jet
-// d'attaque à l'arme/de sort poste désormais un 2e message (rappel non-bloquant) si l'Action est
-// déjà consommée ce tour — ce qui casserait `lastMessageRoll()` ci-dessous (`.at(-1)` irait
-// chercher le rappel, pas le jet) dès le 2e jet d'attaque d'un même personnage dans ce fichier.
-// Ce spec teste les critiques, pas ce chantier : l'Action est réinitialisée avant chaque jet
-// d'attaque/de sort pour ne jamais déclencher ce rappel ici.
+// Rend l'Action avant chaque jet pour éviter le rappel d'économie d'action.
 function resetActionEconomy(actorId) {
   return cy.window().then((win) =>
     win.game.actors
@@ -127,10 +108,7 @@ let fighterId;
 let wizardId;
 
 before(() => {
-  // Créés en session Joueur (comme toute autre spec, cf. cy.createReadyCharacter) : un Actor
-  // créé sous une session MJ n'est PAS automatiquement lié au Joueur (cf. wizard.cy.js >
-  // T-WIZ-013) — les rouvrir/y jouer plus tard en session Joueur échouerait sinon par manque de
-  // permission.
+  // Création en session Joueur pour garder la propriété.
   cy.loginAsPlayer();
 
   cy.createReadyCharacter({
@@ -154,9 +132,7 @@ before(() => {
     cy.window().then((win) => grantCompendiumItem(win, id, "sorts", "Trait de feu"));
   });
 
-  // Combat + les deux Actors Combattants dès le départ (création de Combat/Combattant réservée
-  // au MJ) — les scénarios "hors combat" retirent explicitement le Combattant concerné plutôt
-  // que de créer un second Actor dédié.
+  // Combat et Combattants créés par le MJ.
   cy.loginAsGM();
   cy.window().then((win) =>
     win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then((combat) => {
@@ -205,14 +181,12 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
           lastMessageRoll().then((roll) => {
             expect(roll.flavor, "touché malgré une CA de 999").to.include(hit);
             expect(roll.flavor, "libellé Coup critique affiché").to.include(crit);
-            // Retour de test : le modificateur ne doit plus apparaître dans le résultat affiché
-            // sur un critique — juste le d20 naturel (cf. rollCheck > messageRoll, rolls.js).
+            // Seul le d20 naturel est affiché sur un critique.
             expect(roll.formula, "aucun modificateur affiché sur un coup critique").to.equal("1d20");
           });
         });
 
-      // Dégâts doublés au clic suivant sur CETTE arme (Épée longue, 1d10 par défaut à deux
-      // mains — aucune main secondaire équipée sur ce personnage, cf. cy.createReadyCharacter).
+      // Dégâts doublés de l'Épée longue (1d10 à deux mains).
       resetMessageBaseline();
       equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click();
       lastMessageRoll().then((roll) => {
@@ -249,7 +223,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
   });
 
   it("20 naturel HORS combat : pas de libellé critique, comparaison normale à la CA (T-CRIT-003)", () => {
-    // Modifier un Combattant est réservé au MJ (même piège que la création de cible).
+    // Modification du Combattant par le MJ.
     cy.loginAsGM();
     cy.window().then((win) => win.game.combat?.combatants.find((c) => c.actor?.id === fighterId)?.delete());
 
@@ -277,7 +251,7 @@ describe("Critiques en combat — jet d'attaque d'arme", () => {
         });
     });
 
-    // Remet le personnage en combat pour les tests suivants de ce fichier (MJ requis).
+    // Remet le personnage en combat (MJ).
     cy.loginAsGM();
     cy.window().then((win) =>
       win.game.combat.createEmbeddedDocuments("Combatant", win.JSON.parse(win.JSON.stringify([{ actorId: fighterId, initiative: 10 }])))
@@ -371,10 +345,7 @@ describe("Critiques en combat — jet de sauvegarde", () => {
   });
 });
 
-// Retour de test (lot 3, point 8) : au-delà du libellé texte déjà couvert ci-dessus, la carte
-// de jet elle-même (`.dice-roll`) doit porter un effet visuel dédié — bordure/halo + icône
-// distincte, jamais la couleur seule (cf. flags criticalHit/criticalFumble, rolls.js ; hook
-// renderChatMessageHTML, dnd-custom-ai.js).
+// Effet visuel des critiques sur la carte de jet (bordure, halo, icône).
 describe("Critiques en combat — effet visuel sur la carte de jet", () => {
   beforeEach(() => {
     cy.loginAsPlayer();
@@ -398,7 +369,7 @@ describe("Critiques en combat — effet visuel sur la carte de jet", () => {
         cy.get(".dice-total .dnd-critical-icon.fa-burst").should("exist");
       });
 
-      // Le jet de dégâts doublé qui suit (même mécanique que T-CRIT-001) profite du même effet.
+      // Le jet de dégâts doublé porte le même effet.
       resetMessageBaseline();
       equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click();
       lastMessageRoll();

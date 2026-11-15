@@ -225,12 +225,7 @@ async function buildProgressionPage() {
   `;
 }
 
-/** Crée (une seule fois, si absent) le Journal "Guide du MJ" à plusieurs pages, visible
- *  uniquement du MJ (ownership.default: NONE, explicite — jamais de fuite vers les joueurs même
- *  si le comportement par défaut de Foundry venait à changer). N'écrase jamais un Journal
- *  existant du même nom, même principe que ensurePlayerGuideJournal/ensureOriginsJournal.
- *  Contenu partiellement dérivé de world-items/features.json et scripts/helpers/config.js :
- *  reste synchronisé si ces fichiers évoluent. */
+/** Crée le Journal « Guide du MJ », réservé au MJ, s'il n'existe pas encore. */
 export function ensureGmGuideJournal() {
   return ensureGmAuthoredJournal(
     game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle"),

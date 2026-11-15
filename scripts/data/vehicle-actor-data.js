@@ -1,9 +1,6 @@
 const { SchemaField, NumberField } = foundry.data.fields;
 
-/** Type d'Actor "vehicle" (véhicule non-vivant : charrette, bateau...) : le minimum pour
- *  servir de contenant d'objets partagé entre joueurs (nom natif, vitesse, PV, capacité de
- *  charge, inventaire). Pas de caractéristiques ni de CA — ce n'est pas une créature (cf.
- *  Actor "npc" pour les montures vivantes). */
+/** Données d'un véhicule : contenant d'objets partagé (vitesse, PV, capacité de charge). */
 export class VehicleActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {

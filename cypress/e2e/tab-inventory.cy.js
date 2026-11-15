@@ -1,16 +1,5 @@
-// Implémente la section 5 (T-INV-001 à T-INV-010) de tests/E2E_TEST_PLAN.md — onglet Inventaire
-// (tab-inventory.hbs) et, pour les jets d'attaque/dégâts d'arme (T-INV-003/004/005), les boutons
-// correspondants qui vivent en réalité sur l'onglet Équipement (tab-equipment.hbs) : une arme
-// n'a de bouton de jet que si elle est équipée (cf. weaponStats, actor-sheet.js), et seul cet
-// onglet les affiche — l'Inventaire n'en montre qu'un résumé texte non cliquable
-// (`{{this.damageLabel}}`, tab-inventory.hbs). Vérifié dans le code avant d'écrire ces tests, pas
-// une supposition.
-//
-// Vérification des jets (T-INV-003/004/005) : formule exacte du jet posté en chat (comme
-// tab-stats.cy.js), pas son résultat — sauf T-INV-004 (touché/raté vs CA de la cible) qui se
-// vérifie par construction en choisissant une CA cible hors de portée du jet plutôt qu'en
-// contrôlant le dé (CA très basse = touché garanti quel que soit le jet, CA très haute = raté
-// garanti), plus simple que cy.forceD20 ici.
+// T-INV-001 à 010 : onglet Inventaire ; les jets d'arme se font depuis l'onglet Équipement.
+// Touché/Raté vérifié avec une CA cible hors de portée du jet.
 
 const createdActorIds = [];
 const createdSceneItemIds = []; // tokens créés sur la scène active, à nettoyer à part des Actors
@@ -51,14 +40,7 @@ function withItemId(actorId, itemName, callback) {
     .then(callback);
 }
 
-// Même piège/même fix que dans tab-stats.cy.js (cf. son en-tête) : le clic ne fait que
-// distribuer l'évènement DOM, le gestionnaire (rollCheck -> roll.toMessage()) continue de
-// tourner après. Vérifier juste "un message avec une formule existe" ne suffit pas non plus :
-// ça peut retomber sur le dernier message d'une AUTRE spec exécutée juste avant dans la même
-// session (`npm run test:e2e:run` partage le même monde entre toutes les specs) — flake
-// découvert sur un run combiné, 2026-08-15. `knownMessageCount` (mis à jour par
-// resetMessageBaseline() dans le beforeEach, puis après chaque lecture ici) garantit qu'on
-// attend un message réellement NOUVEAU.
+// Attend un message réellement nouveau (monde partagé entre specs).
 let knownMessageCount = null;
 function resetMessageBaseline() {
   return cy.window().its("game.messages.size").then((size) => {
@@ -76,10 +58,8 @@ function lastMessageRoll() {
       const message = win.game.messages.contents.at(-1);
       return {
         formula: (message.rolls[0]?.formula ?? "").replace(/\s+/g, ""),
-        // Le "flavor" passé à roll.toMessage() (cf. rollCheck, helpers/rolls.js) — c'est là
-        // qu'atterrit le libellé et, pour un jet d'attaque ciblé, la ligne Touché/Raté ajoutée
-        // par compareToTargetAc. `content` n'est que le HTML généré par Foundry pour le rendu
-        // du dé lui-même (juste le total), pas ce texte-là.
+        total: message.rolls[0]?.total,
+        // Libellé du jet, avec Touché/Raté.
         flavor: message.flavor
       };
     });
@@ -155,8 +135,7 @@ describe("Onglet Inventaire", () => {
       cy.get(".capacity-bar-fill").should(carriedWeight > capacity ? "have.class" : "not.have.class", "over-capacity");
     });
 
-    // Objet volontairement très lourd pour dépasser la capacité de façon fiable, sans dépendre
-    // du détail des poids réels des autres objets de la fixture.
+    // Objet très lourd pour dépasser la capacité de charge.
     cy.window().then((win) => {
       return win.game.actors
         .get(sharedActorId)
@@ -190,16 +169,7 @@ describe("Onglet Inventaire", () => {
       });
     });
 
-    // Comparaison : un lanceur de sorts ne maîtrisant pas les armes de guerre (magicien,
-    // cf. DND_CUSTOM.classWeaponProficiencies), équipé de la même arme — mod seul, sans bonus.
-    // `withItemId(wizardId, ...)` DOIT être appelé depuis l'intérieur du `.then()` qui reçoit
-    // `id` : construit hors de ce callback, `wizardId` vaudrait encore `undefined` au moment où
-    // la commande est mise en file (elle ne s'exécute qu'après coup) — piège déjà rencontré,
-    // cf. commentaire de withItemId ci-dessus.
-    //
-    // Ferme la fiche du personnage partagé (ouverte par le beforeEach) avant d'en créer un
-    // autre : sinon les deux fiches restent ouvertes en même temps et sheetRoot() (qui matche
-    // `.application.character`) devient ambigu — piège déjà rencontré dans tab-stats.cy.js.
+    // Comparaison avec un magicien non maîtrisé ; fiche partagée fermée avant.
     cy.window().then((win) => win.game.actors.get(sharedActorId).sheet.close());
     cy.createReadyCharacter({
       name: "Tab Inventory Wizard",
@@ -210,19 +180,15 @@ describe("Onglet Inventaire", () => {
       createdActorIds.push(wizardId);
       cy.window().then((win) => grantWorldItem(win, wizardId, "Épée longue"));
 
-      // Le magicien démarre avec "Dague" équipée (classStartingEquipment.wizard, cf. config.js) :
-      // sans la retirer, elle resterait dans la main principale au même titre que l'épée
-      // longue (les deux "equipped: true" à la fois), et rien ne garantit laquelle des deux
-      // findBySlot (actor-sheet.js) choisirait — la Dague est arrivée en premier au premier run
-      // réel, faussant complètement le test (maîtrisée, contrairement à l'épée longue).
+      // Retire la Dague équipée du magicien.
       withItemId(wizardId, "Dague", (daggerId) => {
         goToTab("inventory");
-        cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).uncheck({ force: true });
+        cy.get(`tr[data-item-id="${daggerId}"] input[data-item-equipped]`).uncheck({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
       });
 
       withItemId(wizardId, "Épée longue", (weaponId) => {
         goToTab("inventory");
-        cy.get(`tr[data-item-id="${weaponId}"] input[data-item-equipped]`).check({ force: true });
+        cy.get(`tr[data-item-id="${weaponId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
         goToTab("equipment");
         cy.window().then((win) => {
           const actor = win.game.actors.get(wizardId);
@@ -282,8 +248,7 @@ describe("Onglet Inventaire", () => {
         });
       });
 
-    // CA hors de portée du jet le plus haut possible (1d20 + bonus) : raté garanti, sans
-    // contrôler le dé.
+    // CA hors de portée : raté garanti.
     cy.loginAsGM();
     cy.window().then((win) =>
       win.game.actors.get(targetActorId).update(win.JSON.parse(win.JSON.stringify({ "system.attributes.ac.value": 999 })))
@@ -309,10 +274,7 @@ describe("Onglet Inventaire", () => {
     equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click();
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("1d10"));
 
-    // Maj-clic force l'alternative (seule voie réellement câblée dans le template pour ça,
-    // cf. commentaire d'en-tête — le dataset `data-versatile` mentionné dans actor-sheet.js
-    // n'est posé sur aucun bouton du template) : force le dé à une main (1d8) même main
-    // secondaire encore libre.
+    // Maj-clic : dé à une main (1d8).
     equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click({ shiftKey: true });
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("1d8"));
   });
@@ -320,9 +282,7 @@ describe("Onglet Inventaire", () => {
   it("utiliser un objet de soin — PV + (base + bonus de compétence), plafonné au max (T-INV-006)", () => {
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      // dndCustomDamageApply : contourne le filet anti-self-dégâts de preUpdateActor
-      // (dnd-custom-ai.js) — simulation de dégâts déjà subis pour tester l'objet de soin, pas
-      // une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      // `dndCustomDamageApply` autorise la baisse de PV simulée.
       return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": 1 })), {
         dndCustomDamageApply: true
       });
@@ -338,11 +298,7 @@ describe("Onglet Inventaire", () => {
         const expectedAmount = Math.max(0, healBase + mod);
 
         cy.get(`tr[data-item-id="${itemId}"] button[data-action="useItem"]`).click();
-        // `.should()` sur les DEUX vérifications ensemble (pas hp puis un `.then()` séparé pour
-        // le message) : #applyHeal termine par `await ChatMessage.create(...)` APRÈS avoir mis à
-        // jour les PV — un `.then()` isolé pour le message pourrait s'exécuter avant que cette
-        // toute dernière étape asynchrone n'ait fini, même une fois les PV déjà à jour (piège
-        // déjà rencontré ailleurs dans cette suite, cf. tab-stats.cy.js).
+        // PV et message vérifiés ensemble (message créé après la mise à jour).
         cy.window().should((win2) => {
           const updated = win2.game.actors.get(sharedActorId);
           expect(updated.system.attributes.hp.value).to.equal(Math.min(1 + expectedAmount, updated.system.attributes.hp.max));
@@ -359,10 +315,7 @@ describe("Onglet Inventaire", () => {
 
   it("utiliser un objet de lumière — allume puis éteint le token de l'Actor (T-INV-007)", () => {
     let tokenId;
-    // Un Joueur n'a pas la permission de créer un Token sur la scène ("User Player1 lacks
-    // permission to create Token", découvert au premier run réel) : posé par le MJ en
-    // préalable, comme le Combat de T-STATS-014 — la fiche est ensuite rouverte en session
-    // Joueur pour le reste du test (chaque connexion recharge la page entièrement).
+    // Token posé par le MJ.
     cy.loginAsGM();
     cy.window()
       .then((win) => win.game.actors.get(sharedActorId).getTokenDocument(win.JSON.parse(win.JSON.stringify({ x: 200, y: 200 }))))
@@ -380,7 +333,7 @@ describe("Onglet Inventaire", () => {
     goToTab("inventory");
 
     withItemId(sharedActorId, "Torche", (itemId) => {
-      // Allume : PV... pardon, la Capacité de lumière du token s'active, message de chat posté.
+      // Allume la lumière du token, message posté.
       cy.window().its("game.messages.size").then((before) => {
         cy.get(`tr[data-item-id="${itemId}"] button[data-action="useItem"]`).click();
         cy.window().should((win) => {
@@ -391,7 +344,7 @@ describe("Onglet Inventaire", () => {
         });
       });
 
-      // Éteint : deuxième clic, une seule source active à la fois (ici la même qu'on retire).
+      // Éteint la même source.
       cy.window().its("game.messages.size").then((before) => {
         cy.get(`tr[data-item-id="${itemId}"] button[data-action="useItem"]`).click();
         cy.window().should((win) => {
@@ -406,7 +359,7 @@ describe("Onglet Inventaire", () => {
 
   it("utiliser un objet de lumière sans token sur la scène — avertissement, pas d'erreur (T-INV-008)", () => {
     let noTokenActorId;
-    // Même piège que T-INV-003 : ferme la fiche du personnage partagé avant d'en ouvrir une autre.
+    // Ferme la fiche partagée avant d'en ouvrir une autre.
     cy.window().then((win) => win.game.actors.get(sharedActorId).sheet.close());
     cy.createReadyCharacter({
       name: "Tab Inventory No Token",
@@ -419,9 +372,7 @@ describe("Onglet Inventaire", () => {
       cy.window().then((win) => grantWorldItem(win, id, "Torche"));
 
       withItemId(id, "Torche", (itemId) => {
-        // L'assistant vient de rouvrir la fiche sur son onglet initial (Statistiques) : basculer
-        // explicitement sur l'Inventaire, contrairement au beforeEach qui ne le fait que pour le
-        // personnage partagé.
+        // Bascule sur l'Inventaire.
         goToTab("inventory");
 
         cy.window().then((win) => {
@@ -495,11 +446,127 @@ describe("Onglet Inventaire", () => {
         });
       });
 
-      // Restaure une quantité normale pour ne pas fausser un test suivant réutilisant cet outil.
+      // Restaure la quantité de l'outil.
       cy.window().then((win) => {
         const tool = win.game.actors.get(sharedActorId).items.get(itemId);
         return tool.update(win.JSON.parse(win.JSON.stringify({ "system.quantity": 1 })));
       });
+    });
+  });
+});
+
+// Équipement ajouté en 1.0.5 : potion à dés consommable, arme +1, accessoire de protection.
+describe("Onglet Inventaire — équipement magique et potions", () => {
+  // Attend, en session MJ, que l'import automatique ait créé les nouveaux objets du monde.
+  before(() => {
+    cy.loginAsGM();
+    cy.window({ timeout: 60000 }).should((win) => {
+      for (const name of ["Préparation rituelle de guérison", "Épée longue +1", "Cape de protection"]) {
+        expect(win.game.items.getName(name), `${name} importé`).to.exist;
+      }
+    });
+  });
+
+  beforeEach(() => {
+    cy.loginAsPlayer();
+    cy.openActorSheet(sharedActorId);
+    goToTab("inventory");
+    resetMessageBaseline();
+  });
+
+  it("préparation rituelle de guérison — 2d4 + 2 PV, une fiole consommée, refusée une fois épuisée (T-INV-011)", () => {
+    cy.window().then((win) => grantWorldItem(win, sharedActorId, "Préparation rituelle de guérison"));
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      // `dndCustomDamageApply` autorise la baisse de PV simulée.
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": 1 })), {
+        dndCustomDamageApply: true
+      });
+    });
+
+    withItemId(sharedActorId, "Préparation rituelle de guérison", (itemId) => {
+      cy.get(`tr[data-item-id="${itemId}"] button[data-action="useItem"]`).click();
+      lastMessageRoll().then((roll) => {
+        expect(roll.formula).to.equal("2d4+2");
+        cy.window().should((win) => {
+          const actor = win.game.actors.get(sharedActorId);
+          expect(actor.system.attributes.hp.value).to.equal(Math.min(1 + roll.total, actor.system.attributes.hp.max));
+          expect(actor.items.get(itemId).system.quantity, "une fiole consommée").to.equal(0);
+        });
+      });
+
+      // Épuisée : aucun nouveau jet.
+      cy.window().its("game.messages.size").then((before) => {
+        cy.get(`tr[data-item-id="${itemId}"] button[data-action="useItem"]`).click();
+        cy.wait(500);
+        cy.window().its("game.messages.size").should("equal", before);
+      });
+      cy.window().then((win) => win.game.actors.get(sharedActorId).deleteEmbeddedDocuments("Item", [itemId]));
+    });
+
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(sharedActorId);
+      return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
+    });
+  });
+
+  it("arme +1 — bonus magique ajouté au jet d'attaque et aux dégâts (T-INV-012)", () => {
+    cy.window().then((win) => grantWorldItem(win, sharedActorId, "Épée longue +1"));
+    withItemId(sharedActorId, "Épée longue", (baseId) => {
+      cy.get(`tr[data-item-id="${baseId}"] input[data-item-equipped]`).uncheck({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
+    });
+    withItemId(sharedActorId, "Épée longue +1", (magicId) => {
+      cy.get(`tr[data-item-id="${magicId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
+      goToTab("equipment");
+      cy.window().then((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        const strMod = abilityModifier(actor.system.abilities.str.total);
+        const prof = proficiencyBonusFor(actor.system.attributes.level);
+
+        equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
+        lastMessageRoll().then((roll) => {
+          expect(roll.formula).to.equal(`1d20${formatModifier(strMod + prof + 1)}`);
+        });
+        equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-damage").click();
+        lastMessageRoll().then((roll) => {
+          expect(roll.formula).to.equal(`1d10${formatModifier(strMod + 1)}`);
+        });
+      });
+
+      // Rétablit l'Épée longue de base, attendue par les autres tests.
+      goToTab("inventory");
+      cy.window().then((win) => win.game.actors.get(sharedActorId).deleteEmbeddedDocuments("Item", [magicId]));
+    });
+    withItemId(sharedActorId, "Épée longue", (baseId) => {
+      cy.get(`tr[data-item-id="${baseId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
+    });
+  });
+
+  it("cape de protection équipée — +1 CA et +1 aux jets de sauvegarde (T-INV-013)", () => {
+    let acBefore;
+    cy.window().then((win) => {
+      acBefore = win.game.actors.get(sharedActorId).system.attributes.ac.value;
+      return grantWorldItem(win, sharedActorId, "Cape de protection");
+    });
+    withItemId(sharedActorId, "Cape de protection", (cloakId) => {
+      cy.get(`tr[data-item-id="${cloakId}"] input[data-item-equipped]`).check({ force: true }); // NOSONAR : case parfois signalée couverte après un changement d'onglet
+      cy.window().should((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        expect(actor.system.attributes.ac.value).to.equal(acBefore + 1);
+        expect(actor.system.attributes.saveBonus).to.equal(1);
+      });
+
+      goToTab("stats");
+      cy.window().then((win) => {
+        const actor = win.game.actors.get(sharedActorId);
+        const dexMod = abilityModifier(actor.system.abilities.dex.total);
+        const prof = actor.system.saves.dex.proficient ? proficiencyBonusFor(actor.system.attributes.level) : 0;
+        sheetRoot().find('button[data-action="rollSave"][data-key="dex"]').click();
+        lastMessageRoll().then((roll) => {
+          expect(roll.formula).to.equal(`1d20${formatModifier(dexMod + prof + 1)}`);
+        });
+      });
+      cy.window().then((win) => win.game.actors.get(sharedActorId).deleteEmbeddedDocuments("Item", [cloakId]));
     });
   });
 });

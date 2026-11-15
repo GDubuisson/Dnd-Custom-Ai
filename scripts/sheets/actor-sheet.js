@@ -23,6 +23,7 @@ import {
   canUseReaction,
   opportunityAttackTrigger,
   SPELL_LEVELS,
+  parenthesized,
 } from "../helpers/rules.js";
 import { SKILL_ABILITIES } from "../data/character-data.js";
 import { InventoryDragDropMixin } from "./inventory-drag-drop.js";
@@ -33,43 +34,73 @@ import { SpellcastingSheetMixin } from "./spellcasting-mixin.js";
 import { rollCheck, rollDamage, sheetRollFlags } from "../helpers/rolls.js";
 import { CharacterCreationWizard, openWizardActorIds } from "./character-creation-wizard.js";
 import { declareDeath } from "../helpers/death.js";
-import { noteActionEconomyUsage, consumeActionEconomy } from "../helpers/action-economy.js";
-import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-relay.js";
+import { noteActionEconomyUsage } from "../helpers/action-economy.js";
 import { conditionsContext } from "../helpers/sheet-conditions.js";
 import { damageAffinityGroups, damageAffinitySummary } from "../helpers/damage-affinity.js";
 import { itemFromTarget } from "../helpers/sheet-items.js";
-import { consumeFeatureCharge } from "../helpers/feature-charges.js";
 import { attackRollOptions, conditionRollEffects } from "../helpers/roll-modifiers.js";
 import { setTokensLight, applyTokensLight } from "../helpers/token-light.js";
-import { recordAttackOnTargets, hasMultiattackDefenseAdvantage, hasSteadfastAdvantage } from "../helpers/hunters-defense.js";
-import { isDisadvantagedByHuntedTarget } from "../helpers/relentless-hunter.js";
+import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const SYSTEM_ID = "dnd-custom-ai";
 
-/** Ennemi juré (Rôdeur 1, SRD 5e — Niveau C, 2026-08-24) : vrai si `actor` a choisi un type de
- *  créature favori (`system.combat.favoredEnemyType`, cf. FeatureData#grantsChoice =
- *  "favoredEnemyType", DND_CUSTOM.creatureTypes) ET qu'au moins une des cibles actuellement
- *  ciblées (`game.user.targets`) est de ce type — même mécanisme de lecture de cible que
- *  `hasAssassinAutoCritical` ci-dessus. Pilote l'avantage aux tests de Sagesse (Survie, pister)
- *  ET d'Intelligence (se souvenir d'une info), cf. #onRollSkill/#onRollAbility. */
+/** Ennemi juré : vrai si une cible ciblée est du type de créature favori de `actor`. */
 function hasFavoredEnemyAdvantage(actor) {
   const favoredType = actor.system.combat?.favoredEnemyType;
   if (!favoredType) return false;
   return [...game.user.targets].some((token) => token.actor?.system?.creatureType === favoredType);
 }
 
-// attackRollOptions / conditionRollEffects (+ hasAssassinAutoCritical / improvedCriticalThreshold
-// / hasMountedSizeAdvantage / seuils d'Exhaustion) : factorisés dans helpers/roll-modifiers.js —
-// partagés par les jets d'attaque de la fiche (actor-sheet.js) et l'attaque de sort
-// (spellcasting-mixin.js).
-// destroyUndeadThreshold / isUndeadDestroyed : factorisés dans helpers/turn-undead.js.
+/** Libellé localisé d'un type de dégâts, vide sans type. */
+function damageTypeLabel(type) {
+  return type ? game.i18n.localize(DND_CUSTOM.damageTypes[type]) : "";
+}
 
-/** Feuille de personnage joueur : un onglet Handlebars par PART, ApplicationV2/ActorSheetV2.
- *  Le glisser-déposer d'objets (InventoryDragDropMixin) permet de transférer un objet vers/
- *  depuis un autre Actor ouvert (ex. la fiche d'un véhicule). */
+/** Vrai si l'arme équipée en main principale n'a aucune autre arme ou armure en main secondaire. */
+function isWieldedTwoHanded(actor, item) {
+  if (!item.system.equipped || !equipmentSlots(item.type, item.system).includes("mainHand")) return false;
+  return !actor.items.contents.some(
+    (other) =>
+      other.id !== item.id &&
+      ["weapon", "armor"].includes(other.type) &&
+      other.system.equipped &&
+      equipmentSlots(other.type, other.system).includes("offHand")
+  );
+}
+
+/**
+ * Libellés d'attaque et de dégâts d'une arme ; une Polyvalente tenue à deux mains (main secondaire libre)
+ * affiche ses dégâts à deux mains et rappelle l'autre mode.
+ */
+function weaponStats(weapon, system, proficiencyBonus, { mainHand, offHand }) {
+  const proficient = isProficientWithWeapon(system.class, weapon.system.weaponType);
+  const atk = weaponAttackDamage(weapon.system, system.abilities, proficiencyBonus, proficient);
+  const damageType = damageTypeLabel(weapon.system.damage.type);
+  const damageLabel = (dice) => (dice ? `${dice}${formatModifier(atk.damageMod)} ${damageType}`.trim() : "");
+  const oneHandedLabel = damageLabel(weapon.system.damage.dice);
+  const twoHandedLabel = damageLabel(weapon.system.damageVersatile.dice);
+  const isVersatile = Boolean(weapon.system.properties.versatile && weapon.system.damageVersatile.dice);
+  const isTwoHandedActive = isVersatile && mainHand?.id === weapon.id && (!offHand || offHand.id === weapon.id);
+
+  let versatileLabel = "";
+  if (isTwoHandedActive) {
+    versatileLabel = `${oneHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.OneHandedShort")})`;
+  } else if (isVersatile) {
+    versatileLabel = `${twoHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
+  }
+  return {
+    attackLabel: formatModifier(atk.attackBonus),
+    damageLabel: isTwoHandedActive ? twoHandedLabel : oneHandedLabel,
+    versatileLabel,
+    isTwoHandedActive,
+    proficient
+  };
+}
+
+/** Fiche de personnage joueur (une PART par onglet), avec transfert d'objets par glisser-déposer. */
 export class DndCustomActorSheet extends SpellcastingSheetMixin(
   FeatureActionsSheetMixin(
     RestAndLevelingSheetMixin(
@@ -80,9 +111,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "sheet", "actor", "character"],
     tag: "form",
-    // Plafond de confort adopté le 2026-09-04 (maquette maquettes/fiche-708x768/) : la fiche
-    // s'ouvre à 708 × 768 et chaque onglet reste consultable en entier à cette taille grâce à
-    // l'en-tête compact (character-sheet.hbs). Reste librement redimensionnable au-delà.
+    // Taille d'ouverture où chaque onglet tient en entier ; redimensionnable.
     position: { width: 708, height: 768 },
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
@@ -103,14 +132,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       openPlayerGuide: DndCustomActorSheet.#onOpenPlayerGuide,
       rollDeathSave: DndCustomActorSheet.#onRollDeathSave,
       selectSpellLevel: DndCustomActorSheet.#onSelectSpellLevel
-      // FeatureActionsSheetMixin : rollFeature/rollFeatureSave/grantFeatureCondition/
-      //   rollOpposedCheck/useFeatureCharge/useResourceTechnique/useConditionalFeature/
-      //   chooseFeatureOption/chooseInitiateMagic/summonCompanion/useManeuver/
-      //   useOpenHandTechnique/toggleReaction/toggleAction/toggleBonusAction
-      // SpellcastingSheetMixin : castSpell/rollSpellDamage/dropConcentration
-      // WildShapeSheetMixin : mount/dismount/enterWildShape/revertWildShape/
-      //   rollWildShapeAttack[Damage]
-      // (fusion ApplicationV2 des DEFAULT_OPTIONS sur la chaîne de mixins)
+      // Les actions des mixins (Capacités, incantation, Forme sauvage) sont fusionnées par ApplicationV2.
     }
   };
 
@@ -138,54 +160,22 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     }
   };
 
-  /** Retour de test : liste des Sorts (onglet Capacités) triée par niveau nécessitait de
-   *  scroller pour atteindre les paliers hauts — regroupée en onglets par niveau (cf.
-   *  #onSelectSpellLevel, context.spellsByLevel). Palier actuellement affiché, mémorisé sur
-   *  l'instance de la fiche (comme `this.tabGroups` le fait nativement pour l'onglet primaire)
-   *  pour survivre à un re-render déclenché ailleurs (ex. lancer un sort met à jour les
-   *  emplacements) — sans ça, chaque re-render retomberait sur le premier palier. */
+  /** Palier de sorts affiché, conservé entre deux rendus. */
   #activeSpellLevel = null;
 
-  /** @override
-   *  Ne rend JAMAIS cette fiche tant que l'assistant de création (CharacterCreationWizard) est
-   *  actuellement ouvert (ou en train de s'ouvrir) pour ce même Actor.
-   *
-   *  Root cause confirmée le 2026-09-05 (5e signalement, repro exacte enfin obtenue + traçage en
-   *  direct — cf. docstring d'`openWizardActorIds`, character-creation-wizard.js) : la boîte de
-   *  dialogue native "Créer un Acteur" (v13+, `DialogV2`) appelle `doc.sheet.render(true)`
-   *  directement dans le callback de son bouton "ok", indépendamment de `options.renderSheet`
-   *  (best-effort, `preCreateActor` ci-dessous, insuffisant seul). Ce rendu survient AVANT que
-   *  l'assistant (construit dans le hook `createActor`, dnd-custom-ai.js) n'ait eu le temps
-   *  d'apparaître dans `foundry.applications.instances` — 4 tentatives précédentes basées sur ce
-   *  registre (scan de `foundry.applications.instances`, en place jusqu'ici) perdaient donc
-   *  systématiquement cette course, malgré l'hypothèse (fausse en pratique) que l'inscription y
-   *  serait synchrone. `openWizardActorIds` est rempli de façon strictement synchrone, au
-   *  constructeur de l'assistant, avant tout appel à `.render()` : plus aucune fenêtre de course
-   *  possible. Contrairement à bloquer sur `!(system.class && system.origin)` (root cause
-   *  initialement envisagée), cette approche scope précisément la fenêtre de course : une fois
-   *  l'assistant refermé — même sans avoir terminé — la fiche native redevient normalement
-   *  accessible (cf. T-WIZ-018, wizard.cy.js : rouvrir la fiche après une fermeture sans
-   *  soumission doit encore afficher le bouton "Créer un personnage"). */
+  /** @override Ne rend pas la fiche tant que l'assistant de création est ouvert pour cet Actor. */
   render(...args) {
     if (openWizardActorIds.has(this.actor.id)) return Promise.resolve(this);
     return super.render(...args);
   }
 
-  /** @override
-   *  Rebranche la persistance des états (cf. #onToggleConditionSelection/
-   *  #applyPendingConditions) après chaque rendu — un nouveau `<details class="conditions-
-   *  dropdown">` est recréé à chaque fois (partial Handlebars), donc pas de garde anti-doublon
-   *  nécessaire ici : l'ancien nœud et son listener disparaissent avec lui. */
+  /** @override Rebranche la persistance des états sur la liste déroulante recréée. */
   _onRender(context, options) {
     super._onRender(context, options);
     this.#attachConditionsListeners();
   }
 
-  /** @override
-   * Construit le contexte partagé par tous les onglets (PARTS) : valeurs brutes du système
-   * + valeurs dérivées (modificateurs, bonus de maîtrise, poids, richesse) calculées ici
-   * pour garder les templates .hbs sans logique.
-   */
+  /** @override Contexte commun à tous les onglets : valeurs du système et valeurs dérivées. */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const system = this.actor.system;
@@ -195,12 +185,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     context.config = DND_CUSTOM;
     context.isGM = game.user.isGM;
 
-    // Chantier clean architecture (2026-09-05) : _prepareContext faisait ~500 lignes mêlant une
-    // quinzaine de concerns indépendants (identité de classe, économie de combat, progression,
-    // caractéristiques/compétences, items, langues/sorts, inventaire, états/résistances,
-    // capacité de charge) — scindé en méthodes privées nommées, appelées dans le MÊME ordre
-    // qu'avant (certaines lisent un champ de contexte posé par la méthode précédente, ex.
-    // context.proficiencyBonus/context.origins/context.weapons — ne PAS réordonner ces appels).
+    // Ordre significatif : certaines étapes lisent le contexte posé par les précédentes.
     this.#prepareClassOriginContext(context, system);
     this.#prepareCombatEconomyContext(context, system);
     this.#prepareProgressionContext(context, system);
@@ -214,22 +199,15 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     return context;
   }
 
-  /** Identité de classe/Origine/sous-classe : labels, sélecteur de sous-classe, en-tête
-   *  d'ambiance de classe (cf. _prepareContext). Pose `context.origins`/`context.isSpellcaster`,
-   *  lus par plusieurs des méthodes suivantes. */
+  /** Classe, Origine et sous-classe ; pose `context.origins` et `context.isSpellcaster`. */
   #prepareClassOriginContext(context, system) {
-    // Chargées une fois au démarrage par le hook "init" (voir dnd-custom-ai.js).
+    // Origines chargées à l'init.
     context.origins = game.dndCustomAi?.origins ?? {};
-    // Classe/Origine : champs fixes sur la fiche (retour de test — ne sont plus des listes
-    // déroulantes, la seule façon de les définir/changer est l'assistant de création, cf.
-    // #onOpenClassSheet/#onOpenOriginSheet ci-dessous pour l'ouverture de leur description).
+    // Classe et Origine en lecture seule, définies par l'assistant de création.
     context.classLabel = system.class ? game.i18n.localize(DND_CUSTOM.classes[system.class]) : "";
     context.originLabel = context.origins[system.origin]?.label ?? "";
 
-    // Sous-classe : sélecteur direct sur la fiche (verrouillé MJ, cf. hook preUpdateActor,
-    // dnd-custom-ai.js), pas un flux dédié comme l'assistant de création — elle se choisit en
-    // cours de partie, à un niveau propre à chaque classe (DND_CUSTOM.subclassLevel), pas à la
-    // création du personnage (sauf Clerc/Ensorceleur/Occultiste, obtenue dès le niveau 1).
+    // Sélecteur de sous-classe.
     const subclassChoices = DND_CUSTOM.subclasses[system.class] ?? {};
     context.subclassLevel = DND_CUSTOM.subclassLevel[system.class] ?? null;
     context.subclassAvailable = context.subclassLevel !== null && system.attributes.level >= context.subclassLevel;
@@ -239,27 +217,16 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       selected: key === system.subclass
     }));
     context.subclassLabel = system.subclass ? game.i18n.localize(subclassChoices[system.subclass]) : "";
-    // Indice affiché tant que le niveau requis n'est pas atteint (ex. "Disponible au niveau 3"),
-    // uniquement si la classe a une sous-classe modélisée du tout.
+    // Indice « Disponible au niveau N » avant le niveau requis.
     context.subclassLevelHint =
       context.subclassLevel && !context.subclassAvailable
         ? game.i18n.format("DND_CUSTOM.Actor.SubclassLevelHint", { level: context.subclassLevel })
         : "";
-    // Bouton "Créer un personnage" masqué une fois Classe ET Origine renseignées (même
-    // condition que l'ouverture automatique de l'assistant sur un Actor vierge, cf.
-    // Hooks.on("createActor"), dnd-custom-ai.js) : retour de test — il n'y avait plus lieu de
-    // le proposer une fois le personnage construit, et le relancer par erreur écraserait ses
-    // choix (SRD 5e, points de vie, équipement de départ) sans confirmation.
+    // Bouton « Créer un personnage » tant que Classe ou Origine manque.
     context.showCreationWizardButton = !(system.class && system.origin);
 
     context.isSpellcaster = DND_CUSTOM.spellcastingClasses.includes(system.class);
-    // En-tête spécialisé de l'onglet Capacités/Sorts (habillage seulement — titre/icône/
-    // accroche propres à la classe) : partial Handlebars unique
-    // (templates/actor/abilities/class-flavor.hbs), résolue via
-    // {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs, préchargée/enregistrée au
-    // hook "init" (cf. dnd-custom-ai.js > loadTemplates). Le partial n'affiche rien tant que
-    // classFlavorTitle n'est pas posé (aucune classe valide choisie, ex. assistant de création
-    // en cours).
+    // Partial d'en-tête d'ambiance de classe (onglet Capacités/Sorts).
     context.classTabPartial = `systems/${SYSTEM_ID}/templates/actor/abilities/class-flavor.hbs`;
     if (DND_CUSTOM.classes[system.class]) {
       context.classFlavorKey = system.class;
@@ -268,40 +235,25 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       context.classFlavorTagline = game.i18n.localize(`DND_CUSTOM.Abilities.ClassFlavor.${system.class}.Tagline`);
     }
 
-    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
-    // (cf. CharacterData#prepareDerivedData) ; trait spécial purement informatif (pas de
-    // système de jet de dés automatisé sur cette fiche). Bonus de caractéristiques/avantages de
-    // compétences recalculés séparément dans #prepareCharacterStatsContext (dérivation pure et
-    // bon marché, évite de les faire transiter par le contexte).
+    // Trait spécial de l'Origine, informatif.
     const currentOrigin = context.origins[system.origin] ?? null;
     context.originTrait = currentOrigin?.specialTrait ?? null;
   }
 
-  /** Économie d'action de combat (réaction/action/action bonus), monture, Forme sauvage
-   *  (cf. _prepareContext). */
+  /** Économie d'action, monture et Forme sauvage. */
   #prepareCombatEconomyContext(context, system) {
-    // Économie d'action de combat (SRD 5e) : disponibilité de la réaction, affichée en en-tête
-    // commune (indicateur cliquable) et sur les Capacités/Sorts "Réaction" de l'onglet
-    // Capacités/Sorts (cf. consumeActionEconomy, helpers/action-economy.js ; hooks updateCombat/deleteCombat).
-    // Action/Action bonus (chantier "Suivi de l'action/action bonus", 2026-08-23) : mêmes
-    // indicateurs en en-tête, mais suivi non-bloquant (cf. helpers/action-economy.js) — jamais
-    // utilisés pour griser un bouton de Capacité/Sort.
+    // Disponibilité de la réaction, de l'Action et de l'Action bonus.
     context.reactionAvailable = canUseReaction(system);
     context.actionAvailable = system.combat.actionAvailable;
     context.bonusActionAvailable = system.combat.bonusActionAvailable;
 
-    // Combat monté (don SRD 5e, cf. #onMount ci-dessous) : monture actuellement chevauchée,
-    // résolue en Actor pour affichage (nom) — vide si non montée.
+    // Monture chevauchée.
     context.mount = system.combat.mountedActorId ? (game.actors.get(system.combat.mountedActorId) ?? null) : null;
 
-    // Forme sauvage (don SRD 5e, cf. #onEnterWildShape ci-dessous) : forme actuellement prise,
-    // résolue en Actor pour affichage (CA/Vitesse/PV de la forme) — vide si forme normale.
+    // Forme sauvage active.
     context.wildShapeForm = system.combat.wildShapeActorId ? (game.actors.get(system.combat.wildShapeActorId) ?? null) : null;
 
-    // Attaques de la Forme sauvage actuellement prise (refonte 2026-09-04, cf.
-    // #onRollWildShapeAttack ci-dessous) : mêmes libellés déjà formatés (attackBonusLabel/
-    // damageLabel) que context.attacks côté fiche PNJ (npc-sheet.js), pour rester accessibles
-    // directement depuis la fiche du personnage sans ouvrir celle de la forme.
+    // Attaques de la Forme sauvage, libellés formatés.
     context.wildShapeAttacks = context.wildShapeForm
       ? context.wildShapeForm.system.attacks.map((attack, index) => {
           const abilityMod = context.wildShapeForm.system.abilities[attack.ability]?.mod ?? 0;
@@ -310,26 +262,18 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       : [];
   }
 
-  /** PV/proficiencyBonus/montée de niveau/XP/Agonie (cf. _prepareContext). Pose
-   *  `context.proficiencyBonus`, lu par plusieurs des méthodes suivantes. */
+  /** PV, maîtrise, niveau, XP et agonie ; pose `context.proficiencyBonus`. */
   #prepareProgressionContext(context, system) {
     const hp = system.attributes.hp;
     context.hpPercent = hitPointsPercent(hp);
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
     context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
-    // Choix Amélioration de caractéristiques/Don dû mais pas encore résolu (cf.
-    // #onResolvePendingAsi, character-data.js#pendingAsiChoices) : badge de rattrapage manuel
-    // dans l'en-tête tant que > 0.
+    // Choix Amélioration/Don dus (badge d'en-tête).
     context.pendingAsiChoices = system.attributes.pendingAsiChoices;
-    // Affichage XP détaillé (total + seuil exact) réservé au MJ (cf. template : bloc entier
-    // sous {{#if isGM}}) : seuil du prochain niveau (DND_CUSTOM.xpThresholds[niveau actuel],
-    // la table étant indexée niveau-1), absent au niveau 20 (déjà au maximum).
+    // Seuil XP du niveau suivant (affiché au MJ), absent au niveau 20.
     context.xpNextThreshold = system.attributes.level < 20 ? DND_CUSTOM.xpThresholds[system.attributes.level] : null;
-    // Barre de progression XP visible au joueur (retour de test — PROJECT.md excluait
-    // jusqu'ici tout affichage d'XP au joueur ; décision revue pour n'exposer que la
-    // progression relative vers le niveau suivant, jamais le total ni les seuils chiffrés,
-    // qui restent réservés au bloc MJ ci-dessus). 100% au niveau 20 (rien au-delà à afficher).
+    // Progression XP relative affichée au joueur, sans chiffres.
     const currentThreshold = DND_CUSTOM.xpThresholds[system.attributes.level - 1] ?? 0;
     context.xpPercent = context.xpNextThreshold
       ? Math.max(
@@ -343,9 +287,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
         )
       : 100;
 
-    // Panneau Agonie (SRD 5e) : visible tant que le personnage est à 0 PV et n'a pas encore
-    // atteint 3 réussites (stabilisé) ou 3 échecs (mort) — cf. hook updateActor dans
-    // dnd-custom-ai.js qui gère la transition et le décompte automatique.
+    // Panneau d'agonie à 0 PV, jusqu'à stabilisation ou mort.
     const death = system.attributes.death;
     context.dying = {
       active: hp.value === 0,
@@ -357,16 +299,9 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     };
   }
 
-  /** Initiative, perception passive, incantation, caractéristiques et compétences
-   *  (cf. _prepareContext) — nécessite `context.proficiencyBonus`/`context.isSpellcaster`/
-   *  `context.origins` déjà posés par les méthodes précédentes. */
+  /** Initiative, perception passive, incantation, caractéristiques et compétences. */
   #prepareCharacterStatsContext(context, system) {
-    // Bug retour de test (exposé par l'automatisation du don Alerte, ANOMALIES_ACTIVES.md
-    // 2026-08-19) : recalculait le mod. d'Initiative à partir du seul mod. de Dex, ignorant tout
-    // bonus dérivé (Traqueur des ténèbres +2, Alerte +5, cf. CharacterData#prepareDerivedData >
-    // attributes.initiativeMod, déjà la source de vérité utilisée par la formule d'Initiative du
-    // Combat Tracker natif dans system.json) — la fiche affichait donc un mod. différent de celui
-    // réellement utilisé au jet d'Initiative. Lit maintenant la même donnée dérivée.
+    // Modificateur d'initiative dérivé, identique à celui du jet.
     context.initiative = {
       mod: system.attributes.initiativeMod,
       modLabel: formatModifier(system.attributes.initiativeMod)
@@ -392,16 +327,11 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     }
 
     const items = this.actor.items.contents;
-    // Origine choisie : bonus de caractéristiques déjà appliqués dans system.abilities.*.total
-    // (cf. CharacterData#prepareDerivedData) ; avantage de compétences ci-dessous — recalculés
-    // ici (dérivation pure et bon marché à partir de context.origins) plutôt que transmis
-    // depuis #prepareClassOriginContext (cf. context.originTrait, posé là-bas).
+    // Avantages de compétences de l'Origine.
     const currentOrigin = context.origins[system.origin] ?? null;
     const originAbilityBonuses = currentOrigin?.abilityBonuses ?? {};
     const originSkillAdvantages = new Set(currentOrigin?.skillAdvantages ?? []);
-    // Aptitudes multiples (Barde, SRD 5e) : moitié du bonus de maîtrise (arrondi à
-    // l'inférieur) sur les compétences non maîtrisées, appliqué automatiquement ci-dessous
-    // (affichage) et dans #onRollSkill (jet réel) dès que le personnage possède la Capacité.
+    // Aptitudes multiples : moitié de la maîtrise aux compétences non maîtrisées.
     const jackOfAllTrades = hasFeature(items, "Aptitudes multiples");
 
     context.abilities = Object.entries(system.abilities).map(([key, ability]) => {
@@ -417,7 +347,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
         modLabel: formatModifier(mod),
         save: {
           proficient: system.saves[key].proficient,
-          mod: mod + (system.saves[key].proficient ? context.proficiencyBonus : 0)
+          mod: mod + (system.saves[key].proficient ? context.proficiencyBonus : 0) + system.attributes.saveBonus
         }
       };
     });
@@ -429,14 +359,9 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
           key,
           label: game.i18n.localize(DND_CUSTOM.skills[key]),
           originAdvantage: originSkillAdvantages.has(key),
-          // Désavantage imposé par l'armure équipée (SRD 5e) : ne concerne que la Discrétion
-          // (cf. CharacterData#prepareDerivedData > this.stealthDisadvantage).
+          // Désavantage de Discrétion dû à l'armure.
           armorDisadvantage: key === "stealth" && system.stealthDisadvantage,
-          // Retour de test (2 passes) : affichait d'abord la clé technique brute ("str", "dex"...),
-          // remplacée par le nom complet localisé — puis un 2e retour de test a demandé une
-          // abréviation (le nom complet prenait trop de place à côté de chaque compétence) :
-          // vraie abréviation localisée (DND_CUSTOM.abilitiesShort, config.js), pas un retour à
-          // la clé technique brute d'origine.
+          // Abréviation localisée de la caractéristique.
           ability: game.i18n.localize(DND_CUSTOM.abilitiesShort[skill.ability]),
           proficient: skill.proficient,
           jackOfAllTrades: jackOfAllTrades && !skill.proficient,
@@ -447,22 +372,16 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
   }
 
-  /** Armes/armures/objets/Capacités possédés, en-têtes/réserves/choix de Capacité, Compagnon
-   *  animal (cf. _prepareContext). Pose `context.weapons`/`context.armors`, lus par
-   *  #prepareInventoryContext. */
+  /** Items possédés, réserves et choix de Capacités, compagnon ; pose `context.weapons` et `context.armors`. */
   #prepareItemsContext(context, system) {
     const items = this.actor.items.contents;
     context.weapons = items.filter((item) => item.type === "weapon");
     context.armors = items.filter((item) => item.type === "armor");
     context.gear = items.filter((item) => item.type === "gear");
     context.features = items.filter((item) => item.type === "feature");
-    // Set natif (Actor#statuses), pas une donnée sérialisée : utilisé par le helper Handlebars
-    // featureDisabled (cf. handlebars-helpers.js) pour griser une Capacité tant que l'état
-    // requis par system.requiresState (ex. "raging") n'est pas actif sur l'Actor.
+    // États actifs, pour désactiver les Capacités dont l'état requis manque.
     context.activeStatuses = this.actor.statuses;
-    // Le don Sentinelle modifie le déclencheur affiché d'Attaque d'opportunité si le personnage
-    // possède les deux (cf. opportunityAttackTrigger, rules.js) — dérivé ici, jamais écrit sur
-    // l'Item lui-même : reste juste automatiquement si Sentinelle est ajoutée/retirée.
+    // Déclencheur d'Attaque d'opportunité étendu par Sentinelle.
     const hasSentinel = context.features.some((feature) => feature.name === "Sentinelle");
     context.features = context.features.map((feature) => {
       if (feature.name !== "Attaque d'opportunité" || !hasSentinel) return feature;
@@ -475,62 +394,41 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
         }
       };
     });
-    // Techniques consommant la réserve d'une autre Capacité (`system.costsResource`, ex. les
-    // techniques de Moine consommant du Ki) : état de la réserve au moment du render, par id
-    // de la technique (même convention lookup-par-id que weaponStats/armorStats) — grisé/
-    // non cliquable dès que la réserve est vide (retour de test).
+    // État de la réserve de chaque technique `costsResource`, par id.
     context.featureResourceState = {};
     for (const feature of context.features) {
       const resourceName = feature.system.costsResource;
-      // Une technique à jet de sauvegarde (system.savingThrow, ex. les options de Canalisation
-      // divine du Paladin) affiche déjà son propre bouton dédié (#onRollFeatureSave, qui gère
-      // lui-même la consommation de costsResource) — pas ce bouton générique "useResourceTechnique"
-      // en plus, qui doublonnerait la consommation de charge.
+      // Les techniques à sauvegarde ont leur propre bouton.
       if (!resourceName || feature.system.savingThrow) continue;
       const resource = context.features.find((candidate) => candidate.name === resourceName);
       if (!resource) continue;
       context.featureResourceState[feature.id] = {
         resourceName,
-        // Nom de la technique dupliqué ici (déjà accessible via `this.name` dans la boucle
-        // `{{#each features}}` du template) pour rester entièrement autonome une fois entré
-        // dans le `{{#with (lookup ...)}}` qui suit — évite toute dépendance à la résolution
-        // Handlebars `../` d'un contexte `#with` imbriqué dans un `#each`.
+        // Nom repris pour le bloc `{{#with}}` du template.
         techniqueName: feature.name,
         remaining: resource.system.uses.value,
         max: resource.system.uses.max
       };
     }
-    // Choix ponctuel proposé par une Capacité (`system.grantsChoice`, ex. "Aspect de la bête") :
-    // bouton "Choisir" affiché (tab-abilities.hbs) tant que le champ ciblé
-    // (`system.combat.<grantsChoice>`) est encore vide, par id de Capacité (même convention
-    // lookup-par-id que featureResourceState ci-dessus).
+    // Choix définitif déjà fait, par id de Capacité.
     context.featureChoiceMade = {};
     for (const feature of context.features) {
       const fieldKey = feature.system.grantsChoice;
-      if (fieldKey) context.featureChoiceMade[feature.id] = !!this.actor.system.combat[fieldKey];
+      if (fieldKey) context.featureChoiceMade[feature.id] = !!system.combat[fieldKey];
     }
 
-    // Compagnon animal (Maître des bêtes, Rôdeur) : bouton "Invoquer" masqué une fois déjà
-    // invoqué (cf. #onSummonCompanion ci-dessus/helpers/companion.js).
+    // Compagnon déjà invoqué.
     context.companionAlreadySummoned = !!this.actor.getFlag(SYSTEM_ID, "beastCompanionCreated");
   }
 
-  /** Langues connues, Sorts groupés par niveau, emplacements de sorts (cf. _prepareContext). */
+  /** Langues connues, Sorts par niveau et emplacements de sorts. */
   #prepareLanguagesAndSpellsContext(context, system) {
     const items = this.actor.items.contents;
-    // Langues connues (onglet Journal) : Commune et langue d'Origine octroyées automatiquement
-    // à la création (cf. helpers/class-content.js > grantLanguages), langues spéciales toujours
-    // ajoutées à la main (glisser depuis le compendium Langues). Retour de test : classées dans
-    // l'ordre d'ajout (pas alphabétique), Commune forcée en tête quel que soit cet ordre — clé
-    // stable `system.category === "common"` comparée, jamais le nom localisé (cf. convention
-    // "clés stables" du projet). `items` reflète déjà l'ordre d'ajout (EmbeddedCollection en
-    // ordre de création) ; `Array#sort` est stable depuis ES2019 (V8/Electron), donc cette seule
-    // comparaison ne réordonne QUE Commune, laissant les autres langues dans leur ordre d'origine.
+    // Langues dans l'ordre d'ajout, Commune en tête.
     context.languages = items
       .filter((item) => item.type === "language")
-      .sort((a, b) => (a.system.category === "common" ? -1 : b.system.category === "common" ? 1 : 0));
-    // Sorts groupés par niveau (0 = tour de magie) pour l'onglet "Sorts" ; emplacements par
-    // niveau (1-9), cf. CharacterData#prepareDerivedData et rules.js > spellSlotsForClass.
+      .sort((a, b) => Number(b.system.category === "common") - Number(a.system.category === "common"));
+    // Sorts groupés par niveau (0 = tours de magie).
     const spells = items.filter((item) => item.type === "spell");
     context.spellsByLevel = Array.from({ length: 10 }, (_, level) => ({
       level,
@@ -538,9 +436,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
         level === 0
           ? game.i18n.localize("DND_CUSTOM.Abilities.Cantrips")
           : game.i18n.format("DND_CUSTOM.Abilities.SpellLevelLabel", { level }),
-      // Libellé court pour l'onglet par niveau (retour de test, cf. #activeSpellLevel
-      // ci-dessus) : "Tours"/"Niv. X" plutôt que le libellé complet "Sorts de niveau X",
-      // trop long pour tenir dans une bande d'onglets.
+      // Libellé court d'onglet : « Tours » / « Niv. X ».
       shortLabel:
         level === 0
           ? game.i18n.localize("DND_CUSTOM.Abilities.CantripsShort")
@@ -548,19 +444,13 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       spells: spells
         .filter((spell) => spell.system.level === level)
         .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang))
-        // showDamageButton : un sort à jet d'attaque OU à sauvegarde (cf. SpellData#save,
-        // item-data.js) OU qui touche automatiquement sans aucun jet (ex. Projectile magique,
-        // seul `damage.dice` renseigné) peut avoir des dégâts — même logique que SpellItemSheet
-        // (item-sheets.js), précalculée ici pour ne pas dupliquer un `{{#if}}` combiné dans le
-        // template (aucun helper Handlebars "or" dans ce système).
+        // Bouton de dégâts pour un sort d'attaque, à sauvegarde ou doté de dés.
         .map((spell) => ({
           item: spell,
           showDamageButton: spell.system.attack || Boolean(spell.system.save.ability) || Boolean(spell.system.damage.dice)
         }))
     })).filter((group) => group.spells.length);
-    // Palier affiché par défaut : celui mémorisé sur l'instance s'il existe encore parmi les
-    // paliers ayant des Sorts (ex. le dernier a été supprimé), sinon le premier palier
-    // disponible — jamais `null` tant qu'au moins un palier a des Sorts.
+    // Palier affiché : celui mémorisé s'il a encore des Sorts, sinon le premier.
     if (!context.spellsByLevel.some((group) => group.level === this.#activeSpellLevel)) {
       this.#activeSpellLevel = context.spellsByLevel[0]?.level ?? null;
     }
@@ -569,14 +459,9 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       ...group,
       active: group.level === this.#activeSpellLevel
     }));
-    // Incantation mineure de sous-classe (ex. Chevalier occulte) : affiche la colonne Sorts même
-    // pour une classe non lanceuse (context.isSpellcaster resterait faux) dès qu'elle possède au
-    // moins un Sort octroyé — sinon ses 3 Sorts fixes n'apparaîtraient jamais sur sa fiche.
+    // Colonne Sorts aussi pour une classe non lanceuse possédant des Sorts.
     context.hasAnySpells = context.isSpellcaster || spells.length > 0;
-    // Emplacements de sorts par niveau (système réel, cf. CharacterData#prepareDerivedData et
-    // rules.js > spellSlotsForClass) : un chip par palier réellement accessible (max > 0), trié
-    // du plus bas au plus haut. isPactMagic (Occultiste, Magie de Pacte) pilote le badge dédié
-    // sur l'onglet (tab-abilities.hbs) rappelant la récupération au repos court.
+    // Emplacements par palier accessible ; badge de Magie de Pacte.
     context.spellSlots = SPELL_LEVELS.map((level) => ({
       level,
       value: system.spells.slots[level].value,
@@ -586,22 +471,17 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     context.concentratingOn = system.spells.concentratingOn;
   }
 
-  /** Emplacements d'équipement (main principale/secondaire, armure, accessoires), bonus
-   *  d'attaque/dégâts d'arme, bonus de CA d'armure (cf. _prepareContext) — nécessite
-   *  `context.weapons`/`context.armors`/`context.proficiencyBonus` déjà posés. */
+  /** Emplacements d'équipement, statistiques d'armes et bonus de CA des armures. */
   #prepareInventoryContext(context, system) {
     const items = this.actor.items.contents;
-    // Onglet Inventaire scindé en deux tableaux : Armes/Armures (emplacements d'équipement,
-    // cf. context.equipment) d'un côté, Objets/Outils de l'autre.
+    // Inventaire scindé : Armes/Armures et Objets/Outils.
     context.weaponsAndArmor = items.filter((item) => ["weapon", "armor"].includes(item.type));
     context.gearAndTools = items.filter((item) => ["gear", "tool"].includes(item.type));
     context.inventoryItems = items.filter((item) =>
       ["weapon", "armor", "gear", "tool"].includes(item.type)
     );
 
-    // Répartit les armes/armures équipées dans leurs emplacements (main principale/secondaire,
-    // armure, accessoires) pour l'onglet "Équipement" — une arme à deux mains occupe les deux
-    // mains à la fois (cf. equipmentSlots dans rules.js).
+    // Armes et armures équipées réparties dans leurs emplacements.
     const equippedWeaponsAndArmor = [...context.weapons, ...context.armors].filter(
       (item) => item.system.equipped
     );
@@ -612,8 +492,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     context.equipment = {
       mainHand,
       offHand,
-      // Une arme à deux mains occupe aussi la main secondaire : évite d'afficher deux fois le
-      // même objet, affiche plutôt une mention dédiée (cf. tab-equipment.hbs).
+      // Arme à deux mains : la main secondaire affiche une mention.
       offHandOccupiedByMainHand: Boolean(mainHand && offHand && mainHand.id === offHand.id),
       armor: findBySlot("armor"),
       accessories: equippedWeaponsAndArmor.filter((item) =>
@@ -621,56 +500,17 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       )
     };
 
-    // Bonus d'attaque et dégâts (avec alternative Polyvalente à deux mains) de chaque arme
-    // possédée, affichés dans le tableau Armes/Armures de l'onglet Inventaire — bonus de
-    // maîtrise appliqué seulement si la classe couvre cette catégorie d'arme (cf.
-    // isProficientWithWeapon/weaponAttackDamage dans rules.js).
-    context.weaponStats = {};
-    for (const weapon of context.weapons) {
-      const proficient = isProficientWithWeapon(system.class, weapon.system.weaponType);
-      const atk = weaponAttackDamage(weapon.system, system.abilities, context.proficiencyBonus, proficient);
-      const damageType = weapon.system.damage.type
-        ? game.i18n.localize(DND_CUSTOM.damageTypes[weapon.system.damage.type])
-        : "";
-      const oneHandedLabel = weapon.system.damage.dice
-        ? `${weapon.system.damage.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim()
-        : "";
-      // Polyvalente : la main secondaire libre est considérée occupée par l'arme elle-même
-      // (empoignée à deux mains), sinon elle reste tenue à une main (cf. retour de test —
-      // l'affichage montrait toujours les deux valeurs sans jamais refléter l'équipement réel).
-      const isTwoHandedActive =
-        weapon.system.properties.versatile &&
-        Boolean(weapon.system.damageVersatile.dice) &&
-        mainHand?.id === weapon.id &&
-        (!offHand || offHand.id === weapon.id);
-      let versatileLabel = "";
-      if (weapon.system.properties.versatile && weapon.system.damageVersatile.dice) {
-        const twoHandedLabel = `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim();
-        if (isTwoHandedActive) {
-          versatileLabel = `${oneHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.OneHandedShort")})`;
-        } else {
-          versatileLabel = `${twoHandedLabel} (${game.i18n.localize("DND_CUSTOM.Equipment.TwoHandedShort")})`;
-        }
-      }
-      context.weaponStats[weapon.id] = {
-        attackLabel: formatModifier(atk.attackBonus),
-        damageLabel: isTwoHandedActive
-          ? `${weapon.system.damageVersatile.dice}${formatModifier(atk.abilityMod)} ${damageType}`.trim()
-          : oneHandedLabel,
-        versatileLabel,
-        isTwoHandedActive,
-        proficient
-      };
-    }
+    // Bonus d'attaque et dégâts de chaque arme (maîtrise selon la classe).
+    context.weaponStats = Object.fromEntries(
+      context.weapons.map((weapon) => [weapon.id, weaponStats(weapon, system, context.proficiencyBonus, { mainHand, offHand })])
+    );
 
-    // Bonus de CA apporté par chaque armure/bouclier/accessoire possédé pris isolément (même
-    // affichage que les dégâts d'arme ci-dessus, cf. armorContribution dans rules.js).
+    // Bonus de CA de chaque armure, bouclier ou accessoire.
     const dexMod = abilityModifier(system.abilities.dex.total);
     context.armorStats = {};
     for (const armor of context.armors) {
       const contribution = armorContribution(armor.system, dexMod);
-      // Armure du corps : CA totale affichée telle quelle (ex. "15") ; bouclier/accessoire :
-      // bonus additionnel affiché avec son signe (ex. "+2"), pas une CA absolue.
+      // Armure : CA totale ; bouclier/accessoire : bonus signé.
       context.armorStats[armor.id] = {
         acLabel: armor.system.slot === "armor" ? `${contribution}` : formatModifier(contribution),
         typeLabel: DND_CUSTOM.armorTypes[armor.system.armorType]
@@ -678,28 +518,18 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     }
   }
 
-  /** États SRD 5e actifs, résistances/immunités/vulnérabilités aux dégâts (cf.
-   *  _prepareContext). */
+  /** États actifs et affinités aux dégâts. */
   #prepareConditionsContext(context, system) {
-    // États SRD 5e (cf. CONFIG.statusEffects, scripts/dnd-custom-ai.js) : actifs via
-    // ActiveEffect (this.actor.statuses), Exhaustion à part (niveau 0-6, cf. character-data.js).
-    // `activeConditions` (sous-ensemble actif) alimente le résumé compact de l'en-tête, partagé
-    // par tous les onglets (cf. character-sheet.hbs) — retour de test, sans quoi les états actifs
-    // n'étaient visibles que sur l'onglet Statistiques.
+    // États, et résumé des états actifs de l'en-tête.
     Object.assign(context, conditionsContext(this.actor));
 
-    // Chantier "types de dégâts" (Phase 1, 2026-08-24) : 3 groupes de cases à cocher (un par
-    // ensemble), même helper que la fiche PNJ (npc-sheet.js) — réglé par le MJ uniquement
-    // (verrouillé côté Joueur, comme la fiche Origine). Pour un personnage, les SetField sont
-    // sous `system.combat` (sous `system` directement pour un PNJ).
+    // Cases d'affinités aux dégâts (sous `system.combat`), réglées par le MJ.
     context.damageAffinityGroups = damageAffinityGroups(system.combat);
-    // Retour de test : côté Joueur, le tableau complet (réservé au MJ) n'a aucune valeur —
-    // résumé filtré affiché à la place pour tout non-MJ (cf. damage-affinity-panel, tab-stats.hbs).
+    // Résumé des affinités affiché aux non-MJ.
     context.damageAffinitySummary = damageAffinitySummary(context.damageAffinityGroups);
   }
 
-  /** Poids porté/capacité de charge, richesse totale (cf. _prepareContext) — nécessite
-   *  `context.inventoryItems` déjà posé par #prepareInventoryContext. */
+  /** Poids porté, capacité de charge et richesse ; requiert `context.inventoryItems`. */
   #prepareCarryingCapacityContext(context, system) {
     context.carriedWeight = carriedWeight(context.inventoryItems);
     context.carryingCapacity =
@@ -712,16 +542,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     context.currencyTotalCopper = currencyTotalInCopper(system.currency);
   }
 
-  // _preparePartContext (expose context.tab par PART) : factorisé dans InventoryDragDropMixin.
-  // itemFromTarget (Item d'une ligne DOM) : factorisé dans helpers/sheet-items.js.
-
-  // Repos court/long, montée de niveau, ASI/sous-classe, ajustement de caractéristiques :
-  // factorisés dans RestAndLevelingSheetMixin (sheets/rest-and-leveling-mixin.js).
-
-  /** Ouvre l'assistant de création de personnage pour cet Actor (cf.
-   *  character-creation-wizard.js) : accessible à tout propriétaire, pas seulement au MJ.
-   *  Referme la fiche du même mouvement (retour de test — les deux restaient affichées en
-   *  même temps) ; elle se rouvrira d'elle-même à la fin de l'assistant si besoin. */
+  /** Ouvre l'assistant de création et ferme la fiche, rouverte à la fin. */
   static async #onOpenCreationWizard() {
     const actor = this.actor;
     await this.close();
@@ -763,76 +584,54 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     );
   }
 
-  /** Ouvre le Journal « Guide du Joueur » (glossaire, règles de base, sorts, classes, origines —
-   *  généré au chargement du monde et rendu visible des joueurs, cf.
-   *  helpers/player-guide-journal.js). Point d'entrée depuis la fiche vers la documentation en
-   *  jeu à laquelle renvoient les infobulles de glossaire. Avertit sans bloquer si le MJ l'a
-   *  supprimé. Recherche par nom LOCALISÉ (le Journal est créé sous le nom de la langue active du
-   *  monde). */
-  static #onOpenPlayerGuide() {
+  /** Ouvre le Journal « Guide du Joueur » (recherché par son nom localisé). */
+  static async #onOpenPlayerGuide() {
     const guide = game.journal.getName(game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"));
     if (!guide) {
       ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Actor.PlayerGuideMissing"));
       return;
     }
-    guide.sheet.render(true);
+    await guide.sheet.render(true);
   }
 
-  /** Ouvre la fiche de description d'une Classe/Sous-classe/Origine correspondant à `predicate` :
-   *  cherchée d'abord dans les Items du monde (import world-items/*.json), puis dans le
-   *  compendium `packName` une fois peuplé par le MJ (cf. packs/<nom>, README de chacun) —
-   *  avertit sans bloquer si introuvable, ces fiches restent optionnelles. Classe/Sous-classe
-   *  identifiées par une clé stable (`system.classKey`/`subclassKey`, cf. ClassData,
-   *  scripts/data/class-data.js), jamais par un nom localisé/traduit — comparer des libellés
-   *  `game.i18n.localize()` à des noms d'Items codés en français échouait systématiquement sous
-   *  un monde non francophone (bug historique, cf. tests/README.md > "Bug connu"). Origine
-   *  identifiée par son nom exact, qui n'est de toute façon jamais localisé (cf. `origin.label`,
-   *  scripts/data/origins.json). `displayName` sert uniquement au message d'avertissement,
-   *  affiché dans la langue active du monde — aucun rôle dans la recherche elle-même. */
+  /** Ouvre la fiche de référence d'une Classe, Sous-classe ou Origine, depuis le monde puis le compendium. */
   static async #openReferenceItem(packName, predicate, missingKey, displayName) {
     const worldItem = game.items.find(predicate);
     if (worldItem) {
-      worldItem.sheet.render(true);
+      await worldItem.sheet.render(true);
       return;
     }
 
     const pack = game.packs.get(`${SYSTEM_ID}.${packName}`);
     const document = pack ? (await pack.getDocuments()).find(predicate) : null;
     if (document) {
-      document.sheet.render(true);
+      await document.sheet.render(true);
       return;
     }
 
     ui.notifications.warn(game.i18n.format(missingKey, { name: displayName }));
   }
 
-  /** Jet de sauvegarde de la mort, SRD 5e : 1d20 sans modificateur. Naturel 20 = régénère
-   *  1 PV — le hook updateActor (dnd-custom-ai.js) détecte alors le retour au-dessus de 0 PV
-   *  et réinitialise l'état (retire Inconscient, remet les compteurs à zéro), pas besoin de
-   *  le refaire ici. Naturel 1 = deux échecs. 10+ = réussite, sinon échec. Troisième échec :
-   *  declareDeath (scripts/helpers/death.js), la même fonction que pour une mort par dégâts
-   *  subis à 0 PV, pour un comportement identique quelle que soit la cause. */
+  /** Sauvegarde contre la mort : 20 naturel = 1 PV, 1 naturel = deux échecs, 10+ (bonus inclus) = réussite. */
   static async #onRollDeathSave() {
     const actor = this.actor;
-    const roll = new Roll("1d20");
+    const bonus = actor.system.attributes.saveBonus;
+    const roll = new Roll(bonus ? `1d20${formatModifier(bonus)}` : "1d20");
     await roll.evaluate();
+    const natural = roll.dice[0].total;
     const total = roll.total;
     const death = actor.system.attributes.death;
 
-    if (total === 20) {
+    if (natural === 20) {
       await actor.update({ "system.attributes.hp.value": 1 });
-    } else if (total === 1) {
+    } else if (natural === 1) {
       const failures = Math.min(3, death.failures + 2);
       await actor.update({ "system.attributes.death.failures": failures });
       if (failures >= 3) await declareDeath(actor);
     } else if (total >= 10) {
       const successes = Math.min(3, death.successes + 1);
       const updates = { "system.attributes.death.successes": successes };
-      // Retour de test (lot 3) : troisième réussite = "stabilisé" — remet 1 PV dans la même
-      // update que la 3e réussite (pas un update séparé) pour que le hook updateActor
-      // (dnd-custom-ai.js, branche `newHp > 0 && oldHp === 0`) retire Inconscient et réinitialise
-      // les compteurs d'un seul coup, exactement comme un nat 20 (cf. branche `total === 20`
-      // ci-dessus) — même mécanisme, déclenché par un chemin différent.
+      // Troisième réussite : stabilisé à 1 PV.
       if (successes >= 3) updates["system.attributes.hp.value"] = 1;
       await actor.update(updates);
     } else {
@@ -848,18 +647,12 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     });
   }
 
-  // Gestionnaires d'action des Capacités (jet libre, sauvegarde, état, test opposé, charges/
-  // réserves, choix d'option, Magie d'initié, compagnon, manœuvres, main ouverte) :
-  // factorisés dans FeatureActionsSheetMixin (sheets/feature-actions-mixin.js).
-
-  /** Jet de caractéristique (1d20 + modificateur). Maj-clic = avantage, Ctrl-clic =
-   *  désavantage (cf. tooltip des boutons de jet). */
+  /** Jet de caractéristique. Maj-clic = avantage, Ctrl-clic = désavantage. */
   static async #onRollAbility(event, target) {
     const key = target.dataset.key;
     const mod = abilityModifier(this.actor.system.abilities[key].total);
     const cond = conditionRollEffects(this.actor, "check", key);
-    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test d'Intelligence brut (se souvenir d'une
-    // info) contre une cible actuellement ciblée du type de créature favori choisi.
+    // Ennemi juré : avantage aux tests d'Intelligence.
     const favoredEnemyAdvantage = key === "int" && hasFavoredEnemyAdvantage(this.actor);
     await rollCheck({
       actor: this.actor,
@@ -873,29 +666,21 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     });
   }
 
-  /** Jet de sauvegarde (1d20 + modificateur de caractéristique + bonus de maîtrise si
-   *  maîtrisée). `criticalRules: true` : un 1/20 naturel est un échec/succès critique
-   *  automatique EN COMBAT (retour de test) — ce système ne compare déjà aucune sauvegarde à
-   *  une CD (le MJ juge à l'œil), donc seul le libellé de chat change, au MJ d'appliquer la
-   *  règle. */
+  /** Jet de sauvegarde (critiques en combat). */
   static async #onRollSave(event, target) {
     const key = target.dataset.key;
     const system = this.actor.system;
     const mod = abilityModifier(system.abilities[key].total);
     const profBonus = system.saves[key].proficient ? proficiencyBonus(system.attributes.level) : 0;
     const cond = conditionRollEffects(this.actor, "save", key);
-    // Combat monté (don SRD 5e, clause 3) : "votre monture réussit automatiquement tout jet de
-    // sauvegarde de Dextérité que vous réussissez vous-même" — la réussite n'étant jamais
-    // déterminée par ce système (aucune sauvegarde générique ne compare à un DD, le MJ juge à
-    // l'œil, cf. commentaire ci-dessus), seul un rappel textuel est ajouté, jamais un jet/statut
-    // appliqué automatiquement à la monture.
+    // Combat monté : rappel que la monture réussit aussi une sauvegarde de Dex réussie.
     const mount = system.combat.mountedActorId ? game.actors.get(system.combat.mountedActorId) : null;
     const mountNote = key === "dex" && mount && hasFeature(this.actor.items.contents, "Combat monté")
       ? ` (${game.i18n.format("DND_CUSTOM.Roll.MountedDexSaveNote", { mount: mount.name })})`
       : "";
     await rollCheck({
       actor: this.actor,
-      formula: formatModifier(mod + profBonus) + cond.bonus,
+      formula: formatModifier(mod + profBonus + system.attributes.saveBonus) + cond.bonus,
       flavor: game.i18n.format("DND_CUSTOM.Roll.SavingThrow", {
         ability: game.i18n.localize(DND_CUSTOM.abilities[key])
       }) + mountNote,
@@ -906,17 +691,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     });
   }
 
-  /** Jet de compétence (1d20 + modificateur). L'avantage d'Origine (cf.
-   *  CharacterData#prepareDerivedData) et le désavantage d'armure (Discrétion) sont appliqués
-   *  automatiquement en plus du Maj/Ctrl-clic manuel — plusieurs avantages ne cumulent jamais
-   *  (SRD 5e), et avantage + désavantage s'annulent (cf. rollCheck).
-   *
-   *  Bonus conditionnel de trait spécial d'Origine (ex. Art de la Parole/Lucentia sur
-   *  Perspicacité, Sagesse Ancienne/Azhar sur Perception, cf. `specialTrait.conditionalBonus`
-   *  dans scripts/data/origins.json) : retour de test, ce bonus ne doit PAS s'appliquer
-   *  automatiquement (contrairement à l'avantage d'Origine ci-dessus, qui lui reste automatique)
-   *  — proposé comme un choix au moment du jet via une boîte de dialogue, le joueur décidant
-   *  d'utiliser ou non son trait pour CE jet précis. */
+  /** Jet de compétence avec avantage d'Origine, désavantage d'armure et bonus de trait d'Origine proposé. */
   static async #onRollSkill(event, target) {
     const key = target.dataset.key;
     const system = this.actor.system;
@@ -929,14 +704,9 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       game.dndCustomAi?.origins?.[system.origin]?.skillAdvantages?.includes(key)
     );
     const armorDisadvantage = key === "stealth" && system.stealthDisadvantage;
-    // Infiltration (sous-classe Assassin, Roublard, niveau 9) : avantage automatique aux tests
-    // de Discrétion — propre au personnage qui jette (Capacité qu'il possède), pas une lecture
-    // d'état de cible, donc dans le même esprit que l'avantage d'Origine ci-dessus. Vérifie la
-    // Capacité réellement possédée (comme jackOfAllTrades ci-dessus), pas seulement la
-    // sous-classe choisie : le niveau 9 doit être atteint.
+    // Infiltration (Assassin) : avantage en Discrétion.
     const assassinStealthAdvantage = key === "stealth" && hasFeature(this.actor.items.contents, "Infiltration");
-    // Ennemi juré (Rôdeur 1, SRD 5e) : avantage au test de Survie (pister) contre une cible
-    // actuellement ciblée du type de créature favori choisi.
+    // Ennemi juré : avantage en Survie.
     const favoredEnemyAdvantage = key === "survival" && hasFavoredEnemyAdvantage(this.actor);
     const cond = conditionRollEffects(this.actor, "check", SKILL_ABILITIES[key]);
 
@@ -964,20 +734,10 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     });
   }
 
-  /** Jet d'attaque d'une arme de l'inventaire (1d20 + bonus d'attaque, cf. weaponAttackDamage
-   *  dans rules.js — bonus de maîtrise seulement si la classe couvre la catégorie de l'arme).
-   *  `criticalRules: true` : 1/20 naturel = échec/coup critique automatique EN COMBAT (retour de
-   *  test) — un coup critique pose un flag transitoire sur CETTE arme précise (pas sur l'Actor,
-   *  pour ne jamais affecter une autre arme/un autre sort en cours d'usage), consommé par le
-   *  prochain jet de dégâts de cette même arme (#onRollWeaponDamage) pour doubler ses dés.
-   *
-   *  `noteActionEconomyUsage(..., { isWeaponAttack: true })` (chantier "Suivi de l'action/action
-   *  bonus", 2026-08-23) : contrairement aux Capacités/Sorts (`item.system.activation`), une arme
-   *  n'a pas de champ activation propre — un jet d'attaque à l'arme consomme toujours l'Action,
-   *  `isWeaponAttack` exempte du rappel les personnages avec Attaque supplémentaire. */
+  /** Jet d'attaque d'une arme ; un critique est mémorisé sur l'arme pour ses dégâts. */
   static async #onRollWeaponAttack(event, target) {
     const item = itemFromTarget(this.actor, target);
-    if (!item || item.type !== "weapon") return;
+    if (item?.type !== "weapon") return;
     const proficient = isProficientWithWeapon(this.actor.system.class, item.system.weaponType);
     const atk = weaponAttackDamage(
       item.system,
@@ -997,29 +757,13 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     await recordAttackOnTargets(this.actor);
   }
 
-  /** Jet de dégâts d'une arme de l'inventaire. Pour une arme Polyvalente, le dé par défaut
-   *  suit l'équipement réel (deux mains si la main secondaire est libre, une main sinon, cf.
-   *  tab-equipment.hbs/tab-inventory.hbs) ; le bouton alternative (ou Maj-clic) force l'autre
-   *  dé. Pas d'avantage/désavantage (ne concerne que les jets de d20). */
+  /** Jet de dégâts d'une arme ; Polyvalente : dé selon l'équipement, Maj-clic pour l'autre. */
   static async #onRollWeaponDamage(event, target) {
     const item = itemFromTarget(this.actor, target);
-    if (!item || item.type !== "weapon") return;
+    if (item?.type !== "weapon") return;
 
     const isVersatile = item.system.properties.versatile && Boolean(item.system.damageVersatile.dice);
-    let isTwoHandedActive = false;
-    if (isVersatile) {
-      const otherOffHand = this.actor.items.contents.find(
-        (other) =>
-          other.id !== item.id &&
-          ["weapon", "armor"].includes(other.type) &&
-          other.system.equipped &&
-          equipmentSlots(other.type, other.system).includes("offHand")
-      );
-      isTwoHandedActive =
-        item.system.equipped &&
-        equipmentSlots(item.type, item.system).includes("mainHand") &&
-        !otherOffHand;
-    }
+    const isTwoHandedActive = isVersatile && isWieldedTwoHanded(this.actor, item);
     const forceAlternate = event.shiftKey || target.dataset.versatile === "true";
     const useVersatileDice = isVersatile && (forceAlternate ? !isTwoHandedActive : isTwoHandedActive);
     const dice = useVersatileDice ? item.system.damageVersatile.dice : item.system.damage.dice;
@@ -1030,54 +774,34 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       this.actor.system.abilities,
       proficiencyBonus(this.actor.system.attributes.level)
     );
-    const damageTypeLabel = item.system.damage.type
-      ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.damage.type])
-      : "";
-    // Consomme le flag posé par #onRollWeaponAttack sur un coup critique (jamais sur l'Actor,
-    // cf. son commentaire) : dés doublés une seule fois, puis retiré même si ce jet de dégâts
-    // ne correspond finalement pas à l'attaque qui l'a posé (le joueur reste libre de l'ordre
-    // de ses clics, cohérent avec "le jet reste manuel").
+    // Consomme le critique mémorisé sur l'arme.
     const critical = Boolean(item.getFlag(SYSTEM_ID, "pendingCritical"));
     if (critical) await item.unsetFlag(SYSTEM_ID, "pendingCritical");
-    // Critique brutal (Barbare 9, SRD 5e) : un dé de dégâts supplémentaire sur un coup critique
-    // à l'arme de CORPS À CORPS uniquement (RAW) — cf. rollDamage#criticalMultiplier.
+    // Critique brutal : dé supplémentaire en mêlée.
     const isMelee = item.system.weaponType?.startsWith("melee");
     const criticalMultiplier =
       critical && isMelee && hasFeature(this.actor.items.contents, "Critique brutal") ? 3 : 2;
-    // Rage (Barbare, SRD 5e — Niveau C, 2026-08-24) : +2 dégâts sur une attaque d'arme de CORPS
-    // À CORPS utilisant la Force (RAW : "si vous utilisez une arme basée sur la Force").
-    // `atk.abilityMod` (weaponAttackDamage, rules.js) vaut déjà le meilleur de Force/Dextérité
-    // pour une arme Finesse — comparer à strMod exclut donc le cas où le joueur combat en
-    // Dextérité sur une Finesse (Dextérité strictement supérieure), sans complexifier
-    // weaponAttackDamage pour ce seul cas.
+    // Rage : +2 aux dégâts d'une attaque de mêlée utilisant la Force.
     const strMod = abilityModifier(this.actor.system.abilities.str.total);
     const rageDamageBonus = this.actor.statuses.has("raging") && isMelee && atk.abilityMod === strMod ? "+2" : "";
     await rollDamage({
       actor: this.actor,
       dice,
-      formula: formatModifier(atk.abilityMod) + rageDamageBonus,
-      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${damageTypeLabel ? ` (${damageTypeLabel})` : ""}`,
+      formula: formatModifier(atk.damageMod) + rageDamageBonus,
+      flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${parenthesized(damageTypeLabel(item.system.damage.type))}`,
       critical,
       criticalMultiplier,
       damageType: item.system.damage.type,
       isMagicalSource: item.system.magic
     });
 
-    // Dégâts BONUS d'une propriété magique (chantier "types de dégâts", Phase 3, 2026-08-24 —
-    // ex. épée de feu = tranchant + feu) : 2e message de dégâts DISTINCT, son propre type, jamais
-    // de modificateur de caractéristique/Rage ajouté (SRD 5e : dés fixes) — résolu indépendamment
-    // du 1er contre les résistances de la cible (cf. damageTypeMultiplier, helpers/damage-resolution.js).
-    // Même critique (dés doublés/triplés) que le composant principal, SRD 5e : "roll all of the
-    // attack's damage dice twice" sur un coup critique, sans distinction de composant.
+    // Dégâts secondaires : message distinct, sans modificateur, critique appliqué.
     if (item.system.secondaryDamage.dice) {
-      const secondaryDamageTypeLabel = item.system.secondaryDamage.type
-        ? game.i18n.localize(DND_CUSTOM.damageTypes[item.system.secondaryDamage.type])
-        : "";
       await rollDamage({
         actor: this.actor,
         dice: item.system.secondaryDamage.dice,
         formula: "",
-        flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${secondaryDamageTypeLabel ? ` (${secondaryDamageTypeLabel})` : ""}`,
+        flavor: `${game.i18n.format("DND_CUSTOM.Roll.WeaponDamage", { weapon: item.name })}${parenthesized(damageTypeLabel(item.system.secondaryDamage.type))}`,
         critical,
         criticalMultiplier,
         damageType: item.system.secondaryDamage.type,
@@ -1085,16 +809,8 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       });
     }
   }
-  // Incantation (onCastSpell + résolution coût/concentration/lumière + délégation par type de
-  // sort + jet de dégâts différé + abandon de concentration) : factorisée dans
-  // SpellcastingSheetMixin (sheets/spellcasting-mixin.js). #onSelectSpellLevel + #activeSpellLevel
-  // (état d'onglet) restent ici.
 
-  /** Bascule l'onglet par niveau de la liste de Sorts (retour de test, cf. #activeSpellLevel) :
-   *  purement visuel (classe `.active` sur l'onglet cliqué + le panneau correspondant), aucun
-   *  `actor.update()` donc aucun re-render — mémorise juste le palier choisi sur l'instance pour
-   *  qu'un re-render déclenché ailleurs (ex. lancer un sort) le restitue au lieu de retomber sur
-   *  le premier palier (cf. context.spellsByLevel, #_prepareContext). */
+  /** Affiche l'onglet de palier de sorts cliqué et le mémorise, sans rendu. */
   static #onSelectSpellLevel(event, target) {
     const level = Number(target.dataset.level);
     this.#activeSpellLevel = level;
@@ -1106,10 +822,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
       .forEach((panel) => panel.classList.toggle("active", Number(panel.dataset.level) === level));
   }
 
-  /** Bouton "Utiliser" de l'inventaire : objets `gear` avec `system.use.type` renseigné
-   *  ("light" allume/éteint la source sur le(s) token(s) de l'Actor sur la scène active,
-   *  "heal" rend (healBase + bonus de compétence) PV), ou objets `tool` avec
-   *  `system.useEffect.skill` renseigné (test de compétence, cf. #onUseTool). */
+  /** Bouton « Utiliser » : lumière ou soin d'un objet, test d'un outil. */
   static async #onUseItem(event, target) {
     const item = itemFromTarget(this.actor, target);
     if (!item) return;
@@ -1123,13 +836,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     if (use.type === "heal") return DndCustomActorSheet.#applyHeal(this.actor, item);
   }
 
-  /** Test de compétence avec un outil (`system.useEffect.skill`, cf. ToolData) : l'outil
-   *  confère sa propre maîtrise (bonus de maîtrise toujours appliqué, indépendamment de la
-   *  maîtrise de la compétence elle-même — cf. toolCheckModifier dans rules.js), plus
-   *  l'éventuel bonus fixe de l'objet (`system.useEffect.bonus`). Maj/Ctrl-clic = avantage/
-   *  désavantage, même convention que #onRollSkill. Décrémente `system.quantity` à chaque
-   *  utilisation (retour de test — s'écarte du SRD 5e, où un kit d'outils est réutilisable à
-   *  l'infini, mais explicitement demandé) ; bloqué avec un avertissement une fois épuisé. */
+  /** Test de compétence avec un outil (maîtrise toujours appliquée) ; consomme une unité. */
   static async #onUseTool(event, actor, item) {
     const skillKey = item.system.useEffect.skill;
     if (!skillKey) return;
@@ -1157,8 +864,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
   static async #toggleLight(actor, item) {
     const turningOn = !item.system.lit;
     if (turningOn) {
-      // Un token n'a qu'une seule configuration de lumière active : éteindre toute autre
-      // source déjà allumée sur cet Actor avant d'allumer celle-ci.
+      // Éteint les autres sources de lumière de l'Actor.
       const others = actor.items.contents.filter(
         (other) => other.id !== item.id && other.type === "gear" && other.system.use.type === "light" && other.system.lit
       );
@@ -1185,30 +891,35 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     }
   }
 
-  // setTokensLight / applyTokensLight : factorisés dans helpers/token-light.js
-  // (partagés avec SpellcastingSheetMixin pour les sorts de lumière).
-
+  /** Soin d'un objet sur son porteur : healDice + healBase + bonus de compétence ; consomme une unité si consommable. */
   static async #applyHeal(actor, item) {
     const use = item.system.use;
-    const bonus = skillModifier(actor.system, use.healSkill || "medicine", proficiencyBonus(actor.system.attributes.level));
-    const amount = Math.max(0, use.healBase + bonus);
+    if (use.consumable && item.system.quantity <= 0) {
+      ui.notifications.warn(game.i18n.format("DND_CUSTOM.Chat.NoChargesLeft", { feature: item.name }));
+      return;
+    }
+
+    const bonus = use.healSkill
+      ? skillModifier(actor.system, use.healSkill, proficiencyBonus(actor.system.attributes.level))
+      : 0;
+    let amount = Math.max(0, use.healBase + bonus);
+    let roll = null;
+    if (use.healDice) {
+      roll = await new Roll(`${use.healDice}${formatModifier(use.healBase + bonus)}`).evaluate();
+      amount = Math.max(0, roll.total);
+    }
 
     const hp = actor.system.attributes.hp;
     await actor.update({ "system.attributes.hp.value": Math.min(hp.value + amount, hp.max) });
+    if (use.consumable) await item.update({ "system.quantity": item.system.quantity - 1 });
 
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content: game.i18n.format("DND_CUSTOM.Chat.UseHeal", { name: actor.name, item: item.name, amount })
-    });
+    const text = game.i18n.format("DND_CUSTOM.Chat.UseHeal", { name: actor.name, item: item.name, amount });
+    const speaker = ChatMessage.getSpeaker({ actor });
+    if (roll) await roll.toMessage({ speaker, flavor: text, flags: sheetRollFlags() });
+    else await ChatMessage.create({ speaker, content: text });
   }
 
-  /** Bascule purement visuelle (classe `.active` + icône case à cocher) de la sélection en
-   *  attente d'un état dans la liste déroulante — ne touche jamais l'Actor. Retour de test :
-   *  l'ancienne version appelait `actor.toggleStatusEffect` (donc un `actor.update()`) à chaque
-   *  clic, déclenchant un re-render complet qui régénère le `<details>` et le referme,
-   *  empêchant de cocher plusieurs états d'affilée sans rouvrir la liste à chaque fois. L'Actor
-   *  n'est désormais mis à jour qu'à la fermeture de la liste, en un seul geste pour tous les
-   *  états changés (cf. #applyPendingConditions, branché par #attachConditionsListeners). */
+  /** Coche ou décoche visuellement un état, appliqué à la fermeture de la liste. */
   static #onToggleConditionSelection(event, target) {
     const nowActive = target.classList.toggle("active");
     const icon = target.querySelector("i");
@@ -1216,29 +927,23 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     icon.classList.toggle("fa-square-check", nowActive);
   }
 
-  /** Branche la persistance des états sur la fermeture de la liste déroulante (évènement natif
-   *  `toggle` d'un `<details>`, déclenché à l'ouverture ET à la fermeture — seule la fermeture
-   *  nous intéresse ici, repérée par `details.open` déjà repassé à `false`). */
+  /** Applique les états sélectionnés à la fermeture de la liste déroulante. */
   #attachConditionsListeners() {
     const details = this.element.querySelector(".conditions-dropdown");
     if (!details) return;
     details.addEventListener("toggle", () => {
       if (details.open) return;
-      this.#applyPendingConditions(details);
+      void this.#applyPendingConditions(details);
     });
   }
 
-  /** Compare la sélection en attente (classe `.active` posée par #onToggleConditionSelection)
-   *  à l'état réel de l'Actor, et ne touche (via `Actor#toggleStatusEffect`, qui crée/retire
-   *  l'ActiveEffect correspondante) que les états qui ont effectivement changé — jamais un
-   *  Promise.all sur plusieurs bascules simultanées : des créations/suppressions concurrentes
-   *  de documents embarqués sur le même Actor pourraient se marcher dessus. */
+  /** Bascule un à un les états dont la sélection diffère de l'Actor. */
   async #applyPendingConditions(details) {
     const rows = [...details.querySelectorAll(".condition-checkbox-row")];
     const current = this.actor.statuses;
     const changed = rows.filter((row) => row.classList.contains("active") !== current.has(row.dataset.key));
     for (const row of changed) {
-      await this.actor.toggleStatusEffect(row.dataset.key);
+      await this.actor.toggleStatusEffect(row.dataset.key); // NOSONAR : séquentiel voulu
     }
   }
 

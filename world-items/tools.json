@@ -12,10 +12,10 @@
       },
       "weight": 3.6,
       "useEffect": {
-        "skill": "",
+        "skill": "arcana",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Fioles, mortier et réactifs pour identifier une substance, préparer un acide ou une fumée. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -31,10 +31,10 @@
       },
       "weight": 4.1,
       "useEffect": {
-        "skill": "",
+        "skill": "medicine",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Tonnelet, siphon et levures : purifier une eau douteuse, repérer une boisson frelatée ou empoisonnée. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -50,10 +50,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "history",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Encres, plumes et parchemins : déchiffrer une écriture ancienne, authentifier ou rédiger un document. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -69,10 +69,10 @@
       },
       "weight": 2.7,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Scie, rabot et clous : repérer une faiblesse dans une charpente, consolider ou bloquer une porte. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -88,10 +88,10 @@
       },
       "weight": 2.7,
       "useEffect": {
-        "skill": "",
+        "skill": "survival",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Compas, règles et encres : relever un itinéraire, lire une carte et ne pas s'égarer. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -107,10 +107,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Alênes, cuir et fil : lire des traces de pas, réparer ou truquer une chaussure. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -126,10 +126,10 @@
       },
       "weight": 3.6,
       "useEffect": {
-        "skill": "",
+        "skill": "survival",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Marmite, couteaux et épices : tirer un repas des ressources trouvées en chemin. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -145,10 +145,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Canne et pinces : estimer la valeur d'un objet en verre, repérer une contrefaçon. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -164,10 +164,10 @@
       },
       "weight": 0.9,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Loupe et pinces fines : évaluer une gemme ou un bijou, repérer un faux. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -183,10 +183,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Couteaux et teintures : identifier l'origine d'un cuir, réparer une sangle ou une armure de cuir. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -202,10 +202,10 @@
       },
       "weight": 3.6,
       "useEffect": {
-        "skill": "",
+        "skill": "perception",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Truelle, ciseaux et marteau : repérer un passage dérobé ou une faiblesse dans un mur. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -221,10 +221,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "history",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Pinceaux et pigments : reconnaître l'origine d'une œuvre, reproduire un symbole ou un blason. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -240,10 +240,10 @@
       },
       "weight": 1.4,
       "useEffect": {
-        "skill": "",
+        "skill": "history",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Tour et outils de modelage : dater un tesson, deviner l'usage d'une poterie. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -259,10 +259,10 @@
       },
       "weight": 3.6,
       "useEffect": {
-        "skill": "",
+        "skill": "investigation",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Marteau, pinces et soufflet : évaluer une arme ou une armure, réparer une pièce de métal. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -278,10 +278,10 @@
       },
       "weight": 4.5,
       "useEffect": {
-        "skill": "",
+        "skill": "history",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Petits outils et pièces : réparer ou comprendre un mécanisme, bricoler un dispositif simple. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -297,10 +297,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "history",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Fils et navette : reconnaître la provenance d'une étoffe, raccommoder un vêtement ou une voile. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -316,10 +316,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "nature",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Couteaux et gouges : identifier une essence de bois, tailler flèches, piquets ou figurines. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -335,10 +335,10 @@
       },
       "weight": 1.4,
       "useEffect": {
-        "skill": "",
+        "skill": "deception",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Fards, teintures et accessoires : changer d'apparence et tromper un observateur. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -354,10 +354,10 @@
       },
       "weight": 2.3,
       "useEffect": {
-        "skill": "",
+        "skill": "deception",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Papiers, encres et sceaux : imiter une écriture ou un document officiel. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -373,10 +373,10 @@
       },
       "weight": 1.4,
       "useEffect": {
-        "skill": "",
+        "skill": "nature",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Sacs, ciseaux et pilon : identifier et récolter des plantes utiles. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -392,10 +392,10 @@
       },
       "weight": 0.9,
       "useEffect": {
-        "skill": "",
+        "skill": "survival",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Sextant, compas et cartes marines : faire le point et tenir un cap en mer. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -411,10 +411,10 @@
       },
       "weight": 0.9,
       "useEffect": {
-        "skill": "",
+        "skill": "medicine",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Fioles et réactifs : identifier un poison, en traiter ou en préparer un. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -433,7 +433,7 @@
         "skill": "sleightOfHand",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage à tout test de Dextérité (Escamotage) impliquant crochetage de serrure ou désamorçage de piège. Bouton \"Utiliser\" sur la fiche : jet automatique (bonus de maîtrise toujours appliqué, indépendamment de la maîtrise d'Escamotage elle-même)."
+      "descriptionRP": "Crochets, lime et miroir : crocheter une serrure ou désamorcer un piège. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   },
   {
@@ -449,10 +449,10 @@
       },
       "weight": 0.05,
       "useEffect": {
-        "skill": "",
+        "skill": "insight",
         "bonus": 0
       },
-      "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage aux tests appropriés (non calculé automatiquement pour l'instant)."
+      "descriptionRP": "Dés de corne ou d'os : jouer, deviner le bluff d'un adversaire ou repérer un tricheur. Bouton « Utiliser » : test de la compétence liée, avec le bonus de maîtrise de l'outil."
     }
   }
 ]

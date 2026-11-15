@@ -1,12 +1,5 @@
-// Niveau B, cf. ClaudeFiles/MECANIQUES_A_AUTOMATISER.md (2026-08-24) : généralisation de
-// `condition-immunity.js` au-delà de Rage sans esprit/Aura de dévotion (déjà couvertes par
-// hunter-subclasses-extra-mechanics.cy.js). Deux nouvelles conditions homebrew (cf. config.js),
-// posées manuellement par le lanceur sur sa cible (même convention que "blessed"/"guided", aucun
-// décompte de durée automatique) :
-// - "freedomOfMovement" (Liberté de mouvement) → immunité à Entravé, sans restriction.
-// - "protectedFromEvilGood" (Protection contre le mal et le bien) → immunité à Charmé/Effrayé,
-//   simplification assumée (pas de restriction par type de créature attaquante, ce système ne
-//   trace l'origine d'aucune ActiveEffect — cf. commentaire de isImmuneToCondition).
+// Immunités par état posé sur la cible : Liberté de mouvement (Entravé) et
+// Protection contre le mal et le bien (Charmé, Effrayé).
 
 const createdActorIds = [];
 

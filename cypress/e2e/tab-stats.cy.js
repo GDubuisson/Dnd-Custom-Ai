@@ -1,29 +1,12 @@
-// Implémente la section 3 (T-STATS-001 à T-STATS-022) de tests/E2E_TEST_PLAN.md — onglet
-// Statistiques (tab-stats.hbs) : jets de dés, repos, Initiative, états/Exhaustion, Agonie et
-// jets de sauvegarde de la mort. Section la plus volumineuse du plan et la première à avoir
-// besoin de contrôler un résultat de dé précis (jets de sauvegarde de la mort) — cf. cy.forceD20
-// (cypress/support/e2e.js) plutôt que de répéter le clic jusqu'à observer chaque cas par hasard
-// (les deux approches sont explicitement autorisées par le plan, la première est fiable, pas la
-// seconde).
-//
-// Vérification des jets d'avantage/désavantage (T-STATS-002/003/005/006/017) : par la FORMULE du
-// jet posté en chat (`2d20kh1`/`2d20kl1` vs `1d20`, cf. scripts/helpers/rolls.js), pas par son
-// résultat — inutile de contrôler le dé pour ça, la formule suffit à prouver que le bon mécanisme
-// s'est déclenché.
-//
-// Personnage partagé (fighter, comme dans character-sheet.cy.js) pour la plupart des scénarios ;
-// personnages dédiés pour ceux qui ont besoin d'une classe précise (Barde pour T-STATS-007,
-// Occultiste pour T-STATS-010, un lanceur de sorts quelconque pour T-STATS-011) ou d'un état de
-// mort/agonie isolé (T-STATS-018 à 022, pour ne pas faire dépendre leurs préconditions HP/mort de
-// l'ordre d'exécution des autres scénarios de ce fichier).
+// T-STATS-001 à 023 : onglet Statistiques (jets, repos, états, Épuisement, agonie). Avantage/désavantage
+// vérifiés par la formule du jet ; dés de sauvegarde contre la mort forcés par cy.forceD20.
+// Personnage partagé, sauf scénarios nécessitant une classe ou un état d'agonie isolé.
 
 const createdActorIds = [];
 const createdCombatIds = [];
 let sharedActorId;
 
-// Reproduit les formules de scripts/helpers/rules.js (déjà couvertes par tests/unit/rules.test.js)
-// pour calculer côté spec le résultat ATTENDU d'un jet, plutôt que de dépendre d'un nombre en dur
-// qui casserait si les caractéristiques du personnage de fixture changent.
+// Formules de rules.js pour calculer le résultat attendu.
 function abilityModifier(score) {
   return Math.floor((score - 10) / 2);
 }
@@ -42,24 +25,8 @@ function updateActor(win, actor, data, options = {}) {
   return actor.update(win.JSON.parse(win.JSON.stringify(data)), options);
 }
 
-// Lit le dernier message de chat posté (le jet qui vient d'être déclenché) : `rolls[0]` porte la
-// formule réellement évaluée par Foundry, la preuve la plus directe qu'avantage/désavantage a été
-// appliqué — pas besoin de parser le rendu HTML de la carte de jet. `formula` est renvoyée sans
-// espaces (Foundry sérialise "1d20+2" en "1d20 + 2") pour rester comparable telle quelle à une
-// chaîne construite via formatModifier ci-dessus.
-//
-// `cy.window().should(...)` (pas un simple `.then()`) : le clic qui déclenche le jet ne fait que
-// distribuer l'évènement DOM, la promesse du gestionnaire (rollCheck -> roll.evaluate() ->
-// roll.toMessage()) continue de tourner après que la commande `.click()` de Cypress s'est
-// terminée — lire `game.messages` immédiatement pouvait tomber avant que le message n'existe
-// encore (formule vide, flake découvert au 5e run réel de cette spec, 2026-08-15).
-//
-// Vérifier juste "un message avec une formule existe" ne suffit PAS : lancé en tout début de
-// fichier (T-STATS-001), ça peut retomber sur le tout DERNIER message d'une AUTRE spec exécutée
-// juste avant dans la même session (`npm run test:e2e:run` partage le même monde entre toutes
-// les specs, cf. tests/README.md) — flake découvert sur un run combiné, 2026-08-15.
-// `knownMessageCount` (mis à jour par resetMessageBaseline() dans chaque beforeEach concerné,
-// puis après chaque lecture ici) garantit qu'on attend un message réellement NOUVEAU.
+// Formule du dernier nouveau message de jet (sans espaces), attendue via `should()` ;
+// `knownMessageCount` garantit un message réellement nouveau.
 let knownMessageCount = null;
 function resetMessageBaseline() {
   return cy.window().its("game.messages.size").then((size) => {
@@ -94,7 +61,7 @@ before(() => {
     name: "Tab Stats Fighter",
     origin: "ravenmoor", // avantage d'Origine sur investigation/perception (T-STATS-005)
     classKey: "fighter", // maîtrise str/con (T-STATS-004), armure de départ à désavantage Discrétion (T-STATS-006),
-    // possède "Second souffle" (uses.recharge "shortRest", T-STATS-012)
+    // Second souffle : recharge « shortRest ».
     skills: ["athletics", "intimidation"]
   }).then((id) => {
     sharedActorId = id;
@@ -131,8 +98,7 @@ describe("Onglet Statistiques — jets de dés", () => {
   });
 
   it("compétence : abréviation localisée de la caractéristique, pas le nom complet ni la clé technique (anomalie 2026-08-19)", () => {
-    // "Athlétisme"/"Athletics" (fixture skills: ["athletics", "intimidation"]) est liée à
-    // Force (str) — cf. DND_CUSTOM.skills, config.js.
+    // Athlétisme, lié à la Force.
     let expectedShort, fullName, athleticsLabel;
     cy.window().then((win) => {
       expectedShort = win.game.i18n.localize("DND_CUSTOM.Abilities.Short.str");
@@ -212,9 +178,7 @@ describe("Onglet Statistiques — jets de dés", () => {
 
   it("Aptitudes multiples (Barde) — demi-bonus sur une compétence non maîtrisée (T-STATS-007)", () => {
     let bardActorId;
-    // Ferme la fiche du personnage partagé (ouverte par le beforeEach de ce describe) avant d'en
-    // créer un autre : sinon les deux fiches restent ouvertes en même temps et sheetRoot() (qui
-    // matche `.application.character`) devient ambigu — piège rencontré au premier run réel.
+    // Ferme la fiche partagée avant d'en créer une autre.
     cy.window().then((win) => win.game.actors.get(sharedActorId).sheet.close());
     cy.createReadyCharacter({
       name: "Tab Stats Bard",
@@ -225,9 +189,7 @@ describe("Onglet Statistiques — jets de dés", () => {
       bardActorId = id;
       createdActorIds.push(id);
 
-      // "Aptitudes multiples" (Barde niveau 2) octroyée directement depuis le compendium plutôt
-      // que via grantClassContent (monter le personnage au niveau 2 n'apporterait rien de plus
-      // ici : seule la présence de la Capacité, pas le niveau, conditionne hasFeature côté code).
+      // Aptitudes multiples octroyée depuis le compendium.
       return cy.window().then((win) => {
         const pack = win.game.packs.get("dnd-custom-ai.capacites");
         return pack.getIndex().then(() => {
@@ -259,15 +221,12 @@ describe("Onglet Statistiques — jets de dés", () => {
     sheetRoot().find('button[data-action="rollAbility"][data-key="wis"]').click();
     lastMessageRoll().then((roll) => expect(roll.formula).to.include("2d20kl1"));
 
-    // Remet l'Exhaustion à zéro pour ne pas fausser les tests suivants de cette spec.
+    // Épuisement remis à 0.
     cy.window().then((win) => updateActor(win, win.game.actors.get(sharedActorId), { "system.attributes.exhaustion": 0 }, { dndCustomExhaustionChange: true }));
   });
 
-  // Retour de test (lot 3) : "Art de la Parole" (Lucentia) ne faisait rien au clic sur
-  // Perspicacité — vérifie le vrai mécanisme (boîte de dialogue DialogV2.confirm, optionnel,
-  // jamais automatique contrairement à l'avantage d'Origine de T-STATS-005 ci-dessus) plutôt que
-  // juste la donnée `conditionalBonus`. Un "Non" ne doit RIEN changer au jet normal ; un "Oui"
-  // ajoute le modificateur de Charisme et le nomme dans le libellé du jet.
+  // Bonus conditionnel du trait d'Origine, proposé par dialogue : « Non » ne change rien,
+  // « Oui » ajoute le modificateur de Charisme et nomme le trait.
   it("jet de compétence — bonus conditionnel de trait d'Origine, optionnel via boîte de dialogue (T-STATS-023)", () => {
     let lucentiaActorId;
     cy.window().then((win) => win.game.actors.get(sharedActorId).sheet.close());
@@ -290,14 +249,11 @@ describe("Onglet Statistiques — jets de dés", () => {
         });
       });
 
-      // "Non" : le jet reste le jet de compétence normal, aucune trace du trait.
+      // « Non » : jet normal.
       sheetRoot().find('button[data-action="rollSkill"][data-key="insight"]').click();
       cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Art de la Parole");
       cy.get('dialog.application.dialog[open] button[data-action="no"]').click();
-      // Attend la fermeture COMPLÈTE (retrait du DOM, pas juste la perte de l'attribut `open`)
-      // avant de rouvrir la même boîte de dialogue plus bas — sinon le prochain `cy.get([open])`
-      // matche parfois encore l'ancienne instance en cours de fermeture (2 éléments), Cypress
-      // refusant alors le clic ("can only be called on a single element").
+      // Attend la suppression du dialogue avant d'en rouvrir un.
       cy.get("dialog.application.dialog", { timeout: 10000 }).should("not.exist");
       let baseFormula;
       lastMessageRoll().then((roll) => {
@@ -305,7 +261,7 @@ describe("Onglet Statistiques — jets de dés", () => {
         baseFormula = roll.formula;
       });
 
-      // "Oui" : le modificateur de Charisme s'ajoute au jet normal, trait nommé dans le libellé.
+      // « Oui » : modificateur de Charisme ajouté.
       sheetRoot().find('button[data-action="rollSkill"][data-key="insight"]').click();
       cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Art de la Parole");
       cy.get('dialog.application.dialog[open] button[data-action="yes"]').click();
@@ -340,7 +296,7 @@ describe("Onglet Statistiques — caractéristiques", () => {
 
       sheetRoot().find('button[data-action="abilityDecrease"][data-key="str"]').click();
       cy.window().then((win3) => {
-        // Retombe exactement sur la valeur de départ : aucune trace laissée pour les tests suivants.
+        // Valeur de départ restaurée.
         expect(win3.game.actors.get(sharedActorId).system.abilities.str.value).to.equal(before);
       });
     });
@@ -356,19 +312,13 @@ describe("Onglet Statistiques — repos", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      const max = actor.system.attributes.hp.max;
-      // dndCustomDamageApply : contourne le filet anti-self-dégâts de preUpdateActor
-      // (dnd-custom-ai.js) — simulation de dégâts déjà subis pour préparer le scénario de Repos,
-      // pas une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      // `dndCustomDamageApply` autorise la baisse de PV simulée.
       return updateActor(win, actor, { "system.attributes.hp.value": 1 }, { dndCustomDamageApply: true });
     });
 
     lastMessageCount().then((before) => {
       sheetRoot().find('button[data-action="restShort"]').click();
-      // `.should()` (pas un `.then()` isolé) : le clic ne fait que distribuer l'évènement DOM,
-      // le gestionnaire (#onRestShort, plusieurs `await` avant le ChatMessage.create final)
-      // continue de tourner après — même piège/même fix que lastMessageRoll ci-dessus, découvert
-      // ici sur un deuxième run réel de cette spec dans la même session que d'autres specs.
+      // Attend la fin de #onRestShort (asynchrone).
       cy.window().should((win) => {
         const actor = win.game.actors.get(sharedActorId);
         const expected = Math.min(1 + Math.floor(actor.system.attributes.hp.max / 2), actor.system.attributes.hp.max);
@@ -378,7 +328,7 @@ describe("Onglet Statistiques — repos", () => {
       });
     });
 
-    // Pleine santé pour les tests suivants.
+    // Pleine santé.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
@@ -440,9 +390,7 @@ describe("Onglet Statistiques — repos", () => {
         const emptyAllSlots = Object.fromEntries(
           Object.keys(slots).map((level) => [`system.spells.slots.${level}.value`, 0])
         );
-        // dndCustomDamageApply : simulation de dégâts déjà subis pour tester un Repos long
-        // depuis un PV partiel (pas juste un no-op à pleine santé) — pas une vraie tentative de
-        // self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+        // `dndCustomDamageApply` autorise la baisse de PV simulée.
         return updateActor(
           win,
           actor,
@@ -453,7 +401,7 @@ describe("Onglet Statistiques — repos", () => {
 
       lastMessageCount().then((before) => {
         sheetRoot().find('button[data-action="restLong"]').click();
-        // `.should()` : même piège/même fix que T-STATS-009 ci-dessus.
+        // Attend la fin du repos.
         cy.window().should((win) => {
           const actor = win.game.actors.get(casterId);
           expect(actor.system.attributes.hp.value).to.equal(actor.system.attributes.hp.max);
@@ -467,15 +415,7 @@ describe("Onglet Statistiques — repos", () => {
     });
   });
 
-  // Historique : ce scénario a longtemps été volontairement rouge (découvert le 2026-08-15,
-  // corrigé le 2026-08-16) — grantClassContent (scripts/helpers/class-content.js) comparait le
-  // nom de classe français codé en dur dans world-items/features.json/spells.json (ex.
-  // "Guerrier") au libellé de la classe LOCALISÉ dynamiquement (`game.i18n.localize`), ce qui ne
-  // correspondait jamais sous une langue de monde autre que le français (ce monde de test tourne
-  // en anglais). Corrigé en stockant une clé de classe STABLE (ex. "fighter", indépendante de la
-  // langue) dans `system.class`/`system.subclass`/`system.classes` du contenu de référence —
-  // cf. FeatureData/SpellData, scripts/data/item-data.js, et la migration de
-  // world-items/features.json/spells.json. Ce test reste la preuve directe de la correction.
+  // Les Capacités à charges se rechargent au repos court comme long.
   it("recharge une Capacité à charges au repos, court comme long (T-STATS-012)", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
@@ -486,11 +426,7 @@ describe("Onglet Statistiques — repos", () => {
       return secondWind.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 0 })));
     });
 
-    // `.should()` (pas un simple `.then()`) : le clic ne fait que distribuer l'évènement DOM, le
-    // gestionnaire (#onRestShort, plusieurs `await` avant la fin) continue de tourner après —
-    // même piège/même fix que lastMessageRoll et T-STATS-009 (cf. leurs commentaires). Devenu
-    // sensible avec l'ajout de #offerSpellSlotRecoveries (anomalie récupération arcanique/
-    // naturelle, 2026-08-22), qui allonge légèrement la chaîne d'attente de #onRestShort.
+    // Attend la fin de #onRestShort (asynchrone).
     sheetRoot().find('button[data-action="restShort"]').click();
     cy.window().should((win) => {
       const secondWind = win.game.actors.get(sharedActorId).items.find((item) => item.name === "Second souffle");
@@ -512,8 +448,7 @@ describe("Onglet Statistiques — repos", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      // dndCustomDamageApply : simulation de dégâts déjà subis pour préparer le scénario "mort",
-      // pas une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+      // `dndCustomDamageApply` autorise la baisse de PV simulée.
       return updateActor(
         win,
         actor,
@@ -523,11 +458,8 @@ describe("Onglet Statistiques — repos", () => {
     });
 
     lastMessageCount().then((before) => {
-      // `{force: true}` : le bouton est déjà désactivé côté template quand le personnage est
-      // mort (`dying.dead`, character-sheet.hbs) — un vrai clic ne passerait même pas l'étape
-      // d'actionabilité de Cypress. Ce qui est testé ici est le garde-fou CÔTÉ DONNÉES
-      // (`#isDead()`, actor-sheet.js), en complément de ce verrou visuel, pas ce dernier.
-      sheetRoot().find('button[data-action="restShort"]').click({ force: true });
+      // `force` : bouton désactivé ; teste le verrou côté données (`#isDead()`).
+      sheetRoot().find('button[data-action="restShort"]').click({ force: true }); // NOSONAR : bouton désactivé (cf. ci-dessus)
       cy.window().then((win) => {
         const actor = win.game.actors.get(sharedActorId);
         expect(actor.system.attributes.hp.value, "aucun soin appliqué").to.equal(1);
@@ -535,7 +467,7 @@ describe("Onglet Statistiques — repos", () => {
       });
     });
 
-    // Retire l'état "mort" posé pour ce test avant de rendre la main aux tests suivants.
+    // Retire l'état « mort ».
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, {
@@ -545,12 +477,7 @@ describe("Onglet Statistiques — repos", () => {
     });
   });
 
-  // Règle maison (absente du SRD, anomalie 2026-08-19 : "ne pas laisser abuser des repos
-  // courts") : à partir du 4e repos court depuis le dernier repos long (celui-ci inclus), CHAQUE
-  // repos court supplémentaire ajoute 1 point d'Épuisement (cf. CharacterData#attributes.
-  // shortRestCount, #onRestShort/#onRestLong dans actor-sheet.js). Préconditions posées
-  // explicitement (shortRestCount) plutôt que de dépendre du nombre de repos déjà déclenchés par
-  // les tests précédents de ce fichier.
+  // À partir du 4e repos court depuis le dernier repos long, +1 point d'Épuisement par repos court.
   it("Épuisement après le 4e repos court sans repos long (anomalie 2026-08-19)", () => {
     cy.openActorSheet(sharedActorId);
     cy.window().then((win) => {
@@ -569,8 +496,7 @@ describe("Onglet Statistiques — repos", () => {
       });
     });
 
-    // 5e repos court (compteur déjà à 4) : chaque repos SUPPLÉMENTAIRE ajoute encore 1 point,
-    // pas seulement le 4e.
+    // 5e repos court : +1 point.
     lastMessageCount().then((before) => {
       sheetRoot().find('button[data-action="restShort"]').click();
       cy.window().should((win) => {
@@ -581,7 +507,7 @@ describe("Onglet Statistiques — repos", () => {
       });
     });
 
-    // Plafond SRD (6) jamais dépassé même après de nombreux repos courts supplémentaires.
+    // Plafond de 6.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.shortRestCount": 3, "system.attributes.exhaustion": 6 }, { dndCustomExhaustionChange: true });
@@ -591,7 +517,7 @@ describe("Onglet Statistiques — repos", () => {
       expect(win.game.actors.get(sharedActorId).system.attributes.exhaustion, "plafonné à 6").to.equal(6);
     });
 
-    // Repos long : remet le compteur à zéro (seul le repos long le fait, pas le repos court).
+    // Le repos long remet le compteur à zéro.
     sheetRoot().find('button[data-action="restLong"]').click();
     cy.window().should((win) => {
       expect(
@@ -600,8 +526,7 @@ describe("Onglet Statistiques — repos", () => {
       ).to.equal(0);
     });
 
-    // Nettoyage : ne pas laisser ce personnage partagé à 6 points d'Épuisement pour les tests
-    // suivants (T-STATS-016 notamment, qui manipule aussi ce champ).
+    // Épuisement remis à 0.
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
       return updateActor(win, actor, { "system.attributes.exhaustion": 0 }, { dndCustomExhaustionChange: true });
@@ -610,17 +535,12 @@ describe("Onglet Statistiques — repos", () => {
 });
 
 describe("Onglet Statistiques — Initiative", () => {
-  // Retour de test (2026-08-16) : le bouton de jet d'Initiative de la fiche a été retiré
-  // (`#onRollInitiative`, actor-sheet.js) — décision explicite de l'utilisateur pour éviter deux
-  // façons différentes de lancer l'Initiative (fiche + Combat Tracker natif de Foundry, seul
-  // point d'entrée désormais). Le modificateur reste affiché, en lecture seule. L'intégration
-  // "un Combattant apparaît dans le tracker" reste couverte par combat-tracker.cy.js >
-  // T-COMBAT-001/003, via le tracker natif plutôt que ce bouton disparu.
+  // Initiative en lecture seule (le jet se fait via le Combat Tracker).
   beforeEach(() => {
     cy.loginAsPlayer();
   });
 
-  it("le modificateur d'Initiative est affiché en lecture seule, plus de bouton de jet (T-STATS-014)", () => {
+  it("le modificateur d'Initiative est affiché en lecture seule, plus de bouton de jet (T-STATS-014)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.openActorSheet(sharedActorId);
 
     cy.window().then((win) => {
@@ -640,11 +560,7 @@ describe("Onglet Statistiques — Initiative", () => {
 describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-19)", () => {
   let featActorId;
 
-  // Un monde déjà chargé une fois conserve les anciennes données de compendium par nom
-  // (importSystemContent n'importe que les entrées ABSENTES, jamais une mise à jour d'une
-  // entrée existante, cf. ANOMALIES_ACTIVES.md) — resynchronise explicitement UNE entrée avant
-  // de tester un champ qui vient d'être ajouté à son schéma, plutôt que de dépendre d'un état de
-  // compendium implicite.
+  // Resynchronise une entrée de compendium avant de tester un champ récent.
   function resyncCompendiumEntry(win, packName, itemName) {
     const pack = win.game.packs.get(`dnd-custom-ai.${packName}`);
     return pack
@@ -691,10 +607,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       baseCha = win.game.actors.get(featActorId).system.abilities.cha.total;
       return grantFeat(win, featActorId, "Doué");
     });
-    // Vérifie d'abord que la donnée dérivée s'est bien stabilisée (retry) AVANT de rouvrir la
-    // fiche : rendre pendant que createEmbeddedDocuments est encore en cours de traitement peut
-    // capturer un instantané pas encore à jour, sans qu'un futur re-render ne le rafraîchisse
-    // (piège découvert au premier run réel de ce describe, sur le test Alerte ci-dessous).
+    // Attend la valeur dérivée stable avant de rouvrir la fiche.
     cy.window().should((win) => {
       expect(win.game.actors.get(featActorId).system.abilities.cha.total).to.equal(baseCha + 1);
     });
@@ -738,11 +651,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       .find(".derived-stats span")
       .first()
       .invoke("text")
-      // Forme callback obligatoire ici (pas `.should("include", formatModifier(baseInitiative +
-      // 5))`) : `baseInitiative` n'est affecté que dans le cy.window().then() ci-dessus, qui
-      // s'exécute de façon asynchrone APRÈS que cette ligne a été mise en file par Cypress —
-      // un appel eager de formatModifier() à cet endroit verrait encore `baseInitiative`
-      // undefined (NaN), piège découvert au premier run réel de ce test.
+      // Callback : `baseInitiative` n'est connu qu'à l'exécution.
       .should((text) => expect(text).to.include(formatModifier(baseInitiative + 5)));
   });
 
@@ -758,10 +667,8 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       });
     });
 
-    // Le choix de caractéristique se règle sur la fiche du DON lui-même (system.chosenAbility,
-    // réservé au MJ, cf. feature-sheet.hbs), pas sur la fiche de l'Actor — un vrai select piloté,
-    // pas un update() direct, pour prouver que le sélecteur fonctionne de bout en bout.
-    cy.then(() => cy.window().then((win) => createdItems[0].sheet.render(true)));
+    // Caractéristique choisie via le vrai select de la fiche du don (MJ).
+    cy.then(() => cy.window().then(() => createdItems[0].sheet.render(true)));
     cy.get(".application.sheet.item", { timeout: 10000 }).should("be.visible").and("contain.text", "Résilient");
     cy.get('select[name="system.chosenAbility"]').select("wis");
 
@@ -818,8 +725,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       sheetRoot().find(`li[data-item-id="${item.id}"] button[data-action="rollFeature"]`).click();
     });
 
-    // Ferme la fiche (recouvre la moitié droite) et ouvre l'onglet Chat avant d'interagir avec
-    // le message posté — même piège/même fix que T-ABIL-024 (tab-abilities.cy.js).
+    // Ferme la fiche et ouvre l'onglet Chat.
     cy.window().then((win) => win.game.actors.get(featActorId).sheet.close());
     cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
     cy.get(".chat-message").last().find("button.dnd-apply-heal-btn").should("be.visible").click();
@@ -833,7 +739,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       );
     });
 
-    // Nettoyage : remet les PV au max et supprime le token créé pour ce test.
+    // PV remis au max, token supprimé.
     cy.loginAsGM();
     cy.window().then((win) => {
       const actor = win.game.actors.get(featActorId);
@@ -866,8 +772,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
       expect(original.getFlag("dnd-custom-ai", "luckApplied"), "jet d'origine marqué, une seule relance par jet").to.be.true;
     });
 
-    // Plus aucune charge : le bouton ne doit plus apparaître du tout sur un nouveau jet (pas un
-    // bouton grisé permanent, cf. commentaire du hook dnd-custom-ai.js).
+    // Plus de charge : plus de bouton.
     cy.window().then((win) => {
       const actor = win.game.actors.get(featActorId);
       const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
@@ -882,7 +787,7 @@ describe("Onglet Statistiques — Dons avec effet automatique (anomalie 2026-08-
     cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
     cy.get(".chat-message").last().find("button.dnd-spend-luck-btn").should("not.exist");
 
-    // Restaure les charges pour ne pas fausser un futur run de cette spec.
+    // Charges restaurées.
     cy.window().then((win) => {
       const actor = win.game.actors.get(featActorId);
       const luckyFeat = actor.items.find((item) => item.name === "Chanceux");
@@ -898,12 +803,7 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
   });
 
   it("plusieurs états cochés pendant que la liste reste ouverte, appliqués en un seul geste à sa fermeture (T-STATS-015)", () => {
-    // Retour de test : cocher un état ne referme plus la liste ni ne met à jour l'Actor
-    // immédiatement (cf. actor-sheet.js > #onToggleConditionSelection, bascule purement
-    // visuelle) — seule la fermeture de la liste déroulante applique la sélection
-    // (#applyPendingConditions), en un seul geste pour tous les états cochés pendant qu'elle
-    // était ouverte. Deux états cochés dans la même ouverture ci-dessous prouvent le
-    // multi-sélection (rien n'est appliqué tant qu'elle reste ouverte).
+    // Deux états cochés, appliqués ensemble à la fermeture de la liste.
     sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="poisoned"]').click();
     sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="prone"]').click();
@@ -939,13 +839,12 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
   });
 
   it("Exhaustion : pas-à-pas masqué côté Joueur, borné 0-6 côté MJ (T-STATS-016)", () => {
-    // Côté Joueur (beforeEach) : l'Épuisement est un état punitif géré par le MJ — la valeur
-    // reste visible mais les boutons ± n'existent pas (cf. tab-stats.hbs).
+    // Joueur : valeur visible, sans boutons ±.
     sheetRoot().find(".exhaustion-chip .ability-value").should("be.visible");
     sheetRoot().find('.exhaustion-chip button[data-action="exhaustionIncrease"]').should("not.exist");
     sheetRoot().find('.exhaustion-chip button[data-action="exhaustionDecrease"]').should("not.exist");
 
-    // Côté MJ : les boutons ± sont là et bornés entre 0 et 6.
+    // MJ : boutons ± bornés entre 0 et 6.
     cy.loginAsGM();
     cy.openActorSheet(sharedActorId);
     for (let i = 0; i < 7; i += 1) {
@@ -959,16 +858,14 @@ describe("Onglet Statistiques — états et Exhaustion", () => {
       sheetRoot().find('button[data-action="exhaustionDecrease"]').click();
     }
     cy.window().should((win) => {
-      // Revenu à 0 : aucune trace laissée pour les tests suivants de cette spec.
+      // Revenu à 0.
       expect(win.game.actors.get(sharedActorId).system.attributes.exhaustion).to.equal(0);
     });
   });
 });
 
 describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () => {
-  // Personnage dédié : ces scénarios manipulent hp.value/system.attributes.death directement et
-  // à répétition, isolé du personnage partagé pour ne dépendre d'aucun ordre d'exécution avec le
-  // reste de cette spec (cf. mémoire projet, exigence de reproductibilité).
+  // Personnage dédié aux scénarios d'agonie.
   let dyingActorId;
 
   before(() => {
@@ -986,24 +883,14 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
     cy.openActorSheet(dyingActorId);
   });
 
-  // Remet le personnage à 0 PV avec les compteurs de sauvegarde de la mort demandés, avant
-  // chaque sous-scénario, plutôt que de compter sur l'état laissé par le précédent — chaque test
-  // de ce describe reste indépendant. Repasse par une vraie transition max PV -> 0 PV (pas une
-  // affectation directe à 0 si les PV y étaient déjà) pour déclencher le hook updateActor
-  // (dnd-custom-ai.js) qui pose Inconscient, PUIS attend que ce hook ait fini de remettre les
-  // compteurs à zéro avant d'imposer l'état voulu par-dessus dans un update SÉPARÉ qui ne touche
-  // plus du tout hp.value. Piège rencontré au premier run réel (2026-08-15) : combiner hp.value
-  // et les compteurs dans un seul update pendant que les PV étaient déjà à 0 déclenchait la
-  // branche "dégâts subis en étant déjà à 0 PV" du même hook (échec automatique +1), qui
-  // écrasait ensuite la valeur qu'on venait de poser — d'où des compteurs incrémentés d'un cran
-  // au hasard d'un sous-cas à l'autre.
+  // Place le personnage à 0 PV (vraie transition, pour Inconscient) puis pose les compteurs
+  // dans un update séparé, après celui du hook.
   function setDyingState(successes, failures) {
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
     });
-    // dndCustomDamageApply : simulation de dégâts déjà subis pour préparer l'état d'Agonie, pas
-    // une vraie tentative de self-dégâts (cf. permissions.cy.js T-PERM-005/007).
+    // `dndCustomDamageApply` autorise la baisse de PV simulée.
     cy.window().then((win) =>
       updateActor(win, win.game.actors.get(dyingActorId), { "system.attributes.hp.value": 0 }, { dndCustomDamageApply: true })
     );
@@ -1021,8 +908,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
   }
 
   it("le panneau Agonie apparaît à 0 PV, pastilles à zéro (T-STATS-018)", () => {
-    // Part d'un PV > 0 pour retomber à 0 : c'est cette transition (pas une création directe à 0)
-    // qui déclenche le statut Inconscient (hook updateActor, dnd-custom-ai.js).
+    // La transition vers 0 PV pose Inconscient.
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": Math.max(1, actor.system.attributes.hp.max) });
@@ -1041,7 +927,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
   });
 
   it("jet de sauvegarde de la mort — réussite, échec, et cas critiques (T-STATS-019)", () => {
-    // Nat 20 : régénère 1 PV, sort de l'Agonie (compteurs remis à zéro par le hook updateActor).
+    // 20 naturel : 1 PV, fin de l'agonie.
     setDyingState(0, 0);
     cy.forceD20(20);
     cy.get('button[data-action="rollDeathSave"]').click();
@@ -1053,7 +939,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
     });
     cy.get(".death-panel").should("not.exist");
 
-    // Nat 1 : compte comme deux échecs d'un coup.
+    // 1 naturel : deux échecs.
     setDyingState(0, 0);
     cy.forceD20(1);
     cy.get('button[data-action="rollDeathSave"]').click();
@@ -1061,7 +947,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
       expect(win.game.actors.get(dyingActorId).system.attributes.death.failures).to.equal(2);
     });
 
-    // 10+ (hors nat 20) : une réussite simple.
+    // 10+ : une réussite.
     setDyingState(0, 0);
     cy.forceD20(15);
     cy.get('button[data-action="rollDeathSave"]').click();
@@ -1071,7 +957,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
       expect(death.failures).to.equal(0);
     });
 
-    // < 10 (hors nat 1) : un échec simple.
+    // Moins de 10 : un échec.
     setDyingState(0, 0);
     cy.forceD20(5);
     cy.get('button[data-action="rollDeathSave"]').click();
@@ -1081,7 +967,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
       expect(death.successes).to.equal(0);
     });
 
-    // Remet une santé normale pour ne pas laisser le personnage en Agonie entre les tests.
+    // Santé normale restaurée.
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });
@@ -1099,19 +985,15 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
       expect(actor.statuses.has("dead")).to.be.true;
     });
 
-    // Pas de comparaison de compte de messages ici (contrairement à T-STATS-013, sur un
-    // personnage stable) : le message "Death" de declareDeath() ci-dessus peut encore être en
-    // train de se poster de façon asynchrone au moment de capturer un total "avant", rendant la
-    // comparaison avant/après instable — un simple contrôle de non-effet sur les PV suffit, déjà
-    // couvert de façon stable par T-STATS-013 pour la partie "aucun message posté".
-    cy.get('[data-action="restShort"]').click({ force: true });
+    // Seuls les PV sont vérifiés (le message de mort peut encore arriver).
+    cy.get('[data-action="restShort"]').click({ force: true }); // NOSONAR : bouton désactivé, teste le verrou côté données
     cy.window().should((win) => {
       expect(win.game.actors.get(dyingActorId).system.attributes.hp.value, "Repos sans effet une fois mort").to.equal(
         0
       );
     });
 
-    // Retire le statut "mort" et rend la santé pour les tests suivants.
+    // Retire « mort », santé restaurée.
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
       return actor.toggleStatusEffect("dead", { active: false }).then(() =>
@@ -1124,15 +1006,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
     });
   });
 
-  // Retour de test (lot 3) : la 3e réussite (stabilisation) doit désormais retirer les états
-  // d'agonie/inconscience et remettre 1 PV automatiquement (auparavant : compteur à 3, mais le
-  // personnage restait à 0 PV et Inconscient indéfiniment). Le panneau Agonie tout entier
-  // disparaît donc dès la stabilisation (`dying.active` = `hp.value === 0`, character-sheet.hbs)
-  // — même comportement observable qu'un nat 20 (cf. T-STATS-019), juste déclenché par un chemin
-  // différent (3e réussite plutôt qu'un jet unique à 20). Le libellé "Stabilisé"
-  // (`.death-status`/`dying.stabilized`) reste dans le template pour un futur cas où
-  // `death.successes` serait à 3 sans PV restaurés (ex. ajustement manuel MJ hors de ce flux),
-  // mais n'est plus atteignable via ce bouton — rien à couvrir ici pour cette raison.
+  // Troisième réussite : retire Inconscient et remet 1 PV (le panneau d'agonie disparaît).
   it("trois réussites — stabilisé : retire Inconscient et remet 1 PV (T-STATS-021)", () => {
     setDyingState(2, 0); // déjà deux réussites
     cy.forceD20(15); // une réussite simple suffit à atteindre 3
@@ -1148,7 +1022,7 @@ describe("Onglet Statistiques — Agonie et jets de sauvegarde de la mort", () =
 
     cy.get(".death-panel").should("not.exist");
 
-    // Remet une santé normale pour les tests suivants.
+    // Santé normale restaurée.
     cy.window().then((win) => {
       const actor = win.game.actors.get(dyingActorId);
       return updateActor(win, actor, { "system.attributes.hp.value": actor.system.attributes.hp.max });

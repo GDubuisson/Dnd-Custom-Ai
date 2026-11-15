@@ -1,15 +1,5 @@
-// Chantier "Niveau C" (2026-08-25, dernier point restant, cf.
-// ClaudeFiles/MECANIQUES_A_AUTOMATISER.md) : Traque implacable (Paladin, Serment de Vengeance 3,
-// SRD 5e) — "toute créature autre que vous a un désavantage aux jets d'attaque" contre la cible
-// portant l'état "Traqué". Point bloquant identifié lors de l'audit initial (2026-08-24) : aucun
-// état homebrew de ce système (raging/blessed/guided/hunted...) n'a de "propriétaire" enregistré,
-// impossible de savoir QUI a posé "Traqué" pour exempter le Paladin du désavantage qu'il cause
-// lui-même. Solution retenue avec l'utilisateur (2026-08-25) : un flag SCOPÉ à cette seule
-// Capacité (`HUNTED_BY_ACTOR_ID_FLAG`, helpers/relentless-hunter.js), pas une généralisation du
-// système d'états — posé uniquement par le nouveau bouton dédié (FeatureData#grantsCondition,
-// #onGrantFeatureCondition dans actor-sheet.js), jamais par une bascule manuelle via l'onglet
-// États (testé explicitement en T-TIERC-HUNT-006 : aucun flag = aucun désavantage automatique,
-// comportement dégradé assumé plutôt que faux).
+// Traque implacable : désavantage aux attaques contre la cible « Traquée » pour toute créature
+// autre que le Paladin. Sans flag propriétaire (état posé à la main), aucun désavantage.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -259,8 +249,7 @@ describe("Traque implacable — désavantage aux jets d'attaque contre la cible 
   beforeEach(() => cy.loginAsGM());
 
   function markQuarryHunted() {
-    // Passe par le vrai bouton (pas un toggleStatusEffect direct) pour poser le flag propriétaire
-    // exactement comme un joueur le ferait — condition nécessaire pour T-TIERC-HUNT-003/004/005.
+    // Vrai bouton, qui pose le flag propriétaire.
     targetToken(quarryTokenId);
     cy.window().then((win) => win.game.actors.get(paladinId).sheet.render(true));
     cy.get(".application.character input.actor-name", { timeout: 15000 }).should("be.visible");
@@ -324,9 +313,7 @@ describe("Traque implacable — désavantage aux jets d'attaque contre la cible 
   });
 
   it("état \"Traqué\" posé À LA MAIN (onglet États, sans le bouton) : aucun désavantage automatique (T-TIERC-HUNT-006)", () => {
-    // Nettoie un éventuel flag laissé par T-TIERC-HUNT-003/004/005 (même cible réutilisée dans ce
-    // describe, posé par le vrai bouton) : ce test veut vérifier le cas "aucun flag", pas
-    // "flag d'un test précédent encore présent".
+    // Retire le flag laissé par les tests précédents.
     cy.window().then((win) => win.canvas.tokens.get(quarryTokenId).actor.unsetFlag("dnd-custom-ai", "huntedByActorId"));
     cy.window().then((win) => win.canvas.tokens.get(quarryTokenId).actor.toggleStatusEffect("hunted", { active: true }));
     cy.window().should((win) => {

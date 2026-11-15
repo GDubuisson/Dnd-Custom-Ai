@@ -99,6 +99,8 @@ scripts/
                                  # partagé par les DialogV2 de choix (sous-classe/Don/Forme sauvage)
     death.js                    # agonie/mort, stabilisation
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
+    item-lore-journal.js        # Journal « Chroniques des objets » (MJ seul), une page par région,
+                                 # construit depuis regional.json, historical.json et item-lore.json
     origins-journal.js, player-guide-journal.js, gm-guide-journal.js  # génération du contenu
                                  # de référence dans le Journal du monde ; création via
                                  # ensureGmAuthoredJournal (journal.js, garde MJ + anti-écrasement).
@@ -113,6 +115,9 @@ scripts/
                                  # d'opportunité (PNJ hostile qui s'éloigne d'un PJ) + Échappée de
                                  # la horde en sens inverse (Tactiques défensives)
     sentinel.js                 # checkSentinelReminder, appelé depuis npc-sheet.js#onRollAttack
+    reaction-reminders.js       # isReadyReactor, hostileAttackContext, remindAdjacentReactors —
+                                 # base commune des rappels de réaction (Sentinelle, Tueur de
+                                 # géants, Attaque d'opportunité)
     action-economy.js           # noteActionEconomyUsage (suivi non-bloquant Action/Action bonus
                                  # du tour, actif uniquement en combat) + consumeActionEconomy
                                  # (garde de réaction bloquante avant l'usage d'une Capacité/d'un Sort)
@@ -169,8 +174,9 @@ templates/
                           # {{> (lookup this "classTabPartial")}} dans tab-abilities.hbs
   apps/                  # character-creation-wizard.hbs
   item/                  # un .hbs par type d'Item (9)
-  item/parts/            # partials communs aux fiches d'Item : header.hbs (racine + image/nom +
-                         #   note MJ, params `placeholder`/`notice`), price.hbs (fieldset Prix),
+  item/parts/            # partials communs aux fiches d'Item : header.hbs (partial à bloc
+                         #   `{{#> …}}corps{{/…}}` : racine + image/nom + note MJ, params
+                         #   `placeholder`/`notice`), price.hbs (fieldset Prix),
                          #   description.hbs (zone ProseMirror, params `field`/`label`),
                          #   reaction-trigger.hbs — préchargés au hook init (loadTemplates)
 lang/fr.json, lang/en.json   # toutes les clés DND_CUSTOM.* utilisées par JS/templates DOIVENT
@@ -598,8 +604,8 @@ unique et centralisée : `damageTypeMultiplier(actor, damageType, { isSpellDamag
 isMagicalSource })` dans `helpers/damage-resolution.js` — combine, dans l'ordre, l'immunité (prioritaire sur
 tout), les résistances déjà câblées en dur par état/Capacité (Rage, Résilience draconique, Affinité
 de la tempête, Voile des anciens), le champ générique réglable par le MJ (cases à cocher sur la
-fiche Personnage/PNJ), et `hasArmorDamageAffinity` (résistance/immunité/vulnérabilité **propre** à
-une armure ÉQUIPÉE, indépendante du champ générique). Résistance et vulnérabilité sur le MÊME type
+fiche Personnage/PNJ), et `hasEquipmentDamageAffinity` (résistance/immunité/vulnérabilité **propre** à
+une armure, un accessoire ou une arme ÉQUIPÉS, indépendante du champ générique). Résistance et vulnérabilité sur le MÊME type
 s'annulent (dégâts normaux) ; sinon la meilleure protection l'emporte, jamais de cumul.
 
 `isMagicalSource`/`genericBypassed` : nuance SRD "résistance aux attaques non magiques" —
@@ -724,6 +730,27 @@ ultérieur (combat automatisé, sous-classes, Métamagie...) ajoute sa propre sp
 sans repasser par ce plan initial. Point de vigilance permanent : **toujours comparer
 `game.system.version` à `system.json` local avant de lancer des tests d'interface**, sans quoi un
 échec peut juste être un monde de test resté sur une ancienne version du système.
+
+## Analyse statique (SonarQube for IDE)
+
+Plugin local, sans serveur connecté : seules les annotations `// NOSONAR : raison` (ou
+`/* NOSONAR : raison */` en CSS) en fin de ligne masquent un faux positif. Elles marquent des choix
+voulus, à ne pas « corriger » :
+- `await` dans une boucle : écritures de documents, messages de chat et dialogues enchaînés un à un,
+  pour garder l'ordre et éviter les écritures concurrentes sur un même document ;
+- `!important` en CSS : surcharge des styles du cœur Foundry (onglets, marges de `li`, cartes de jet) ;
+- `{ force: true }` Cypress : bouton désactivé exprès (le test vise le verrou côté données) ou case
+  signalée couverte juste après un changement d'onglet ;
+- tests Cypress « sans assertion » : assertions portées par des helpers (`sheetRoot().should(...)`),
+  que Sonar ne suit pas ; l'audit de contraste (`accessibility.cy.js`) consigne sans échouer ;
+- dans un test Cypress, Sonar ne compte que les `expect(...)` terminés par un appel : écrire
+  `.to.equal(true)` / `.to.not.equal(undefined)` plutôt que `.to.be.true` / `.to.exist` ;
+- imports absolus de `tests/quench/` (chemin servi par Foundry), bouchon de classe vide de
+  `tests/support/foundry-stub.js`.
+
+Complexité cognitive (seuil 15) : découper en fonctions de module nommées par leur rôle métier
+plutôt qu'en méthodes privées — `CharacterData#prepareDerivedData` est appelée par les tests sur
+un objet brut (`prototype.prepareDerivedData.call(fixture)`), où une méthode `#privée` échouerait.
 
 ## Versionnage et publication
 

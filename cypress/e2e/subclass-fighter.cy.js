@@ -1,9 +1,5 @@
-// Couvre le lot Guerrier du chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") : 2 nouvelles sous-classes ajoutées
-// (Maître de guerre/battleMaster, Chevalier occulte/eldritchKnight), en plus du Champion déjà
-// existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque mécanique
-// propre — en particulier la primitive P2 (incantation mineure de sous-classe, cf.
-// FeatureData#grantsSpells / grantClassContent) construite ici pour la première fois.
+// Sous-classes du Guerrier (Maître de guerre, Chevalier occulte) : octroi des Capacités et
+// sorts toujours prêts du Chevalier occulte.
 
 const createdActorIds = [];
 
@@ -16,9 +12,7 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
-// Onglets par palier de sort (commit 7a1719d) : un seul .spell-level-group visible à la fois,
-// palier 0 (tours de magie du Chevalier occulte) actif par défaut — passer au palier 1 pour
-// atteindre le bouton "Lancer" de "Bouclier", sinon caché (display:none).
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -139,8 +133,7 @@ describe("Sous-classes de Guerrier — Maître de guerre / Chevalier occulte", (
         for (const spellName of ["Bouclier", "Prestidigitation", "Lumière"]) {
           expect(actor.items.find((i) => i.name === spellName), `${spellName} octroyé`).to.exist;
         }
-        // Fighter n'est pas dans DND_CUSTOM.spellcastingClasses : tous les paliers d'emplacement
-        // restent à 0/0, la preuve que ces 3 sorts sont bien "toujours prêts" sans emplacement.
+        // Classe non lanceuse : tous les paliers d'emplacement à 0/0.
         for (let level = 1; level <= 9; level++) {
           expect(
             actor.system.spells.slots[level].max,
@@ -159,8 +152,7 @@ describe("Sous-classes de Guerrier — Maître de guerre / Chevalier occulte", (
 
         cy.window().should((win) => {
           expect(win.game.messages.size, "message de lancer posté malgré un pool à 0").to.be.greaterThan(knownMessageCount);
-          // Aucun avertissement "aucun emplacement" n'a dû bloquer le lancer : le sort reste
-          // possédé et le pool à 0 n'a pas été impacté (rien à décompter).
+          // Lancé sans emplacement ni avertissement.
           expect(win.game.actors.get(actorId).items.get(itemId), "Bouclier toujours possédé après lancer").to.exist;
         });
       });

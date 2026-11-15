@@ -4,38 +4,22 @@ import { itemFromTarget } from "../helpers/sheet-items.js";
 
 const { DialogV2 } = foundry.applications.api;
 
-// Objets physiques (quantité empilable) + Capacités/Sorts/Langues (ni quantité ni doublon
-// voulu, cf. _onDropItem ci-dessous) : ces derniers étaient absents de cette liste jusqu'ici,
-// ce qui bloquait silencieusement tout glisser-déposer d'une Capacité/d'un Sort/d'une Langue
-// depuis un compendium ou une autre fiche vers la fiche de personnage (retour de test).
-const PHYSICAL_TYPES = ["weapon", "armor", "gear", "tool"];
-// Armes/armures NON empilables (retour de test — contrairement aux Objets/Outils, chaque arme
-// ou armure garde sa propre ligne d'inventaire même si une autre du même nom est déjà
-// possédée : chacune a son propre état "Équipée", cf. tab-equipment.hbs) — sous-ensemble de
-// PHYSICAL_TYPES ci-dessus.
-const STACKABLE_PHYSICAL_TYPES = ["gear", "tool"];
-const TRANSFERABLE_TYPES = [...PHYSICAL_TYPES, "feature", "spell", "language"];
+// Types d'Item physiques (avec quantité).
+const PHYSICAL_TYPES = new Set(["weapon", "armor", "gear", "tool"]);
+// Types physiques empilables ; armes et armures gardent une ligne chacune.
+const STACKABLE_PHYSICAL_TYPES = new Set(["gear", "tool"]);
+const TRANSFERABLE_TYPES = new Set([...PHYSICAL_TYPES, "feature", "spell", "language"]);
 
-/** Un Sort (SpellData#classes, ensemble de clés de classe stables — cf. grantClassContent dans
- *  class-content.js pour la même convention, jamais un libellé localisé/traduit) peut-il être
- *  glissé sur `actor` ? Retour de test : rien n'empêchait de poser un sort d'une autre classe
- *  (ex. "Décharge occulte", Occultiste, sur un Magicien). Un sort sans classes renseignées
- *  (donnée incomplète) ou un Actor sans classe encore choisie reste accepté par défaut, pour ne
- *  pas bloquer un cas de données incomplètes plutôt qu'une vraie incompatibilité connue. */
+/** Indique si un Sort peut être glissé sur `actor` (sort de sa classe, ou données incomplètes). */
 function isSpellAllowedForActor(item, actor) {
   if (item.type !== "spell" || actor.type !== "character") return true;
   if (!item.system.classes.size || !actor.system.class) return true;
   return item.system.classes.has(actor.system.class);
 }
 
-/** Le poids ajouté par `item` (un nouvel exemplaire, ou `addedQuantity` unités d'un objet déjà
- *  empilable, cf. STACKABLE_PHYSICAL_TYPES) ferait-il dépasser la capacité de charge de
- *  `actor` ? Retour de test : rien n'empêchait d'ajouter un objet au-delà du max, contrairement
- *  à la règle SRD 5e de base (capacité de charge = Force x 15 lb, un dépassement n'est pas
- *  possible en jeu normal). Uniquement pour un personnage (`character`) : les PNJ/montures/
- *  véhicules n'ont pas cette même formule dérivée de la Force. */
+/** Indique si l'ajout de `item` (ou de `addedQuantity` unités) dépasse la capacité de charge d'un personnage. */
 function wouldExceedCarryingCapacity(item, actor, addedQuantity = null) {
-  if (actor.type !== "character" || !PHYSICAL_TYPES.includes(item.type)) return false;
+  if (actor.type !== "character" || !PHYSICAL_TYPES.has(item.type)) return false;
 
   const addedWeight = (item.system.weight ?? 0) * (addedQuantity ?? item.system.quantity ?? 1);
   if (addedWeight <= 0) return false;
@@ -45,31 +29,17 @@ function wouldExceedCarryingCapacity(item, actor, addedQuantity = null) {
   return carriedWeight(items) + addedWeight > capacity;
 }
 
-/** Emplacements légaux pour équiper `item` — reprend la logique de `slotOptions` sur la fiche
- *  d'Item elle-même (item-sheets.js, réservée au MJ) pour la fenêtre de choix présentée au
- *  Joueur au moment de cocher "Équipé" depuis l'onglet Inventaire. Anomalie testeur précise :
- *  "je ne peux plus choisir l'emplacement d'une ARME (main principale vs secondaire)" — ne
- *  concerne QUE les armes à une main Légères (seul cas réellement ambigu, cf. isOffHandEligible
- *  dans rules.js), jamais les armures (armure/bouclier/accessoire sont des objets distincts en
- *  pratique, leur `system.slot` déjà fixé par le contenu n'a jamais posé ce problème) ni une
- *  arme à deux mains (occupe toujours les deux mains sans choix possible, cf. equipmentSlots
- *  dans rules.js). Renvoie un objet vide (aucune fenêtre à afficher) dans tous les autres cas. */
+/** Emplacements proposés au joueur pour équiper `item` (arme à une main Légère seulement), sinon `{}`. */
 function equipSlotOptionsFor(item) {
   if (item.type !== "weapon") return {};
   if (item.system.properties?.handedness === "twoHanded") return {};
   return isOffHandEligible(item.system) ? DND_CUSTOM.weaponSlotOptions : {};
 }
 
-/** Mixin ApplicationV2 : glisser-déposer d'objet entre deux fiches ouvertes (personnage ↔
- *  véhicule, ou depuis un compendium/le monde), édition directe des lignes d'inventaire
- *  (quantité, équipé) et bouton "Voir" par ligne pour ouvrir la fiche de l'Item.
- *
- *  Le drop lui-même s'appuie sur le hook protégé `_onDropItem(event, item)` que Foundry
- *  fournit déjà nativement sur `ActorSheetV2` (branché via `this._dragDrop`, lui-même lié
- *  dans `_onRender` de la classe de base) plutôt que sur des listeners `dragover`/`drop`
- *  maison : Foundry attache toujours les siens sur `this.element` (racine de la fiche) dès
- *  que `ActorSheetV2._onRender` tourne, donc des listeners HTML5 additionnels sur ce même
- *  élément s'exécutaient EN PLUS des siens et dupliquaient l'Item créé à chaque drop. */
+/**
+ * Mixin d'inventaire : glisser-déposer entre fiches, édition directe des lignes (quantité, équipé)
+ * et bouton « Voir ». Le drop passe par le `_onDropItem` natif d'ActorSheetV2.
+ */
 export function InventoryDragDropMixin(Base) {
   return class InventoryDragDrop extends Base {
     static DEFAULT_OPTIONS = {
@@ -85,23 +55,14 @@ export function InventoryDragDropMixin(Base) {
       this.#attachInventoryRowListeners();
     }
 
-    /** @override
-     *  Expose `context.tab` (l'onglet de CE part) aux templates de part : Foundry ne le fait
-     *  pas seul quand les onglets sont déclarés via `static TABS` plutôt que par un groupe de
-     *  navigation nommé. Sans effet sur une fiche sans onglets (véhicule). Identique dans les
-     *  3 fiches d'Actor avant extraction ici. */
+    /** @override Expose `context.tab` aux templates de part. */
     async _preparePartContext(partId, context) {
       context = await super._preparePartContext(partId, context);
       if (context.tabs?.[partId]) context.tab = context.tabs[partId];
       return context;
     }
 
-    /** Glisser une ligne d'inventaire (dragstart) : Foundry ne gère nativement que les
-     *  éléments matchant son sélecteur `.draggable` (cf. ActorSheetV2#_dragDrop), pas
-     *  l'attribut HTML `draggable` posé ici — pas de doublon possible avec le sien.
-     *  Branche aussi l'édition directe (quantité, équipé) via un listener `change` délégué
-     *  sur le root, borné une seule fois (flag) pour survivre aux lignes recréées à chaque
-     *  render sans jamais s'empiler. */
+    /** Branche le glisser des lignes d'inventaire et l'édition directe (listener délégué unique). */
     #attachInventoryRowListeners() {
       const root = this.element;
 
@@ -127,9 +88,7 @@ export function InventoryDragDropMixin(Base) {
       if (target.matches("[data-item-quantity]")) {
         const newQuantity = Math.max(0, Math.trunc(Number(target.value) || 0));
         const delta = newQuantity - (item.system.quantity ?? 0);
-        // Une augmentation de quantité ajoute du poids comme un nouvel objet (cf.
-        // wouldExceedCarryingCapacity) : bloquée de la même façon en cas de surcharge, valeur
-        // de saisie remise à l'ancienne quantité. Une diminution reste toujours autorisée.
+        // Hausse de quantité bloquée en cas de surcharge.
         if (delta > 0 && wouldExceedCarryingCapacity(item, this.actor, delta)) {
           ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Inventory.OverCapacityBlocked"));
           target.value = item.system.quantity ?? 0;
@@ -142,11 +101,7 @@ export function InventoryDragDropMixin(Base) {
           return;
         }
 
-        // Retour de test : le champ Emplacement (system.slot) est verrouillé au MJ sur la fiche
-        // d'Item elle-même (contenu de règles) — un Joueur n'a donc plus aucun moyen de choisir
-        // main principale vs secondaire pour une arme à une main, ni le type d'emplacement d'une
-        // armure. Fenêtre de choix ici quand plusieurs emplacements sont légaux pour cet objet ;
-        // équipe directement sans fenêtre s'il n'y en a qu'un seul (ou aucun, ex. Objet/Outil).
+        // Choix de l'emplacement s'il y en a plusieurs légaux.
         const slotOptions = equipSlotOptionsFor(item);
         const optionKeys = Object.keys(slotOptions);
         const updates = { "system.equipped": true };
@@ -163,19 +118,15 @@ export function InventoryDragDropMixin(Base) {
         }
 
         await item.update(updates);
-        // Un conflit d'emplacement (cf. hook preUpdateItem, dnd-custom-ai.js) annule l'update
-        // sans re-render de la fiche : la case resterait cochée à l'écran alors que rien n'a
-        // changé côté données — resynchronise sur l'état réel de l'Item dans tous les cas.
+        // Resynchronise la case avec l'état réel (conflit d'emplacement possible).
         target.checked = item.system.equipped;
       }
     }
 
-    /** Petite fenêtre à choix unique (radio) parmi `slotOptions` (clé stable -> clé de
-     *  localisation, cf. DND_CUSTOM.weaponSlotOptions/armorSlotOptions dans config.js), pré-
-     *  sélectionnant l'emplacement déjà enregistré sur `item` s'il fait partie des choix
-     *  légaux, sinon le premier. Renvoie la clé choisie, ou `null`/`undefined` si la fenêtre est
-     *  fermée sans validation (même contrat que DialogV2.prompt). Même mécanique que
-     *  offerSubclassChoiceDialog (helpers/subclass-choice.js). */
+    /**
+     * Dialogue de choix d'emplacement parmi `slotOptions`.
+     * @returns {Promise<string|null|undefined>} clé choisie
+     */
     async #offerEquipSlotDialog(item, slotOptions) {
       const keys = Object.keys(slotOptions);
       const defaultKey = keys.includes(item.system.slot) ? item.system.slot : keys[0];
@@ -199,16 +150,11 @@ export function InventoryDragDropMixin(Base) {
       });
     }
 
-    /** @override
-     *  Remplace le comportement par défaut de Foundry (crée toujours un nouvel Item, même si
-     *  un exemplaire du même nom existe déjà sur l'Actor) : regroupe en quantité s'il y a
-     *  déjà un Item de même type/nom, et retire l'Item de sa fiche source s'il était déjà
-     *  possédé par un autre Actor (déplacement, pas copie). Le tri au sein du même Actor
-     *  (glisser une ligne sur elle-même) reste géré par Foundry (`super`). */
+    /** @override Empile par nom si possible et déplace l'Item depuis son Actor d'origine. */
     async _onDropItem(event, item) {
       if (!this.actor.isOwner) return null;
       if (this.actor.uuid === item.parent?.uuid) return super._onDropItem(event, item);
-      if (!TRANSFERABLE_TYPES.includes(item.type)) return null;
+      if (!TRANSFERABLE_TYPES.has(item.type)) return null;
       if (!isSpellAllowedForActor(item, this.actor)) {
         ui.notifications.warn(
           game.i18n.format("DND_CUSTOM.Inventory.SpellWrongClass", { spell: item.name })
@@ -226,21 +172,15 @@ export function InventoryDragDropMixin(Base) {
         );
 
         let result;
-        if (existing && STACKABLE_PHYSICAL_TYPES.includes(item.type)) {
+        if (existing && STACKABLE_PHYSICAL_TYPES.has(item.type)) {
           const addedQuantity = item.system.quantity ?? 1;
           await existing.update({ "system.quantity": (existing.system.quantity ?? 0) + addedQuantity });
           result = existing;
-        } else if (existing && PHYSICAL_TYPES.includes(item.type)) {
-          // Arme/armure : jamais empilée, même nom ou pas (retour de test) — chacune garde sa
-          // propre ligne, son propre état "Équipée" (cf. tab-equipment.hbs/tab-inventory.hbs).
-          const [created] = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
-          result = created;
-        } else if (existing) {
-          // Capacité/Sort : pas de champ quantité (FeatureData/SpellData), un exemplaire de
-          // plus n'a pas de sens (ex. Rage ou Boule de feu en double) — on garde l'existant
-          // tel quel plutôt que de tenter d'écrire system.quantity dessus.
+        } else if (existing && !PHYSICAL_TYPES.has(item.type)) {
+          // Capacité ou Sort déjà possédé : conservé tel quel.
           result = existing;
         } else {
+          // Nouvel objet, ou arme/armure jamais empilée.
           const [created] = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
           result = created;
         }

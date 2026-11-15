@@ -1,20 +1,5 @@
-// Implémente le premier maillon du chantier "Combat automatisé avancé" — cadrage du 2026-08-23
-// avec l'utilisateur (ANOMALIES_ACTIVES.md) : positionnement via l'API de distance native de
-// Foundry (`canvas.grid.measurePath`, pas de grille tactique reconstruite), réaction en "rappel
-// non-bloquant" (message de chat informatif, jamais d'interruption synchrone du jet).
-//
-// Cas pilote : Attaque d'opportunité (Capacité universelle, déjà octroyée à tout PJ, jusqu'ici
-// jamais déclenchée automatiquement) — cf. helpers/opportunity-attack.js. Quand un token PNJ
-// HOSTILE quitte la portée de mêlée (1,50 m) d'un Combattant personnage joueur qui a encore sa
-// réaction disponible, un message de chat de rappel est posté ; le joueur reste libre de cliquer
-// (ou non) le bouton d'attaque de son arme ensuite, comme pour toute réaction de ce système.
-//
-// Découverte en testant : system.json déclarait une grille par défaut "distance: 5, units: m",
-// incohérente avec tout le texte du contenu (1,50 m/9 m/18 m — multiples de 1,5, la conversion
-// correcte de 5 pieds) — corrigé à distance: 1.5. La scène de test persistée (monde Docker) a sa
-// propre config de grille historique (gridless, distance 1, taille 100) : ce spec la reconfigure
-// explicitement en before()/la restaure en after() plutôt que de dépendre de sa valeur d'origine.
-// Grille du spec : taille 100 px, 1,5 m par case -> 1 px = 0,015 m.
+// Rappel d'attaque d'opportunité quand un PNJ hostile quitte l'allonge (1,50 m) d'un PJ ayant sa réaction.
+// Grille de test : 100 px par case de 1,5 m (1 px = 0,015 m).
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -69,9 +54,7 @@ function expectNoNewMessage() {
 
 before(() => {
   cy.loginAsGM();
-  // Grille connue et déterministe pour ce spec (cf. commentaire d'en-tête) : sauvegardée pour
-  // restauration en after(), la scène de test étant partagée avec toutes les autres specs de
-  // cette instance Docker persistée.
+  // Grille déterministe, restaurée en after() (scène partagée).
   cy.window().then((win) => {
     originalGrid = { distance: win.canvas.scene.grid.distance, units: win.canvas.scene.grid.units, size: win.canvas.scene.grid.size };
     return win.canvas.scene.update(win.JSON.parse(win.JSON.stringify({ grid: { distance: 1.5, units: "m", size: 100 } })));
@@ -115,9 +98,7 @@ describe("Attaque d'opportunité — rappel automatique au déplacement d'un PNJ
     cy.loginAsGM();
   });
 
-  // Un PNJ hostile frais est recréé à chaque test (position/combat propres), le PJ/son token
-  // restent ceux du before() global. `initialOffsetPx` : décalage initial en x par rapport au
-  // Guerrier (même y) — 60px = 0,9 m (à portée de mêlée, seuil 1,5 m).
+  // PNJ hostile neuf par test, décalé de `initialOffsetPx` en x (60px = 0,9 m).
   function setupPreyAndCombat(initialOffsetPx) {
     return cy
       .window()

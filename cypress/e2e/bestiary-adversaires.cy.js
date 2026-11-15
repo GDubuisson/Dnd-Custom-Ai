@@ -1,12 +1,4 @@
-// Chantier "Adversaires" (2026-08-25, demande explicite de l'utilisateur) : bestiaire prêt à
-// l'emploi dans un nouveau compendium Actor "adversaires" — 7 PNJ humanoïdes (Brigand,
-// Maraudeur, Garde, Espion, Chef de brigands, Mercenaire vétéran, Chevalier) + 8 bêtes sauvages
-// réelles (Rat, Corbeau, Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours brun),
-// aucune créature légendaire/mythique. Peuplé automatiquement par content-import.js (même
-// mécanisme que les autres compendiums de référence, cf. world-items/README.md), MJ uniquement
-// (ownership PLAYER: "NONE"). Ce spec valide : présence du compendium et de ses 15 entrées, le
-// contenu d'un PNJ humanoïde et d'un PNJ à attaques multiples une fois importés dans le monde
-// (attaques réellement jouables + butin visible), et l'absence de toute créature hors scope.
+// Compendium « adversaires » : 15 PNJ (humanoïdes et bêtes réelles), attaques jouables et butin.
 
 const createdActorIds = [];
 
@@ -14,16 +6,7 @@ function sheetRoot() {
   return cy.get(".application.npc");
 }
 
-// L'auto-import (hook "ready", cf. content-import.js) est lancé en arrière-plan sans être
-// attendu par Foundry (Hooks.callAll n'attend pas les handlers async) — pour "adversaires" (15
-// nouveaux Actors à créer, dernier fichier de COMPENDIUM_FILES, après 7 autres fetch+écritures),
-// il peut ne pas être terminé au moment où un test accède déjà au compendium juste après
-// cy.loginAsGM(). `cy.window().should(...)` (retryable, PAS un simple `.then()`) attend la fin de
-// l'import automatique en le laissant se terminer seul — retour de test : appeler à nouveau
-// `importSystemContent()` explicitement ici a d'abord semblé une solution plus directe, mais crée
-// une VRAIE course avec l'appel automatique déjà en cours (les deux lisent `getIndex()` avant que
-// l'autre n'ait fini de créer ses documents) et double les 15 PNJ (30 au lieu de 15) — jamais
-// relancer l'import manuellement pendant qu'il peut déjà tourner en arrière-plan.
+// Attend la fin de l'import automatique ; ne jamais relancer l'import (doublons).
 function waitForAdversairesImport() {
   return cy.window({ timeout: 20000 }).should((win) => {
     const pack = win.game.packs.get("dnd-custom-ai.adversaires");
@@ -105,7 +88,7 @@ describe("PNJ humanoïde importé depuis le compendium — Brigand", () => {
     sheetRoot().find(`section.tab[data-tab="stats"]`).should("have.class", "active");
     sheetRoot().find('button[data-action="rollAttack"][data-index="0"]').should("exist");
 
-    // Onglet Butin : le Cimeterre/la Dague/la Bourse doivent y apparaître.
+    // Onglet Butin.
     sheetRoot().find(`nav.tabs [data-tab="loot"]`).click();
     sheetRoot().find(`section.tab[data-tab="loot"]`).should("have.class", "active");
     sheetRoot().contains(".inventory-table td", "Cimeterre").should("exist");

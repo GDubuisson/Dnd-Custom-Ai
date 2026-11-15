@@ -1,6 +1,5 @@
 <section class="tab abilities {{tab.cssClass}}" data-group="primary" data-tab="abilities">
-  {{! Réorganisé pour regrouper les infos "fiche" (DD/bonus, langues, trait d'Origine) avant
-      l'identité de classe et la liste Capacités/Sorts elle-même — cf. images_test/img_7.png. }}
+  {{! Infos d'incantation, langues et trait d'Origine, avant l'identité de classe et la liste. }}
   <div class="abilities-top-row">
     {{#if isSpellcaster}}
     <div class="spellcasting-stats">
@@ -76,9 +75,7 @@
       <ul class="features-list">
         {{#each features}}
         <li data-item-id="{{this.id}}">
-          {{! Retour de test : ouvrir la fiche complète de l'Item juste pour lire sa description
-              était trop lourd (fenêtre séparée) — un simple survol suffit désormais, cf. même
-              convention déjà utilisée pour les langues ci-dessus (htmlSnippet). }}
+          {{! Description de l'Item au survol. }}
           <strong class="item-name-tooltip" data-tooltip="{{htmlSnippet this.system.description}}">{{this.name}}</strong>
           {{#if this.system.source}}<span class="source">({{this.system.source}})</span>{{/if}}
           {{#if (isReactionItem this)}}
@@ -88,18 +85,14 @@
           <span class="feature-uses" data-tooltip="{{localize 'DND_CUSTOM.Item.Fields.Uses'}}">{{this.system.uses.value}}/{{this.system.uses.max}}</span>
           {{/if}}
           {{#if this.system.recoversSpellSlots}}
-          {{! Aucun bouton : récupération automatique proposée au premier repos court de la
-              journée (cf. #onRestShort, actor-sheet.js) — la puce "uses" ci-dessus suffit à
-              indiquer la charge restante. }}
+          {{! Pas de bouton : récupération proposée au premier repos court. }}
           {{else if this.system.offersSpellChoice}}
             {{#unless this.system.chosenLevelOneSpell}}
             <button type="button" class="roll-btn feature-roll-btn" data-action="chooseInitiateMagic" data-tooltip="{{localize 'DND_CUSTOM.Abilities.ChooseOptionTooltip'}}">
               <i class="fa-solid fa-hand-pointer"></i> {{localize "DND_CUSTOM.Abilities.ChooseOptionConfirm"}}
             </button>
             {{/unless}}
-            {{! une fois choisi : aucun bouton, le sort de niveau 1 se lance depuis l'onglet
-                Sorts comme n'importe quel autre sort octroyé (cf. #onCastSpell) — la puce
-                "uses" ci-dessus indique la charge de cast gratuit restante. }}
+            {{! Sort choisi : lancé depuis l'onglet Sorts. }}
           {{else if this.system.offersManeuverChoice}}
           <button type="button" class="roll-btn feature-roll-btn" data-action="useManeuver" {{#if (featureDisabled this ../reactionAvailable ../activeStatuses)}}disabled{{/if}} data-tooltip="{{localize 'DND_CUSTOM.Roll.Tooltip'}}">
             <i class="fa-solid fa-dice-d20"></i> {{displayRollFormula this.system.rollFormula ../system.attributes.level (localize "DND_CUSTOM.Actor.Level")}}
@@ -164,9 +157,7 @@
     {{#if hasAnySpells}}
     <div class="spells-column">
       <h3 class="section-subtitle" data-tooltip="{{glossaryTip 'sort'}}">{{localize "DND_CUSTOM.Abilities.SpellsTitle"}}</h3>
-      {{! Retour de test : la liste de Sorts triée par niveau imposait de scroller pour
-          atteindre les paliers hauts — un onglet par niveau (bascule purement visuelle, cf.
-          #onSelectSpellLevel/actor-sheet.js) affiche un seul palier à la fois. }}
+      {{! Un onglet par palier de sorts, un seul affiché à la fois. }}
       {{#if spellsByLevel.length}}
       <div class="spell-level-tabs" role="tablist">
         {{#each spellsByLevel}}

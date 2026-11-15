@@ -1,12 +1,7 @@
 import { DND_CUSTOM } from "./config.js";
 import { ensureGmAuthoredJournal } from "./journal.js";
 
-/** Crée (une seule fois, si absent) un Journal récapitulant les différences entre les 6
- *  Origines, à partir de game.dndCustomAi.origins (cf. scripts/data/origins.json). **Visible de
- *  tous les joueurs** (`ownership.default: OBSERVER`) : outil de choix d'Origine à la création,
- *  destiné aux joueurs. N'écrase jamais un Journal existant du même nom, pour ne pas effacer les
- *  modifications du MJ ; un Journal créé « Aucun » avant ce correctif est remonté à OBSERVER, cf.
- *  ensureGmAuthoredJournal. */
+/** Crée le Journal comparatif des Origines, visible de tous, s'il n'existe pas encore. */
 export function ensureOriginsJournal() {
   const title = game.i18n.localize("DND_CUSTOM.Journal.OriginsComparisonTitle");
   return ensureGmAuthoredJournal(
@@ -49,10 +44,6 @@ function buildOriginsTable(origins) {
     })
     .join("");
 
-  // Retour de test : la colonne "Traits culturels" (texte le plus long, ex. "Noblesse,
-  // chevalerie, droiture, honneur") débordait sans troncature propre faute de propriété CSS
-  // dédiée — cf. règle `.dnd-origins-traits-cell` (styles/dnd-custom-ai.css), globale (pas
-  // scopée `.dnd-custom-ai`) car cette page de Journal Foundry n'est pas rendue à l'intérieur
-  // de ce conteneur. Le texte complet reste consultable via l'infobulle `title` ci-dessus.
+  // Texte complet de la colonne « Traits culturels » accessible via l'infobulle `title`.
   return `<table class="dnd-origins-table"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
 }

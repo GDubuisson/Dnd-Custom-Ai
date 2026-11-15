@@ -9,11 +9,7 @@ DND_CUSTOM.abilities = {
   cha: "DND_CUSTOM.Abilities.cha"
 };
 
-/** Abréviation localisée (FR : FOR/DEX/CON/INT/SAG/CHA, EN : STR/DEX/CON/INT/WIS/CHA) — retour
- *  de test : le nom complet de la caractéristique affiché à côté de chaque compétence
- *  (context.skills, actor-sheet.js) prenait trop de place ; une vraie abréviation localisée,
- *  différente d'une clé technique brute ("str"/"dex"...) qui avait causé le même retour de test
- *  une première fois avant que le nom complet ne soit adopté. */
+/** Abréviations localisées des caractéristiques (FOR, DEX…). */
 DND_CUSTOM.abilitiesShort = {
   str: "DND_CUSTOM.Abilities.Short.str",
   dex: "DND_CUSTOM.Abilities.Short.dex",
@@ -44,7 +40,7 @@ DND_CUSTOM.skills = {
   survival: "DND_CUSTOM.Skills.survival"
 };
 
-/** Classes D&D 5e (SRD, 12 classes officielles), utilisées par la fiche de personnage. */
+/** Les 12 classes SRD. */
 DND_CUSTOM.classes = {
   barbarian: "DND_CUSTOM.Classes.barbarian",
   bard: "DND_CUSTOM.Classes.bard",
@@ -60,12 +56,10 @@ DND_CUSTOM.classes = {
   wizard: "DND_CUSTOM.Classes.wizard"
 };
 
-/** Classes considérées comme lanceuses de sorts : l'onglet "Capacités" devient "Sorts". */
+/** Classes lanceuses de sorts : l'onglet « Capacités » devient « Sorts ». */
 DND_CUSTOM.spellcastingClasses = ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"];
 
-/** Icône FontAwesome (classe `fa-solid`) de l'en-tête d'ambiance de classe affiché en haut de
- *  l'onglet Capacités/Sorts (cf. templates/actor/abilities/class-flavor.hbs, context.classFlavorIcon
- *  dans actor-sheet.js). Purement décoratif, une entrée par classe jouable. */
+/** Icône FontAwesome de l'en-tête d'ambiance de chaque classe. */
 DND_CUSTOM.classFlavorIcon = {
   barbarian: "fa-fire",
   bard: "fa-music",
@@ -81,12 +75,7 @@ DND_CUSTOM.classFlavorIcon = {
   wizard: "fa-hat-wizard"
 };
 
-/** Sous-classes SRD 5e disponibles par classe (clé classe -> clé sous-classe -> clé de
- *  localisation), une par classe pour l'instant (première option SRD listée pour chacune) —
- *  d'autres pourront s'ajouter au même niveau d'imbrication sans changement de structure.
- *  Utilisé par la fiche de personnage (sélecteur) et grantClassContent (helpers/class-content.js)
- *  pour l'octroi automatique des Capacités liées (system.subclass sur FeatureData, libellé
- *  localisé exact, même convention que system.class). */
+/** Sous-classes par classe : clé de classe -> clé de sous-classe -> clé de localisation. */
 DND_CUSTOM.subclasses = {
   barbarian: {
     berserker: "DND_CUSTOM.Subclasses.barbarian.berserker",
@@ -150,10 +139,7 @@ DND_CUSTOM.subclasses = {
   }
 };
 
-/** Niveau SRD 5e auquel chaque classe choisit sa sous-classe (Domaine divin/Origine
- *  ensorcelée/Patron surnaturel dès le niveau 1 ; Tradition arcanique/Cercle druidique au
- *  niveau 2 ; toutes les autres au niveau 3). Utilisé pour n'afficher le sélecteur de
- *  sous-classe qu'une fois ce seuil atteint. */
+/** Niveau auquel chaque classe choisit sa sous-classe. */
 DND_CUSTOM.subclassLevel = {
   barbarian: 3,
   bard: 3,
@@ -169,30 +155,21 @@ DND_CUSTOM.subclassLevel = {
   wizard: 2
 };
 
-/** Esprits totems disponibles pour "Aspect de la bête" (Voie du Cœur sauvage, Barbare) — choix
- *  ponctuel et définitif proposé une fois la Capacité octroyée (cf. FeatureData#grantsChoice,
- *  CharacterData#combat.totemSpirit, #onChooseFeatureOption dans actor-sheet.js). Clé stable ->
- *  clé de localisation, même convention que DND_CUSTOM.subclasses ci-dessus. */
+/** Esprits totems d'Aspect de la bête (Barbare), choix définitif. */
 DND_CUSTOM.totemSpirits = {
   bear: "DND_CUSTOM.TotemSpirits.bear",
   eagle: "DND_CUSTOM.TotemSpirits.eagle",
   wolf: "DND_CUSTOM.TotemSpirits.wolf"
 };
 
-/** Manœuvres disponibles pour "Dés de manœuvre" (Maître de guerre, Guerrier) — reproposées à
- *  chaque charge dépensée (cf. FeatureData#offersManeuverChoice, #onUseManeuver dans
- *  actor-sheet.js), contrairement au choix ponctuel de DND_CUSTOM.totemSpirits ci-dessus. */
+/** Manœuvres du Maître de guerre, choisies à chaque dé dépensé. */
 DND_CUSTOM.maneuvers = {
   precise: "DND_CUSTOM.Maneuvers.precise",
   push: "DND_CUSTOM.Maneuvers.push",
   feint: "DND_CUSTOM.Maneuvers.feint"
 };
 
-/** Formes proposées au choix pour "Forme sauvage" (Druide, refonte 2026-09-04) : nom exact du
- *  PNJ correspondant dans le compendium `dnd-custom-ai.adversaires` (world-items/npcs.json) +
- *  niveau de Druide minimum, dérivé du `challengeRating` déjà présent sur chaque PNJ selon la
- *  progression SRD 5e (CR ≤1/4 dès le niveau 2 où la Capacité s'obtient, CR ≤1/2 dès le niveau 4,
- *  CR ≤1 dès le niveau 8) — cf. scripts/helpers/wild-shape-choice.js pour l'usage. */
+/** Formes sauvages proposées : nom du PNJ du compendium « adversaires » et niveau de Druide minimum. */
 DND_CUSTOM.wildShapeForms = [
   { name: "Rat", minLevel: 2 },
   { name: "Corbeau", minLevel: 2 },
@@ -204,24 +181,20 @@ DND_CUSTOM.wildShapeForms = [
   { name: "Ours brun", minLevel: 8 }
 ];
 
-/** Effets de Technique de la Main Ouverte (Open Hand, Moine, SRD 5e) — reproposés à chaque
- *  utilisation (cf. FeatureData#offersOpenHandTechnique, #onUseOpenHandTechnique dans
- *  actor-sheet.js), même esprit que DND_CUSTOM.maneuvers ci-dessus. */
+/** Effets de Technique de la Main ouverte (Moine), choisis à chaque utilisation. */
 DND_CUSTOM.openHandEffects = {
   prone: "DND_CUSTOM.OpenHandEffects.prone",
   pushed: "DND_CUSTOM.OpenHandEffects.pushed",
   noReaction: "DND_CUSTOM.OpenHandEffects.noReaction"
 };
 
-/** Effets de Bousculer (SRD 5e — cf. FeatureData#opposedCheckType, #onRollOpposedCheck dans
- *  actor-sheet.js) : choisi par l'attaquant AVANT le jet (même UX que DND_CUSTOM.openHandEffects
- *  ci-dessus), appliqué seulement en cas de succès du test opposé. */
+/** Effets de Bousculer, choisis avant le test opposé. */
 DND_CUSTOM.shoveEffects = {
   prone: "DND_CUSTOM.ShoveEffects.prone",
   pushed: "DND_CUSTOM.ShoveEffects.pushed"
 };
 
-/** Dé de vie par classe, SRD 5e. Utilisé pour le calcul automatique des PV max. */
+/** Dé de vie par classe, pour le calcul des PV max. */
 DND_CUSTOM.classHitDice = {
   barbarian: 12,
   bard: 8,
@@ -237,8 +210,7 @@ DND_CUSTOM.classHitDice = {
   wizard: 6
 };
 
-/** Nombre de compétences à choisir à la création, par classe, SRD 5e ("Skills" de chaque
- *  classe). Utilisé par l'assistant de création de personnage. */
+/** Nombre de compétences à choisir à la création, par classe. */
 DND_CUSTOM.classSkillChoices = {
   barbarian: 2,
   bard: 3,
@@ -254,9 +226,7 @@ DND_CUSTOM.classSkillChoices = {
   wizard: 2
 };
 
-/** Caractéristiques de jets de sauvegarde maîtrisées par classe, SRD 5e ("Saving Throws" de
- *  chaque classe) : fixe, pas un choix du joueur. Utilisé par l'assistant de création de
- *  personnage. */
+/** Sauvegardes maîtrisées par classe. */
 DND_CUSTOM.classSavingThrows = {
   barbarian: ["str", "con"],
   bard: ["dex", "cha"],
@@ -272,11 +242,7 @@ DND_CUSTOM.classSavingThrows = {
   wizard: ["int", "wis"]
 };
 
-/** Catégories d'armes maîtrisées par classe, SRD 5e ("Weapons" de chaque classe) —
- *  simplifié au niveau des 4 catégories déjà utilisées par WeaponData.weaponType (courante/
- *  de guerre, corps-à-corps/à distance), sans les quelques exceptions nommées du SRD (ex.
- *  Rogue + rapière). Utilisé par weaponAttackDamage (rules.js) pour n'appliquer le bonus de
- *  maîtrise que si la classe du personnage couvre le type de l'arme équipée. */
+/** Catégories d'armes maîtrisées par classe. */
 DND_CUSTOM.classWeaponProficiencies = {
   barbarian: ["meleeSimple", "rangedSimple", "meleeMartial", "rangedMartial"],
   bard: ["meleeSimple", "rangedSimple"],
@@ -292,8 +258,7 @@ DND_CUSTOM.classWeaponProficiencies = {
   wizard: ["meleeSimple", "rangedSimple"]
 };
 
-/** Caractéristique d'incantation par classe lanceuse de sorts, SRD 5e. Utilisée pour le DD
- *  de sauvegarde et le bonus d'attaque des sorts. */
+/** Caractéristique d'incantation par classe lanceuse. */
 DND_CUSTOM.spellcastingAbility = {
   bard: "cha",
   cleric: "wis",
@@ -304,16 +269,7 @@ DND_CUSTOM.spellcastingAbility = {
   wizard: "int"
 };
 
-/** États SRD 5e (14) + "En Rage" (extension propre à ce système, cf. DND_CUSTOM_CONDITIONS
- *  historique) : remplace CONFIG.statusEffects (cf. dnd-custom-ai.js > hook init). Icônes du
- *  cœur Foundry réutilisées quand elles correspondent ; icône de Capacité propre au système pour
- *  "raging", faute d'équivalent SRD 5e générique dans les icônes fournies par Foundry. Exportée
- *  ici (pas seulement locale à dnd-custom-ai.js) pour que FeatureData#requiresState (item-data.js)
- *  puisse contraindre ses valeurs possibles aux mêmes identifiants — cf. `choices` plus bas.
- *  "raging" pilote le grisage des Capacités qui l'exigent (ex. Frénésie, Barbare Berserker,
- *  retour de test lot 3 point 5 "Capacités à ressource") : grisées tant que l'état n'est pas
- *  actif sur l'Actor, dégrisées automatiquement à sa bascule (cf. actor-sheet.js > featureDisabled,
- *  handlebars-helpers.js) — pas de contrôle manuel séparé à faire par le joueur. */
+/** États du système (SRD + bascules homebrew), installés dans CONFIG.statusEffects à l'init. */
 DND_CUSTOM.conditions = [
   { id: "blinded", name: "DND_CUSTOM.Conditions.blinded", img: "icons/svg/blind.svg" },
   { id: "charmed", name: "DND_CUSTOM.Conditions.charmed", img: "icons/svg/aura.svg" },
@@ -329,71 +285,29 @@ DND_CUSTOM.conditions = [
   { id: "restrained", name: "DND_CUSTOM.Conditions.restrained", img: "icons/svg/net.svg" },
   { id: "stunned", name: "DND_CUSTOM.Conditions.stunned", img: "icons/svg/daze.svg" },
   { id: "unconscious", name: "DND_CUSTOM.Conditions.unconscious", img: "icons/svg/unconscious.svg" },
-  // Pas un état SRD 5e classique (pas d'avantage/désavantage associé) mais nécessaire pour
-  // marquer visuellement un personnage mort sur son token (cf. hook updateActor > mort par
-  // échec de jets de sauvegarde, dnd-custom-ai.js).
+  // Marque un personnage mort sur son token.
   { id: "dead", name: "DND_CUSTOM.Conditions.dead", img: "icons/svg/skull.svg" },
-  // Homebrew (pas un état SRD 5e à part entière, mais nécessaire comme bascule visible pour
-  // piloter le grisage des Capacités liées à la Rage, cf. commentaire ci-dessus) : réutilise
-  // l'icône déjà existante de la Capacité "Rage" plutôt qu'une icône générique du cœur Foundry.
+  // En Rage : active les Capacités qui l'exigent.
   { id: "raging", name: "DND_CUSTOM.Conditions.raging", img: "systems/dnd-custom-ai/assets/icons/features/Rage.png" },
-  // Homebrew (comme "raging" ci-dessus) : la Surprise n'est pas un état SRD 5e à proprement
-  // parler (une règle de début de combat, pas une condition durable), mais ce système en a
-  // besoin comme bascule manuelle pour piloter le critique automatique d'Assassin (Roublard,
-  // cf. world-items/features.json > "Assassinat" et rollCheck > forceCriticalHit, rolls.js) —
-  // le MJ la pose sur la cible au moment où elle est effectivement prise par surprise.
+  // Surpris : posé par le MJ, permet le critique automatique d'Assassinat.
   { id: "surprised", name: "DND_CUSTOM.Conditions.surprised", img: "icons/svg/eye.svg" },
-  // Homebrew (comme "raging" ci-dessus) : bascule manuelle pilotant les Capacités de Cercle de
-  // la Lune/Cercle des Spores (Druide) qui exigent d'être en Forme sauvage, cf.
-  // world-items/features.json > "Forme sauvage de combat"/"Nuée de Symbiote".
+  // En Forme sauvage : active les Capacités qui l'exigent.
   { id: "wildShape", name: "DND_CUSTOM.Conditions.wildShape", img: "systems/dnd-custom-ai/assets/icons/features/Forme-sauvage.png" },
-  // Homebrew (comme "surprised" ci-dessus) : bascule manuelle posée sur la cible d'un Paladin du
-  // Serment de Vengeance (désavantage aux attaques de quiconque n'est pas le Paladin contre
-  // elle), à poser/lever manuellement par le MJ, cf. world-items/features.json > "Traque
-  // implacable".
+  // Traqué : cible de Traque implacable (Serment de Vengeance).
   { id: "hunted", name: "DND_CUSTOM.Conditions.hunted", img: "icons/svg/target.svg" },
-  // Homebrew (comme "raging"/"hunted" ci-dessus) : bascule manuelle posée par le lanceur sur une
-  // cible de Bénédiction (Clerc/Paladin) — tant qu'active, +1d4 automatique aux jets d'attaque et
-  // de sauvegarde de cette cible (cf. conditionRollEffects, actor-sheet.js). Comme les autres
-  // conditions homebrew, aucune durée ni décompte de sort n'est suivi : à lever manuellement
-  // quand le sort prend fin.
+  // Béni : +1d4 aux jets d'attaque et de sauvegarde.
   { id: "blessed", name: "DND_CUSTOM.Conditions.blessed", img: "icons/svg/angel.svg" },
-  // Homebrew (comme "blessed" ci-dessus) : bascule manuelle posée par le lanceur d'Avis divin
-  // (Clerc) — tant qu'active, +1d4 automatique aux tests de caractéristique/compétence de la
-  // cible. SRD 5e : normalement une seule utilisation avant la fin du sort ; simplifié comme le
-  // reste des conditions homebrew (pas de décompte automatique, à lever manuellement après usage
-  // ou fin du sort).
+  // Guidé : +1d4 aux tests de caractéristique et de compétence.
   { id: "guided", name: "DND_CUSTOM.Conditions.guided", img: "icons/svg/light.svg" },
-  // Homebrew (comme "blessed"/"guided" ci-dessus) : bascule manuelle posée par le lanceur de
-  // Liberté de mouvement (Clerc, Paladin, Druide) sur sa cible — tant qu'active, immunité à
-  // Entravé (cf. isImmuneToCondition, helpers/condition-immunity.js, chantier "généraliser
-  // condition-immunity.js" de ClaudeFiles/MECANIQUES_A_AUTOMATISER.md, 2026-08-24). Pas de
-  // décompte automatique (1 h SRD), à lever manuellement comme le reste des conditions homebrew.
+  // Liberté de mouvement : immunité à Entravé.
   { id: "freedomOfMovement", name: "DND_CUSTOM.Conditions.freedomOfMovement", img: "icons/svg/wing.svg" },
-  // Homebrew (comme ci-dessus) : bascule manuelle posée par le lanceur de Protection contre le
-  // mal et le bien sur sa cible — tant qu'active, immunité à Charmé/Effrayé (cf.
-  // isImmuneToCondition). Simplification assumée par rapport au texte SRD exact : la protection
-  // RAW ne vaut QUE contre les Aberrations/Célestes/Élémentaires/Fées/Fiélons/Morts-vivants (pas
-  // n'importe quelle source de Charmé/Effrayé) — ce système ne trace pas le type de créature à
-  // l'origine d'une condition posée (aucun mécanisme d'"origine d'attaquant" pour une
-  // ActiveEffect nulle part ailleurs dans ce système), donc l'immunité posée ici est
-  // volontairement plus large que le SRD plutôt que non modélisée du tout.
+  // Protection contre le mal et le bien : immunité à Charmé et Effrayé.
   { id: "protectedFromEvilGood", name: "DND_CUSTOM.Conditions.protectedFromEvilGood", img: "icons/svg/holy-shield.svg" },
-  // Homebrew (comme "raging"/"blessed" ci-dessus, Niveau C, 2026-08-24) : bascule manuelle posée
-  // par le Paladin lui-même à l'activation de "Voile des anciens" (Canalisation divine, Serment
-  // des Anciens) — tant qu'active sur LUI, toute créature à 3 m (lui inclus) bénéficie d'une
-  // résistance aux dégâts de SORTS (pas un type précis, cf. damageTypeMultiplier >
-  // isSpellDamage/isProtectedByAncientsVeil, helpers/damage-resolution.js) — même mécanisme de portée que
-  // isProtectedByDevotionAura (helpers/condition-immunity.js), la bascule remplaçant ici la
-  // possession passive de la Capacité (activation temporaire, pas un trait permanent). Aucun
-  // décompte de durée (1 min SRD) n'est suivi, comme le reste des conditions homebrew : à lever
-  // manuellement.
+  // Voile des anciens : résistance aux dégâts des sorts à 3 m du Paladin.
   { id: "ancientsVeil", name: "DND_CUSTOM.Conditions.ancientsVeil", img: "icons/svg/mage-shield.svg" }
 ];
 
-/** Types d'activation SRD 5e (cf. FeatureData/SpellData#activation, item-data.js) — utilisé
- *  pour le select des fiches de Capacité/Sort et le libellé du badge "Réaction" sur l'onglet
- *  Capacités/Sorts. Seule "reaction" déclenche un suivi (system.combat.reactionAvailable). */
+/** Types d'activation des Capacités et Sorts ; seule la réaction est suivie. */
 DND_CUSTOM.activationTypes = {
   action: "DND_CUSTOM.Item.ActivationTypes.action",
   bonusAction: "DND_CUSTOM.Item.ActivationTypes.bonusAction",
@@ -401,12 +315,10 @@ DND_CUSTOM.activationTypes = {
   free: "DND_CUSTOM.Item.ActivationTypes.free"
 };
 
-/** Vitesse de base (en pieds) : les origines de ce système sont des cultures/régions,
- *  pas des espèces, donc pas de variation de vitesse par origine pour l'instant. */
+/** Vitesse de base en pieds, identique pour toutes les Origines. */
 DND_CUSTOM.baseSpeed = 30;
 
-/** Types d'armure SRD 5e, déterminant le plafond de bonus de Dex sur la CA
- *  (cf. scripts/helpers/rules.js > armorClass). */
+/** Types d'armure, qui plafonnent le bonus de Dex à la CA. */
 DND_CUSTOM.armorTypes = {
   light: "DND_CUSTOM.Item.ArmorTypes.light",
   medium: "DND_CUSTOM.Item.ArmorTypes.medium",
@@ -421,10 +333,7 @@ DND_CUSTOM.weaponTypes = {
   rangedMartial: "DND_CUSTOM.Item.WeaponTypes.rangedMartial"
 };
 
-/** Types de dégâts physiques SRD 5e. */
-// Types physiques (armes) + types élémentaires/énergétiques SRD 5e (sorts, cf. SpellData >
-// system.damage.type dans item-data.js) réunis dans une seule liste partagée : une arme ne
-// propose en pratique que les 3 premiers dans son select (weapon-sheet.hbs), un sort les 13.
+/** Types de dégâts SRD : 3 physiques (armes) puis 10 élémentaires et énergétiques. */
 DND_CUSTOM.damageTypes = {
   bludgeoning: "DND_CUSTOM.Item.DamageTypes.bludgeoning",
   piercing: "DND_CUSTOM.Item.DamageTypes.piercing",
@@ -441,11 +350,7 @@ DND_CUSTOM.damageTypes = {
   thunder: "DND_CUSTOM.Item.DamageTypes.thunder"
 };
 
-/** Sous-ensemble de DND_CUSTOM.damageTypes ci-dessus : les 5 seuls types réellement associés à
- *  un type de dragon SRD 5e (Résilience draconique, Ensorceleur Lignée draconique — choix
- *  ponctuel et définitif, cf. FeatureData#grantsChoice = "draconicResistanceType",
- *  CharacterData#combat.draconicResistanceType, #onChooseFeatureOption dans actor-sheet.js).
- *  Mêmes clés de localisation que damageTypes, pas de doublon à maintenir. */
+/** Types de dégâts proposés pour Résilience draconique. */
 DND_CUSTOM.draconicResistanceTypes = {
   acid: DND_CUSTOM.damageTypes.acid,
   cold: DND_CUSTOM.damageTypes.cold,
@@ -454,28 +359,20 @@ DND_CUSTOM.draconicResistanceTypes = {
   poison: DND_CUSTOM.damageTypes.poison
 };
 
-/** Tactiques défensives (Hunter, Rôdeur, SRD 5e) : choix ponctuel et définitif d'un bonus passif
- *  parmi 3 (cf. FeatureData#grantsChoice = "huntersDefense", CharacterData#combat.huntersDefense,
- *  #onChooseFeatureOption dans actor-sheet.js) — non appliqué automatiquement aux jets (cf.
- *  commentaire de la Capacité, features.json), seul le choix lui-même est enregistré/affiché. */
+/** Options de Tactiques défensives (Chasseur, Rôdeur), choix définitif. */
 DND_CUSTOM.huntersDefenses = {
   mobile: "DND_CUSTOM.HuntersDefenses.mobile",
   multiattackDefense: "DND_CUSTOM.HuntersDefenses.multiattackDefense",
   steadfast: "DND_CUSTOM.HuntersDefenses.steadfast"
 };
 
-/** Une main / Deux mains (SRD 5e), propriété de base de toute arme. */
+/** Une main / deux mains. */
 DND_CUSTOM.weaponHandedness = {
   oneHanded: "DND_CUSTOM.Item.WeaponHandedness.oneHanded",
   twoHanded: "DND_CUSTOM.Item.WeaponHandedness.twoHanded"
 };
 
-/** Emplacements d'équipement possibles pour une Arme/une Armure (system.slot, cf. item-data.js
- *  et equipmentSlots() dans rules.js) — clés stables partagées par la fiche d'Item (select
- *  system.slot, réservé au MJ, cf. item-sheets.js) ET la fenêtre de choix d'emplacement
- *  présentée au Joueur au moment d'équiper depuis l'onglet Inventaire (cf.
- *  inventory-drag-drop.js > #offerEquipSlotDialog) — même jeu d'options des deux côtés, une
- *  seule source de vérité. */
+/** Emplacements d'équipement d'une arme ou d'une armure (fiche d'Item et dialogue d'équipement). */
 DND_CUSTOM.weaponSlotOptions = {
   mainHand: "DND_CUSTOM.Equipment.MainHand",
   offHand: "DND_CUSTOM.Equipment.OffHand"
@@ -487,15 +384,22 @@ DND_CUSTOM.armorSlotOptions = {
   accessory: "DND_CUSTOM.Equipment.Accessories"
 };
 
-/** Catégories de Langue (cf. scripts/data/item-data.js > LanguageData) : "common" (la Commune,
- *  connue de tous), "origin" (langue propre à une des 6 Origines), "special" (langue secrète/
- *  de métier). Commune et langue d'Origine octroyées automatiquement à la création du
- *  personnage (cf. helpers/class-content.js > grantLanguages) ; les langues spéciales restent
- *  toujours un ajout manuel (glisser depuis le compendium Langues). */
+/** Catégories de langues : commune, d'Origine (octroyées à la création) et spéciales. */
 DND_CUSTOM.languageCategories = {
   common: "DND_CUSTOM.Item.LanguageCategories.common",
   origin: "DND_CUSTOM.Item.LanguageCategories.origin",
   special: "DND_CUSTOM.Item.LanguageCategories.special"
+};
+
+/** Régions du monde : rangement des objets régionaux et historiques, pages des Chroniques des objets. */
+DND_CUSTOM.regions = {
+  fleuraine: "DND_CUSTOM.Regions.fleuraine",
+  altenmark: "DND_CUSTOM.Regions.altenmark",
+  lucentia: "DND_CUSTOM.Regions.lucentia",
+  ravenmoor: "DND_CUSTOM.Regions.ravenmoor",
+  valdera: "DND_CUSTOM.Regions.valdera",
+  azhar: "DND_CUSTOM.Regions.azhar",
+  saintSiege: "DND_CUSTOM.Regions.saintSiege"
 };
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
@@ -506,13 +410,13 @@ DND_CUSTOM.currencyToCopper = {
   pp: 5000
 };
 
-/** Capacité de charge D&D 5e standard : Force x 15 lb (soit x 7.5 kg). */
+/** Capacité de charge par point de Force : 15 lb (7,5 kg). */
 DND_CUSTOM.carryCapacityPerStrength = {
   lb: 15,
   kg: 7.5
 };
 
-/** Types de créature SRD 5e (14 types officiels), utilisés par la fiche d'ennemi/PNJ. */
+/** Les 14 types de créature SRD. */
 DND_CUSTOM.creatureTypes = {
   aberration: "DND_CUSTOM.CreatureTypes.aberration",
   beast: "DND_CUSTOM.CreatureTypes.beast",
@@ -530,7 +434,7 @@ DND_CUSTOM.creatureTypes = {
   undead: "DND_CUSTOM.CreatureTypes.undead"
 };
 
-/** Tailles SRD 5e (6 catégories officielles), utilisées par la fiche d'ennemi/PNJ. */
+/** Les 6 tailles SRD. */
 DND_CUSTOM.sizes = {
   tp: "DND_CUSTOM.Sizes.tp",
   p: "DND_CUSTOM.Sizes.p",
@@ -548,9 +452,7 @@ DND_CUSTOM.challengeRatings = [
   "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
 ];
 
-/** Points d'expérience rapportés par FI, SRD 5e (table officielle) : pré-remplit
- *  `xpReward` quand le MJ change l'indice de dangerosité (cf. dnd-custom-ai.js > hook
- *  preUpdateActor), la valeur reste ensuite modifiable à la main. */
+/** XP rapporté par FI, qui pré-remplit `xpReward`. */
 DND_CUSTOM.challengeRatingXp = {
   "0": 10, "1/8": 25, "1/4": 50, "1/2": 100,
   "1": 200, "2": 450, "3": 700, "4": 1100, "5": 1800,
@@ -561,30 +463,16 @@ DND_CUSTOM.challengeRatingXp = {
   "26": 90000, "27": 105000, "28": 120000, "29": 135000, "30": 155000
 };
 
-/** XP total cumulé requis pour atteindre chaque niveau, SRD 5e (table "Character
- *  Advancement" officielle, niveaux 1 à 20 — index 0 = niveau 1). Utilisé pour détecter
- *  qu'une montée de niveau est disponible (cf. rules.js > levelForXp). */
+/** XP cumulé requis par niveau (index 0 = niveau 1). */
 DND_CUSTOM.xpThresholds = [
   0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
   85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
 ];
 
-/** Niveaux où une Amélioration de caractéristiques est proposée, SRD 5e (générique, hors
- *  variations mineures par classe comme le Guerrier/Roublard qui en ont davantage — non
- *  modélisées ici). Utilisé au clic sur "Monter de niveau" pour proposer le choix. */
+/** Niveaux offrant une Amélioration de caractéristiques. */
 DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
 
-/** Équipement de départ simplifié par classe (une arme + une armure typiques, SRD 5e sans
- *  les choix multiples officiels) : noms exacts d'Items de `world-items/weapons.json` et
- *  `world-items/armors.json`, recherchés dans les Items du monde par l'assistant de création
- *  de personnage (character-creation-wizard.js). `armor: null` = classe sans armure de
- *  départ typique (Barbare/Moine/Ensorceleur/Magicien, comptent sur leur Dextérité ou une
- *  Défense sans armure). */
-// Retour de test (lot 3) : l'arme de départ doit toujours être d'un type que la classe maîtrise
-// réellement (cf. classWeaponProficiencies ci-dessus) — Barde/Druide/Roublard donnaient une arme
-// martiale (Rapière/Cimeterre) alors que ces 3 classes ne maîtrisent QUE les armes simples dans
-// ce système. Remplacées par Dague/Faucille (armes simples), cf. test dédié dans
-// tests/data/consistency.test.js pour empêcher toute régression future.
+/** Équipement de départ par classe (noms d'Items de weapons.json / armors.json) ; arme toujours maîtrisée. */
 DND_CUSTOM.classStartingEquipment = {
   barbarian: { weapon: "Grande hache", armor: null },
   bard: { weapon: "Dague", armor: "Cuir" },

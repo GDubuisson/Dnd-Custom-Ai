@@ -1,13 +1,5 @@
-// Couvre le point "Bugs de synchronisation" de ClaudeFiles/ANOMALIES_ACTIVES.md : un token de
-// personnage joueur posé sur une scène AVANT que le correctif actorLink (dnd-custom-ai.js >
-// preCreateActor/ensureCharacterTokensLinked) n'existe, et déjà désynchronisé (PV différents) à
-// ce moment-là, reste `actorLink: false` pour toujours — la migration automatique refuse par
-// sécurité de le relier de force. Seule la Macro "Resynchroniser un token"
-// (scripts/helpers/token-sync.js > resyncControlledToken) permet ensuite au MJ de trancher.
-//
-// Reproduit ici directement en désynchronisant un token fraîchement posé (mêmes symptômes que le
-// cas réel : `actorLink: false` + PV différents entre le token et la fiche `game.actors`), sans
-// dépendre d'un monde ancien.
+// Macro « Resynchroniser un token » : relie au personnage un token non lié dont les PV divergent,
+// reproduit en désynchronisant un token fraîchement posé.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];

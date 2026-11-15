@@ -1,6 +1,4 @@
-/* Thème "Auberge et Grand Chemin" : bois vieilli, parchemin taché et cire à cacheter.
-   Ambiance carnet d'aventurier posé sur une table de taverne (plutôt qu'un manuscrit
-   arcanique précieux) : tons chauds de bois et de cuir, encre brune, accents rouille/cire. */
+/* Thème « Auberge et Grand Chemin » : bois vieilli, parchemin taché, encre brune et cire. */
 
 .dnd-custom-ai {
   --dca-surface: #e9dcb8;
@@ -13,8 +11,7 @@
   --dca-on-surface-variant: #4a3820;
   --dca-outline: #7a5a35;
   --dca-outline-variant: #b99a63;
-  /* Texte secondaire/discret : plus sombre que --dca-outline (réservé aux bordures)
-     pour rester lisible sur le parchemin (contraste ~5.5:1 au lieu de ~3.5:1). */
+  /* Texte secondaire lisible sur parchemin (contraste ~5.5:1). */
   --dca-muted-text: #6b5330;
   --dca-primary: #3d2b17;
   --dca-primary-container: #5c4326;
@@ -22,13 +19,7 @@
   --dca-secondary-container: #e8c98a;
   --dca-on-secondary-container: #5c2c0d;
   --dca-secondary-fixed: #f0dfae;
-  /* Retour de test (lot 3, point 9 "Accessibilité") : #c99a52 (valeur d'origine) ne contrastait
-     qu'à 3.6:1 sur --dca-primary-container, sous le seuil RGAA/WCAG AA de 4.5:1 pour du texte
-     de cette taille (ex. en-têtes de tableau d'inventaire) — éclairci jusqu'à ~4.7:1 sur ce même
-     fond (audit réel via axe-core, cf. cypress/e2e/accessibility.cy.js), tout en restant plus
-     sourd que --dca-secondary-fixed pour garder la hiérarchie visuelle libellé/valeur voulue.
-     Seul jeton touché par cet audit : les autres usages (texte sombre sur fond clair, ou fond
-     clair sous texte sombre) gagnent aussi en contraste avec cet éclaircissement, jamais l'inverse. */
+  /* Libellés dorés sur fond bois, contraste AA (~4.7:1). */
   --dca-secondary-fixed-dim: #d7b47f;
   --dca-tertiary: #b3401f;
   --dca-error: #ba1a1a;
@@ -37,10 +28,7 @@
   --dca-font-body: "Vollkorn", "Iowan Old Style", Palatino, Georgia, serif;
   --dca-font-label: "Work Sans", "Segoe UI", sans-serif;
 
-  /* Vraies textures photo (CC0, cf. styles/textures/CREDITS.md), réutilisées en
-     couche sur le fond, l'en-tête et les cartes. Chaque usage les recouvre d'un
-     voile de couleur semi-transparent (teintes --dca-*) pour les raccorder à la
-     palette du thème plutôt que d'afficher leurs tons bruts. */
+  /* Textures photo CC0 (cf. styles/textures/CREDITS.md), toujours recouvertes d'un voile de la palette. */
   --dca-texture-parchment: url("textures/parchment.jpg");
   --dca-texture-wood: url("textures/wood.jpg");
 }
@@ -65,13 +53,7 @@
   box-shadow: inset 0 0 70px rgba(43, 32, 17, 0.22);
 }
 
-/* Largeur plancher de la fiche de personnage (pas de plafond : librement agrandissable). La
-   fenêtre s'ouvre à 708 × 768 (cf. DEFAULT_OPTIONS.position, actor-sheet.js) et l'en-tête
-   compact (3 bandes fines : identité / constantes / économie d'action, cf. .sheet-header plus
-   bas) est pensé pour tenir à cette largeur ; sous ce plancher, la bande de constantes
-   (.hdr-vitals) commencerait à reflouer sur 2 lignes. Foundry lit `computedStyle.minWidth` de
-   cet élément lui-même pour borner le redimensionnement (ApplicationV2#_onResizeMouseMove),
-   donc ce seul `min-width` suffit à empêcher physiquement de descendre en dessous. */
+/* Largeur minimale de la fiche de personnage, lue par Foundry pour borner le redimensionnement. */
 .dnd-custom-ai.sheet.actor.character {
   min-width: 640px;
 }
@@ -87,6 +69,7 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  padding: 1rem 1.1rem 1.4rem;
 }
 
 .dnd-custom-ai .tab::-webkit-scrollbar {
@@ -102,9 +85,7 @@
   border-radius: 4px;
 }
 
-/* ---------- En-tête ("poutre de bois") — disposition d'origine, utilisée telle quelle par la
-   fiche PNJ (npc-sheet.hbs : .header-fields / .header-row / .hp-field). La fiche personnage
-   ajoute `.sheet-header-compact` sur son <header> et redéfinit tout ce bloc plus bas. ---------- */
+/* ---------- En-tête « poutre de bois » de la fiche PNJ ; la fiche personnage utilise .sheet-header-compact. ---------- */
 
 .dnd-custom-ai .sheet-header {
   display: flex;
@@ -157,8 +138,7 @@
   opacity: 0.75;
 }
 
-/* Groupes de statistiques de l'en-tête PNJ (créature type / taille / FP, puis PV / CA /
-   Vitesse / XP). `flex-wrap` reflue les groupes plutôt que de comprimer leur contenu. */
+/* Groupes de statistiques de l'en-tête PNJ, qui passent à la ligne au besoin. */
 .dnd-custom-ai .header-stats {
   display: flex;
   flex-wrap: wrap;
@@ -210,12 +190,7 @@
   text-align: center;
 }
 
-/* ========== En-tête compact de la FICHE PERSONNAGE (.sheet-header-compact) ==========
-   Maquette maquettes/fiche-708x768/ adoptée le 2026-09-04 : la fenêtre s'ouvre à 708 × 768
-   (cf. DEFAULT_OPTIONS.position, actor-sheet.js). L'en-tête tient en 3 bandes fines empilées
-   — identité / constantes / économie d'action — pour rendre la hauteur à l'onglet actif.
-   Chaque bande passe à la ligne (`flex-wrap`) sans jamais chevaucher au-dessus du plancher
-   min-width de la fiche. Bloc entièrement scopé : la fiche PNJ (ci-dessus) n'est pas touchée. */
+/* ========== En-tête compact de la fiche personnage : 3 bandes (identité, constantes, économie d'action) ========== */
 
 .dnd-custom-ai .sheet-header-compact {
   flex-direction: column;
@@ -252,8 +227,7 @@
   padding: 0.05rem 0;
 }
 
-/* Classe · Sous-classe · Origine sur une ligne (reflue si besoin). Chaque champ = petit
-   libellé + valeur cliquable (ouvre la fiche de description) ou <select> (sous-classe MJ). */
+/* Classe · Sous-classe · Origine : libellé + valeur cliquable ou select. */
 .dnd-custom-ai .sheet-header-compact .hdr-sub {
   display: flex;
   flex-wrap: wrap;
@@ -369,8 +343,7 @@
   padding: 0.25rem 0.4rem;
   background: rgba(0, 0, 0, 0.08);
   font-family: var(--dca-font-label);
-  /* Réinitialise le `text-transform: uppercase` que ces <label> pouvaient hériter
-     (cf. bug historique sur l'unité "m" de Vitesse). */
+  /* Unité « m » de Vitesse en minuscule. */
   text-transform: none;
 }
 
@@ -403,8 +376,7 @@
   border-bottom-color: var(--dca-secondary-fixed-dim);
 }
 
-/* Classe/Origine : champs fixes (non éditables sur la fiche, cf. assistant de création),
-   cliquables pour ouvrir leur fiche de description quand elle existe. */
+/* Classe/Origine : valeurs fixes, cliquables pour ouvrir leur fiche de description. */
 .dnd-custom-ai .fixed-field {
   display: flex;
   flex-direction: column;
@@ -437,23 +409,17 @@
   text-decoration: none;
 }
 
-/* Deux classes CSS ici (vs une seule pour .roll-btn) : gagne sur `color: inherit` (roll-btn,
-   ligne ~705) quel que soit l'ordre dans la feuille. Sans ça, Classe/Origine héritaient de la
-   couleur sombre du corps de fiche (--dca-on-surface) au lieu du clair prévu pour l'en-tête
-   bois foncé : illisible, quasi invisible sur ce fond (retour de test). */
+/* Couleur claire de Classe/Origine sur l'en-tête bois (spécificité supérieure à .roll-btn). */
 .dnd-custom-ai .fixed-field-value.roll-btn {
   color: var(--dca-secondary-fixed);
 }
 
-/* .roll-btn:hover (ligne ~716) fonce la couleur (--dca-secondary) : pensé pour un survol sur
-   fond clair (parchemin), illisible sur ce même fond bois sombre. Réutilise la teinte dorée
-   atténuée déjà éprouvée ici pour --dca-secondary-fixed-dim (cf. .fixed-field-label). */
+/* Survol doré adapté au fond bois. */
 .dnd-custom-ai .fixed-field-value.roll-btn:hover {
   color: var(--dca-secondary-fixed-dim);
 }
 
-/* .hp-field : utilisé par l'en-tête PNJ (largeur plancher) et, en compact, comme case PV de
-   la bande de constantes (redéfini plus bas). */
+/* Case PV : en-tête PNJ, et bande de constantes de l'en-tête compact (redéfinie plus bas). */
 .dnd-custom-ai .hp-field {
   min-width: 8rem;
 }
@@ -477,8 +443,7 @@
   width: 2.2rem;
 }
 
-/* Case PV de la bande de constantes compacte (fiche personnage) : centrée, chiffres serrés,
-   jauge sur toute la largeur de la case. */
+/* Case PV de l'en-tête compact : centrée, jauge pleine largeur. */
 .dnd-custom-ai .sheet-header-compact .hp-field {
   min-width: 0;
 }
@@ -523,10 +488,7 @@
   margin-top: 0.15rem;
 }
 
-/* Retour de test : le badge "Monter de niveau" (pilule pleine largeur, images_test/
-   bouton_monter_niveau.png) remplacé par un simple bouton rond entre le niveau et la barre
-   d'XP (images_test/proposition_position.png) — rouge/rond pour rester bien visible sans
-   déséquilibrer la ligne niveau/XP. */
+/* Bouton rond « Monter de niveau » entre le niveau et la jauge d'XP. */
 .dnd-custom-ai .level-up-btn {
   display: inline-flex;
   align-items: center;
@@ -579,10 +541,7 @@
   color: var(--dca-tertiary);
 }
 
-/* Indicateurs d'économie d'action de combat (SRD 5e) dans la zone commune de la fiche — Action,
-   Action bonus et Réaction partagent cette même classe (cf. #onToggleAction/#onToggleBonusAction/
-   #onToggleReaction, actor-sheet.js), cliquables pour un rattrapage manuel. Doré (comme
-   .level-up-badge) tant que la ressource est disponible, grisé une fois consommée. */
+/* Indicateurs Action / Action bonus / Réaction, cliquables : dorés si disponibles, grisés sinon. */
 .dnd-custom-ai .reaction-indicator {
   display: inline-flex;
   align-items: center;
@@ -621,9 +580,7 @@
   background: linear-gradient(90deg, var(--dca-tertiary), var(--dca-secondary-fixed-dim));
 }
 
-/* Regroupe le libellé/chiffres MJ (.xp-gm-field, si MJ) au-dessus de la barre de XP plutôt que
-   côte à côte — retour de test, cf. images_test. Dans l'en-tête compact, la jauge est calée à
-   droite sous le niveau (cf. .hdr-progression). */
+/* Chiffres d'XP du MJ au-dessus de la jauge. */
 .dnd-custom-ai .xp-field {
   display: flex;
   flex-direction: column;
@@ -647,9 +604,7 @@
   font-size: 0.72rem;
 }
 
-/* Barre de progression XP (visible au joueur, cf. actor-sheet.js > context.xpPercent) : ne
-   révèle que la progression relative vers le niveau suivant, jamais un chiffre — le total et
-   les seuils exacts restent réservés au bloc MJ (.xp-gm-field). */
+/* Jauge de progression XP relative, sans chiffres. */
 .dnd-custom-ai .xp-bar {
   display: inline-flex;
   align-items: center;
@@ -820,7 +775,7 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--dca-primary) !important;
+  color: var(--dca-primary) !important; /* NOSONAR : surcharge du cœur Foundry */
   padding: 0.5rem 0.9rem;
   border-radius: 0.4rem 0.4rem 0 0;
   border-bottom: 2px solid transparent;
@@ -835,26 +790,20 @@
 .dnd-custom-ai nav.tabs .item:hover,
 .dnd-custom-ai .sheet-tabs .item:hover {
   background: var(--dca-secondary-fixed);
-  color: var(--dca-primary) !important;
+  color: var(--dca-primary) !important; /* NOSONAR : surcharge du cœur Foundry */
 }
 
 .dnd-custom-ai nav.tabs .item.active,
 .dnd-custom-ai .sheet-tabs .item.active {
   background: var(--dca-surface);
-  color: var(--dca-secondary) !important;
+  color: var(--dca-secondary) !important; /* NOSONAR : surcharge du cœur Foundry */
   border-bottom-color: var(--dca-secondary);
   font-weight: 600;
 }
 
 /* ---------- Contenu des onglets ---------- */
 
-.dnd-custom-ai .tab {
-  padding: 1rem 1.1rem 1.4rem;
-}
-
-/* Onglet Caractéristiques : marges latérales réduites (retour utilisateur — récupérer de la
-   largeur pour les cases de caractéristiques et la liste de compétences sur une fenêtre de
-   708px). Ne touche que cet onglet ; les autres gardent la gouttière d'origine. */
+/* Onglet Caractéristiques : marges latérales réduites. */
 .dnd-custom-ai .tab.stats {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -888,10 +837,7 @@
   color: var(--dca-muted-text);
 }
 
-/* Infobulles de glossaire (data-tooltip -> infobulle stylée Foundry, cf. helper `glossaryTip`
-   et scripts/data/glossary.json) posées sur des libellés non cliquables : curseur "aide" pour
-   signaler qu'un survol donne une définition. Les éléments cliquables (button/a/input/select)
-   gardent leur propre curseur. */
+/* Libellés porteurs d'une infobulle de glossaire : curseur d'aide. */
 .dnd-custom-ai span[data-tooltip],
 .dnd-custom-ai strong[data-tooltip],
 .dnd-custom-ai label[data-tooltip],
@@ -916,16 +862,14 @@
   height: 0.9rem;
 }
 
-/* Champs réservés au MJ (caractéristiques, maîtrises, classe/origine/niveau) : désactivés
-   côté joueur (cf. templates, condition `isGM`). */
+/* Champs réservés au MJ, désactivés côté joueur. */
 .dnd-custom-ai input:disabled,
 .dnd-custom-ai select:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* PV max / CA / Vitesse / Init. / Perception passive : valeurs calculées, jamais des champs de
-   saisie (cf. CharacterData#prepareDerivedData). Rendu homogène avec les inputs voisins. */
+/* Valeurs calculées de l'en-tête (PV max, CA…), alignées sur les champs voisins. */
 .dnd-custom-ai .hdr-vitals .computed-value,
 .dnd-custom-ai .hp-max-value {
   font-family: var(--dca-font-headline);
@@ -933,9 +877,7 @@
   font-weight: 600;
   color: var(--dca-secondary-fixed);
   padding: 0;
-  /* Le libellé parent (ex. "VITESSE") est en text-transform: uppercase : hérité par défaut,
-     sans cette réinitialisation l'unité "m" de formatSpeed (handlebars-helpers.js) s'affichait
-     "M" à l'écran malgré un textContent correct — bug remonté par test. */
+  /* Unité « m » en minuscule malgré le libellé en majuscules. */
   text-transform: none;
 }
 
@@ -1000,11 +942,7 @@
   white-space: nowrap;
 }
 
-/* Profil d'attaque simplifié (fiche PNJ, cf. NpcData#attack, npc-data.js — retour de test :
-   un PNJ ne pouvait pas attaquer). Réutilise .equipment-roll-btn/.equipment-roll-row (déjà
-   stylées pour les boutons Attaque/Dégâts de l'onglet Équipement, fiche personnage) pour les
-   deux boutons de jet ci-dessous, seuls les champs de configuration (nom/caractéristique/bonus)
-   sont propres à ce panneau. */
+/* Profils d'attaque de la fiche PNJ ; boutons de jet partagés avec l'onglet Équipement. */
 .dnd-custom-ai .npc-attack-fields {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -1046,16 +984,7 @@
   gap: 0.7rem;
 }
 
-/* Grille 2 colonnes x 3 lignes plutôt qu'une pile verticale à 1 colonne (retour de test :
-   les 6 cases ne tenaient plus toutes à l'écran sans défiler dès qu'une fenêtre de fiche assez
-   basse, ex. 830px de haut) — divise par ~2 la hauteur totale nécessaire pour cette colonne.
-   Retour de test (2026-09-04, images_test/cellule_stat_plus_petite.png) : les cases prenaient
-   trop de largeur (la valeur, centrée dans `.ability-main` en `flex: 1 1 auto`, gonflait la
-   case) — `.ability-main` ne grandit plus (valeur collée à gauche, bloc MOD./SAUV. collé à
-   droite) et cette colonne se contente désormais de ~300px, laissant plus de place aux
-   Compétences sur une fenêtre de 708px de large. Le bloc MOD./SAUV. (`.ability-side`) garde sa
-   largeur naturelle : la case à cocher de maîtrise de sauvegarde (session MJ) ne peut plus se
-   faire écraser puisque plus rien ne se dispute l'espace horizontal dans la case. */
+/* Caractéristiques en grille 2 × 3 ; valeur à gauche, MOD./SAUV. à droite. */
 .dnd-custom-ai .abilities-column {
   display: grid;
   grid-template-columns: repeat(2, minmax(132px, 1fr));
@@ -1146,10 +1075,7 @@
   border-color: var(--dca-secondary);
 }
 
-/* Retour de test : "Monter"/"Descendre"/"Reprendre forme" (mount-chip) réutilisaient
-   .ability-btn (cercle 1.1rem taillé pour un seul glyphe "-"/"+") — le texte du bouton
-   débordait largement du cadre rond. Même habillage (pilule, mêmes couleurs) mais largeur
-   auto + padding horizontal pour accueillir un libellé. */
+/* Bouton pilule à libellé (Monter, Descendre, Reprendre forme). */
 .dnd-custom-ai .ability-btn-text {
   display: inline-flex;
   align-items: center;
@@ -1228,8 +1154,7 @@
   height: 0.7rem;
 }
 
-/* Indicateur de maîtrise de sauvegarde côté Joueur (lecture seule, cf. tab-stats.hbs) : la
-   maîtrise elle-même reste éditable uniquement par le MJ (case à cocher, ci-dessus). */
+/* Indicateur de maîtrise de sauvegarde côté joueur (lecture seule). */
 .dnd-custom-ai .ability-side-label.proficient {
   color: var(--dca-secondary);
   font-weight: 700;
@@ -1251,28 +1176,15 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Retour de test : les icônes de dé de "MOD." et "SAUV." (même carte de caractéristique)
-   s'affichaient à des tailles visiblement différentes. Cause : `.roll-btn i` (règle générale,
-   partagée par tous les boutons de jet du système) fixe la taille de l'icône en `em`, relative
-   au `font-size` du bouton qui la contient — `.ability-mod` (0.9rem) et `.save-mod` (0.7rem) ont
-   des tailles de texte volontairement différentes (hiérarchie visuelle test/sauvegarde), donc
-   leurs icônes héritées l'étaient aussi. Taille fixe en `rem` ici, scopée à cette seule paire de
-   boutons : n'affecte aucun autre bouton de jet du système. */
+/* Icônes de dé MOD./SAUV. à taille fixe, indépendante de la taille du texte. */
 .dnd-custom-ai .ability-side .ability-mod i,
 .dnd-custom-ai .ability-side .save-mod i {
   font-size: 0.75rem;
 }
 
-/* Boutons de jet (test/sauvegarde/compétence/attaque/dégâts) : indice visuel de clic au repos
-   (retour de test — sans indice avant le survol, ça se confondait avec du texte statique).
-   Une icône de dé (cf. gabarit `<i class="fa-solid fa-dice-d20">` dans les templates) sert
-   cet indice quand elle est présente ; les rares boutons sans icône gardent le soulignement
-   pointillé en repli (retour de test suivant — remplacer les pointillés par des icônes de dé,
-   plus lisible qu'un simple soulignement). */
+/* Boutons de jet : icône de dé, ou soulignement pointillé à défaut. */
 .dnd-custom-ai .roll-btn {
-  /* Sans display/width explicites, un <button> reste ici plein-largeur/block (styles de base
-     de Foundry) et retombe seul sur sa propre ligne au lieu de suivre le texte qui le précède
-     (retour de test — "Attaque"/"Dégâts" affichés au-dessus de leur valeur au lieu d'à côté). */
+  /* En ligne avec le texte qui précède. */
   display: inline-flex;
   align-items: baseline;
   gap: 0.25rem;
@@ -1328,11 +1240,7 @@
   margin: 0;
 }
 
-/* DD de sauvegarde/bonus d'attaque (gauche) et langues connues (droite) sur la même ligne, cf.
-   images_test/img_7.png — `.spellcasting-stats` est absent pour une classe non lanceuse de
-   sorts, auquel cas `.languages-block` reste seul sur la ligne (flex-start naturel, pas besoin
-   de cas particulier). `flex-wrap` fait passer les langues sous les DD/bonus dès que la fiche
-   est trop étroite pour les deux côte à côte, sans jamais les chevaucher. */
+/* DD/bonus d'incantation et langues connues sur une même ligne, qui passe à la ligne si étroite. */
 .dnd-custom-ai .abilities-top-row {
   display: flex;
   flex-wrap: wrap;
@@ -1389,10 +1297,7 @@
   align-items: flex-start;
 }
 
-/* Un peu plus compact que .derived-stats/.spellcasting-stats de l'onglet Capacités/Sorts (pas
-   touché, cf. sa propre mise au point) : aide les 5 éléments de cette ligne (états, épuisement,
-   bonus de maîtrise, initiative, perception passive) à tenir sur une seule ligne à une largeur
-   de fiche courante plutôt que de retomber à 2 lignes. */
+/* Ligne états / épuisement / maîtrise / initiative / perception, compacte pour tenir sur une ligne. */
 .dnd-custom-ai .conditions-row .derived-stats {
   gap: 0.4rem;
 }
@@ -1401,17 +1306,7 @@
   padding: 0.3rem 0.6rem;
 }
 
-/* Retour de test : la version précédente (grille de pastilles cliquables, une par état, toutes
-   visibles en permanence) jugée peu claire — remplacée par une vraie liste déroulante (élément
-   natif `<details>`, pas de JS requis) : repliée par défaut sur un résumé des états actifs
-   uniquement, dépliée sur une liste à cocher complète. Icône case à cocher (fa-square/
-   fa-square-check) à la place de la pastille. Côté fiche personnage (actor-sheet.js), cocher un
-   état ne fait plus qu'une bascule visuelle locale (`data-action="toggleConditionSelection"`) :
-   la sélection n'est appliquée à l'Actor qu'à la fermeture de la liste (retour de test — un
-   `actor.update()` par clic re-render-ait toute la fiche et refermait le `<details>`,
-   empêchant de cocher plusieurs états d'affilée sans le rouvrir à chaque fois). La fiche PNJ
-   (npc-sheet.js) garde encore l'ancien mécanisme immédiat (`data-action="toggleCondition"`),
-   son usage typique ne cumulant pas plusieurs états à la fois. */
+/* Liste déroulante des états (`<details>`) : résumé des états actifs, liste à cocher dépliée. */
 .dnd-custom-ai .conditions-dropdown {
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.4rem;
@@ -1471,12 +1366,7 @@
   overflow-y: auto;
 }
 
-/* Retour de test : la liste apparaissait décalée vers le centre plutôt que collée à gauche.
-   Cause : `.condition-checkbox-row` est un `<button>` — le CSS core de Foundry pose
-   `justify-content: center` sur les boutons par défaut (pensé pour ses propres boutons-icônes
-   carrés), jamais écrasé ici puisque cette règle ne fixait que `display`/`align-items`, pas
-   `justify-content`. `flex-start` explicite règle l'alignement quel que soit l'ordre de
-   chargement des feuilles de style. */
+/* Alignement à gauche (le cœur Foundry centre le contenu des boutons). */
 .dnd-custom-ai .condition-checkbox-row {
   display: flex;
   align-items: center;
@@ -1521,9 +1411,7 @@
   opacity: 1;
 }
 
-/* Résumé compact des états actifs dans l'en-tête (retour de test — invisible sauf sur
-   l'onglet Statistiques jusqu'ici) : mêmes pastilles que .condition-chip, en lecture seule
-   (pas de data-action, juste l'image + le nom), visibles quel que soit l'onglet ouvert. */
+/* Résumé des états actifs dans l'en-tête, en lecture seule. */
 .dnd-custom-ai .active-conditions-row {
   display: flex;
   flex-wrap: wrap;
@@ -1590,13 +1478,7 @@
   overflow: hidden;
 }
 
-/* `flex-wrap: wrap` (retour de test) : sans lui, une compétence avec un badge en plus (avantage
-   d'Origine, désavantage d'armure) débordait de son `<li>` sur la colonne voisine de la grille
-   2 colonnes dès que celle-ci se resserrait un peu (ex. après l'élargissement de
-   .abilities-column ci-dessus) — le bouton de jet devenait alors invisible/inaccessible
-   ("covered by/hidden by an <li>"). Le libellé garde son ellipsis (`.skills-list .skill label`,
-   plus bas) : c'est seulement le badge + bouton qui passent à la ligne suivante si besoin,
-   jamais la case voisine qui se fait recouvrir. */
+/* Badge et bouton de jet passent à la ligne plutôt que de déborder sur la case voisine. */
 .dnd-custom-ai .skills-list .skill {
   display: flex;
   flex-wrap: wrap;
@@ -1609,13 +1491,8 @@
   border-left: 3px solid transparent;
   font-size: 0.78rem;
   transition: background 0.15s ease;
-  /* Retour de test (lot 3) : la compétence la plus en bas à droite (dernier `<li>` du DOM)
-     tranchait visuellement des autres — même mécanisme que `.language-chip` plus bas dans ce
-     fichier : le CSS core de Foundry pose `margin-bottom: 0.25rem` sur TOUT `<li>` sauf
-     `:last-child`, ce qui grandit la ligne de grille de tous les autres `.skill` (via leur
-     marge) sauf celui-ci, en 2 colonnes -> décalage visible pour la toute dernière carte.
-     `!important` neutralise cette règle core quelle que soit la position dans la liste. */
-  margin-bottom: 0 !important;
+  /* Neutralise la marge de `li` du cœur Foundry pour des cartes de hauteur égale. */
+  margin-bottom: 0 !important; /* NOSONAR : surcharge du cœur Foundry */
 }
 
 .dnd-custom-ai .skills-list .skill:nth-child(odd) {
@@ -1737,8 +1614,7 @@
   gap: 0.5rem;
 }
 
-/* Ligne d'objet équipé (main principale/secondaire, armure, accessoire) : image + nom/stats/
-   description, cf. retour de test — rien de tout ça n'était visible auparavant. */
+/* Ligne d'objet équipé : image, nom, stats et description. */
 .dnd-custom-ai .equipped-item-line {
   display: flex;
   gap: 0.5rem;
@@ -1786,10 +1662,7 @@
   color: var(--dca-muted-text);
 }
 
-/* Boutons Attaque/Dégâts de l'onglet Équipement (retour de test — mis plus en évidence que
-   les autres jets de la fiche : vrais boutons avec fond/bordure/icône, plutôt que du texte
-   souligné en pointillés comme .roll-btn) : sword/blood-drop, code couleur distinct par
-   action pour les repérer d'un coup d'œil. */
+/* Boutons Attaque/Dégâts de l'onglet Équipement, avec fond, icône et couleur propres. */
 .dnd-custom-ai .equipment-roll-row {
   display: flex;
   flex-wrap: wrap;
@@ -1798,9 +1671,7 @@
 }
 
 .dnd-custom-ai .equipment-roll-btn {
-  /* width:auto explicite : sans ça, le reset `button { width: 100% }` du cœur Foundry
-     l'emporte (on ne fixe pas la largeur ici), chaque bouton prend toute la ligne et
-     Attaque/Dégâts se retrouvent l'un sous l'autre — même piège que .roll-btn plus haut. */
+  /* Largeur automatique (le cœur Foundry met les boutons à 100 %). */
   display: inline-flex;
   width: auto;
   align-items: center;
@@ -1942,10 +1813,7 @@
 
 .dnd-custom-ai .currency {
   display: flex;
-  /* Le titre (h3, ci-dessous) est en width:100% : avec nowrap, il occupait toute la largeur
-     de la ligne et ne laissait plus de place aux 4 champs de monnaie, qui se retrouvaient
-     écrasés les uns sur les autres (retour de test). En wrap, le titre passe seul sur sa
-     propre ligne et les champs se répartissent normalement sur la suivante. */
+  /* Le titre passe sur sa propre ligne, laissant la suivante aux 4 pièces. */
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
@@ -1969,9 +1837,7 @@
   color: var(--dca-secondary-fixed);
 }
 
-/* Une ligne unique : chaque pièce est une colonne (libellé centré au-dessus de sa valeur),
-   pas un libellé + champ mis bout à bout (retour de test — avec les noms complets des
-   pièces, ça se retrouvait à stacker à gauche au lieu de tenir sur une ligne). */
+/* Une colonne par pièce : libellé centré au-dessus de sa valeur. */
 .dnd-custom-ai .currency label {
   display: flex;
   flex-direction: column;
@@ -1987,17 +1853,14 @@
 
 .dnd-custom-ai .currency input {
   width: 100%;
-  /* Sans ceci, un <input> garde sa largeur minimale intrinsèque (contrairement à un <div>) et
-     ignore le rétrécissement du label parent (déjà en min-width: 0 ci-dessus) : sur une fiche
-     étroite, les 4 champs se chevauchaient au lieu de se comprimer (retour de test). */
+  /* Permet aux champs de rétrécir sur une fiche étroite. */
   min-width: 0;
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   color: var(--dca-secondary-fixed);
   font-family: var(--dca-font-headline);
-  /* Retour de test : sans taille explicite, l'input retombe sur la taille par défaut du
-     navigateur (plus petite que le reste de la fiche), illisible pour une valeur de monnaie. */
+  /* Taille de valeur lisible. */
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
@@ -2070,10 +1933,7 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Trait/sort d'Origine : mis en avant au-dessus des deux colonnes Capacités/Sorts (retour de
-   test — auparavant premier élément de .features-list, il se retrouvait noyé au milieu des
-   capacités de classe au lieu de ressortir comme un avantage à part). Même carte que
-   .features-list li, avec un liseré de couleur pour le distinguer. */
+/* Trait/sort d'Origine mis en avant au-dessus des colonnes Capacités/Sorts. */
 .dnd-custom-ai .origin-trait-panel {
   background-color: var(--dca-surface-container);
   background-image:
@@ -2108,11 +1968,7 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* En-tête d'identité de classe, en haut de l'onglet Capacités/Sorts (cf.
-   templates/actor/abilities/class-flavor.hbs, partial unique pour les 12 classes) : sceau de
-   cire + titre thématique + phrase d'ambiance, sur un bandeau parcheminé assorti au thème
-   "Auberge et Grand Chemin". Le `data-class` (context.classFlavorKey, actor-sheet.js) ne sert
-   qu'à teinter le sceau ci-dessous — aucune autre différence de structure entre classes. */
+/* Bandeau d'identité de classe de l'onglet Capacités/Sorts : sceau, titre et phrase d'ambiance. */
 .dnd-custom-ai .class-flavor-header {
   display: flex;
   align-items: center;
@@ -2130,9 +1986,7 @@
   box-shadow: inset 0 0 0 1px rgba(122, 90, 53, 0.15), 0 1px 3px rgba(43, 32, 17, 0.2);
 }
 
-/* Médaillon "cire à cacheter" : --seal-color par défaut sur --dca-primary, redéfini par classe
-   juste en dessous. Relief simulé sans image (dégradé + ombres internes) pour rester cohérent
-   avec le reste du thème (aucun asset supplémentaire). */
+/* Sceau de cire en relief (dégradé + ombres), teinte `--seal-color` par classe. */
 .dnd-custom-ai .class-flavor-seal {
   --seal-color: var(--dca-primary);
   display: flex;
@@ -2157,11 +2011,7 @@
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
-/* Teintes de cire par classe — purement décoratives (archétype de la classe : feu, nature,
-   arcane, ombre...), volontairement désaturées pour rester dans la palette bois/parchemin du
-   thème plutôt que de jurer avec elle. Couverture vérifiée par tests/data/i18n-coverage.test.js
-   (une entrée DND_CUSTOM.classFlavorIcon par classe jouable) : ajouter une règle ici pour toute
-   nouvelle classe ajoutée à ce map. */
+/* Teinte de cire par classe ; une règle par entrée de DND_CUSTOM.classFlavorIcon. */
 .dnd-custom-ai .class-flavor-header[data-class="barbarian"] .class-flavor-seal { --seal-color: #9c3b1e; }
 .dnd-custom-ai .class-flavor-header[data-class="bard"] .class-flavor-seal { --seal-color: #7d4a86; }
 .dnd-custom-ai .class-flavor-header[data-class="cleric"] .class-flavor-seal { --seal-color: #b8862c; }
@@ -2196,10 +2046,7 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Capacités (gauche) / Sorts (droite) côte à côte pour les classes lanceuses de sorts ; une
-   seule colonne (Capacités) sinon — .features-column s'étire naturellement sur toute la
-   largeur quand .spells-column est absent du DOM (retour de test — demande explicite de
-   séparer les deux au lieu de tout empiler dans une même liste). */
+/* Capacités et Sorts côte à côte pour un lanceur, une seule colonne sinon. */
 .dnd-custom-ai .abilities-tab-columns {
   display: flex;
   align-items: flex-start;
@@ -2212,9 +2059,7 @@
   min-width: 0;
 }
 
-/* Retour de test : les libellés "Sorts de niveau 1/2/..." (0.62rem, --dca-muted-text) se
-   confondaient avec le reste de la fiche — taille/poids augmentés, couleur d'accent (au lieu
-   du gris passe-partout) et soulignement pour bien marquer chaque nouveau palier. */
+/* Titre de palier de sorts accentué. */
 .dnd-custom-ai .spell-level-subtitle {
   margin: 0.9rem 0 0.4rem;
   padding-bottom: 0.2rem;
@@ -2231,10 +2076,7 @@
   margin-top: 0;
 }
 
-/* Retour de test : un onglet par niveau (Tours/Niv. 1/Niv. 2/...) au-dessus de la liste de
-   Sorts, pour ne plus avoir à scroller jusqu'aux paliers hauts — même habillage "pilule" que
-   .spell-slot-chip juste en dessous, actif = fond plein plutôt qu'un simple soulignement (la
-   couleur seule ne suffit jamais à marquer l'état actif, cf. .pact-magic-badge). */
+/* Onglets de palier de sorts (pilules), actif en fond plein. */
 .dnd-custom-ai .spell-level-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -2268,11 +2110,7 @@
 }
 
 /* ---------- Sorts ---------- */
-
-/* Séparateur centré entre l'en-tête de classe et la liste Capacités/Sorts, cf.
-   images_test/img_7.png — un chip par palier d'emplacement de sort accessible (1 à 9), le
-   flex row générique (::before/::after, flex-wrap) absorbe le nombre variable de chips selon
-   la classe/le niveau du personnage. */
+/* Bandeau des emplacements de sorts : un chip par palier accessible. */
 .dnd-custom-ai .spell-slots-row {
   display: flex;
   align-items: center;
@@ -2315,9 +2153,7 @@
   padding: 0.1rem 0.2rem;
 }
 
-/* Badge "Magie de Pacte" (Occultiste, cf. tab-abilities.hbs) : distingue visuellement ce pool
-   d'un jeu d'emplacements classique (un seul palier actif, récupéré au repos court ET long) —
-   bordure dédiée en plus du texte, jamais la couleur seule (accessibilité). */
+/* Badge « Magie de Pacte », bordure dédiée en plus du texte. */
 .dnd-custom-ai .pact-magic-badge {
   display: inline-flex;
   align-items: center;
@@ -2359,10 +2195,7 @@
   color: var(--dca-secondary-container);
 }
 
-/* Retour de test : un seul palier affiché à la fois (cf. .spell-level-tabs ci-dessus), le
-   reste bascule côté JS via #onSelectSpellLevel — jamais de scroll pour atteindre les paliers
-   hauts. Tous les panneaux restent dans le DOM (rendus par Handlebars), seul .active est
-   visible. */
+/* Un seul palier de sorts visible à la fois (.active). */
 .dnd-custom-ai .spell-level-group {
   display: none;
   margin-top: 0.9rem;
@@ -2412,8 +2245,7 @@
   font-weight: 600;
 }
 
-/* Badge "Réaction" (cf. FeatureData/SpellData#activation) sur une entrée de l'onglet
-   Capacités/Sorts — le déclencheur (system.reactionTrigger) est affiché en tooltip. */
+/* Badge « Réaction », déclencheur en infobulle. */
 .dnd-custom-ai .reaction-badge {
   display: inline-flex;
   align-items: center;
@@ -2427,9 +2259,7 @@
   letter-spacing: 0.03em;
 }
 
-/* Retour de test (lot 3) : concept de sort "préparé" retiré (system.prepared, purement
-   informatif, jamais utilisé par aucune règle) — les boutons d'action restent poussés à droite
-   de la ligne (avant, `.spell-prepared` portait ce `margin-left: auto`). */
+/* Boutons d'action du sort poussés à droite. */
 .dnd-custom-ai .spells-list li [data-action="castSpell"] {
   margin-left: auto;
 }
@@ -2461,13 +2291,7 @@
   font-size: 0.85rem;
 }
 
-/* Bug retour de test ("aucun texte visible / impossible d'éditer" dans les zones de texte) :
-   `min-height` seul sur `<prose-mirror>` ne se propage pas à sa zone éditable interne
-   (`.editor-content.ProseMirror`, contenteditable). Un champ VIDE (aucun paragraphe -> aucune
-   hauteur intrinsèque de contenu) donnait donc une zone éditable de 0px de haut, invisible et
-   non cliquable, malgré le cadre de 8rem bien affiché autour. `display: flex` + `flex: 1` sur la
-   zone éditable contourne le calcul de `height: 100%` en laissant le flex layout distribuer
-   l'espace réellement disponible, quel que soit le contenu. */
+/* Zone éditable ProseMirror en flex pour garder une hauteur cliquable même vide. */
 .dnd-custom-ai .journal-block prose-mirror {
   display: flex;
   flex-direction: column;
@@ -2482,23 +2306,7 @@
   font-size: 0.85rem;
 }
 
-/* Retour de test (ANOMALIES_ACTIVES.md) : un texte plus long que min-height défilait à
-   l'intérieur du champ au lieu de s'afficher en entier. Root cause identifiée en conditions
-   réelles (inspection des styles calculés, pas une supposition) : le CSS core de Foundry
-   (`foundry2.css`) pose `.editor-content { position: absolute; inset: 0; overflow: hidden auto }`
-   par défaut — une zone éditable TOUJOURS calée sur la taille de son parent positionné, quel que
-   soit son contenu, avec défilement interne dès dépassement. Foundry expose lui-même l'échappatoire
-   officielle à ce comportement : la classe `content-sized` sur `<prose-mirror>` (posée dans le
-   template, cf. tab-journal.hbs et consorts), qui repasse `.editor-content` en `position: unset`
-   (flux normal). Une fois hors positionnement absolu, notre propre `flex: 1 1 auto` (grandir tout
-   en gardant `auto` comme base = taille réelle du contenu, pas 0) fait grandir naturellement le
-   conteneur flex parent (`.journal-block prose-mirror`, `display: flex` sans hauteur explicite)
-   au-delà de `min-height` ; `overflow: visible` neutralise le `overflow-y: auto` du cœur Foundry
-   qui s'appliquerait sinon encore à cette zone. Le fix "champ vide -> 0px" ci-dessus reste
-   nécessaire et continue de fonctionner à l'identique (vérifié en conditions réelles : la zone
-   éditable garde une hauteur non nulle et cliquable même vide). Sans la classe `content-sized`
-   posée côté template, ces déclarations n'ont aucun effet (elles ciblent un élément qui reste
-   `position: absolute`) — les deux vont nécessairement de pair. */
+/* Zone éditable qui grandit avec son contenu (avec la classe `content-sized` posée côté template). */
 .dnd-custom-ai .journal-block prose-mirror .editor-content {
   flex: 1 1 auto;
   overflow: visible;
@@ -2532,19 +2340,8 @@
   background: var(--dca-surface-lowest);
   font-family: var(--dca-font-label);
   font-size: 0.72rem;
-}
-
-/* Retour de test : la dernière pastille de langue (la plus à droite/en bas) semblait "plus
-   grosse" que les autres. Root cause exacte fournie par le testeur (2026-08-16) : le CSS core
-   de Foundry (`foundry2.css`) pose `margin-bottom: 0.25rem` sur TOUT `<li>`, sauf
-   `:last-child` (`margin-bottom: 0`) — chaque `.language-chip` est justement un `<li>`
-   (`.languages-list`), donc la dernière pastille d'une ligne recevait un peu moins de marge que
-   ses voisines, perçu comme une différence de taille plutôt que de marge. `!important`
-   neutralise cette règle core quelle que soit la position dans la liste (`:last-child` ou non) —
-   la tentative précédente ciblait `font-size` sur `.item-name-link`, une fausse piste qui
-   n'adressait pas la vraie cause. */
-.dnd-custom-ai .language-chip {
-  margin-bottom: 0 !important;
+  /* Neutralise la marge de `li` du cœur Foundry pour des pastilles de taille égale. */
+  margin-bottom: 0 !important; /* NOSONAR : surcharge du cœur Foundry */
 }
 
 .dnd-custom-ai .language-chip .item-name-link {
@@ -2564,8 +2361,7 @@
   border-color: var(--dca-secondary);
 }
 
-/* Catégorie "origin" : même teinte dorée que les autres bonus liés à l'Origine sur la fiche
-   (cf. .origin-bonus, .origin-advantage-tag). */
+/* Langue d'Origine : teinte dorée des bonus d'Origine. */
 .dnd-custom-ai .language-chip-origin {
   border-color: var(--dca-secondary-fixed-dim);
 }
@@ -2598,10 +2394,7 @@
   margin: 0.2rem 0 0.6rem;
 }
 
-/* Panneau MJ "types de dégâts" (tab-stats.hbs) : fieldset/legend natifs, jamais habillés
-   ailleurs sur la fiche (habillage réservé à .item-sheet-body) — reprend le style des autres
-   groupes de la fiche au lieu du rendu par défaut du navigateur. margin-bottom sur le panneau
-   laisse un peu d'air avant les cartes de caractéristiques qui suivent (retour de test). */
+/* Panneau MJ des affinités aux dégâts (fieldset/legend habillés). */
 .dnd-custom-ai .damage-affinity-panel {
   display: flex;
   flex-direction: column;
@@ -2637,8 +2430,7 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Résumé côté Joueur (remplace le tableau ci-dessus, réservé au MJ) : uniquement les types déjà
-   actifs, une ligne par groupe non vide. */
+/* Résumé des affinités actives, côté joueur. */
 .dnd-custom-ai .damage-affinity-summary {
   display: flex;
   flex-direction: column;
@@ -2664,22 +2456,14 @@
   color: var(--dca-on-surface);
 }
 
-/* ---------- Fiches d'Item (arme, armure, objet, capacité, origine, classe, outil,
-   moyen de transport) : une fiche Handlebars dédiée par type (cf.
-   ClaudeFiles/CONCEPTION_FONCTIONNELLE.md), mais un habillage commun simple et cohérent avec
-   le thème "Auberge et Grand Chemin". ---------- */
+/* ---------- Fiches d'Item : habillage commun à tous les types ---------- */
 
 .dnd-custom-ai.sheet.item {
   display: flex;
   flex-direction: column;
   gap: 0;
   height: 100%;
-  /* position.height "auto" (item-sheets.js) laisse Foundry mesurer la hauteur du contenu pour
-     dimensionner la fenêtre : sans plafond, une fiche avec beaucoup de champs (ex. Arme :
-     prix, dégâts, 7 propriétés, portée...) pouvait dépasser la hauteur de l'écran sans qu'il
-     n'y ait jamais de barre de défilement à l'intérieur (retour de test — plus moyen de
-     scroller/atteindre les derniers champs). max-height plafonne la mesure ET active le
-     défilement interne (overflow-y) dans le même mouvement. */
+  /* Hauteur plafonnée avec défilement interne. */
   max-height: 85vh;
   overflow-y: auto;
   font-family: var(--dca-font-body);
@@ -2687,9 +2471,7 @@
   background-color: var(--dca-surface);
 }
 
-/* Chaque PART Handlebars (ApplicationV2) doit rendre un unique élément racine : ce wrapper
-   n'existe que pour satisfaire cette contrainte, sans participer à la mise en page (le
-   header et le corps de la fiche restent les enfants flex directs de .sheet.item). */
+/* Racine unique de PART, sans effet de mise en page. */
 .dnd-custom-ai .item-sheet-root {
   display: contents;
 }
@@ -2767,55 +2549,27 @@
   padding: 0.25rem 0.5rem;
 }
 
-/* Retour de test (ANOMALIES_ACTIVES.md) : les zones "Description"/"Description du trait" (5
-   lignes environ à 6rem) restaient trop petites pour lire confortablement un texte un peu long
-   sans redimensionner manuellement à chaque fois — 10rem laisse voir nettement plus de lignes
-   par défaut. `field-sizing: content` (remplace `resize: vertical`) fait grandir le champ avec
-   son contenu, sans plafond ni défilement interne ; `min-height` reste le plancher. Dégrade
-   proprement si non supporté (Firefox à ce jour) : comportement inchangé par rapport à avant ce
-   correctif. */
+/* Zones de description qui grandissent avec leur contenu (`field-sizing`), 10rem minimum. */
 .dnd-custom-ai .item-sheet-body .form-row textarea {
   display: block;
   min-height: 10rem;
   field-sizing: content;
 }
 
-/* Retour de test : "texte invisible / impossible d'éditer" dans les zones de texte des Items de
-   compendium. Root cause identifiée en conditions réelles (mesure DOM directe, pas une
-   supposition) : `min-height` seul sur `<prose-mirror>` ne se propage jamais à sa zone éditable
-   interne (`.editor-content.ProseMirror`, contenteditable) — un champ VIDE (aucun paragraphe,
-   donc aucune hauteur intrinsèque de contenu) donne une zone éditable de 0px de haut, invisible
-   ET non cliquable, malgré le cadre bien affiché autour. Un champ déjà rempli n'était jamais
-   concerné (sa propre hauteur de contenu masquait le bug), et un compendium fraîchement créé/
-   édité par un Item vierge a justement TOUS ses champs de texte vides au départ — cohérent avec
-   le retour. Même correctif que .journal-block (actor-sheet, cf. plus haut) : `display: flex` +
-   `flex: 1` sur la zone éditable contourne le calcul de `height: 100%` (qui ignore un
-   `min-height` sur son parent, seul une `height` explicite compte). */
+/* Zone éditable ProseMirror en flex pour garder une hauteur cliquable même vide. */
 .dnd-custom-ai .item-sheet-body .form-row prose-mirror {
   display: flex;
   flex-direction: column;
   min-height: 10rem;
 }
 
-/* Retour de test (ANOMALIES_ACTIVES.md) : même root cause et même correctif que
-   .journal-block prose-mirror .editor-content plus haut — le CSS core de Foundry pose
-   `.editor-content { position: absolute; inset: 0; overflow: hidden auto }`, une zone toujours
-   calée sur la taille de son parent avec défilement interne dès dépassement, quel que soit ce
-   qu'on pose ici tant que la classe `content-sized` de Foundry (posée dans le template sur
-   `<prose-mirror>`, cf. weapon-sheet.hbs et les autres fiches d'Item) n'a pas repassé cette zone
-   en `position: unset`. Une fois hors positionnement absolu, `flex: 1 1 auto` (grandir en gardant
-   `auto` comme base = taille réelle du contenu) fait grandir naturellement le conteneur flex
-   parent au-delà de min-height, et `overflow: visible` neutralise le `overflow-y: auto` du cœur
-   Foundry. Le fix "champ vide -> 0px" ci-dessus reste inchangé (vérifié : hauteur non nulle et
-   cliquable même vide). */
+/* Zone éditable qui grandit avec son contenu (avec la classe `content-sized` posée côté template). */
 .dnd-custom-ai .item-sheet-body .form-row prose-mirror .editor-content {
   flex: 1 1 auto;
   overflow: visible;
 }
 
-/* Un Joueur n'a qu'un accès Observateur sur un Item de compendium (propriété du MJ) : le champ
-   devient `contenteditable="false"` sans AUCUNE indication visuelle de cet état, indiscernable
-   d'un champ cassé pour qui essaie d'y taper sans effet. */
+/* Signale visuellement un champ non modifiable (accès Observateur). */
 .dnd-custom-ai .item-sheet-body .form-row prose-mirror [contenteditable="false"] {
   cursor: not-allowed;
   opacity: 0.75;
@@ -2826,14 +2580,7 @@
   border-style: dashed;
 }
 
-/* Retour de test : un champ texte court (ex. Origine > "Traits culturels") devenait illisible
-   en fenêtre étroite — la valeur restait présente (pas perdue) mais totalement invisible, sans
-   troncature ni indication qu'il y avait plus de texte que ce qui tenait dans la largeur
-   disponible (comportement par défaut d'un `<input>` : le texte défile hors-champ sans jamais
-   raccourcir visuellement). `min-width: 0` déjà posé ci-dessus sur ces champs (nécessaire pour
-   qu'un enfant flex accepte de rétrécir sous sa largeur de contenu naturelle, sinon ces 3
-   propriétés resteraient sans effet) ; `title="{{system.traits}}"` posé côté template (attribut
-   natif HTML) affiche le texte complet au survol malgré la troncature visuelle. */
+/* Texte court tronqué avec ellipse ; texte complet dans l'attribut `title`. */
 .dnd-custom-ai .item-sheet-body .form-row input[type="text"] {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2849,10 +2596,7 @@
   color: var(--dca-on-surface-variant);
 }
 
-/* Retour de test : la liste complète des compétences (Origine > Compétences avantagées, une
-   case par compétence SRD) prenait trop de place affichée en permanence sur la fiche d'Item —
-   repliée dans une liste déroulante (même mécanique que .conditions-dropdown, actor-sheet), dont
-   le résumé n'affiche que les compétences déjà cochées. */
+/* Liste repliable de cases à cocher, résumé des éléments cochés. */
 .dnd-custom-ai .checklist-dropdown {
   border: 1px solid var(--dca-outline-variant);
   border-radius: 0.35rem;
@@ -2958,9 +2702,7 @@
   flex: 0 0 auto;
 }
 
-/* ---------- Fiche de véhicule (charrette, bateau...) : nom/vitesse/PV/capacité + un
-   inventaire partagé alimenté par glisser-déposer entre fiches (cf.
-   scripts/sheets/inventory-drag-drop.js). ---------- */
+/* ---------- Fiche de véhicule : statistiques et inventaire partagé ---------- */
 
 .dnd-custom-ai.sheet.actor.vehicle {
   display: flex;
@@ -3052,10 +2794,7 @@
   border-radius: 0.3rem;
   background: transparent;
   cursor: pointer;
-  /* Le contour de focus par défaut du navigateur (souvent gris/pointillé) restait visible
-     après un clic et se lisait comme un liseré parasite sous l'icône — retour de test répété
-     malgré le retrait de la bordure statique. Remplacé par un anneau plus discret, visible
-     seulement au clavier (:focus-visible). */
+  /* Anneau de focus visible uniquement au clavier. */
   outline: none;
 }
 
@@ -3090,8 +2829,7 @@
   color: var(--dca-muted-text);
 }
 
-/* ---------- Carte de chat (hors ".dnd-custom-ai", les messages de chat ne sont pas
-   imbriqués dans une fiche du système) ---------- */
+/* ---------- Cartes de chat (hors .dnd-custom-ai) ---------- */
 
 .dnd-apply-damage-btn {
   display: block;
@@ -3147,12 +2885,7 @@
 }
 
 /* ---------- Assistant de création de personnage ---------- */
-
-/* Retour de test : fond noir (thème Foundry par défaut), en rupture avec le reste du système.
-   `.sheet.actor`/`.sheet.item` ont chacun leur propre règle de fond parchemin (cf. plus haut
-   dans ce fichier) mais l'assistant, avec ses propres classes CSS (`character-wizard`, ni
-   `actor` ni `item`), n'était couvert par aucune des deux — jamais de fond de thème appliqué du
-   tout, juste le fond sombre par défaut d'ApplicationV2. */
+/* Fond parchemin de l'assistant. */
 .dnd-custom-ai.sheet.character-wizard {
   height: 100%;
   font-family: var(--dca-font-body);
@@ -3169,9 +2902,7 @@
   margin-top: 0;
 }
 
-/* Résumé des bonus/particularités de l'Origine ou de la Classe sélectionnée (cf.
-   character-creation-wizard.js > #syncSelectionInfo) : mis en avant plutôt qu'une simple note
-   discrète, pour rester visible pendant que le joueur compare ses choix. */
+/* Résumé de l'Origine ou de la Classe sélectionnée, mis en avant. */
 .dnd-custom-ai .wizard-info-panel {
   margin: -0.2rem 0 0.6rem;
   padding: 0.4rem 0.6rem;
@@ -3220,10 +2951,7 @@
   border-color: var(--dca-secondary);
 }
 
-/* Technique consommant la réserve d'une autre Capacité (ex. techniques de Moine consommant
-   du Ki, cf. featureResourceState dans actor-sheet.js) : grisée et non cliquable dès que la
-   réserve est vide (retour de test), redevient cliquable dès qu'une charge est de nouveau
-   disponible (repos, ou charge restaurée manuellement par le MJ). */
+/* Technique désactivée quand sa réserve est vide. */
 .dnd-custom-ai .resource-technique-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -3234,10 +2962,7 @@
   border-color: var(--dca-outline-variant);
 }
 
-/* Capacité nécessitant un état actif sur l'Actor (ex. Frénésie qui nécessite d'être En Rage,
-   cf. FeatureData#requiresState, item-data.js) : même traitement visuel que la réserve à
-   charges partagées ci-dessus, grisée tant que l'état n'est pas actif (retour de test, lot 3
-   point 5 "Capacités à ressource"). */
+/* Capacité désactivée tant que l'état requis est inactif. */
 .dnd-custom-ai .conditional-feature-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -3261,9 +2986,7 @@
   letter-spacing: 0.03em;
 }
 
-/* ---------- Journal "Comparatif des Origines" ---------- */
-/* Pas scopé .dnd-custom-ai : cette page de Journal Foundry (origins-journal.js) n'est pas
-   rendue à l'intérieur d'une fiche du système, mais dans la fenêtre de Journal native. */
+/* ---------- Journal « Comparatif des Origines » (hors .dnd-custom-ai) ---------- */
 
 .dnd-origins-traits-cell {
   max-width: 12rem;
@@ -3272,14 +2995,8 @@
   white-space: nowrap;
 }
 
-/* ---------- Effet visuel sur les coups/échecs critiques (cf. rollCheck > criticalRules,
-   rolls.js ; hook renderChatMessageHTML, dnd-custom-ai.js) ---------- */
-/* Pas scopé .dnd-custom-ai (même raison que le Journal ci-dessus) : les cartes de jet de dés
-   vivent dans le journal de chat (barre latérale Foundry), jamais imbriquées dans une fiche du
-   système — les variables --dca-* (définies dans le bloc .dnd-custom-ai) n'y sont pas
-   accessibles, d'où des couleurs en dur ci-dessous plutôt que des jetons partagés. Bordure +
-   halo + icône distincte pour chaque cas (jamais la couleur seule) : un coup critique reste
-   repérable même en cas de daltonisme (RGAA/WCAG). */
+/* ---------- Coups et échecs critiques dans le chat (hors .dnd-custom-ai, couleurs en dur) ----------
+   Bordure, halo et icône distincts : jamais la couleur seule. */
 .dice-roll.dnd-critical-hit {
   border: 2px solid #8a6d1f;
   border-radius: 4px;
@@ -3306,43 +3023,29 @@
   color: #ba1a1a;
 }
 
-/* ---------- Style "parchemin déchiré" des jets issus de ce système ----------
-   Demande explicite de l'utilisateur (2026-09-04, cf. maquettes/chat-roll-style/) : distinguer
-   dans le chat les jets générés par la fiche (bouton d'attaque/compétence/sauvegarde, relance
-   automatique d'un don, jet de concentration...) d'un jet tapé à la main (/r). Marqué à la
-   source par `sheetRollFlags()` (helpers/rolls.js), posé sur QUASIMENT tout `Roll#toMessage`/
-   `RollTable#toMessage` du système (jamais deviné ici depuis le speaker : un joueur peut très
-   bien taper /r avec son personnage sélectionné, le speaker seul ne prouve rien) ; classe
-   `.dnd-sheet-roll` posée sur la racine du message par le hook renderChatMessageHTML
-   (dnd-custom-ai.js). Pas scopé `.dnd-custom-ai` (même raison que les critiques ci-dessus : les
-   cartes de chat vivent dans la barre latérale, jamais dans la fiche — couleurs en dur, texture
-   servie par le même chemin relatif que --dca-texture-parchment). `!important` sur les
-   propriétés qui doivent gagner sur le style de base `.chat-message` du cœur Foundry, dont on ne
-   connaît pas la spécificité exacte selon la version. */
+/* ---------- Style « parchemin déchiré » des jets du système (`.dnd-sheet-roll`, hors .dnd-custom-ai) ----------
+   `!important` pour l'emporter sur le style `.chat-message` du cœur Foundry. */
 .dnd-sheet-roll {
-  /* 6 couches : voile crème + texture parchemin (déjà livrée) + 4 petits repères "cire" aux
-     coins (retour utilisateur : coins ornés, discrets pour ne pas concurrencer le bord
-     déchiré). Chaque propriété ci-dessous liste ses valeurs dans le même ordre que les couches. */
+  /* Couches : voile crème, texture parchemin, 4 repères de cire aux coins (même ordre partout). */
   background-image:
     linear-gradient(rgba(233, 220, 184, 0.88), rgba(227, 212, 169, 0.9)),
     url("textures/parchment.jpg"),
     radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
     radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
     radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%),
-    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%) !important;
-  background-size: 100% 100%, 300px 300px, 8px 8px, 8px 8px, 8px 8px, 8px 8px !important;
+    radial-gradient(circle, rgba(122, 55, 18, 0.75) 0%, rgba(122, 55, 18, 0.75) 45%, transparent 80%) !important; /* NOSONAR : surcharge du cœur Foundry */
+  background-size: 100% 100%, 300px 300px, 8px 8px, 8px 8px, 8px 8px, 8px 8px !important; /* NOSONAR : surcharge du cœur Foundry */
   background-position:
     0 0, 0 0,
     12px 12px, calc(100% - 12px) 12px,
-    12px calc(100% - 12px), calc(100% - 12px) calc(100% - 12px) !important;
-  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat !important;
-  background-color: #e3d4a9 !important;
-  border: none !important;
-  border-radius: 2px !important;
-  padding: 10px 14px 16px !important;
+    12px calc(100% - 12px), calc(100% - 12px) calc(100% - 12px) !important; /* NOSONAR : surcharge du cœur Foundry */
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat !important; /* NOSONAR : surcharge du cœur Foundry */
+  background-color: #e3d4a9 !important; /* NOSONAR : surcharge du cœur Foundry */
+  border: none !important; /* NOSONAR : surcharge du cœur Foundry */
+  border-radius: 2px !important; /* NOSONAR : surcharge du cœur Foundry */
+  padding: 10px 14px 16px !important; /* NOSONAR : surcharge du cœur Foundry */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  /* Bord irrégulier façon page déchirée : dents peu profondes (quelques px), donc lisible à
-     n'importe quelle hauteur de carte (contenu court ou long). */
+  /* Bord irrégulier de page déchirée. */
   clip-path: polygon(
     0 4px, 3% 0, 10% 3px, 22% 0, 38% 4px, 55% 0, 72% 3px, 88% 0, 97% 4px, 100% 1px,
     100% calc(100% - 5px), 96% 100%, 82% calc(100% - 4px), 64% 100%, 46% calc(100% - 3px),
@@ -3350,9 +3053,7 @@
   );
 }
 
-/* Icône de classe du personnage en médaillon, en tête de carte (cf. hook renderChatMessageHTML,
-   dnd-custom-ai.js > DND_CUSTOM.classFlavorIcon). Absente pour un PNJ ou un jet sans acteur
-   reconnu (le hook n'injecte alors rien). */
+/* Médaillon de l'icône de classe du lanceur. */
 .dnd-sheet-roll .dnd-class-icon {
   display: inline-flex;
   align-items: center;
@@ -3368,10 +3069,7 @@
   flex: 0 0 auto;
 }
 
-/* Accent de couleur selon le type de jet (cf. hook renderChatMessageHTML) : ne retouche que le
-   petit fleuron devant le libellé et la couleur du résultat — jamais le fond parchemin, pour
-   rester sobre et cohérent avec le style de base. Un coup/échec critique (halo doré/rouge déjà
-   existant) n'a jamais l'une de ces classes en plus (cf. garde dans le hook). */
+/* Accent de couleur par type de jet (fleuron et résultat), hors critiques. */
 .dnd-sheet-roll.dnd-roll-attack .flavor-text::before {
   color: #a16207;
 }
@@ -3412,8 +3110,7 @@
   color: #3d2b17;
 }
 
-/* Même pile de polices que --dca-font-headline (fiche) : cohérence visuelle entre fiche et
-   chat sans dépendre d'une variable CSS (hors du bloc .dnd-custom-ai ici). */
+/* Polices de titre de la fiche. */
 .dnd-sheet-roll .flavor-text {
   font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
   font-style: normal;
@@ -3434,26 +3131,24 @@
 
 .dnd-sheet-roll .dice-roll .dice-result,
 .dnd-sheet-roll .dice-tooltip {
-  background: transparent !important;
-  border: none !important;
+  background: transparent !important; /* NOSONAR : surcharge du cœur Foundry */
+  border: none !important; /* NOSONAR : surcharge du cœur Foundry */
 }
 
 .dnd-sheet-roll .dice-formula {
-  background: transparent !important;
-  border: none !important;
+  background: transparent !important; /* NOSONAR : surcharge du cœur Foundry */
+  border: none !important; /* NOSONAR : surcharge du cœur Foundry */
   color: #6b5330;
   font-style: italic;
   font-family: "Vollkorn", "Iowan Old Style", Palatino, Georgia, serif;
-  padding: 0 0 4px !important;
+  padding: 0 0 4px !important; /* NOSONAR : surcharge du cœur Foundry */
 }
 
-/* Retour de test : le trait de "cire" sous le résultat (::after, supprimé) ressortait comme un
-   simple trait rouge disgracieux plutôt qu'un soulignement discret — juste le chiffre en grand,
-   sans décoration en dessous. */
+/* Résultat en grand, sans décoration. */
 .dnd-sheet-roll .dice-total {
   display: block;
   text-align: center;
-  padding: 0 !important;
+  padding: 0 !important; /* NOSONAR : surcharge du cœur Foundry */
   font-family: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
   font-weight: 600;
   font-size: 1.7em;

@@ -1,32 +1,6 @@
-// Implémente la section 8 (T-LVL-001 à T-LVL-012) de tests/E2E_TEST_PLAN.md — montée de niveau
-// (bouton `data-action="levelUp"` de l'en-tête de fiche, #onLevelUp dans actor-sheet.js,
-// level-up-choice.js, subclass-choice.js, ability-score-improvement.js).
-//
-// Préconditions de niveau/sous-classe/XP posées directement via `actor.update(data,
-// { dndCustomWizard: true })` (même bypass volontaire du hook preUpdateActor que
-// character-sheet.cy.js > T-SHEET-007) plutôt qu'en rejouant plusieurs vraies montées de niveau
-// pour y arriver : seul le clic RÉEL sur le bouton "Monter de niveau" testé par chaque scénario
-// ci-dessous doit prouver le comportement, pas la mise en place. `system.xp` n'est PAS un champ
-// verrouillé (cf. preUpdateActor, dnd-custom-ai.js — seuls class/origin/subclass/level/
-// abilities/saves/skills le sont) : un Joueur peut le poser librement sans bypass, direct depuis
-// la session Joueur.
-//
-// T-LVL-004 (Capacités/Sorts octroyés à la montée de niveau) a longtemps été volontairement
-// rouge (même bug que T-STATS-012, tab-stats.cy.js, corrigé le 2026-08-16) : grantClassContent
-// (class-content.js) comparait le libellé de classe localisé (`game.i18n.localize`) au libellé
-// français codé en dur dans world-items/features.json, ce qui ne correspondait jamais sous une
-// langue de monde non française. Corrigé en comparant des clés de classe stables (cf.
-// FeatureData/SpellData, scripts/data/item-data.js) — #onLevelUp (actor-sheet.js) rappelle cette
-// même fonction, désormais correcte quelle que soit la langue active.
-//
-// Structure DOM des boîtes de dialogue (DialogV2, capturée en conditions réelles) :
-// - Choix de sous-classe (subclass-choice.js) : `dialog.application.dialog` avec des
-//   `input[type="radio"][name="subclassKey"]` et un bouton de confirmation
-//   `button[data-action="ok"]`.
-// - Choix Amélioration de caractéristiques/Don (level-up-choice.js) : deux boutons
-//   `button[data-action="asi"]`/`button[data-action="feat"]` sur la première boîte, puis soit
-//   des `select[name="ability1"]`/`select[name="ability2"]` + `button[data-action="ok"]` (AMC),
-//   soit des `input[type="radio"][name="featId"]` + `button[data-action="ok"]` (Don).
+// T-LVL-001 à 013 : montée de niveau (un niveau par clic, contenu octroyé, choix de sous-classe
+// et Amélioration/Don). Préconditions posées via `actor.update(…, { dndCustomWizard: true })`.
+// Dialogues DialogV2 : `dialog.application.dialog`, radios ou selects, `button[data-action="ok"]`.
 
 const createdActorIds = [];
 let sharedActorId;
@@ -40,15 +14,7 @@ function openSheet(actorId) {
   return cy.get("input.actor-name", { timeout: 15000 }).should("be.visible");
 }
 
-// `win.Actor.create({name, type: "character"})` sur un Actor vierge déclenche l'ouverture
-// automatique de l'assistant de création (même hook que wizard.cy.js). Les scénarios ci-dessous
-// posent class/origin/niveau directement via `updateActor(..., {dndCustomWizard: true})` sans
-// jamais soumettre ni fermer cet assistant — depuis le correctif du 2026-08-16 (render() de
-// DndCustomActorSheet, actor-sheet.js, qui bloque tout rendu de la fiche tant qu'un assistant
-// reste ouvert pour le même Actor), un assistant laissé ouvert en arrière-plan empêche
-// `openSheet` de jamais afficher la fiche. Un vrai utilisateur soumettrait ou fermerait toujours
-// l'assistant avant d'aller voir la fiche — fermer ici reproduit fidèlement ce geste plutôt que
-// de contourner le correctif.
+// Ferme l'assistant ouvert automatiquement à la création, sans quoi la fiche ne s'affiche pas.
 function closeAutoWizard(actorId) {
   return cy.window().then((win) => {
     const wizard = [...win.foundry.applications.instances.values()].find(
@@ -86,10 +52,7 @@ after(() => {
 });
 
 describe("Montée de niveau — clic simple, PV, accessibilité Joueur", () => {
-  // Niveau 5, sous-classe déjà posée (subclassLevel fighter = 3, cf. config.js) : les clics
-  // testés ici (5 -> 6 -> 7) ne croisent ni le seuil de choix de sous-classe ni un seuil
-  // Amélioration de caractéristiques/Don ([4, 8, 12, 16, 19]), donc aucune boîte de dialogue
-  // n'interrompt le flux — seul le mécanisme "un niveau par clic" est sous test ici.
+  // Niveau 5 avec sous-classe : aucun dialogue entre 5 et 7.
   beforeEach(() => {
     cy.loginAsPlayer();
     cy.window().then((win) => {
@@ -109,7 +72,7 @@ describe("Montée de niveau — clic simple, PV, accessibilité Joueur", () => {
     openSheet(sharedActorId);
   });
 
-  it("ne monte que d'UN niveau par clic, même cliqué plusieurs fois d'affilée (T-LVL-001)", () => {
+  it("ne monte que d'UN niveau par clic, même cliqué plusieurs fois d'affilée (T-LVL-001)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     sheetRoot().find('button[data-action="levelUp"]').click();
     actorLevel(sharedActorId).should("equal", 6);
 
@@ -133,11 +96,8 @@ describe("Montée de niveau — clic simple, PV, accessibilité Joueur", () => {
     });
   });
 
-  it("le bouton 'Monter de niveau' aboutit pour un Joueur propriétaire, pas seulement le MJ (T-LVL-003)", () => {
-    // cy.loginAsPlayer() dans le beforeEach ci-dessus suffit déjà à couvrir ce scénario (aucune
-    // des assertions T-LVL-001/002 ne serait vraie si le hook preUpdateActor rejetait l'update
-    // d'un Joueur) — ce test le rend explicite plutôt que de rester implicite dans les deux
-    // précédents, comme demandé par le plan.
+  it("le bouton 'Monter de niveau' aboutit pour un Joueur propriétaire, pas seulement le MJ (T-LVL-003)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
+    // Montée de niveau en session Joueur.
     sheetRoot().find('button[data-action="levelUp"]').click();
     actorLevel(sharedActorId).should("equal", 6);
   });
@@ -148,8 +108,7 @@ describe("Montée de niveau — octroi de contenu de classe", () => {
     cy.loginAsPlayer();
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
-      // Fighter niveau 1 -> 2 : "Sursaut d'activité" (world-items/features.json), aucun seuil
-      // de sous-classe/ASI-Don ni croisé (subclassLevel fighter = 3, liste ASI = [4,8,12,16,19]).
+      // Guerrier 1 -> 2 : « Sursaut d'activité », sans dialogue.
       return updateActor(
         win,
         actor,
@@ -177,13 +136,7 @@ describe("Montée de niveau — octroi de contenu de classe", () => {
   });
 
   it("ne poste aucun message parasite quand rien n'est octroyé à ce niveau (T-LVL-005)", () => {
-    // Marqué "Quench" seul dans le plan, mais #onLevelUp (actor-sheet.js) est une méthode
-    // PRIVÉE inatteignable directement depuis un test Quench (même limite documentée pour
-    // #grantStartingEquipment, cf. tests/quench/quench-tests.js > submitWizardForm) — testé ici
-    // en E2E via le vrai bouton, seul chemin qui exerce réellement le mécanisme "pas de message
-    // si grantedNames est vide". Niveau 6 -> 7 : aucune Capacité de Guerrier/Champion à ce
-    // niveau (world-items/features.json : Guerrier en a en 1/2/5/9, Champion en 3/7 -- 7 est
-    // exclu ici via un personnage SANS sous-classe choisie, cf. mise en place ci-dessous).
+    // Niveau 6 -> 7 sans sous-classe : aucune Capacité octroyée.
     cy.loginAsPlayer();
     cy.window().then((win) => {
       const actor = win.game.actors.get(sharedActorId);
@@ -206,9 +159,7 @@ describe("Montée de niveau — octroi de contenu de classe", () => {
     cy.window().should((win) => {
       expect(win.game.actors.get(sharedActorId).system.attributes.level, "le niveau doit bien avoir avancé").to.equal(7);
     });
-    // #onLevelUp poste TOUJOURS un message "montée de niveau" (DND_CUSTOM.Chat.LevelUp), avant
-    // de décider s'il y ajoute un second message "contenu octroyé" — donc exactement UN nouveau
-    // message est attendu ici, pas zéro : c'est l'ABSENCE d'un second message qui est sous test.
+    // Un seul message (« montée de niveau ») attendu, sans message de contenu octroyé.
     cy.wait(1000);
     cy.window().should((win) => {
       expect(win.game.messages.size, "exactement le message de montée de niveau, aucun second message").to.equal(
@@ -241,8 +192,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
     cy.then(() => closeAutoWizard(dedicatedActorId));
     cy.then(() => openSheet(dedicatedActorId));
 
-    // Niveau 2 -> 3 : subclassLevel fighter = 3 (config.js), aucune sous-classe encore choisie ->
-    // la boîte de dialogue doit s'ouvrir automatiquement (T-LVL-006).
+    // Niveau 2 -> 3 sans sous-classe : dialogue de sous-classe.
     sheetRoot().find('button[data-action="levelUp"]').click();
 
     cy.window()
@@ -259,9 +209,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
       expect(win.game.actors.get(dedicatedActorId).system.subclass, "sous-classe appliquée").to.equal("champion");
     });
 
-    // Niveau 3 -> 4 : sous-classe déjà choisie -> pas de nouvelle proposition (T-LVL-007). Le
-    // niveau 4 déclenche en revanche la boîte Amélioration de caractéristiques/Don (hors sujet
-    // ici, cf. describe suivant) : fermée sans choisir pour ne pas interférer avec ce test.
+    // Niveau 3 -> 4 avec sous-classe : pas de nouvelle proposition ; dialogue Amélioration/Don fermé.
     cy.then(() => openSheet(dedicatedActorId));
     sheetRoot().find('button[data-action="levelUp"]').click();
 
@@ -269,10 +217,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
       .its("game.i18n")
       .then((i18n) => i18n.localize("DND_CUSTOM.LevelUp.ChoiceTitle"))
       .then((choiceTitle) => {
-        // Niveau 4 = seuil AMC/Don (DND_CUSTOM.abilityScoreImprovementLevels) : c'est CETTE
-        // boîte qui s'ouvre, jamais celle de sous-classe (déjà choisie) — la preuve la plus
-        // directe de "pas de re-proposition" est que le titre affiché soit bien celui du choix
-        // AMC/Don, pas celui de sous-classe.
+        // Le dialogue ouvert est celui d'Amélioration/Don.
         cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", choiceTitle);
       });
     cy.get('dialog.application.dialog button[data-action="close"]').click();
@@ -301,16 +246,14 @@ describe("Montée de niveau — choix de sous-classe", () => {
     cy.then(() => openSheet(dedicatedActorId));
     sheetRoot().find('button[data-action="levelUp"]').click();
 
-    // Ferme la boîte de choix de sous-classe (niveau 3 atteint) sans rien sélectionner.
+    // Ferme le dialogue de sous-classe sans choisir.
     cy.get('dialog.application.dialog[open] .window-title', { timeout: 10000 }).should("exist");
     cy.get('dialog.application.dialog[open] button[data-action="close"]').click();
     cy.window().should((win) => {
       expect(win.game.actors.get(dedicatedActorId).system.subclass, "aucune sous-classe appliquée après fermeture").to.be.empty;
     });
 
-    // Secours : le sélecteur permanent de l'en-tête de fiche reste utilisable, avec le même
-    // octroi de contenu de sous-classe à la clé (hook updateActor, dnd-custom-ai.js) que la
-    // boîte de dialogue.
+    // Le sélecteur de l'en-tête reste disponible et octroie les Capacités.
     cy.then(() => openSheet(dedicatedActorId));
     sheetRoot().find('select[name="system.subclass"]').select("champion");
     cy.window().should((win) => {
@@ -322,8 +265,7 @@ describe("Montée de niveau — choix de sous-classe", () => {
 });
 
 describe("Montée de niveau — Amélioration de caractéristiques / Don", () => {
-  // Sous-classe déjà posée (champion) pour ne jamais croiser la boîte de choix de sous-classe
-  // dans ce describe : seule la boîte AMC/Don est sous test ici.
+  // Guerrier niveau 3 avec sous-classe, pour ne tester que le dialogue Amélioration/Don.
   function createLevel3Fighter(name) {
     let dedicatedActorId;
     cy.window()
@@ -353,8 +295,7 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
   it("propose le choix AMC/Don au niveau requis, pas ailleurs une fois résolu (T-LVL-009, T-LVL-010)", () => {
     cy.loginAsPlayer();
     createLevel3Fighter("LevelUp ASI Threshold").then((dedicatedActorId) => {
-      // Niveau 3 -> 4 : niveau ASI (DND_CUSTOM.abilityScoreImprovementLevels) -> la boîte de
-      // choix doit s'ouvrir (T-LVL-009).
+      // Niveau 3 -> 4 : dialogue Amélioration/Don.
       openSheet(dedicatedActorId);
       sheetRoot().find('button[data-action="levelUp"]').click();
 
@@ -364,14 +305,12 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
         .then((title) => {
           cy.get("dialog.application.dialog .window-title", { timeout: 10000 }).should("contain.text", title);
         });
-      // Résolu (pas juste fermée sans choisir, cf. T-LVL-013 pour ce cas précis) : sinon le
-      // choix reste dû et se reproposerait à la montée de niveau suivante (comportement
-      // volontaire depuis le retour de test sur la perte de choix, cf. T-LVL-013).
+      // Choix appliqué, rien ne reste dû.
       cy.get('dialog.application.dialog button[data-action="asi"]').click();
       cy.get('dialog.application.dialog select[name="ability1"]').select("str");
       cy.get('dialog.application.dialog button[data-action="ok"]').click();
 
-      // Niveau 4 -> 5 : pas un niveau ASI et rien n'est plus dû -> aucune boîte proposée (T-LVL-010).
+      // Niveau 4 -> 5 : aucun dialogue.
       cy.then(() => openSheet(dedicatedActorId));
       sheetRoot().find('button[data-action="levelUp"]').click();
       cy.wait(1000);
@@ -382,7 +321,7 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
   it("choix AMC/Don fermé sans choisir : reste dû, reproposé à la montée suivante, rattrapable via le badge (T-LVL-013)", () => {
     cy.loginAsPlayer();
     createLevel3Fighter("LevelUp ASI Pending").then((dedicatedActorId) => {
-      // Niveau 3 -> 4 : ferme la boîte de choix SANS rien choisir.
+      // Niveau 3 -> 4 : dialogue fermé sans choisir.
       openSheet(dedicatedActorId);
       sheetRoot().find('button[data-action="levelUp"]').click();
       cy.get('dialog.application.dialog .window-title', { timeout: 10000 }).should("exist");
@@ -393,11 +332,10 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
         expect(win.game.actors.get(dedicatedActorId).system.attributes.pendingAsiChoices, "choix resté dû").to.equal(1);
       });
 
-      // Badge de rattrapage manuel visible sur la fiche, même sans re-monter de niveau (pas de
-      // nouveau render forcé : la fiche se met déjà à jour toute seule après l'update ci-dessus).
+      // Badge de choix dû visible.
       sheetRoot().find('button[data-action="resolvePendingAsi"]').should("exist");
 
-      // Niveau 4 -> 5 : pas un niveau ASI, mais le choix niveau 4 reste dû -> reproposé quand même.
+      // Niveau 4 -> 5 : le choix dû est reproposé.
       sheetRoot().find('button[data-action="levelUp"]').click();
       cy.get('dialog.application.dialog .window-title', { timeout: 10000 }).should("have.length", 1);
 
@@ -455,8 +393,7 @@ describe("Montée de niveau — Amélioration de caractéristiques / Don", () =>
 
       cy.window().should((win) => {
         const actor = win.game.actors.get(dedicatedActorId);
-        // Un seul choix (ability2 laissé vide) -> +2, plafonné à 20 (cf.
-        // ability-score-improvement.js).
+        // Une seule caractéristique : +2, plafonné à 20.
         expect(actor.system.abilities.str.value).to.equal(Math.min(20, strBefore + 2));
       });
     });
@@ -507,18 +444,14 @@ describe("Montée de niveau — emplacements de sorts par niveau", () => {
     cy.then(() => closeAutoWizard(dedicatedActorId));
 
     cy.window().should((win) => {
-      // Prérequis : magicien niveau 2 (fullCaster[2] = [3,0,...], scripts/data/spell-slots.json)
-      // n'a encore aucun emplacement de niveau 2.
+      // Magicien niveau 2 : aucun emplacement de niveau 2.
       expect(
         win.game.actors.get(dedicatedActorId).system.spells.slots[2].max,
         "prérequis : pas encore d'emplacement de niveau 2"
       ).to.equal(0);
     });
 
-    // Simule un lanceur qui a déjà entamé ses emplacements de niveau 1 avant de monter de
-    // niveau (scénario réel du bug — anomalie 2026-08-19 : `#onLevelUp` ne touchait jamais
-    // `system.spells.slots`, un lanceur restait aux charges qu'il lui restait au lieu d'être
-    // rechargé). fullCaster[2] = [3,0,...] : max = 3, on entame à 1 restant.
+    // Emplacements de niveau 1 entamés (1 sur 3) avant la montée de niveau.
     cy.then(() =>
       cy.window().then((win) =>
         updateActor(win, win.game.actors.get(dedicatedActorId), { "system.spells.slots.1.value": 1 })
@@ -531,11 +464,9 @@ describe("Montée de niveau — emplacements de sorts par niveau", () => {
     cy.window().should((win) => {
       const actor = win.game.actors.get(dedicatedActorId);
       expect(actor.system.attributes.level, "niveau bien monté").to.equal(3);
-      // fullCaster[3] = [4,2,0,...] : le magicien niveau 3 gagne son premier emplacement de
-      // niveau 2.
+      // Niveau 3 : premier emplacement de niveau 2.
       expect(actor.system.spells.slots[2].max, "emplacement de niveau 2 gagné au niveau 3").to.equal(2);
-      // Rechargé au nouveau max (4), pas resté à la valeur entamée (1) d'avant la montée de
-      // niveau — c'est le comportement corrigé par spellSlotFillUpdates (rules.js).
+      // Emplacements remplis au nouveau maximum.
       expect(
         actor.system.spells.slots[1].value,
         "emplacements de niveau 1 rechargés au max à la montée de niveau, pas laissés entamés"

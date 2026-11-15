@@ -1,12 +1,5 @@
-// Implémente la section 12 (T-ITEM-001 à T-ITEM-003) de tests/E2E_TEST_PLAN.md — fiches d'Item
-// (item-sheets.js, templates/item/*.hbs). Un Item par type (les 9 du plan : weapon/armor/
-// feature/gear/language/origin/class/spell/tool — "subclass" n'est pas listé séparément, sa
-// fiche est de toute façon la même que "class", cf. registerSheet dans dnd-custom-ai.js et
-// reference-sheets.cy.js > T-REF-002), pris dans les Items du monde déjà importés pour les
-// types physiques (weapon/armor/gear/tool, cf. world-items/*.json) ou dans leur compendium pour
-// les autres (feature/origin/class/spell/language, cf. content-import.js) — session MJ tout du
-// long : ouvrir/éditer une fiche d'Item de compendium exige des droits d'écriture que
-// l'ownership du pack (PLAYER: OBSERVER, system.json) refuse à un Joueur.
+// T-ITEM-001 à 003 : une fiche d'Item par type, depuis les Items du monde ou les compendiums,
+// en session MJ (droits d'écriture requis).
 
 function fetchCompendiumItem(pack, name) {
   return cy
@@ -55,14 +48,14 @@ describe("Fiches d'Item — ouverture de chaque type", () => {
   ];
 
   worldItemCases.forEach(({ type, name }) => {
-    it(`ouvre la fiche d'un Item de type '${type}' sans erreur (T-ITEM-001)`, () => {
+    it(`ouvre la fiche d'un Item de type '${type}' sans erreur (T-ITEM-001)`, () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
       fetchWorldItem(name).then((item) => item.sheet.render(true));
       latestItemSheet().should("be.visible").and("contain.text", name);
     });
   });
 
   compendiumItemCases.forEach(({ type, pack, name }) => {
-    it(`ouvre la fiche d'un Item de type '${type}' sans erreur (T-ITEM-001)`, () => {
+    it(`ouvre la fiche d'un Item de type '${type}' sans erreur (T-ITEM-001)`, () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
       fetchCompendiumItem(pack, name).then((item) => item.sheet.render(true));
       latestItemSheet().should("be.visible").and("contain.text", name);
     });
@@ -83,8 +76,7 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
     cy.window().then((win) => win.game.items.find((candidate) => candidate.name === "Gourdin").sheet.render(true));
     latestItemSheet().find('input[name="system.weight"]').should("have.value", "2.5");
 
-    // Remet le poids d'origine pour ne pas fausser un futur run de cette spec/d'une autre
-    // utilisant le même Item du monde (ex. tab-inventory.cy.js).
+    // Restaure le poids d'origine de l'Item partagé.
     cy.window().then((win) => {
       const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
       return item.update(win.JSON.parse(win.JSON.stringify({ "system.weight": 0.9 })));
@@ -100,9 +92,7 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
     });
     cy.window().then((win) => win.game.items.find((candidate) => candidate.name === "Gourdin").sheet.render(true));
 
-    // Champ vide : la zone éditable doit rester non nulle et cliquable (retour de test déjà
-    // corrigé par le passé, cf. commentaire CSS .item-sheet-body .form-row prose-mirror) — pas
-    // de régression introduite par le correctif content-sized de ce point.
+    // Champ vide : zone éditable non nulle et cliquable.
     latestItemSheet()
       .find('prose-mirror[name="system.description"] .editor-content')
       .should(($el) => {
@@ -130,8 +120,7 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
         ).to.be.at.most(2);
       });
 
-    // Remet la description d'origine (retour de test : nettoyage complet obligatoire, cf. Item
-    // du monde partagé avec d'autres specs).
+    // Restaure la description d'origine de l'Item partagé.
     cy.window().then((win) => {
       const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
       return item.update(win.JSON.parse(win.JSON.stringify({ "system.description": originalDescription })));
@@ -140,7 +129,7 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
 
   it("le champ Dégâts (Polyvalente) apparaît seulement une fois la propriété activée (T-ITEM-003)", () => {
     fetchWorldItem("Gourdin").then((item) => {
-      expect(item.system.properties.versatile, "prérequis : 'Gourdin' n'est pas Polyvalente par défaut").to.be.false;
+      expect(item.system.properties.versatile, "prérequis : 'Gourdin' n'est pas Polyvalente par défaut").to.equal(false);
       item.sheet.render(true);
     });
 
@@ -148,7 +137,7 @@ describe("Fiches d'Item — édition et champs conditionnels", () => {
     latestItemSheet().find('input[name="system.properties.versatile"]').check();
     latestItemSheet().find('input[name="system.damageVersatile.dice"]').should("exist");
 
-    // Nettoyage : remet la propriété à son état par défaut.
+    // Restaure la propriété par défaut.
     cy.window().then((win) => {
       const item = win.game.items.find((candidate) => candidate.name === "Gourdin");
       return item.update(win.JSON.parse(win.JSON.stringify({ "system.properties.versatile": false })));

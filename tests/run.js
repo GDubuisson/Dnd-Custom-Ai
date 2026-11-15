@@ -1,10 +1,4 @@
-// Petit lanceur de tests maison : `node --test <dossier>` s'est révélé peu fiable sur cette
-// installation Windows/Git Bash (échoue en essayant de `require()` le dossier lui-même plutôt
-// que d'y découvrir les fichiers *.test.js — `node --test` sans argument, lui, fonctionne très
-// bien). Contourne le problème en résolvant nous-mêmes la liste de fichiers via `node:fs`
-// (fiable sur toute plateforme/shell, aucune dépendance à l'expansion de glob du shell
-// appelant) puis en la passant à l'API programmatique `node:test` (`run()`).
-//
+// Lanceur de tests : liste les *.test.js des dossiers donnés et les passe à `run()` de node:test.
 // Usage : node tests/run.js <dossier1> [dossier2 ...]
 import { run } from "node:test";
 import { spec } from "node:test/reporters";

@@ -1,4 +1,4 @@
-{{> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.gear" notice="DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}
+{{#> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.gear" notice="DND_CUSTOM.Item.Fields.EquipmentGmOnlyNotice"}}
 
   <div class="form-row">
     <label>{{localize "DND_CUSTOM.Item.Fields.Quantity"}}</label>
@@ -42,6 +42,10 @@
 
     {{#if showHealFields}}
     <div class="form-row">
+      <label>{{localize "DND_CUSTOM.Item.Fields.HealDice"}}</label>
+      <input type="text" name="system.use.healDice" value="{{system.use.healDice}}" placeholder="2d4" {{#unless isGM}}disabled{{/unless}}>
+    </div>
+    <div class="form-row">
       <label>{{localize "DND_CUSTOM.Item.Fields.HealBase"}}</label>
       <input type="number" name="system.use.healBase" value="{{system.use.healBase}}" min="0" {{#unless isGM}}disabled{{/unless}}>
     </div>
@@ -52,9 +56,12 @@
         {{selectOptions config.skills selected=system.use.healSkill localize=true}}
       </select>
     </div>
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.use.consumable" {{#if system.use.consumable}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
+      {{localize "DND_CUSTOM.Item.Fields.Consumable"}}
+    </label>
     {{/if}}
   </fieldset>
 
   {{> "systems/dnd-custom-ai/templates/item/parts/description.hbs" field="description" label="DND_CUSTOM.Item.Fields.Description"}}
-</div>
-</div>
+{{/"systems/dnd-custom-ai/templates/item/parts/header.hbs"}}

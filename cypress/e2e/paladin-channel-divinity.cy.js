@@ -1,18 +1,5 @@
-// Implémente la correction "les 2 options de Canalisation divine d'un Serment de Paladin
-// doivent partager la MÊME réserve" (revue de conception du 2026-08-22, ANOMALIES_ACTIVES.md) :
-// Voile des anciens (Anciens) et Traque implacable (Vengeance) avaient chacune leur PROPRE
-// réserve indépendante au lieu de puiser dans "Canalisation divine (Paladin)" comme Arme sacrée
-// (Dévotion) le fait déjà — contraire au SRD (1 seule réserve de Canalisation divine, peu
-// importe l'option choisie) et plus généreux qu'attendu.
-//
-// Modèle retenu : #onRollFeatureSave (actor-sheet.js) accepte maintenant `costsResource` (cf.
-// FeatureData#costsResource, item-data.js) exactement comme #onUseResourceTechnique déjà
-// existant pour les techniques de Moine consommant du Ki — la charge est décomptée sur la
-// Capacité RÉSERVOIR nommée, jamais sur l'option elle-même.
-//
-// Cette spec vérifie spécifiquement le PARTAGE de réserve entre 2 options différentes (pas le
-// mécanisme de jet de sauvegarde lui-même, déjà couvert en détail par turn-undead-feature.cy.js) :
-// utiliser une option épuise la réserve pour l'AUTRE option aussi.
+// Les options de Canalisation divine d'un Serment partagent la réserve « Canalisation divine (Paladin) » :
+// utiliser une option épuise aussi l'autre.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -26,9 +13,7 @@ function sheetRoot() {
   return cy.get(".application.character");
 }
 
-// Capture une baseline `game.messages.size` une fois le flux de chat au repos : le message du
-// jet de l'option A peut atterrir juste après son actor.update et fausser l'assertion "aucun
-// nouveau message" de l'option B (`=== messagesBefore`) — flaky historique de cette spec.
+// Mémorise `game.messages.size` une fois le chat stable.
 function captureStableBaseline(assign) {
   return cy
     .window()
@@ -134,9 +119,7 @@ describe("Canalisation divine (Paladin) — 2 options partagent la même réserv
       .then(() =>
         cy.window().then((win) => {
           const actor = win.game.actors.get(casterId);
-          // L'ordre du tableau renvoyé par createEmbeddedDocuments (et celui de la collection
-          // actor.items) ne correspond pas forcément à l'ordre d'entrée du batch — recherche
-          // par nom plutôt que par index, piège rencontré en écrivant ce test.
+          // Recherche par nom : l'ordre renvoyé n'est pas garanti.
           optionAId = actor.items.find((i) => i.name === "Test CD Option A").id;
           optionBId = actor.items.find((i) => i.name === "Test CD Option B").id;
         })
@@ -157,7 +140,7 @@ describe("Canalisation divine (Paladin) — 2 options partagent la même réserv
       expect(reservoir.system.uses.value, "réserve consommée par l'option A").to.equal(0);
     });
 
-    // Option B : même réserve, déjà vide -> avertissement, aucun nouveau message posté.
+    // Option B : réserve vide, avertissement sans message.
     let messagesBefore;
     captureStableBaseline((n) => (messagesBefore = n));
     cy.then(() =>

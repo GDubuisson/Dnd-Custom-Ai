@@ -775,5 +775,315 @@
         "range": { "normal": 2, "long": 5 }, "special": "Entrave la cible touchée (DD 10 Athlétisme pour se libérer) ; aucun dégât."
       }
     }
+  },
+  {
+    "name": "Dague +1",
+    "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 1
+    }
+  },
+  {
+    "name": "Dague +2",
+    "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 2
+    }
+  },
+  {
+    "name": "Rapière +1",
+    "type": "weapon",
+    "img": "icons/weapons/swords/sword-guard-bronze.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 1
+    }
+  },
+  {
+    "name": "Rapière +2",
+    "type": "weapon",
+    "img": "icons/weapons/swords/sword-guard-bronze.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 2
+    }
+  },
+  {
+    "name": "Épée longue +1",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 1
+    }
+  },
+  {
+    "name": "Épée longue +2",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 2
+    }
+  },
+  {
+    "name": "Grande hache +1",
+    "type": "weapon",
+    "img": "icons/weapons/axes/axe-double-black.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "damage": { "dice": "1d12", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 3.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 1
+    }
+  },
+  {
+    "name": "Grande hache +2",
+    "type": "weapon",
+    "img": "icons/weapons/axes/axe-double-black.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d12", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 3.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 2
+    }
+  },
+  {
+    "name": "Arc long +1",
+    "type": "weapon",
+    "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 45, "long": 180 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 1
+    }
+  },
+  {
+    "name": "Arc long +2",
+    "type": "weapon",
+    "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 45, "long": 180 },
+        "special": ""
+      },
+      "magic": true,
+      "enhancement": 2
+    }
   }
 ]

@@ -3,16 +3,10 @@ import { ABILITY_KEYS } from "../data/character-data.js";
 
 const { DialogV2 } = foundry.applications.api;
 
-/** Boîte de dialogue "Amélioration de caractéristiques", SRD 5e : +2 sur une seule
- *  caractéristique, ou +1 sur deux caractéristiques différentes (au choix du joueur),
- *  plafonné à 20 (maximum SRD sans objet magique). Ouverte par offerAbilityScoreOrFeatDialog
- *  (level-up-choice.js), qui gère la boucle de va-et-vient avec le choix Don et le décompte de
- *  system.attributes.pendingAsiChoices.
- *
- *  Renvoie `"applied"` si l'amélioration a bien été appliquée, `"back"` si le joueur veut
- *  revenir au choix Amélioration/Don (retour de test — aucun moyen de revenir en arrière
- *  auparavant), ou `null` si la fenêtre a été fermée sans rien choisir (validation ratée
- *  incluse : le choix reste dû, reproposé à la prochaine montée de niveau plutôt que perdu). */
+/**
+ * Dialogue d'Amélioration de caractéristiques : +2 sur une ou +1 sur deux (max 20).
+ * @returns {Promise<"applied"|"back"|null>} `back` = retour au choix Amélioration/Don
+ */
 export async function openAbilityScoreImprovementDialog(actor) {
   const abilityOptions = ABILITY_KEYS.map(
     (key) =>

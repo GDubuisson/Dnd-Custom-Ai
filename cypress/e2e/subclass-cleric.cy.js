@@ -1,8 +1,4 @@
-// Couvre le chantier "plusieurs sous-classes par classe" (inspiration BG3, cf.
-// ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") pour le Clerc : 2 nouvelles sous-classes
-// ajoutées (Domaine de la Lumière/light, Domaine de la Ruse/trickery), en plus du Domaine de la
-// Vie déjà existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de chaque
-// mécanique active (charge à usage limité décomptée).
+// Sous-classes du Clerc (Lumière, Ruse) : octroi des Capacités et charges consommées.
 
 const createdActorIds = [];
 
@@ -58,11 +54,7 @@ describe("Sous-classes de Clerc — Domaine de la Lumière / Domaine de la Ruse"
       cy.openActorSheet(actorId);
       goToTab("abilities");
 
-      // "Flamme protectrice" a `requiresRoll: true` (jet 1d8 + niveau pour la réduction de
-      // dégâts, cf. world-items/features.json) : ce champ est prioritaire dans la chaîne
-      // {{else if}} de tab-abilities.hbs, donc son bouton réel est "rollFeature" (qui jette ET
-      // décompte la charge via consumeFeatureCharge, cf. #onRollFeature), jamais
-      // "useFeatureCharge" (réservé aux Capacités sans jet).
+      // Capacité à jet : bouton « rollFeature », qui jette et consomme la charge.
       withItemId(actorId, "Flamme protectrice", (itemId) => {
         cy.window().its("game.messages.size").then((before) => {
           cy.get(`li[data-item-id="${itemId}"] button[data-action="rollFeature"]`).click();

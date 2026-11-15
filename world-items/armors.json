@@ -136,7 +136,7 @@
     }
   },
   {
-    "name": "Cotte de mailles",
+    "name": "Broigne",
     "type": "armor",
     "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
     "system": {
@@ -153,7 +153,7 @@
     }
   },
   {
-    "name": "Broigne",
+    "name": "Cotte de mailles",
     "type": "armor",
     "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
     "system": {
@@ -218,6 +218,464 @@
       "quantity": 1,
       "equipped": false,
       "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+    }
+  },
+  {
+    "name": "Cuir clouté +1",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 13,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 5.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Cuir clouté +2",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 20000, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 5.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Demi-plate +1",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 16,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Demi-plate +2",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 20000, "pp": 0 },
+      "baseAC": 17,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Harnois +1",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 19,
+      "strengthRequired": 15,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 29.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Harnois +2",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 20000, "pp": 0 },
+      "baseAC": 20,
+      "strengthRequired": 15,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 29.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Bouclier +1",
+    "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "baseAC": 3,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel peu courant. Bouclier préparé des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Bouclier +2",
+    "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 4,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Bouclier préparé des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+    }
+  },
+  {
+    "name": "Demi-plate en mithral",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "baseAC": 15,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Pièce rare forgée dans le mithral, un métal léger et souple que seuls quelques ateliers savent travailler : elle n'impose pas de désavantage aux tests de Discrétion."
+    }
+  },
+  {
+    "name": "Harnois en mithral",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "baseAC": 18,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 29.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Pièce rare forgée dans le mithral, un métal léger et souple que seuls quelques ateliers savent travailler : elle n'impose pas de désavantage aux tests de Discrétion et ne demande aucune valeur de Force."
+    }
+  },
+  {
+    "name": "Cuir clouté de résistance (feu)",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 12,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 5.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de feu tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "damageResistances": ["fire"]
+    }
+  },
+  {
+    "name": "Cuirasse de résistance (froid)",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de froid tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "damageResistances": ["cold"]
+    }
+  },
+  {
+    "name": "Demi-plate de résistance (foudre)",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 15,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 18.1,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de foudre tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "damageResistances": ["lightning"]
+    }
+  },
+  {
+    "name": "Anneau de protection",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-shield-silver.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 1,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "saveBonus": 1,
+      "description": "Ouvrage rituel rare. Un anneau d'argent qui porte une protection durable : +1 à la CA et aux jets de sauvegarde tant qu'il est porté (appliqués automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Cape de protection",
+    "type": "armor",
+    "img": "icons/equipment/back/cloak-collared-blue.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "baseAC": 1,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "saveBonus": 1,
+      "description": "Ouvrage rituel peu courant. Une cape doublée dans laquelle un ritualiste a fixé une protection : +1 à la CA et aux jets de sauvegarde tant qu'elle est portée (appliqués automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Bracelets de défense",
+    "type": "armor",
+    "img": "icons/equipment/wrist/bracer-armored-steel-blue.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 2,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "unarmoredOnly": true,
+      "description": "Ouvrage rituel rare. Des bracelets de cuir renforcé consacrés par rituel : +2 à la CA tant que le porteur n'a ni armure ni bouclier (appliqué automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (acide)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-faceted-gold-green.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["acid"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de acide tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (froid)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-faceted-white.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["cold"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de froid tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (feu)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-cabochon-copper-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["fire"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de feu tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (force)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-ball-gold.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["force"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de force tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (foudre)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-cabochon-rounded-gold-teal.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["lightning"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de foudre tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (nécrotique)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-cabochon-notched-silver-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["necrotic"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de nécrotique tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (poison)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-ball-leaves-green.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["poison"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de poison tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (psychique)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-crown-gold-pink.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["psychic"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de psychique tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (radiant)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-cabochon-rounded-gold-red.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["radiant"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de radiant tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+    }
+  },
+  {
+    "name": "Anneau de résistance (tonnerre)",
+    "type": "armor",
+    "img": "icons/equipment/finger/ring-cabochon-silver-orange.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "baseAC": 0,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "accessory",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "damageResistances": ["thunder"],
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de tonnerre tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
     }
   }
 ]

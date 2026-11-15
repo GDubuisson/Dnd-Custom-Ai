@@ -1,20 +1,5 @@
-// Implémente la section 6 (T-ABIL-001 à T-ABIL-020) de tests/E2E_TEST_PLAN.md — onglet
-// Capacités/Sorts (tab-abilities.hbs + partials par classe). T-ABIL-021 (régénération de la
-// réaction en début de tour) est marqué "Quench" seul dans le plan : implémenté dans
-// tests/quench/quench-tests.js, pas ici. T-ABIL-022/023 (langues connues), T-ABIL-024 (sort de
-// soin), T-ABIL-025 (capacité conditionnée à un état actif) et T-ABIL-026 (surclassement
-// d'emplacement de sort) sont hors plan initial, ajoutés depuis sur des retours de test réels/le
-// chantier des vrais emplacements de sorts par niveau.
-//
-// Écrit à l'origine pour contourner un bug de locale sur grantClassContent (corrigé depuis, cf.
-// tests/README.md > "Bug connu — CORRIGÉ", T-STATS-012 dans tab-stats.cy.js) — le contournement
-// reste néanmoins la bonne approche ici : TOUTES les Capacités/tous les Sorts utilisés dans ce
-// fichier sont octroyés directement depuis leur compendium (cf. grantCompendiumItem), jamais via
-// l'assistant de création, pour isoler un seul mécanisme à la fois SANS dépendre de la classe
-// "officielle" du personnage qui les reçoit. #onCastSpell/#onRollFeature ne revérifient jamais
-// l'éligibilité de classe à l'UTILISATION (seul grantClassContent la vérifie à l'OCTROI) — donc
-// un personnage Magicien peut très bien recevoir manuellement un sort de Clerc pour tester, par
-// exemple, l'Incantation rituelle isolément (T-ABIL-013).
+// T-ABIL-001 à 026 (sauf 021, testé par Quench) : onglet Capacités/Sorts. Capacités et Sorts
+// octroyés directement depuis leur compendium, indépendamment de la classe du personnage.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -31,13 +16,7 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
-// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
-// visible à la fois (display:none CSS sur les autres, cf. dnd-custom-ai.css), le palier actif
-// par défaut à l'ouverture de la fiche est toujours le premier palier non-vide — quasi toujours
-// 0 (tours de magie) pour ce magicien de fixture qui a "Trait de feu" en permanence. Nécessaire
-// avant tout clic sur un bouton de sort de niveau ≥ 1, sans quoi Cypress refuse le clic
-// (élément caché par son .spell-level-group parent) — piège découvert le 2026-09-05 lors d'un
-// refactor sans rapport (7 tests en échec identique avant et après, cf. ANOMALIES_ACTIVES.md).
+// Affiche l'onglet du palier de sorts `level` (requis avant de cliquer un sort de niveau ≥ 1).
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -58,10 +37,7 @@ function withItemId(actorId, itemName, callback) {
     .then(callback);
 }
 
-// Même piège/même fix que tab-stats.cy.js/tab-inventory.cy.js (cf. leur en-tête) : attend un
-// message réellement NOUVEAU (compte de game.messages en hausse depuis un repère), pas juste
-// "un message existe" — sinon on peut retomber sur le dernier message d'une autre spec/d'une
-// action précédente de la même session.
+// Attend un message réellement nouveau.
 let knownMessageCount = null;
 function resetMessageBaseline() {
   return cy.window().its("game.messages.size").then((size) => {
@@ -86,8 +62,7 @@ function lastMessage() {
     });
 }
 
-// Octroie un Item du compendium `packName` (packs/capacites ou packs/sorts) par son nom exact,
-// jamais via grantClassContent (cf. commentaire d'en-tête).
+// Octroie un Item du compendium `packName` par son nom exact.
 function grantCompendiumItem(win, actorId, packName, itemName) {
   const pack = win.game.packs.get(`dnd-custom-ai.${packName}`);
   return pack.getIndex().then(() => {
@@ -99,12 +74,7 @@ function grantCompendiumItem(win, actorId, packName, itemName) {
   });
 }
 
-// Réserve confortable pour tester le décompte d'emplacement/la concentration sans dépendre de
-// l'historique d'un test précédent : remplit les paliers 1 à 3 (les seuls réellement utilisés par
-// les sorts de cette fixture, cf. Invisibilité niveau 2/Contresort niveau 3) à une valeur
-// volontairement haute, silencieusement plafonnée à son propre max par le correctif global
-// "emplacements de sorts ne dépassent jamais leur max" (dnd-custom-ai.js) — piège déjà rencontré
-// ici avec l'ancien pool unique (un "5" posé alors retombait à 2 avant même le clic).
+// Remplit les emplacements des paliers 1 à 3 (plafonnés à leur maximum).
 function fillWizardSlots(win) {
   return updateActor(win, win.game.actors.get(wizardId), {
     "system.spells.slots.1.value": 10,
@@ -165,18 +135,13 @@ before(() => {
         ].map((name) => grantCompendiumItem(win, id, "sorts", name))
       ).then(() => grantCompendiumItem(win, id, "capacites", "Incantation rituelle (Druide)"))
     );
-    // Niveau 5 (mis à jour directement, hors assistant/#onLevelUp — option dndCustomWizard,
-    // même bypass que subclass-*.cy.js) : seul niveau garantissant un emplacement à CHAQUE
-    // palier réellement utilisé par les sorts de cette fixture (1 à 3, cf. Invisibilité niveau 2/
-    // Contresort niveau 3) — fullCaster[5] = [4,3,2,0,...]. Les sorts eux-mêmes restent octroyés
-    // directement (grantCompendiumItem, cf. en-tête du fichier), jamais via grantClassContent.
+    // Niveau 5 : un emplacement à chaque palier utilisé (1 à 3).
     cy.window().then((win) =>
       win.game.actors
         .get(id)
         .update(win.JSON.parse(win.JSON.stringify({ "system.attributes.level": 5 })), { dndCustomWizard: true })
     );
-    // Réserve de sorts confortable pour tester slots/concentration sans dépendre de l'historique
-    // d'un test précédent (cf. fillWizardSlots ci-dessous).
+    // Emplacements remplis.
     cy.window().then((win) => fillWizardSlots(win));
   });
 
@@ -185,11 +150,7 @@ before(() => {
     (id) => {
       barbareId = id;
       createdActorIds.push(id);
-      // Créée directement (pas via grantCompendiumItem comme les autres Capacités ci-dessus) :
-      // isole le mécanisme générique requiresState/featureDisabled (retour de test, lot 3 point
-      // 5) du contenu réel du compendium "capacites", dont l'octroi via grantClassContent est
-      // déjà couvert ailleurs (tests/unit/class-content.test.js) — ce scénario teste le grisage
-      // conditionnel lui-même, pas l'octroi de Frénésie en particulier.
+      // Capacité de test créée directement pour isoler requiresState.
       cy.window().then((win) =>
         win.game.actors.get(id).createEmbeddedDocuments(
           "Item",
@@ -237,7 +198,7 @@ describe("Onglet Capacités/Sorts", () => {
     cy.loginAsPlayer();
   });
 
-  it("en-tête spécifique par classe (T-ABIL-001)", () => {
+  it("en-tête spécifique par classe (T-ABIL-001)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.openActorSheet(fighterId);
     goToTab("abilities");
     cy.window()
@@ -258,12 +219,11 @@ describe("Onglet Capacités/Sorts", () => {
       });
   });
 
-  it("repli sur le partial 'default' sans classe, sans erreur (T-ABIL-002)", () => {
+  it("repli sur le partial 'default' sans classe, sans erreur (T-ABIL-002)", () => { // NOSONAR : assertions portées par les helpers (sheetRoot()…should)
     cy.openActorSheet(noClassId);
     goToTab("abilities");
     sheetRoot().find(".class-flavor-header").should("not.exist");
-    // Cypress fait échouer le test lui-même en cas d'exception non interceptée côté page : arriver
-    // jusqu'ici sans erreur EST la preuve attendue par ce scénario.
+    // Aucune exception côté page jusqu'ici.
     sheetRoot().find(".features-list").should("exist");
   });
 
@@ -299,7 +259,7 @@ describe("Onglet Capacités/Sorts", () => {
         expect(win.game.actors.get(fighterId).items.get(itemId).system.uses.value).to.equal(0);
       });
 
-      // Recharge pour ne pas fausser un test suivant réutilisant ce personnage/cette Capacité.
+      // Recharge la Capacité.
       cy.window().then((win) => {
         const item = win.game.actors.get(fighterId).items.get(itemId);
         return item.update(win.JSON.parse(win.JSON.stringify({ "system.uses.value": 1 })));
@@ -419,8 +379,7 @@ describe("Onglet Capacités/Sorts", () => {
         .should("not.include", "Sentinelle");
     });
 
-    // "Sentinelle" est un Don (feats.json), importé dans le compendium "dons", pas "capacites"
-    // (cf. world-items/README.md) — piège rencontré au premier run réel de ce fichier.
+    // Sentinelle est un Don (compendium « dons »).
     cy.window().then((win) => grantCompendiumItem(win, fighterId, "dons", "Sentinelle"));
     cy.openActorSheet(fighterId);
     goToTab("abilities");
@@ -436,10 +395,7 @@ describe("Onglet Capacités/Sorts", () => {
   });
 
   it("lancer un sort — décompte de l'emplacement de son propre niveau (T-ABIL-010)", () => {
-    // Remplit au max plutôt qu'à une valeur arbitraire (5/10) : le hook global de correction
-    // "emplacements de sorts ne dépassent jamais leur max" (dnd-custom-ai.js) ramène
-    // silencieusement toute valeur au-delà de spells.slots.1.max (4 pour ce magicien niveau 5)
-    // — piège rencontré au premier run réel, un "5" posé ici retombait à 2 avant même le clic.
+    // Emplacements au maximum (une valeur supérieure serait plafonnée).
     let maxSlots;
     cy.window().then((win) => {
       const actor = win.game.actors.get(wizardId);
@@ -452,9 +408,7 @@ describe("Onglet Capacités/Sorts", () => {
     resetMessageBaseline();
 
     withItemId(wizardId, "Projectile magique", (itemId) => {
-      // Prérequis : Projectile magique est de niveau 1, l'emplacement de son propre niveau est
-      // disponible -> décompte direct, aucune fenêtre de surclassement (cf. T-ABIL-011bis pour
-      // le cas surclassement).
+      // Emplacement de niveau 1 disponible : décompte direct, sans surclassement.
       cy.window().then((win) => {
         expect(win.game.actors.get(wizardId).items.get(itemId).system.level, "prérequis : sort de niveau 1").to.equal(1);
       });
@@ -503,8 +457,7 @@ describe("Onglet Capacités/Sorts", () => {
   });
 
   it("surclassement — palier exact épuisé, palier supérieur dépensé après confirmation (T-ABIL-026)", () => {
-    // Projectile magique (niveau 1) : palier 1 épuisé, palier 2 disponible -> la fenêtre de
-    // choix doit s'ouvrir et proposer le palier 2 (cf. spell-slot-choice.js).
+    // Palier 1 épuisé, palier 2 disponible : dialogue de surclassement.
     cy.window().then((win) =>
       updateActor(win, win.game.actors.get(wizardId), {
         "system.spells.slots.1.value": 0,
@@ -518,9 +471,7 @@ describe("Onglet Capacités/Sorts", () => {
 
     withItemId(wizardId, "Projectile magique", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
-      // Structure DOM DialogV2 (cf. level-up.cy.js en-tête pour le pattern de référence) :
-      // `dialog.application.dialog`, radio par palier proposé (name="slotLevel"), confirmation
-      // via button[data-action="ok"].
+      // Dialogue : radios `name="slotLevel"`, confirmation `button[data-action="ok"]`.
       cy.window()
         .its("game.i18n")
         .then((i18n) => i18n.localize("DND_CUSTOM.Spells.UpcastDialogTitle"))
@@ -613,11 +564,7 @@ describe("Onglet Capacités/Sorts", () => {
       cy.window().should((win) => {
         expect(win.game.actors.get(wizardId).system.spells.concentratingOn).to.equal("Invisibilité");
       });
-      // #onCastSpell poste DEUX messages ici : "concentration rompue" (Bénédiction) d'abord,
-      // PUIS la confirmation de lancer d'Invisibilité elle-même — le dernier message n'est donc
-      // pas celui qu'on cherche (piège rencontré au premier run réel avec d'autres specs :
-      // `.at(-1)` retombait sur le second). Cherche parmi tous les messages apparus depuis le
-      // repère plutôt que de supposer une position fixe.
+      // Deux messages (concentration rompue puis lancer) : chercher parmi les nouveaux.
       cy.window()
         .its("game.i18n")
         .then((i18n) => i18n.format("DND_CUSTOM.Chat.ConcentrationBroken", { name: "Tab Abilities Wizard", spell: "Bénédiction" }))
@@ -644,7 +591,7 @@ describe("Onglet Capacités/Sorts", () => {
   });
 
   it("sort d'attaque — jet d'attaque puis bouton de dégâts distinct (T-ABIL-016)", () => {
-    // "Trait de feu" est un tour de magie (niveau 0) : aucun emplacement à préparer ici.
+    // Tour de magie : aucun emplacement nécessaire.
     cy.openActorSheet(wizardId);
     goToTab("abilities");
     resetMessageBaseline();
@@ -704,20 +651,16 @@ describe("Onglet Capacités/Sorts", () => {
         const token = win.canvas.scene.tokens.get(tokenId);
         expect(token.light.bright, "lumière appliquée au token").to.be.greaterThan(0);
       });
-      // Retour de test : un double message ("Allume Lumière" + "Lance Lumière") était posté
-      // pour un seul lancer — un seul message attendu désormais (#onCastSpell, actor-sheet.js).
+      // Un seul message pour le lancer de Lumière.
       cy.window().should((win) => {
         expect(win.game.messages.size, "un seul nouveau message de chat pour ce lancer").to.equal(knownMessageCount + 1);
       });
     });
   });
 
-  // Retour de test (lot 3) : "Mot de guérison"/"Soin des blessures" ne lançaient aucun dé et ne
-  // soignaient rien (system.heal.dice absent du schéma) — vérifie le vrai jet (dé + modificateur
-  // de caractéristique d'incantation) et le bouton "Appliquer le soin" affiché sur son message.
+  // Sort de soin : dé + modificateur d'incantation, bouton « Appliquer le soin ».
   it("sort de soin lance le dé de soin et le bouton 'Appliquer le soin' restaure des PV (T-ABIL-024)", () => {
-    // "Mot de guérison" est de niveau 1 : garantit un emplacement disponible indépendamment de
-    // l'historique des tests précédents (cf. fillWizardSlots).
+    // Emplacement de niveau 1 disponible.
     cy.window().then((win) => fillWizardSlots(win));
 
     let tokenId;
@@ -751,19 +694,14 @@ describe("Onglet Capacités/Sorts", () => {
       resetMessageBaseline();
       cy.get(`li[data-item-id="${itemId}"] button[data-action="castSpell"]`).click();
       lastMessage().then((message) => {
-        // Mot de guérison : 1d4 + modificateur d'Intelligence (Magicien) — le modificateur EST
-        // ajouté pour un soin, contrairement aux dégâts d'un sort (cf. rollHeal, rolls.js).
+        // Mot de guérison : 1d4 + modificateur d'Intelligence.
         expect(message.formula).to.match(/^1d4[+-]\d+$/);
         expect(Number.isFinite(message.total), "un vrai total de soin doit être calculé").to.be.true;
       });
 
       cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
 
-      // Ferme la fiche personnage (recouvre la moitié droite de l'écran) et ouvre l'onglet Chat
-      // de la barre latérale (repliée par défaut après un cy.loginAsPlayer(), même pattern que
-      // #sidebar-tabs [data-tab="combat"] dans combat-tracker.cy.js) avant d'interagir avec le
-      // message posté — sans ça, Cypress refuse le clic ("center of this element is hidden from
-      // view") même si l'élément existe bien dans le DOM.
+      // Ferme la fiche et ouvre l'onglet Chat avant de cliquer sur le message.
       cy.window().then((win) => win.game.actors.get(wizardId).sheet.close());
       cy.window().then((win) => win.document.querySelector('#sidebar-tabs [data-tab="chat"]')?.click());
       cy.get(".chat-message").last().find("button.dnd-apply-heal-btn").click();
@@ -777,7 +715,7 @@ describe("Onglet Capacités/Sorts", () => {
       });
     });
 
-    // Remet les PV au maximum pour ne pas fausser un futur run de cette spec.
+    // PV remis au maximum.
     cy.window().then((win) => {
       const actor = win.game.actors.get(wizardId);
       return actor.update(win.JSON.parse(win.JSON.stringify({ "system.attributes.hp.value": actor.system.attributes.hp.max })));
@@ -810,13 +748,11 @@ describe("Onglet Capacités/Sorts", () => {
       };
     });
 
-    // Contresort est un sort réaction de niveau 3 : bloqué par la réaction déjà consommée
-    // AVANT même la vérification d'emplacement (#consumeReaction s'exécute en premier dans
-    // #onCastSpell) — son propre palier (3) n'est donc jamais consulté ni décompté.
+    // Contresort bloqué par la réaction consommée, avant toute vérification d'emplacement.
     withItemId(wizardId, "Contresort", (counterspellId) => {
       cy.window().then((win) => {
         const before = win.game.actors.get(wizardId).system.spells.slots[3].value;
-        cy.get(`li[data-item-id="${counterspellId}"] button[data-action="castSpell"]`).click({ force: true });
+        cy.get(`li[data-item-id="${counterspellId}"] button[data-action="castSpell"]`).click({ force: true }); // NOSONAR : bouton désactivé, teste le verrou côté données
         cy.window().should((win2) => {
           expect(warned, "avertissement ReactionUnavailable attendu").to.be.true;
           expect(win2.game.actors.get(wizardId).system.spells.slots[3].value, "aucune charge décomptée").to.equal(before);
@@ -842,11 +778,7 @@ describe("Onglet Capacités/Sorts", () => {
     });
   });
 
-  // Retour de test (lot 3, point 5 "Capacités à ressource") : une Capacité qui ne fonctionne que
-  // dans un état particulier (ex. Frénésie, qui nécessite d'être En Rage) doit être grisée par
-  // défaut et se dégriser automatiquement dès que l'état correspondant est actif — la bascule de
-  // l'état (onglet Statistiques, mécanisme déjà existant) est le SEUL contrôle actionné par le
-  // joueur, pas de bouton séparé pour la Capacité elle-même.
+  // Capacité exigeant un état : désactivée par défaut, activée par la bascule de l'état.
   it("Capacité conditionnée à un état actif — grisée par défaut, dégrisée à la bascule de l'état (T-ABIL-025)", () => {
     cy.openActorSheet(barbareId);
     goToTab("abilities");
@@ -856,8 +788,7 @@ describe("Onglet Capacités/Sorts", () => {
     });
 
     goToTab("stats");
-    // Retour de test (cf. tab-stats.cy.js > T-STATS-015) : cocher un état ne l'applique plus
-    // qu'à la fermeture de la liste déroulante.
+    // Les états cochés s'appliquent à la fermeture de la liste.
     sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="raging"]').click();
     sheetRoot().find(".conditions-dropdown summary").click(); // ferme -> applique
@@ -881,7 +812,7 @@ describe("Onglet Capacités/Sorts", () => {
         });
       });
 
-    // Rebascule l'état "En Rage" à faux : ne fausse pas un futur run réutilisant ce personnage.
+    // Retire l'état « En Rage ».
     goToTab("stats");
     sheetRoot().find(".conditions-dropdown summary").click();
     sheetRoot().find('button[data-action="toggleConditionSelection"][data-key="raging"]').click();
@@ -897,11 +828,7 @@ describe("Onglet Capacités/Sorts", () => {
   });
 });
 
-// Langues connues, déplacées de l'onglet Journal vers l'onglet Capacités le 2026-08-16 (retour
-// de test), affichées juste au-dessus du panneau de la capacité d'Origine (cf.
-// templates/actor/tab-abilities.hbs). Anciennement T-JOURNAL-001/002 (tests/E2E_TEST_PLAN.md >
-// section 7) — Actor dédié distinct des fixtures partagées ci-dessus, pour ne pas dépendre de
-// leur composition de Capacités/Sorts.
+// Langues connues de l'onglet Capacités, sur un Actor dédié.
 describe("Onglet Capacités/Sorts — langues connues", () => {
   const languagesActorIds = [];
   let languagesActorId;
@@ -936,9 +863,7 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       .find(".languages-list .language-chip .item-name-link")
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
-        // Retour de test : ordre d'ajout (pas alphabétique), Commune forcée en tête quel que
-        // soit cet ordre (cf. actor-sheet.js > context.languages). Origine "fleuraine" -> langue
-        // "Fleurain".
+        // Ordre d'ajout, Commune en tête.
         expect(names).to.deep.equal(["Commune", "Fleurain"]);
       });
   });
@@ -963,10 +888,7 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       .find(".languages-list .language-chip .item-name-link")
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
-        // Ajoutée en dernier dans la liste (ordre d'ajout, cf. T-ABIL-022) : "Argot des rues"
-        // sortirait AVANT "Commune"/"Fleurain" sous un tri alphabétique (A < C < F) — la
-        // retrouver en dernière position prouve que le tri est bien par ordre d'ajout, pas
-        // alphabétique.
+        // « Argot des rues » en dernier : tri par ordre d'ajout, pas alphabétique.
         expect(names).to.deep.equal(["Commune", "Fleurain", "Argot des rues"]);
       });
 

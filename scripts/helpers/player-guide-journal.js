@@ -2,14 +2,11 @@ import { DND_CUSTOM } from "./config.js";
 import { loadSystemJson } from "./system-json.js";
 import { ensureGmAuthoredJournal } from "./journal.js";
 
-/** Enrobe `text` dans un `<abbr title="...">` pointant vers la définition de `term` dans le
- *  glossaire (cf. scripts/data/glossary.json) : tooltip natif du navigateur, sans JS
- *  supplémentaire. Renvoie `text` tel quel si le terme est introuvable (ne bloque jamais le
- *  rendu pour un simple lien de confort manquant). */
+/** Entoure `text` d'un `<abbr>` portant la définition de `term` du glossaire, si elle existe. */
 function glossaryAbbr(glossary, term, text = term) {
   const entry = glossary.find((candidate) => candidate.term === term);
   if (!entry) return text;
-  const title = entry.definition.replace(/"/g, "&quot;");
+  const title = entry.definition.replaceAll('"', "&quot;");
   return `<abbr title="${title}">${text}</abbr>`;
 }
 
@@ -209,12 +206,11 @@ async function buildLanguagesPage(glossary) {
   const languages = await loadSystemJson("world-items/languages.json");
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const byCategory = (category) => languages.filter((entry) => entry.system.category === category);
-  const section = (titleKey, entries) =>
-    entries.length
-      ? `<h3>${game.i18n.localize(titleKey)}</h3><dl>${entries
-          .map((entry) => `<dt><strong>${entry.name}</strong></dt><dd>${entry.system.description}</dd>`)
-          .join("")}</dl>`
-      : "";
+  const section = (titleKey, entries) => {
+    if (!entries.length) return "";
+    const terms = entries.map((entry) => `<dt><strong>${entry.name}</strong></dt><dd>${entry.system.description}</dd>`);
+    return `<h3>${game.i18n.localize(titleKey)}</h3><dl>${terms.join("")}</dl>`;
+  };
 
   return `
     <p>Chaque personnage connaît toujours la ${abbr("Langue", "Commune")} et la langue de son
@@ -230,7 +226,10 @@ async function buildLanguagesPage(glossary) {
 function buildEquipmentPage(glossary) {
   const abbr = (term, text) => glossaryAbbr(glossary, term, text);
   const currencyRows = Object.entries(DND_CUSTOM.currencyToCopper)
-    .map(([key, copperValue]) => `<tr><td>${game.i18n.localize(`DND_CUSTOM.Currency.${key}`)}</td><td>${copperValue} PC</td></tr>`)
+    .map(([key, copperValue]) => {
+      const label = game.i18n.localize(`DND_CUSTOM.Currency.${key}`);
+      return `<tr><td>${label}</td><td>${copperValue} PC</td></tr>`;
+    })
     .join("");
   return `
     <h2>Monnaie</h2>
@@ -252,27 +251,14 @@ function buildEquipmentPage(glossary) {
   `;
 }
 
-/** Crée (une seule fois, si absent) le Journal "Guide du Joueur" à plusieurs pages : glossaire,
- *  règles de base, système de sorts simplifié, classes, origines, langues, équipement/inventaire.
- *  **Visible de tous les joueurs** (`ownership.default: OBSERVER`) : c'est la documentation en jeu
- *  destinée aux joueurs, la couche d'infobulles de la fiche y renvoie. N'écrase jamais un Journal
- *  existant du même nom (le MJ peut librement l'éditer ensuite sans craindre de le voir régénéré/
- *  écrasé au prochain chargement du monde) — même principe que ensureOriginsJournal
- *  (origins-journal.js) ; un Journal créé « Aucun » avant ce correctif est remonté à OBSERVER, cf.
- *  ensureGmAuthoredJournal. Contenu entièrement dérivé des fichiers de données du système
- *  (scripts/data/glossary.json, world-items/classes.json, world-items/origins.json,
- *  world-items/languages.json, scripts/helpers/config.js) : reste synchronisé si ces fichiers
- *  évoluent, rien à maintenir en double. */
+/** Crée le Journal « Guide du Joueur », visible de tous, s'il n'existe pas encore. */
 export function ensurePlayerGuideJournal() {
   return ensureGmAuthoredJournal(
     game.i18n.localize("DND_CUSTOM.Journal.PlayerGuideTitle"),
     async () => {
       const glossary = await loadSystemJson("scripts/data/glossary.json");
 
-      // Clé i18n écrite en toutes lettres (littéral complet, pas une concaténation) pour chaque
-      // page : détectable par le scanner de couverture i18n (tests/data/i18n-coverage.test.js),
-      // qui ne peut pas suivre une clé construite dynamiquement (ex. reconstituée à partir d'une
-      // variable) et laisserait alors passer une clé manquante sans avertissement.
+      // Clés i18n écrites en littéral pour rester détectables par le test de couverture i18n.
       const pages = [
         { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageGlossary", content: buildGlossaryPage(glossary) },
         { titleKey: "DND_CUSTOM.Journal.PlayerGuidePageRules", content: buildRulesPage(glossary) },

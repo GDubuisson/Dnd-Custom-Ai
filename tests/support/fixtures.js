@@ -10,11 +10,7 @@ function loadJson(relativePath) {
   return JSON.parse(readFileSync(path.join(ROOT, relativePath), "utf8"));
 }
 
-/** Les VRAIES données de jeu du système (pas des doublures) : ties directement les tests à
- *  scripts/data/origins.json et scripts/data/spell-slots.json, chargées ici via `fs` plutôt que
- *  `fetch` (cf. dnd-custom-ai.js > loadOrigins/loadSpellSlotTables, mécanisme équivalent côté
- *  navigateur) — toute modification de ces fichiers est donc immédiatement couverte par les
- *  tests qui s'en servent, sans données de test dupliquées à maintenir en parallèle. */
+/** Vraies données de jeu (origins.json, spell-slots.json), lues sur le disque. */
 export const ORIGINS = loadJson("scripts/data/origins.json");
 export const SPELL_SLOT_TABLES = loadJson("scripts/data/spell-slots.json");
 export const WORLD_SPELLS = loadJson("world-items/spells.json");
@@ -23,6 +19,9 @@ export const WORLD_WEAPONS = loadJson("world-items/weapons.json");
 export const WORLD_ARMORS = loadJson("world-items/armors.json");
 export const WORLD_GEAR = loadJson("world-items/gear.json");
 export const WORLD_TOOLS = loadJson("world-items/tools.json");
+export const WORLD_REGIONAL = loadJson("world-items/regional.json");
+export const WORLD_HISTORICAL = loadJson("world-items/historical.json");
+export const ITEM_LORE = loadJson("scripts/data/item-lore.json");
 export const WORLD_CLASSES = loadJson("world-items/classes.json");
 export const WORLD_SUBCLASSES = loadJson("world-items/subclasses.json");
 export const WORLD_ORIGIN_ITEMS = loadJson("world-items/origins.json");
@@ -30,11 +29,7 @@ export const WORLD_LANGUAGES = loadJson("world-items/languages.json");
 export const WORLD_NPCS = loadJson("world-items/npcs.json");
 export const GLOSSARY = loadJson("scripts/data/glossary.json");
 
-/** Construit un objet "brut" au format du schéma CharacterData (cf. scripts/data/character-
- *  data.js) suffisant pour appeler `CharacterData.prototype.prepareDerivedData.call(fixture)`
- *  directement, sans passer par le pipeline Document/DataModel complet de Foundry (cf. tests/
- *  support/foundry-stub.js). `overrides` est fusionné en profondeur sur les valeurs par défaut
- *  (personnage niveau 1 générique, aucun équipement). */
+/** Objet brut au format CharacterData pour appeler `prepareDerivedData` directement ; `overrides` fusionné en profondeur. */
 export function buildCharacterFixture(overrides = {}) {
   const abilities = Object.fromEntries(
     ["str", "dex", "con", "int", "wis", "cha"].map((key) => [key, { value: 10, total: 10 }])
@@ -56,26 +51,22 @@ export function buildCharacterFixture(overrides = {}) {
       slots: Object.fromEntries(SPELL_LEVELS.map((level) => [level, { value: 0, max: 0 }])),
       concentratingOn: ""
     },
-    // `parent.items` simule `this.parent?.items` (l'Actor propriétaire) : liste d'objets
-    // `{ type, system: { slot, equipped, ... } }, suffisante pour prepareDerivedData (armure/
-    // bouclier/accessoires équipés).
+    // Items de l'Actor propriétaire.
     parent: { items: overrides.items ?? [] }
   };
 
   const merged = {
     ...base,
     ...overrides,
-    abilities: { ...base.abilities, ...(overrides.abilities ?? {}) },
-    saves: { ...base.saves, ...(overrides.saves ?? {}) },
-    attributes: { ...base.attributes, ...(overrides.attributes ?? {}) },
-    spells: { ...base.spells, ...(overrides.spells ?? {}) }
+    abilities: { ...base.abilities, ...overrides.abilities },
+    saves: { ...base.saves, ...overrides.saves },
+    attributes: { ...base.attributes, ...overrides.attributes },
+    spells: { ...base.spells, ...overrides.spells }
   };
-  // `hp`/`ac` sont des sous-objets de `attributes` : les fusionner un niveau plus profond pour
-  // qu'un `overrides.attributes.hp` partiel n'écrase pas les autres champs de `hp`.
+  // Fusion profonde de `hp`.
   if (overrides.attributes?.hp) merged.attributes.hp = { ...base.attributes.hp, ...overrides.attributes.hp };
   if (overrides.attributes?.ac) merged.attributes.ac = { ...base.attributes.ac, ...overrides.attributes.ac };
-  // `spells.slots` est un objet par palier (1-9) : un `overrides.spells.slots` partiel (ex. un
-  // seul palier) ne doit écraser que les paliers fournis, jamais réinitialiser les 8 autres.
+  // Fusion par palier de `spells.slots`.
   if (overrides.spells?.slots) {
     merged.spells.slots = { ...base.spells.slots };
     for (const [level, slot] of Object.entries(overrides.spells.slots)) {

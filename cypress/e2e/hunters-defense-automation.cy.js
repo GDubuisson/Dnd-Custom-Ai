@@ -1,15 +1,5 @@
-// Suite du chantier "8 sous-classes déjà à ≥1 mécanique" (2026-08-23) — sur demande explicite de
-// l'utilisateur d'aller plus loin sur Tactiques défensives (Hunter, Rôdeur), dont seul le CHOIX
-// était automatisé jusqu'ici. Couvre les 3 options désormais réellement appliquées aux jets :
-// - Volonté de fer : avantage à la sauvegarde d'une cible qui l'a choisi, quand la Capacité qui
-//   la force applique Effrayé en cas d'échec (helpers/hunters-defense.js#hasSteadfastAdvantage).
-// - Défense contre les attaques multiples : avantage si l'attaquant qui force la sauvegarde a
-//   déjà fait un jet d'attaque contre la cible ce round (nouveau
-//   system.combat.attackedByThisRound, rempli par #recordAttackOnTargets à chaque jet d'attaque
-//   arme/sort, remis à zéro au début du tour propre).
-// - Échappée de la horde : désavantage éphémère posé sur le PROCHAIN jet d'un PNJ hostile dont
-//   le Rôdeur (avec ce choix) vient de quitter la portée de mêlée — extension du hook
-//   `updateToken` d'opportunity-attack.js dans le sens inverse de l'Attaque d'opportunité.
+// Tactiques défensives appliquées aux jets : Volonté de fer (contre Effrayé), Défense contre les
+// attaques multiples (attaquant du round), Échappée de la horde (désavantage au prochain jet du PNJ).
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -263,12 +253,7 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
   it("le Rôdeur s'éloigne d'un PNJ hostile à 1,50 m : désavantage sur son prochain jet d'attaque (T-MOBILE-001)", () => {
     cy.window().then((win) => (createdCombatIds.length ? win.Combat.deleteDocuments(createdCombatIds.splice(0)) : null));
 
-    // Découvert en testant : un token nouvellement créé hérite d'une disposition HOSTILE par
-    // défaut (comportement natif Foundry, pas de préréglage côté ce système) — sans corriger la
-    // disposition du PROTOTYPE dès la création (`prototypeToken.disposition`, jamais un update du
-    // token séparé ensuite), le déplacement du Rôdeur serait pris pour le sens "PNJ hostile
-    // s'éloigne" (branche existante d'opportunity-attack.js) plutôt que le nouveau sens
-    // "Échappée de la horde" testé ici.
+    // Disposition du prototype réglée à la création (hostile par défaut).
     cy.window()
       .then((win) =>
         createActor(win, {
@@ -303,12 +288,7 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
         .document.update(win.JSON.parse(win.JSON.stringify({ disposition: win.CONST.TOKEN_DISPOSITIONS.HOSTILE })))
     );
 
-    // `Combatant#tokenId` peut différer du tokenId explicitement fourni ici (résolution Foundry
-    // non garantie identique, piège déjà documenté ailleurs dans cette suite) : se fier au
-    // résultat RÉEL de la création pour savoir quel token déplacer ensuite, pas la variable
-    // suivie séparément. `tokenId` explicite pour les DEUX Combattants (piège découvert ici :
-    // omis pour l'ennemi, Foundry le laisse à `null` — `combatant.token` (getter) renvoie alors
-    // `undefined`, faisant échouer silencieusement le hook `updateToken` qui s'appuie dessus).
+    // tokenId explicite pour les deux Combattants, relu depuis la création.
     let rangerCombatantTokenId;
     cy.window()
       .then((win) =>
@@ -329,23 +309,17 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
         rangerCombatantTokenId = combatants.find((c) => c.actorId === rangerId).tokenId;
       });
 
-    // Attend que `game.combat` reflète bien les 2 Combattants avant de déplacer le token : piste
-    // de course potentielle entre la création du Combat/des Combattants et le hook `updateToken`
-    // qui lit `game.combat.combatants` (cf. commentaire du chantier ci-dessus).
+    // Attend les 2 Combattants avant de déplacer le token.
     cy.window().should((win) => {
       expect(win.game.combat?.combatants.size, "les 2 Combattants doivent être enregistrés avant le déplacement").to.equal(2);
     });
 
-    // Le Rôdeur s'éloigne à 4,50 m (hors de la portée de mêlée de 1,50 m).
+    // Le Rôdeur s'éloigne à 4,50 m.
     cy.window().then((win) =>
       win.canvas.tokens.get(rangerCombatantTokenId).document.update(win.JSON.parse(win.JSON.stringify({ x: 1300, y: 1000 })))
     );
 
-    // Token PNJ non lié (`actorLink: false` par défaut, cf. turn-undead-feature.cy.js) : le flag
-    // est posé par le hook sur l'acteur SYNTHÉTIQUE propre à ce token
-    // (`combatant.actor` == `canvas.tokens.get(id).actor`), jamais sur l'acteur "prototype" du
-    // monde (`game.actors.get(id)`) — piège rencontré en écrivant ce test, cf. même remarque déjà
-    // faite pour Repousser les morts-vivants.
+    // Flag posé sur l'acteur synthétique du token non lié.
     cy.window({ timeout: 10000 }).should((win) => {
       expect(
         win.canvas.tokens.get(enemyTokenId).actor.getFlag("dnd-custom-ai", "pendingOpportunityDisadvantage"),
@@ -361,12 +335,7 @@ describe("Échappée de la horde — désavantage éphémère sur l'ennemi dont 
       expect(roll.formula, "désavantage : 2d20kl1").to.include("2d20kl1");
     });
 
-    // `.to.be.false`, pas `.to.be.undefined` : #onRollAttack consomme ce flag via
-    // `setFlag(..., false)`, pas `unsetFlag` — sur l'acteur synthétique d'un token non lié
-    // (ce PNJ), `unsetFlag` sur une clé de `flags` de l'Actor lui-même ne persiste jamais
-    // (bug Foundry vérifié indépendamment du code de ce système, cf. le commentaire du fix dans
-    // npc-sheet.js). `false` est l'équivalent fonctionnel exact d'"absent" pour ce flag, lu par
-    // `Boolean(...)` partout où il compte.
+    // Flag consommé à `false` (`unsetFlag` ne persiste pas sur un token non lié).
     cy.window().should((win) => {
       expect(
         win.canvas.tokens.get(enemyTokenId).actor.getFlag("dnd-custom-ai", "pendingOpportunityDisadvantage"),

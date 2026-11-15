@@ -1,34 +1,13 @@
-// Tests d'intégration Quench : s'exécutent DANS un vrai monde Foundry (vrai pipeline
-// Document/DataModel, permissions, sockets...), contrairement à tests/unit et tests/dom qui
-// appellent les fonctions/DataModels sur des fixtures isolées (cf. tests/README.md >
-// "Limites connues"). Chargé uniquement si ce module (dnd-custom-ai-quench-tests) et le
-// module "quench" sont tous les deux actifs dans le monde de test — jamais dans le système
-// livré (cf. tests/quench/module.json, non référencé par system.json).
-//
-// Import direct des fonctions système (chemin absolu depuis la racine, ce module vit hors de
-// systems/dnd-custom-ai/ — cf. docker-compose.yml qui le monte sous /data/Data/modules/) :
-// grantClassContent/grantLanguages sont exportées et appelables telles quelles (T-WIZ-016/017
-// ci-dessous). #grantStartingEquipment (T-WIZ-014/015) est une méthode privée de
-// CharacterCreationWizard, donc inatteignable directement — submitWizardForm ci-dessous rejoue
-// la vraie soumission du formulaire (mêmes lecture/écriture DOM que #onSubmit) plutôt que d'en
-// dupliquer la logique dans ce test, qui ne prouverait alors plus rien sur le vrai code.
-import { grantClassContent, grantLanguages } from "/systems/dnd-custom-ai/scripts/helpers/class-content.js";
-import { CharacterCreationWizard } from "/systems/dnd-custom-ai/scripts/sheets/character-creation-wizard.js";
+// Tests d'intégration Quench exécutés dans un vrai monde Foundry (module de test, jamais livré).
+// L'assistant est testé via submitWizardForm, qui déclenche la vraie soumission (#onSubmit).
+import { grantClassContent, grantLanguages } from "/systems/dnd-custom-ai/scripts/helpers/class-content.js"; // NOSONAR : chemin servi par Foundry
+import { CharacterCreationWizard } from "/systems/dnd-custom-ai/scripts/sheets/character-creation-wizard.js"; // NOSONAR : chemin servi par Foundry
 
-/** Rejoue une soumission valide de l'assistant de création sans passer par des clics Cypress :
- *  ce module Quench tourne dans le vrai client (Chromium, via cypress/e2e/quench.cy.js), donc le
- *  vrai DOM de l'Application est disponible — seule la manière d'y écrire diffère (affectation
- *  directe plutôt que simulation d'interaction utilisateur), ce qui reste fidèle au vrai
- *  gestionnaire de soumission (#onSubmit) puisque c'est bien lui qui est déclenché au clic.
- *  `abilities` est facultatif : la répartition par défaut du formulaire (cf. STANDARD_ARRAY,
- *  character-creation-wizard.js) est déjà une permutation valide du tableau standard.
- *  N'attend PAS la fin d'une soumission invalide (le formulaire ne se ferme jamais dans ce cas,
- *  cf. #onSubmit) — réservé aux scénarios de soumission valide. */
+/** Remplit et soumet l'assistant de création de `actor` (soumission valide uniquement). */
 async function submitWizardForm(actor, { name, origin, classKey, abilities, skills }) {
   const wizard = new CharacterCreationWizard(actor);
   await wizard.render(true);
-  // Laisse le premier rendu (et son câblage d'évènements, cf. _onRender) se terminer avant de
-  // lire/écrire le DOM.
+  // Laisse le premier rendu se terminer.
   await new Promise((resolve) => setTimeout(resolve, 200));
 
   const root = wizard.element;
@@ -42,12 +21,7 @@ async function submitWizardForm(actor, { name, origin, classKey, abilities, skil
     root.querySelector(`input[type="checkbox"][name="skills.${key}"]`).checked = true;
   }
 
-  // #onSubmit ferme l'assistant (`this.close()`) juste après avoir tout octroyé (équipement,
-  // contenu de classe, langues) : attendre le hook "close<NomDeClasse>" standard d'AppV2 garantit
-  // que la soumission est intégralement terminée, contrairement à un simple hook "updateActor"
-  // qui résoudrait dès le premier des deux actor.update() de #onSubmit (cf. son commentaire).
-  // Sélecteur/nom de hook à vérifier au premier lancement réel (pas de Docker/licence Foundry
-  // disponible au moment d'écrire ce test, cf. tests/README.md > "Limites connues").
+  // Attend la fermeture de l'assistant, signe que la soumission est terminée.
   const closed = new Promise((resolve, reject) => {
     Hooks.once("closeCharacterCreationWizard", resolve);
     setTimeout(
@@ -83,8 +57,7 @@ Hooks.on("quenchReady", (quench) => {
 
           assert.ok(actor, "L'Actor aurait dû être créé");
           assert.equal(actor.type, "character");
-          // Vierge (pas de classe/origine) : cf. #onOpenCreationWizard/Hooks createActor,
-          // scripts/dnd-custom-ai.js — l'assistant de création prend le relais, pas testé ici.
+          // Personnage vierge, pris en charge par l'assistant (non testé ici).
           assert.equal(actor.system.class, "");
           assert.equal(actor.system.origin, "");
         });
@@ -93,9 +66,7 @@ Hooks.on("quenchReady", (quench) => {
           const actor = await Actor.create({ name: "Quench Test Actor - PV", type: "character" });
           createdActorIds.push(actor.id);
 
-          // Guerrier (d10), CON value 14 (mod +2, cf. helpers/rules.js#abilityModifier) :
-          // valeurs choisies arbitrairement, seule la cohérence du calcul est vérifiée ici, pas
-          // un nombre en dur qui casserait si la table de dés de vie change.
+          // Valeurs arbitraires : seule la cohérence du calcul est vérifiée.
           await actor.update({
             "system.class": "guerrier",
             "system.attributes.level": 1,
@@ -114,13 +85,7 @@ Hooks.on("quenchReady", (quench) => {
     { displayName: "D&D Custom Ai — Actor" }
   );
 
-  // Section 1 de tests/E2E_TEST_PLAN.md (assistant de création) : volet "calcul" des scénarios
-  // E2E+Quench, complémentaire de cypress/e2e/wizard.cy.js qui vérifie l'affichage/l'interaction
-  // (cf. sa section "Conventions" : "Quench vérifie le calcul, E2E vérifie qu'il s'affiche
-  // correctement"). Tourne en session Gamemaster (cf. cypress/e2e/quench.cy.js), donc réservé aux
-  // scénarios dont l'issue ne dépend pas de l'identité Joueur/MJ (T-WIZ-012/013 concernent
-  // justement cette identité et restent testés uniquement dans wizard.cy.js, avec les deux
-  // sessions nécessaires).
+  // Assistant de création : volet calcul (l'affichage est testé par wizard.cy.js), en session MJ.
   quench.registerBatch(
     "dndCustomAi.wizard",
     (context) => {
@@ -181,9 +146,7 @@ Hooks.on("quenchReady", (quench) => {
           };
 
           try {
-            // monk : arme de départ "Bâton" (qu'on vient de retirer), pas d'armure de départ
-            // (cf. DND_CUSTOM.classStartingEquipment) — seul cas où une seule ressource
-            // manquante suffit à déclencher l'avertissement sans qu'une autre soit trouvée.
+            // Moine : seule l'arme manque, pas d'armure de départ.
             const actor = await Actor.create({ name: "Quench Wizard Monk", type: "character" });
             createdActorIds.push(actor.id);
 
@@ -225,12 +188,7 @@ Hooks.on("quenchReady", (quench) => {
           const features = actor.items.filter((item) => item.type === "feature");
           const spells = actor.items.filter((item) => item.type === "spell" && (item.system.level ?? 0) <= 1);
           assert.isAbove(features.length + spells.length, 0, "au moins une Capacité ou un Sort/tour de magie attendu");
-          // Vérifie explicitement au moins une Capacité NON universelle (propre à la classe) : une
-          // Capacité universelle seule (ex. Attaque d'opportunité) suffisait à satisfaire
-          // grantedNames.length > 0 ci-dessus même quand grantClassContent était cassé pour tout
-          // contenu propre à la classe (bug de locale historique, corrigé le 2026-08-16, cf.
-          // tests/README.md > "Bug connu — CORRIGÉ") — sans cette assertion, ce test donnait un
-          // faux sentiment de couverture sur ce point précis.
+          // Au moins une Capacité propre à la classe, pas seulement universelle.
           assert.ok(
             features.some((f) => !f.system.universal) || spells.length > 0,
             "au moins une Capacité/un Sort PROPRE à la classe (pas seulement universelle) attendu"
@@ -253,10 +211,7 @@ Hooks.on("quenchReady", (quench) => {
     { displayName: "D&D Custom Ai — Assistant de création" }
   );
 
-  // T-ABIL-021 (section 6, tab-abilities.hbs) : seul scénario de cette section marqué "Quench"
-  // seul dans le plan — simule un changement de tour via l'API Combat plutôt qu'un clic sur le
-  // Combat Tracker, cf. hook updateCombat (dnd-custom-ai.js) qui ne réagit qu'à `game.users.
-  // activeGM`, déjà la session de ce batch.
+  // T-ABIL-021 : changement de tour via l'API Combat.
   quench.registerBatch(
     "dndCustomAi.combatReaction",
     (context) => {
@@ -282,13 +237,10 @@ Hooks.on("quenchReady", (quench) => {
           createdCombatIds.push(combat.id);
           await combat.createEmbeddedDocuments("Combatant", [{ actorId: actor.id }]);
 
-          // startCombat() pose round=1/turn=0 (changement réel depuis l'état initial du Combat),
-          // ce qui déclenche bien le hook updateCombat (condition `"turn" in changes`).
+          // startCombat() déclenche le hook updateCombat.
           await combat.startCombat();
 
-          // Le hook est asynchrone (son propre `await actor.update(...)`) : laisse le temps à
-          // cette mise à jour de retomber avant de vérifier — `actor` reste la même référence
-          // que celle de la collection du monde, mise à jour en place par Foundry.
+          // Laisse le hook asynchrone terminer sa mise à jour.
           await new Promise((resolve) => setTimeout(resolve, 500));
 
           assert.isTrue(

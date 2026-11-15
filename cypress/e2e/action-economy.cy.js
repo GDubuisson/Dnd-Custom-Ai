@@ -1,16 +1,5 @@
-// Chantier "Suivi de l'action/action bonus dans le tour" (2026-08-23) — cadrage avec
-// l'utilisateur (ANOMALIES_ACTIVES.md) : suivi NON-bloquant (rappel de chat, jamais de jet
-// refusé, contrairement à la réaction), périmètre élargi aux jets d'attaque à l'arme (pas
-// seulement Capacités/Sorts à activation explicite), et ACTIF UNIQUEMENT EN COMBAT (retour de
-// l'utilisateur : même garde que criticalRules, cf. isActorInActiveCombat, helpers/
-// action-economy.js) — les deux Actors de test sont donc Combattants d'un vrai Combat actif dès
-// le before() ci-dessous, sans quoi aucune consommation/aucun rappel ne se déclenche jamais.
-//
-// La régénération au début du tour propre (hooks updateCombat/deleteCombat) est déjà couverte
-// par combat-tracker.cy.js > T-COMBAT-002 (étendu à actionAvailable/bonusActionAvailable en
-// même temps que reactionAvailable) — ce spec couvre le comportement propre à ce chantier :
-// rappel non-bloquant EN combat, silence total HORS combat, exemption Attaque supplémentaire,
-// libellé Action bonus.
+// Suivi non bloquant de l'Action / Action bonus : rappel en combat, silence hors combat,
+// exemption Attaque supplémentaire, libellé Action bonus.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -83,9 +72,7 @@ function targetToken(tokenId) {
   return cy.window().then((win) => win.canvas.tokens.get(tokenId).setTarget(true, { releaseOthers: true }));
 }
 
-// Un jet d'attaque poste son propre message, PUIS (chantier de ce spec) éventuellement le rappel
-// non-bloquant : il faut chercher dans TOUS les nouveaux messages, pas juste le dernier (même
-// piège que sentinel-mounted-combat.cy.js).
+// Le rappel suit le message du jet : chercher dans tous les nouveaux messages.
 let knownMessageCount = null;
 function resetMessageBaseline() {
   return cy.window().its("game.messages.size").then((size) => {
@@ -102,11 +89,7 @@ function expectMessageContaining(expectedText) {
     expect(found, `un message contenant "${expectedText}" doit apparaître parmi ${messages.length} nouveau(x) message(s)`).to.be.true;
   });
 }
-// Construit le texte de rappel attendu à partir du libellé RÉELLEMENT localisé de
-// DND_CUSTOM.Item.ActivationTypes.<activation> (cf. helpers/action-economy.js/config.js) plutôt
-// qu'une chaîne figée en dur dans ce spec — l'instance Docker de test peut tourner dans une
-// locale différente du français (piège déjà rencontré sur d'autres specs, cf.
-// project_docker_e2e_testing_setup.md), un libellé codé en dur y aurait échoué à tort.
+// Texte de rappel attendu, construit depuis le libellé localisé.
 function expectedActionEconomyReminder(name, activation) {
   return cy.window().then((win) =>
     win.game.i18n.format("DND_CUSTOM.Chat.ActionEconomyReminder", {
@@ -163,9 +146,7 @@ before(() => {
     createdActorIds.push(id);
   });
 
-  // Suivi actif UNIQUEMENT en combat (cf. isActorInActiveCombat, helpers/action-economy.js) :
-  // seuls fighterId/extraAttackFighterId sont Combattants — outOfCombatFighterId reste en dehors
-  // délibérément, pour le test "hors combat" ci-dessous.
+  // Seuls fighterId et extraAttackFighterId sont Combattants.
   cy.loginAsGM();
   cy.window().then((win) =>
     win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then((combat) => {
@@ -210,10 +191,7 @@ describe("Suivi de l'action du tour — jets d'attaque à l'arme", () => {
       targetToken(tokenId);
       equipmentSlotEl(MAIN_HAND).find(".equipment-roll-btn-attack").click();
 
-      // Dans #onRollWeaponAttack, le message du jet est posté AVANT le `actor.update` qui décoche
-      // actionAvailable (noteActionEconomyUsage) : les deux assertions doivent donc être dans un
-      // même `should()` qui retente, sinon on lit actionAvailable avant que l'update ait abouti
-      // (flaky historique — passait au retry).
+      // Message et `actionAvailable` vérifiés dans le même `should()` (update postérieur).
       cy.window({ timeout: 10000 }).should((win) => {
         expect(win.game.messages.size, "le jet d'attaque poste un message").to.be.greaterThan(knownMessageCount);
         expect(win.game.messages.size - knownMessageCount, "un seul message (le jet), aucun rappel").to.equal(1);
@@ -317,15 +295,7 @@ describe("Suivi de l'Action bonus du tour — Capacité 'Second souffle' (Guerri
     goToTab("abilities");
 
     withItemId(fighterId, "Second souffle", (itemId) => {
-      // Second souffle est octroyé automatiquement à la création du personnage (grantClassContent)
-      // DEPUIS le compendium persistant de cette instance Docker, jamais mis à jour rétroactivement
-      // par un changement de world-items/features.json (piège déjà documenté, cf.
-      // deferred-rider-spells.cy.js) — `system.activation: "bonusAction"` a été ajouté à cette
-      // Capacité dans ce même chantier, donc réglé ici directement sur CET exemplaire pour tester
-      // le comportement à jour sans dépendre d'un réimport de compendium. Recharge aussi la charge
-      // au cas où un test précédent l'aurait consommée (reproductibilité isolée). `preUpdateItem`
-      // (dnd-custom-ai.js) efface tout `system.*` d'une Capacité venant d'un non-MJ sauf
-      // `uses.value` : cette correction doit donc passer par une session MJ, jamais Joueur.
+      // Second souffle mis à jour en session MJ (`activation: "bonusAction"`, charge rechargée).
       cy.loginAsGM();
       cy.window().then((win) =>
         updateActor(win, win.game.actors.get(fighterId).items.get(itemId), {

@@ -37,11 +37,7 @@ const SURGE_TABLES = {
   }
 };
 
-/** Crée (une seule fois, si absente) la table de Surtenance sauvage de `subclassKey` (cf.
- *  SURGE_TABLES ci-dessus) sous forme de RollTable Foundry native — le tirage/l'affichage du
- *  résultat est ensuite entièrement géré par l'API native (`RollTable#draw`), aucune UI custom à
- *  écrire. Jamais écrasée si déjà présente, même principe que ensureOriginsJournal
- *  (origins-journal.js)/ensureAwardXpMacro (xp.js) : le MJ reste libre d'éditer les entrées. */
+/** Crée la RollTable de Surtenance sauvage de `subclassKey` si elle n'existe pas encore. */
 export async function ensureWildSurgeTable(subclassKey) {
   if (!game.user.isGM) return;
 
@@ -63,9 +59,7 @@ export async function ensureWildSurgeTable(subclassKey) {
   });
 }
 
-/** Tire un résultat sur la table de Surtenance sauvage de `subclassKey` pour `actor` et le poste
- *  en chat, `actor` comme locuteur — silencieux (juste loggé) si la table n'existe pas encore
- *  (ex. import de contenu pas encore terminé au moment précis de l'activation de Rage). */
+/** Tire sur la table de Surtenance sauvage et poste le résultat en chat. */
 export async function rollWildSurge(actor, subclassKey) {
   const table = SURGE_TABLES[subclassKey];
   if (!table) return;

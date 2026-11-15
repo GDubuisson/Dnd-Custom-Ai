@@ -1,14 +1,6 @@
 const { DialogV2 } = foundry.applications.api;
 
-/** Crée (une seule fois, si absente) une Macro monde "Resynchroniser un token" — même principe
- *  que ensureAwardXpMacro (xp.js)/ensureContentImportMacro (content-import.js) : jamais écrasée
- *  si elle existe déjà. Sert de porte d'entrée MJ pour resyncControlledToken ci-dessous : un
- *  token de personnage joueur posé sur une scène AVANT le correctif `preCreateActor`/
- *  `ensureCharacterTokensLinked` (dnd-custom-ai.js) qui force `actorLink: true`, et déjà
- *  désynchronisé (PV différents) à ce moment-là, reste `actorLink: false` pour toujours : cette
- *  migration automatique refuse par sécurité de relier de force un token désynchronisé (perte de
- *  donnée potentielle), donc plus aucun geste automatique ne le corrige ensuite — seule cette
- *  Macro, déclenchée à la main par le MJ avec le token concerné sélectionné, permet de trancher. */
+/** Crée la macro MJ « Resynchroniser un token » si elle n'existe pas encore. */
 export async function ensureTokenResyncMacro() {
   if (!game.user.isGM) return;
 
@@ -24,10 +16,7 @@ export async function ensureTokenResyncMacro() {
   });
 }
 
-/** Relie à sa fiche (`actorLink: true`) l'unique token de personnage joueur actuellement
- *  sélectionné sur le canvas — cf. ensureTokenResyncMacro ci-dessus pour le contexte. Si les PV
- *  du token et de la fiche divergent déjà, demande au MJ lequel des deux garder (jamais tranché
- *  automatiquement, même logique de prudence que ensureCharacterTokensLinked, dnd-custom-ai.js). */
+/** Relie le token de personnage sélectionné à sa fiche, en demandant au MJ quels PV garder s'ils divergent. */
 export async function resyncControlledToken() {
   if (!game.user.isGM) {
     ui.notifications.warn(game.i18n.localize("DND_CUSTOM.TokenSync.GmOnly"));

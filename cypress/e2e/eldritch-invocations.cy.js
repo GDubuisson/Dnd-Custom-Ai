@@ -1,16 +1,5 @@
-// Implémente les Invocations occultes (Occultiste) — revue de conception du 2026-08-22/23,
-// ANOMALIES_ACTIVES.md, périmètre "petit lot mécanisé" choisi explicitement avec l'utilisateur.
-// Contrairement à la Métamagie (un seul mécanisme partagé), les Invocations occultes SRD n'ont
-// pas de terrain commun : une seule (Salve implacable / Agonizing Blast) s'est avérée
-// mécanisable sans gros chantier, les 7 autres ajoutées au compendium restent du texte pur.
-//
-// Modèle retenu (cf. FeatureData#boostsSpellDamage/boostsSpellDamageAbility, item-data.js,
-// #onRollSpellDamage dans actor-sheet.js) : une Capacité dont `boostsSpellDamage` correspond au
-// nom exact d'un Sort possédé ajoute le modificateur de `boostsSpellDamageAbility` au jet de
-// dégâts de CE Sort, et de lui seul. Ces Invocations sont `manualOnly` (item-data.js) : jamais
-// octroyées par grantClassContent même si `class`/`level` correspondent (le pool SRD compte 30+
-// options dont seul un sous-ensemble est connu à la fois) — d'où grantCompendiumItem ci-dessous,
-// jamais l'assistant de création, même stratégie que tab-abilities.cy.js (cf. son en-tête).
+// Invocation Salve implacable : ajoute le modificateur de Charisme aux dégâts du sort ciblé seulement.
+// Invocations `manualOnly`, octroyées depuis le compendium.
 
 const createdActorIds = [];
 let warlockId;
@@ -58,9 +47,7 @@ function lastMessage() {
     });
 }
 
-// Même helper que tab-abilities.cy.js (cf. son en-tête) : octroie un Item du compendium réel par
-// son nom exact, jamais via grantClassContent — teste le contenu réellement livré, pas une
-// fixture minimale.
+// Octroie un Item du compendium par son nom exact.
 function grantCompendiumItem(win, actorId, packName, itemName) {
   const pack = win.game.packs.get(`dnd-custom-ai.${packName}`);
   return pack.getIndex().then(() => {
@@ -73,11 +60,7 @@ function grantCompendiumItem(win, actorId, packName, itemName) {
 }
 
 before(() => {
-  // Réimport idempotent (session MJ) : garantit que "Salve implacable" (ajoutée à
-  // world-items/features.json) est bien présente dans le compendium Capacités de CETTE instance
-  // Docker persistée, même si son dernier chargement de monde date d'avant l'ajout — même
-  // pattern que reference-sheets.cy.js/tab-stats.cy.js (importSystemContent n'importe que les
-  // entrées absentes, idempotent).
+  // Réimport idempotent du contenu (session MJ).
   cy.loginAsGM();
   cy.window().then((win) => win.game.dndCustomAi.importSystemContent({ notifyIfEmpty: false }));
 
@@ -92,10 +75,7 @@ before(() => {
           grantCompendiumItem(win, id, "sorts", "Trait de feu")
         ])
       );
-      // Charisme à 18 (mod +4), valeur déterministe indépendante de l'Origine choisie.
-      // `dndCustomWizard: true` requis : preUpdateActor (dnd-custom-ai.js) bloque sinon toute
-      // écriture directe de system.abilities par un Joueur hors assistant/montée de niveau
-      // (filet de sécurité "champs de build réservés au MJ").
+      // Charisme 18 (mod +4) ; `dndCustomWizard` autorise l'écriture des caractéristiques.
       cy.window().then((win) =>
         updateActor(win, win.game.actors.get(id), { "system.abilities.cha.value": 18 }, { dndCustomWizard: true })
       );
@@ -110,9 +90,7 @@ after(() => {
 });
 
 describe("Invocations occultes — Salve implacable (Agonizing Blast)", () => {
-  // Chaque test réauthentifie explicitement (cf. tab-abilities.cy.js/metamagic-careful-heightened.cy.js) :
-  // l'isolation Cypress efface cookies/storage entre chaque `it()` (page ramenée à about:blank),
-  // sans quoi `win.game` est indéfini au début de tout test après le premier.
+  // Reconnexion à chaque test (isolation Cypress).
   beforeEach(() => {
     cy.loginAsPlayer();
   });

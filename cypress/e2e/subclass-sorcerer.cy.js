@@ -1,10 +1,5 @@
-// Couvre le lot Ensorceleur du chantier "plusieurs sous-classes par classe" (inspiration BG3,
-// cf. ClaudeFiles/ANOMALIES_ACTIVES.md > "Gros chantier") : 2 nouvelles sous-classes ajoutées
-// (Magie sauvage/wildSorcery, Sorcellerie des tempêtes/stormSorcery), en plus du Lignage
-// draconique déjà existant. Vérifie l'octroi des Capacités liées ET le scénario minimal de
-// chaque mécanique propre — en particulier la réutilisation de la primitive P1 (RollTable,
-// construite pour le Barbare) avec une table et un déclencheur distincts (emplacement de sort
-// dépensé, pas activation de Rage).
+// Sous-classes de l'Ensorceleur (Magie sauvage, Tempêtes) : octroi des Capacités et Surtenance sauvage
+// à chaque emplacement dépensé.
 
 const createdActorIds = [];
 
@@ -17,9 +12,7 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
-// Onglets par palier de sort (commit 7a1719d) : un seul .spell-level-group visible à la fois,
-// palier 0 (tours de magie) actif par défaut — passer au palier du sort visé, sinon son bouton
-// "Lancer" reste caché (display:none).
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -59,12 +52,7 @@ describe("Sous-classes d'Ensorceleur — Magie sauvage / Sorcellerie des tempêt
             win.JSON.stringify({
               "system.attributes.level": 3,
               "system.subclass": "wildSorcery",
-              // Valeurs explicites plutôt que de dépendre des emplacements hérités de la
-              // création (niveau 1) : #onLevelUp les topperait normalement, bypassé ici comme
-              // pour les autres tests de sous-classe (dndCustomWizard), donc `value` resterait
-              // sinon à sa valeur de niveau 1 — pas forcément > 0 selon le moment du test. Les
-              // deux paliers accessibles à un Ensorceleur niveau 3 (fullCaster[3] = [4,2,...])
-              // sont remplis, `leveledSpell` pouvant être de niveau 1 ou 2 (cf. plus bas).
+              // Emplacements des paliers 1 et 2 remplis explicitement.
               "system.spells.slots.1.value": 4,
               "system.spells.slots.2.value": 2
             })
@@ -86,9 +74,7 @@ describe("Sous-classes d'Ensorceleur — Magie sauvage / Sorcellerie des tempêt
 
       cy.openActorSheet(actorId);
       goToTab("abilities");
-      // `leveledSpellLevel` n'est affecté que lorsque la commande `cy.window().should(...)`
-      // ci-dessus s'exécute réellement — le lire ici nécessite donc un `.then()` différé
-      // (toute lecture directe au moment de l'enfilement de la commande verrait `undefined`).
+      // `leveledSpellLevel` n'est connu qu'à l'exécution : lecture différée.
       cy.window().then(() => goToSpellLevel(leveledSpellLevel));
 
       cy.window().its("game.messages.size").then((before) => {

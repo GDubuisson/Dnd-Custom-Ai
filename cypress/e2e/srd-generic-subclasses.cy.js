@@ -1,19 +1,5 @@
-// Implémente 3 des "12 sous-classes SRD génériques" (les seules encore à zéro mécanique avant
-// cette session, cf. ANOMALIES_ACTIVES.md) — revue de conception du 2026-08-23, choisi au cas
-// par cas avec l'utilisateur (Champion/Lore/Evocation implémentés, Thief laissé texte pur faute
-// de mécanisme trouvé — action économie/déplacement non trackés, comme Doigts agiles/Escalade
-// experte le documentent désormais).
-//
-// - Champion (Guerrier) — Critique amélioré : nouveau `criticalThreshold` sur `rollCheck`
-//   (rolls.js), calculé par `improvedCriticalThreshold` (actor-sheet.js, hasFeature) — critique
-//   dès 19 au lieu de 20 seul, réutilise tout le pipeline critique existant (doublement des dés).
-// - Lore (Barde) — Mots cinglants : même schéma que Disciplines élémentaires (chantier des 9
-//   riders différés) — `requiresRoll`+`rollFormula` (1d6) et `costsResource: "Inspiration
-//   bardique"`, deux boutons séparés.
-// - Evocation (Magicien) — Sculpteur de sorts : nouveau helpers/sculpt-spells.js
-//   (chooseSculptSpellsTarget), même convention Maj-clic que Sort Prudent (Métamagie) mais
-//   gratuit — approximation assumée avec l'utilisateur (s'applique à TOUT sort à sauvegarde du
-//   Magicien, pas seulement aux sorts d'évocation ; un seul allié protégé par lancer).
+// Champion (critique dès 19), Collège du Savoir (Mots cinglants : jet 1d6 + réserve d'Inspiration bardique)
+// et Évocation (Sculpteur de sorts : Maj-clic protège un allié d'un sort à sauvegarde).
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -30,11 +16,7 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
-// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est
-// visible à la fois, le palier actif par défaut est toujours le premier palier non-vide — jamais
-// le niveau 1 du sort de test ci-dessous pour ce magicien qui a des tours de magie octroyés à la
-// création. Même piège déjà rencontré et corrigé dans tab-abilities.cy.js/
-// metamagic-careful-heightened.cy.js (cf. ANOMALIES_ACTIVES.md).
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -181,15 +163,13 @@ before(() => {
           ])
         ])
       );
-      // Emplacement de niveau 1 nécessaire pour lancer le sort de test ci-dessus (#onCastSpell
-      // consomme un emplacement avant même d'atteindre la branche sauvegarde/Sculpteur de sorts).
+      // Emplacement de niveau 1 nécessaire au lancer.
       cy.window().then((win) => updateActor(win, win.game.actors.get(id), { "system.spells.slots.1.value": 10 }));
     }
   );
   cy.window().then((win) => win.game.actors.get(wizardId)?.sheet?.close());
 
-  // Combat + Combattant pour le Guerrier (criticalRules n'agit qu'en combat actif, cf.
-  // rolls.js > isActorInCombat) — même pattern que combat-criticals.cy.js.
+  // Combat actif requis pour les critiques.
   cy.loginAsGM();
   cy.window().then((win) =>
     win.Combat.create(win.JSON.parse(win.JSON.stringify({ scene: win.canvas.scene.id, active: true }))).then((combat) => {

@@ -1,19 +1,6 @@
-// Implémente Sentinelle (clause 3) et Combat monté — suite du chantier "Combat automatisé
-// avancé" (cadrage du 2026-08-23, cf. opportunity-attack.cy.js pour le cas pilote Attaque
-// d'opportunité). Choisi avec l'utilisateur : les deux dons, "Combat monté" inclus malgré
-// l'absence de tout lien monture/cavalier préexistant dans ce système.
-//
-// - Sentinelle (clause 3 seule, cf. helpers/sentinel.js) : quand un PNJ hostile attaque une
-//   cible autre qu'un Combattant PJ à 1,50 m possédant Sentinelle avec réaction disponible, un
-//   message de chat de rappel est posté. Réutilise le helper de distance d'opportunity-attack.js
-//   (extrait dans helpers/tactical-distance.js à cette occasion).
-// - Combat monté (cf. #onMount/#onDismount, hasMountedSizeAdvantage, actor-sheet.js) : nouveau
-//   lien monture/cavalier (system.combat.mountedActorId, ciblage du token de monture + bouton
-//   "Monter") réservé aux Actors de type "mount" (créature vivante, NpcData — jamais "vehicle").
-//   2 clauses mécanisées : avantage automatique aux jets d'attaque contre une cible plus petite
-//   que la monture ; rappel textuel sur les jets de sauvegarde de Dextérité tant que monté (la
-//   clause "rediriger une attaque visant la monture" reste texte, hors scope — interruption
-//   synchrone). Grille configurée comme opportunity-attack.cy.js (1,5 m/case, taille 100 px).
+// Sentinelle (rappel quand un PNJ hostile attaque une autre cible à 1,50 m d'un porteur ayant sa réaction)
+// et Combat monté (monter/descendre, avantage contre une cible plus petite, rappel aux sauvegardes de Dex).
+// Grille : 1,5 m par case de 100 px.
 
 const createdActorIds = [];
 const createdCombatIds = [];
@@ -75,31 +62,20 @@ function lastMessage() {
       return { content: message.content, flavor: message.flavor, formula: (message.rolls[0]?.formula ?? "").replace(/\s+/g, "") };
     });
 }
-// Certaines actions postent PLUSIEURS messages (ex. le jet d'attaque PUIS le rappel Sentinelle,
-// #onRollAttack -> checkSentinelReminder) : `lastMessage()` seul est sujet à une course si on
-// le vérifie trop tôt (il ne capture que le DERNIER connu au moment où `game.messages.size` a
-// grandi d'AU MOINS un, potentiellement avant que le 2e message n'arrive) — retour de test.
-// Cherche plutôt le texte attendu parmi TOUS les nouveaux messages depuis la dernière baseline.
-function expectMessageContaining(expectedText) {
-  return cy.window().should((win) => {
-    const newMessages = win.game.messages.contents.slice(knownMessageCount);
-    const found = newMessages.some((message) => message.content.includes(expectedText));
-    expect(found, `un message contenant "${expectedText}" doit apparaître parmi ${newMessages.length} nouveau(x) message(s)`).to.be.true;
-  });
+/** Contenus des messages postés depuis `resetMessageBaseline()`. */
+function newMessageContents(win) {
+  return win.game.messages.contents.slice(knownMessageCount).map((message) => message.content);
 }
-// Négatif équivalent à expectMessageContaining : certaines actions postent TOUJOURS au moins un
-// message (ex. le jet d'attaque lui-même, #onRollAttack) même quand le rappel conditionnel
-// (Sentinelle) ne doit PAS apparaître — `expectNoNewMessage` (aucun message du tout) ne convient
-// donc pas à ces cas, seul le texte précis du rappel doit être absent.
+
+/** Laisse 1,5 s aux messages pour arriver, puis vérifie qu'aucun ne contient `unexpectedText`. */
 function expectNoMessageContaining(unexpectedText) {
   return cy.wait(1500).then(() =>
     cy.window().then((win) => {
-      const newMessages = win.game.messages.contents.slice(knownMessageCount);
-      const found = newMessages.some((message) => message.content.includes(unexpectedText));
+      const contents = newMessageContents(win);
       expect(
-        found,
-        `aucun message ne doit contenir "${unexpectedText}" (knownMessageCount=${knownMessageCount}, size=${win.game.messages.size}, nouveaux=${JSON.stringify(newMessages.map((m) => m.content))})`
-      ).to.be.false;
+        contents.some((content) => content.includes(unexpectedText)),
+        `aucun message ne doit contenir "${unexpectedText}" (knownMessageCount=${knownMessageCount}, size=${win.game.messages.size}, nouveaux=${JSON.stringify(contents)})`
+      ).to.equal(false);
     })
   );
 }
@@ -132,26 +108,14 @@ describe("Sentinelle — rappel automatique quand un PNJ hostile attaque un alli
   let victimTokenId;
   let fighterTokenId;
   let enemyTokenId;
-  // tokenId RÉEL du Combattant "Sentinel Fighter" une fois créé — retour de test :
-  // `Combatant#tokenId` peut différer du `fighterTokenId` explicitement fourni à
-  // createEmbeddedDocuments (résolution Foundry non garantie identique) ; se fier au résultat
-  // de la création elle-même plutôt qu'à `game.combat` relu plus tard (autre piège : `game.combat`
-  // — le combat actuellement "viewed" — ne pointe pas de façon fiable vers le combat fraîchement
-  // créé de CE test précis une fois plusieurs combats créés au fil des tests précédents).
+  // tokenId réel du Combattant, relu depuis la création.
   let fighterCombatantTokenId;
 
   beforeEach(() => {
     cy.loginAsGM();
   });
 
-  // Recrée le Guerrier (Sentinelle), le PNJ hostile attaquant et une victime à chaque test :
-  // évite toute dépendance à l'historique (réserve/réaction/combat) d'un test précédent, même
-  // logique que les autres specs de ce chantier. Supprime tout Combat déjà créé par un test
-  // PRÉCÉDENT avant d'en recréer un : retour de test, `game.combat` ("viewed") ne pointe pas de
-  // façon fiable vers le combat fraîchement créé tant qu'un ancien combat coexiste sur la même
-  // scène (même Actors "Sentinel Fighter"/"Sentinel Enemy" par NOM, mais un id différent —
-  // l'ancien combat déclenchait à tort le rappel avec son propre Combattant, jamais réellement
-  // affecté par la mise à jour du test en cours).
+  // Recrée Guerrier, PNJ attaquant et victime à chaque test, après suppression des combats existants.
   function setup() {
     return cy
       .window()
@@ -218,14 +182,17 @@ describe("Sentinelle — rappel automatique quand un PNJ hostile attaque un alli
       cy.window()
         .its("game.i18n")
         .then((i18n) => i18n.format("DND_CUSTOM.Chat.SentinelAvailable", { reactor: "Sentinel Fighter", attacker: "Sentinel Enemy" }))
-        .then((expected) => expectMessageContaining(expected));
+        .then((expected) => {
+          cy.window().should((win) => {
+            expect(newMessageContents(win).some((content) => content.includes(expected)), "rappel Sentinelle posté").to.equal(true);
+          });
+        });
     });
   });
 
   it("le PNJ hostile attaque le Guerrier lui-même : aucun rappel Sentinelle", () => {
     setup().then(() => {
-      // Cible le token RÉEL du Combattant "Sentinel Fighter" (fighterCombatantTokenId, capturé
-      // à la création dans setup() — cf. son commentaire).
+      // Cible le token réel du Combattant.
       cy.window().then((win) => win.canvas.tokens.get(fighterCombatantTokenId).setTarget(true, { releaseOthers: true }));
       resetMessageBaseline();
       cy.openActorSheet(enemyId);
@@ -233,7 +200,9 @@ describe("Sentinelle — rappel automatique quand un PNJ hostile attaque un alli
       cy.window()
         .its("game.i18n")
         .then((i18n) => i18n.format("DND_CUSTOM.Chat.SentinelAvailable", { reactor: "Sentinel Fighter", attacker: "Sentinel Enemy" }))
-        .then((unexpected) => expectNoMessageContaining(unexpected));
+        .then((unexpected) => cy.wait(1500).then(() => cy.window()).then((win) => {
+          expect(newMessageContents(win).some((content) => content.includes(unexpected)), "aucun rappel Sentinelle").to.equal(false);
+        }));
     });
   });
 
@@ -268,10 +237,7 @@ describe("Combat monté — avantage vs cible plus petite, rappel sur sauvegarde
   let sameSizeTargetTokenId;
 
   before(() => {
-    // "Mounted Rider" créé en session Joueur (comme combat-criticals.cy.js/eldritch-invocations.cy.js,
-    // cf. leur en-tête) : un Actor créé sous une session MJ n'est PAS automatiquement lié au
-    // Joueur — le mettre à jour ensuite en session Joueur (#onMount, mountedActorId) échouerait
-    // sinon par manque de permission.
+    // Cavalier créé en session Joueur pour en garder la propriété.
     cy.loginAsPlayer();
     cy.window()
       .then((win) => createActor(win, { name: "Mounted Rider", type: "character" }))
@@ -280,8 +246,7 @@ describe("Combat monté — avantage vs cible plus petite, rappel sur sauvegarde
         return cy.window().then((win) => grantCompendiumItem(win, riderId, "dons", "Combat monté"));
       });
 
-    // Monture/cibles créées en session MJ (création d'Actor réservée au MJ) : jamais mises à
-    // jour depuis la session Joueur ensuite, seulement lues (taille) ou ciblées.
+    // Monture et cibles créées en session MJ.
     cy.loginAsGM();
     cy.window()
       .then((win) => createActor(win, { name: "War Horse", type: "mount", system: { size: "g" } }))
@@ -314,10 +279,7 @@ describe("Combat monté — avantage vs cible plus petite, rappel sur sauvegarde
     cy.openActorSheet(riderId);
     resetMessageBaseline();
     cy.get('nav.tabs [data-tab="abilities"]').click();
-    // Test de caractéristique Force comme substitut d'un jet d'attaque : le don s'applique à
-    // TOUT jet d'attaque, arme ou sort — ce personnage de test n'a ni arme ni sort équipé,
-    // vérifié directement via #onRollWeaponAttack serait redondant avec combat-criticals.cy.js.
-    // -> on utilise un sort de test à la place (attack: true), plus fidèle au mécanisme réel.
+    // Sort d'attaque de test comme jet d'attaque.
     cy.window().then((win) =>
       win.game.actors.get(riderId).createEmbeddedDocuments("Item", [
         win.JSON.parse(win.JSON.stringify({ name: "Test Mounted Attack Spell", type: "spell", system: { classes: ["fighter"], level: 0, attack: true } }))

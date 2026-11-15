@@ -1,29 +1,5 @@
-// Implémente les "9 sorts/capacités à rider différé" — revue de conception du 2026-08-21/23,
-// ANOMALIES_ACTIVES.md, périmètre "tout faire" choisi explicitement avec l'utilisateur.
-//
-// Couvre les mécanismes réellement NOUVEAUX introduits pour ce chantier :
-// - États homebrew "blessed"/"guided" (Bénédiction/Avis divin) : cf. conditionRollEffects
-//   (actor-sheet.js) étendu pour ajouter "+1d4" à la formule d'un jet d'attaque/de sauvegarde
-//   (blessed) ou de caractéristique/compétence (guided) tant que l'état est actif — bascule
-//   manuelle (onglet États), même esprit que raging/hunted déjà existants.
-// - FeatureData#saveDCAbility (item-data.js) : caractéristique de DD explicite quand elle n'est
-//   pas celle d'incantation de la classe (ex. Frappe étourdissante, Moine — DD basé sur la
-//   Sagesse alors que "monk" est absent de DND_CUSTOM.spellcastingAbility).
-// - FeatureData#dealsDamage (item-data.js) : jet de Capacité marqué du même flag `damageRoll`
-//   qu'un jet de dégâts d'arme/de sort, pour réutiliser le bouton "Appliquer les dégâts" déjà
-//   existant (ex. Disciplines élémentaires, Moine).
-//
-// Items de test créés DIRECTEMENT (createEmbeddedDocuments), jamais depuis le compendium réel,
-// pour les 5 Capacités/Sorts dont le CONTENU existant a été modifié cette session (Chant de
-// repos, Malédiction du sorcier, Porte dimensionnelle, Frappe étourdissante, Disciplines
-// élémentaires) : piège déjà documenté ailleurs (spell-slot-recovery.cy.js) —
-// `importSystemContent` n'importe que les entrées ABSENTES par nom, jamais une mise à jour d'une
-// entrée déjà présente dans le compendium persistant de cette instance Docker. "Ki"/"Trait de
-// feu" restent inchangés cette session : sans risque à récupérer depuis le compendium réel.
-// Effroi psychique (Occultiste) et Pourfendeur de colosses (Rôdeur Chasseur) réutilisent
-// respectivement le mécanisme savingThrow/appliesCondition déjà validé par
-// turn-undead-feature.cy.js/paladin-channel-divinity.cy.js et le même dealsDamage que
-// Disciplines élémentaires ci-dessous : pas de spec dédiée, redondant.
+// États Béni/Guidé (+1d4), `saveDCAbility` (DD de Frappe étourdissante en Sagesse)
+// et `dealsDamage` (bouton « Appliquer les dégâts »). Items de test créés sur l'Actor.
 
 const createdActorIds = [];
 const createdSceneItemIds = [];
@@ -67,11 +43,7 @@ function goToTab(tabId) {
   sheetRoot().find(`section.tab[data-tab="${tabId}"]`).should("have.class", "active");
 }
 
-// Onglets par palier de sort (commit 7a1719d, 2026-08-27) : un seul .spell-level-group est visible
-// à la fois, le palier actif par défaut est le premier palier non-vide (ici le palier 0 : le
-// cleric a "Trait de feu"). Sans ça, le bouton d'un sort de palier ≥ 1 reste `display: none` et
-// `cy.click()` échoue ("not visible"). Même piège déjà corrigé dans tab-abilities.cy.js /
-// srd-generic-subclasses.cy.js / metamagic-careful-heightened.cy.js (cf. ANOMALIES_ACTIVES.md).
+// Affiche l'onglet du palier de sorts `level`.
 function goToSpellLevel(level) {
   sheetRoot().find(`.spell-level-tab[data-level="${level}"]`).click();
   sheetRoot().find(`.spell-level-group[data-level="${level}"]`).should("have.class", "active");
@@ -166,9 +138,7 @@ before(() => {
   );
   cy.window().then((win) => win.game.actors.get(monkId)?.sheet?.close());
 
-  // NPC cible (Frappe étourdissante) créée en session MJ : Player1 n'a pas la permission de
-  // créer un Token sur la scène (retour de test), même pattern que
-  // metamagic-careful-heightened.cy.js > createNpcWithToken.
+  // PNJ cible et token créés en session MJ.
   cy.loginAsGM();
   cy.window()
     .then((win) => win.Actor.create(win.JSON.parse(win.JSON.stringify({ name: "Rider Stun Target", type: "npc" }))))
@@ -305,19 +275,13 @@ describe("Contenu réutilisant des mécanismes déjà existants", () => {
 });
 
 describe("FeatureData#saveDCAbility — DD hors caractéristique d'incantation (Frappe étourdissante, Moine)", () => {
-  // Session MJ (pas Joueur) : la cible est un PNJ non possédé par Player1, et l'échec du jet de
-  // sauvegarde applique la condition "stunned" (ActiveEffect) sur son Actor synthétique — même
-  // contrainte de permission que turn-undead-feature.cy.js (toujours en session MJ pour cette
-  // raison), retour de test rencontré ici aussi (« User Player1 lacks permission to create
-  // ActiveEffect »).
+  // Session MJ : l'état est appliqué à un PNJ non possédé.
   beforeEach(() => {
     cy.loginAsGM();
   });
 
   it("le DD utilise la Sagesse (saveDCAbility), pas 0 (Moine absent de spellcastingAbility)", () => {
-    // Sagesse basse et connue (8, mod -1) : si saveDCAbility était ignoré (retombant sur
-    // spellcastingAbility["monk"], absent -> mod 0), le DD afficherait 8+prof+0 au lieu de
-    // 8+prof-1 — les deux valeurs sont distinguables dans le message de sauvegarde de la cible.
+    // Sagesse 8 (mod -1), pour distinguer le DD attendu.
     cy.window().then((win) =>
       updateActor(win, win.game.actors.get(monkId), { "system.abilities.wis.value": 8 }, { dndCustomWizard: true })
     );
@@ -328,11 +292,7 @@ describe("FeatureData#saveDCAbility — DD hors caractéristique d'incantation (
     cy.forceD20(1); // jet de sauvegarde de la CIBLE : échec garanti, formule/DD restent vérifiables
     withItemId(monkId, "Frappe étourdissante", (itemId) => {
       cy.get(`li[data-item-id="${itemId}"] button[data-action="rollFeatureSave"]`).click();
-      // DD attendu : 8 + bonus de maîtrise (niveau 1 -> 2) + mod. de Sagesse (8 -> -1) = 9,
-      // JAMAIS 8+2+0=10 (ce que donnerait un `saveDCAbility` ignoré, retombant sur
-      // spellcastingAbility["monk"], absent -> mod 0). Formule construite via i18n (comme
-      // metamagic-careful-heightened.cy.js) plutôt qu'un texte en dur : robuste à la locale
-      // active de cette instance Docker (anglais ici, cf. retour de test).
+      // DD attendu 9 (8 + 2 - 1), construit via i18n.
       cy.window()
         .its("game.i18n")
         .then((i18n) =>
@@ -365,17 +325,14 @@ describe("FeatureData#dealsDamage — bouton 'Appliquer les dégâts' sur un jet
     resetMessageBaseline();
 
     withItemId(monkId, "Disciplines élémentaires", (itemId) => {
-      // Bouton "rollFeature" (dé) : jet de dégâts, indépendant de la réserve de Ki.
+      // Jet de dégâts.
       cy.get(`li[data-item-id="${itemId}"] button[data-action="rollFeature"]`).click();
       lastMessage().then((message) => {
         expect(message.formula, "4d6").to.equal("4d6");
         expect(message.flags.damageRoll, "flag damageRoll (bouton Appliquer les dégâts)").to.be.true;
       });
 
-      // Bouton "useResourceTechnique" (Ki) : mécanisme déjà éprouvé ailleurs (cf.
-      // tab-abilities.cy.js > "technique consommant la réserve d'une autre Capacité"), vérifié
-      // ici seulement pour confirmer qu'il coexiste bien avec le bouton de jet ci-dessus sur
-      // cette même Capacité (costsResource + requiresRoll en même temps, cas nouveau).
+      // Consommation de Ki sur la même Capacité.
       cy.get(`li[data-item-id="${itemId}"] button[data-action="useResourceTechnique"]`).click();
       cy.window().should((win) => {
         const ki = win.game.actors.get(monkId).items.find((i) => i.name === "Ki");
