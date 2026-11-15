@@ -1,0 +1,15 @@
+{{! Cases résistances / immunités / vulnérabilités propres à l'objet, actives s'il est équipé.
+    Hérite du contexte de la fiche (`damageAffinityGroups`, `isGM`). }}
+<div class="damage-affinity-panel">
+  {{#each damageAffinityGroups}}
+  <fieldset class="form-group">
+    <legend>{{localize this.titleKey}}</legend>
+    {{#each this.options}}
+    <label class="checkbox-row">
+      <input type="checkbox" name="system.{{../field}}" value="{{this.key}}" {{#if this.checked}}checked{{/if}} {{#unless ../../isGM}}disabled{{/unless}}>
+      {{localize this.label}}
+    </label>
+    {{/each}}
+  </fieldset>
+  {{/each}}
+</div>

@@ -1,0 +1,246 @@
+[
+  {
+    "name": "Harnois de Saint-Lys",
+    "lore": "La cavalerie lourde de Fleuraine n'a pas d'équivalent connu. Ses harnois sortent des ateliers de Saint-Lys, qui les ajustent sur mesure : un cavalier ne porte jamais l'armure d'un autre. Elle n'a plus chargé depuis la Paix de Vespera, en 700.\n\nRègle : dérivé du Harnois SRD selon la logique du mithral (un ajustement qui allège la contrainte de Force), sans aller jusqu'à la supprimer ; prix porté à 2 000 po pour le travail sur mesure."
+  },
+  {
+    "name": "Épée de serment",
+    "lore": "À Fleuraine, on ne jure pas la main sur un livre mais sur une lame nue. La tradition veut que le fer coupe le menteur ; en vérité il ne coupe que ceux qui appuient trop fort ou qui tremblent. Celui qui hésite, retire les doigts ou demande à jurer autrement s'est déjà condamné aux yeux de tous.\n\nLes maisons nobles gardent une lame réservée à cet usage : l'usure au milieu de la lame est celle des mains qui s'y sont posées."
+  },
+  {
+    "name": "Écu armorié",
+    "lore": "Chaque seigneur renouvelle le Serment des Bannières en personne, à Saint-Lys, à chaque avènement. Les écus des vassaux sont repeints quand une maison s'éteint ou change d'allégeance, ce qui fait de nombreux écus des palimpsestes héraldiques.\n\nAccroche suggérée : en 887, les seigneurs de Bellerive n'ont toujours pas renouvelé leur Serment à Aymeric V. Un écu de la marche orientale repeint à la hâte en dirait long."
+  },
+  {
+    "name": "Denier de l'Aube",
+    "lore": "On glisse une pièce sous le seuil d'une maison neuve, face vers le haut. Elle ne doit jamais être reprise, même en cas de famine : reprendre le denier d'un seuil est, dans les campagnes, une infamie qui ne se lave pas. Un personnage qui en possède un a soit hérité d'une maison détruite, soit commis cette infamie."
+  },
+  {
+    "name": "Sac de charbon de Logne",
+    "lore": "Logneval vit du charbon de bois qui chauffe l'est du royaume. Les communautés de charbonniers de la forêt vivent sous des chartes qui ne relèvent d'aucun seigneur. En 776, quand le Parlement voulut taxer le charbon, elles cessèrent de livrer pour tout l'hiver : Saint-Lys gela, et l'on parle encore de l'Hiver Noir."
+  },
+  {
+    "name": "Sauf-conduit royal",
+    "lore": "Délivré par la chancellerie de Saint-Lys, il garantit le libre passage de son porteur dans le royaume. Les Maîtres du Cercle de l'Étoile Polaire voyagent sous sauf-conduit royal. Il ne s'achète pas : il s'obtient, ou il se falsifie."
+  },
+  {
+    "name": "Acte scellé du collège des Registres",
+    "lore": "Le collège des Registres, fondé à Saint-Lys en 297, forme les greffiers du royaume : c'est là, et nulle part ailleurs, qu'on apprend à dresser un acte selon la forme. Un acte rédigé par un clerc qui n'en sort pas est valable ; il est simplement regardé de travers par tous les tribunaux."
+  },
+  {
+    "name": "Écritoire de greffier",
+    "lore": "L'outil des greffiers formés au collège des Registres de Saint-Lys. Le formulaire glissé dans le couvercle recense les formules qu'exigent les tribunaux fleurainais, à la lettre."
+  },
+  {
+    "name": "Hallebarde des Passwachten",
+    "lore": "Les Passwachten tiennent les cols de l'Eismark, Eisenpass et Eisengrund, gardent les mines et les convois d'argent, et la frontière nord au-delà de laquelle il n'y a que la plaine gelée. Le service est dur, bien payé, et héréditaire dans bien des familles de l'Eismark."
+  },
+  {
+    "name": "Cotte fourrée des cols",
+    "lore": "L'armure des Passwachten. Dans l'Eismark, on dit qu'un homme de fer, l'Eisenmann, parcourt les cols les nuits de tempête et compte les sentinelles ; s'il en manque une, il prend sa place. Les Passwachten font l'appel deux fois par nuit."
+  },
+  {
+    "name": "Pic d'Eisengrund",
+    "lore": "Le grand filon d'argent d'Eisengrund fut découvert en 594 par un muletier qui cherchait une bête égarée. La marche a gravé son nom au-dessus de l'entrée de la mine, et n'a jamais retrouvé celui de la mule. En 887, le filon principal s'appauvrit."
+  },
+  {
+    "name": "Recueil du Landrecht",
+    "lore": "Le code commun de la Fédération : court, dur, appliqué identiquement partout. Pas de juridiction d'exception, pas de privilège de naissance, pas de grâce. Il est rédigé en Commun par principe, pour ne favoriser l'accent d'aucune marche. Les marchands lucentiens font juger à Altenburg des litiges qui n'ont rien à voir avec la Fédération."
+  },
+  {
+    "name": "Pfennig d'Eisburg",
+    "lore": "La Fédération frappe sa monnaie à Eisburg depuis 290. Le Landrecht punit le rognage des pièces aussi durement que le vol à main armée : d'où ces bords impeccables, dont l'Eismark tire une fierté que les autres marches trouvent déplacée."
+  },
+  {
+    "name": "Sac de tourbe de la Sümpfenmark",
+    "lore": "La tourbe des marais chauffe Altenburg depuis que Hartmut le Sourd fit entrer la Sümpfenmark dans la Fédération, en 341. Les Sümpfer ne suivent pas les Moorlichter, les feux de tourbière, et ne traversent jamais les « coins calmes » du marais."
+  },
+  {
+    "name": "Corne d'appel des cols",
+    "lore": "Elle sert à l'appel des sentinelles, deux fois par nuit dans les cols de l'Eismark, et à donner l'alerte d'une tour à l'autre."
+  },
+  {
+    "name": "Baume des Passwachten",
+    "lore": "Préparé par les familles de l'Eismark pour les engelures et les coupures des gardes de col. Les Passwachten en emportent toujours une boîte."
+  },
+  {
+    "name": "Rapière de la Compagnia del Sole",
+    "lore": "La Compagnia del Sole fut fondée en 614 à San Brizio par trois capitaines ravenmoorois. Avec la Cavalcata Nera, c'est l'une des deux grandes Compagnies de la Route : des escortes armées qui peuvent porter les armes à l'étranger, arrêter et juger sommairement sur la route."
+  },
+  {
+    "name": "Cuirasse noire de la Cavalcata Nera",
+    "lore": "La Cavalcata Nera tient son nom d'un deuil : en 739, elle perdit son capitaine et quarante hommes en défendant un convoi du Banco di Vespera. Ses cavaliers portent le noir depuis. Le convoi arriva intact."
+  },
+  {
+    "name": "Arbalète de convoi",
+    "lore": "L'arme ordinaire des escortes des Compagnies de la Route, faite pour tirer depuis un chariot en mouvement."
+  },
+  {
+    "name": "Lettre de change du Banco",
+    "lore": "Le Banco di Vespera inventa en 590 la lettre de change, qui fait voyager l'argent sans faire voyager l'or. Il n'existe pas un trône sur le continent qui ne lui doive quelque chose. Sa valeur dépend du montant inscrit : à fixer par le MJ."
+  },
+  {
+    "name": "Sceau de la Charte des Routes",
+    "lore": "Depuis 436, les six nations garantissent la franchise des convois, même en temps de guerre : un convoi porteur du sceau ne peut être ni fouillé, ni taxé, ni retenu. La Charte a été violée neuf fois en quatre siècles et toujours rétablie, parce que tout le monde y perd : les convois cessent de passer."
+  },
+  {
+    "name": "Police d'assurance de Castelmare",
+    "lore": "La première police d'assurance maritime connue fut signée à Castelmare en 612. Depuis 874, les pirates de la Mer intérieure ont fait tripler le prix des assurances en trois ans. Un contrat signé au coucher du soleil est réputé tenir mieux, ce qu'aucun juriste ne défendrait devant un tribunal."
+  },
+  {
+    "name": "Pièce de Fortune",
+    "lore": "Chaque maison de commerce lucentienne garde une pièce dite de Fortune, la première jamais gagnée par la maison : jamais dépensée, jamais prêtée, jamais montrée à un étranger. Une maison qui perd sa pièce est réputée finie. Deux l'ont effectivement été.\n\nAccroche suggérée : voler ou retrouver la pièce de Fortune d'une maison du Conseil des Cent Maisons."
+  },
+  {
+    "name": "Balance de change",
+    "lore": "Le cours des lettres de change se fixe chaque matin dans la loggia des changes, sur la grand-place de Vespera. Les changeurs y pèsent tout ce qui passe."
+  },
+  {
+    "name": "Arc long de Blackwood",
+    "lore": "Taillé dans les ifs de la forêt de Blackwood, à l'ouest du royaume, près de Crowmere."
+  },
+  {
+    "name": "Bâton de Veilleur",
+    "lore": "Les Veilleurs sont chargés des routes, des marches intérieures et des affaires qui ne relèvent d'aucun comté : une police plus qu'une armée. Ils entretiennent la route de la forêt des murmures et n'y laissent passer personne sans escorte. Les crans du bâton servent à mesurer, à la manière du Grand Registre."
+  },
+  {
+    "name": "Gambison des landes",
+    "lore": "Ravenmoor vit sous un climat que les étrangers jugent déprimant et que les Ravenmoorois appellent tempéré."
+  },
+  {
+    "name": "Cape grise de Veilleur",
+    "lore": "La tenue des Veilleurs. Sobre, comme le reste : le ravenmoorois dit ce qu'il signe et signe ce qu'il dit."
+  },
+  {
+    "name": "Lanterne de guet de Wickhollow",
+    "lore": "Wickhollow tient la crête des Greyspine jusqu'à la baie par une chaîne de tours de guet. Pendant les Guerres de la Passe, ses guetteurs ont noté chaque flotte, chaque campagne et chaque retraite : leurs registres, conservés à Ravenhold, sont la seule chronique de ces guerres écrite ni à Torralba ni à Qasirah."
+  },
+  {
+    "name": "Plume de corbeau de Ravenhold",
+    "lore": "Une colonie de corbeaux occupe les tours du château de Ravenhold, nourrie aux frais de la Couronne : le poste de Gardien des Oiseaux figure au budget depuis 231, et la tradition veut que le royaume tienne tant qu'ils restent. Le poste n'a jamais été supprimé, même quand on rationnait le pain."
+  },
+  {
+    "name": "Étalons et toises de recenseur",
+    "lore": "Le Grand Registre, institué par Édouard le Comptable en 712, recense les terres, le bétail, les puits, les moulins et les hommes, et il est révisé tous les douze ans sans exception. L'article seize du Serment de Ravenhold impose une seule mesure pour tout le royaume, dont l'étalon est gardé à Ravenhold."
+  },
+  {
+    "name": "Épée de l'Ordre de la Flamme",
+    "lore": "L'Ordre de la Flamme fut fondé en 501 par Inés la Brûlante, à Cortelba, dans une forteresse de montagne que personne n'a jamais essayé de prendre. Les Ordres de Ferveur obéissent au roi et répondent au Hiérarque ; en cas de conflit entre les deux, le droit ne dit rien."
+  },
+  {
+    "name": "Pique de la Garde du Passage",
+    "lore": "La Garde du Passage fut fondée en 431 à Poerto del Robis pour tenir la place entre deux guerres. C'est le plus ancien des trois Ordres de Ferveur, le seul qui ne doive rien à Inés, et c'est lui qui tient aujourd'hui la Passe."
+  },
+  {
+    "name": "Rondache de Varela",
+    "lore": "Les Frères de Varela furent fondés par Inés en 509, sur les bords du Brimwater, pour garder la frontière ravenmooroise pendant que le royaume se battait au sud. Ils la gardent toujours, et ne se sont battus contre Ravenmoor qu'en paroles."
+  },
+  {
+    "name": "Gambison à l'image cousue",
+    "lore": "Les soldats valdériens portent l'image d'Inés la Brûlante cousue à l'intérieur du gambison, ce qui permet de dire qu'ils ne la portent pas : le culte d'Inés est universel à Valdera, mais le Saint-siège ne l'a jamais canonisée."
+  },
+  {
+    "name": "Ruban rouge",
+    "lore": "À Valdera, on protège les nourrissons du mauvais œil par un ruban rouge au poignet, et l'on ne complimente jamais un enfant sans ajouter une formule de conjuration. Le clergé condamne la pratique dans ses sermons et bénit les rubans à la sortie de l'office."
+  },
+  {
+    "name": "Cierge de Veillée",
+    "lore": "Les Veillées sont des nuits de prière collective organisées par les paroisses. C'est aussi, très régulièrement, le lieu où se décident les émeutes : tout gouverneur sait qu'une ville qui multiplie les Veillées prépare quelque chose. En 794, trois nuits de Veillées à Serancha précédèrent la révolte du sel."
+  },
+  {
+    "name": "Cimeterre de Qasirah",
+    "lore": "L'inscription est presque toujours une maxime de la Mesure (al-Mîzân) : toute chose a un poids, et la hâte est la première forme de l'erreur."
+  },
+  {
+    "name": "Arc de caravane",
+    "lore": "Qasirah ne doit rien à un fleuve ni à un port : elle doit tout au fait que l'on ne peut traverser Azhar sans y passer. Ses caravanes s'arment de ces arcs courts."
+  },
+  {
+    "name": "Lamellaire de piste",
+    "lore": "Portée par les gardes des caravanes des quatre grandes pistes qui se croisent à Qasirah."
+  },
+  {
+    "name": "Outre de caravane",
+    "lore": "Le premier seau tiré d'un puits neuf est versé à terre, jamais bu ni donné aux bêtes : le contrat type de forage l'inscrit noir sur blanc. La marque du puits sur l'outre rappelle les Sceaux d'Eau, titres de propriété des puits et fondement du pouvoir dans le Sultanat."
+  },
+  {
+    "name": "Recueil des tables du ciel",
+    "lore": "L'observatoire de Qasirah, fondé en 455 sous la Sultane Zaynab al-Munira, tient depuis plus de quatre siècles des relevés du ciel ininterrompus : la plus longue série d'observations du monde connu. « Les étoiles ne mentent pas » : un caravanier qui se perd accuse sa carte, son guide ou lui-même, jamais le ciel."
+  },
+  {
+    "name": "Astrolabe de la Maison",
+    "lore": "Sorti des ateliers de la Maison des Cent Portes, à Qasirah, qui a reconstitué la géométrie, l'astronomie et la cartographie dont se sert le continent entier. Les étudiants de la Maison, de quelque pays qu'ils viennent, finissent par compter en azhari."
+  },
+  {
+    "name": "Copie du Premier Codex",
+    "lore": "Le Premier Codex, rédigé par les neuf disciples d'Estevan d'Almora après sa mort en 17, est le plus ancien texte écrit du monde connu. C'est de sa langue qu'est né le Commun, que les clercs appellent encore « la langue du Codex ». Sa première phrase est celle du scribe, pas du prophète."
+  },
+  {
+    "name": "Habit et bourdon de pèlerin",
+    "lore": "La Grande Cathédrale de Velencia est le lieu le plus visité du continent : les pèlerins prient devant le mur qui ferme le tombeau d'Estevan. L'hospice des pèlerins, fondé en 331, en accueille plusieurs milliers par an, et c'est le seul bâtiment du Saint-siège où l'on ne demande à personne sa foi."
+  },
+  {
+    "name": "Médaille de pèlerinage de Velencia",
+    "lore": "Vendue au pied de la Grande Cathédrale, commencée en 288 et achevée en 455 après cent soixante-sept ans de chantier."
+  },
+  {
+    "name": "La Lame des Bannières",
+    "lore": "En 131, dans la clairière dite des Bannières, quarante-trois seigneurs jurèrent de se porter secours avant toute autre obligation, et firent roi Thibaud de Saint-Lys, qui refusa trois fois. À Fleuraine, on jure sur une lame nue : les éraflures sont celles des quarante-trois mains.\n\nAccroche suggérée : la lame est gardée au trésor de Saint-Lys et sortie à chaque avènement pour le renouvellement du Serment. Aymeric V attend toujours que les seigneurs de Bellerive viennent y poser la main."
+  },
+  {
+    "name": "La Citation d'Aymeric III",
+    "lore": "L'Ordre de l'Aube Blanche peut citer n'importe qui à comparaître, y compris le roi. Cela s'est produit quatre fois ; trois rois se sont présentés. Le quatrième, Aymeric III le Fol, entré dans la Guerre des Trois Bannières pour un affront de préséance, ne s'est pas présenté. Sa citation, datée de 384, fut renvoyée à Rochemont sans avoir été ouverte. On ne prononce plus son nom à la cour.\n\nElle est conservée dans la salle capitulaire de l'Aube Blanche, à Rochemont, avec les trois autres."
+  },
+  {
+    "name": "Le Peson de Gautier",
+    "lore": "Pendant la Guerre des Greniers, Bléval fut le seul marché de l'ouest à ne jamais fermer. Le bailli Gautier de Bléval fit peser le grain en public chaque matin et pendre deux accapareurs sur la place de la halle, en 643. Le royaume perdit un habitant sur six ; Bléval, un sur vingt. La cloche qui ouvre les halles s'appelle encore la Gautière."
+  },
+  {
+    "name": "Le Compas d'Éloi de Montclair",
+    "lore": "Maître Éloi de Montclair, du Cercle de l'Étoile Polaire, né en 831, achève en 887 la première carte du monde connu dressée entièrement d'après des relevés : vingt ans de route, trois chevaux morts sous lui. Il refuse de porter sur une carte ce qu'il n'a pas vérifié. Le Parlement l'a trouvée moins belle ; les marchands, plus juste.\n\nAccroche suggérée : son propriétaire est vivant. Trouver ce compas ailleurs que dans ses mains pose une question."
+  },
+  {
+    "name": "Le Bâton d'Otwin",
+    "lore": "Après le siège de Wechselhof, en 231, Otwin d'Eberwald fit additionner les morts des trois camps et lire le total à voix haute, puis attendit. En 233, quatre marches signèrent le Pacte d'Altenburg. On lui offrit une couronne ; il répondit : « Une couronne se transmet à un fils. Un fils peut être un imbécile. » Il fut le premier Altmeister (233–251) et mourut avant de voir Altenburg achevée.\n\nAccroche suggérée : le bâton, qu'il préférait à toute marque de rang, est posé sur le banc de l'Altmeister lors des sessions de la Diète."
+  },
+  {
+    "name": "L'Épée d'Adelheid",
+    "lore": "Adelheid de Grenzfestung tint la passe de l'ouest onze mois, en 381–382, avec neuf cents hommes face à une armée fleurainaise dix fois supérieure. La tradition veut qu'elle ait fait murer sa propre porte de sortie le premier jour du siège : le rapport officiel de la Diète ne le mentionne pas, les maçons de Grenzfestung si. Elle fut ensuite Altmeister de 381 à 402.\n\nAccroche suggérée : l'épée est exposée à Grenzfestung, où la Westmark vient de renforcer la garnison face à Bellerive."
+  },
+  {
+    "name": "Le Fouet d'Aurelio Della Costa",
+    "lore": "Aurelio Della Costa, ancien convoyeur arrivé enfant avec les Grands Départs, ne savait pas lire à trente ans. Il devint en 411 le premier Prince de Lucentia. C'est le mythe fondateur du pays : à Lucentia, on ne demande pas d'où vous venez."
+  },
+  {
+    "name": "Les Cinq Lettres de Chiara",
+    "lore": "En 700, Chiara Della Costa fit asseoir cinq souverains autour d'une même table en convainquant chacun, séparément et par écrit, qu'il en présidait la conduite : ce fut la Paix de Vespera. Elle avait reçu leurs envoyés en secret à Villa Serena, pendant l'hiver 698–699. Les cinq lettres sont exposées au Palais de Vespera : c'est le seul monument que les Lucentiens montrent avec fierté.\n\nAccroche suggérée : leur vol ferait scandale, et chacune des cinq cours aurait un intérêt à les récupérer."
+  },
+  {
+    "name": "Le Registre d'Aldric le Gris",
+    "lore": "En 156, les sept clans des landes mirent leurs greniers en commun et désignèrent Aldric le Gris pour les administrer, parce qu'il tenait déjà les comptes de trois d'entre eux et que personne ne l'avait jamais pris en défaut. Il tint le registre du royaume de sa propre main jusqu'à sa mort, et refusa toujours de porter une couronne, jugeant que le métal serait mieux employé ailleurs."
+  },
+  {
+    "name": "Le Traité d'Amberlake",
+    "lore": "En 599, Ravenmoor et Valdera jurèrent à Amberlake, sur la pierre de serment du bourg, une assistance navale mutuelle. En 604, la flotte ravenmooroise lança le signal ; la flotte de Valdera ne bougea pas, et quarante et un navires furent perdus en deux jours. Wulfric IV fut délié la même année. La mer porte depuis le nom de Serment Brisé. Le traité est exposé à la maison de ville d'Amberlake, retourné face au mur."
+  },
+  {
+    "name": "L'Épée d'Inés la Brûlante",
+    "lore": "Inés la Brûlante (règne 498–526) porta les Guerres de la Passe à leur maximum d'intensité, prit Sahelia trois fois et la perdit trois fois, fonda deux des trois Ordres de Ferveur et mourut en campagne. La maison mère de l'Ordre de la Flamme, à Cortelba, garde son épée, que les novices baisent le jour de leurs vœux.\n\nCanonisée par acclamation populaire mais jamais par le Saint-siège : Torralba réclame formellement sa canonisation depuis 883, et le Hiérarque Anselmo IX temporise. Toute atteinte à cette épée embraserait Valdera."
+  },
+  {
+    "name": "Le Bâton de pèlerin de Fernán III",
+    "lore": "En 619, Fernán III fit passer des troupes par le territoire du Saint-siège, en violation de sa neutralité. Le Hiérarque Mateo IV plaça Valdera sous interdit : plus de sacrements, plus de sépultures en terre consacrée, plus de mariages valides, pendant onze ans. Le royaume céda en 630, et Fernán fit à pied le trajet de Torralba à Velencia, puis gravit les marches de la cathédrale.\n\nAccroche suggérée : le bâton est conservé à Velencia comme témoin de la neutralité du Saint-siège, ce que Torralba vit comme une humiliation permanente."
+  },
+  {
+    "name": "Les Rôles de Monteluz",
+    "lore": "En 604, selon Torralba, la flotte valdérienne était à quai à Monteluz pour avarie, et le signal de Ravenmoor ne fut jamais reçu. Les rôles du chantier naval sont conservés : datés, signés, contresignés. Ravenhold n'a jamais voulu les lire.\n\nAccroche suggérée : les porter jusqu'à Ravenhold, ou découvrir ce qu'ils disent vraiment, pourrait rouvrir une plaie vieille de trois siècles."
+  },
+  {
+    "name": "Le Premier Sceau d'Eau",
+    "lore": "Yusuf ibn Sahl comprit que celui qui contrôle l'eau n'a nul besoin de contrôler les hommes : il acquit, creusa ou hérita l'essentiel des points d'eau de la route septentrionale, sans bataille, et fut reconnu Sultan en 188. En 216, la Charte des Puits rendit les Sceaux d'Eau cessibles, transmissibles et négociables : c'est l'acte fondateur du droit azhari.\n\nAccroche suggérée : ce titre serait le tout premier Sceau enregistré par Yusuf lui-même. Les familles de Sceaux, à commencer par celle de Bir Azraq, la plus procédurière, en contesteraient la possession."
+  },
+  {
+    "name": "L'Astrolabe de Zaynab",
+    "lore": "La Sultane Zaynab al-Munira, « l'Illuminatrice » (441–470), fit bâtir l'observatoire de Qasirah en 455 et ordonna la première mesure systématique du ciel, en exigeant par testament que les relevés soient poursuivis après sa mort. Ils le sont depuis plus de quatre siècles.\n\nAccroche suggérée : il s'agirait du premier instrument de l'observatoire. La Maison des Cent Portes ne laisse rien sortir de ses collections."
+  }
+]

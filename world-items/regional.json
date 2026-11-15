@@ -1,0 +1,912 @@
+[
+  {
+    "name": "Harnois de Saint-Lys",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 2000, "pp": 0 },
+      "baseAC": 18,
+      "strengthRequired": 13,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 29.5,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Harnois ajusté pièce à pièce sur son porteur, si bien qu'il pèse moins aux épaules qu'un harnois ordinaire (Force 13 requise au lieu de 15). Chaque plaque porte au revers le même petit poinçon."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Épée de serment",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Épée longue à la lame polie comme un miroir, dont le plat ne porte aucune gravure. Une petite usure marque le milieu de la lame, toujours au même endroit.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Écu armorié",
+    "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+      "baseAC": 2,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Bouclier peint aux armes d'une maison. Sous la peinture fraîche, on devine les contours d'un blason plus ancien."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Denier de l'Aube",
+    "type": "gear",
+    "img": "icons/commodities/currency/coin-inset-crown-gold.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": "Pièce d'argent usée, retrouvée face vers le haut. Une trace de mortier colle encore à son revers."
+    }
+  },
+  {
+    "name": "Sac de charbon de Logne",
+    "type": "gear",
+    "img": "icons/containers/bags/sack-simple-leather-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Charbon de bois serré dans un sac de toile, marqué d'une hache stylisée."
+    }
+  },
+  {
+    "name": "Sauf-conduit royal",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-sealed-brown-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Lettre scellée de cire rouge, nominative, que les gardes des ponts et des portes lisent en fronçant les sourcils."
+    }
+  },
+  {
+    "name": "Acte scellé du collège des Registres",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-official-brownl.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Acte rédigé en fleurain de chancellerie, chargé de formules, au bas duquel figure le sceau d'un collège."
+    }
+  },
+  {
+    "name": "Écritoire de greffier",
+    "type": "tool",
+    "img": "icons/tools/scribal/pen-steel-grey-brown.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "weight": 2.3,
+      "useEffect": { "skill": "history", "bonus": 1 },
+      "descriptionRP": "Écritoire de voyage en bois verni : encres, grattoirs, cire et un formulaire des tournures de chancellerie. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Hallebarde des Passwachten",
+    "type": "weapon",
+    "img": "icons/weapons/polearms/halberd-engraved-black.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Hallebarde au fer épais, au manche bagué de cuivre pour ne pas glisser dans les gants. Une encoche est taillée dans le bois pour chaque hiver passé dans les cols.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": true,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Cotte fourrée des cols",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+    "system": {
+      "armorType": "heavy",
+      "price": { "pc": 0, "pa": 0, "po": 90, "pp": 0 },
+      "baseAC": 16,
+      "strengthRequired": 13,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 24.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Cotte de mailles doublée de laine épaisse et de fourrure aux épaules, faite pour les nuits de garde en montagne."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Pic d'Eisengrund",
+    "type": "weapon",
+    "img": "icons/weapons/axes/pickaxe-iron-green.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Pic de mineur dont le fer a été retrempé pour le combat. Le manche porte le poinçon d'une galerie.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Recueil du Landrecht",
+    "type": "gear",
+    "img": "icons/sundries/books/book-embossed-blue.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Petit livre relié de cuir, rédigé en Commun. Il compte cent quarante-trois articles numérotés, et pas un de plus."
+    }
+  },
+  {
+    "name": "Pfennig d'Eisburg",
+    "type": "gear",
+    "img": "icons/commodities/currency/coins-engraved-face-silver.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": "Pièce d'argent épaisse, aux bords parfaitement nets."
+    }
+  },
+  {
+    "name": "Sac de tourbe de la Sümpfenmark",
+    "type": "gear",
+    "img": "icons/containers/bags/sack-simple-leather-orange.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 3, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Mottes de tourbe séchée qui sentent le marais même une fois brûlées."
+    }
+  },
+  {
+    "name": "Corne d'appel des cols",
+    "type": "gear",
+    "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations."
+    }
+  },
+  {
+    "name": "Baume des Passwachten",
+    "type": "gear",
+    "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "use": { "type": "heal", "healDice": "1d4", "healBase": 1, "healSkill": "", "consumable": true },
+      "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
+    }
+  },
+  {
+    "name": "Rapière de la Compagnia del Sole",
+    "type": "weapon",
+    "img": "icons/weapons/swords/sword-guard-bronze.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Rapière à coquille dorée en forme de soleil. Une contre-marque discrète est frappée près de la garde.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Cuirasse noire de la Cavalcata Nera",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 450, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "armor",
+      "weight": 9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Cuirasse bronzée au noir, sans ornement, dont la doublure est cousue de fil noir."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Arbalète de convoi",
+    "type": "weapon",
+    "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.3,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Arbalète robuste à étrier, avec un crochet pour la pendre à l'arçon d'un chariot.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": true,
+        "reloadValue": 1,
+        "range": { "normal": 24, "long": 96 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Lettre de change du Banco",
+    "type": "gear",
+    "img": "icons/sundries/documents/envelope-sealed-red-white.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Lettre pliée portant un montant, deux signatures et un sceau. Elle ne vaut rien sans la bonne contre-signature."
+    }
+  },
+  {
+    "name": "Sceau de la Charte des Routes",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons."
+    }
+  },
+  {
+    "name": "Police d'assurance de Castelmare",
+    "type": "gear",
+    "img": "icons/sundries/scrolls/scroll-writing-brown-gold.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Contrat roulé qui énumère une cargaison, un navire et une somme, signé à l'heure des vêpres."
+    }
+  },
+  {
+    "name": "Pièce de Fortune",
+    "type": "gear",
+    "img": "icons/commodities/currency/coin-inset-compass-silver.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "description": "Pièce ordinaire, enveloppée dans un carré de soie comme un objet précieux."
+    }
+  },
+  {
+    "name": "Balance de change",
+    "type": "tool",
+    "img": "icons/tools/hand/scale-balances-merchant-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "weight": 1.4,
+      "useEffect": { "skill": "investigation", "bonus": 1 },
+      "descriptionRP": "Balance de précision et jeu de poids étalonnés, rangés dans un coffret. Elle sert à peser les pièces, repérer les monnaies rognées et estimer une marchandise. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    }
+  },
+  {
+    "name": "Arc long de Blackwood",
+    "type": "weapon",
+    "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+    "system": {
+      "weaponType": "rangedMartial",
+      "price": { "pc": 0, "pa": 0, "po": 55, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Arc long d'if sombre, sans décoration, dont la poignée est enveloppée de cuir gris.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 45, "long": 180 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Bâton de Veilleur",
+    "type": "weapon",
+    "img": "icons/weapons/staves/staff-simple.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Bâton ferré aux deux bouts, marqué de crans à intervalles réguliers comme une toise.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Gambison des landes",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "baseAC": 11,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 3.6,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Gambison de laine bouillie, épais et terne, qui sèche mal mais coupe bien le vent."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Cape grise de Veilleur",
+    "type": "gear",
+    "img": "icons/equipment/back/cloak-layered-grey.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif."
+    }
+  },
+  {
+    "name": "Lanterne de guet de Wickhollow",
+    "type": "gear",
+    "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "use": {
+        "type": "light",
+        "light": { "bright": 9, "dim": 9 }
+      },
+      "description": "Lanterne de fer à volet, faite pour signaler d'une tour à l'autre. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+    }
+  },
+  {
+    "name": "Plume de corbeau de Ravenhold",
+    "type": "gear",
+    "img": "icons/equipment/neck/necklace-simple-feather-red-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Longue plume noire et luisante, portée nouée à un lacet."
+    }
+  },
+  {
+    "name": "Étalons et toises de recenseur",
+    "type": "tool",
+    "img": "icons/tools/navigation/compass-worn-copper.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "weight": 2.7,
+      "useEffect": { "skill": "investigation", "bonus": 1 },
+      "descriptionRP": "Coffret de mesures étalonnées : toise pliante, poids et mesure à grain, avec un registre vierge aux colonnes tracées d'avance. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    }
+  },
+  {
+    "name": "Épée de l'Ordre de la Flamme",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Épée longue dont le pommeau est une flamme de bronze. Une courte prière est gravée sur le talon de la lame.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Pique de la Garde du Passage",
+    "type": "weapon",
+    "img": "icons/weapons/polearms/spear-hooked-spike.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 7, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 8.2,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Longue pique dont le fer porte une petite croix de garde, polie par l'usage.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": true,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Rondache de Varela",
+    "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+      "baseAC": 2,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Petit bouclier rond de chêne et de fer, peint d'une tour face à l'eau."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Gambison à l'image cousue",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "baseAC": 11,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 3.6,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Gambison ordinaire. En le retournant, on sent sous la doublure, à hauteur du cœur, un petit carré de tissu rigide."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Ruban rouge",
+    "type": "gear",
+    "img": "icons/commodities/cloth/ribbon-bolt-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Ruban de laine rouge, à nouer au poignet."
+    }
+  },
+  {
+    "name": "Cierge de Veillée",
+    "type": "gear",
+    "img": "icons/sundries/lights/candle-unlit-bone-white.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+      "use": {
+        "type": "light",
+        "light": { "bright": 1.5, "dim": 1.5 }
+      },
+      "description": "Grand cierge de cire blanche qui brûle une nuit entière. Lumière vive sur 1,50 m et faible sur 1,50 m supplémentaire. Utilisez l'objet depuis l'inventaire pour l'allumer ou l'éteindre."
+    }
+  },
+  {
+    "name": "Cimeterre de Qasirah",
+    "type": "weapon",
+    "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Cimeterre à la lame finement striée. Une inscription minuscule court le long du dos de la lame.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Arc de caravane",
+    "type": "weapon",
+    "img": "icons/weapons/bows/shortbow-leather.webp",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Arc court et nerveux, assez compact pour être tiré du dos d'un chameau.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 24, "long": 96 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Lamellaire de piste",
+    "type": "armor",
+    "img": "icons/equipment/chest/breastplate-banded-steel.webp",
+    "system": {
+      "armorType": "medium",
+      "price": { "pc": 0, "pa": 0, "po": 60, "pp": 0 },
+      "baseAC": 14,
+      "strengthRequired": 0,
+      "stealthDisadvantage": true,
+      "slot": "armor",
+      "weight": 20.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Armure de lamelles d'acier lacées, couverte d'une robe claire contre le soleil."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Outre de caravane",
+    "type": "gear",
+    "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 3, "po": 0, "pp": 0 },
+      "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois."
+    }
+  },
+  {
+    "name": "Recueil des tables du ciel",
+    "type": "gear",
+    "img": "icons/sundries/books/book-tooled-eye-gold-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Livre épais couvert de colonnes de chiffres, de dates et de positions d'étoiles."
+    }
+  },
+  {
+    "name": "Astrolabe de la Maison",
+    "type": "tool",
+    "img": "icons/tools/navigation/sextant-brass-brown.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 100, "pp": 0 },
+      "weight": 0.9,
+      "useEffect": { "skill": "survival", "bonus": 1 },
+      "descriptionRP": "Astrolabe de laiton gravé de chiffres azharis, accompagné de tables de correction. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Copie du Premier Codex",
+    "type": "gear",
+    "img": "icons/sundries/books/book-worn-purple.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Livre de prières relié de toile. La première phrase n'est pas une prière : « Nous écrivons parce que nous avons appris à écrire. »"
+    }
+  },
+  {
+    "name": "Habit et bourdon de pèlerin",
+    "type": "gear",
+    "img": "icons/weapons/staves/staff-simple-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Manteau de bure et long bâton de marche surmonté d'une gourde."
+    }
+  },
+  {
+    "name": "Médaille de pèlerinage de Velencia",
+    "type": "gear",
+    "img": "icons/equipment/neck/pendant-gold-hook.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Médaille de cuivre frappée de la silhouette d'une cathédrale, percée pour être portée au cou."
+    }
+  }
+]

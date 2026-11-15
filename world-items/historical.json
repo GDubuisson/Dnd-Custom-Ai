@@ -1,0 +1,326 @@
+[
+  {
+    "name": "La Lame des Bannières",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Épée longue très ancienne à la garde de fer nue, remontée sur une poignée neuve. La lame est couverte de minuscules éraflures, toutes au même endroit.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "La Citation d'Aymeric III",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-sealed-red-white.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 2000, "pp": 0 },
+      "description": "Pli de parchemin jauni, fermé d'un cachet de cire rouge qui n'a jamais été brisé."
+    }
+  },
+  {
+    "name": "Le Peson de Gautier",
+    "type": "gear",
+    "img": "icons/tools/hand/scale-balances-merchant-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "description": "Grande balance à fléau, noircie par l'usage. Le plateau est marqué d'une date gravée au couteau."
+    }
+  },
+  {
+    "name": "Le Compas d'Éloi de Montclair",
+    "type": "tool",
+    "img": "icons/tools/navigation/map-chart-tan.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 1000, "pp": 0 },
+      "weight": 2.7,
+      "useEffect": { "skill": "survival", "bonus": 0 },
+      "descriptionRP": "Étui de cuir usé contenant un compas de laiton, des règles graduées et un carnet couvert de relevés chiffrés. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Le Bâton d'Otwin",
+    "type": "weapon",
+    "img": "icons/weapons/staves/staff-simple.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 2000, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Simple bâton de chêne, sans ornement ni métal. Le bois est poli là où une main l'a tenu longtemps.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "L'Épée d'Adelheid",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 4000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Épée longue au fil ébréché en dizaines d'endroits, jamais réaffûtée. Un peu de poussière de mortier reste incrustée dans la garde.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Le Fouet d'Aurelio Della Costa",
+    "type": "weapon",
+    "img": "icons/sundries/survival/leather-strap-brown.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 2500, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Fouet de convoyeur au manche de corne, rafistolé plusieurs fois avec du cuir de couleurs différentes.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": true,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Les Cinq Lettres de Chiara",
+    "type": "gear",
+    "img": "icons/sundries/documents/envelope-sealed-red-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.23,
+      "price": { "pc": 0, "pa": 0, "po": 10000, "pp": 0 },
+      "description": "Cinq lettres de la même main, adressées à cinq destinataires différents, qui disent toutes presque la même chose."
+    }
+  },
+  {
+    "name": "Le Registre d'Aldric le Gris",
+    "type": "gear",
+    "img": "icons/sundries/books/book-embossed-jewel-silver-green.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 3000, "pp": 0 },
+      "description": "Gros registre de comptes à la reliure de bois, rempli d'une seule écriture serrée, sans une rature."
+    }
+  },
+  {
+    "name": "Le Traité d'Amberlake",
+    "type": "gear",
+    "img": "icons/sundries/scrolls/scroll-bound-sealed-red-tan.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
+      "description": "Parchemin encadré dont le dos est plus pâli que la face, comme s'il était resté longtemps tourné vers un mur."
+    }
+  },
+  {
+    "name": "L'Épée d'Inés la Brûlante",
+    "type": "weapon",
+    "img": "icons/weapons/swords/greatsword-guard.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 10000, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.4,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Épée longue étroite, à la garde usée jusqu'au métal nu. La lame porte des dizaines de petites marques plus claires, comme si on l'avait touchée des lèvres encore et encore.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Le Bâton de pèlerin de Fernán III",
+    "type": "weapon",
+    "img": "icons/weapons/staves/staff-simple.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "1d8" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Bourdon de pèlerin dont le bout ferré est usé presque jusqu'au bois.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      },
+      "magic": false
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Les Rôles de Monteluz",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-torn-diagram-tan.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.45,
+      "price": { "pc": 0, "pa": 0, "po": 800, "pp": 0 },
+      "description": "Liasse de registres de chantier naval datés, signés et contresignés, couverts de noms de navires et de réparations."
+    }
+  },
+  {
+    "name": "Le Premier Sceau d'Eau",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-sealed-white-orange.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 8000, "pp": 0 },
+      "description": "Tablette d'argile cuite, gravée d'un plan de puits et d'une signature, dans un étui de cuir moderne."
+    }
+  },
+  {
+    "name": "L'Astrolabe de Zaynab",
+    "type": "tool",
+    "img": "icons/tools/navigation/sextant-brass-brown.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 5000, "pp": 0 },
+      "weight": 0.9,
+      "useEffect": { "skill": "survival", "bonus": 0 },
+      "descriptionRP": "Astrolabe de laiton très ancien, d'une précision étonnante, dont les graduations ont été regravées plusieurs fois. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  }
+]
