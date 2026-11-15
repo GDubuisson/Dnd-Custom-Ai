@@ -1,4 +1,4 @@
-{{> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.feature" notice="DND_CUSTOM.Item.Fields.GmOnlyNotice"}}
+{{#> "systems/dnd-custom-ai/templates/item/parts/header.hbs" placeholder="TYPES.Item.feature" notice="DND_CUSTOM.Item.Fields.GmOnlyNotice"}}
 
   <label class="checkbox-row">
     <input type="checkbox" name="system.universal" {{#if system.universal}}checked{{/if}} {{#unless isGM}}disabled{{/unless}}>
@@ -93,5 +93,4 @@
   </fieldset>
 
   {{> "systems/dnd-custom-ai/templates/item/parts/description.hbs" field="description" label="DND_CUSTOM.Item.Fields.Description"}}
-</div>
-</div>
+{{/"systems/dnd-custom-ai/templates/item/parts/header.hbs"}}
