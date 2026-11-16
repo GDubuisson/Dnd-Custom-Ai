@@ -75,6 +75,34 @@
     }
   },
   {
+    "name": "La Selle de Thibaud Ier",
+    "type": "gear",
+    "img": "icons/containers/bags/case-simple-leather-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 11.3,
+      "price": { "pc": 0, "pa": 0, "po": 3000, "pp": 0 },
+      "description": "Selle de cuir très ancienne, basse et sans étriers, au troussequin usé et recousu, aux armes effacées d'une petite maison de Saint-Lys."
+    }
+  },
+  {
+    "name": "Le Manuscrit de la Geste des Bannières",
+    "type": "gear",
+    "img": "icons/sundries/books/book-embossed-blue.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 4000, "pp": 0 },
+      "description": "Gros manuscrit relié de cuir, quarante-trois chants copiés d'une même main. Plusieurs pages portent, en marge, une marque grossière dessinée à côté d'un nom."
+    }
+  },
+  {
     "name": "Le Bâton d'Otwin",
     "type": "weapon",
     "img": "icons/weapons/staves/staff-simple.webp",
@@ -141,6 +169,20 @@
     }
   },
   {
+    "name": "Le Dénombrement d'Otwin",
+    "type": "gear",
+    "img": "icons/sundries/books/book-worn-purple.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 6.8,
+      "price": { "pc": 0, "pa": 0, "po": 3000, "pp": 0 },
+      "description": "Registre épais, rempli de noms classés par marche et par village, sans un mot de commentaire. Les dernières pages portent trois totaux et une somme."
+    }
+  },
+  {
     "name": "Le Fouet d'Aurelio Della Costa",
     "type": "weapon",
     "img": "icons/sundries/survival/leather-strap-brown.webp",
@@ -188,6 +230,20 @@
     }
   },
   {
+    "name": "L'original de la Charte des Routes",
+    "type": "gear",
+    "img": "icons/sundries/scrolls/scroll-bound-sealed-red-tan.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 6000, "pp": 0 },
+      "description": "Long rouleau de parchemin portant six sceaux de cire de couleurs différentes, et une roue à quatre rayons dessinée en tête."
+    }
+  },
+  {
     "name": "Le Registre d'Aldric le Gris",
     "type": "gear",
     "img": "icons/sundries/books/book-embossed-jewel-silver-green.webp",
@@ -213,6 +269,20 @@
       "weight": 0.0,
       "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
       "description": "Parchemin encadré dont le dos est plus pâli que la face, comme s'il était resté longtemps tourné vers un mur."
+    }
+  },
+  {
+    "name": "Les Comptes de Morwen la Patiente",
+    "type": "gear",
+    "img": "icons/sundries/books/book-tooled-eye-gold-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 2500, "pp": 0 },
+      "description": "Livre de comptes relié de bois, colonnes de chiffres d'une écriture serrée, et des notes en marge, nombreuses, d'une écriture plus rapide."
     }
   },
   {
@@ -321,6 +391,76 @@
     },
     "flags": {
       "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Le Recueil des Quatrains du chamelier",
+    "type": "gear",
+    "img": "icons/sundries/books/book-embossed-jewel-silver-green.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 3500, "pp": 0 },
+      "description": "Petit livre de papier de Safwan, quatre cents quatrains en azhari copiés sans nom d'auteur, l'encre pâlie par le soleil."
+    }
+  },
+  {
+    "name": "Les papiers d'Hartmut le Sourd",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-sealed-brown-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "secrets" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 },
+      "description": "Liasse de papiers personnels nouée d'un cordon : notes de mandat, comptes de tourbe, quelques lettres et un plan de marais annoté."
+    }
+  },
+  {
+    "name": "Les carnets de relevé d'Éloi de Montclair",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-torn-diagram-tan.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "secrets" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 1200, "pp": 0 },
+      "description": "Carnets de cuir couverts de triangles, d'angles notés au crayon et de distances chiffrées. Certaines pages ne portent que deux mots : « non relevé »."
+    }
+  },
+  {
+    "name": "Les rapports de l'expédition de Tirwen",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-official-brownl.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "secrets" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 800, "pp": 0 },
+      "description": "Liasse de rapports de colons datés de 704 à 708 : inventaires de bétail, listes de plantes, relevés de côtes, d'une écriture de plus en plus pressée."
+    }
+  },
+  {
+    "name": "Le dossier de Layla bint Amir",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "secrets" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
+      "description": "Épais dossier de tables du ciel recopiées et comparées, couvert de calculs et de notes en azhari, avec une lettre d'envoi adressée au Cercle de l'Étoile Polaire."
     }
   }
 ]

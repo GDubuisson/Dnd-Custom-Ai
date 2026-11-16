@@ -167,7 +167,8 @@ Quatre Journaux créés une fois au premier chargement (jamais réécrits ensuit
 librement) : **Guide du Joueur** (glossaire, règles de base, sorts, classes, origines, langues,
 équipement) et **Comparatif des Origines** sont visibles de tous les joueurs (`ownership` par
 défaut = Observateur) ; le **Guide du MJ** et les **Chroniques des objets** (histoire des objets
-régionaux et historiques, une page par région) restent réservés au MJ, qui en partage ce qu'il veut. L'en-tête de la fiche de
+régionaux et historiques, une page par région, plus une page « Secrets (MJ) » pour les objets liés à
+l'histoire cachée, à ne jamais partager) restent réservés au MJ, qui en partage ce qu'il veut. L'en-tête de la fiche de
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
 ### Progression (XP, niveau)

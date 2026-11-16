@@ -399,7 +399,9 @@ DND_CUSTOM.regions = {
   ravenmoor: "DND_CUSTOM.Regions.ravenmoor",
   valdera: "DND_CUSTOM.Regions.valdera",
   azhar: "DND_CUSTOM.Regions.azhar",
-  saintSiege: "DND_CUSTOM.Regions.saintSiege"
+  saintSiege: "DND_CUSTOM.Regions.saintSiege",
+  // Objets liés aux secrets du doc MJ : dossier et page des Chroniques à part, jamais à partager.
+  secrets: "DND_CUSTOM.Regions.secrets"
 };
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */

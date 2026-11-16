@@ -312,12 +312,24 @@
     "lore": "Maître Éloi de Montclair, du Cercle de l'Étoile Polaire, né en 831, achève en 887 la première carte du monde connu dressée entièrement d'après des relevés : vingt ans de route, trois chevaux morts sous lui. Il refuse de porter sur une carte ce qu'il n'a pas vérifié. Le Parlement l'a trouvée moins belle ; les marchands, plus juste.\n\nAccroche suggérée : son propriétaire est vivant. Trouver ce compas ailleurs que dans ses mains pose une question."
   },
   {
+    "name": "La Selle de Thibaud Ier",
+    "lore": "Thibaud de Saint-Lys, cadet sans terre, passa les années 129 et 130 à chevaucher d'un donjon à l'autre pour proposer un serment de secours mutuel. En 131, quarante-trois seigneurs jurèrent dans la clairière des Bannières et le firent roi, après trois refus. La selle date d'avant la selle haute et l'étrier (vers 250) : un cavalier de son temps tombait quand sa lance touchait.\n\nAccroche suggérée : la marche orientale tarde à renouveler son Serment à Aymeric V ; une relique du Rassembleur, offerte ou volée au bon moment, pèserait sur Bellerive."
+  },
+  {
+    "name": "Le Manuscrit de la Geste des Bannières",
+    "lore": "Composée vers 440, la Geste compte quarante-trois chants, un par seigneur du Serment de 131. Pour plusieurs seigneurs, le poète n'avait qu'une marque sur la pierre et un nom deviné par les moines de Sylvecourt ; il inventa le reste. On la récite à chaque avènement, et ce manuscrit serait la plus ancienne copie connue."
+  },
+  {
     "name": "Le Bâton d'Otwin",
     "lore": "Après le siège de Wechselhof, en 231, Otwin d'Eberwald fit additionner les morts des trois camps et lire le total à voix haute, puis attendit. En 233, quatre marches signèrent le Pacte d'Altenburg. On lui offrit une couronne ; il répondit : « Une couronne se transmet à un fils. Un fils peut être un imbécile. » Il fut le premier Altmeister (233–251) et mourut avant de voir Altenburg achevée.\n\nAccroche suggérée : le bâton, qu'il préférait à toute marque de rang, est posé sur le banc de l'Altmeister lors des sessions de la Diète."
   },
   {
     "name": "L'Épée d'Adelheid",
     "lore": "Avant d'être Altmeister, Adelheid de Grenzfestung n'était qu'une soldate de la garnison de la Westmark, et c'est cette épée qu'elle porta pendant les quatorze années de raids sur La Velle (367–380). Elle l'avait encore à la main quand elle tint la passe de l'ouest onze mois, en 381–382, avec neuf cents hommes face à une armée fleurainaise dix fois supérieure. La tradition veut qu'elle ait fait murer sa propre porte de sortie le premier jour du siège : le rapport officiel de la Diète ne le mentionne pas, les maçons de Grenzfestung si. La Diète l'élut Altmeister en 381, alors qu'elle était déjà enfermée dans la forteresse ; elle le resta jusqu'en 402.\n\nAccroche suggérée : l'épée est exposée à Grenzfestung, où la Westmark vient de renforcer la garnison face à Bellerive."
+  },
+  {
+    "name": "Le Dénombrement d'Otwin",
+    "lore": "Après le siège de Wechselhof, en 231, Otwin d'Eberwald fit relever les morts des trois camps, additionner les chiffres et lire le total devant les chefs réunis, puis attendit. Deux ans plus tard, quatre marches signaient le Pacte d'Altenburg. On lit encore la liste à voix haute à l'ouverture de la foire de Wechselhof, en entier, et la lecture dure jusqu'au soir.\n\nAccroche suggérée : la foire n'a jamais été ouverte sans cette lecture. Le registre disparu la veille, Wechselhof chercherait des coupables."
   },
   {
     "name": "Le Fouet d'Aurelio Della Costa",
@@ -328,12 +340,20 @@
     "lore": "En 700, Chiara Della Costa fit asseoir cinq souverains autour d'une même table en convainquant chacun, séparément et par écrit, qu'il en présidait la conduite : ce fut la Paix de Vespera. Elle avait reçu leurs envoyés en secret à Villa Serena, pendant l'hiver 698–699. Les cinq lettres sont exposées au Palais de Vespera : c'est le seul monument que les Lucentiens montrent avec fierté.\n\nAccroche suggérée : leur vol ferait scandale, et chacune des cinq cours aurait un intérêt à les récupérer."
   },
   {
+    "name": "L'original de la Charte des Routes",
+    "lore": "En 436, les six nations garantirent la franchise des convois sur leur territoire, même en temps de guerre entre elles : un convoi porteur du sceau ne peut être ni fouillé, ni taxé, ni retenu. Les voisins de Lucentia la signèrent avec elle comme avec un égal, sans jamais la reconnaître par un autre traité. La Charte a été violée neuf fois et toujours rétablie.\n\nAccroche suggérée : avec la crise des pirates et l'argument des « terres vaines », chacun voudrait relire ce que les six sceaux engagent exactement."
+  },
+  {
     "name": "Le Registre d'Aldric le Gris",
     "lore": "En 156, les sept clans des landes mirent leurs greniers en commun et désignèrent Aldric le Gris pour les administrer, parce qu'il tenait déjà les comptes de trois d'entre eux et que personne ne l'avait jamais pris en défaut. Il tint le registre du royaume de sa propre main jusqu'à sa mort, et refusa toujours de porter une couronne, jugeant que le métal serait mieux employé ailleurs."
   },
   {
     "name": "Le Traité d'Amberlake",
     "lore": "En 599, Ravenmoor et Valdera jurèrent à Amberlake, sur la pierre de serment du bourg, une assistance navale mutuelle. En 604, la flotte ravenmooroise lança le signal ; la flotte de Valdera ne bougea pas, et quarante et un navires furent perdus en deux jours. Wulfric IV fut délié la même année. La mer porte depuis le nom de Serment Brisé. Le traité est exposé à la maison de ville d'Amberlake, retourné face au mur."
+  },
+  {
+    "name": "Les Comptes de Morwen la Patiente",
+    "lore": "Morwen la Patiente (487–531) refusa deux guerres en achetant ses adversaires. L'Assemblée des Terres publia ses livres de comptes l'année qui suivit sa mort : des chiffres et des notes en marge, qui en ont fait le livre le plus lu du royaume. C'est là qu'elle appelle les péages d'Ashbourne « notre part des guerres des autres »."
   },
   {
     "name": "L'Épée d'Inés la Brûlante",
@@ -354,5 +374,25 @@
   {
     "name": "L'Astrolabe de Zaynab",
     "lore": "La Sultane Zaynab al-Munira, « l'Illuminatrice » (441–470), fit bâtir l'observatoire de Qasirah en 455 et ordonna la première mesure systématique du ciel, en exigeant par testament que les relevés soient poursuivis après sa mort. Ils le sont depuis plus de quatre siècles.\n\nAccroche suggérée : il s'agirait du tout premier anneau des étoiles, gravé vers 480 d'après ses tables du ciel, dix ans après sa mort, et dédié à sa mémoire. La Maison des Cent Portes ne laisse rien sortir de ses collections."
+  },
+  {
+    "name": "Le Recueil des Quatrains du chamelier",
+    "lore": "Quatre cents quatrains anonymes sur la route, la soif, l'amour et les puits, composés vers 380. Les lettrés de la Maison des Cent Portes les tiennent pour la plus belle chose écrite en azhari, et pour la preuve que l'on peut être précis et triste à la fois. Ce recueil serait l'une des premières copies sur papier de Safwan."
+  },
+  {
+    "name": "Les papiers d'Hartmut le Sourd",
+    "lore": "SECRET. Hartmut le Sourd (Altmeister 337–360) força en 341 l'admission de la Sümpfenmark en tranchant lui-même un vote à égalité. La version officielle parle de la tourbe ; en réalité, il savait quelque chose de la pierre du marais, au-delà du Schilfbach. Ses papiers personnels ont disparu à sa mort.\n\nLes papiers ne nomment pas la pierre. Ils montrent un homme qui avait relevé les coins calmes, les disparitions et l'effet des coutumes sümpfer, et qui jugeait qu'un marais pareil ne devait pas tomber dans d'autres mains. Ils peuvent aussi évoquer l'ordonnance du Moorvogt qui interdit le rituel dans le marais.\n\nAccroche suggérée : amorce « Sümpfenmark » (trois morts cet été, rapport du Moorvogt en retard, patrouilles d'Ostbruchwacht raccourcies)."
+  },
+  {
+    "name": "Les carnets de relevé d'Éloi de Montclair",
+    "lore": "SECRET. Les carnets d'Éloi portent deux zones « non relevé » qu'il a figurées sur sa carte de 887 sans y porter ni nom ni chemin, dont le nord-ouest de la Forêt de Logne, au-delà de Sylvecourt et de Logneval (environ 40 lieues²). Il y a constaté que la zone est infranchissable, et pas seulement non relevée. Il a aussi lu les rapports de Tirwen 704. Il ne conclut rien publiquement et répond aux lettres de Layla bint Amir par prudence.\n\nAccroche suggérée : amorce « la zone non relevée » (le Cercle cherche des escorteurs au départ de Sylvecourt ; les bûcherons ne veulent pas)."
+  },
+  {
+    "name": "Les rapports de l'expédition de Tirwen",
+    "lore": "SECRET. La colonisation fleurainaise de 704, partie de Port-Lys, fut abandonnée en moins de cinq ans, comme les deux lucentiennes de 582 et 617. Les rapports, conservés par le Cercle de l'Étoile Polaire, se lisent comme la chronique d'une retraite : faune nombreuse et hardie, plantes qui empoisonnent les bêtes, troupeaux jamais gardés un hiver entier. La cause réelle est la fuite diffuse et continue de la pierre de Tirwen, qui affecte le vivant depuis mille ans.\n\nAccroche suggérée : piste B des pirates. Les flottes hiverneraient à Tirwen, et les rapports décrivent le seul passage, par le chapelet d'îlots, praticable quelques semaines par an."
+  },
+  {
+    "name": "Le dossier de Layla bint Amir",
+    "lore": "SECRET. Layla bint Amir (Qasirah, née en 843) a constaté que les tables du ciel de Zaynab ne concordent pas avec les traditions orales, et en déduit qu'il manque du temps. Ses collègues tiennent les traditions pour fausses ; elle n'est plus publiée depuis 881 et écrit au Cercle une lettre par saison. Le dossier est incompréhensible pour qui n'est pas astronome.\n\nAccroche suggérée : amorce « la lettre de Layla » (porter le dossier à Saint-Lys en main propre, sans passer par la Maison ; plusieurs personnes voudraient qu'il n'arrive pas)."
   }
 ]

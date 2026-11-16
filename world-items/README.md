@@ -26,7 +26,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `weapons.json` | 37 armes SRD 5e (courantes et de guerre) + 10 ouvrages rituels (+1/+2) | `weapon` | Items du monde |
 | `gear.json` | 52 objets d'aventurier SRD 5e (dont munitions et contenants) + 4 préparations rituelles et 3 préparations d'herboriste | `gear` | Items du monde |
 | `regional.json` | 74 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
-| `historical.json` | 15 pièces historiques uniques, sans pouvoir ni bonus | mélangé | Items du monde, dossier « Objets historiques » > région |
+| `historical.json` | 25 pièces historiques uniques, sans pouvoir ni bonus, dont 4 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
@@ -92,7 +92,10 @@ valeur tient à leur histoire.
 
 Leur description reste neutre, avec un indice ; leur histoire vit dans
 `scripts/data/item-lore.json` et alimente le Journal **« Chroniques des objets »**, créé au
-chargement et réservé au MJ (une page par région). Le MJ choisit ce qu'il partage. Comme les
+chargement et réservé au MJ (une page par région). Le MJ choisit ce qu'il partage. La région
+`secrets` regroupe les objets liés à l'histoire cachée (doc MJ) : leur description visible reste
+banale, et leur histoire est isolée sur une page « Secrets (MJ) », à ne jamais partager, pour que
+le MJ puisse partager les pages des nations sans rien révéler. Comme les
 autres Items du monde, ces objets ne sont pas visibles des joueurs tant que le MJ ne les leur
 donne pas.
 

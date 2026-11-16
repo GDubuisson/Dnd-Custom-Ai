@@ -267,7 +267,8 @@
       "ravenmoor": "Ravenmoor",
       "valdera": "Valdera",
       "azhar": "Azhar",
-      "saintSiege": "Saint-siège de Valencia"
+      "saintSiege": "Saint-siège de Valencia",
+      "secrets": "Secrets (MJ)"
     },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
