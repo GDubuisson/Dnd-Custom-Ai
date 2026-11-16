@@ -357,7 +357,7 @@
     }
   },
   {
-    "name": "Demi-plate en mithral",
+    "name": "Demi-plate en acier d'Eisengrund",
     "type": "armor",
     "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
     "system": {
@@ -370,11 +370,11 @@
       "weight": 18.1,
       "quantity": 1,
       "equipped": false,
-      "description": "Pièce rare forgée dans le mithral, un métal léger et souple que seuls quelques ateliers savent travailler : elle n'impose pas de désavantage aux tests de Discrétion."
+      "description": "Pièce rare forgée en acier d'Eisengrund, un alliage léger et souple que seuls quelques maîtres-forgerons de l'Eismark savent travailler : elle n'impose pas de désavantage aux tests de Discrétion."
     }
   },
   {
-    "name": "Harnois en mithral",
+    "name": "Harnois en acier d'Eisengrund",
     "type": "armor",
     "img": "icons/equipment/chest/breastplate-layered-steel.webp",
     "system": {
@@ -387,7 +387,7 @@
       "weight": 29.5,
       "quantity": 1,
       "equipped": false,
-      "description": "Pièce rare forgée dans le mithral, un métal léger et souple que seuls quelques ateliers savent travailler : elle n'impose pas de désavantage aux tests de Discrétion et ne demande aucune valeur de Force."
+      "description": "Pièce rare forgée en acier d'Eisengrund, un alliage léger et souple que seuls quelques maîtres-forgerons de l'Eismark savent travailler : elle n'impose pas de désavantage aux tests de Discrétion et ne demande aucune valeur de Force."
     }
   },
   {
