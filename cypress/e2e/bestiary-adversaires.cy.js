@@ -1,4 +1,4 @@
-// Compendium « adversaires » : 15 PNJ (humanoïdes et bêtes réelles), attaques jouables et butin.
+// Compendium « adversaires » : 24 PNJ (humanoïdes et bêtes réelles), attaques jouables et butin.
 
 const createdActorIds = [];
 
@@ -11,7 +11,7 @@ function waitForAdversairesImport() {
   return cy.window({ timeout: 20000 }).should((win) => {
     const pack = win.game.packs.get("dnd-custom-ai.adversaires");
     expect(pack, "compendium 'adversaires' introuvable").to.exist;
-    expect(pack.index.size, "import automatique du bestiaire pas encore terminé").to.equal(15);
+    expect(pack.index.size, "import automatique du bestiaire pas encore terminé").to.equal(24);
   });
 }
 
@@ -23,18 +23,23 @@ after(() => {
 describe("Compendium \"Adversaires\" — présence et contenu", () => {
   beforeEach(() => cy.loginAsGM());
 
-  it("existe, contient exactement les 15 PNJ attendus, aucune créature hors scope (T-ADV-001)", () => {
+  it("existe, contient exactement les 24 PNJ attendus, aucune créature hors scope (T-ADV-001)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const pack = win.game.packs.get("dnd-custom-ai.adversaires");
       expect(pack, "compendium 'adversaires' introuvable").to.exist;
       const index = await pack.getIndex();
 
-      const expectedHumanoids = ["Brigand", "Maraudeur", "Garde", "Espion", "Chef de brigands", "Mercenaire vétéran", "Chevalier"];
+      const expectedHumanoids = [
+        "Brigand", "Maraudeur", "Garde", "Espion", "Chef de brigands", "Mercenaire vétéran", "Chevalier",
+        // Pirates de la Mer intérieure et PNJ régionaux (2026-11-16), dérivés des humanoïdes SRD ci-dessus.
+        "Matelot pirate", "Capitaine d'abordage", "Passwacht", "Veilleur de Ravenmoor", "Cavalier des Compagnies de la Route",
+        "Frère de l'Ordre de la Flamme", "Garde de caravane azhari", "Charbonnier de Logne", "Contrebandier de Blackwych"
+      ];
       const expectedBeasts = ["Rat", "Corbeau", "Loup", "Sanglier", "Serpent venimeux", "Panthère", "Crocodile", "Ours brun"];
       const names = [...index].map((entry) => entry.name);
 
-      expect(names, "15 entrées attendues").to.have.length(15);
+      expect(names, "24 entrées attendues").to.have.length(24);
       for (const name of [...expectedHumanoids, ...expectedBeasts]) {
         expect(names, `"${name}" absent du compendium`).to.include(name);
       }

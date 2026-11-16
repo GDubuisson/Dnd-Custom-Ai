@@ -4,7 +4,7 @@ Dossier vide dans le dépôt : Foundry le compile en LevelDB directement ici, la
 qu'un document y est ajouté depuis l'interface (glisser un Actor de type `npc` depuis le monde
 vers ce compendium, ou "Créer un acteur" directement dedans).
 
-Les 15 PNJ prêts à l'emploi de `world-items/npcs.json` (7 humanoïdes, 8 bêtes sauvages réelles —
+Les 24 PNJ prêts à l'emploi de `world-items/npcs.json` (16 humanoïdes, 8 bêtes sauvages réelles —
 aucune créature légendaire/mythique) y sont importés **automatiquement au chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.

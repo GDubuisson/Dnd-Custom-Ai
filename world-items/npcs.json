@@ -470,6 +470,743 @@
     ]
   },
   {
+    "name": "Matelot pirate",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Pirate des flottes qui écument la Mer intérieure depuis 874 : aborde les caboteurs en bande, connaît les calendriers de départ, et disparaît en mer sans qu'on sache où il hiverne."
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon", "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.45, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces d'argent et de cuivre."
+        }
+      },
+      {
+        "name": "Grappin", "type": "gear",
+        "img": "icons/tools/fishing/hook-multi-steel-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.8,
+          "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "description": "",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Capitaine d'abordage",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 3 }, "con": { "mod": 2 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 65, "max": 65, "temp": 0 }, "ac": { "value": 15 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Dague", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Commande l'abordage d'une flotte pirate de la Mer intérieure : sait d'avance quel convoi est le mieux chargé, et rompt le combat dès que la prise est faite."
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon", "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "offHand", "weight": 0.45, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Police d'assurance de Castelmare", "type": "gear",
+        "img": "icons/sundries/scrolls/scroll-writing-brown-gold.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+          "description": "Contrat roulé qui énumère une cargaison, un navire et une somme, signé à l'heure des vêpres.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Passwacht",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 58, "max": 58, "temp": 0 }, "ac": { "value": 17 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Soldat des garnisons permanentes de l'Eismark, à Eisenpass et Eisengrund : garde les cols, les mines et les convois d'argent. Service dur, bien payé, souvent héréditaire ; on y fait l'appel deux fois par nuit."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon", "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" }, "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon", "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial", "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 8.2, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+            "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1,
+            "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse", "type": "armor", "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium", "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 }, "baseAC": 14,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "armor",
+          "weight": 9, "quantity": 1, "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Solde d'engagement, en partie déjà dépensé."
+        }
+      },
+      {
+        "name": "Corne d'appel des cols", "type": "gear",
+        "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.9,
+          "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+          "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Baume des Passwachten", "type": "gear",
+        "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.23,
+          "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "use": { "type": "heal", "healDice": "1d4", "healBase": 1, "healSkill": "", "consumable": true },
+          "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Veilleur de Ravenmoor",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Lance", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Membre de la compagnie chargée des routes et des affaires qui ne relèvent d'aucun comté, une police plus qu'une armée : escorte les voyageurs par tronçons, notamment sur la route de la forêt des murmures."
+    },
+    "items": [
+      {
+        "name": "Lance simple", "type": "weapon", "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "1d8" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor", "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 }, "baseAC": 2,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "offHand",
+          "weight": 2.7, "quantity": 1, "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Gambison", "type": "armor", "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 }, "baseAC": 11,
+          "strengthRequired": 0, "stealthDisadvantage": true, "slot": "armor",
+          "weight": 3.6, "quantity": 1, "equipped": true,
+          "description": "Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion)."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces de cuivre et d'argent."
+        }
+      },
+      {
+        "name": "Cape grise de Veilleur", "type": "gear",
+        "img": "icons/equipment/back/cloak-layered-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.4,
+          "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Cavalier des Compagnies de la Route",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 58, "max": 58, "temp": 0 }, "ac": { "value": 17 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Escorte sous contrat de la Compagnia del Sole ou de la Cavalcata Nera, domiciliées à San Brizio : peut porter les armes à l'étranger, arrêter et juger sommairement sur la route. Mieux payé que la plupart des soldats du continent."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon", "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" }, "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon", "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial", "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 8.2, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+            "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1,
+            "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse", "type": "armor", "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium", "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 }, "baseAC": 14,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "armor",
+          "weight": 9, "quantity": 1, "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Solde d'engagement, en partie déjà dépensé."
+        }
+      },
+      {
+        "name": "Sceau de la Charte des Routes", "type": "gear",
+        "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+          "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Frère de l'Ordre de la Flamme",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 0 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 52, "max": 52, "temp": 0 }, "ac": { "value": 18 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Membre de l'Ordre de Ferveur fondé par Inés la Brûlante à Cortelba en 501 : obéit au roi, répond au Hiérarque, et tient la Trêve de la Passe pour une erreur. Se rend rarement."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon", "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" }, "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor", "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 }, "baseAC": 2,
+          "strengthRequired": 0, "stealthDisadvantage": false, "slot": "offHand",
+          "weight": 2.7, "quantity": 1, "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates", "type": "armor", "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy", "price": { "pc": 0, "pa": 0, "po": 1500, "pp": 0 }, "baseAC": 17,
+          "strengthRequired": 15, "stealthDisadvantage": true, "slot": "armor",
+          "weight": 27.2, "quantity": 1, "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 40, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Image d'Inés", "type": "gear",
+        "img": "icons/equipment/neck/pendant-gold-hook.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+          "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Garde de caravane azhari",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Arc court", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Archer des caravanes qui se croisent à Qasirah : marche de nuit, tire depuis le dos d'un chameau, et ne quitte jamais le convoi pour poursuivre un ennemi."
+    },
+    "items": [
+      {
+        "name": "Arc court", "type": "weapon", "img": "icons/weapons/bows/shortbow-leather.webp",
+        "system": {
+          "weaponType": "rangedSimple", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.9, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 24, "long": 96 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 4, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces de cuivre."
+        }
+      },
+      {
+        "name": "Outre de caravane", "type": "gear",
+        "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": { "pc": 0, "pa": 3, "po": 0, "pp": 0 },
+          "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Charbonnier de Logne",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Hachette", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Membre des communautés de bûcherons et de charbonniers de la Forêt de Logne, qui vivent sous chartes royales et ne relèvent d'aucun seigneur. Ne parle guère aux étrangers et ne les laisse pas passer là où il ne va pas lui-même."
+    },
+    "items": [
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.45, "quantity": 1, "equipped": false, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Quelques pièces d'argent et de cuivre."
+        }
+      },
+      {
+        "name": "Hachette", "type": "weapon",
+        "img": "icons/weapons/axes/axe-broad-black.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true, "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Sac de charbon de Logne", "type": "gear",
+        "img": "icons/containers/bags/sack-simple-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 4.5,
+          "price": { "pc": 5, "pa": 0, "po": 0, "pp": 0 },
+          "description": "Charbon de bois serré dans un sac de toile, marqué d'une hache stylisée.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
+    "name": "Contrebandier de Blackwych",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 27, "max": 27, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète de poing", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Fait passer tourbe et marchandises des deux côtés de la frontière entre Ravenmoor et la Sümpfenmark, compte en monnaie d'Eisburg et connaît chaque fondrière du chemin."
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon", "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 0.9, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète de poing", "type": "weapon", "img": "icons/weapons/crossbows/crossbow-slotted.webp",
+        "system": {
+          "weaponType": "rangedMartial", "price": { "pc": 0, "pa": 0, "po": 75, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "offHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1,
+            "range": { "normal": 9, "long": 36 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Outils de voleur", "type": "tool", "img": "icons/tools/hand/lockpicks-steel-grey.webp",
+        "system": {
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 }, "weight": 0.45, "quantity": 1, "equipped": false,
+          "useEffect": { "skill": "sleightOfHand", "bonus": 0 },
+          "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage à tout test de Dextérité (Escamotage) impliquant crochetage de serrure ou désamorçage de piège."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-silver-grey.webp",
+        "system": {
+          "weight": 0.2, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Pièces d'argent et un message codé illisible."
+        }
+      },
+      {
+        "name": "Pfennig d'Eisburg", "type": "gear",
+        "img": "icons/commodities/currency/coins-engraved-face-silver.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+          "description": "Pièce d'argent épaisse, aux bords parfaitement nets.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Sac de tourbe de la Sümpfenmark", "type": "gear",
+        "img": "icons/containers/bags/sack-simple-leather-orange.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 4.5,
+          "price": { "pc": 3, "pa": 0, "po": 0, "pp": 0 },
+          "description": "Mottes de tourbe séchée qui sentent le marais même une fois brûlées.",
+          "equipped": false
+        }
+      }
+    ]
+  },
+  {
     "name": "Rat",
     "type": "npc",
     "img": "icons/creatures/mammals/rodent-rat-green.webp",

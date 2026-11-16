@@ -210,9 +210,12 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-15 PNJ déjà configurés (attaques + butin embarqué), importés automatiquement comme le reste du
-contenu de référence : 7 humanoïdes du FI 1/8 au FI 3 (Brigand, Maraudeur, Garde, Espion, Chef de
-brigands, Mercenaire vétéran, Chevalier) et 8 bêtes sauvages réelles du FI 0 au FI 1 (Rat, Corbeau,
+24 PNJ déjà configurés (attaques + butin embarqué), importés automatiquement comme le reste du
+contenu de référence : 16 humanoïdes du FI 1/8 au FI 3 — 7 de base (Brigand, Maraudeur, Garde, Espion, Chef de
+brigands, Mercenaire vétéran, Chevalier) et 9 propres à l'univers qui en reprennent les statistiques
+(Matelot pirate, Capitaine d'abordage, Passwacht, Veilleur de Ravenmoor, Cavalier des Compagnies de
+la Route, Frère de l'Ordre de la Flamme, Garde de caravane azhari, Charbonnier de Logne, Contrebandier
+de Blackwych) et 8 bêtes sauvages réelles du FI 0 au FI 1 (Rat, Corbeau,
 Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours brun) — volontairement aucune
 créature légendaire/mythique/fantastique, cohérent avec le système d'Origines (cultures humaines
 réelles, pas de races/monstres imaginaires). Seul compendium invisible aux joueurs (visible du MJ

@@ -620,7 +620,7 @@ utilisé pour une arme/attaque à dégâts combinés (ex. épée de feu = tranch
 ## Compendium "Adversaires" (bestiaire, Actor) — 2026-08-25
 
 Demande explicite de l'utilisateur ("crée des fiches d'ennemis humains et de bêtes sauvages
-réelles") : `world-items/npcs.json` (15 Actors `npc` — 7 humanoïdes FI 1/8 à 3, 8 bêtes FI 0 à 1,
+réelles") : `world-items/npcs.json` (24 Actors `npc` — 16 humanoïdes FI 1/8 à 3, dont 9 propres à l'univers dérivés des 7 SRD, 8 bêtes FI 0 à 1,
 volontairement AUCUNE créature légendaire/mythique) importé dans un NOUVEAU compendium **Actor**
 `packs/adversaires` (`system.json` > `packs`, `ownership.PLAYER: "NONE"` — seul compendium de ce
 système invisible aux joueurs, un bestiaire n'a pas vocation à être consulté à l'avance).

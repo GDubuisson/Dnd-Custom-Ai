@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 15 PNJ prêts à l'emploi (7 humanoïdes, 8 bêtes sauvages réelles — aucune créature légendaire/mythique) avec butin embarqué | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 24 PNJ prêts à l'emploi (16 humanoïdes, 8 bêtes sauvages réelles — aucune créature légendaire/mythique) avec butin embarqué | Actor `npc` | Compendium "Adversaires" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
 avec le système) — dupliquez l'Item une fois importé si vous voulez le personnaliser.
@@ -182,9 +182,11 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 15 Actors `npc` prêts à
-glisser sur une scène : 7 humanoïdes (Brigand, Maraudeur, Garde, Espion, Chef de brigands,
-Mercenaire vétéran, Chevalier) et 8 bêtes sauvages réelles (Rat, Corbeau, Loup, Sanglier, Serpent
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 24 Actors `npc` prêts à
+glisser sur une scène : 16 humanoïdes (Brigand, Maraudeur, Garde, Espion, Chef de brigands,
+Mercenaire vétéran, Chevalier, et 9 PNJ de l'univers qui reprennent exactement les statistiques
+de l'un d'eux : pirates de la Mer intérieure, Passwacht, Veilleur, Compagnies de la Route, Ordre
+de la Flamme, caravane azhari, charbonnier de Logne, contrebandier de Blackwych) et 8 bêtes sauvages réelles (Rat, Corbeau, Loup, Sanglier, Serpent
 venimeux, Panthère, Crocodile, Ours brun) — volontairement **aucune** créature légendaire/
 mythique/fantastique (pas de dragon, gobelin, mort-vivant...), sur demande explicite de
 l'utilisateur. Indices de dangerosité SRD 5e du FI 0 au FI 3, calculés à partir de vrais blocs de
