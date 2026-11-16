@@ -143,6 +143,98 @@
     }
   },
   {
+    "name": "Lance de l'Aube Blanche",
+    "type": "weapon",
+    "img": "icons/weapons/polearms/spear-simple-engraved.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+      "damage": { "dice": "1d12", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Lance de cavalerie au fût peint de blanc, dont le fer porte, gravé près de la douille, un soleil levant à demi caché.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": true,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": "Désavantage si la cible est à moins de 1,50 m ; nécessite une monture pour être maniée à une main."
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Selle haute à étriers",
+    "type": "gear",
+    "img": "icons/containers/bags/case-simple-leather-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 13.6,
+      "price": { "pc": 0, "pa": 0, "po": 24, "pp": 0 },
+      "description": "Selle de guerre à haut dossier et à étriers de fer : le cavalier ne tombe plus quand sa lance touche. Avantage aux tests pour rester en selle, à arbitrer par le MJ."
+    }
+  },
+  {
+    "name": "Hache de bûcheron de Logne",
+    "type": "weapon",
+    "img": "icons/weapons/axes/axe-battle-black.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "slashing" },
+      "damageVersatile": { "dice": "1d10" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Hache à long manche de frêne, au fer large et lourd, faite pour abattre les chênes de la Forêt de Logne. Le manche est marqué d'une hache stylisée.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": true,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Chapeau de bûcheron de Logne",
+    "type": "gear",
+    "img": "icons/equipment/back/cloak-hooded-blue.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.2,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Chapeau de feutre à large bord, taché de suie. Celui-ci a déjà été ramassé derrière quelqu'un : la coiffe est cabossée."
+    }
+  },
+  {
     "name": "Hallebarde des Passwachten",
     "type": "weapon",
     "img": "icons/weapons/polearms/halberd-engraved-black.webp",
@@ -297,6 +389,102 @@
       "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
       "use": { "type": "heal", "healDice": "1d4", "healBase": 1, "healSkill": "", "consumable": true },
       "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
+    }
+  },
+  {
+    "name": "Couteau de foire de Wechselhof",
+    "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Couteau de table à lame courte et arrondie, à la longueur réglementaire de la foire de Wechselhof. Une dague en tout point, sauf pour le Landrecht.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Bottes de tourbière",
+    "type": "gear",
+    "img": "icons/commodities/leather/fur-pelt-brown.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 2,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Hautes bottes de cuir graissé, montant jusqu'aux cuisses, à semelle large pour ne pas s'enfoncer. On en voit à tous les seuils de la Sümpfenmark."
+    }
+  },
+  {
+    "name": "Lanterne sourde de Moorburg",
+    "type": "gear",
+    "img": "icons/sundries/lights/lantern-steel.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "use": {
+        "type": "light",
+        "light": { "bright": 9, "dim": 9 }
+      },
+      "description": "Lanterne de fer à volet, dont la flamme reste cachée tant qu'on ne l'ouvre pas, pour ne pas être prise de loin pour un Moorlicht. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Morgenstern de la Westmark",
+    "type": "weapon",
+    "img": "icons/weapons/maces/mace-cube-spiked-steel.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 18, "pp": 0 },
+      "damage": { "dice": "1d8", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 1.8,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Masse hérissée de pointes de fer, au manche cerclé, l'arme des milices de la marche frontière face aux seigneurs de Bellerive.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
     }
   },
   {
@@ -456,6 +644,80 @@
     }
   },
   {
+    "name": "Masque de la Commedia delle Case",
+    "type": "tool",
+    "img": "icons/equipment/back/cloak-hooded-blue.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "weight": 1.4,
+      "useEffect": { "skill": "deception", "bonus": 1 },
+      "descriptionRP": "Masque de cuir peint aux traits d'une Maison du Conseil, avec fards, perruques et costume assortis, tel qu'on les porte pour la farce de la grand-place de Vespera. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Verres à lire de Castelmare",
+    "type": "gear",
+    "img": "icons/equipment/finger/ring-faceted-white.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 120, "pp": 0 },
+      "description": "Deux lentilles de verre taillé à Castelmare, montées sur une monture qui pince le nez. Avantage aux tests pour estimer ou inspecter un petit objet très détaillé."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Stylet de convoyeur",
+    "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Lame fine et triangulaire, faite pour passer entre les mailles, que les hommes des Compagnies de la Route portent dans la botte.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Extrait du Livre des Prises",
+    "type": "gear",
+    "img": "icons/sundries/documents/document-official-brownl.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Copie certifiée d'une page du Livre des Prises de Vespera : une parcelle, un nom, une date d'inscription, et la signature d'un greffier de la Principauté."
+    }
+  },
+  {
     "name": "Arc long de Blackwood",
     "type": "weapon",
     "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
@@ -602,6 +864,98 @@
     }
   },
   {
+    "name": "Fronde de berger de Goldenhill",
+    "type": "weapon",
+    "img": "icons/weapons/slings/slingshot-wood.webp",
+    "system": {
+      "weaponType": "rangedSimple",
+      "price": { "pc": 0, "pa": 2, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "bludgeoning" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.0,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Fronde de laine tressée, usée au creux, dont la cordelette s'enroule autour du poignet. Les bergers des Collines de l'écho en portent tous une.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 9, "long": 36 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Cor des Collines de l'écho",
+    "type": "gear",
+    "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "description": "Corne de bélier percée, au son grave, dont le relief des collines renvoie l'appel plusieurs fois. On s'en sert pour rassembler les troupeaux, et pour prévenir les autres."
+    }
+  },
+  {
+    "name": "Glaive des Veilleurs",
+    "type": "weapon",
+    "img": "icons/weapons/polearms/glaive-simple.webp",
+    "system": {
+      "weaponType": "meleeMartial",
+      "price": { "pc": 0, "pa": 0, "po": 24, "pp": 0 },
+      "damage": { "dice": "1d10", "type": "slashing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Lame large au bout d'une hampe, sobre et sans ornement, la seule arme d'hast que les Veilleurs emportent sur la route de la forêt des murmures.",
+      "properties": {
+        "handedness": "twoHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": false,
+        "heavy": true,
+        "reach": true,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 0, "long": 0 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Couvert de l'Invité Silencieux",
+    "type": "gear",
+    "img": "icons/containers/kitchenware/vase-clay-brown-large.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Assiette, gobelet et couteau d'étain, rangés ensemble dans un linge. Un couvert qu'on met à toute table de fête, et devant lequel personne ne s'assied."
+    }
+  },
+  {
     "name": "Épée de l'Ordre de la Flamme",
     "type": "weapon",
     "img": "icons/weapons/swords/greatsword-guard.webp",
@@ -740,6 +1094,80 @@
     }
   },
   {
+    "name": "Javeline de la Passe",
+    "type": "weapon",
+    "img": "icons/weapons/polearms/javelin-flared.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 6, "po": 0, "pp": 0 },
+      "damage": { "dice": "1d6", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.9,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Javeline courte au fer barbelé, l'arme de jet des barques qui franchissaient la Passe à Poerto del Robis.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": false,
+        "light": false,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 9, "long": 36 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Image d'Inés",
+    "type": "gear",
+    "img": "icons/equipment/neck/pendant-gold-hook.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur."
+    }
+  },
+  {
+    "name": "Rameau d'étable",
+    "type": "gear",
+    "img": "icons/consumables/plants/herb-tied-bundle-green.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.1,
+      "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Rameau de laurier noué d'un fil rouge, qu'on suspend au-dessus de la porte d'une étable pour protéger les bêtes du mauvais œil."
+    }
+  },
+  {
+    "name": "Cantar d'Inés",
+    "type": "gear",
+    "img": "icons/sundries/books/book-tooled-eye-gold-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "description": "Recueil relié du poème de campagne des soldats d'Inés la Brûlante, en valdérien : trois prises de Sahelia, chantées couplet par couplet."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
     "name": "Cimeterre de Qasirah",
     "type": "weapon",
     "img": "icons/weapons/swords/scimitar-worn-blue.webp",
@@ -868,6 +1296,100 @@
     }
   },
   {
+    "name": "Rame de papier de Safwan",
+    "type": "gear",
+    "img": "icons/sundries/documents/parchment-plain-tan.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Vingt feuilles de papier de fibres de lin et de chiffons battus, dix fois moins chères que le parchemin, liées d'un cordon au sceau d'un moulin de Safwan."
+    }
+  },
+  {
+    "name": "Recueil des remèdes",
+    "type": "tool",
+    "img": "icons/sundries/books/book-embossed-jewel-silver-green.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "weight": 1.4,
+      "useEffect": { "skill": "nature", "bonus": 1 },
+      "descriptionRP": "Copie abrégée du Recueil des remèdes de la Maison des Cent Portes, avec ses sachets de simples : ce qu'une plante soigne, ce qu'elle ne soigne pas et ce qu'elle aggrave. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Khanjar",
+    "type": "weapon",
+    "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+    "system": {
+      "weaponType": "meleeSimple",
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "damage": { "dice": "1d4", "type": "piercing" },
+      "damageVersatile": { "dice": "" },
+      "slot": "mainHand",
+      "weight": 0.45,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Dague courbe à double tranchant, au fourreau recourbé, portée à la ceinture par les gens des pistes.",
+      "properties": {
+        "handedness": "oneHanded",
+        "versatile": false,
+        "finesse": true,
+        "light": true,
+        "thrown": true,
+        "heavy": false,
+        "reach": false,
+        "reload": false,
+        "reloadValue": 0,
+        "range": { "normal": 6, "long": 18 },
+        "special": ""
+      }
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Bouclier de cuir de piste",
+    "type": "armor",
+    "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+    "system": {
+      "armorType": "light",
+      "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+      "baseAC": 2,
+      "strengthRequired": 0,
+      "stealthDisadvantage": false,
+      "slot": "offHand",
+      "weight": 2.7,
+      "quantity": 1,
+      "equipped": false,
+      "description": "Bouclier ovale de cuir de chameau tendu sur une armature de bois, léger à porter sous le soleil des grandes pistes."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Robe de désert",
+    "type": "gear",
+    "img": "icons/equipment/chest/robe-layered-purple.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "description": "Robe ample de lin clair, chèche et voile contre le sable, que portent les caravaniers de Bir Azraq à Qasirah."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
     "name": "Copie du Premier Codex",
     "type": "gear",
     "img": "icons/sundries/books/book-worn-purple.webp",
@@ -907,6 +1429,52 @@
       "weight": 0.0,
       "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
       "description": "Médaille de cuivre frappée de la silhouette d'une cathédrale, percée pour être portée au cou."
+    }
+  },
+  {
+    "name": "Bréviaire de l'office",
+    "type": "gear",
+    "img": "icons/sundries/books/book-worn-purple.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "description": "Livre d'office relié de cuir, en Commun ancien, avec les tournures que la liturgie de Velencia a figées. Les marges portent la notation du chant à une voix."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    }
+  },
+  {
+    "name": "Cierge de la veille",
+    "type": "gear",
+    "img": "systems/dnd-custom-ai/assets/icons/items/Accessoires/candle-unlit-white.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.0,
+      "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+      "use": {
+        "type": "light",
+        "light": { "bright": 0, "dim": 1.5 }
+      },
+      "description": "Haut cierge de cire pure, au modèle de ceux qui brûlent devant le mur du tombeau d'Estevan. Lumière faible dans un rayon de 1,50 m. Utilisez l'objet depuis l'inventaire pour l'allumer ou l'éteindre."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    }
+  },
+  {
+    "name": "Outils de copiste de Velencia",
+    "type": "tool",
+    "img": "icons/tools/scribal/pen-steel-grey-brown.webp",
+    "system": {
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "weight": 2.3,
+      "useEffect": { "skill": "history", "bonus": 1 },
+      "descriptionRP": "Plumes, grattoirs, encres et règles des archivistes du Saint-siège, qui écrivent encore leurs actes sur parchemin, par principe. Bouton « Utiliser » : test de la compétence liée avec le bonus de maîtrise de l'outil, +1 pour sa qualité."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
     }
   }
 ]

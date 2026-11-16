@@ -184,6 +184,118 @@
     "lore": "Vendue au pied de la Grande Cathédrale, commencée en 288 et achevée en 455 après cent soixante-sept ans de chantier."
   },
   {
+    "name": "Lance de l'Aube Blanche",
+    "lore": "L'Ordre de l'Aube Blanche fut fondé en 204 par Guillaume de Rochemont pour juger les manquements à l'honneur ; ses commanderies ne relèvent que du Grand Commandeur, qui prête serment au royaume et non au roi. La cavalerie lourde fleurainaise n'a pas d'équivalent connu, et n'a plus chargé depuis la Paix de Vespera.\n\nBase SRD : lance de cavalerie."
+  },
+  {
+    "name": "Selle haute à étriers",
+    "lore": "La selle à dossier et les deux étriers de fer apparurent à Fleuraine vers 250 : c'est l'origine de la cavalerie lourde du royaume. Altenmark affirme que ses cavaliers de la Westmark en usaient avant ; la Maison des Cent Portes n'en a trouvé aucune trace écrite.\n\nBase SRD : selle militaire (20 po, avantage pour rester en selle)."
+  },
+  {
+    "name": "Hache de bûcheron de Logne",
+    "lore": "Au nord de Sylvecourt et de Logneval, la forêt est tenue par des communautés de bûcherons et de charbonniers qui vivent sous des chartes royales : elles ne relèvent d'aucun seigneur et ne paient pas l'aide. Personne à Saint-Lys n'a oublié l'Hiver Noir de 776.\n\nBase SRD : hache de bataille."
+  },
+  {
+    "name": "Chapeau de bûcheron de Logne",
+    "lore": "Les bûcherons du nord parlent d'une femme en gris, la Dame de Logne, qui ne répond pas et ne laisse pas de traces. La croiser n'est pas un mauvais présage ; être suivi par elle en est un. On jette alors son chapeau derrière soi et l'on ne se retourne pas avant la lisière."
+  },
+  {
+    "name": "Couteau de foire de Wechselhof",
+    "lore": "Chaque année, à la date du siège de 231, Wechselhof tient la plus ancienne foire de la Fédération, où personne n'a le droit de porter une arme dans l'enceinte : c'est la seule où le Landrecht punit le port d'un couteau de table trop long. On l'ouvre en lisant le Dénombrement d'Otwin, et la lecture dure jusqu'au soir.\n\nBase SRD : dague."
+  },
+  {
+    "name": "Bottes de tourbière",
+    "lore": "La Sümpfenmark est faite de marais, de tourbières et de brume. Les Sümpfer ne s'endorment jamais seuls dans le marais, ne suivent pas les Moorlichter et ne traversent pas les « coins calmes », que les géomètres d'Altenburg tiennent pour des fondrières."
+  },
+  {
+    "name": "Lanterne sourde de Moorburg",
+    "lore": "Moorburg est bâtie sur pilotis de chêne et s'enfonce, dit-on, d'un pouce par génération. Dans le marais, on ne suit pas les feux de tourbière et on ne les montre pas du doigt : une lanterne qu'on peut masquer évite d'être pris pour l'un d'eux.\n\nBase SRD : lanterne à capuchon."
+  },
+  {
+    "name": "Morgenstern de la Westmark",
+    "lore": "La Westmark est une marche militaire par vocation : bocages, forêt de Grenzwald et frontière fleurainaise. En 887, elle a renforcé Grenzfestung face à Bellerive avant même que la Diète le lui demande.\n\nBase SRD : morgenstern."
+  },
+  {
+    "name": "Masque de la Commedia delle Case",
+    "lore": "Sur la grand-place de Vespera, on joue depuis le septième siècle une farce masquée où chaque Maison du Conseil a son masque. Chacune paie, plus ou moins discrètement, pour que le sien soit moins ridicule que celui des autres.\n\nBase SRD : kit de déguisement, +1 pour sa qualité."
+  },
+  {
+    "name": "Verres à lire de Castelmare",
+    "lore": "Les verres à lire furent d'abord portés, vers 700, par les archivistes de Velencia, que des siècles de registres rendaient aveugles avant l'âge. Le verre est taillé à Castelmare ; la monture, longtemps, ne tint pas.\n\nBase SRD : loupe."
+  },
+  {
+    "name": "Stylet de convoyeur",
+    "lore": "Les Compagnies de la Route peuvent porter les armes à l'étranger, arrêter et juger sommairement sur la route. Les plus grandes, la Compagnia del Sole et la Cavalcata Nera, alignent plus d'hommes que certains comtés fleurainais.\n\nBase SRD : dague."
+  },
+  {
+    "name": "Extrait du Livre des Prises",
+    "lore": "À Lucentia, la terre fut d'abord à celui qui la défrichait, sous la presa. Les maisons qui tenaient les relais inscrivirent les prises dans leurs registres, puis la Principauté les rassembla en un seul Livre des Prises, qui sert encore de cadastre : on n'y possède une terre que si elle y est écrite.\n\nAccroche suggérée : une parcelle inscrite deux fois, ou rayée sans qu'on sache par qui."
+  },
+  {
+    "name": "Fronde de berger de Goldenhill",
+    "lore": "Goldenhill doit son nom aux genêts des collines, pas à l'or, ce que des prospecteurs lucentiens apprirent à leurs dépens vers 450. Les bergers leur vendirent du fromage pendant toute la durée des fouilles.\n\nBase SRD : fronde."
+  },
+  {
+    "name": "Cor des Collines de l'écho",
+    "lore": "Dans les Collines de l'écho, entendre son propre nom appelé annonce une mort dans l'année ; entendre celui d'un autre oblige à aller le prévenir. Les bergers de Goldenhill font des lieues pour cela et considèrent que c'est un devoir, non une superstition."
+  },
+  {
+    "name": "Glaive des Veilleurs",
+    "lore": "Les Veilleurs procèdent de l'article onze du Serment de Ravenhold : le roi entretient les routes d'une Terre à l'autre et en assure la sûreté. Ils escortent les voyageurs par tronçons sur la route de la forêt des murmures, que l'Assemblée vote chaque année sans débat.\n\nBase SRD : glaive."
+  },
+  {
+    "name": "Couvert de l'Invité Silencieux",
+    "lore": "À toute table de fête ravenmooroise, on met un couvert de plus. On ne l'explique pas, on ne le commente pas, et l'on ne s'assied pas à cette place. Un hôte qui l'oublie est repris à voix basse, une seule fois."
+  },
+  {
+    "name": "Javeline de la Passe",
+    "lore": "Pendant quatre cent quarante-neuf ans (402–851), les armées valdériennes ont franchi la Passe douze fois depuis Poerto del Robis, et pris neuf fois Sahelia sans jamais la garder. La Trêve de 851 doit être renouvelée en 891.\n\nBase SRD : javeline."
+  },
+  {
+    "name": "Image d'Inés",
+    "lore": "Le culte d'Inés la Brûlante n'est pas reconnu et il est universel : les soldats valdériens portent son image cousue à l'intérieur du gambison, ce qui permet de dire qu'ils ne la portent pas. Torralba réclame sa canonisation depuis 883."
+  },
+  {
+    "name": "Rameau d'étable",
+    "lore": "À Valdera, on protège les nourrissons du mauvais œil par un ruban rouge, et les bêtes par un rameau au-dessus de l'étable. Le clergé condamne la pratique dans ses sermons et bénit les rubans à la sortie de l'office."
+  },
+  {
+    "name": "Cantar d'Inés",
+    "lore": "Composé vers 540 par les soldats d'Inés dans les années qui suivirent sa mort, le Cantar raconte les trois prises de Sahelia et ne dit rien des trois pertes. Le Saint-siège ne l'a jamais condamné et ne l'a jamais laissé chanter à l'office.\n\nBase SRD : livre."
+  },
+  {
+    "name": "Rame de papier de Safwan",
+    "lore": "Le papier de Safwan, fait de fibres de lin et de chiffons battus, remplace le parchemin dans les comptoirs depuis 560 environ. Sans lui, la lettre de change n'aurait pas pu naître à Vespera trente ans plus tard. Les clercs de Velencia écrivent encore sur parchemin, par principe."
+  },
+  {
+    "name": "Recueil des remèdes",
+    "lore": "Composé vers 620 à la Maison des Cent Portes, le Recueil classe trois mille préparations par mal et par plante. Il est copié dans tous les hôpitaux du continent, y compris ceux de la Foi, qui en retirent les quelques pages où le remède est un rituel.\n\nBase SRD : kit d'herboristerie, +1 pour sa qualité."
+  },
+  {
+    "name": "Khanjar",
+    "lore": "On ne prend pas une ville d'Azhar : on la fait mourir de soif. Les gens des pistes portent le khanjar comme un outil plus que comme une arme, et l'on ne le retire pas à un hôte : pendant trois jours, il ne peut être ni interrogé sur son nom, ni chassé, ni livré.\n\nBase SRD : dague."
+  },
+  {
+    "name": "Bouclier de cuir de piste",
+    "lore": "Les gardes des caravanes qui se croisent à Qasirah voyagent de nuit, quand il fait frais, en marchant à l'anneau des étoiles : l'équipement doit être léger, et le cuir ne chauffe pas au soleil comme le fer.\n\nBase SRD : bouclier."
+  },
+  {
+    "name": "Robe de désert",
+    "lore": "Au sud-ouest, au-delà de Bir Azraq et de Ramlah, le sable prend le dessus jusqu'à la mer : c'est le Désert de Zahir, que les caravaniers ignorent comme ils ignorent le large, et devant lequel ils annoncent leur nom, comme devant tout lieu vide.\n\nBase SRD : vêtements de voyageur."
+  },
+  {
+    "name": "Bréviaire de l'office",
+    "lore": "L'office de Velencia se chante à une seule voix, sans instrument, dans le Commun ancien du Premier Codex, selon les règles que les maîtres de chœur fixèrent vers 300. Tout le continent l'imite, sauf Azhar, qui n'a pas d'office.\n\nBase SRD : livre."
+  },
+  {
+    "name": "Cierge de la veille",
+    "lore": "Sous le chœur de la Grande Cathédrale repose Estevan, dans un tombeau muré qui n'a jamais été rouvert. Les pèlerins prient devant le mur, et tout Hiérarque nouvellement élu y passe seul la nuit de son avènement.\n\nBase SRD : bougie."
+  },
+  {
+    "name": "Outils de copiste de Velencia",
+    "lore": "Le Saint-siège tient registre depuis la mort d'Estevan, sans interruption : ce sont les archives les plus anciennes du monde connu, et les chroniqueurs des six nations viennent y vérifier leurs propres dates.\n\nBase SRD : matériel de calligraphe, +1 pour sa qualité."
+  },
+  {
     "name": "La Lame des Bannières",
     "lore": "En 131, dans la clairière dite des Bannières, quarante-trois seigneurs jurèrent de se porter secours avant toute autre obligation, et firent roi Thibaud de Saint-Lys, qui refusa trois fois. À Fleuraine, on jure sur une lame nue : les éraflures sont celles des quarante-trois mains.\n\nAccroche suggérée : la lame est gardée au trésor de Saint-Lys et sortie à chaque avènement pour le renouvellement du Serment. Aymeric V attend toujours que les seigneurs de Bellerive viennent y poser la main."
   },
