@@ -5,6 +5,26 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.4.0] - 2026-11-16
+
+**Bestiaire par phases de campagne.**
+- Le compendium « Adversaires » (toujours réservé au MJ) est rangé en dossiers : **phase de campagne**
+  (0 monde scellé, 1 premières fissures, 2 retour de la magie, 3 l'ancien monde, selon le nombre de
+  pierres brisées), puis **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de
+  la forêt de Logne). Les 24 créatures existantes y sont rangées automatiquement au chargement.
+- **40 nouvelles créatures** aux statistiques SRD 5.1 exactes, soit 64 au total :
+  - faune régionale : cerf, élan, ours noir, chouette (Fleuraine) ; ours polaire, chèvre, aigle, nuée
+    d'insectes (Altenmark) ; nuée de corbeaux (Ravenmoor) ; faucon (Lucentia) ; vautour (Valdera) ;
+    hyène, chacal, scorpion, serpent constricteur, lion (Azhar) ; nuée de rats et molosse (partout) ;
+  - Mer intérieure : pieuvre, requin de récif, requin chasseur, orque sur les côtes ; au large, où la
+    magie survit, pieuvre géante, requin géant et le **Kraken** endormi ;
+  - humains : milicien, notable, guide d'Eisengrund, gros bras de guilde, champion de tournoi, spadassin ;
+  - site de la forêt de Logne : gardien de Logne et faune aberrante (grand-loup, sanglier, araignée-loup)
+    en phase 0 ; arbuste et arbre éveillés, lutin et loup gris de Logne en phase 1 ;
+  - **Kraken (affaibli près des côtes)**, phase 1 : son énergie est absorbée par les pierres quand il
+    approche des terres (PV divisés par deux, sans pouvoirs magiques, FP 15 recalculé).
+- Test de cohérence : aucune créature surnaturelle en phase 0, sauf au large de la Mer intérieure.
+
 ## [1.3.0] - 2026-11-16
 
 **Contenu ancré dans l'univers de jeu.**
