@@ -20,7 +20,8 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
     magie survit, pieuvre géante, requin géant et le **Kraken** endormi ;
   - humains : milicien, notable, guide d'Eisengrund, gros bras de guilde, champion de tournoi, spadassin ;
   - site de la forêt de Logne : gardien de Logne et faune aberrante (grand-loup, sanglier, araignée-loup)
-    en phase 0 ; arbuste et arbre éveillés, lutin et loup gris de Logne en phase 1 ;
+    en phase 0 ; arbuste et arbre éveillés, lutin et loup gris de Logne en phase 1, liés (note MJ)
+    à la Dame de Logne ;
   - **Kraken (affaibli près des côtes)**, phase 1 : son énergie est absorbée par les pierres quand il
     approche des terres (PV divisés par deux, sans pouvoirs magiques, FP 15 recalculé).
 - Test de cohérence : aucune créature surnaturelle en phase 0, sauf au large de la Mer intérieure.

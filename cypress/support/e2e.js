@@ -78,14 +78,16 @@ Cypress.Commands.add("loginAsPlayer", () => {
   });
 });
 
-// Attend la fin de l'import automatique du contenu : le bestiaire est importé en dernier, son compendium
-// compte alors autant d'entrées que world-items/npcs.json. Ne jamais relancer l'import en parallèle.
+// Attend la fin de l'import automatique du contenu (créations ET resynchronisations, signalée par le hook
+// `ready`), puis vérifie que le bestiaire, importé en dernier, compte autant d'entrées que
+// world-items/npcs.json. Ne jamais relancer l'import en parallèle.
 Cypress.Commands.add("waitForContentImport", () => {
   cy.readFile("world-items/npcs.json").then((npcs) => {
     cy.window({ timeout: 30000 }).should((win) => {
+      expect(win.game.dndCustomAi?.contentImported, "import automatique du contenu pas encore terminé").to.equal(true);
       const pack = win.game.packs.get("dnd-custom-ai.adversaires");
       expect(pack, "compendium 'adversaires' introuvable").to.exist;
-      expect(pack.index.size, "import automatique du contenu pas encore terminé").to.equal(npcs.length);
+      expect(pack.index.size, "nombre de créatures du bestiaire").to.equal(npcs.length);
     });
   });
 });

@@ -686,6 +686,10 @@ Actor `adversaires` (toujours `ownership.PLAYER: "NONE"`) est rangé en dossiers
   documents existants sans dossier sont rangés **avant** la création des manquants, pour que le
   compte final du pack reste le signal de fin d'import attendu par les specs
   (`cy.waitForContentImport()`, qui lit le nombre d'entrées de `npcs.json` au lieu d'un compte en dur).
+- Ce compte ne suffit pas quand le JSON a changé : les entrées existent déjà, mais leur
+  resynchronisation est encore en cours (course reproduite sur T-SYNC-001). Le hook `ready` pose donc
+  `game.dndCustomAi.contentImported = true` après `importSystemContent()`, et
+  `cy.waitForContentImport()` attend ce drapeau avant de vérifier le compte.
 
 ## Test opposé (Agripper/Bousculer) — `opposedCheckType`
 

@@ -2978,7 +2978,7 @@
       "damageResistances": ["piercing"],
       "damageVulnerabilities": ["fire"],
       "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un buisson ordinaire.",
-      "particularity": "Premier signe du suintement après la rupture de la pierre : des buissons qui bougent quand on ne les regarde pas."
+      "particularity": "Premier signe du suintement après la rupture de la pierre : des buissons qui bougent quand on ne les regarde pas. (MJ : les mains de la Dame de Logne, fragment survivant d'une ancienne déesse de la forêt, de la faune et de la flore, qui reprend des forces depuis la rupture de la pierre.)"
     },
     "items": [],
     "flags": {
@@ -3009,7 +3009,7 @@
       "damageResistances": ["bludgeoning", "piercing"],
       "damageVulnerabilities": ["fire"],
       "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un arbre ordinaire.",
-      "particularity": "Un des premiers ou derniers arbres d'une coupe, laissés debout par la coutume. Il se souvient des haches."
+      "particularity": "Un des premiers ou derniers arbres d'une coupe, laissés debout par la coutume. Il se souvient des haches. (MJ : éveillé par la Dame de Logne, fragment survivant d'une ancienne déesse de la forêt, de la faune et de la flore, qui reprend des forces depuis la rupture de la pierre ; il la sert.)"
     },
     "items": [],
     "flags": {
@@ -3043,7 +3043,7 @@
         }
       ],
       "specialAbilities": "Vol (12 m), 3 m au sol. Flèche : JS de Constitution DD 10 ou empoisonné 1 minute ; avec un résultat de 5 ou moins, inconscient pour la même durée (réveillé par des dégâts ou une action). Vision du cœur : en touchant une créature, connaît son état émotionnel ; sur un JS de Charisme DD 10 raté, aussi son alignement. Invisibilité (concentration) : devient invisible avec ce qu'il porte. Perception +3, Discrétion +8.",
-      "particularity": "Petit peuple de l'ancien monde revenu avec la magie ; ne parle aucune langue connue, et juge les intrus avant de les laisser passer."
+      "particularity": "Petit peuple de l'ancien monde revenu avec la magie ; ne parle aucune langue connue, et juge les intrus avant de les laisser passer. (MJ : de la cour de la Dame de Logne, fragment survivant d'une ancienne déesse de la forêt, de la faune et de la flore, qui reprend des forces depuis la rupture de la pierre.)"
     },
     "items": [],
     "flags": {
@@ -3072,7 +3072,7 @@
         }
       ],
       "specialAbilities": "Une créature touchée par la morsure fait un JS de Force DD 13 ou tombe à terre. Vision dans le noir 18 m. Ouïe et odorat aiguisés. Perception +4. Parle une langue grondante de l'ancien monde.",
-      "particularity": "Grand loup rusé et malveillant, qui parle. Les grands-loups de Logne s'écartent de lui."
+      "particularity": "Grand loup rusé et malveillant, qui parle. Les grands-loups de Logne s'écartent de lui. (MJ : gardien de la Dame de Logne, fragment survivant d'une ancienne déesse de la forêt, de la faune et de la flore, qui reprend des forces depuis la rupture de la pierre ; elle protège la faune, pas les intrus.)"
     },
     "items": [],
     "flags": {

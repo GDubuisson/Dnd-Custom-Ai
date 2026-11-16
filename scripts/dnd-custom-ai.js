@@ -150,6 +150,8 @@ Hooks.once("ready", async () => {
   await ensureContentImportMacro();
   await ensureTokenResyncMacro();
   await importSystemContent({ notifyIfEmpty: false });
+  // Fin de l'import automatique (création ET resynchronisation), attendue par les tests E2E.
+  game.dndCustomAi.contentImported = true;
   await ensureWildSurgeTable("barbarian");
   await ensureWildSurgeTable("sorcerer");
   await ensureCharacterTokensLinked();
