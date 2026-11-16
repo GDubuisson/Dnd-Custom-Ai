@@ -10,6 +10,7 @@ ClaudeFiles/*
 !ClaudeFiles/CONCEPTION_TECHNIQUE.md
 !ClaudeFiles/CONCEPTION_FONCTIONNELLE.md
 !ClaudeFiles/ANOMALIES_ACTIVES.md
+!ClaudeFiles/JEU_DE_ROLES_HISTOIRE/*
 images_test/
 
 # Tests E2E "au réel" (Docker/Cypress/Quench, cf. tests/README.md)
