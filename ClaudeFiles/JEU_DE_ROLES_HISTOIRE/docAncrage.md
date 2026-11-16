@@ -1,1 +1,0 @@
-Document vide pour ancrage avec Claude Web.
