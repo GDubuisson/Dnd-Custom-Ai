@@ -156,15 +156,44 @@ describe("Onglet Statistiques — jets de dés", () => {
     });
   });
 
+  // Ravenmoor cumule sur Investigation l'avantage d'Origine et le bonus conditionnel de son trait
+  // (Œil du Registre, modificateur de Sagesse) : le dialogue du trait s'ouvre à chaque jet.
   it("jet de compétence — avantage d'Origine automatique, sans Maj-clic (T-STATS-005)", () => {
     cy.window().then((win) => {
-      expect(
-        win.game.dndCustomAi.origins.ravenmoor.skillAdvantages,
-        "prérequis : Ravenmoor avantage Investigation"
-      ).to.include("investigation");
+      const ravenmoor = win.game.dndCustomAi.origins.ravenmoor;
+      expect(ravenmoor.skillAdvantages, "prérequis : Ravenmoor avantage Investigation").to.include("investigation");
+      expect(ravenmoor.specialTrait.conditionalBonus, "prérequis : Œil du Registre sur Investigation").to.deep.equal({
+        skill: "investigation",
+        ability: "wis"
+      });
     });
+
+    // « Non » : avantage d'Origine seul.
     sheetRoot().find('button[data-action="rollSkill"][data-key="investigation"]').click();
-    lastMessageRoll().then((roll) => expect(roll.formula).to.include("2d20kh1"));
+    cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Œil du Registre");
+    cy.get('dialog.application.dialog[open] button[data-action="no"]').click();
+    cy.get("dialog.application.dialog", { timeout: 10000 }).should("not.exist");
+    let baseFormula;
+    lastMessageRoll().then((roll) => {
+      expect(roll.formula).to.include("2d20kh1");
+      expect(roll.flavor, "pas de mention du trait si refusé").to.not.include("Œil du Registre");
+      baseFormula = roll.formula;
+    });
+
+    // « Oui » : modificateur de Sagesse ajouté, avantage conservé.
+    sheetRoot().find('button[data-action="rollSkill"][data-key="investigation"]').click();
+    cy.get("dialog.application.dialog[open] .window-title", { timeout: 10000 }).should("contain.text", "Œil du Registre");
+    cy.get('dialog.application.dialog[open] button[data-action="yes"]').click();
+    cy.window().then((win) => {
+      const wisMod = abilityModifier(win.game.actors.get(sharedActorId).system.abilities.wis.total);
+      const baseMod = Number(baseFormula.replace("2d20kh1", "") || 0);
+      lastMessageRoll().then((roll) => {
+        expect(roll.formula, "modificateur de Sagesse ajouté, avantage conservé").to.equal(
+          `2d20kh1${formatModifier(baseMod + wisMod)}`
+        );
+        expect(roll.flavor, "trait nommé dans le libellé si accepté").to.include("Œil du Registre");
+      });
+    });
   });
 
   it("jet de compétence — désavantage d'armure automatique sur Discrétion (T-STATS-006)", () => {
