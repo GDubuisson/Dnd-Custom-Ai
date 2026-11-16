@@ -63,6 +63,16 @@
     }
   },
   {
+    "name": "Sümpfer",
+    "type": "language",
+    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
+    "system": {
+      "category": "special",
+      "requiredLanguage": "Altenmarkois",
+      "description": "Le parler des marais de la Sümpfenmark, né de l'altenmarkois mais qui s'en est écarté plus que tous les autres accents : il n'est pas rare qu'un marchand d'Ostfurt passe au Commun pour se faire comprendre à Moorburg. Ajout manuel, réservé à un personnage qui parle déjà l'altenmarkois : à glisser sur la fiche si le personnage a vécu dans les marais ou parmi les Sümpfer."
+    }
+  },
+  {
     "name": "Argot des rues",
     "type": "language",
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",

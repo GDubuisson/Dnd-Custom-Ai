@@ -565,6 +565,20 @@ describe("world-items/languages.json — cohérence avec scripts/data/origins.js
     }
   });
 
+  test("toute langue requise (requiredLanguage) existe, et seule une langue spéciale en exige une", () => {
+    const names = new Set(WORLD_LANGUAGES.map((entry) => entry.name));
+    for (const entry of WORLD_LANGUAGES.filter((lang) => lang.system.requiredLanguage)) {
+      assert.ok(names.has(entry.system.requiredLanguage), `"${entry.name}" exige "${entry.system.requiredLanguage}", introuvable`);
+      assert.equal(entry.system.category, "special", `"${entry.name}" : seule une langue spéciale (ajout manuel) peut avoir un prérequis`);
+    }
+  });
+
+  test("le sümpfer exige l'altenmarkois", () => {
+    const sumpfer = WORLD_LANGUAGES.find((entry) => entry.name === "Sümpfer");
+    assert.ok(sumpfer, "'Sümpfer' introuvable dans world-items/languages.json");
+    assert.equal(sumpfer.system.requiredLanguage, "Altenmarkois");
+  });
+
   test("aucun nom de langue en double", () => {
     const names = WORLD_LANGUAGES.map((entry) => entry.name);
     assert.equal(new Set(names).size, names.length);

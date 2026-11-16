@@ -5,5 +5,18 @@
     <select name="system.category" {{#unless isGM}}disabled{{/unless}}>{{selectOptions config.languageCategories selected=system.category localize=true}}</select>
   </div>
 
+  {{!-- Langue requise : éditable par le MJ, affichée au Joueur seulement si renseignée. --}}
+  {{#if isGM}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.RequiredLanguage"}}</label>
+    <input type="text" name="system.requiredLanguage" value="{{system.requiredLanguage}}" />
+  </div>
+  {{else if system.requiredLanguage}}
+  <div class="form-row">
+    <label>{{localize "DND_CUSTOM.Item.Fields.RequiredLanguage"}}</label>
+    <input type="text" name="system.requiredLanguage" value="{{system.requiredLanguage}}" disabled />
+  </div>
+  {{/if}}
+
   {{> "systems/dnd-custom-ai/templates/item/parts/description.hbs" field="description" label="DND_CUSTOM.Item.Fields.Description"}}
 {{/"systems/dnd-custom-ai/templates/item/parts/header.hbs"}}

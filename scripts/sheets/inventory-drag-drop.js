@@ -1,4 +1,10 @@
-import { carryingCapacity, carryingCapacityBonus, carriedWeight, isOffHandEligible } from "../helpers/rules.js";
+import {
+  carryingCapacity,
+  carryingCapacityBonus,
+  carriedWeight,
+  isOffHandEligible,
+  missingRequiredLanguage
+} from "../helpers/rules.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 import { itemFromTarget } from "../helpers/sheet-items.js";
 
@@ -158,6 +164,13 @@ export function InventoryDragDropMixin(Base) {
       if (!isSpellAllowedForActor(item, this.actor)) {
         ui.notifications.warn(
           game.i18n.format("DND_CUSTOM.Inventory.SpellWrongClass", { spell: item.name })
+        );
+        return null;
+      }
+      const requiredLanguage = missingRequiredLanguage(item, this.actor.items.contents);
+      if (requiredLanguage) {
+        ui.notifications.warn(
+          game.i18n.format("DND_CUSTOM.Inventory.LanguageRequired", { language: item.name, required: requiredLanguage })
         );
         return null;
       }

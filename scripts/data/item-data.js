@@ -372,6 +372,8 @@ export class LanguageData extends foundry.abstract.TypeDataModel {
         initial: "special",
         choices: ["common", "origin", "special"]
       }),
+      // Langue à connaître déjà pour pouvoir apprendre celle-ci (nom exact) ; vide = aucune.
+      requiredLanguage: new StringField({ required: false, blank: true, initial: "" }),
       description: new HTMLField({ required: false, blank: true, initial: "" })
     };
   }

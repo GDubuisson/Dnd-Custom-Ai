@@ -898,4 +898,55 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       return added?.delete();
     });
   });
+  // Le sümpfer exige l'altenmarkois : refusé sur un personnage de Fleuraine qui ne le parle pas,
+  // accepté une fois l'altenmarkois ajouté.
+  it("le sümpfer ne s'ajoute qu'à un personnage qui parle déjà l'altenmarkois (T-ABIL-027)", () => {
+    const dropLanguage = (name) =>
+      cy.window().then((win) =>
+        win.game.packs
+          .get("dnd-custom-ai.langues")
+          .getDocuments()
+          .then((docs) => {
+            const source = docs.find((doc) => doc.name === name);
+            expect(source, `langue "${name}" introuvable dans le compendium`).to.exist;
+            const dataTransfer = new win.DataTransfer();
+            dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: source.uuid }));
+            const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
+            win.document.querySelector(".application.character").dispatchEvent(dropEvent);
+          })
+      );
+    const languageNames = () =>
+      cy.window().then((win) =>
+        win.game.actors
+          .get(languagesActorId)
+          .items.filter((item) => item.type === "language")
+          .map((item) => item.name)
+      );
+
+    // Sans altenmarkois : refus, rien n'est ajouté.
+    dropLanguage("Sümpfer");
+    cy.get("#notifications .notification", { timeout: 10000 }).should("contain.text", "Altenmarkois");
+    languageNames().should("not.include", "Sümpfer");
+
+    // Avec altenmarkois : accepté.
+    dropLanguage("Altenmarkois");
+    cy.window().should((win) => {
+      const names = win.game.actors.get(languagesActorId).items.map((item) => item.name);
+      expect(names).to.include("Altenmarkois");
+    });
+    dropLanguage("Sümpfer");
+    sheetRoot()
+      .find(".languages-list .language-chip .item-name-link")
+      .should(($links) => {
+        const names = Array.from($links, (el) => el.textContent.trim());
+        expect(names).to.deep.equal(["Commun", "Fleurain", "Altenmarkois", "Sümpfer"]);
+      });
+
+    // Nettoyage : le personnage partagé retrouve ses deux langues d'origine.
+    cy.window().then((win) => {
+      const actor = win.game.actors.get(languagesActorId);
+      const added = actor.items.filter((item) => ["Altenmarkois", "Sümpfer"].includes(item.name)).map((item) => item.id);
+      return actor.deleteEmbeddedDocuments("Item", added);
+    });
+  });
 });

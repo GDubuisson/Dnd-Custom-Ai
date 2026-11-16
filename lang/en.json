@@ -411,7 +411,8 @@
       "NoTokenOnScene": "No token for this character on the active scene.",
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
       "DropError": "Could not move this item (insufficient permissions).",
-      "SpellWrongClass": "{spell} isn't on this class's spell list."
+      "SpellWrongClass": "{spell} isn't on this class's spell list.",
+      "LanguageRequired": "{language} can only be learned by someone who already speaks {required}."
     },
     "Currency": {
       "pc": "Copper pieces",
@@ -778,7 +779,8 @@
         "SpellHealHelp": "If set, rolls this die + the spellcasting ability modifier when cast, and shows an \"Apply Healing\" button on the chat card.",
         "HealDice": "Healing Die",
         "SpellLight": "Light emitted (optional, e.g. the Light cantrip)",
-        "LanguageCategory": "Category"
+        "LanguageCategory": "Category",
+        "RequiredLanguage": "Required language"
       }
     }
   },

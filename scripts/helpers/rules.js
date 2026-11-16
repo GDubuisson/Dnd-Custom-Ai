@@ -88,6 +88,16 @@ export function hasFeature(items, name) {
   return items.some((item) => item.type === "feature" && item.name === name);
 }
 
+/**
+ * Langue que `language` exige déjà de connaître (ex. le sümpfer exige l'altenmarkois) et que
+ * `items` ne contient pas ; `null` si l'ajout est permis.
+ */
+export function missingRequiredLanguage(language, items) {
+  const required = language.system?.requiredLanguage;
+  if (language.type !== "language" || !required) return null;
+  return items.some((item) => item.type === "language" && item.name === required) ? null : required;
+}
+
 /** Bonus d'un test avec outil : caractéristique + maîtrise toujours appliquée + bonus de l'objet. */
 export function toolCheckModifier(system, skillKey, proficiencyBonusValue, itemBonus = 0) {
   const skill = system.skills[skillKey];

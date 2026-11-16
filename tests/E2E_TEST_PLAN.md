@@ -160,6 +160,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-021 | Régénération de la réaction en début de tour | P1 | Quench | Simuler `updateCombat` faisant passer au tour du personnage | `combat.reactionAvailable` repasse à `true` (hook, à vérifier côté `dnd-custom-ai.js`) |
 | T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commun + langue d'origine listés, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
 | T-ABIL-023 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans la liste de l'onglet Capacités |
+| T-ABIL-027 | Langue à prérequis (sümpfer) | P2 | E2E | Glisser le Sümpfer sur un personnage sans altenmarkois, puis après lui avoir ajouté l'altenmarkois | Refus avec avertissement nommant l'altenmarkois, puis ajout accepté |
 | T-ABIL-026 | Surclassement — palier exact épuisé, palier supérieur disponible | P0 | E2E+Quench | `spells.slots.<niveau>.value = 0`, un palier supérieur > 0, cliquer Lancer | Fenêtre de choix ouverte ; en choisissant le palier proposé, c'est CE palier (pas celui du sort) qui est décompté |
 
 ---

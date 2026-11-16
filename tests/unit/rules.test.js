@@ -32,10 +32,30 @@ import {
   isProficientWithWeapon,
   weaponAttackDamage,
   hasFeature,
+  missingRequiredLanguage,
   canUseReaction,
   opportunityAttackTrigger
 } from "../../scripts/helpers/rules.js";
 import { SPELL_SLOT_TABLES } from "../support/fixtures.js";
+
+describe("missingRequiredLanguage (langue à connaître déjà, ex. sümpfer -> altenmarkois)", () => {
+  const sumpfer = { type: "language", name: "Sümpfer", system: { requiredLanguage: "Altenmarkois" } };
+  const language = (name) => ({ type: "language", name, system: {} });
+
+  test("prérequis absent -> renvoie la langue manquante", () => {
+    assert.equal(missingRequiredLanguage(sumpfer, [language("Commun"), language("Fleurain")]), "Altenmarkois");
+  });
+  test("prérequis connu -> null (ajout permis)", () => {
+    assert.equal(missingRequiredLanguage(sumpfer, [language("Commun"), language("Altenmarkois")]), null);
+  });
+  test("un objet homonyme d'un autre type ne compte pas comme la langue", () => {
+    assert.equal(missingRequiredLanguage(sumpfer, [{ type: "feature", name: "Altenmarkois" }]), "Altenmarkois");
+  });
+  test("langue sans prérequis ou autre type d'Item -> null", () => {
+    assert.equal(missingRequiredLanguage(language("Argot des rues"), []), null);
+    assert.equal(missingRequiredLanguage({ type: "spell", name: "Lumière", system: {} }, []), null);
+  });
+});
 
 describe("canUseReaction (économie d'action, SRD 5e : 1 réaction/round)", () => {
   test("réaction disponible : true", () => {

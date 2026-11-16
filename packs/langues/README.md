@@ -15,5 +15,5 @@ sans doublon (comparaison par nom) et sans action du MJ.
 
 Le Commun et la langue de l'Origine choisie sont octroyés **automatiquement** à la création
 du personnage (cf. `scripts/helpers/class-content.js` > `grantLanguages`). Les langues
-spéciales (catégorie `special`) restent toujours un ajout manuel : glissez-déposez-les depuis
+spéciales (catégorie `special`) restent toujours un ajout manuel (une langue spéciale peut exiger d'en parler déjà une autre, champ `requiredLanguage` : le Sümpfer n'est accepté que sur un personnage qui parle l'Altenmarkois) : glissez-déposez-les depuis
 ce compendium vers la fiche d'un personnage (onglet "Capacités") pour les lui attribuer.
