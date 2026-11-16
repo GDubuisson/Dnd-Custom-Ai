@@ -4,10 +4,22 @@ Dossier vide dans le dépôt : Foundry le compile en LevelDB directement ici, la
 qu'un document y est ajouté depuis l'interface (glisser un Actor de type `npc` depuis le monde
 vers ce compendium, ou "Créer un acteur" directement dedans).
 
-Les 24 PNJ prêts à l'emploi de `world-items/npcs.json` (16 humanoïdes, 8 bêtes sauvages réelles —
-aucune créature légendaire/mythique) y sont importés **automatiquement au chargement du monde**
+Les créatures prêtes à l'emploi de `world-items/npcs.json` y sont importées **automatiquement au
+chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
+
+64 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+**milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
+scellé : humains et bêtes réelles de chaque région, faune aberrante autour du site de la forêt de Logne,
+et, seul surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la
+magie survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
+(arbres et arbustes éveillés, lutin, loup gris) et le Kraken affaibli qui approche des côtes. Toutes
+reprennent exactement un bloc SRD 5.1 (seul le Kraken affaibli est dérivé, FP recalculé).
+
+Les dossiers sont créés par l'import d'après les flags `phase` et `habitat` de chaque entrée
+(`scripts/helpers/bestiary.js`) ; une créature déjà présente sans dossier y est rangée au chargement
+suivant.
 
 Seul compendium de ce système invisible aux joueurs par défaut (`ownership.PLAYER: "NONE"`, cf.
 `system.json` > `packs`) — un bestiaire n'a pas vocation à être consulté à l'avance par la table.

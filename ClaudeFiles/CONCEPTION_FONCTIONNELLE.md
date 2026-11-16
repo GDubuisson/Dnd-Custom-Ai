@@ -210,15 +210,23 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-24 PNJ déjà configurés (attaques + butin embarqué), importés automatiquement comme le reste du
-contenu de référence : 16 humanoïdes du FI 1/8 au FI 3 — 7 de base (Brigand, Maraudeur, Garde, Espion, Chef de
+64 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+**milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
+scellé : humains et bêtes réelles de chaque région, faune aberrante autour du site de la forêt de Logne,
+et, seul surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la
+magie survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
+(arbres et arbustes éveillés, lutin, loup gris) et le Kraken affaibli qui approche des côtes. Toutes
+reprennent exactement un bloc SRD 5.1 (seul le Kraken affaibli est dérivé, FP recalculé).
+
+Rangement voulu par le MJ (arc de campagne) : dès la première session les PJ brisent la pierre de la
+forêt de Logne, puis cherchent les autres ; chaque pierre brisée ramène un peu plus de magie, de dieux
+et de démons. Le surnaturel n'est donc pas absent du bestiaire, il n'est « pas encore » revenu. Contenu
+de la 1.3.0, conservé en phase 0 : 16 humanoïdes du FI 1/8 au FI 3 — 7 de base (Brigand, Maraudeur, Garde, Espion, Chef de
 brigands, Mercenaire vétéran, Chevalier) et 9 propres à l'univers qui en reprennent les statistiques
 (Matelot pirate, Capitaine d'abordage, Passwacht, Veilleur de Ravenmoor, Cavalier des Compagnies de
 la Route, Frère de l'Ordre de la Flamme, Garde de caravane azhari, Charbonnier de Logne, Contrebandier
 de Blackwych) et 8 bêtes sauvages réelles du FI 0 au FI 1 (Rat, Corbeau,
-Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours brun) — volontairement aucune
-créature légendaire/mythique/fantastique, cohérent avec le système d'Origines (cultures humaines
-réelles, pas de races/monstres imaginaires). Seul compendium invisible aux joueurs (visible du MJ
+Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours brun). Seul compendium invisible aux joueurs (visible du MJ
 uniquement) — un bestiaire n'a pas vocation à être consulté à l'avance par la table.
 
 ## Fiche Véhicule/Monture (Actor type `vehicle`)

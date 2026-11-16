@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 24 PNJ prêts à l'emploi (16 humanoïdes, 8 bêtes sauvages réelles — aucune créature légendaire/mythique) avec butin embarqué | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 64 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,14 +183,28 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 24 Actors `npc` prêts à
-glisser sur une scène : 16 humanoïdes (Brigand, Maraudeur, Garde, Espion, Chef de brigands,
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 64 Actors `npc` prêts à
+glisser sur une scène.
+
+64 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+**milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
+scellé : humains et bêtes réelles de chaque région, faune aberrante autour du site de la forêt de Logne,
+et, seul surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la
+magie survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
+(arbres et arbustes éveillés, lutin, loup gris) et le Kraken affaibli qui approche des côtes. Toutes
+reprennent exactement un bloc SRD 5.1 (seul le Kraken affaibli est dérivé, FP recalculé).
+
+Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
+`.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle
+en phase 0 hors du large (`fitsSealedWorld`). Bloc SRD recopié au schéma simplifié : jet d'attaque =
+modificateur + `bonus`, dégâts = dés + modificateur + `damage.bonus` ; ce que le schéma ne modélise
+pas (attaques multiples, sauvegardes, nuées, actions légendaires) est écrit dans `specialAbilities`.
+
+Contenu de la 1.3.0, en phase 0 : 16 humanoïdes (Brigand, Maraudeur, Garde, Espion, Chef de brigands,
 Mercenaire vétéran, Chevalier, et 9 PNJ de l'univers qui reprennent exactement les statistiques
 de l'un d'eux : pirates de la Mer intérieure, Passwacht, Veilleur, Compagnies de la Route, Ordre
 de la Flamme, caravane azhari, charbonnier de Logne, contrebandier de Blackwych) et 8 bêtes sauvages réelles (Rat, Corbeau, Loup, Sanglier, Serpent
-venimeux, Panthère, Crocodile, Ours brun) — volontairement **aucune** créature légendaire/
-mythique/fantastique (pas de dragon, gobelin, mort-vivant...), sur demande explicite de
-l'utilisateur. Indices de dangerosité SRD 5e du FI 0 au FI 3, calculés à partir de vrais blocs de
+venimeux, Panthère, Crocodile, Ours brun). Indices de dangerosité SRD 5e du FI 0 au FI 3, calculés à partir de vrais blocs de
 statistiques SRD adaptés au schéma simplifié de `NpcData` (bonus directs, pas de score complet) —
 `xpReward` pré-rempli depuis `DND_CUSTOM.challengeRatingXp`. Chaque PNJ embarque son propre butin
 (`items`, visible dans l'onglet "Butin" de sa fiche une fois placé sur une scène) : armes/armures

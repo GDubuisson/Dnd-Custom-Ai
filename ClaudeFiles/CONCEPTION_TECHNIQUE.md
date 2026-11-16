@@ -670,6 +670,23 @@ attaques réellement cliquables + butin structuré + intégration au pipeline d'
 dossier `world-actors/` supprimé plutôt que laissé à côté comme second mécanisme concurrent et
 non maintenu.
 
+## Bestiaire par phases de campagne (dossiers de compendium) — 2026-11-16
+
+Le MJ fait briser aux PJ la pierre de la forêt de Logne dès la première session, puis les autres :
+la magie revient par paliers, et la Mer intérieure garde au large une magie résiduelle (et le Kraken).
+`world-items/npcs.json` porte donc `flags["dnd-custom-ai"].phase` / `.habitat`, et le compendium
+Actor `adversaires` (toujours `ownership.PLAYER: "NONE"`) est rangé en dossiers phase > milieu.
+
+- `scripts/helpers/bestiary.js` : `bestiaryFolderKeys(entry)` (clés i18n du chemin de dossier,
+  `[]` si flags absents/inconnus) et `fitsSealedWorld(entry)` (phase 0 hors `bestiaryMagicHabitats`
+  → humanoid/beast seulement), testés en unitaire et appliqués à tout `npcs.json` par les tests de
+  cohérence.
+- `content-import.js` : une entrée de `COMPENDIUM_FILES` peut déclarer `folderPath`. Les dossiers du
+  pack sont créés à la demande (`Folder.create(..., { pack })`, rapprochés par nom et parent) ; les
+  documents existants sans dossier sont rangés **avant** la création des manquants, pour que le
+  compte final du pack reste le signal de fin d'import attendu par les specs
+  (`cy.waitForContentImport()`, qui lit le nombre d'entrées de `npcs.json` au lieu d'un compte en dur).
+
 ## Test opposé (Agripper/Bousculer) — `opposedCheckType`
 
 Premier mécanisme de ce système où les DEUX camps lancent un d20, comparés entre eux (jusqu'ici

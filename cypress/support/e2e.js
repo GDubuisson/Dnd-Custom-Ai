@@ -78,6 +78,18 @@ Cypress.Commands.add("loginAsPlayer", () => {
   });
 });
 
+// Attend la fin de l'import automatique du contenu : le bestiaire est importé en dernier, son compendium
+// compte alors autant d'entrées que world-items/npcs.json. Ne jamais relancer l'import en parallèle.
+Cypress.Commands.add("waitForContentImport", () => {
+  cy.readFile("world-items/npcs.json").then((npcs) => {
+    cy.window({ timeout: 30000 }).should((win) => {
+      const pack = win.game.packs.get("dnd-custom-ai.adversaires");
+      expect(pack, "compendium 'adversaires' introuvable").to.exist;
+      expect(pack.index.size, "import automatique du contenu pas encore terminé").to.equal(npcs.length);
+    });
+  });
+});
+
 // Recrée `data` dans la réalité JS de la page (aller-retour JSON), exigé par les API Foundry.
 Cypress.Commands.add("toAutObject", (win, data) => win.JSON.parse(win.JSON.stringify(data)));
 

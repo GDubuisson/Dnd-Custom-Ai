@@ -404,6 +404,35 @@ DND_CUSTOM.regions = {
   secrets: "DND_CUSTOM.Regions.secrets"
 };
 
+/**
+ * Phases de campagne du bestiaire, selon le nombre de pierres brisées : dossiers de premier niveau
+ * du compendium « adversaires » (réservé au MJ). Le surnaturel n'y est pas absent, il n'est pas encore revenu.
+ */
+DND_CUSTOM.bestiaryPhases = {
+  0: "DND_CUSTOM.Bestiary.Phases.0",
+  1: "DND_CUSTOM.Bestiary.Phases.1",
+  2: "DND_CUSTOM.Bestiary.Phases.2",
+  3: "DND_CUSTOM.Bestiary.Phases.3"
+};
+
+/** Milieux du bestiaire : sous-dossiers d'une phase (flag `habitat`). */
+DND_CUSTOM.bestiaryHabitats = {
+  common: "DND_CUSTOM.Bestiary.Habitats.common",
+  fleuraine: "DND_CUSTOM.Regions.fleuraine",
+  altenmark: "DND_CUSTOM.Regions.altenmark",
+  lucentia: "DND_CUSTOM.Regions.lucentia",
+  ravenmoor: "DND_CUSTOM.Regions.ravenmoor",
+  valdera: "DND_CUSTOM.Regions.valdera",
+  azhar: "DND_CUSTOM.Regions.azhar",
+  coast: "DND_CUSTOM.Bestiary.Habitats.coast",
+  // Le large : la magie y survit, seul surnaturel possible dès la phase 0.
+  abyss: "DND_CUSTOM.Bestiary.Habitats.abyss",
+  siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne"
+};
+
+/** Habitats où le surnaturel existe dès la phase 0 (le large de la Mer intérieure). */
+DND_CUSTOM.bestiaryMagicHabitats = ["abyss"];
+
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {
   pc: 1,

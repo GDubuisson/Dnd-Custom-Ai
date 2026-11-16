@@ -1,14 +1,9 @@
 // Resynchronisation du contenu de référence : une entrée qui diffère du JSON source est écrasée,
 // une entrée identique n'est jamais patchée (T-SYNC-001). Session MJ.
 
-// Attend la fin de l'import automatique (« adversaires » à 24 entrées, dernier fichier importé) ;
-// ne jamais relancer l'import en parallèle.
+// Attend la fin de l'import automatique ; ne jamais relancer l'import en parallèle.
 function waitForAutoImport() {
-  return cy.window({ timeout: 20000 }).should((win) => {
-    const pack = win.game.packs.get("dnd-custom-ai.adversaires");
-    expect(pack, "compendium 'adversaires' introuvable").to.exist;
-    expect(pack.index.size, "import automatique pas encore terminé").to.equal(24);
-  });
+  return cy.waitForContentImport();
 }
 
 afterEach(() => {

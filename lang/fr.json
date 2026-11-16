@@ -270,6 +270,20 @@
       "saintSiege": "Saint-siège de Valencia",
       "secrets": "Secrets (MJ)"
     },
+    "Bestiary": {
+      "Phases": {
+        "0": "Phase 0 — Monde scellé",
+        "1": "Phase 1 — Premières fissures",
+        "2": "Phase 2 — Retour de la magie",
+        "3": "Phase 3 — L'ancien monde"
+      },
+      "Habitats": {
+        "common": "Partout",
+        "coast": "Côtes de la Mer intérieure",
+        "abyss": "Large et abysses de la Mer intérieure",
+        "siteLogne": "Site de pierre : forêt de Logne"
+      }
+    },
     "Roll": {
       "Tooltip": "Cliquer : jet normal. Maj-clic : avantage. Ctrl-clic : désavantage.",
       "DamageTooltip": "Jet de dégâts. Maj-clic : dé Polyvalente (deux mains) si l'arme en a un.",

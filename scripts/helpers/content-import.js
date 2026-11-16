@@ -1,5 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
 import { loadSystemJson } from "./system-json.js";
+import { bestiaryFolderKeys } from "./bestiary.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
 
@@ -40,8 +41,41 @@ const COMPENDIUM_FILES = [
   // Compendiums Actor : montures et véhicules, puis le bestiaire (toujours en dernier : les specs
   // attendent la fin de l'import sur le compte des adversaires).
   { file: "mounts.json", pack: `${SYSTEM_ID}.montures-vehicules` },
-  { file: "npcs.json", pack: `${SYSTEM_ID}.adversaires` }
+  // Bestiaire rangé dans le compendium par phase de campagne puis par milieu.
+  { file: "npcs.json", pack: `${SYSTEM_ID}.adversaires`, folderPath: bestiaryFolderKeys }
 ];
+
+/** Crée, s'il n'existe pas, le dossier `name` sous `parentId` (racine par défaut) dans le compendium `pack`. */
+async function ensurePackFolder(pack, name, parentId = null) {
+  const existing = pack.folders.find((folder) => folder.name === name && (folder._source.folder ?? null) === parentId);
+  if (existing) return existing;
+  return Folder.create({ name, type: pack.documentName, folder: parentId }, { pack: pack.collection });
+}
+
+/** Identifiant du dossier de compendium d'une entrée (chemin de clés de libellé), `null` sans chemin. */
+async function resolvePackFolderId(pack, entry, folderPathFn) {
+  let parentId = null;
+  for (const labelKey of folderPathFn(entry)) {
+    parentId = (await ensurePackFolder(pack, game.i18n.localize(labelKey), parentId)).id; // NOSONAR : séquentiel voulu
+  }
+  return parentId;
+}
+
+/** Range dans leur dossier les documents du compendium encore sans dossier, d'après leur entrée JSON. */
+async function filePackDocuments(pack, data, folderPathFn) {
+  const dataByName = new Map(data.map((entry) => [entry.name, entry]));
+  const documents = await pack.getDocuments();
+  const updates = [];
+  for (const doc of documents) {
+    const entry = dataByName.get(doc.name);
+    if (doc._source.folder || !entry) continue;
+    const folder = await resolvePackFolderId(pack, entry, folderPathFn); // NOSONAR : séquentiel voulu
+    if (folder) updates.push({ _id: doc.id, folder });
+  }
+  if (!updates.length) return;
+  await pack.documentClass.updateDocuments(updates, { pack: pack.collection });
+  console.log(`${SYSTEM_ID} | ${pack.collection} : ${updates.length} document(s) existant(s) rangé(s) dans un dossier`);
+}
 
 /** Crée, s'il n'existe pas, le dossier d'Items `name` sous `parentId` (racine par défaut). */
 async function ensureFolder(name, parentId = null) {
@@ -128,7 +162,7 @@ async function syncWorldItemFile(spec) {
 }
 
 /** Synchronise un fichier `world-items/*.json` avec son compendium du système. */
-async function syncCompendiumFile({ file, pack: packId }) {
+async function syncCompendiumFile({ file, pack: packId, folderPath }) {
   const compendium = game.packs.get(packId);
   if (!compendium) {
     console.warn(`${SYSTEM_ID} | Compendium ${packId} introuvable, ${file} ignoré`);
@@ -144,6 +178,14 @@ async function syncCompendiumFile({ file, pack: packId }) {
   const index = await compendium.getIndex();
   const existingNames = new Set(index.map((entry) => entry.name));
   const missing = data.filter((entry) => !existingNames.has(entry.name));
+  if (folderPath) {
+    // Rangement avant création : le compte final des documents signale ainsi la fin de l'import.
+    await filePackDocuments(compendium, data, folderPath);
+    for (const entry of missing) {
+      const folder = await resolvePackFolderId(compendium, entry, folderPath); // NOSONAR : séquentiel voulu
+      if (folder) entry.folder = folder;
+    }
+  }
   // Classe de document du pack : Item ou Actor.
   if (missing.length) await compendium.documentClass.createDocuments(missing, { pack: packId });
   console.log(`${SYSTEM_ID} | ${file} : ${missing.length} objet(s) importé(s) dans ${packId}`);

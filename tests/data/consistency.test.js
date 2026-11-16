@@ -23,6 +23,7 @@ import {
   GLOSSARY
 } from "../support/fixtures.js";
 import { LOCALES } from "../support/i18n.js";
+import { bestiaryFolderKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
 
 const CLASS_KEYS = Object.keys(DND_CUSTOM.classes);
 const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"];
@@ -406,13 +407,24 @@ describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () 
     assert.equal(new Set(names).size, names.length, "doublon de nom détecté dans npcs.json");
   });
 
-  // Bestiaire limité aux humanoïdes et aux bêtes réelles.
-  test("seuls les types de créature \"humanoid\" et \"beast\" sont présents (aucune créature fantastique)", () => {
+  // Monde scellé : en phase 0, le surnaturel n'existe qu'au large de la Mer intérieure.
+  test("phase 0 hors du large : seuls les types \"humanoid\" et \"beast\" (aucune créature surnaturelle)", () => {
     for (const npc of WORLD_NPCS) {
-      assert.ok(
-        ["humanoid", "beast"].includes(npc.system.creatureType),
-        `"${npc.name}" a un type de créature hors scope : "${npc.system.creatureType}"`
-      );
+      assert.ok(fitsSealedWorld(npc), `"${npc.name}" (${npc.system.creatureType}) n'a pas sa place dans le monde scellé`);
+    }
+  });
+
+  test("chaque créature a une phase et un milieu connus (dossier du compendium)", () => {
+    for (const npc of WORLD_NPCS) {
+      assert.equal(bestiaryFolderKeys(npc).length, 2, `flags phase/habitat absents ou inconnus sur "${npc.name}"`);
+    }
+  });
+
+  test("chaque milieu du bestiaire a son libellé dans les deux langues", () => {
+    for (const key of [...Object.values(DND_CUSTOM.bestiaryPhases), ...Object.values(DND_CUSTOM.bestiaryHabitats)]) {
+      for (const [locale, messages] of Object.entries(LOCALES)) {
+        assert.equal(typeof messages[key], "string", `libellé ${key} absent en ${locale}`);
+      }
     }
   });
 

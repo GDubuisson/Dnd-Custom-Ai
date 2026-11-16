@@ -60,7 +60,10 @@
           "lit": false, "description": "Quelques pièces d'argent et de cuivre."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Maraudeur",
@@ -110,7 +113,10 @@
           "lit": false, "description": "Quelques pièces de cuivre."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Garde",
@@ -178,7 +184,10 @@
           "lit": false, "description": "Quelques pièces de cuivre et d'argent."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Espion",
@@ -254,7 +263,10 @@
           "lit": false, "description": "Pièces d'argent et un message codé illisible."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Chef de brigands",
@@ -322,7 +334,10 @@
           "lit": false, "description": "La part du chef sur le butin récent de la bande."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Mercenaire vétéran",
@@ -399,7 +414,10 @@
           "lit": false, "description": "Solde d'engagement, en partie déjà dépensé."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Chevalier",
@@ -467,7 +485,10 @@
           "lit": false, "description": "Pièces d'or frappées aux armes d'une maison noble."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Matelot pirate",
@@ -541,7 +562,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
   },
   {
     "name": "Capitaine d'abordage",
@@ -620,7 +644,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
   },
   {
     "name": "Passwacht",
@@ -720,7 +747,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
   },
   {
     "name": "Veilleur de Ravenmoor",
@@ -799,7 +829,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ravenmoor" }
+    }
   },
   {
     "name": "Cavalier des Compagnies de la Route",
@@ -887,7 +920,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "lucentia" }
+    }
   },
   {
     "name": "Frère de l'Ordre de la Flamme",
@@ -966,7 +1002,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "valdera" }
+    }
   },
   {
     "name": "Garde de caravane azhari",
@@ -1027,7 +1066,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
   },
   {
     "name": "Charbonnier de Logne",
@@ -1106,7 +1148,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "fleuraine" }
+    }
   },
   {
     "name": "Contrebandier de Blackwych",
@@ -1204,7 +1249,10 @@
           "equipped": false
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ravenmoor" }
+    }
   },
   {
     "name": "Rat",
@@ -1230,7 +1278,10 @@
       "specialAbilities": "",
       "particularity": "Fuit dès que le combat tourne à son désavantage ; rarement rencontré seul."
     },
-    "items": []
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Corbeau",
@@ -1256,7 +1307,10 @@
       "specialAbilities": "",
       "particularity": "Vole ; difficile à toucher en mêlée depuis le sol sans capacité adaptée."
     },
-    "items": []
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Loup",
@@ -1292,7 +1346,10 @@
           "lit": false, "description": "Peut être vendue à un tanneur."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Sanglier",
@@ -1328,7 +1385,10 @@
           "lit": false, "description": "Trophée de chasse sans grande valeur marchande."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Serpent venimeux",
@@ -1354,7 +1414,10 @@
       "specialAbilities": "",
       "particularity": "Venin puissant malgré sa petite taille ; préfère fuir plutôt qu'engager un combat prolongé."
     },
-    "items": []
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Panthère",
@@ -1390,7 +1453,10 @@
           "lit": false, "description": "Fourrure tachetée, recherchée par certains tanneurs."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Crocodile",
@@ -1426,7 +1492,10 @@
           "lit": false, "description": "Peau épaisse, prisée pour la maroquinerie fine."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
   },
   {
     "name": "Ours brun",
@@ -1476,6 +1545,1538 @@
           "lit": false, "description": "Trophée de chasse, parfois utilisé en artisanat."
         }
       }
-    ]
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Cerf",
+    "type": "npc",
+    "img": "icons/creatures/mammals/deer-antlers-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 3 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 2 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 4, "max": 4, "temp": 0 }, "ac": { "value": 13 }, "speed": 15 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Gibier des forêts de Fleuraine, de la Logne aux bois de la couronne ; détale au moindre bruit. Sa chasse est un privilège seigneurial que les bûcherons des chartes ignorent superbement."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "fleuraine" }
+    }
+  },
+  {
+    "name": "Élan",
+    "type": "npc",
+    "img": "icons/creatures/mammals/elk-moose-marked-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 13, "max": 13, "temp": 0 }, "ac": { "value": 10 }, "speed": 15 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Coup de tête", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Sabots (cible à terre)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge : s'il parcourt au moins 6 m en ligne droite avant de toucher d'un coup de tête, la cible subit 2d6 dégâts contondants supplémentaires et doit réussir un jet de sauvegarde de Force DD 13 ou tomber à terre. Les sabots ne visent qu'une créature à terre.",
+      "particularity": "Grand cervidé des forêts du nord de Fleuraine ; dangereux à la saison du brame."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "fleuraine" }
+    }
+  },
+  {
+    "name": "Ours noir",
+    "type": "npc",
+    "img": "icons/creatures/abilities/bear-roar-bite-brown-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 0 }, "con": { "mod": 2 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 19, "max": 19, "temp": 0 }, "ac": { "value": 11 }, "speed": 12 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 1, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffes", "ability": "str", "bonus": 1, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : une morsure et une attaque de griffes par tour. Odorat aiguisé (avantage aux tests de Sagesse (Perception) basés sur l'odorat). Grimpe à 9 m.",
+      "particularity": "Plus petit et plus craintif que l'ours brun ; pille les ruches et les réserves des charbonniers."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "fleuraine" }
+    }
+  },
+  {
+    "name": "Chouette",
+    "type": "npc",
+    "img": "icons/creatures/birds/raptor-owl-flying-moon.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 1 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 1, "max": 1, "temp": 0 }, "ac": { "value": 11 }, "speed": 18 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Serres", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": -1, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (18 m), 1,50 m au sol. Vol rasant : ne provoque pas d'attaque d'opportunité en quittant l'allonge d'un ennemi. Ouïe et vue aiguisées. Vision dans le noir 36 m.",
+      "particularity": "Chasse la nuit dans les forêts et les granges ; les bûcherons de Logne la tiennent pour une messagère, sans pouvoir dire de qui."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "fleuraine" }
+    }
+  },
+  {
+    "name": "Ours polaire",
+    "type": "npc",
+    "img": "icons/creatures/abilities/bear-roar-bite-brown.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 5 }, "dex": { "mod": 0 }, "con": { "mod": 3 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 42, "max": 42, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffes", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : une morsure et une attaque de griffes par tour. Odorat aiguisé. Nage à 9 m.",
+      "particularity": "Descend des neiges de l'Eismark vers les cols en hiver ; les Passwachten le comptent parmi les raisons de faire l'appel deux fois par nuit."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
+  },
+  {
+    "name": "Chèvre",
+    "type": "npc",
+    "img": "icons/creatures/mammals/goat-horned-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 0 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 4, "max": 4, "temp": 0 }, "ac": { "value": 10 }, "speed": 12 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Coup de cornes", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge : si elle parcourt au moins 6 m en ligne droite avant de toucher, la cible subit 1d4 dégâts contondants supplémentaires et doit réussir un jet de sauvegarde de Force DD 10 ou tomber à terre. Pied sûr : avantage aux jets de sauvegarde de Force et de Dextérité contre ce qui la ferait tomber à terre.",
+      "particularity": "Troupeaux des alpages de l'Eismark ; un bouc mal luné suffit à barrer un sentier de col."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
+  },
+  {
+    "name": "Aigle",
+    "type": "npc",
+    "img": "icons/creatures/birds/raptor-hawk-flying.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "p",
+      "abilities": {
+        "str": { "mod": -2 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 2 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 3, "max": 3, "temp": 0 }, "ac": { "value": 12 }, "speed": 18 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Serres", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (18 m), 3 m au sol. Vue aiguisée.",
+      "particularity": "Niche sur les falaises de l'Eismark ; enlève les agneaux, jamais les enfants, quoi qu'en disent les bergers."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
+  },
+  {
+    "name": "Nuée d'insectes",
+    "type": "npc",
+    "img": "icons/creatures/invertebrates/wasp-swarm-attack.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 1 }, "con": { "mod": 0 },
+        "int": { "mod": -5 }, "wis": { "mod": -2 }, "cha": { "mod": -5 }
+      },
+      "attributes": { "hp": { "value": 22, "max": 22, "temp": 0 }, "ac": { "value": 12 }, "speed": 6 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Piqûres (moitié des PV ou moins : 2d4)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "4d4", "bonus": -1, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Nuée : occupe l'espace d'une autre créature et inversement ; passe par toute ouverture assez grande pour un de ses membres ; ne peut ni regagner de PV ni gagner de PV temporaires. Immunisée contre charmé, effrayé, agrippé, paralysé, pétrifié, à terre, entravé et étourdi. Vision aveugle 3 m. Grimpe à 6 m. Les piqûres ne portent qu'à 0 m (créature dans l'espace de la nuée).",
+      "particularity": "Moustiques et taons des tourbières de la Sümpfenmark, en nuées assez denses pour rendre fou un cheval ; on ne s'endort jamais seul dans le marais, et pas seulement à cause des légendes."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
+  },
+  {
+    "name": "Nuée de rats",
+    "type": "npc",
+    "img": "icons/creatures/mammals/rodent-rat-diseaed-gray.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": -1 }, "dex": { "mod": 0 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 24, "max": 24, "temp": 0 }, "ac": { "value": 10 }, "speed": 9 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsures (moitié des PV ou moins : 1d6)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Nuée : occupe l'espace d'une autre créature et inversement ; passe par toute ouverture assez grande pour un de ses membres ; ne peut ni regagner de PV ni gagner de PV temporaires. Immunisée contre charmé, effrayé, agrippé, paralysé, pétrifié, à terre, entravé et étourdi. Vision dans le noir 9 m. Odorat aiguisé. Les morsures ne portent qu'à 0 m (créature dans l'espace de la nuée).",
+      "particularity": "Égouts, entrepôts et cales : la plaie des ports et des greniers, de Castelmare aux silos de Ravenmoor."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Molosse",
+    "type": "npc",
+    "img": "icons/creatures/mammals/dog-husky-white-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 5, "max": 5, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Une créature touchée par la morsure doit réussir un jet de sauvegarde de Force DD 11 ou tomber à terre. Ouïe et odorat aiguisés.",
+      "particularity": "Chien de garde des entrepôts, des relais de poste et des domaines ; les guides d'Eisengrund en élèvent une race à poil long."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Nuée de corbeaux",
+    "type": "npc",
+    "img": "icons/creatures/birds/corvid-call-sound-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": -2 }, "dex": { "mod": 2 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 24, "max": 24, "temp": 0 }, "ac": { "value": 12 }, "speed": 15 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Coups de bec (moitié des PV ou moins : 1d6)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": -2, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Nuée : occupe l'espace d'une autre créature et inversement ; passe par toute ouverture assez grande pour un de ses membres ; ne peut ni regagner de PV ni gagner de PV temporaires. Immunisée contre charmé, effrayé, agrippé, paralysé, pétrifié, à terre, entravé et étourdi. Vol (15 m), 3 m au sol.",
+      "particularity": "Colonies des tours et des gibets de Ravenmoor. Ceux de Ravenhold sont nourris aux frais de la Couronne et ne s'en prennent à personne ; ceux des champs de bataille, si."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Faucon",
+    "type": "npc",
+    "img": "icons/creatures/birds/raptor-hawk-flying.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -3 }, "dex": { "mod": 3 }, "con": { "mod": -1 },
+        "int": { "mod": -4 }, "wis": { "mod": 2 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 1, "max": 1, "temp": 0 }, "ac": { "value": 13 }, "speed": 18 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Serres", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": -3, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (18 m), 3 m au sol. Vue aiguisée.",
+      "particularity": "Oiseau de la fauconnerie, passe-temps des familles marchandes de Vespera ; un faucon dressé vaut plus cher qu'un cheval."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "lucentia" }
+    }
+  },
+  {
+    "name": "Vautour",
+    "type": "npc",
+    "img": "icons/creatures/birds/corvid-flying-wings-purple.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": -2 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 5, "max": 5, "temp": 0 }, "ac": { "value": 10 }, "speed": 15 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Bec", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (15 m), 3 m au sol. Vue et odorat aiguisés. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible.",
+      "particularity": "Tourne au-dessus des hauteurs de Valdera ; les bergers lisent dans son vol l'emplacement d'une bête morte, ou d'un voyageur."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "valdera" }
+    }
+  },
+  {
+    "name": "Hyène",
+    "type": "npc",
+    "img": "icons/creatures/mammals/wolf-howl-moon-black.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 5, "max": 5, "temp": 0 }, "ac": { "value": 11 }, "speed": 15 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible.",
+      "particularity": "Rôde autour des caravanes et des puits abandonnés d'Azhar ; suit une caravane affaiblie pendant des jours."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
+  },
+  {
+    "name": "Chacal",
+    "type": "npc",
+    "img": "icons/creatures/mammals/wolf-howl-moon-gray.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "p",
+      "abilities": {
+        "str": { "mod": -1 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 3, "max": 3, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Ouïe et odorat aiguisés. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible.",
+      "particularity": "Charognard des bordures du désert ; ses cris, la nuit, passent à Bir Azraq pour ceux des sâkin, ce qui arrange tout le monde."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
+  },
+  {
+    "name": "Scorpion",
+    "type": "npc",
+    "img": "icons/creatures/invertebrates/scorpion-yellow.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 0 }, "con": { "mod": -1 },
+        "int": { "mod": -5 }, "wis": { "mod": -1 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 1, "max": 1, "temp": 0 }, "ac": { "value": 11 }, "speed": 3 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Dard", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d8", "type": "poison" }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 3 m. Dard : la cible fait un jet de sauvegarde de Constitution DD 9 ; dégâts de poison divisés par deux en cas de réussite.",
+      "particularity": "Dort dans les bottes et les sacoches laissées au sol ; on secoue tout avant de s'habiller, au campement."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
+  },
+  {
+    "name": "Serpent constricteur",
+    "type": "npc",
+    "img": "icons/creatures/reptiles/snake-poised-white.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 13, "max": 13, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Constriction", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 3 m. Nage à 9 m. Constriction : la cible est agrippée (évasion DD 14) et entravée tant que dure l'étreinte ; le serpent ne peut pas étreindre une autre cible.",
+      "particularity": "Vit dans les palmeraies et le long de la rivière Zuhral ; les jardiniers de Qasirah le tolèrent, il mange les rats."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
+  },
+  {
+    "name": "Lion",
+    "type": "npc",
+    "img": "icons/creatures/abilities/lion-roar-yellow.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 26, "max": 26, "temp": 0 }, "ac": { "value": 12 }, "speed": 15 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffe", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Odorat aiguisé. Tactique de meute. Bond : s'il parcourt au moins 6 m en ligne droite avant de toucher d'une griffe, la cible fait un jet de sauvegarde de Force DD 13 ou tombe à terre, et le lion peut la mordre par une action bonus. Saut avec élan : 7,50 m en longueur.",
+      "particularity": "Chasse aux lisières de la forêt d'Al-Murrah ; à Azhar, tuer un lion seul est un exploit que l'on chante."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "azhar" }
+    }
+  },
+  {
+    "name": "Pieuvre",
+    "type": "npc",
+    "img": "icons/creatures/fish/octopus-pink.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "0",
+      "size": "p",
+      "abilities": {
+        "str": { "mod": -3 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 3, "max": 3, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Tentacules", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": -2, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage à 9 m (1,50 m à terre). Retient sa respiration 30 minutes. Respiration aquatique. Camouflage sous-marin (avantage en Discrétion sous l'eau). La cible touchée est agrippée (évasion DD 10). Nuage d'encre (1/repos court) : zone de 1,50 m fortement obscurcie pendant 1 minute, puis la pieuvre peut se replier par l'action Foncer.",
+      "particularity": "Hôte des rochers de la côte ; les pêcheurs de Porto Vero la vendent séchée sur le port."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
+  },
+  {
+    "name": "Requin de récif",
+    "type": "npc",
+    "img": "icons/creatures/fish/fish-shark-swimming.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 22, "max": 22, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage uniquement (12 m). Respiration aquatique. Vision aveugle 9 m. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible.",
+      "particularity": "Suit les caboteurs le long des côtes, attiré par les déchets jetés par-dessus bord ; un homme à la mer saigne rarement longtemps."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
+  },
+  {
+    "name": "Requin chasseur",
+    "type": "npc",
+    "img": "icons/creatures/fish/fish-shark-swimming.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 45, "max": 45, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage uniquement (12 m). Respiration aquatique. Vision aveugle 9 m. Frénésie sanguinaire : avantage aux jets d'attaque au corps à corps contre une créature qui n'a pas tous ses PV.",
+      "particularity": "Vient des eaux plus profondes et remonte vers les côtes après les tempêtes ; les assureurs de Castelmare le comptent parmi les pertes « de mer », au même titre que les pirates."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
+  },
+  {
+    "name": "Orque",
+    "type": "npc",
+    "img": "icons/creatures/fish/deepsea-creature-glowing-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "3",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 0 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 90, "max": 90, "temp": 0 }, "ac": { "value": 12 }, "speed": 18 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "5d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage uniquement (18 m). Vision aveugle 36 m. Écholocation (perd sa vision aveugle s'il est assourdi). Retient sa respiration 30 minutes. Ouïe aiguisée.",
+      "particularity": "Passe en bandes à la limite du large, là où les caboteurs n'osent plus aller ; on dit qu'il fuit le bassin central, ce que personne n'a pu vérifier."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
+  },
+  {
+    "name": "Pieuvre géante",
+    "type": "npc",
+    "img": "icons/creatures/tentacles/tentacles-octopus-black-pink.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": -3 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 52, "max": 52, "temp": 0 }, "ac": { "value": 11 }, "speed": 18 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Tentacules (allonge 4,50 m)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage à 18 m (3 m à terre). Vision dans le noir 18 m. Retient sa respiration 1 heure. Respiration aquatique. Camouflage sous-marin. La cible touchée par les tentacules est agrippée (évasion DD 16) et entravée ; la pieuvre ne peut pas viser une autre cible. Nuage d'encre (1/repos court) : sphère de 6 m fortement obscurcie pendant 1 minute.",
+      "particularity": "Ce que les rares survivants des traversées directes appellent « les bras du large ». Ne s'approche jamais des côtes."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "abyss" }
+    }
+  },
+  {
+    "name": "Requin géant",
+    "type": "npc",
+    "img": "icons/creatures/fish/fish-fangtooth-skeletal-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "5",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 6 }, "dex": { "mod": 0 }, "con": { "mod": 5 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 126, "max": 126, "temp": 0 }, "ac": { "value": 13 }, "speed": 15 },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "3d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage uniquement (15 m). Vision aveugle 18 m. Respiration aquatique. Frénésie sanguinaire : avantage aux jets d'attaque au corps à corps contre une créature qui n'a pas tous ses PV.",
+      "particularity": "Bête du bassin central, de la taille d'une barque de pêche ; la piste C des pirates (doc MJ) passe forcément par ses eaux."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "abyss" }
+    }
+  },
+  {
+    "name": "Kraken",
+    "type": "npc",
+    "img": "icons/creatures/fish/squid-kraken-teal.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "23",
+      "size": "gig",
+      "abilities": {
+        "str": { "mod": 10 }, "dex": { "mod": 0 }, "con": { "mod": 10 },
+        "int": { "mod": 6 }, "wis": { "mod": 4 }, "cha": { "mod": 5 }
+      },
+      "attributes": { "hp": { "value": 472, "max": 472, "temp": 0 }, "ac": { "value": 18 }, "speed": 18 },
+      "xpReward": 50000,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 7, "magic": false,
+          "damage": { "dice": "3d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Tentacule (allonge 9 m)", "ability": "str", "bonus": 7, "magic": false,
+          "damage": { "dice": "3d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["lightning", "bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Titan. Nage à 18 m (6 m à terre). Jets de sauvegarde : For +17, Dex +7, Con +17, Int +13, Sag +11. Immunisé contre la foudre et les dégâts physiques d'armes non magiques ; immunisé contre effrayé et paralysé. Vision véritable 36 m. Comprend les langues de l'ancien monde sans les parler ; télépathie 36 m. Amphibie. Liberté de mouvement : ignore le terrain difficile, les effets magiques ne le ralentissent ni ne l'entravent. Monstre de siège : dégâts doublés contre les objets et les structures. Attaques multiples : trois tentacules, chacun remplaçable par Projection. Tentacule : la cible est agrippée (évasion DD 18) et entravée ; dix tentacules, une cible chacun. Morsure : une créature de taille G ou moins qu'il agrippe est avalée (aveuglée, entravée, abri total, 12d6 dégâts d'acide au début de chaque tour du kraken) ; s'il subit 50 dégâts ou plus en un tour de l'intérieur, JS de Constitution DD 25 ou il recrache tout, les créatures à terre à 3 m. Projection : lance une créature agrippée (taille G ou moins) à 18 m dans une direction aléatoire, à terre ; 1d6 dégâts contondants par tranche de 3 m si elle heurte une surface, une créature heurtée fait un JS de Dextérité DD 18 ou subit autant et tombe à terre. Tempête de foudre : trois éclairs sur des cibles visibles à 36 m, JS de Dextérité DD 23, 4d10 dégâts de foudre (moitié si réussite). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : tentacule ou Projection ; Tempête de foudre (coûte 2) ; Nuage d'encre (coûte 3, sous l'eau : rayon de 18 m fortement obscurci, JS de Constitution DD 23 ou 3d10 dégâts de poison, moitié si réussite).",
+      "particularity": "La bête légendaire endormie au centre de la Mer intérieure, là où la magie de l'ancien monde survit. Rien n'y passe, rien ne trouble son sommeil. Version complète : n'existe qu'au large ; près des terres, voir « Kraken (affaibli près des côtes) »."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "abyss" }
+    }
+  },
+  {
+    "name": "Kraken (affaibli près des côtes)",
+    "type": "npc",
+    "img": "icons/creatures/fish/squid-kraken-orange.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "15",
+      "size": "gig",
+      "abilities": {
+        "str": { "mod": 10 }, "dex": { "mod": 0 }, "con": { "mod": 10 },
+        "int": { "mod": 6 }, "wis": { "mod": 4 }, "cha": { "mod": 5 }
+      },
+      "attributes": { "hp": { "value": 236, "max": 236, "temp": 0 }, "ac": { "value": 18 }, "speed": 18 },
+      "xpReward": 13000,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 7, "magic": false,
+          "damage": { "dice": "3d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Tentacule (allonge 9 m)", "ability": "str", "bonus": 7, "magic": false,
+          "damage": { "dice": "3d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["lightning", "bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Titan affaibli. Nage à 18 m (6 m à terre). Jets de sauvegarde : For +17, Dex +7, Con +17, Int +13, Sag +11. Immunisé contre la foudre et les dégâts physiques d'armes non magiques ; immunisé contre effrayé et paralysé. Amphibie. Monstre de siège. Attaques multiples : trois tentacules, chacun remplaçable par Projection. Tentacule : agrippé (évasion DD 18) et entravé ; dix tentacules. Morsure : avale une créature agrippée de taille G ou moins (12d6 dégâts d'acide par tour ; recrache tout sur 50 dégâts en un tour et JS de Con DD 25 raté). Projection : 18 m, à terre, 1d6 par tranche de 3 m, JS de Dex DD 18 pour une créature heurtée. Perdus près des terres : Tempête de foudre, vision véritable, télépathie, liberté de mouvement et actions légendaires.",
+      "particularity": "Le kraken quand il s'approche des côtes : son énergie est absorbée par les pierres. Chaque pierre brisée affaiblit cette absorption et lui permet de venir plus près. Dérivé du Kraken SRD : PV divisés par deux, pouvoirs magiques perdus ; FP recalculé par la méthode de création de monstres (PV effectifs 295 avec immunités → FP défensif 16 ; 60 dégâts par round à +17 → FP offensif 14 ; moyenne 15)."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "coast" }
+    }
+  },
+  {
+    "name": "Milicien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 0 }, "con": { "mod": 0 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 4, "max": 4, "temp": 0 }, "ac": { "value": 10 }, "speed": 9 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Gourdin", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Paysan, artisan ou portefaix levé pour la défense d'un village, d'un pont ou d'une foire ; se débande au premier mort."
+    },
+    "items": [
+      {
+        "name": "Gourdin", "type": "weapon",
+        "img": "icons/weapons/clubs/club-banded-brown.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "bludgeoning" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Notable",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 0 },
+        "int": { "mod": 1 }, "wis": { "mod": 2 }, "cha": { "mod": 3 }
+      },
+      "attributes": { "hp": { "value": 9, "max": 9, "temp": 0 }, "ac": { "value": 15 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Rapière", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Parade (réaction) : +2 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Tromperie +5, Intuition +4, Persuasion +5.",
+      "particularity": "Seigneur de province, échevin, membre d'une guilde ou d'une famille marchande : se bat mal, négocie bien, et a toujours quelqu'un à appeler."
+    },
+    "items": [
+      {
+        "name": "Rapière", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-bronze.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Guide d'Eisengrund",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 16, "max": 16, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arc long (45/180 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
+      "particularity": "Mène les convois et les voyageurs à travers les cols et jusqu'aux bordures du Désert gelé de Kis, jamais au-delà. Connaît des choses qui ne sont écrites nulle part, et ne les dit pas aux étrangers."
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long", "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 45, "long": 180 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "altenmark" }
+    }
+  },
+  {
+    "name": "Gros bras de guilde",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 0 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 32, "max": 32, "temp": 0 }, "ac": { "value": 11 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Masse d'armes", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible. Intimidation +2.",
+      "particularity": "Homme de main d'une guilde lucentienne : recouvre les dettes, garde les entrepôts, décourage la concurrence. N'a jamais rien vu."
+    },
+    "items": [
+      {
+        "name": "Masse d'armes", "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "bludgeoning" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1, "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "lucentia" }
+    }
+  },
+  {
+    "name": "Champion de tournoi",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 2 }, "con": { "mod": 3 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 112, "max": 112, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Lance (à deux mains : 2d8)", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques au corps à corps, ou deux attaques à distance (lance lancée, 6/18 m). Brute : un dé de dégâts supplémentaire (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Parade (réaction) : +3 à la CA. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5.",
+      "particularity": "Vainqueur des lices et des fêtes de cour, de Fleuraine à Valdera ; loue son bras quand la saison des tournois est finie."
+    },
+    "items": [
+      {
+        "name": "Lance simple", "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "1d8" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Spadassin",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 3 }, "con": { "mod": 2 },
+        "int": { "mod": 1 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 78, "max": 78, "temp": 0 }, "ac": { "value": 15 }, "speed": 9 },
+      "xpReward": 3900,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 3, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "7d6", "type": "poison" }
+        },
+        {
+          "name": "Arbalète légère (24/96 m)", "ability": "dex", "bonus": 3, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "7d6", "type": "poison" }
+        }
+      ],
+      "damageResistances": ["poison"],
+      "specialAbilities": "Attaques multiples : deux attaques à l'épée courte. Poison : JS de Constitution DD 15, dégâts de poison divisés par deux en cas de réussite. Assassinat : avantage contre toute créature qui n'a pas encore joué ; toute attaque qui touche une créature surprise est un coup critique. Attaque sournoise (1/tour) : +4d6 si avantage ou allié à 1,50 m de la cible. Esquive totale. Jets de sauvegarde : Dex +6, Int +4. Discrétion +9, Acrobaties +6.",
+      "particularity": "Lame payée, de celles qu'on ne voit qu'une fois : les cours et les guildes s'en servent plus qu'elles ne l'avouent."
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète légère", "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+        "system": {
+          "weaponType": "rangedSimple",
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 2.3,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1, "range": { "normal": 24, "long": 96 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "common" }
+    }
+  },
+  {
+    "name": "Gardien de Logne",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 3 },
+        "int": { "mod": -1 }, "wis": { "mod": 0 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 67, "max": 67, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Grande hache", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d12", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Téméraire : au début de son tour, peut obtenir l'avantage à toutes ses attaques au corps à corps du tour ; les attaques contre lui ont l'avantage jusqu'à son tour suivant.",
+      "particularity": "Bûcheron des communautés à chartes du nord-ouest de la Logne, celles qui ne relèvent d'aucun seigneur. Ne laisse passer personne vers le cœur de la forêt et serait bien en peine de dire pourquoi. (MJ : gardien dégénéré de la première pierre.)"
+    },
+    "items": [
+      {
+        "name": "Grande hache", "type": "weapon",
+        "img": "icons/weapons/axes/axe-double-black.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+          "damage": { "dice": "1d12", "type": "slashing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 3.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Peau", "type": "armor",
+        "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+        "system": {
+          "armorType": "medium",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Grand-loup de Logne",
+    "type": "npc",
+    "img": "icons/creatures/mammals/wolf-howl-moon-forest-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 2 }, "con": { "mod": 2 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 37, "max": 37, "temp": 0 }, "ac": { "value": 14 }, "speed": 15 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Une créature touchée par la morsure fait un jet de sauvegarde de Force DD 13 ou tombe à terre. Ouïe et odorat aiguisés. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible.",
+      "particularity": "Loup de la taille d'un cheval, qu'on ne voit qu'au nord-ouest de la Logne. Les charbonniers en parlent comme d'une variété locale. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Sanglier de Logne",
+    "type": "npc",
+    "img": "icons/creatures/mammals/beast-horned-scaled-glowing-orange.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 0 }, "con": { "mod": 3 },
+        "int": { "mod": -4 }, "wis": { "mod": -2 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 42, "max": 42, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Défenses", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge : s'il parcourt au moins 6 m en ligne droite avant de toucher, la cible subit 2d6 dégâts tranchants supplémentaires et fait un JS de Force DD 13 ou tombe à terre. Acharné (1/repos court) : s'il subit 10 dégâts ou moins qui le mettraient à 0 PV, il reste à 1 PV.",
+      "particularity": "Sanglier grand comme un bœuf. Aucun seigneur n'en a jamais chassé, faute de droit de chasse dans les terres à chartes. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Araignée-loup de Logne",
+    "type": "npc",
+    "img": "icons/creatures/invertebrates/spider-mandibles-brown.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 3 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 13 }, "speed": 12 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "2d6", "type": "poison" }
+        }
+      ],
+      "specialAbilities": "Morsure : JS de Constitution DD 11, dégâts de poison divisés par deux si réussite ; tombée à 0 PV par le poison, la cible est stable mais empoisonnée et paralysée 1 heure. Vision aveugle 3 m, vision dans le noir 18 m. Pattes d'araignée (escalade, plafonds) et déplacement libre dans les toiles. Perception des toiles.",
+      "particularity": "Araignée de la taille d'un chien, qui chasse au sol sans toile. Les sentiers des charbonniers contournent ses terriers. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Arbuste éveillé",
+    "type": "npc",
+    "img": "icons/magic/nature/leaf-glow-triple-green.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "0",
+      "size": "p",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": -1 }, "con": { "mod": 0 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 10, "max": 10, "temp": 0 }, "ac": { "value": 9 }, "speed": 6 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Ratissage", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["piercing"],
+      "damageVulnerabilities": ["fire"],
+      "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un buisson ordinaire.",
+      "particularity": "Premier signe du suintement après la rupture de la pierre : des buissons qui bougent quand on ne les regarde pas."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Arbre éveillé",
+    "type": "npc",
+    "img": "icons/environment/wilderness/tree-oak.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "2",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": -2 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 59, "max": 59, "temp": 0 }, "ac": { "value": 13 }, "speed": 6 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Coup (allonge 3 m)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "3d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing"],
+      "damageVulnerabilities": ["fire"],
+      "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un arbre ordinaire.",
+      "particularity": "Un des premiers ou derniers arbres d'une coupe, laissés debout par la coutume. Il se souvient des haches."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Lutin de Logne",
+    "type": "npc",
+    "img": "icons/creatures/magical/fae-fairy-winged-glowing-green.webp",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "1/4",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -4 }, "dex": { "mod": 4 }, "con": { "mod": 0 },
+        "int": { "mod": 2 }, "wis": { "mod": 1 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 2, "max": 2, "temp": 0 }, "ac": { "value": 15 }, "speed": 12 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Épée minuscule", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "1", "bonus": 4, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arc court (12/48 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1", "bonus": -4, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (12 m), 3 m au sol. Flèche : JS de Constitution DD 10 ou empoisonné 1 minute ; avec un résultat de 5 ou moins, inconscient pour la même durée (réveillé par des dégâts ou une action). Vision du cœur : en touchant une créature, connaît son état émotionnel ; sur un JS de Charisme DD 10 raté, aussi son alignement. Invisibilité (concentration) : devient invisible avec ce qu'il porte. Perception +3, Discrétion +8.",
+      "particularity": "Petit peuple de l'ancien monde revenu avec la magie ; ne parle aucune langue connue, et juge les intrus avant de les laisser passer."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
+    }
+  },
+  {
+    "name": "Loup gris de Logne",
+    "type": "npc",
+    "img": "icons/creatures/mammals/wolf-shadow-black.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "1/2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": -2 }, "wis": { "mod": 0 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 26, "max": 26, "temp": 0 }, "ac": { "value": 13 }, "speed": 15 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Une créature touchée par la morsure fait un JS de Force DD 13 ou tombe à terre. Vision dans le noir 18 m. Ouïe et odorat aiguisés. Perception +4. Parle une langue grondante de l'ancien monde.",
+      "particularity": "Grand loup rusé et malveillant, qui parle. Les grands-loups de Logne s'écartent de lui."
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
+    }
   }
 ]

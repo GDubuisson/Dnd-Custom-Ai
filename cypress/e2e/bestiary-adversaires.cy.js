@@ -1,4 +1,5 @@
-// Compendium « adversaires » : 24 PNJ (humanoïdes et bêtes réelles), attaques jouables et butin.
+// Compendium « adversaires » (réservé au MJ) : bestiaire rangé par phase de campagne puis par milieu,
+// monde scellé respecté en phase 0, attaques jouables et butin.
 
 const createdActorIds = [];
 
@@ -8,11 +9,19 @@ function sheetRoot() {
 
 // Attend la fin de l'import automatique ; ne jamais relancer l'import (doublons).
 function waitForAdversairesImport() {
-  return cy.window({ timeout: 20000 }).should((win) => {
-    const pack = win.game.packs.get("dnd-custom-ai.adversaires");
-    expect(pack, "compendium 'adversaires' introuvable").to.exist;
-    expect(pack.index.size, "import automatique du bestiaire pas encore terminé").to.equal(24);
-  });
+  return cy.waitForContentImport();
+}
+
+/** Chemin de dossiers d'un document de compendium, de la racine au dossier direct. */
+function folderPath(pack, doc) {
+  const names = [];
+  let folderId = doc._source.folder;
+  while (folderId) {
+    const folder = pack.folders.get(folderId);
+    names.unshift(folder.name);
+    folderId = folder._source.folder;
+  }
+  return names;
 }
 
 after(() => {
@@ -23,39 +32,67 @@ after(() => {
 describe("Compendium \"Adversaires\" — présence et contenu", () => {
   beforeEach(() => cy.loginAsGM());
 
-  it("existe, contient exactement les 24 PNJ attendus, aucune créature hors scope (T-ADV-001)", () => {
+  it("contient exactement les créatures de world-items/npcs.json (T-ADV-001)", () => {
+    waitForAdversairesImport();
+    cy.readFile("world-items/npcs.json").then((npcs) => {
+      cy.window().then(async (win) => {
+        const index = await win.game.packs.get("dnd-custom-ai.adversaires").getIndex();
+        const names = [...index].map((entry) => entry.name).sort();
+        expect(names).to.deep.equal(npcs.map((npc) => npc.name).sort());
+        // Humains et bêtes de la 1.3.0 toujours présents.
+        expect(names).to.include.members(["Brigand", "Chevalier", "Passwacht", "Ours brun", "Loup"]);
+      });
+    });
+  });
+
+  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes (T-ADV-002)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
-      const pack = win.game.packs.get("dnd-custom-ai.adversaires");
-      expect(pack, "compendium 'adversaires' introuvable").to.exist;
-      const index = await pack.getIndex();
-
-      const expectedHumanoids = [
-        "Brigand", "Maraudeur", "Garde", "Espion", "Chef de brigands", "Mercenaire vétéran", "Chevalier",
-        // Pirates de la Mer intérieure et PNJ régionaux (2026-11-16), dérivés des humanoïdes SRD ci-dessus.
-        "Matelot pirate", "Capitaine d'abordage", "Passwacht", "Veilleur de Ravenmoor", "Cavalier des Compagnies de la Route",
-        "Frère de l'Ordre de la Flamme", "Garde de caravane azhari", "Charbonnier de Logne", "Contrebandier de Blackwych"
-      ];
-      const expectedBeasts = ["Rat", "Corbeau", "Loup", "Sanglier", "Serpent venimeux", "Panthère", "Crocodile", "Ours brun"];
-      const names = [...index].map((entry) => entry.name);
-
-      expect(names, "24 entrées attendues").to.have.length(24);
-      for (const name of [...expectedHumanoids, ...expectedBeasts]) {
-        expect(names, `"${name}" absent du compendium`).to.include(name);
+      const docs = await win.game.packs.get("dnd-custom-ai.adversaires").getDocuments();
+      for (const doc of docs) {
+        const { phase, habitat } = doc.flags["dnd-custom-ai"] ?? {};
+        if (phase !== 0 || habitat === "abyss") continue;
+        expect(["humanoid", "beast"], `"${doc.name}" : ${doc.system.creatureType} en phase 0`).to.include(doc.system.creatureType);
       }
     });
   });
 
-  it("aucune entrée n'est du type humanoid/beast en dehors de la liste attendue (T-ADV-002)", () => {
+  it("range les créatures par phase puis par milieu (T-ADV-005)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const pack = win.game.packs.get("dnd-custom-ai.adversaires");
-      const docs = await pack.getDocuments();
-      for (const doc of docs) {
-        expect(["humanoid", "beast"], `"${doc.name}" a un type de créature hors scope : ${doc.system.creatureType}`).to.include(
-          doc.system.creatureType
-        );
+      const byName = new Map((await pack.getDocuments()).map((doc) => [doc.name, doc]));
+      // Libellés dans la langue du client MJ qui a lancé l'import.
+      const label = (key) => win.game.i18n.localize(`DND_CUSTOM.${key}`);
+      const phase0 = label("Bestiary.Phases.0");
+      const phase1 = label("Bestiary.Phases.1");
+      const logne = label("Bestiary.Habitats.siteLogne");
+      const expected = {
+        "Brigand": [phase0, label("Bestiary.Habitats.common")],
+        "Passwacht": [phase0, label("Regions.altenmark")],
+        "Kraken": [phase0, label("Bestiary.Habitats.abyss")],
+        "Grand-loup de Logne": [phase0, logne],
+        "Arbre éveillé": [phase1, logne],
+        "Kraken (affaibli près des côtes)": [phase1, label("Bestiary.Habitats.coast")]
+      };
+      for (const [name, path] of Object.entries(expected)) {
+        expect(byName.get(name), `"${name}" absent`).to.exist;
+        expect(folderPath(pack, byName.get(name)), name).to.deep.equal(path);
       }
+      // Aucune créature hors dossier.
+      const unfiled = [...byName.values()].filter((doc) => !doc._source.folder).map((doc) => doc.name);
+      expect(unfiled, "créatures sans dossier").to.deep.equal([]);
+    });
+  });
+});
+
+describe("Compendium \"Adversaires\" — invisible des joueurs", () => {
+  it("un joueur ne voit ni le compendium ni ses dossiers (T-ADV-006)", () => {
+    cy.loginAsPlayer();
+    cy.window().then((win) => {
+      const pack = win.game.packs.get("dnd-custom-ai.adversaires");
+      expect(pack.visible, "compendium visible d'un joueur").to.equal(false);
+      expect(pack.testUserPermission(win.game.user, "OBSERVER"), "droit d'observation d'un joueur").to.equal(false);
     });
   });
 });

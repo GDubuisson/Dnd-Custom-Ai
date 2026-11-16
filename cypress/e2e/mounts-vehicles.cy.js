@@ -8,8 +8,8 @@ const VEHICLES = ["Chariot de convoi", "Traîneau des guides d'Eisengrund", "Nav
 
 // Attend la fin de l'import automatique (le bestiaire est importé en dernier).
 function waitForAutoImport() {
-  return cy.window({ timeout: 20000 }).should((win) => {
-    expect(win.game.packs.get("dnd-custom-ai.adversaires")?.index.size, "import pas encore terminé").to.equal(24);
+  cy.waitForContentImport();
+  return cy.window().should((win) => {
     expect(win.game.packs.get("dnd-custom-ai.montures-vehicules"), "compendium absent").to.exist;
   });
 }
