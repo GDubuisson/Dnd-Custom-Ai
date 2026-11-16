@@ -5,12 +5,7 @@ dist/
 .idea/
 maquettes/
 .claude/*
-ClaudeFiles/*
-# Documentation de conception versionnée (cf. README.md) — le reste de ClaudeFiles/ reste ignoré
-!ClaudeFiles/CONCEPTION_TECHNIQUE.md
-!ClaudeFiles/CONCEPTION_FONCTIONNELLE.md
-!ClaudeFiles/ANOMALIES_ACTIVES.md
-!ClaudeFiles/JEU_DE_ROLES_HISTOIRE/*
+ClaudeFiles/CLAUDE.md
 images_test/
 
 # Tests E2E "au réel" (Docker/Cypress/Quench, cf. tests/README.md)
