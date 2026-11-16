@@ -11,8 +11,8 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 - Le compendium « Adversaires » (toujours réservé au MJ) est rangé en dossiers : **phase de campagne**
   (0 monde scellé, 1 premières fissures, 2 retour de la magie, 3 l'ancien monde, selon le nombre de
   pierres brisées), puis **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de
-  la forêt de Logne). Les 24 créatures existantes y sont rangées automatiquement au chargement.
-- **40 nouvelles créatures** aux statistiques SRD 5.1 exactes, soit 64 au total :
+  la forêt de Logne ou de la Sümpfenmark). Les 24 créatures existantes y sont rangées automatiquement au chargement.
+- **49 nouvelles créatures** aux statistiques SRD 5.1 exactes, soit 73 au total :
   - faune régionale : cerf, élan, ours noir, chouette (Fleuraine) ; ours polaire, chèvre, aigle, nuée
     d'insectes (Altenmark) ; nuée de corbeaux (Ravenmoor) ; faucon (Lucentia) ; vautour (Valdera) ;
     hyène, chacal, scorpion, serpent constricteur, lion (Azhar) ; nuée de rats et molosse (partout) ;
@@ -22,6 +22,9 @@ et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
   - site de la forêt de Logne : gardien de Logne et faune aberrante (grand-loup, sanglier, araignée-loup)
     en phase 0 ; arbuste et arbre éveillés, lutin et loup gris de Logne en phase 1, liés (note MJ)
     à la Dame de Logne ;
+  - site de la Sümpfenmark : grenouille géante de tourbière, crapaud des fondrières, grand serpent des
+    marais, patrouilleur d'Ostbruchwacht et tourbier sümpfer en phase 0 ; Moorlicht, mort et goule de
+    tourbière, tourbe qui marche en phase 1 ;
   - **Kraken (affaibli près des côtes)**, phase 1 : son énergie est absorbée par les pierres quand il
     approche des terres (PV divisés par deux, sans pouvoirs magiques, FP 15 recalculé).
 - Test de cohérence : aucune créature surnaturelle en phase 0, sauf au large de la Mer intérieure.

@@ -3078,5 +3078,370 @@
     "flags": {
       "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
     }
+  },
+  {
+    "name": "Grenouille géante de tourbière",
+    "type": "npc",
+    "img": "icons/creatures/amphibians/bullfrog-glowing-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 1 }, "con": { "mod": 0 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 18, "max": 18, "temp": 0 }, "ac": { "value": 11 }, "speed": 9 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Amphibie, nage à 9 m. Vision dans le noir 9 m. Bond sans élan : 6 m en longueur, 3 m en hauteur. Morsure : la cible est agrippée (évasion DD 11) et entravée ; la grenouille ne peut pas mordre une autre cible. Engloutissement : une morsure réussie contre une cible de taille P ou moins qu'elle agrippe l'avale (aveuglée, entravée, abri total, 2d4 dégâts d'acide au début de chaque tour de la grenouille) ; une seule proie à la fois ; si la grenouille meurt, la proie sort avec 1,50 m de déplacement, à terre. Perception +2, Discrétion +3.",
+      "particularity": "Grenouille de la taille d'un chien, au-delà du Schilfbach ; les Sümpfer disent qu'elle mange les canards, puis les chiens. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Crapaud des fondrières",
+    "type": "npc",
+    "img": "icons/creatures/amphibians/bullfrog-glass-teal.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 39, "max": 39, "temp": 0 }, "ac": { "value": 11 }, "speed": 6 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d10", "type": "poison" }
+        }
+      ],
+      "specialAbilities": "Amphibie, nage à 12 m. Vision dans le noir 9 m. Bond sans élan : 6 m en longueur, 3 m en hauteur. Morsure : la cible est agrippée (évasion DD 13) et entravée ; le crapaud ne peut pas mordre une autre cible. Engloutissement : une morsure réussie contre une cible de taille M ou moins qu'il agrippe l'avale (aveuglée, entravée, abri total, 3d6 dégâts d'acide au début de chaque tour du crapaud) ; une seule proie à la fois ; s'il meurt, la proie sort avec 1,50 m de déplacement, à terre.",
+      "particularity": "Crapaud gros comme un veau, immobile au bord des fondrières ; les tourbiers le prennent pour une souche jusqu'au dernier moment. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Grand serpent des marais",
+    "type": "npc",
+    "img": "icons/creatures/reptiles/snake-fangs-bite-green-yellow.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -5 }, "wis": { "mod": 0 }, "cha": { "mod": -4 }
+      },
+      "attributes": { "hp": { "value": 60, "max": 60, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure (allonge 3 m)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Constriction", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Nage à 9 m. Vision aveugle 3 m. Perception +2. Constriction : la cible est agrippée (évasion DD 16) et entravée tant que dure l'étreinte ; le serpent ne peut pas étreindre une autre cible.",
+      "particularity": "Serpent long comme trois barques, qui chasse dans les chenaux à l'est d'Ostbruchwacht. Personne à Altenburg ne croit les patrouilles qui en parlent. (MJ : faune aberrante, signe de la pierre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Patrouilleur d'Ostbruchwacht",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 16, "max": 16, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arc long (45/180 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
+      "particularity": "Soldat de la garnison d'Ostbruchwacht, qui manque d'hommes depuis des années et a raccourci ses patrouilles de son propre chef. Connaît les chenaux, les fondrières et les endroits où l'on ne va pas."
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long", "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 45, "long": 180 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Tourbier sümpfer",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "0",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 0 }, "con": { "mod": 0 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 4, "max": 4, "temp": 0 }, "ac": { "value": 10 }, "speed": 9 },
+      "xpReward": 10,
+      "attacks": [
+        {
+          "name": "Gourdin", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Parle sümpfer. Ne donne pas son vrai nom à un inconnu après la tombée du jour, ne s'endort jamais seul dans le marais, ne suit pas les feux de tourbière.",
+      "particularity": "Extrait la tourbe qui chauffe la moitié d'Altenburg. Superstitieux pour le reste de la Fédération ; prudent, à l'entendre. (MJ : ses coutumes sont de vraies protections, devenues folklore.)"
+    },
+    "items": [
+      {
+        "name": "Gourdin", "type": "weapon",
+        "img": "icons/weapons/clubs/club-banded-brown.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 1, "po": 0, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "bludgeoning" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Pelle", "type": "gear",
+        "img": "icons/tools/hand/shovel-spade-steel-brown-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "description": "Pour creuser une tranchée, déterrer un coffre ou ensevelir un feu de camp.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Moorlicht",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-mischief-fire-blue.webp",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "2",
+      "size": "tp",
+      "abilities": {
+        "str": { "mod": -5 }, "dex": { "mod": 9 }, "con": { "mod": 0 },
+        "int": { "mod": 1 }, "wis": { "mod": 2 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 22, "max": 22, "temp": 0 }, "ac": { "value": 19 }, "speed": 15 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Décharge (attaque de sort)", "ability": "dex", "bonus": -5, "magic": false,
+          "damage": { "dice": "2d8", "bonus": -9, "type": "lightning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["acid", "cold", "fire", "necrotic", "thunder", "bludgeoning", "piercing", "slashing"],
+      "damageImmunities": ["lightning", "poison"],
+      "specialAbilities": "Vol stationnaire (15 m), aucune vitesse au sol. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre épuisement, agrippé, paralysé, empoisonné, à terre, entravé et inconscient. Vision dans le noir 36 m. Consumer la vie (action bonus) : une créature à 1,50 m tombée à 0 PV fait un JS de Constitution DD 10 ou meurt ; le Moorlicht regagne 3d6 PV. Éphémère : ne peut rien porter. Mouvement incorporel (1d10 dégâts de force s'il finit son tour dans un objet). Lumière variable : vive dans un rayon de 1,50 à 6 m, faible au-delà sur autant, au choix. Invisibilité (concentration) : devient invisible.",
+      "particularity": "Les feux de tourbière : on ne les suit pas, on ne les montre pas du doigt. Ils mènent les égarés vers les fondrières et se nourrissent de ceux qui s'y noient. (MJ : n'apparaît qu'une fois la pierre de la Sümpfenmark brisée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Mort de tourbière",
+    "type": "npc",
+    "img": "icons/creatures/magical/humanoid-silhouette-green.webp",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": -2 }, "con": { "mod": 3 },
+        "int": { "mod": -4 }, "wis": { "mod": -2 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 22, "max": 22, "temp": 0 }, "ac": { "value": 8 }, "speed": 6 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Coup", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["poison"],
+      "specialAbilities": "Immunisé contre le poison et l'état empoisonné. Vision dans le noir 18 m. Sauvegarde de Sagesse +0. Robustesse de mort-vivant : réduit à 0 PV, il fait un JS de Constitution DD 5 + dégâts subis et reste à 1 PV en cas de réussite, sauf dégâts radiants ou coup critique.",
+      "particularity": "Un corps que la tourbe a gardé intact pendant des siècles, peau tannée et cuir encore sur le dos ; les tourbiers en déterrent depuis toujours et les réenterrent sans un mot. (MJ : n'apparaît qu'une fois la pierre de la Sümpfenmark brisée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Goule de tourbière",
+    "type": "npc",
+    "img": "icons/creatures/abilities/mouth-teeth-misshapen-pink.webp",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 2 }, "con": { "mod": 0 },
+        "int": { "mod": -2 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 22, "max": 22, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "dex", "bonus": 0, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffes", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["poison"],
+      "specialAbilities": "Immunisé contre le poison et l'état empoisonné. Vision dans le noir 18 m. Immunisée aussi contre charmé et épuisement. Griffes : une créature qui n'est pas un mort-vivant fait un JS de Constitution DD 10 ou est paralysée 1 minute (nouveau JS à la fin de chacun de ses tours).",
+      "particularity": "Un mort de tourbière qui a mangé. Il cherche la chair fraîche des vivants et laisse les noyés à la tourbe. (MJ : n'apparaît qu'une fois la pierre de la Sümpfenmark brisée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteSumpfenmark" }
+    }
+  },
+  {
+    "name": "Tourbe qui marche",
+    "type": "npc",
+    "img": "icons/creatures/slimes/slime-movement-dripping-pseudopods-green.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": -1 }, "con": { "mod": 3 },
+        "int": { "mod": -3 }, "wis": { "mod": 0 }, "cha": { "mod": -3 }
+      },
+      "attributes": { "hp": { "value": 136, "max": 136, "temp": 0 }, "ac": { "value": 15 }, "speed": 6 },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["cold", "fire"],
+      "damageImmunities": ["lightning"],
+      "specialAbilities": "Nage à 6 m. Vision aveugle 18 m (aveugle au-delà). Immunisée contre aveuglé, assourdi et épuisement. Discrétion +2. Absorption de la foudre : les dégâts de foudre lui rendent autant de PV au lieu de la blesser. Attaques multiples : deux coups ; si les deux touchent une cible de taille M ou moins, elle est agrippée (évasion DD 14) et engloutie. Engloutissement : la cible est aveuglée, entravée, ne peut plus respirer, et fait un JS de Constitution DD 14 au début de chaque tour de la tourbe ou subit 2d8 + 4 dégâts contondants ; elle se déplace avec la tourbe ; une seule cible à la fois.",
+      "particularity": "Un pan de tourbière qui se lève et avance. On ne s'endort jamais seul dans le marais : elle choisit les dormeurs. (MJ : n'apparaît qu'une fois la pierre de la Sümpfenmark brisée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteSumpfenmark" }
+    }
   }
 ]

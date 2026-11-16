@@ -281,7 +281,8 @@
         "common": "Partout",
         "coast": "Côtes de la Mer intérieure",
         "abyss": "Large et abysses de la Mer intérieure",
-        "siteLogne": "Site de pierre : forêt de Logne"
+        "siteLogne": "Site de pierre : forêt de Logne",
+        "siteSumpfenmark": "Site de pierre : Sümpfenmark"
       }
     },
     "Roll": {

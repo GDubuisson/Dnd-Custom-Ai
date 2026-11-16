@@ -427,7 +427,8 @@ DND_CUSTOM.bestiaryHabitats = {
   coast: "DND_CUSTOM.Bestiary.Habitats.coast",
   // Le large : la magie y survit, seul surnaturel possible dès la phase 0.
   abyss: "DND_CUSTOM.Bestiary.Habitats.abyss",
-  siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne"
+  siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne",
+  siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark"
 };
 
 /** Habitats où le surnaturel existe dès la phase 0 (le large de la Mer intérieure). */

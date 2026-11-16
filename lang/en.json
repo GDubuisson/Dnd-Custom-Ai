@@ -281,7 +281,8 @@
         "common": "Everywhere",
         "coast": "Inner Sea coasts",
         "abyss": "Inner Sea open water and abyss",
-        "siteLogne": "Stone site: Logne Forest"
+        "siteLogne": "Stone site: Logne Forest",
+        "siteSumpfenmark": "Stone site: Sümpfenmark"
       }
     },
     "Roll": {

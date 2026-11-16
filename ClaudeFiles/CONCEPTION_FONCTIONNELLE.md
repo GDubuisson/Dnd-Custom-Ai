@@ -210,12 +210,14 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-64 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+73 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
 **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
-scellé : humains et bêtes réelles de chaque région, faune aberrante autour du site de la forêt de Logne,
-et, seul surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la
-magie survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
-(arbres et arbustes éveillés, lutin, loup gris) et le Kraken affaibli qui approche des côtes. Toutes
+scellé : humains et bêtes réelles de chaque région, faune aberrante autour des sites de la forêt de Logne
+et de la Sümpfenmark (grenouille, crapaud, grand serpent, avec patrouilleurs et tourbiers), et, seul
+surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la magie
+survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
+(arbres et arbustes éveillés, lutin, loup gris, liés à la Dame de Logne), de la Sümpfenmark (Moorlicht,
+morts et goules de tourbière, tourbe qui marche) et le Kraken affaibli qui approche des côtes. Toutes
 reprennent exactement un bloc SRD 5.1 (seul le Kraken affaibli est dérivé, FP recalculé).
 
 Rangement voulu par le MJ (arc de campagne) : dès la première session les PJ brisent la pierre de la
