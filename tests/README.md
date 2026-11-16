@@ -134,7 +134,7 @@ npm run docker:down        # arrête l'instance
   réaction), toutes les Capacités/tous les Sorts octroyés directement depuis leur compendium
   (cf. bug connu ci-dessous — grantClassContent ne peut pas servir ici), plus T-ABIL-022/023
   (langues connues, déplacées depuis l'onglet Journal le 2026-08-16 — retour de test, cf.
-  describe dédié en fin de fichier : Commune + langue d'Origine triées alphabétiquement, ajout
+  describe dédié en fin de fichier : Commun + langue d'Origine triés alphabétiquement, ajout
   manuel d'une langue "special" par glisser-déposer depuis le compendium Langues, ex. "Argot des
   rues" — jamais auto-octroyée quelle que soit l'Origine, cf. world-items/languages.json,
   DragEvent/DataTransfer synthétique dispatché sur la racine de la fiche) ; `cypress/e2e/

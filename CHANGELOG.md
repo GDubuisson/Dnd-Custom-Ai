@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.2.4] - 2026-11-16
+
+**Cohérence avec l'univers de jeu** (documents de `ClaudeFiles/JEU_DE_ROLES_HISTOIRE`).
+- Langues : « Commune » devient **le Commun** ; Ravenmoorien → **Ravenmoorois**, Valderan →
+  **Valdérien**, Azharite → **Azhari**. Les descriptions des langues reprennent celles des chroniques
+  (la Langue sacrée devient le Commun ancien du Premier Codex).
+- Origines : gentilés Fleurainais, Ravenmoorois, Valdérien, Azhari ; Lucentia décrite comme une
+  principauté marchande (et non des cités-États).
+- Ravenmoor : le trait **Œil du Registre** remplace Stoïcisme — modificateur de Sagesse ajouté, sur
+  proposition au jet, à un test d'Investigation pour déceler un mensonge ou une chose cachée.
+- Valdera : le trait **Faveur de l'Unique** remplace Ferveur Incarnée (même effet, présenté comme une
+  grâce divine et non comme un rituel).
+- Chroniques des objets : dates du Premier Sceau d'Eau (141 et 169), de l'Astrolabe de Zaynab (vers
+  480, après sa mort) et de l'Épée d'Adelheid (portée quand elle n'était encore que soldate) alignées
+  sur les chroniques.
+- Mondes existants : le contenu de référence se resynchronise **par nom** — les anciennes langues
+  (Commune, Ravenmoorien, Valderan, Azharite) restent en orphelines dans le compendium Langues et sur
+  les personnages déjà créés ; les Journaux déjà générés (Guides, Chroniques) ne sont pas réécrits.
+
 ## [1.2.3] - 2026-11-15
 
 **Qualité de code (SonarQube, troisième lot).** Aucun changement de règle de jeu.

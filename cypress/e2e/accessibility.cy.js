@@ -124,7 +124,7 @@ describe("Accessibilité — fiches d'Item (contraste texte/fond)", () => {
     { type: "origin", pack: "origines", name: "Fleuraine" },
     { type: "class", pack: "classes", name: "Guerrier" },
     { type: "spell", pack: "sorts", name: "Trait de feu" },
-    { type: "language", pack: "langues", name: "Commune" }
+    { type: "language", pack: "langues", name: "Commun" }
   ];
 
   worldItemCases.forEach(({ type, name }) => {

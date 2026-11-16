@@ -49,7 +49,7 @@ selon un système d'**Origines** géographiques inspirées de nations réelles.
   Ensorceleur/Occultiste/Magicien).
 - Multiclassage non géré (un seul champ Classe par personnage).
 - Langues "spéciales" jamais octroyées automatiquement (ajout manuel par glisser-déposer
-  uniquement) — seules Commune et la langue d'Origine le sont.
+  uniquement) — seuls le Commun et la langue d'Origine le sont.
 - Compendium "Classes" purement informatif : les champs sauvegardes/compétences/maîtrises visibles
   n'ont aucun effet sur les calculs de la fiche de personnage.
 - Couvert (bonus de CA +2/+5 selon la position, SRD 5e) : aucune détection automatique fiable
@@ -82,10 +82,10 @@ leur **Origine** (pays d'origine) :
 |---|---|---|---|---|---|
 | Fleuraine | France | Noblesse, chevalerie, droiture, honneur | Charisme +2, Force +1 | Persuasion, Intimidation | Honneur Inébranlable : 1×/combat, relance obligatoire d'une sauvegarde ratée contre peur/charme |
 | Altenmark | Germanie | Force, courage, détermination, discipline | Force +2, Constitution +1 | Athlétisme, Survie | Discipline de Fer : jamais surpris par une embuscade en état d'alerte |
-| Lucentia | Italie | Charme, éloquence, persuasion, commerce | Charisme +2, Dextérité +1 | Tromperie, Représentation | Art de la Parole : modificateur de Charisme ajouté aux tests d'Intimidation ou de Tromperie |
-| Ravenmoor | Angleterre | Loyauté, pragmatisme, stoïcisme, devoir | Sagesse +2, Constitution +1 | Investigation, Perception | Stoïcisme : ignore les effets de peur, d'effroi ou d'illusions mineures |
-| Valdera | Espagne | Piété, ferveur, passion, ardeur | Sagesse +2, Charisme +1 | Religion, Athlétisme | Ferveur Incarnée : 1×/jour, crée une petite flamme sans matériel |
-| Azhar | Arabie | Sagesse, connaissance, réflexion, patience | Intelligence +2, Sagesse +1 | Histoire, Arcanes | Sagesse Ancienne : bonus d'Intelligence ajouté à un jet d'Investigation sur quelque chose de magique |
+| Lucentia | Italie | Charme, éloquence, persuasion, commerce | Charisme +2, Dextérité +1 | Tromperie, Représentation | Art de la Parole : modificateur de Charisme ajouté à un test de Perspicacité pour sentir un mensonge (bonus proposé au jet) |
+| Ravenmoor | Angleterre | Loyauté, pragmatisme, stoïcisme, devoir | Sagesse +2, Constitution +1 | Investigation, Perception | Œil du Registre : modificateur de Sagesse ajouté à un test d'Investigation pour déceler un mensonge ou une chose cachée (bonus proposé au jet) |
+| Valdera | Espagne | Piété, ferveur, passion, ardeur | Sagesse +2, Charisme +1 | Religion, Athlétisme | Faveur de l'Unique : 1×/jour, une petite flamme naît sans matériel (grâce divine, pas un rituel) |
+| Azhar | Arabie | Sagesse, connaissance, réflexion, patience | Intelligence +2, Sagesse +1 | Histoire, Arcanes | Sagesse Ancienne : modificateur d'Intelligence ajouté à un test de Perception pour repérer un phénomène ou un objet magique (bonus proposé au jet) |
 
 ## Feuille de personnage — spécification par zone
 
@@ -148,7 +148,7 @@ dédié par classe + `default.hbs`) :
 - **Classe non lanceuse** → onglet "Capacités" : aptitudes de classe, dons, actions spéciales.
 
 Langues connues affichées en haut de cet onglet (au-dessus du panneau de capacité d'Origine),
-triées alphabétiquement (Commune + langue d'Origine) — déplacées depuis l'onglet Journal.
+triées alphabétiquement (Commun + langue d'Origine) — déplacées depuis l'onglet Journal.
 
 ### Onglet "Journal"
 Biographie, Notes (zones de texte riche ProseMirror).
@@ -237,7 +237,7 @@ interne en kg**.
 | `class`/`subclass` | nom, description (flavor uniquement), sauvegardes maîtrisées, quota de compétences, maîtrises d'armes | la donnée mécanique réelle (capacités par niveau) vit dans `CONFIG.DND_CUSTOM` + `world-items/features.json`, pas sur cet Item |
 | `tool` (outil) | nom, prix, poids, compétence/bonus lié, description RP | bouton "Utiliser" lance le test de compétence lié (bonus de maîtrise + bonus éventuel) |
 | `spell` (sort) | classes autorisées (cases à cocher), niveau, école, composantes, formule de dégâts/soin | filtré par classe au glisser-déposer sur la fiche |
-| `language` (langue) | nom, description | Commune + langue d'Origine toujours connues ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium |
+| `language` (langue) | nom, description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium |
 
 ## Classes, sous-classes et capacités (référence de contenu)
 

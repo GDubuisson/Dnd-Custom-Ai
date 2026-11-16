@@ -4,10 +4,10 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Fleuraine.webp",
     "system": {
-      "demonym": "Fleurainois",
+      "demonym": "Fleurainais",
       "language": "Fleurain",
       "traits": "Noblesse, chevalerie, droiture, honneur",
-      "description": "<p>Terre de cours royales, de chevalerie et de codes d'honneur stricts. Les Fleurainois grandissent bercés par les récits de valeureux chevaliers et cultivent un sens aigu de la parole donnée.</p>",
+      "description": "<p>Terre de cours royales, de chevalerie et de codes d'honneur stricts. Les Fleurainais grandissent bercés par les récits de valeureux chevaliers et cultivent un sens aigu de la parole donnée.</p>",
       "abilityBonuses": { "cha": 2, "str": 1 },
       "skillAdvantages": ["persuasion", "intimidation"],
       "specialTrait": {
@@ -41,7 +41,7 @@
       "demonym": "Lucentien",
       "language": "Lucentien",
       "traits": "Charme, éloquence, persuasion, commerce",
-      "description": "<p>Cité-états prospères bâties sur le commerce et les arts. Les Lucentiens excellent dans la négociation et savent tirer parti de leur charisme naturel en toute situation.</p>",
+      "description": "<p>Principauté marchande de la plaine centrale, au croisement de toutes les routes terrestres du continent, fondée par des familles venues de partout et gouvernée par un Prince élu. Les Lucentiens excellent dans la négociation et savent tirer parti de leur charisme naturel en toute situation.</p>",
       "abilityBonuses": { "cha": 2, "dex": 1 },
       "skillAdvantages": ["deception", "performance"],
       "specialTrait": {
@@ -55,15 +55,15 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Ravenmoor.webp",
     "system": {
-      "demonym": "Ravenmoorien",
-      "language": "Ravenmoorien",
+      "demonym": "Ravenmoorois",
+      "language": "Ravenmoorois",
       "traits": "Loyauté, pragmatisme, stoïcisme, sens du devoir",
-      "description": "<p>Landes brumeuses et côtes battues par les vents, où le devoir prime sur les sentiments. Les Ravenmooriens sont pragmatiques, patients et rarement pris de court.</p>",
+      "description": "<p>Landes brumeuses et côtes battues par les vents, où le devoir prime sur les sentiments. Les Ravenmoorois sont pragmatiques, patients et rarement pris de court.</p>",
       "abilityBonuses": { "wis": 2, "con": 1 },
       "skillAdvantages": ["investigation", "perception"],
       "specialTrait": {
-        "name": "Stoïcisme",
-        "description": "Le personnage peut ignorer les effets de peur, d'effroi ou d'illusions mineures."
+        "name": "Œil du Registre",
+        "description": "Le personnage peut ajouter son modificateur de Sagesse à un jet d'Investigation pour déceler un mensonge (récit qui ne tient pas, compte falsifié, acte trafiqué) ou découvrir une chose cachée."
       }
     }
   },
@@ -72,15 +72,15 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Valdera.webp",
     "system": {
-      "demonym": "Valderan",
-      "language": "Valderan",
+      "demonym": "Valdérien",
+      "language": "Valdérien",
       "traits": "Piété, ferveur, passion, ardeur",
-      "description": "<p>Terre baignée de soleil où la foi et la passion animent chaque geste du quotidien. Les Valderans vivent avec ferveur, que ce soit au combat, en amour ou en prière.</p>",
+      "description": "<p>Terre baignée de soleil où la foi et la passion animent chaque geste du quotidien. Les Valdériens vivent avec ferveur, que ce soit au combat, en amour ou en prière.</p>",
       "abilityBonuses": { "wis": 2, "cha": 1 },
       "skillAdvantages": ["religion", "athletics"],
       "specialTrait": {
-        "name": "Ferveur Incarnée",
-        "description": "Une fois par jour, le personnage peut créer une petite flamme (équivalente à une bougie ou une torche) sans matériel."
+        "name": "Faveur de l'Unique",
+        "description": "Une fois par jour, une petite flamme (équivalente à une bougie ou une torche) naît sans matériel à la prière du personnage. Les Valdériens y voient une faveur divine, une grâce de l'Unique et non un art de ritualiste : elle se reçoit, elle ne se prend pas."
       }
     }
   },
@@ -89,10 +89,10 @@
     "type": "origin",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Azhar.webp",
     "system": {
-      "demonym": "Azharite",
-      "language": "Azharite",
+      "demonym": "Azhari",
+      "language": "Azhari",
       "traits": "Sagesse, connaissance, réflexion, patience",
-      "description": "<p>Vastes étendues désertiques parcourues de routes caravanières et parsemées de bibliothèques savantes. Les Azharites valorisent la connaissance ancienne et la réflexion patiente avant l'action.</p>",
+      "description": "<p>Vastes étendues désertiques parcourues de routes caravanières et parsemées de bibliothèques savantes. Les Azharis valorisent la connaissance ancienne et la réflexion patiente avant l'action.</p>",
       "abilityBonuses": { "int": 2, "wis": 1 },
       "skillAdvantages": ["history", "arcana"],
       "specialTrait": {

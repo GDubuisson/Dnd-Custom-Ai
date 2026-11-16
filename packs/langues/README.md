@@ -8,12 +8,12 @@ Chaque langue est un Item de type `language`, édité via sa fiche dédiée
 (`templates/item/language-sheet.hbs`) : juste une catégorie (`system.category` — `common`,
 `origin` ou `special`) et une description.
 
-Les langues pré-écrites dans `world-items/languages.json` (la Commune, une par Origine, et
+Les langues pré-écrites dans `world-items/languages.json` (le Commun, une par Origine, et
 quelques langues spéciales dont Druidique) y sont importées **automatiquement au chargement du
 monde** (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`),
 sans doublon (comparaison par nom) et sans action du MJ.
 
-La Commune et la langue de l'Origine choisie sont octroyées **automatiquement** à la création
+Le Commun et la langue de l'Origine choisie sont octroyés **automatiquement** à la création
 du personnage (cf. `scripts/helpers/class-content.js` > `grantLanguages`). Les langues
 spéciales (catégorie `special`) restent toujours un ajout manuel : glissez-déposez-les depuis
-ce compendium vers la fiche d'un personnage (onglet "Journal") pour les lui attribuer.
+ce compendium vers la fiche d'un personnage (onglet "Capacités") pour les lui attribuer.

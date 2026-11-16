@@ -195,15 +195,15 @@ Hooks.on("quenchReady", (quench) => {
           );
         });
 
-        it("octroie Commune et la langue propre à l'Origine choisie (T-WIZ-017)", async () => {
+        it("octroie le Commun et la langue propre à l'Origine choisie (T-WIZ-017)", async () => {
           const actor = await Actor.create({ name: "Quench Wizard Languages", type: "character" });
           createdActorIds.push(actor.id);
 
           const grantedNames = await grantLanguages(actor, "fleuraine");
-          assert.includeMembers(grantedNames, ["Commune", "Fleurain"]);
+          assert.includeMembers(grantedNames, ["Commun", "Fleurain"]);
 
           const ownedLanguages = actor.items.filter((item) => item.type === "language").map((item) => item.name);
-          assert.include(ownedLanguages, "Commune");
+          assert.include(ownedLanguages, "Commun");
           assert.include(ownedLanguages, "Fleurain");
         });
       });

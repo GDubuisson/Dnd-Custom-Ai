@@ -424,7 +424,7 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
   /** Langues connues, Sorts par niveau et emplacements de sorts. */
   #prepareLanguagesAndSpellsContext(context, system) {
     const items = this.actor.items.contents;
-    // Langues dans l'ordre d'ajout, Commune en tête.
+    // Langues dans l'ordre d'ajout, Commun en tête.
     context.languages = items
       .filter((item) => item.type === "language")
       .sort((a, b) => Number(b.system.category === "common") - Number(a.system.category === "common"));

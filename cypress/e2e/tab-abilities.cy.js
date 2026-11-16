@@ -858,13 +858,13 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
     goToTab("abilities");
   });
 
-  it("liste Commune en premier, puis la langue d'Origine (T-ABIL-022)", () => {
+  it("liste le Commun en premier, puis la langue d'Origine (T-ABIL-022)", () => {
     sheetRoot()
       .find(".languages-list .language-chip .item-name-link")
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
-        // Ordre d'ajout, Commune en tête.
-        expect(names).to.deep.equal(["Commune", "Fleurain"]);
+        // Ordre d'ajout, Commun en tête.
+        expect(names).to.deep.equal(["Commun", "Fleurain"]);
       });
   });
 
@@ -889,7 +889,7 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       .should(($links) => {
         const names = Array.from($links, (el) => el.textContent.trim());
         // « Argot des rues » en dernier : tri par ordre d'ajout, pas alphabétique.
-        expect(names).to.deep.equal(["Commune", "Fleurain", "Argot des rues"]);
+        expect(names).to.deep.equal(["Commun", "Fleurain", "Argot des rues"]);
       });
 
     cy.window().then((win) => {

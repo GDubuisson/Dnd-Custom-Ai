@@ -1178,8 +1178,8 @@ describe("item/origin-sheet.hbs — verrouillage MJ/Joueur", () => {
         item: { img: "o.webp", name: "Azhar" },
         isGM,
         system: {
-          demonym: "Azharite",
-          language: "Azharite",
+          demonym: "Azhari",
+          language: "Azhari",
           traits: "Sagesse",
           description: "<p>Désert.</p>",
           abilityBonuses: { int: 2, wis: 1 },

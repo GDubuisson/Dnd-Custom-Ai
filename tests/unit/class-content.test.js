@@ -248,25 +248,25 @@ describe("grantLanguages", () => {
     globalThis.ui = { notifications: { warn: (msg) => warnings.push(msg) } };
   });
 
-  test("Origine renseignée : reçoit Commune + la langue d'Origine exacte (scripts/data/origins.json > language)", async () => {
+  test("Origine renseignée : reçoit le Commun + la langue d'Origine exacte (scripts/data/origins.json > language)", async () => {
     const actor = makeActor({ class: "" });
     const granted = await grantLanguages(actor, "fleuraine");
-    assert.deepEqual(new Set(granted), new Set(["Commune", "Fleurain"]));
+    assert.deepEqual(new Set(granted), new Set(["Commun", "Fleurain"]));
   });
 
   test("chaque Origine octroie une langue qui existe réellement dans world-items/languages.json", async () => {
     for (const key of Object.keys(ORIGINS)) {
       const actor = makeActor({ class: "" });
       const granted = await grantLanguages(actor, key);
-      assert.ok(granted.includes("Commune"), `Origine ${key} : Commune non octroyée`);
+      assert.ok(granted.includes("Commun"), `Origine ${key} : Commun non octroyé`);
       assert.ok(granted.includes(ORIGINS[key].language), `Origine ${key} : langue "${ORIGINS[key].language}" non octroyée (${JSON.stringify(granted)})`);
     }
   });
 
-  test("Origine vide : reçoit uniquement Commune", async () => {
+  test("Origine vide : reçoit uniquement le Commun", async () => {
     const actor = makeActor({ class: "" });
     const granted = await grantLanguages(actor, "");
-    assert.deepEqual(granted, ["Commune"]);
+    assert.deepEqual(granted, ["Commun"]);
   });
 
   test("les langues spéciales (catégorie 'special') ne sont jamais octroyées automatiquement", async () => {
@@ -277,10 +277,10 @@ describe("grantLanguages", () => {
   });
 
   test("langue déjà possédée par nom -> pas re-octroyée (idempotence)", async () => {
-    const commune = WORLD_LANGUAGES.find((lang) => lang.name === "Commune");
+    const commune = WORLD_LANGUAGES.find((lang) => lang.name === "Commun");
     const actor = makeActor({ class: "", owned: [commune] });
     const granted = await grantLanguages(actor, "fleuraine");
-    assert.ok(!granted.includes("Commune"));
+    assert.ok(!granted.includes("Commun"));
     assert.ok(granted.includes("Fleurain"));
   });
 

@@ -35,29 +35,30 @@
   },
   "ravenmoor": {
     "label": "Ravenmoor",
-    "language": "Ravenmoorien",
+    "language": "Ravenmoorois",
     "traits": "Loyauté, pragmatisme, stoïcisme, sens du devoir",
     "abilityBonuses": { "wis": 2, "con": 1 },
     "skillAdvantages": ["investigation", "perception"],
     "specialTrait": {
-      "name": "Stoïcisme",
-      "description": "Le personnage peut ignorer les effets de peur, d'effroi ou d'illusions mineures."
+      "name": "Œil du Registre",
+      "description": "Le personnage peut ajouter son modificateur de Sagesse à un jet d'Investigation pour déceler un mensonge (récit qui ne tient pas, compte falsifié, acte trafiqué) ou découvrir une chose cachée.",
+      "conditionalBonus": { "skill": "investigation", "ability": "wis" }
     }
   },
   "valdera": {
     "label": "Valdera",
-    "language": "Valderan",
+    "language": "Valdérien",
     "traits": "Piété, ferveur, passion, ardeur",
     "abilityBonuses": { "wis": 2, "cha": 1 },
     "skillAdvantages": ["religion", "athletics"],
     "specialTrait": {
-      "name": "Ferveur Incarnée",
-      "description": "Une fois par jour, le personnage peut créer une petite flamme (équivalente à une bougie ou une torche) sans matériel."
+      "name": "Faveur de l'Unique",
+      "description": "Une fois par jour, une petite flamme (équivalente à une bougie ou une torche) naît sans matériel à la prière du personnage. Les Valdériens y voient une faveur divine, une grâce de l'Unique et non un art de ritualiste : elle se reçoit, elle ne se prend pas."
     }
   },
   "ashar": {
     "label": "Azhar",
-    "language": "Azharite",
+    "language": "Azhari",
     "traits": "Sagesse, connaissance, réflexion, patience",
     "abilityBonuses": { "int": 2, "wis": 1 },
     "skillAdvantages": ["history", "arcana"],

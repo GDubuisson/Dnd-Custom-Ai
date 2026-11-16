@@ -92,7 +92,7 @@ export async function grantClassContent(actor, classKey, level) {
 export async function grantLanguages(actor, originKey) {
   const ownedNames = new Set(actor.items.contents.map((item) => item.name));
   const originLanguage = game.dndCustomAi?.origins?.[originKey]?.language;
-  const wantedNames = new Set(["Commune", originLanguage].filter(Boolean));
+  const wantedNames = new Set(["Commun", originLanguage].filter(Boolean));
 
   const languages = await findClassContentCandidates("language", "langues", () => true);
   const toGrant = languages.filter((item) => wantedNames.has(item.name) && !ownedNames.has(item.name));

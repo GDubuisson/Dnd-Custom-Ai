@@ -9,7 +9,7 @@ Chaque Origine doit être un Item de type `origin` (cf. `scripts/data/origin-dat
 via sa fiche dédiée (`templates/item/origin-sheet.hbs`) :
 - `name` : nom de l'Origine (ex. "Fleuraine")
 - `img` : illustration (champ natif de l'Item, pas de champ dédié)
-- `system.demonym` : gentilé (ex. "Fleurainois")
+- `system.demonym` : gentilé (ex. "Fleurainais")
 - `system.language` : langue parlée
 - `system.inspiration` : inspiration culturelle réelle (ex. "France")
 - `system.traits` : traits culturels résumés en quelques mots

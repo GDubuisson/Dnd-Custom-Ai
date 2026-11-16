@@ -25,7 +25,7 @@ function buildOverviewPage() {
       restaurée aussi au repos court. Si l'emplacement du niveau exact du sort est épuisé mais
       qu'un palier supérieur est disponible, le joueur peut choisir de surclasser (fenêtre de
       choix dédiée, aucune charge décomptée sans confirmation).</li>
-      <li>Langues : Commune et langue d'Origine octroyées automatiquement à la création.</li>
+      <li>Langues : Commun et langue d'Origine octroyés automatiquement à la création.</li>
       <li>Sorts/Capacités de classe : octroyés automatiquement à la création et à chaque montée
       de niveau (cf. page "Expérience et montée de niveau" ci-dessous).</li>
       <li>Réaction : une seule utilisable par round, régénérée automatiquement au début du tour

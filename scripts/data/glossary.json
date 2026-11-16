@@ -107,7 +107,7 @@
   {
     "key": "langue",
     "term": "Langue",
-    "definition": "Un personnage connaît toujours la Commune et la langue de son Origine (octroyées automatiquement à la création). Les langues spéciales (Argot des rues, Jargon militaire...) s'ajoutent manuellement en les glissant depuis le compendium Langues vers l'onglet Journal."
+    "definition": "Un personnage connaît toujours le Commun et la langue de son Origine (octroyés automatiquement à la création). Les langues spéciales (Argot des rues, Jargon militaire...) s'ajoutent manuellement en les glissant depuis le compendium Langues vers l'onglet Capacités."
   },
   {
     "key": "charge",

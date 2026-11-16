@@ -213,8 +213,8 @@ async function buildLanguagesPage(glossary) {
   };
 
   return `
-    <p>Chaque personnage connaît toujours la ${abbr("Langue", "Commune")} et la langue de son
-    Origine : octroyées automatiquement à la création, sans rien à faire. Les langues spéciales
+    <p>Chaque personnage connaît toujours le ${abbr("Langue", "Commun")} et la langue de son
+    Origine : octroyés automatiquement à la création, sans rien à faire. Les langues spéciales
     ci-dessous s'ajoutent manuellement, en les glissant depuis le compendium Langues sur l'onglet
     Capacités de la fiche de personnage (où elles s'affichent, en haut).</p>
     ${section("DND_CUSTOM.Item.LanguageCategories.common", byCategory("common"))}

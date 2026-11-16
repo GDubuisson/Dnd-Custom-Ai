@@ -540,9 +540,9 @@ describe("world-items/languages.json — cohérence avec scripts/data/origins.js
     assert.deepEqual(new Set(originCategoryLanguages), originLanguageNames);
   });
 
-  test("'Commune' existe et a la catégorie 'common'", () => {
-    const commune = WORLD_LANGUAGES.find((entry) => entry.name === "Commune");
-    assert.ok(commune, "'Commune' introuvable dans world-items/languages.json");
+  test("'Commun' existe et a la catégorie 'common'", () => {
+    const commune = WORLD_LANGUAGES.find((entry) => entry.name === "Commun");
+    assert.ok(commune, "'Commun' introuvable dans world-items/languages.json");
     assert.equal(commune.system.category, "common");
   });
 

@@ -54,7 +54,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-WIZ-014 | Équipement de départ attribué | P1 | E2E+Quench | Terminer l'assistant avec une classe ayant arme+armure de départ (ex. Guerrier) | Les deux Items apparaissent sur l'Actor avec `system.equipped = true` |
 | T-WIZ-015 | Équipement de départ manquant → avertissement non bloquant | P2 | Quench | Terminer l'assistant sans que les Items du monde `world-items/weapons.json`/`armors.json` soient importés | Notification d'avertissement `StartingEquipmentMissing`, la création du personnage aboutit quand même |
 | T-WIZ-016 | Capacités/sorts de niveau 1 octroyés | P1 | E2E+Quench | Terminer l'assistant avec une classe lanceuse de sorts | Les capacités de classe niveau 1 et les sorts/tours de magie de niveau 1 apparaissent sur l'Actor |
-| T-WIZ-017 | Langues octroyées | P2 | Quench | Terminer l'assistant avec n'importe quelle origine | L'Actor possède un Item "Commune" + la langue propre à l'origine choisie |
+| T-WIZ-017 | Langues octroyées | P2 | Quench | Terminer l'assistant avec n'importe quelle origine | L'Actor possède un Item "Commun" + la langue propre à l'origine choisie |
 | T-WIZ-018 | Réouverture après fermeture sans terminer | P2 | E2E | Fermer l'assistant sans soumettre, rouvrir la fiche | Le bouton "Créer un personnage" reste visible, aucune donnée n'a été modifiée |
 | T-WIZ-019 | Token configuré dès la création de l'Actor | P2 | E2E | Créer un Actor "character" vierge | `prototypeToken.displayName`/`displayBars` = `ALWAYS`, `bar1.attribute` = `attributes.hp` |
 
@@ -158,7 +158,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-ABIL-019 | Réaction — capacité de type "reaction" bloquée si déjà utilisée | P1 | E2E+Quench | Réaction déjà consommée ce round, tenter d'utiliser une autre capacité/sort de type "reaction" | Avertissement `ReactionUnavailable`, action annulée sans décompte de charge |
 | T-ABIL-020 | Bascule manuelle de la réaction | P2 | E2E | Cliquer l'indicateur de réaction dans l'en-tête | `combat.reactionAvailable` bascule |
 | T-ABIL-021 | Régénération de la réaction en début de tour | P1 | Quench | Simuler `updateCombat` faisant passer au tour du personnage | `combat.reactionAvailable` repasse à `true` (hook, à vérifier côté `dnd-custom-ai.js`) |
-| T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commune + langue d'origine listées, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
+| T-ABIL-022 | Langues connues affichées et triées | P2 | E2E | Terminer l'assistant, ouvrir l'onglet Capacités | Commun + langue d'origine listés, triées alphabétiquement, juste au-dessus du panneau de capacité d'Origine |
 | T-ABIL-023 | Ajout manuel d'une langue spéciale | P2 | E2E | Glisser un Item langue depuis le compendium "Langues" sur la fiche | La langue apparaît dans la liste de l'onglet Capacités |
 | T-ABIL-026 | Surclassement — palier exact épuisé, palier supérieur disponible | P0 | E2E+Quench | `spells.slots.<niveau>.value = 0`, un palier supérieur > 0, cliquer Lancer | Fenêtre de choix ouverte ; en choisissant le palier proposé, c'est CE palier (pas celui du sort) qui est décompté |
 

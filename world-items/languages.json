@@ -1,11 +1,11 @@
 [
   {
-    "name": "Commune",
+    "name": "Commun",
     "type": "language",
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "common",
-      "description": "La langue universelle, comprise et parlée par la quasi-totalité des habitants du monde connu, quelle que soit leur Origine. Octroyée automatiquement à la création du personnage."
+      "description": "Langue du Premier Codex, née du parler des collines de Velencia et devenue celle de l'écriture : les clercs et les juristes l'appellent encore « la langue du Codex ». Tous les traités s'y signent, tous les marchands s'y entendent, et il n'est guère de village où personne ne le parle. Octroyé automatiquement à la création du personnage."
     }
   },
   {
@@ -14,7 +14,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/origins/Fleuraine.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Fleuraine. Octroyée automatiquement à la création si le personnage est originaire de Fleuraine."
+      "description": "Langue de la cour et du greffe de Fleuraine : précieuse, chargée de titres, de formules et de degrés de politesse, où l'on peut refuser une faveur sans jamais dire non et insulter un homme sans qu'il puisse s'en plaindre. Octroyée automatiquement à la création si le personnage est originaire de Fleuraine."
     }
   },
   {
@@ -23,7 +23,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/origins/Altenmark.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Altenmark. Octroyée automatiquement à la création si le personnage est originaire d'Altenmark."
+      "description": "Langue rugueuse de la Fédération d'Altenmark : des consonnes dures, des mots composés qui s'allongent à mesure que la chose se précise, et aucune formule inutile. Chaque marche a son accent ; le sümpfer, le parler des marais, s'en est le plus écarté. Octroyée automatiquement à la création si le personnage est originaire d'Altenmark."
     }
   },
   {
@@ -32,34 +32,34 @@
     "img": "systems/dnd-custom-ai/assets/icons/origins/Lucentia.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Lucentia. Octroyée automatiquement à la création si le personnage est originaire de Lucentia."
+      "description": "Langue de la Principauté de Lucentia, faite des langues de ceux qui y sont arrivés : les nuances du fleurain, les mots composés de l'altenmarkois, la manière de compter du ravenmoorois. Irrégulière mais comprise partout : les mots du change, de la banque et de l'assurance sont lucentiens dans toutes les langues du continent. Octroyée automatiquement à la création si le personnage est originaire de Lucentia."
     }
   },
   {
-    "name": "Ravenmoorien",
+    "name": "Ravenmoorois",
     "type": "language",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Ravenmoor.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Ravenmoor. Octroyée automatiquement à la création si le personnage est originaire de Ravenmoor."
+      "description": "Langue sobre du Royaume de Ravenmoor, qui dit ce qu'elle signe et signe ce qu'elle dit : les adjectifs y sont rares, les superlatifs presque inconnus, et le goût de la litote proverbial. Un Ravenmoorois qui trouve une chose « pas mauvaise » en est enthousiaste. Octroyée automatiquement à la création si le personnage est originaire de Ravenmoor."
     }
   },
   {
-    "name": "Valderan",
+    "name": "Valdérien",
     "type": "language",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Valdera.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Valdera. Octroyée automatiquement à la création si le personnage est originaire de Valdera."
+      "description": "Langue d'autel et de champ de bataille du Royaume de Valdera : sonore, ample, solennelle. On y bénit, on y jure et on y conjure à chaque phrase, et les Ordres de Ferveur y prêchent. Octroyée automatiquement à la création si le personnage est originaire de Valdera."
     }
   },
   {
-    "name": "Azharite",
+    "name": "Azhari",
     "type": "language",
     "img": "systems/dnd-custom-ai/assets/icons/origins/Azhar.webp",
     "system": {
       "category": "origin",
-      "description": "Langue parlée en Azhar. Octroyée automatiquement à la création si le personnage est originaire d'Azhar."
+      "description": "Langue savante, mesurée et exacte du Sultanat d'Azhar, qui distingue par des mots différents ce que d'autres langues confondent : un puits qui donne, un puits qui a donné, un puits qui donnera. Le Commun lui a emprunté presque tout son vocabulaire du calcul, de l'astronomie et de l'hydraulique. Octroyée automatiquement à la création si le personnage est originaire d'Azhar."
     }
   },
   {
@@ -86,7 +86,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "Langue liturgique réservée aux textes et cérémonies religieuses, enseignée dans les temples et monastères. Ajout manuel : à glisser sur la fiche si le personnage a reçu une éducation religieuse."
+      "description": "Forme la plus ancienne du Commun, celle du Premier Codex, que la liturgie de la Foi de l'Unique a figée : on l'entend à l'office, avec des tournures que plus personne n'emploie ailleurs. Enseignée dans les abbayes et les écoles de la Foi. Ajout manuel : à glisser sur la fiche si le personnage a reçu une éducation religieuse."
     }
   },
   {
