@@ -223,7 +223,17 @@ uniquement) — un bestiaire n'a pas vocation à être consulté à l'avance par
 
 ## Fiche Véhicule/Monture (Actor type `vehicle`)
 
-Champs de base, barre de PV bornée, inventaire.
+Champs de base (vitesse, PV avec barre bornée, capacité de charge), description en texte libre (prix,
+attelage, contexte), inventaire.
+
+### Compendium "Montures et véhicules"
+Visible des joueurs (Observateur). 5 montures (Actor `mount`, fiche PNJ, utilisables avec Combat
+monté) reprenant exactement les blocs SRD : Cheval de selle, Destrier fleurainais (cheval de guerre,
+Charge piétinante), Cheval de trait, Mule de l'Eismark (Bête de somme, Pied sûr), Chameau de piste —
+prix en tête de la particularité. 4 véhicules (Actor `vehicle`) : Chariot de convoi, Traîneau des
+guides d'Eisengrund, Navire de cabotage, Barque de la Passe — prix SRD, PV de la table SRD des objets
+(bois résistant selon la taille), capacité = traction SRD de l'attelage (cinq fois sa charge,
+véhicule compris) ou cargaison SRD des bateaux ; prix et contexte dans la description.
 
 ## Types d'Item
 

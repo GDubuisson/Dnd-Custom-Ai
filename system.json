@@ -130,6 +130,17 @@
       }
     },
     {
+      "name": "montures-vehicules",
+      "label": "Montures et véhicules",
+      "system": "dnd-custom-ai",
+      "path": "packs/montures-vehicules",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "adversaires",
       "label": "Adversaires",
       "system": "dnd-custom-ai",

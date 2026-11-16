@@ -1,4 +1,4 @@
-const { SchemaField, NumberField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField } = foundry.data.fields;
 
 /** Données d'un véhicule : contenant d'objets partagé (vitesse, PV, capacité de charge). */
 export class VehicleActorData extends foundry.abstract.TypeDataModel {
@@ -11,7 +11,9 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
         }),
         speed: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
-      carryCapacity: new NumberField({ required: true, min: 0, initial: 0 })
+      carryCapacity: new NumberField({ required: true, min: 0, initial: 0 }),
+      // Prix, attelage et contexte, en texte brut.
+      description: new StringField({ required: false, blank: true, initial: "" })
     };
   }
 }

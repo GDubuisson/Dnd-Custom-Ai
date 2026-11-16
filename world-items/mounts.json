@@ -1,0 +1,239 @@
+[
+  {
+    "name": "Cheval de selle",
+    "type": "mount",
+    "img": "icons/environment/creatures/horse-brown.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 },
+        "dex": { "mod": 0 },
+        "con": { "mod": 1 },
+        "int": { "mod": -4 },
+        "wis": { "mod": 0 },
+        "cha": { "mod": -2 }
+      },
+      "attributes": {
+        "hp": { "value": 13, "max": 13, "temp": 0 },
+        "ac": { "value": 10 },
+        "speed": 18
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Sabots",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Prix : 75 po. La monture ordinaire des routes du continent, de la Grande Route du Nord aux pistes de Qasirah. Capacité de charge : 217 kg."
+    },
+    "items": []
+  },
+  {
+    "name": "Destrier fleurainais",
+    "type": "mount",
+    "img": "icons/environment/creatures/horse-white.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 },
+        "dex": { "mod": 1 },
+        "con": { "mod": 1 },
+        "int": { "mod": -4 },
+        "wis": { "mod": 1 },
+        "cha": { "mod": -2 }
+      },
+      "attributes": {
+        "hp": { "value": 19, "max": 19, "temp": 0 },
+        "ac": { "value": 11 },
+        "speed": 18
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Sabots",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge piétinante : si le destrier se déplace d'au moins 6 m en ligne droite vers une créature puis la touche avec ses sabots au cours du même tour, la cible doit réussir une sauvegarde de Force DD 14 ou être jetée à terre. Si elle est à terre, le destrier peut l'attaquer de nouveau avec ses sabots par une action bonus.",
+      "particularity": "Prix : 400 po. Cheval de guerre de la cavalerie lourde de Fleuraine, dressé à charger sous le harnois, qui n'a plus chargé depuis la Paix de Vespera. Capacité de charge : 245 kg."
+    },
+    "items": []
+  },
+  {
+    "name": "Cheval de trait",
+    "type": "mount",
+    "img": "icons/environment/creatures/horse-tan.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 },
+        "dex": { "mod": 0 },
+        "con": { "mod": 1 },
+        "int": { "mod": -4 },
+        "wis": { "mod": 0 },
+        "cha": { "mod": -2 }
+      },
+      "attributes": {
+        "hp": { "value": 19, "max": 19, "temp": 0 },
+        "ac": { "value": 10 },
+        "speed": 12
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Sabots",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Prix : 50 po. Tire les chariots des convois et les charrues lourdes des plaines de Bléval. Capacité de charge : 245 kg ; peut tirer jusqu'à cinq fois cette charge, véhicule compris."
+    },
+    "items": []
+  },
+  {
+    "name": "Mule de l'Eismark",
+    "type": "mount",
+    "img": "icons/environment/creatures/horses.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 },
+        "dex": { "mod": 0 },
+        "con": { "mod": 1 },
+        "int": { "mod": -4 },
+        "wis": { "mod": 0 },
+        "cha": { "mod": -3 }
+      },
+      "attributes": {
+        "hp": { "value": 11, "max": 11, "temp": 0 },
+        "ac": { "value": 10 },
+        "speed": 12
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Sabots",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Bête de somme : compte comme une créature de taille Grande pour sa capacité de charge. Pied sûr : avantage aux sauvegardes de Force et de Dextérité contre les effets qui la jetteraient à terre.",
+      "particularity": "Prix : 8 po. La bête des muletiers des cols de l'Eismark, qui descendent l'argent d'Eisengrund : c'est un muletier qui découvrit le grand filon en 594. Capacité de charge : 190 kg."
+    },
+    "items": []
+  },
+  {
+    "name": "Chameau de piste",
+    "type": "mount",
+    "img": "icons/environment/creatures/horse-tan.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/8",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 },
+        "dex": { "mod": -1 },
+        "con": { "mod": 2 },
+        "int": { "mod": -4 },
+        "wis": { "mod": -1 },
+        "cha": { "mod": -3 }
+      },
+      "attributes": {
+        "hp": { "value": 15, "max": 15, "temp": 0 },
+        "ac": { "value": 9 },
+        "speed": 15
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": { "dice": "1d4", "bonus": -3, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Prix : 50 po. La monture des caravanes qui se croisent à Qasirah, et la seule qui aille au-delà de Bir Azraq et de Ramlah. Capacité de charge : 217 kg."
+    },
+    "items": []
+  },
+  {
+    "name": "Chariot de convoi",
+    "type": "vehicle",
+    "img": "icons/environment/settlement/wagon.webp",
+    "system": {
+      "attributes": {
+        "hp": { "value": 55, "max": 55 },
+        "speed": 12
+      },
+      "carryCapacity": 2270,
+      "description": "Prix : 35 po (chariot), sans l'attelage. Grand chariot bâché des convois de la Charte des Routes, tiré par deux chevaux de trait. Classe d'armure 15 (bois). La capacité tient compte de la traction de deux chevaux de trait (cinq fois leur charge, chariot compris)."
+    }
+  },
+  {
+    "name": "Traîneau des guides d'Eisengrund",
+    "type": "vehicle",
+    "img": "icons/environment/settlement/wagon-black.webp",
+    "system": {
+      "attributes": {
+        "hp": { "value": 27, "max": 27 },
+        "speed": 12
+      },
+      "carryCapacity": 1770,
+      "description": "Prix : 20 po, sans l'attelage. Traîneau de bois et de cuir des guides qui connaissent les bordures du Désert gelé de Kis, où il faut tout emporter, jusqu'au bois. Classe d'armure 15 (bois). Capacité calculée pour une paire de mules de l'Eismark."
+    }
+  },
+  {
+    "name": "Navire de cabotage",
+    "type": "vehicle",
+    "img": "icons/environment/settlement/ship.webp",
+    "system": {
+      "attributes": {
+        "hp": { "value": 55, "max": 55 },
+        "speed": 6
+      },
+      "carryCapacity": 90700,
+      "description": "Prix : 10 000 po. Voilier de commerce de la Mer intérieure, qui va de port en port en restant en vue de la côte, de Port-Lys à Castelmare. Équipage 20, passagers 20, cargaison 100 tonnes. Vitesse 2 milles à l'heure (environ 3 km/h). Classe d'armure 15 (bois) ; PV par section de coque."
+    }
+  },
+  {
+    "name": "Barque de la Passe",
+    "type": "vehicle",
+    "img": "icons/environment/vehicles/boat-fishing-masted.webp",
+    "system": {
+      "attributes": {
+        "hp": { "value": 27, "max": 27 },
+        "speed": 4
+      },
+      "carryCapacity": 270,
+      "description": "Prix : 50 po. Barque à rames des passeurs de Poerto del Robis : quelques heures suffisent pour gagner l'autre rive de la Passe. Équipage 1, passagers 3. Vitesse 1,5 mille à l'heure (environ 2,5 km/h). Classe d'armure 15 (bois)."
+    }
+  }
+]

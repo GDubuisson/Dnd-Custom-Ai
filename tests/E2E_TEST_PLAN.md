@@ -230,6 +230,9 @@ deux champs de texte libre ci-dessous.
 | T-VEH-001 | Ouverture et champs de base | P2 | E2E | Ouvrir un Actor type Véhicule | Formulaire simple s'affiche, pas d'erreur |
 | T-VEH-002 | Barre de PV | P2 | E2E | Modifier les PV | Barre recalculée, bornée 0-100% |
 | T-VEH-003 | Inventaire embarqué | P2 | E2E | Ajouter un objet weapon/armor/gear/tool | Apparaît dans la liste d'inventaire du véhicule |
+| T-MOUNT-001 | Compendium Montures et véhicules | P2 | E2E | Ouvrir le compendium "Montures et véhicules" | 5 montures (Actor `mount`) et 4 véhicules (Actor `vehicle`) attendus, compendium consultable par un joueur |
+| T-MOUNT-002 | Monture importée | P2 | E2E | Importer le Destrier fleurainais dans le monde | Bloc SRD conservé (19 PV, sabots 2d6), fiche PNJ ouverte avec la Charge piétinante |
+| T-MOUNT-003 | Description de véhicule | P2 | E2E | Importer le Chariot de convoi, ouvrir sa fiche | Capacité 2 270 kg, description commençant par le prix |
 
 ---
 

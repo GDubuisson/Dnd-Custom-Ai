@@ -1,5 +1,6 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { DND_CUSTOM } from "../../scripts/helpers/config.js";
 import {
   ORIGINS,
@@ -15,6 +16,7 @@ import {
   WORLD_ORIGIN_ITEMS,
   WORLD_LANGUAGES,
   WORLD_NPCS,
+  WORLD_MOUNTS,
   WORLD_REGIONAL,
   WORLD_HISTORICAL,
   ITEM_LORE,
@@ -343,6 +345,50 @@ describe("world-items/tools.json — compétence liée (ToolData#useEffect)", ()
   for (const tool of allTools) {
     test(`${tool.name} : compétence "${tool.system.useEffect.skill}" valide`, () => {
       assert.ok(Object.hasOwn(DND_CUSTOM.skills, tool.system.useEffect.skill));
+    });
+  }
+});
+
+// Montures et véhicules (compendium « montures-vehicules ») : blocs SRD et véhicules cohérents.
+describe("world-items/mounts.json — montures (Actor mount) et véhicules (Actor vehicle)", () => {
+  const SIZE_KEYS = new Set(Object.keys(DND_CUSTOM.sizes));
+  const CR_KEYS = new Set(DND_CUSTOM.challengeRatings);
+  const systemJson = JSON.parse(readFileSync(new URL("../../system.json", import.meta.url), "utf8"));
+
+  test("compendium déclaré dans system.json (Actor, visible des joueurs)", () => {
+    const pack = systemJson.packs.find((entry) => entry.name === "montures-vehicules");
+    assert.ok(pack, "compendium 'montures-vehicules' absent de system.json");
+    assert.equal(pack.type, "Actor");
+    assert.equal(pack.ownership.PLAYER, "OBSERVER");
+  });
+
+  test("uniquement des montures et des véhicules, sans doublon de nom", () => {
+    assert.ok(WORLD_MOUNTS.length > 0);
+    for (const entry of WORLD_MOUNTS) assert.ok(["mount", "vehicle"].includes(entry.type), `type inattendu : ${entry.name}`);
+    const names = WORLD_MOUNTS.map((entry) => entry.name);
+    assert.equal(new Set(names).size, names.length);
+  });
+
+  for (const mount of WORLD_MOUNTS.filter((entry) => entry.type === "mount")) {
+    test(`${mount.name} : bête réelle, FI/XP SRD, taille valide, attaque à la Force`, () => {
+      const system = mount.system;
+      assert.equal(system.creatureType, "beast");
+      assert.ok(SIZE_KEYS.has(system.size));
+      assert.ok(CR_KEYS.has(system.challengeRating));
+      assert.equal(system.xpReward, DND_CUSTOM.challengeRatingXp[system.challengeRating]);
+      assert.ok(system.attributes.hp.max > 0 && system.attributes.ac.value > 0 && system.attributes.speed > 0);
+      assert.ok(system.attacks.length > 0 && system.attacks.every((attack) => attack.ability === "str"));
+      assert.match(system.particularity, /^Prix : /, "prix indiqué en tête de la particularité");
+    });
+  }
+
+  for (const vehicle of WORLD_MOUNTS.filter((entry) => entry.type === "vehicle")) {
+    test(`${vehicle.name} : PV, vitesse et capacité positifs, prix en description`, () => {
+      const system = vehicle.system;
+      assert.ok(system.attributes.hp.max > 0 && system.attributes.hp.value === system.attributes.hp.max);
+      assert.ok(system.attributes.speed > 0 && Number.isInteger(system.attributes.speed));
+      assert.ok(system.carryCapacity > 0);
+      assert.match(system.description, /^Prix : /);
     });
   }
 });

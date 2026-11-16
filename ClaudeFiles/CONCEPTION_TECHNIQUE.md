@@ -468,7 +468,7 @@ manuelle d'un Item/document de compendium de référence est perdue au prochain 
 si le JSON source a changé depuis. Attendu, pas un bug — à ne jamais "corriger" en sens inverse.
 
 **Mécanisme** : pour chaque catégorie (boucle `WORLD_ITEM_FILES` sur les Items du monde, boucle
-`COMPENDIUM_FILES` sur les 8 compendiums), après l'import des entrées absentes par nom (logique
+`COMPENDIUM_FILES` sur les 9 compendiums), après l'import des entrées absentes par nom (logique
 existante, inchangée), une seconde passe construit une Map nom→document des entrées déjà
 présentes puis calcule un patch via `diffPatch(entry, existing)` pour chacune :
 
@@ -520,7 +520,7 @@ de renommer l'existante, qui reste alors orpheline dans le compendium (à nettoy
 **Couverture E2E** (`cypress/e2e/content-resync.cy.js`, session MJ uniquement — `importSystemContent`
 retourne immédiatement pour un non-MJ) :
 - **T-SYNC-001** — garde-fou direct contre le piège de faux positifs ci-dessus : sur tout le
-  contenu (8 compendiums), aucune entrée déjà à jour ne doit ressortir comme "à resynchroniser".
+  contenu (9 compendiums), aucune entrée déjà à jour ne doit ressortir comme "à resynchroniser".
 - **T-SYNC-002** — modifie à la main la description de "Rage" (compendium `capacites`), rappelle
   `importSystemContent()`, vérifie qu'elle est bien réécrasée par le JSON ET qu'un champ NON
   modifié (`uses.max`) reste intact (patch partiel, pas table rase de l'entrée entière).

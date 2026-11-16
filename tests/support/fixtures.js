@@ -27,6 +27,7 @@ export const WORLD_SUBCLASSES = loadJson("world-items/subclasses.json");
 export const WORLD_ORIGIN_ITEMS = loadJson("world-items/origins.json");
 export const WORLD_LANGUAGES = loadJson("world-items/languages.json");
 export const WORLD_NPCS = loadJson("world-items/npcs.json");
+export const WORLD_MOUNTS = loadJson("world-items/mounts.json");
 export const GLOSSARY = loadJson("scripts/data/glossary.json");
 
 /** Objet brut au format CharacterData pour appeler `prepareDerivedData` directement ; `overrides` fusionné en profondeur. */

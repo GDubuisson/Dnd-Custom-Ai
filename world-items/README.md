@@ -35,6 +35,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 | `npcs.json` | 24 PNJ prêts à l'emploi (16 humanoïdes, 8 bêtes sauvages réelles — aucune créature légendaire/mythique) avec butin embarqué | Actor `npc` | Compendium "Adversaires" |
+| `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
 avec le système) — dupliquez l'Item une fois importé si vous voulez le personnaliser.

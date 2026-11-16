@@ -37,6 +37,7 @@ describe("Resynchronisation du contenu de référence — importSystemContent()"
         "dnd-custom-ai.capacites": "features.json",
         "dnd-custom-ai.dons": "feats.json",
         "dnd-custom-ai.langues": "languages.json",
+        "dnd-custom-ai.montures-vehicules": "mounts.json",
         "dnd-custom-ai.adversaires": "npcs.json"
       };
       const staleCounts = {};

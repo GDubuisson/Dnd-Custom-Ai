@@ -37,7 +37,9 @@ const COMPENDIUM_FILES = [
   { file: "features.json", pack: `${SYSTEM_ID}.capacites` },
   { file: "feats.json", pack: `${SYSTEM_ID}.dons` },
   { file: "languages.json", pack: `${SYSTEM_ID}.langues` },
-  // Bestiaire : seul compendium Actor.
+  // Compendiums Actor : montures et véhicules, puis le bestiaire (toujours en dernier : les specs
+  // attendent la fin de l'import sur le compte des adversaires).
+  { file: "mounts.json", pack: `${SYSTEM_ID}.montures-vehicules` },
   { file: "npcs.json", pack: `${SYSTEM_ID}.adversaires` }
 ];
 
