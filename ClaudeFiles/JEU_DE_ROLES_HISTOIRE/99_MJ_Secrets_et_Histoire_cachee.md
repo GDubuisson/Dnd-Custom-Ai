@@ -1,0 +1,248 @@
+# DOCUMENT DU MAÎTRE DE JEU
+### Histoire cachée, secrets et indices — **NE PAS DISTRIBUER**
+
+---
+
+## 1. La vérité
+
+Il y a environ mille ans, ce monde était un monde de haute fantasy.
+
+La magie y était libre, puissante, accessible. Des divinités bienveillantes et malveillantes y intervenaient directement. Des démons y avaient prise. Les prouesses individuelles étaient légendaires. Il existait d'autres royaumes, d'autres peuples, d'autres langues, dont il ne reste **rien**.
+
+Les conflits n'ont cessé de croître, et leurs armes avec eux, jusqu'à un point de non-retour. **Douze sages** ont alors accompli ce qui demeure le plus grand acte magique de l'histoire du monde : ils ont **jugulé les puissances** — magie, divin, démoniaque — et les ont scellées dans des **pierres** dispersées en six lieux du monde.
+
+Le résultat fut brutal. Plus de magie, plus de dieux, plus de prodiges. Le monde s'est effondré : famines, ruine des structures politiques qui reposaient sur la puissance, perte de l'écriture, dépeuplement massif. Ce que les chroniques appellent aujourd'hui **les Années Muettes** est en réalité le siècle d'agonie qui a suivi le Scellement.
+
+Puis les survivants ont reconstruit. À partir de zéro, sans mémoire, sans texte. Personne ne se souvient. Il n'existe aucun écrit. Ce n'est pas un oubli progressif : c'est une coupure nette. Les documents joueurs présentent les Années Muettes comme un temps *sans* lettres, jamais comme un temps où on les aurait *perdues*.
+
+### Les langues
+
+Une seule langue de l'ancien monde a survécu au Scellement : celle des survivants du continent. Pendant les Années Muettes, parlée par des clans isolés, elle s'est éclatée en patois innombrables mais proches. Les disciples d'Estevan en ont fixé un par écrit, et c'est le Commun. Les langues nationales en dérivent toutes.
+
+Les documents joueurs présentent cette histoire comme parfaitement ordinaire (des patois de clans, un parler devenu langue écrite). Rien n'y doit être signalé comme étrange.
+
+### Points de règle implicites
+
+- La magie résiduelle du monde est ce qui **fuit** des pierres. C'est pourquoi les rituels sont possibles, longs et faibles.
+- Plus on est près d'une pierre, plus les rituels réussissent. C'est l'explication de la « superstition de métier » des ritualistes, des registres réservés de la Maison des Cent Portes, et des champs que les guildes lucentiennes achètent à prix d'or.
+- Les grâces cléricales sont réelles mais infimes. Elles ne viennent pas de l'Unique, qui n'existe pas au sens où la Foi l'entend.
+- Un site de pierre présente des anomalies locales : faune absente ou aberrante, désorientation, perte de repères, sons, comportement animal anormal.
+
+---
+
+## 2. Les six sites
+
+| # | Lieu | Ce qu'en disent les documents joueurs | Ce qu'il y a réellement |
+|---|---|---|---|
+| 1 | **Nord-ouest de la Forêt de Logne** (Fleuraine), au-delà de Sylvecourt et Logneval | Des communautés de bûcherons sous chartes royales, hors seigneurie, présentées comme un problème fiscal. La Dame de Logne, parmi d'autres légendes. | Pierre. Les communautés locales sont des gardiens dégénérés qui ne savent plus ce qu'ils gardent — les chartes sont le vestige juridique de leur charge. La zone (environ 40 lieues²) n'a jamais été relevée : sur la carte d'Éloi, elle est figurée en forêt comme le reste, sans un nom ni un chemin, et seuls ses carnets de relevé la marquent « non relevé ». Aucun document joueur ne la signale. |
+| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* de la pierre, non son décor : la région a gelé après le Scellement. Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
+| 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
+| 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
+| 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre. Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
+| 6 | **Île de Tirwen** | Faune hardie, plantes toxiques, trois colonisations abandonnées. Présentée parmi d'autres îles sans intérêt. | Pierre. Fuite magique diffuse et continue affectant le vivant depuis mille ans. |
+
+### Sur les douze sages
+
+Douze sages, six pierres : **deux sages par pierre**. Ce détail n'apparaît nulle part dans les documents joueurs. Le **Collège des Douze** du Saint-siège en est le vestige institutionnel : les premiers membres, en l'an 34, étaient — ou croyaient être — les héritiers d'une charge dont ils ne connaissaient déjà plus l'objet. Le nombre a survécu à sa raison d'être.
+
+L'indice n'est visible que par recoupement : le doc 00 mentionne les **neuf** disciples qui rédigent le *Premier Codex* en l'an 17 ; le doc 07 présente le **Collège des Douze** institué en l'an 34. Aucun document ne rapproche les deux chiffres.
+
+---
+
+## 3. Ce qu'il faut tenir
+
+### Les joueurs ne savent rien
+
+Aucun document joueur ne mentionne le Scellement, les sages, les pierres, ou l'existence d'un âge antérieur. Les anomalies y sont toutes présentées comme :
+
+- des faits pratiques (terrain difficile, mauvais climat, absence de puits) ;
+- du folklore, au même titre que le folklore des lieux sans secret ;
+- des questions politiques ou fiscales ;
+- des erreurs d'instrument classées par les savants.
+
+**Aucun PNJ influent ne dit la vérité.** Ceux qui approchent quelque chose ou bien se taisent, ou bien passent pour fous.
+
+### Qui sait, qui soupçonne, qui se tait
+
+| Personne | Ce qu'elle a | Pourquoi cela ne sort pas | Présence dans les documents joueurs |
+|---|---|---|---|
+| **Layla bint Amir** (Qasirah, née en 843) | Les tables de Zaynab ne concordent pas avec les traditions orales. Elle en déduit qu'il manque du temps. | Ses collègues considèrent que ce sont les traditions orales qui sont fausses. Elle n'est plus publiée depuis 881. On la traite comme une excentrique douée. Elle écrit au Cercle une lettre par saison ; on lui a répondu deux fois en six ans. **C'est la « folle » du corpus.** | **Aucune.** À introduire en jeu. |
+| **Maître Éloi de Montclair** (Saint-Lys) | Deux zones « non relevées » dans ses carnets, qu'il a figurées sur la carte sans y porter ni nom ni chemin. Il a constaté que le nord-ouest de Logne est infranchissable, et pas seulement non relevé. Il a lu les rapports de Tirwen 704. | Il ne conclut rien publiquement. Il refuse d'inventer, ce qui passe pour de la maniaquerie. Il répond à Layla par prudence. | Figure du doc 01, présentée comme un cartographe rigoureux. Les zones non relevées ne sont pas mentionnées. |
+| **Sœur Amadea de Monteluz** (Velencia) | Archiviste en chef. Elle a trouvé, dans les plans de fondation de 288, que le chantier a **contourné** une structure existante. Elle a vu la description originale de l'appareil du mur du tombeau : personne ne sait tailler ainsi. | Elle a fait fermer trois salles d'archives en janvier « pour travaux » qui n'ont pas commencé. Elle n'a rien publié en vingt-trois ans. Elle protège l'institution, non la vérité. | Une ligne dans le doc 07 (sa charge). La fermeture des salles est à révéler en jeu. |
+| **Hiérarque Anselmo IX** | Amadea lui a parlé une fois, en 885. Il a écouté et n'a rien dit. | Il a soixante-treize ans, il est malade, et il ne voit aucun bénéfice à ouvrir ce dossier. | Doc 07. La vacance du siège est publiquement attribuée aux calculs autour de la canonisation d'Inés ; le vrai motif reste à la discrétion du MJ. |
+| **La Maison des Cent Portes** | Les registres de rituels : la liste des sites où les rituels réussissent mieux. | Traitée comme un secret **commercial**, non comme une énigme. Personne n'a fait le lien avec autre chose. Les guildes lucentiennes offrent des fortunes pour l'obtenir. | Doc 06, noyée parmi d'autres fonds réservés (relevés hydrauliques, cartes de la Passe). |
+| **Les guides d'Eisengrund et de Bir Azraq** | Le refus des chiens dans le quart nord-est de Kis ; les distances et les étoiles fausses au Zahir. | Ils n'écrivent pas et n'en parlent qu'entre eux, ou à qui paie le voyage. | **Aucune.** À recueillir en jeu. |
+| **Les anciens de Sümpfenmark** | Rien de conscient. Des interdits transmis, efficaces, dont ils ignorent l'objet. | Ils répondent « ce sont de vieilles bêtises » à toute question et respectent scrupuleusement les règles. | Doc 02, parmi le folklore des autres marches. |
+| **Les bûcherons de Logne** | De même : des droits, des usages, une frontière que l'on ne franchit pas. | Ils ne relèvent de personne et ne parlent à personne. | Doc 01, sous l'angle fiscal. |
+
+**Règle de table :** si un joueur formule la bonne hypothèse à voix haute devant un PNJ, la réaction par défaut n'est pas la panique, c'est l'incrédulité polie. Un savant lui expliquera pourquoi c'est impossible, et il aura de bons arguments.
+
+---
+
+## 4. Où sont les indices, document par document
+
+Les indices réels sont délibérément mêlés à des **leurres** (marqués ◇) : des étrangetés sans rapport avec les pierres, écrites sur le même ton et avec le même poids. Aucun site ne doit être le lieu le plus étrange de son document.
+
+| Document | Indices semés |
+|---|---|
+| **00 – Calendrier** | Les Jours Muets : l'explication calendaire est savante et a posteriori, mais les interdits populaires qui s'y attachent sont universels. Les neuf disciples (à croiser avec les Douze du doc 07). Les ruines « sans mortier » attribuées aux Années Muettes. |
+| **01 – Fleuraine** | Les chartes de Logne, hors seigneurie. La Dame de Logne. Éloi qui ne porte que ce qu'il a vérifié. Ne pas nommer un enfant aux Jours Muets. ◇ Sainte Colombe. |
+| **02 – Altenmark** | Les *stille Stellen*, les Moorlichter, le nom caché la nuit. Hartmut et la tourbe. Les Passwachten maintenus contre toute réduction. Les trois morts de l'été et les patrouilles raccourcies d'Ostbruchwacht. ◇ L'Eisenmann, le Waldvater, les Hausgeister. |
+| **03 – Lucentia** | Les champs sans valeur achetés cinq fois leur prix par les guildes. ◇ Le Silver Lake. ◇ Le Signore delle Strade. |
+| **04 – Ravenmoor** | Aucun site. ◇ Les Collines de l'écho. ◇ La forêt des murmures et son budget triplé. ◇ Les corbeaux. ◇ L'article 23. |
+| **05 – Valdera** | L'interdiction totale du rituel. ◇ Le pas de l'autel. ◇ La mort d'Alonso II (intrigue politique réelle, sans lien avec les pierres). |
+| **06 – Azhar** | Les sâkin et l'annonce du nom dans les lieux vides, pratiquée à Bir Azraq face au Zahir. Les registres de rituels réservés. Les expéditions archivées. ◇ Les jours sans poids. |
+| **07 – Saint-siège** | Le Collège des Douze. La Faute (« prendre ce qui doit être reçu »). Le tombeau muré et la veille du Hiérarque. La phrase du scribe. La superstition de métier. Le siège vacant. |
+| **08 – Terres sans maître** | Kis (gibier absent, guides prudents), Zahir, Tirwen — présentés au milieu des mers et des îlots sans intérêt. Le nord-ouest de Logne et la Sümpfenmark n'y figurent pas. |
+
+---
+
+## 5. Divergences entre chroniques nationales
+
+À utiliser pour les enquêtes en bibliothèque : deux sources officielles ne racontent pas la même chose.
+
+| Épisode | Version A | Version B | Réalité |
+|---|---|---|---|
+| **Guerre des Trois Bannières (366–389)** | Saint-Lys : provoquée par un affront de la Westmark, Aymeric III a réagi. | Altenburg : agression fleurainaise pure et simple ; Grenzfestung en est la preuve. · Ravenhold : les seigneurs de Bellerive ont voulu la guerre ; Ravenmoor n'est venu qu'en 383, à la demande du roi de Fleuraine, pour garder la paix d'une marche abandonnée. | Fleuraine a voulu la guerre, Altenmark l'a subie, Ravenmoor l'a financée puis s'est payé. Ce que les chroniques taisent n'est pas la participation de Ravenmoor, mais sa nature : un gage encaissé. Voir ci-dessous. |
+| **Le Serment Brisé (604)** | Ravenhold : Valdera n'a pas bougé, quarante et un navires perdus. | Torralba : le signal n'a jamais été reçu, flotte à quai pour avarie. | Au choix du MJ. La version valdérienne est techniquement plausible ; le fait que Ravenmoor ait délié son propre roi suggère qu'à Ravenhold on a jugé la faute partagée. |
+| **Annexion de la Sümpfenmark (341)** | Altenburg : la tourbe pour chauffer la capitale, et un marais qu'il ne fallait pas laisser acheter par un autre. Hartmut force l'admission en tranchant lui-même un vote à égalité. | — | Motif réel inconnu de tous. Hartmut savait quelque chose. Ses papiers personnels ont disparu à sa mort. |
+| **Guerres de la Passe (402–851)** | Torralba : marchands molestés, hérétiques accueillis à Qasirah, péages de Ravenmoor. Les Ordres parlent de guerre sainte. | Qasirah : douze invasions repoussées, aucune riposte au-delà de la Passe. | Valdera a attaqué chaque fois ; Azhar n'a jamais franchi la Passe. Le motif initial est économique (une route vers le sud sans Ravenmoor), il devient politique (terres, commandements, naissance des Ordres), et l'habillage religieux vient en dernier. Aucun Hiérarque n'a béni une campagne : c'est la vraie raison, jamais dite, du refus de canoniser Inés. |
+| **Mort d'Alonso II (851)** | Torralba : fièvre soudaine, deux mois après la Trêve. | — | Piste ouverte : les Ordres de Ferveur. Rien n'a jamais été prouvé et le dossier n'a jamais été ouvert. |
+| **Guerre des Greniers (641–648)** | Chacun accuse son voisin d'avoir fermé ses silos. | — | Tous les six l'ont fait. |
+
+### La Guerre des Trois Bannières, ce qui s'est réellement passé
+
+Guerre purement politique, **sans aucun lien avec l'histoire cachée**.
+
+> *Ravenmoor n'a pas allumé le feu. Il a vendu le bois.*
+
+**Les causes réelles.** Depuis des décennies, les seigneurs de la marche orientale de Fleuraine (Bellerive) et ceux de la Westmark se pillent le long de La Velle ; Bellerive convoite Teilenburg et les bois du Nordwald. À l'avènement d'Aymeric III, en 366, les seigneurs de l'est renouvellent leur Serment à une condition qui n'est écrite nulle part : qu'il leur donne Teilenburg. Il le promet. La guerre est décidée avant le mariage.
+
+**L'étincelle : le mariage de Ravenhold (366).** La sœur du roi Osric Ier (père d'Osric II) épouse le fils de l'Altmeister alors en charge. Le protocole ravenmoorois place l'Altmeister et Aymeric au même rang : à Ravenhold, un roi juré et un chef élu tiennent tous deux leur charge du consentement des autres. Aymeric exige la préséance et ne l'obtient pas ; un seigneur de la Westmark retourne contre lui la formule fleurainaise : *« Qu'il garde donc sa place, puisqu'il ne la possède pas. »* Aymeric quitte la noce. L'affront est réel, mais c'est un prétexte : Teilenburg tombe dès l'été suivant, ce qu'aucune campagne improvisée n'aurait permis. Le protocole de Ravenmoor est sincère et n'a rien d'un complot ; mais Ravenhold savait comment Aymeric le prendrait, et n'a rien fait pour l'éviter.
+
+**367–380, la guerre des marches.** Teilenburg prise, puis quatorze ans de raids sur La Velle et le Nordwald. L'Eismark et l'Ostheim ne votent à la Diète que le strict minimum. Ravenmoor vend du grain et des chevaux aux deux camps : Altenmark paie comptant, Fleuraine achète à crédit.
+
+**381–382, Grenzfestung.** Endetté, Aymeric veut un coup décisif et lance l'armée de Bellerive. La Diète élit Adelheid Altmeister en 381 alors qu'elle est déjà enfermée dans la forteresse. Elle tient onze mois. Ce que le rapport de la Diète ne dit pas : pendant l'hiver 381–382, **Ravenmoor cesse de livrer à crédit l'armée assiégeante**. Ravenhold a calculé qu'une Fleuraine battue ne pourrait plus payer, et devrait donc donner un gage. Affamés, les assiégeants lèvent le siège.
+
+**382–389, la troisième bannière.**
+- En 382, Aymeric met en gage auprès de Ravenmoor les revenus et les places fortes de la marche orientale, sans l'accord de ses seigneurs.
+- En 383, l'Assemblée des Terres consent (article 13) à envoyer des garnisons de soldats payés, et non de levées (article 12), pour « garder le gage ». Pendant six ans, trois bannières s'affrontent dans la marche : les garnisons ravenmooroises, les seigneurs de Bellerive qui refusent le gage, et la Westmark qui harcèle tout le monde. C'est de là que vient le nom de la guerre.
+- En 384, l'Aube Blanche cite Aymeric. Le vrai motif : un roi de Fleuraine a engagé des terres tenues sous serment, alors qu'il ne possède rien, il garde. Il renvoie la citation sans l'ouvrir ; elle ne l'a jamais été depuis.
+
+**389, la paix.** Signée à Ravenhold, dans la grange de 156, Ravenmoor étant hôte et arbitre. Aymeric III meurt cette année-là ; son fils bâtard, Raoul, à qui les seigneurs viennent de renouveler le Serment, signe. Teilenburg est rendue à Altenmark ; Ravenmoor garde le gage jusqu'au remboursement. Aucune chronique ne dit où la paix a été signée.
+
+**Les suites.**
+- Saint-Lys ne rembourse jamais. Les seigneurs de Bellerive rachètent eux-mêmes leur marche, morceau par morceau, en deux générations (vers 389–450) : d'où leur conviction de ne devoir leurs terres à aucun roi, et le proverbe « un serment se renouvelle, il ne se donne pas ».
+- Les Grands Départs (391–410) emportent vers la plaine centrale les paysans de la marche orientale, qui ont payé deux fois (aux percepteurs ravenmoorois, puis pour le rachat), les villages frontaliers de la Westmark et du Nordwald, et les soldats licenciés des garnisons ravenmooroises. D'où les familles fleurainaises de Villa Serena et de Castelmare, altenmarkoises de Valdoro, ravenmooroises de San Brizio.
+- Ravenmoor sort de la guerre enrichi par les intérêts, le grain et les sommes du rachat. Osric II, fils du roi qui en avait profité, croira en 418 pouvoir vendre ainsi des troupes à Valdera ; mais en 383 l'Assemblée avait consenti, et en 418 il ne lui avait rien demandé.
+
+**Ce que chaque chronique tait.**
+
+| Chronique | Responsable désigné | Ce qu'elle tait |
+|---|---|---|
+| **Saint-Lys** (doc 01) | Altenmark, à cause de l'affront | La promesse faite aux seigneurs de l'est, l'armée prête avant la noce, le gage, le motif de la citation |
+| **Altenburg** (doc 02) | Fleuraine, agresseur | Les raids de la Westmark avant 366, le grain acheté à Ravenmoor, et le fait que l'arrêt du crédit a sauvé Grenzfestung autant qu'Adelheid |
+| **Ravenhold** (doc 04) | Les seigneurs de Bellerive | Le protocole et ce qu'il savait, l'arrêt du crédit, le gage, le profit tiré de toute la guerre |
+
+**Pistes pour la table.**
+- **La citation scellée de Rochemont.** L'ouvrir en 887 révélerait que la Couronne a mis en gage la marche de Bellerive, au moment même où Bellerive tarde à prêter serment.
+- **La dernière parcelle.** Un droit n'a jamais été racheté, par exemple un péage sur La Velle à Bellerive. L'acte dort dans les archives de Ravenhold ; Cedric IV pourrait s'en servir, ou le vendre.
+- **L'écho de 366.** En 887, de nouveau, les seigneurs de l'est marchandent leur serment avec un jeune roi nommé Aymeric.
+
+---
+
+## 6. Les pirates de la Mer intérieure (874–)
+
+Le seul fil rouge du présent. Les faits : premières flottes en 874, recrudescence depuis 884, flottes organisées, connaissance des calendriers de départ, base inconnue, trois campagnes de répression infructueuses armées à Castelmare, accusation ravenmooroise contre trois Maisons lucentiennes sans preuve.
+
+Trois pistes possibles, à trancher selon la campagne.
+
+**A — Mercantile (la plus simple).** Ce sont bien des Maisons lucentiennes. Chaque attaque renchérit la route terrestre. Aucun lien avec l'histoire cachée. Bonne intrigue politique, pas de surnaturel.
+
+**B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps.
+
+*Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre ne sait faire. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
+
+**C — Résiduelle.** Les flottes lisent les courants du large, ce qu'aucun équipage vivant ne sait faire. Elles ne se contentent pas de longer les côtes : elles coupent. C'est l'explication de leur impunité — elles disparaissent en allant là où personne ne peut les suivre. Elles tiennent ce savoir d'un rituel, d'un site, ou d'un héritage. Piste la plus lente, et la plus payante.
+
+Dans les trois cas : **Serafina Aldobrandi vient d'une maison d'assurance maritime de Castelmare**, ce qui la rend suspecte à tout le monde et probablement innocente. Elle a confié l'enquête à un membre du Conseil, ce qui est soit de la naïveté, soit un piège tendu à ce membre.
+
+---
+
+## 7. Amorces de campagne
+
+**Bas niveau — la Sümpfenmark.** Trois morts cet été, un rapport en retard, une garnison d'Ostbruchwacht qui a raccourci ses patrouilles au-delà du Schilfbach sans autorisation. Enquête locale, folklore, terrain. Les PJ apprennent les règles sümpfer et découvrent qu'elles fonctionnent. Aucune révélation, beaucoup d'inquiétude.
+
+**Bas niveau — la zone non relevée.** Le Cercle de l'Étoile Polaire cherche des escorteurs pour un relevé du nord-ouest de Logne, au départ de Sylvecourt. Maître Éloi veut compléter ses carnets avant de graver la prochaine édition de sa carte. Les bûcherons ne veulent pas.
+
+**Niveau moyen — les registres.** Une guilde de ritualistes de Vespera engage les PJ pour obtenir les registres de rituels de la Maison des Cent Portes, à Qasirah. Vol, corruption ou négociation. Ce qu'ils y trouveront, ce sont six régions.
+
+**Niveau moyen — la lettre de Layla.** Layla bint Amir cherche quelqu'un pour porter un dossier à Saint-Lys, en main propre, sans passer par les canaux de la Maison. Le dossier est incompréhensible pour les PJ. Plusieurs personnes voudraient qu'il n'arrive pas.
+
+**Haut niveau — la Crypte.** Anselmo IX se meurt. Le Collège n'est pas au complet. Sœur Amadea cherche à faire ouvrir le tombeau avant qu'un nouveau Hiérarque ne renouvelle le sceau lors de sa nuit de veille. Valdera veut sa canonisation. L'Ordre de la Flamme est à un jour et demi de marche, à Cortelba.
+
+**Politique, sans surnaturel.** Le renouvellement de la Trêve de la Passe, la marche orientale de Fleuraine autour de Bellerive, l'accusation ravenmooroise contre Vespera. Trois crises qui peuvent occuper une campagne entière sans jamais approcher l'histoire cachée.
+
+**Politique — les terres vaines.** Aucun voisin n'a jamais renoncé formellement à la plaine centrale (doc 03). Les actes de la Couronne fleurainaise n'ont jamais rayé la plaine des « terres vaines » du royaume. Un clerc formé au collège des Registres pourrait soutenir que l'ouest de Lucentia, de Villa Serena à Castelmare, n'a jamais cessé d'en faire partie. L'argument est juridiquement faible et politiquement explosif : en temps normal personne ne le prendrait au sérieux, mais avec la crise des pirates et Bellerive qui tarde à jurer, il devient un levier. Qui l'exhume, et pour le compte de qui (la Couronne pour se refaire une autorité, Bellerive pour faire monter les enchères, une Maison lucentienne pour faire tomber Serafina, née à Castelmare), reste au choix du MJ.
+
+**Politique — le mariage.** Aymeric V (24 ans) et l'Infante Beatriz (28 ans) ne sont mariés ni l'un ni l'autre. Aucun document joueur n'évoque une union ; c'est au MJ de la faire naître, par une rumeur, une ambassade ou une fuite. Ce qu'elle mettrait en jeu :
+- **Pour** : la Couronne fleurainaise, qui y trouverait l'appui de Valdera contre Bellerive ; les Ordres de Ferveur, qui voient d'un bon œil une reine dévote sur le trône de l'ouest ; le Banco, qui a des créances des deux côtés.
+- **Contre** : Velencia, qui ne veut pas d'une Valdera plus forte avant de trancher la canonisation d'Inés ; Ravenhold, qui se retrouverait entre deux couronnes alliées ; Bellerive, qui perdrait son levier ; Altenburg, qui a déjà révoqué un Altmeister pour un mariage fleurainais.
+- **Le poids du passé** : Torralba n'a pas oublié le mariage des Jours Muets de 474. Elle exigera une date vérifiée devant l'autel, et toute hésitation de Saint-Lys sur le calendrier des noces sera lue comme une trahison préparée.
+- **Une Aldobrandi dans l'arbre** : la reine Bianca (763) fait de la maison de Serafina une lointaine parente de la Couronne fleurainaise, ce que les adversaires de Serafina au Conseil pourraient rappeler si Vespera se mêlait de l'affaire.
+
+---
+
+## 8. Rappels de cohérence
+
+- **887 est l'année en cours.** Toutes les dates des documents joueurs sont vérifiées entre elles.
+- La magie ne se lance pas en combat. Jamais. Un rituel prend des jours et coûte cher.
+- Aucune divinité n'intervient. Les grâces cléricales sont infimes et non reproductibles.
+- Aucune arme à poudre.
+- **Le Saint-siège a une côte** (au sud et à l'est) et comprend Almendra. Cortelba est valdérienne, à un jour et demi de Velencia.
+- **Wickhollow est un cul-de-sac** : le fort tient la crête des Greyspine jusqu'à la Passe. La seule route entre Ravenmoor et Azhar passe par Ashbourne et Hisn al-Hajar.
+- **Lucentia et l'Altenmark** ne sont reliés que par la Grande Route du Nord (Vespera, Porto Vero, Bellerive, Grenzfestung) ; Valdoro est au bout de sa route.
+- **Valdera et Azhar n'ont pas de frontière terrestre.** Ils ne se touchent qu'à la Passe, le bras de mer de Poerto del Robis (« la Passe » est un nom commun, pas un toponyme). Les Montagnes de Greyspine séparent Ravenmoor d'Azhar. Azhar n'a jamais été l'agresseur.
+- **La Mer intérieure ne se traverse pas.** Le cabotage en vue de côte est ordinaire ; couper au large est mortel. Aucune liaison maritime entre le nord et le sud du monde connu. Tirwen n'est accessible que par le chapelet d'îlots du sud-ouest fleurainais, quelques semaines par an.
+- Il n'existe aucun écrit antérieur à l'an 0. Le *Premier Codex* est le plus ancien texte du monde, et sa première phrase est du scribe, non du prophète.
+- Les ruines trouvées dans les campagnes sont attribuées aux Années Muettes par tout le monde. Elles sont bien plus anciennes.
+
+---
+
+## 9. Glossaire des noms propres canoniques
+
+Aucun toponyme hors de cette liste ne doit apparaître dans les documents. Tous proviennent des cartes.
+
+**Fleuraine** — Saint-Lys (capitale), Port-Lys, Rivebleue, Bléval, Bellerive, Rochemont, Sylvecourt, Logneval. Forêt de Logne. Rivières : La Lysaine, La Velle.
+
+**Altenmark** — Altenburg (capitale). *Nordwald* : Teilenburg, Winterheim, Eberwald, Wechselhof. *Eismark* : Eisenpass, Eisengrund, Eisburg. *Ostheim* : Ostfurt, Seehafen, Grünfeld. *Westmark* : Grenzfestung, Baümedorf, Randewaldes, Weizenweiler. *Sümpfenmark* : Moorburg, Westbruchwacht, Ostbruchwacht, Grünbruch. Montagnes : Graufels, Eiseneis, Schwarzgebirge. Forêt de Grenzwald. Rivières : Tannenbach, Eberbach, Eisenbach, Silberbach, Ostbach, Altenfluss, Schilfbach.
+
+**Lucentia** — Vespera (capitale), Porto Vero, Castelmare, Valdoro, Villa Serena, San Brizio. Silver Lake.
+
+**Ravenmoor** — Ravenhold (capitale), Blackwych, Stoneford, Crowmere, Goldenhill, Amberlake, Ashbourne, Wickhollow. Collines de l'écho. Forêt de Blackwood, forêt des murmures. Montagnes de Greyspine. Rivières : Amber, du Corbeau. Brimwater.
+
+**Valdera** — Torralba (capitale), Porto Alta, Valdencio, Monteluz, Lloren, Vellamar, Sanvila, Caladoria, Serancha, Marisenda, Las Ventas, Varela, Cortelba, Poerto del Robis. Monts de Velencia. Forêts d'Albenar, d'Aldarion, de Varela.
+
+**Azhar** — Qasirah (capitale), Port Sahir, Safwan, Dar al-Qamar, Zafira, Hisn al-Hajar, Bir Azraq, Ramlah, Tazrout, Miraj, Sahelia, Bahira. Forêt d'Al-Murrah, bois de Tamaris. Rivière Zuhral.
+
+**Saint-siège de Valencia** — Velencia (ville), Almendra.
+
+**Terres sans maître** — Désert gelé de Kis, désert de Zahir, île de Tirwen. Mer intérieure, mer du Serment Brisé.
+
+### Corrections appliquées
+
+Les premières versions de ces documents contenaient des noms erronés ou inventés, désormais remplacés partout :
+Valencia (ville) → **Velencia** ; l'entité politique conserve le nom de **Saint-siège de Valencia** · Oasirah → **Qasirah** · Grisepierre → **Greyspine** · forêt des Brumes → **forêt des murmures** · rivière Ambre → **rivière Amber** · Monts de Vernaz → **Monts de Velencia** · rivière Zahral → **rivière Zuhral** · forêt d'Al-Murad → **forêt d'Al-Murrah** · La Vaille → **La Velle** · lac d'Argent → **Silver Lake** · Amberlin → **Rochemont** · Val-Nourrin → **Bléval** · Montclair (ville) → supprimée, ne subsiste que comme patronyme · Greymarch, Thornwick, Ashfold, Bell Harrow → **Stoneford, Crowmere, Goldenhill, Amberlake** · Alcaraz, Peñabranca, Miralvo, Puerto Alegre → **Poerto del Robis, Cortelba, Monteluz, Porto Alta** · Al-Murad (ville), Tanim, Sabhat an-Nur → **Zafira, Hisn al-Hajar, Bir Azraq**.
+
+---
+
+## 10. Principes de rédaction des documents joueurs
+
+À respecter pour tout nouveau document (villes et villages, scénarios, aides de jeu).
+
+1. **Voix interne.** Chaque document est écrit par quelqu'un du monde, qui ne trouve pas ces lieux étranges. Pas de clin d'œil du narrateur (« personne ne sait pourquoi », « ce qui n'était pas la question », « les travaux n'ont pas commencé »).
+2. **Budget d'étrangeté égal.** Chaque nation a son folklore. Un site de pierre ne doit jamais recevoir plus de lignes, ni une formulation plus inquiétante, que les leurres de son propre document.
+3. **Explication banale publique.** Toute anomalie liée à un site est accompagnée de l'explication que le monde lui donne, énoncée comme un fait : fiscalité, fierté locale, géologie, dépense jugée inutile.
+4. **Pas de regroupement.** Aucun document ne rassemble les sites comme une série. Les indices qui se répondent sont dispersés dans des documents différents et ne se citent jamais.
+5. **Les personnages qui savent restent en retrait.** Ils apparaissent par leur fonction, jamais par leur doute. Ce qu'ils soupçonnent se découvre en jeu.
+6. **Ce qui ne s'écrit pas.** Ce que seuls les guides, les bergers ou les anciens savent reste oral : on le recueille à la table, pas dans un livre.
