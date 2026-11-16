@@ -5,6 +5,29 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.3.0] - 2026-11-16
+
+**Contenu ancré dans l'univers de jeu.**
+- **Acier d'Eisengrund** : la demi-plate et le harnois en mithral deviennent « en acier d'Eisengrund »
+  (mêmes statistiques).
+- **Langue Sümpfer** (spéciale) : le parler des marais de la Sümpfenmark. Nouveau champ « langue
+  requise » sur les langues : le Sümpfer n'est accepté sur une fiche que si le personnage parle déjà
+  l'Altenmarkois (avertissement sinon).
+- **28 objets régionaux** supplémentaires (4 par nation, 3 pour le Saint-siège), chacun dérivé d'un
+  objet SRD aux statistiques identiques ; histoire et base SRD dans les Chroniques des objets.
+- **6 pièces historiques** (Selle de Thibaud Ier, Manuscrit de la Geste des Bannières, Dénombrement
+  d'Otwin, original de la Charte des Routes, Comptes de Morwen, Quatrains du chamelier) et **4 objets
+  liés aux secrets du MJ**, rangés dans un dossier et une page des Chroniques « Secrets (MJ) » à part,
+  pour pouvoir partager les pages des nations sans rien révéler.
+- **Bestiaire** : 9 PNJ de l'univers (Matelot pirate, Capitaine d'abordage, Passwacht, Veilleur de
+  Ravenmoor, Cavalier des Compagnies de la Route, Frère de l'Ordre de la Flamme, Garde de caravane
+  azhari, Charbonnier de Logne, Contrebandier de Blackwych), aux statistiques d'un humanoïde SRD.
+- **Compendium « Montures et véhicules »** (visible des joueurs) : 5 montures aux blocs SRD exacts,
+  utilisables avec Combat monté, et 4 véhicules ; la fiche Véhicule gagne une description (prix,
+  attelage).
+- Mondes existants : les Chroniques des objets déjà générées ne sont pas réécrites (supprimer le
+  Journal pour qu'il soit recréé au prochain chargement avec les nouvelles pages).
+
 ## [1.2.4] - 2026-11-16
 
 **Cohérence avec l'univers de jeu** (documents de `ClaudeFiles/JEU_DE_ROLES_HISTOIRE`).
