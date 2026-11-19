@@ -186,23 +186,28 @@ Capacités de classe de base :
 `npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 96 Actors `npc` prêts à
 glisser sur une scène.
 
-96 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
-**milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
-scellé : humains et bêtes réelles de chaque région, faune aberrante autour des sites de la forêt de Logne
-et de la Sümpfenmark (grenouille, crapaud, grand serpent, avec patrouilleurs et tourbiers), et, seul
-surnaturel possible avant la première pierre, les créatures du large de la Mer intérieure (où la magie
-survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
-(arbres et arbustes éveillés, lutin, loup gris, liés à la Dame de Logne), de la Sümpfenmark (Moorlicht,
-morts et goules de tourbière, tourbe qui marche) et le Kraken affaibli qui approche des côtes. Toutes
-reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont dérivés, FP
-recalculé). Dossier à part « Ulrich et sa bande », premier grand méchant de la campagne : sa bande en
-phase 0 (homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8
-au FP 3) et Ulrich, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée
-(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3). Site du désert gelé de Kis : faune figée
-en phase 0 (chouette des glaces, grand élan, tigre à dents de sabre, mammouth), loup arctique et
-méphite de glace en phase 1, et les deux oiseaux de l'ancien monde, Kisaeth (glace : renaissante,
-éveillée, pleine puissance) et Varhun (feu : oisillon, jeune, adulte), en phases 1 à 3, aux
-statistiques exactes des dragons blanc et rouge SRD.
+96 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
+- **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
+  large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
+  bêtes réelles de chaque région et, seul surnaturel possible avant la première pierre, les créatures
+  du large de la Mer intérieure (où la magie survit), dont le Kraken endormi. Phase 1 : le Kraken
+  affaibli qui approche des côtes.
+- **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
+  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
+  arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
+  crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
+  tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
+  tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
+  monde après, Kisaeth (glace : renaissante, éveillée, pleine puissance) et Varhun (feu : oisillon,
+  jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
+- **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande (homme de main,
+  cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8 au FP 3) et Ulrich,
+  qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée (1 à 5 pierres,
+  FP 5, 8, 11, 14 et 17).
+
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont
+dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle

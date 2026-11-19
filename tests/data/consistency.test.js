@@ -23,7 +23,7 @@ import {
   GLOSSARY
 } from "../support/fixtures.js";
 import { LOCALES } from "../support/i18n.js";
-import { bestiaryFolderKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
+import { bestiaryFolderKeys, bestiaryFolderLabelKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
 
 const CLASS_KEYS = Object.keys(DND_CUSTOM.classes);
 const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"];
@@ -416,12 +416,18 @@ describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () 
 
   test("chaque créature a une phase et un milieu connus (dossier du compendium)", () => {
     for (const npc of WORLD_NPCS) {
-      assert.equal(bestiaryFolderKeys(npc).length, 2, `flags phase/habitat absents ou inconnus sur "${npc.name}"`);
+      assert.ok(bestiaryFolderKeys(npc).length > 0, `flags phase/habitat absents ou inconnus sur "${npc.name}"`);
+    }
+  });
+
+  test("sites de pierre et milieux autonomes : des milieux connus", () => {
+    for (const habitat of [...DND_CUSTOM.bestiarySiteHabitats, ...DND_CUSTOM.bestiaryStandaloneHabitats]) {
+      assert.ok(Object.hasOwn(DND_CUSTOM.bestiaryHabitats, habitat), habitat);
     }
   });
 
   test("chaque milieu du bestiaire a son libellé dans les deux langues", () => {
-    for (const key of [...Object.values(DND_CUSTOM.bestiaryPhases), ...Object.values(DND_CUSTOM.bestiaryHabitats)]) {
+    for (const key of bestiaryFolderLabelKeys()) {
       for (const [locale, messages] of Object.entries(LOCALES)) {
         assert.equal(typeof messages[key], "string", `libellé ${key} absent en ${locale}`);
       }

@@ -415,7 +415,7 @@ DND_CUSTOM.bestiaryPhases = {
   3: "DND_CUSTOM.Bestiary.Phases.3"
 };
 
-/** Milieux du bestiaire : sous-dossiers d'une phase (flag `habitat`). */
+/** Milieux du bestiaire (flag `habitat`) : sous-dossiers d'une phase, sauf sites et milieux autonomes. */
 DND_CUSTOM.bestiaryHabitats = {
   common: "DND_CUSTOM.Bestiary.Habitats.common",
   fleuraine: "DND_CUSTOM.Regions.fleuraine",
@@ -432,6 +432,21 @@ DND_CUSTOM.bestiaryHabitats = {
   siteKis: "DND_CUSTOM.Bestiary.Habitats.siteKis",
   // Premier grand méchant de la campagne : sa bande (phase 0) et ses paliers après chaque pierre absorbée.
   ulrichBand: "DND_CUSTOM.Bestiary.Habitats.ulrichBand"
+};
+
+/**
+ * Sites de pierre : l'ordre et l'auteur des ruptures dépendent de la table, ils forment donc chacun un
+ * dossier de premier niveau, découpé en avant/après la rupture (flag `phase` 0 ou 1+).
+ */
+DND_CUSTOM.bestiarySiteHabitats = ["siteLogne", "siteSumpfenmark", "siteKis"];
+
+/** Milieux rangés dans un seul dossier de premier niveau, hors phases (paliers lisibles dans les noms). */
+DND_CUSTOM.bestiaryStandaloneHabitats = ["ulrichBand"];
+
+/** Sous-dossiers d'un site de pierre. */
+DND_CUSTOM.bestiaryRupture = {
+  before: "DND_CUSTOM.Bestiary.Rupture.before",
+  after: "DND_CUSTOM.Bestiary.Rupture.after"
 };
 
 /** Habitats où le surnaturel existe dès la phase 0 (le large de la Mer intérieure). */

@@ -677,13 +677,21 @@ la magie revient par paliers, et la Mer intérieure garde au large une magie ré
 `world-items/npcs.json` porte donc `flags["dnd-custom-ai"].phase` / `.habitat`, et le compendium
 Actor `adversaires` (toujours `ownership.PLAYER: "NONE"`) est rangé en dossiers phase > milieu.
 
+**2026-11-19 (1.7.0)** : l'ordre et l'auteur des ruptures dépendent de la table. Les sites de pierre
+(`DND_CUSTOM.bestiarySiteHabitats`) sortent donc des phases : dossier du site > « Avant la rupture »
+(`phase` 0) ou « Après la rupture » (`phase` 1+, le chiffre ne disant plus que la montée en puissance
+d'une créature qui évolue, comme Kisaeth). `bestiaryStandaloneHabitats` (`ulrichBand`) : un seul
+dossier, paliers lisibles dans les noms. `filePackDocuments` déplace aussi les documents rangés selon
+un ancien découpage, puis `prunePackFolders` supprime les dossiers vides portant un libellé géré
+(`bestiaryFolderLabelKeys()`), jamais un dossier créé à la main sous un autre nom.
+
 - `scripts/helpers/bestiary.js` : `bestiaryFolderKeys(entry)` (clés i18n du chemin de dossier,
   `[]` si flags absents/inconnus) et `fitsSealedWorld(entry)` (phase 0 hors `bestiaryMagicHabitats`
   → humanoid/beast seulement), testés en unitaire et appliqués à tout `npcs.json` par les tests de
   cohérence.
 - `content-import.js` : une entrée de `COMPENDIUM_FILES` peut déclarer `folderPath`. Les dossiers du
   pack sont créés à la demande (`Folder.create(..., { pack })`, rapprochés par nom et parent) ; les
-  documents existants sans dossier sont rangés **avant** la création des manquants, pour que le
+  documents existants sans dossier (ou mal rangés) sont rangés **avant** la création des manquants, pour que le
   compte final du pack reste le signal de fin d'import attendu par les specs
   (`cy.waitForContentImport()`, qui lit le nombre d'entrées de `npcs.json` au lieu d'un compte en dur).
 - Ce compte ne suffit pas quand le JSON a changé : les entrées existent déjà, mais leur

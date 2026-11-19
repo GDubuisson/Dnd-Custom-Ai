@@ -285,6 +285,10 @@
         "siteSumpfenmark": "Stone site: Sümpfenmark",
         "siteKis": "Stone site: Frozen Desert of Kis",
         "ulrichBand": "Ulrich and his band"
+      },
+      "Rupture": {
+        "before": "Before the shattering",
+        "after": "After the shattering"
       }
     },
     "Roll": {

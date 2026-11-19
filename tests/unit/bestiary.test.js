@@ -1,22 +1,41 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
-import { bestiaryFolderKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
+import { bestiaryFolderKeys, bestiaryFolderLabelKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
 
 const creature = (phase, habitat, creatureType = "beast") => ({
   system: { creatureType },
   flags: { "dnd-custom-ai": { phase, habitat } }
 });
 
-describe("bestiaryFolderKeys — dossier du compendium par phase puis milieu", () => {
+describe("bestiaryFolderKeys — dossier du compendium par phase puis milieu, sites et Ulrich à part", () => {
   test("phase 0, Fleuraine : libellés de phase puis de région", () => {
     assert.deepEqual(bestiaryFolderKeys(creature(0, "fleuraine")), ["DND_CUSTOM.Bestiary.Phases.0", "DND_CUSTOM.Regions.fleuraine"]);
   });
 
-  test("phase 1, site de Logne", () => {
-    assert.deepEqual(bestiaryFolderKeys(creature(1, "siteLogne")), [
-      "DND_CUSTOM.Bestiary.Phases.1",
-      "DND_CUSTOM.Bestiary.Habitats.siteLogne"
+  test("site de pierre : le site, puis avant (phase 0) ou après la rupture (phase 1 et au-delà)", () => {
+    assert.deepEqual(bestiaryFolderKeys(creature(0, "siteKis")), [
+      "DND_CUSTOM.Bestiary.Habitats.siteKis",
+      "DND_CUSTOM.Bestiary.Rupture.before"
     ]);
+    for (const phase of [1, 2, 3]) {
+      assert.deepEqual(bestiaryFolderKeys(creature(phase, "siteLogne")), [
+        "DND_CUSTOM.Bestiary.Habitats.siteLogne",
+        "DND_CUSTOM.Bestiary.Rupture.after"
+      ]);
+    }
+  });
+
+  test("Ulrich et sa bande : un seul dossier, quelle que soit la phase", () => {
+    for (const phase of [0, 1, 3]) {
+      assert.deepEqual(bestiaryFolderKeys(creature(phase, "ulrichBand")), ["DND_CUSTOM.Bestiary.Habitats.ulrichBand"]);
+    }
+  });
+
+  test("libellés de dossiers gérés : phases, milieux, avant/après la rupture", () => {
+    const keys = bestiaryFolderLabelKeys();
+    for (const key of ["DND_CUSTOM.Bestiary.Phases.3", "DND_CUSTOM.Bestiary.Habitats.siteKis", "DND_CUSTOM.Bestiary.Rupture.after"]) {
+      assert.ok(keys.includes(key), key);
+    }
   });
 
   test("sans flags, ou phase/milieu inconnus : aucun dossier", () => {

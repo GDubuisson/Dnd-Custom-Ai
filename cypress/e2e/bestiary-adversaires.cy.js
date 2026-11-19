@@ -57,7 +57,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
     });
   });
 
-  it("range les créatures par phase puis par milieu (T-ADV-005)", () => {
+  it("range par phase puis par milieu, sites de pierre (avant/après la rupture) et Ulrich à part (T-ADV-005)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const pack = win.game.packs.get("dnd-custom-ai.adversaires");
@@ -66,22 +66,27 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const label = (key) => win.game.i18n.localize(`DND_CUSTOM.${key}`);
       const phase0 = label("Bestiary.Phases.0");
       const phase1 = label("Bestiary.Phases.1");
+      const before = label("Bestiary.Rupture.before");
+      const after = label("Bestiary.Rupture.after");
       const logne = label("Bestiary.Habitats.siteLogne");
+      const sumpfenmark = label("Bestiary.Habitats.siteSumpfenmark");
+      const kis = label("Bestiary.Habitats.siteKis");
+      const ulrich = label("Bestiary.Habitats.ulrichBand");
       const expected = {
         "Brigand": [phase0, label("Bestiary.Habitats.common")],
         "Passwacht": [phase0, label("Regions.altenmark")],
         "Kraken": [phase0, label("Bestiary.Habitats.abyss")],
-        "Grand-loup de Logne": [phase0, logne],
-        "Arbre éveillé": [phase1, logne],
         "Kraken (affaibli près des côtes)": [phase1, label("Bestiary.Habitats.coast")],
-        "Crapaud des fondrières": [phase0, label("Bestiary.Habitats.siteSumpfenmark")],
-        "Moorlicht": [phase1, label("Bestiary.Habitats.siteSumpfenmark")],
-        "Lieutenant d'Ulrich": [phase0, label("Bestiary.Habitats.ulrichBand")],
-        "Ulrich (1 pierre)": [phase1, label("Bestiary.Habitats.ulrichBand")],
-        "Ulrich (5 pierres)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.ulrichBand")],
-        "Mammouth de Kis": [phase0, label("Bestiary.Habitats.siteKis")],
-        "Kisaeth (renaissante)": [phase1, label("Bestiary.Habitats.siteKis")],
-        "Varhun (adulte)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.siteKis")]
+        "Grand-loup de Logne": [logne, before],
+        "Arbre éveillé": [logne, after],
+        "Crapaud des fondrières": [sumpfenmark, before],
+        "Moorlicht": [sumpfenmark, after],
+        "Mammouth de Kis": [kis, before],
+        "Kisaeth (renaissante)": [kis, after],
+        "Varhun (adulte)": [kis, after],
+        "Lieutenant d'Ulrich": [ulrich],
+        "Ulrich (1 pierre)": [ulrich],
+        "Ulrich (5 pierres)": [ulrich]
       };
       for (const [name, path] of Object.entries(expected)) {
         expect(byName.get(name), `"${name}" absent`).to.exist;
@@ -90,6 +95,13 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       // Aucune créature hors dossier.
       const unfiled = [...byName.values()].filter((doc) => !doc._source.folder).map((doc) => doc.name);
       expect(unfiled, "créatures sans dossier").to.deep.equal([]);
+      // Aucun dossier vide laissé par un ancien rangement (ex. un site sous « Phase 1 »).
+      const used = new Set([...byName.values()].map((doc) => doc._source.folder));
+      const empty = pack.folders.filter((folder) => !used.has(folder.id) && !pack.folders.some((child) => child._source.folder === folder.id));
+      expect(empty.map((folder) => folder.name), "dossiers vides").to.deep.equal([]);
+      // Les sites ne sont plus rangés sous une phase globale.
+      const siteUnderPhase = pack.folders.filter((folder) => folder.name === logne && folder._source.folder);
+      expect(siteUnderPhase.map((folder) => folder.name), "site rangé sous une phase").to.deep.equal([]);
     });
   });
 });
