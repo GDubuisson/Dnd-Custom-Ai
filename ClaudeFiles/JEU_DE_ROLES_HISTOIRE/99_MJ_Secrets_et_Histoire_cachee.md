@@ -1,6 +1,8 @@
 # DOCUMENT DU MAÎTRE DE JEU
 ### Histoire cachée, secrets et indices — **NE PAS DISTRIBUER**
 
+> **Statut : pré-première session (887).** Ce document décrit le monde tel qu'il est avant que les PJ ne brisent la première pierre, comme les documents joueurs. Ce qui change ensuite se suit au §2 (« État des pierres ») et au §8.
+
 ---
 
 ## 1. La vérité
@@ -27,6 +29,11 @@ Les documents joueurs présentent cette histoire comme parfaitement ordinaire (d
 - Plus on est près d'une pierre, plus les rituels réussissent. C'est l'explication de la « superstition de métier » des ritualistes, des registres réservés de la Maison des Cent Portes, et des champs que les guildes lucentiennes achètent à prix d'or.
 - Les grâces cléricales sont réelles mais infimes. Elles ne viennent pas de l'Unique, qui n'existe pas au sens où la Foi l'entend.
 - Un site de pierre présente des anomalies locales : faune absente ou aberrante, désorientation, perte de repères, sons, comportement animal anormal.
+- **Chaque pierre brisée** libère un peu de ce qu'elle contenait : un peu de magie, un peu de divin, un peu de démoniaque. Le retour se répand depuis le site brisé, et s'ajoute à chaque nouvelle rupture.
+
+### Le Kraken
+
+La Mer intérieure abrite le **Kraken**, endormi. Sa présence crée au large des courants très dangereux, suicidaires pour qui s'y risque : c'est la vraie raison pour laquelle on ne traverse pas la Mer intérieure. Pour tout le monde, ce ne sont que les courants du large. Aucun document joueur ne le mentionne.
 
 ---
 
@@ -35,11 +42,24 @@ Les documents joueurs présentent cette histoire comme parfaitement ordinaire (d
 | # | Lieu | Ce qu'en disent les documents joueurs | Ce qu'il y a réellement |
 |---|---|---|---|
 | 1 | **Nord-ouest de la Forêt de Logne** (Fleuraine), au-delà de Sylvecourt et Logneval | Des communautés de bûcherons sous chartes royales, hors seigneurie, présentées comme un problème fiscal. La Dame de Logne, parmi d'autres légendes. | Pierre. Les communautés locales sont des gardiens dégénérés qui ne savent plus ce qu'ils gardent — les chartes sont le vestige juridique de leur charge. La zone (environ 40 lieues²) n'a jamais été relevée : sur la carte d'Éloi, elle est figurée en forêt comme le reste, sans un nom ni un chemin, et seuls ses carnets de relevé la marquent « non relevé ». Aucun document joueur ne la signale. |
-| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* de la pierre, non son décor : la région a gelé après le Scellement. Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
+| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* du Scellement, non son décor : Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée (§12). Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
 | 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
 | 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
 | 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre. Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
 | 6 | **Île de Tirwen** | Faune hardie, plantes toxiques, trois colonisations abandonnées. Présentée parmi d'autres îles sans intérêt. | Pierre. Fuite magique diffuse et continue affectant le vivant depuis mille ans. |
+
+### État des pierres
+
+À tenir au fil de la campagne. L'ordre des découvertes et des ruptures, et leurs auteurs, ne sont pas fixés d'avance : ils dépendent des joueurs.
+
+| # | Site | État | Brisée par | Session / date | Effets constatés |
+|---|---|---|---|---|---|
+| 1 | Nord-ouest de la Forêt de Logne | Intacte | | | |
+| 2 | Nord-est du Désert gelé de Kis | Intacte | | | |
+| 3 | Marais de Sümpfenmark | Intacte | | | |
+| 4 | Souterrain de la Grande Cathédrale de Velencia | Intacte | | | |
+| 5 | Désert de Zahir | Intacte | | | |
+| 6 | Île de Tirwen | Intacte | | | |
 
 ### Sur les douze sages
 
@@ -74,6 +94,8 @@ Aucun document joueur ne mentionne le Scellement, les sages, les pierres, ou l'e
 | **Les guides d'Eisengrund et de Bir Azraq** | Le refus des chiens dans le quart nord-est de Kis ; les distances et les étoiles fausses au Zahir. | Ils n'écrivent pas et n'en parlent qu'entre eux, ou à qui paie le voyage. | **Aucune.** À recueillir en jeu. |
 | **Les anciens de Sümpfenmark** | Rien de conscient. Des interdits transmis, efficaces, dont ils ignorent l'objet. | Ils répondent « ce sont de vieilles bêtises » à toute question et respectent scrupuleusement les règles. | Doc 02, parmi le folklore des autres marches. |
 | **Les bûcherons de Logne** | De même : des droits, des usages, une frontière que l'on ne franchit pas. | Ils ne relèvent de personne et ne parlent à personne. | Doc 01, sous l'angle fiscal. |
+| **Ulrich** (Altenburg, né en 845) | Les papiers personnels d'Hartmut le Sourd : il sait qu'il y a quelque chose de puissant au-delà du Schilfbach, et il le cherche. Il ignore ce que c'est. | Il ne veut pas comprendre, il veut le pouvoir, et il ne partage rien. Voir §11. | **Aucune.** À introduire en jeu. |
+| **Le Moorvogt de Moorburg** | Rien de ce que contenaient les papiers : il a remis le coffre sans l'ouvrir. | Il doit trop d'argent à la pègre d'Ulrich, et il a peur. | Doc 02, par son rapport non rendu. |
 
 **Règle de table :** si un joueur formule la bonne hypothèse à voix haute devant un PNJ, la réaction par défaut n'est pas la panique, c'est l'incrédulité polie. Un savant lui expliquera pourquoi c'est impossible, et il aura de bons arguments.
 
@@ -105,7 +127,7 @@ Les indices réels sont délibérément mêlés à des **leurres** (marqués ◇
 |---|---|---|---|
 | **Guerre des Trois Bannières (366–389)** | Saint-Lys : provoquée par un affront de la Westmark, Aymeric III a réagi. | Altenburg : agression fleurainaise pure et simple ; Grenzfestung en est la preuve. · Ravenhold : les seigneurs de Bellerive ont voulu la guerre ; Ravenmoor n'est venu qu'en 383, à la demande du roi de Fleuraine, pour garder la paix d'une marche abandonnée. | Fleuraine a voulu la guerre, Altenmark l'a subie, Ravenmoor l'a financée puis s'est payé. Ce que les chroniques taisent n'est pas la participation de Ravenmoor, mais sa nature : un gage encaissé. Voir ci-dessous. |
 | **Le Serment Brisé (604)** | Ravenhold : Valdera n'a pas bougé, quarante et un navires perdus. | Torralba : le signal n'a jamais été reçu, flotte à quai pour avarie. | Au choix du MJ. La version valdérienne est techniquement plausible ; le fait que Ravenmoor ait délié son propre roi suggère qu'à Ravenhold on a jugé la faute partagée. |
-| **Annexion de la Sümpfenmark (341)** | Altenburg : la tourbe pour chauffer la capitale, et un marais qu'il ne fallait pas laisser acheter par un autre. Hartmut force l'admission en tranchant lui-même un vote à égalité. | — | Motif réel inconnu de tous. Hartmut savait quelque chose. Ses papiers personnels ont disparu à sa mort. |
+| **Annexion de la Sümpfenmark (341)** | Altenburg : la tourbe pour chauffer la capitale, et un marais qu'il ne fallait pas laisser acheter par un autre. Hartmut force l'admission en tranchant lui-même un vote à égalité. | — | Motif réel inconnu de tous. Hartmut savait quelque chose. Ses papiers personnels ont disparu à sa mort, en 362 ; ils sont aujourd'hui entre les mains d'Ulrich (§11). |
 | **Guerres de la Passe (402–851)** | Torralba : marchands molestés, hérétiques accueillis à Qasirah, péages de Ravenmoor. Les Ordres parlent de guerre sainte. | Qasirah : douze invasions repoussées, aucune riposte au-delà de la Passe. | Valdera a attaqué chaque fois ; Azhar n'a jamais franchi la Passe. Le motif initial est économique (une route vers le sud sans Ravenmoor), il devient politique (terres, commandements, naissance des Ordres), et l'habillage religieux vient en dernier. Aucun Hiérarque n'a béni une campagne : c'est la vraie raison, jamais dite, du refus de canoniser Inés. |
 | **Mort d'Alonso II (851)** | Torralba : fièvre soudaine, deux mois après la Trêve. | — | Piste ouverte : les Ordres de Ferveur. Rien n'a jamais été prouvé et le dossier n'a jamais été ouvert. |
 | **Guerre des Greniers (641–648)** | Chacun accuse son voisin d'avoir fermé ses silos. | — | Tous les six l'ont fait. |
@@ -155,25 +177,25 @@ Guerre purement politique, **sans aucun lien avec l'histoire cachée**.
 
 Le seul fil rouge du présent. Les faits : premières flottes en 874, recrudescence depuis 884, flottes organisées, connaissance des calendriers de départ, base inconnue, trois campagnes de répression infructueuses armées à Castelmare, accusation ravenmooroise contre trois Maisons lucentiennes sans preuve.
 
-Trois pistes possibles, à trancher selon la campagne.
+Les pirates n'ont **aucune capacité extraordinaire**. Ils cabotent comme tout le monde, mais ils sont plus téméraires que les autres : ils naviguent plus loin du rivage, de nuit et par plus mauvais temps. Ils y perdent des navires, et ils l'acceptent.
+
+Deux pistes possibles, à trancher selon la campagne.
 
 **A — Mercantile (la plus simple).** Ce sont bien des Maisons lucentiennes. Chaque attaque renchérit la route terrestre. Aucun lien avec l'histoire cachée. Bonne intrigue politique, pas de surnaturel.
 
 **B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps.
 
-*Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre ne sait faire. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
+*Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre n'ose faire, et le paie en navires. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
 
-**C — Résiduelle.** Les flottes lisent les courants du large, ce qu'aucun équipage vivant ne sait faire. Elles ne se contentent pas de longer les côtes : elles coupent. C'est l'explication de leur impunité — elles disparaissent en allant là où personne ne peut les suivre. Elles tiennent ce savoir d'un rituel, d'un site, ou d'un héritage. Piste la plus lente, et la plus payante.
-
-Dans les trois cas : **Serafina Aldobrandi vient d'une maison d'assurance maritime de Castelmare**, ce qui la rend suspecte à tout le monde et probablement innocente. Elle a confié l'enquête à un membre du Conseil, ce qui est soit de la naïveté, soit un piège tendu à ce membre.
+Dans les deux cas : **Serafina Aldobrandi vient d'une maison d'assurance maritime de Castelmare**, ce qui la rend suspecte à tout le monde et probablement innocente. Elle a confié l'enquête à un membre du Conseil, ce qui est soit de la naïveté, soit un piège tendu à ce membre.
 
 ---
 
 ## 7. Amorces de campagne
 
-**Bas niveau — la Sümpfenmark.** Trois morts cet été, un rapport en retard, une garnison d'Ostbruchwacht qui a raccourci ses patrouilles au-delà du Schilfbach sans autorisation. Enquête locale, folklore, terrain. Les PJ apprennent les règles sümpfer et découvrent qu'elles fonctionnent. Aucune révélation, beaucoup d'inquiétude.
+**Bas niveau — la Sümpfenmark.** Trois morts cet été, un rapport en retard, une garnison d'Ostbruchwacht qui a raccourci ses patrouilles au-delà du Schilfbach sans autorisation. Enquête locale, folklore, terrain. Les PJ apprennent les règles sümpfer et découvrent qu'elles fonctionnent. Aucune révélation, beaucoup d'inquiétude. Derrière les noyades, les patrouilles et le rapport : les équipes d'Ulrich, qui cherchent la pierre (§11).
 
-**Bas niveau — la zone non relevée.** Le Cercle de l'Étoile Polaire cherche des escorteurs pour un relevé du nord-ouest de Logne, au départ de Sylvecourt. Maître Éloi veut compléter ses carnets avant de graver la prochaine édition de sa carte. Les bûcherons ne veulent pas.
+**Première session — la zone non relevée.** Olivier, copiste fleurainais au service du Cercle de l'Étoile Polaire, mène les PJ à un temple en ruine du nord-ouest de Logne. Sur un piédestal, une pierre pulse ; touchée, elle se brise, et ses éclats se logent dans tous les présents. C'est la première pierre brisée de la campagne, et le moment de la création des personnages. Les bûcherons de Logne, eux, ne voulaient pas qu'on y aille.
 
 **Niveau moyen — les registres.** Une guilde de ritualistes de Vespera engage les PJ pour obtenir les registres de rituels de la Maison des Cent Portes, à Qasirah. Vol, corruption ou négociation. Ce qu'ils y trouveront, ce sont six régions.
 
@@ -196,14 +218,14 @@ Dans les trois cas : **Serafina Aldobrandi vient d'une maison d'assurance mariti
 ## 8. Rappels de cohérence
 
 - **887 est l'année en cours.** Toutes les dates des documents joueurs sont vérifiées entre elles.
-- La magie ne se lance pas en combat. Jamais. Un rituel prend des jours et coûte cher.
-- Aucune divinité n'intervient. Les grâces cléricales sont infimes et non reproductibles.
+- **Avant la première rupture** (état des documents joueurs) : la magie ne se lance pas en combat, jamais ; un rituel prend des jours et coûte cher. Aucune divinité n'intervient ; les grâces cléricales sont infimes et non reproductibles.
+- **Après chaque rupture**, ces deux règles s'assouplissent un peu, en partant du site brisé (§1, §2).
 - Aucune arme à poudre.
 - **Le Saint-siège a une côte** (au sud et à l'est) et comprend Almendra. Cortelba est valdérienne, à un jour et demi de Velencia.
 - **Wickhollow est un cul-de-sac** : le fort tient la crête des Greyspine jusqu'à la Passe. La seule route entre Ravenmoor et Azhar passe par Ashbourne et Hisn al-Hajar.
 - **Lucentia et l'Altenmark** ne sont reliés que par la Grande Route du Nord (Vespera, Porto Vero, Bellerive, Grenzfestung) ; Valdoro est au bout de sa route.
 - **Valdera et Azhar n'ont pas de frontière terrestre.** Ils ne se touchent qu'à la Passe, le bras de mer de Poerto del Robis (« la Passe » est un nom commun, pas un toponyme). Les Montagnes de Greyspine séparent Ravenmoor d'Azhar. Azhar n'a jamais été l'agresseur.
-- **La Mer intérieure ne se traverse pas.** Le cabotage en vue de côte est ordinaire ; couper au large est mortel. Aucune liaison maritime entre le nord et le sud du monde connu. Tirwen n'est accessible que par le chapelet d'îlots du sud-ouest fleurainais, quelques semaines par an.
+- **La Mer intérieure ne se traverse pas.** Le cabotage en vue de côte est ordinaire ; couper au large est mortel, à cause des courants que crée le Kraken endormi (§1). Aucune liaison maritime entre le nord et le sud du monde connu. Tirwen n'est accessible que par le chapelet d'îlots du sud-ouest fleurainais, quelques semaines par an.
 - Il n'existe aucun écrit antérieur à l'an 0. Le *Premier Codex* est le plus ancien texte du monde, et sa première phrase est du scribe, non du prophète.
 - Les ruines trouvées dans les campagnes sont attribuées aux Années Muettes par tout le monde. Elles sont bien plus anciennes.
 
@@ -246,3 +268,68 @@ Valencia (ville) → **Velencia** ; l'entité politique conserve le nom de **Sai
 4. **Pas de regroupement.** Aucun document ne rassemble les sites comme une série. Les indices qui se répondent sont dispersés dans des documents différents et ne se citent jamais.
 5. **Les personnages qui savent restent en retrait.** Ils apparaissent par leur fonction, jamais par leur doute. Ce qu'ils soupçonnent se découvre en jeu.
 6. **Ce qui ne s'écrit pas.** Ce que seuls les guides, les bergers ou les anciens savent reste oral : on le recueille à la table, pas dans un livre.
+
+---
+
+## 11. Ulrich, premier grand méchant
+
+### Qui il est
+
+**Ulrich**, sans nom de famille, est né en **845** à Eisenpass. C'est le fils non reconnu de **Reinmar von Eisburg**, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark ; sans nom, il n'y a jamais eu sa place. La Fédération se flatte de n'accorder aucun privilège de naissance, mais elle l'a écarté pour la sienne. Il en garde une haine viscérale de l'ordre et du monde qui le porte.
+
+C'est un combattant. Il règne par la force et par ses talents au combat, pas par la ruse. Depuis une dizaine d'années (vers 877), il dirige **toute la pègre d'Altenmark**, dans les cinq marches. Il vit à **Altenburg**, où il passe pour un marchand de tourbe. Ce **négoce de tourbe** n'est qu'une couverture : un commerce en déclin, qui chauffait la capitale au temps d'Hartmut et ne rapporte plus grand-chose, mais qui explique son argent et justifie des équipes dans le marais. Il a des contacts dans tout le monde connu.
+
+Il ne sait pas ce qu'il libère. Il ne cherche ni la vérité ni le passé : il veut le pouvoir, régner, le plus possible, avidement. Quand il trouvera la pierre, il y verra une source de pouvoir, rien de plus.
+
+Reinmar sait-il qu'il a un fils ? Au choix du MJ. Si l'affaire sort, c'est un scandale qui peut coûter sa charge à l'Altmeister.
+
+### Comment il sait : le coffre du Moorvogt
+
+- **360.** Fin du mandat d'Hartmut le Sourd.
+- **362.** Mort d'Hartmut. Ses papiers personnels disparaissent d'Altenburg. En réalité, le **premier Moorvogt**, dont Hartmut avait créé la charge en 342 et qu'il avait choisi lui-même, les emporte à Moorburg dans un coffre scellé. Il en tire l'ordonnance qui interdit le rituel dans le marais (§2), sans jamais dire d'où elle vient.
+- **362–vers 878.** Le coffre passe d'un Moorvogt à l'autre avec la charge. L'usage veut qu'on ne l'ouvre pas ; avec les siècles, plus personne ne sait pourquoi, et il n'est plus qu'un meuble de la charge.
+- **Vers 878.** Le Moorvogt actuel, endetté auprès de la pègre, ne peut pas payer. Il remet le coffre en gage, ou le vend, à Ulrich, qui vient d'en prendre la tête. Ulrich l'ouvre.
+- **Ce que disent les papiers.** Qu'il y a, au-delà du Schilfbach, quelque chose de puissant qu'Hartmut voulait tenir hors de portée de tout autre. Pas l'emplacement exact. D'où des années de recherches dans le marais.
+
+### Les fils vers 887
+
+- **Proches (Sümpfenmark, doc 02).** Les trois morts de l'été sont de vraies noyades : ce sont ses tourbiers, envoyés creuser au-delà du Schilfbach. Le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le manque d'hommes est réel, mais c'est un prétexte. Le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport.
+- **Plus lointains, au choix du MJ.** Les ritualistes que l'Eismark commande pour chercher de nouveaux filons à Eisengrund, s'ils travaillent pour lui : les rituels réussissent mieux près d'une pierre, ce qui en fait un détecteur. La guilde de Vespera qui veut les registres de la Maison des Cent Portes (§7). L'argent prêté aux seigneurs de Bellerive pour que leur délai dure. Le butin des pirates, recelé par l'intermédiaire de Maisons lucentiennes, sans qu'il commande les flottes.
+
+### La rupture et la transformation
+
+Ulrich brise la **pierre de la Sümpfenmark**, pour le pouvoir, sans savoir ce qu'il libère, et il **absorbe** ce qu'elle contenait.
+
+Cela se produit **au moment où les PJ arrivent sur le site**. La bande tient les abords, nombreuse, sans son chef. Pendant que les PJ s'y heurtent, Ulrich, dans la salle de la pierre, prend le pouvoir ; il en sort transformé. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
+
+Ensuite, il recommence avec chaque pierre qu'il trouve. Il se renforce avec le temps, et chaque pierre absorbée lui donne un gros saut de puissance. Quelles pierres il obtient, et dans quel ordre, dépend de la table.
+
+### Olivier
+
+Ulrich **blesse mortellement Olivier**, et sent alors qu'il peut **absorber le pouvoir d'Olivier**, c'est-à-dire les éclats de la première pierre logés en lui. Il les aspire. Olivier meurt à cet instant, de la blessure et des éclats arrachés ensemble. Ulrich comprend ce jour-là que les éclats se prennent sur les vivants comme sur les pierres ; les PJ, qui portent les mêmes, deviennent des proies. Ils ont dès lors une raison personnelle de le haïr, et une autre de l'arrêter que d'empêcher qu'il prenne d'autres pierres. Un fragment le renforce un peu ; une pierre entière reste le vrai saut. Le moment et les circonstances sont au choix du MJ.
+
+### Fiches de jeu
+
+Compendium « Adversaires », dossier « Ulrich et sa bande » : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en cinq étapes dans le temps calées sur le niveau des PJ, plus un gabarit à appliquer pour chaque pierre absorbée en plus, et un plus petit pour chaque fragment.
+
+---
+
+## 12. Kisaeth et Varhun, les oiseaux de Kis
+
+### Le mythe
+
+Avant le Scellement vivaient deux grandes bêtes volantes, inséparables, liées comme des frères ou des amants : **Kisaeth**, l'oiseau de glace, et **Varhun**, l'oiseau de feu. Le Scellement les a séparés. **Varhun s'est sacrifié dans la pierre de Kis.** Kisaeth s'est dispersée dans la plaine du nord, et c'est elle qui l'a gelée : le Désert gelé de Kis, c'est elle. Le nom de **Kis** est le seul fragment du sien qui ait survécu, venu d'une des langues dont il ne reste rien (§1). Personne ne le remarque.
+
+### Avant la rupture
+
+Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site. Il n'a pas de fiche et se joue en narration : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. Son froid a gardé une **faune d'un autre âge** : grands élans, tigres à dents de sabre, mammouths, rares et solitaires, cantonnés au quart nord-est où personne ne va. Les quelques crânes que des guides en ont rapportés sont attribués par les savants d'Altenburg à des espèces disparues ; aucun document joueur ne les mentionne (le doc 08 dit que les expéditions n'ont rien rapporté).
+
+### Quand la pierre est brisée
+
+Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth renaît**, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
+
+### L'œuf de Varhun : quête secondaire
+
+L'œuf ne vaut rien pour qui ignore ce qu'il est, et tout pour Kisaeth. Il faut le protéger, le garder au chaud et le mener là où il pourra éclore. Kisaeth peut devenir l'alliée de ceux qui le protègent. Ce qui en sort, et ce que devient Varhun, dépend de ce que les PJ en font.
+
+Les fiches de jeu (compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis ») : la faune figée et le suintement, Kisaeth en trois états (renaissante, éveillée, pleine puissance) et Varhun en trois âges (oisillon, jeune, adulte). L'œuf est un objet du dossier « Secrets (MJ) ».
