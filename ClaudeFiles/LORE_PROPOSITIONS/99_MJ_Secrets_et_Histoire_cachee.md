@@ -287,11 +287,11 @@ Il possède les **papiers personnels d'Hartmut le Sourd**, disparus à sa mort e
 
 ### La rupture et la transformation
 
-Ulrich brise la **deuxième pierre**, celle de la Sümpfenmark, pour le pouvoir. Il **absorbe** ce qu'elle contenait, et il recommence avec chaque pierre qu'il trouve : il devient plus fort à chacune.
+Ulrich brise la **deuxième pierre**, celle de la Sümpfenmark, pour le pouvoir. Il **absorbe** ce qu'elle contenait, et il recommence avec chaque pierre qu'il trouve. Il se renforce avec le temps, et chaque pierre absorbée lui donne un gros saut de puissance. Quelles pierres il obtient, et dans quel ordre, dépend de la table.
 
 Les PJ arrivent sur le site au moment de la rupture. La bande est déjà là, nombreuse, sans le chef. Ulrich sort de la salle de la pierre, déjà transformé. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
 
-Les fiches de jeu (compendium « Adversaires », dossier « Ulrich et sa bande ») : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée.
+Les fiches de jeu (compendium « Adversaires », dossier « Ulrich et sa bande ») : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en cinq étapes dans le temps calées sur le niveau des PJ, plus un gabarit à appliquer pour chaque pierre absorbée en plus.
 
 ---
 
