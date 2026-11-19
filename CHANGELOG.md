@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.9.0] - 2026-11-19
+
+**Ulrich : la mafia d'Altenmark et les fragments de pierre.**
+- Ulrich dirige toute la mafia d'Altenmark ; le négoce de tourbe d'Altenburg n'est que sa couverture.
+- À la Sümpfenmark, il prend le pouvoir de la pierre au moment où les PJ arrivent, puis tue Olivier,
+  PNJ allié des PJ, en aspirant le fragment de la pierre de Logne qu'il portait : il découvre qu'il peut
+  prendre le pouvoir de ceux qui portent des fragments, ce qui fait des PJ des cibles (note MJ).
+- Nouveau **gabarit de fragment** sur ses 5 fiches, cumulable : +15 PV et +2 dégâts par coup d'arme,
+  environ +1 FP par fragment (une pierre entière reste le gros saut, environ +3 FP).
+
 ## [1.8.0] - 2026-11-19
 
 **Ulrich : le temps et les pierres.**
