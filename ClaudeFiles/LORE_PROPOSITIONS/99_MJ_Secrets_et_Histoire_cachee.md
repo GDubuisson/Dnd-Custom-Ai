@@ -1,11 +1,13 @@
 > **PROPOSITION DE MODIFICATION — 2026-11-19 (à fusionner dans `JEU_DE_ROLES_HISTOIRE/`, puis supprimer cet encadré et ce fichier)**
 >
 > Copie de `99_MJ_Secrets_et_Histoire_cachee.md`. L'original n'a pas été touché. Décisions du MJ prises en
-> conception du bestiaire (système v1.5.0), absentes du lore :
+> conception du bestiaire (système v1.5.0 et v1.6.0), absentes du lore :
 > 1. **§3, tableau « Qui sait »** : nouvelle ligne **Ulrich**.
 > 2. **§5, ligne « Annexion de la Sümpfenmark »** : on sait désormais où sont passés les papiers d'Hartmut.
 > 3. **§7, amorce « Bas niveau — la Sümpfenmark »** : une phrase sur ce qu'il y a derrière.
 > 4. **§11, nouvelle section** : Ulrich et sa bande, premier grand méchant de la campagne.
+> 5. **§2, ligne « Désert gelé de Kis »** : renvoi au mythe des deux oiseaux.
+> 6. **§12, nouvelle section** : Kisaeth et Varhun, les oiseaux de glace et de feu, et l'œuf de Varhun.
 >
 > Hors de ce fichier, également décidé et pas encore dans le lore : la pierre de la forêt de Logne est brisée
 > par les PJ dès la première session, chaque pierre brisée ramène un peu de magie, de dieux et de démons, et la
@@ -48,7 +50,7 @@ Les documents joueurs présentent cette histoire comme parfaitement ordinaire (d
 | # | Lieu | Ce qu'en disent les documents joueurs | Ce qu'il y a réellement |
 |---|---|---|---|
 | 1 | **Nord-ouest de la Forêt de Logne** (Fleuraine), au-delà de Sylvecourt et Logneval | Des communautés de bûcherons sous chartes royales, hors seigneurie, présentées comme un problème fiscal. La Dame de Logne, parmi d'autres légendes. | Pierre. Les communautés locales sont des gardiens dégénérés qui ne savent plus ce qu'ils gardent — les chartes sont le vestige juridique de leur charge. La zone (environ 40 lieues²) n'a jamais été relevée : sur la carte d'Éloi, elle est figurée en forêt comme le reste, sans un nom ni un chemin, et seuls ses carnets de relevé la marquent « non relevé ». Aucun document joueur ne la signale. |
-| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* de la pierre, non son décor : la région a gelé après le Scellement. Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
+| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* de la pierre, non son décor : la région a gelé après le Scellement : c'est Kisaeth, l'oiseau de glace, dispersé dans la plaine (§12). Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
 | 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
 | 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
 | 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre. Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
@@ -289,3 +291,25 @@ Ulrich brise la **deuxième pierre**, celle de la Sümpfenmark, pour le pouvoir.
 Les PJ arrivent sur le site au moment de la rupture. La bande est déjà là, nombreuse, sans le chef. Ulrich sort de la salle de la pierre, déjà transformé. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
 
 Les fiches de jeu (compendium « Adversaires », dossier « Ulrich et sa bande ») : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée.
+
+---
+
+## 12. Kisaeth et Varhun, les oiseaux de Kis
+
+### Le mythe
+
+Avant le Scellement vivaient deux grandes bêtes volantes, inséparables, liées comme des frères ou des amants : **Kisaeth**, l'oiseau de glace, et **Varhun**, l'oiseau de feu. Au Scellement, Varhun s'est sacrifié. Kisaeth s'est dispersée dans la plaine du nord, qui a gelé : le Désert gelé de Kis, c'est elle. Le nom de **Kis** est le seul fragment du sien qui ait survécu. Personne ne le remarque, puisque l'ancienne langue a disparu.
+
+### Avant la rupture
+
+Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site. Il n'a pas de fiche et se joue en narration : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. Son froid a gardé une **faune d'un autre âge** : grands élans, tigres à dents de sabre, mammouths, rares et solitaires. Les savants d'Altenburg attribuent les crânes que rapportent les expéditions à des espèces disparues.
+
+### Quand la pierre est brisée
+
+Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth renaît**, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
+
+### L'œuf de Varhun : quête secondaire
+
+L'œuf ne vaut rien pour qui ignore ce qu'il est, et tout pour Kisaeth. Il faut le protéger, le garder au chaud et le mener là où il pourra éclore. Kisaeth peut devenir l'alliée de ceux qui le protègent. Ce qui en sort, et ce que devient Varhun, dépend de ce que les PJ en font.
+
+Les fiches de jeu (compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis ») : la faune figée et le suintement, Kisaeth en trois états (renaissante, éveillée, pleine puissance) et Varhun en trois âges (oisillon, jeune, adulte). L'œuf est un objet du dossier « Secrets (MJ) ».
