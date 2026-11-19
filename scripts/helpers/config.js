@@ -425,7 +425,7 @@ DND_CUSTOM.bestiaryHabitats = {
   valdera: "DND_CUSTOM.Regions.valdera",
   azhar: "DND_CUSTOM.Regions.azhar",
   coast: "DND_CUSTOM.Bestiary.Habitats.coast",
-  // Le large : la magie y survit, seul surnaturel possible dès la phase 0.
+  // Le large et les profondeurs : la magie fonctionne encore au fond (le Kraken y dort), seul surnaturel possible dès la phase 0.
   abyss: "DND_CUSTOM.Bestiary.Habitats.abyss",
   siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne",
   siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark",

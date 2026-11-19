@@ -673,7 +673,7 @@ non maintenu.
 ## Bestiaire par phases de campagne (dossiers de compendium) — 2026-11-16
 
 Le MJ fait briser aux PJ la pierre de la forêt de Logne dès la première session, puis les autres :
-la magie revient par paliers, et la Mer intérieure garde au large une magie résiduelle (et le Kraken).
+la magie revient par paliers, et la magie fonctionne encore dans les profondeurs de la Mer intérieure, où dort le Kraken (ses courants empêchent la traversée).
 `world-items/npcs.json` porte donc `flags["dnd-custom-ai"].phase` / `.habitat`, et le compendium
 Actor `adversaires` (toujours `ownership.PLAYER: "NONE"`) est rangé en dossiers phase > milieu.
 

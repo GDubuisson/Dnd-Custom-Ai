@@ -14,7 +14,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
   bêtes réelles de chaque région et, seul surnaturel possible avant la première pierre, les créatures
-  du large de la Mer intérieure (où la magie survit), dont le Kraken endormi. Phase 1 : le Kraken
+  du large de la Mer intérieure (la magie fonctionne encore dans ses profondeurs), dont le Kraken
+  endormi au fond ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken
   affaibli qui approche des côtes.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
