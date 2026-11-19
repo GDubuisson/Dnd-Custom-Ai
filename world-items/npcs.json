@@ -4419,5 +4419,417 @@
     "flags": {
       "dnd-custom-ai": { "phase": 3, "habitat": "ulrichBand" }
     }
+  },
+  {
+    "name": "Chouette des glaces",
+    "type": "npc",
+    "img": "icons/creatures/birds/raptor-owl-flying-moon.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 1 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": -1 }, "wis": { "mod": 1 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 19, "max": 19, "temp": 0 }, "ac": { "value": 12 }, "speed": 18 },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Serres", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Vol (18 m), 1,50 m au sol. Vol rasant : ne provoque pas d'attaque d'opportunité en quittant l'allonge d'un ennemi. Ouïe et vue aiguisées. Vision dans le noir 36 m. Perception +5, Discrétion +4. Comprend le Commun sans le parler.",
+      "particularity": "Plus grande qu'aucune chouette du continent, elle chasse en silence au-dessus de la plaine gelée, là où rien d'autre ne vole. (MJ : faune gardée par le froid de Kisaeth, l'oiseau de glace dispersé dans la plaine ; voir « Kisaeth (renaissante) ».) (Bloc SRD Chouette géante.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Grand élan de Kis",
+    "type": "npc",
+    "img": "icons/creatures/mammals/elk-moose-marked-green.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 3 }, "con": { "mod": 2 },
+        "int": { "mod": -2 }, "wis": { "mod": 2 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 42, "max": 42, "temp": 0 }, "ac": { "value": 14 }, "speed": 18 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Coup de bois (allonge 3 m)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Sabots (cible à terre)", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "4d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge : s'il se déplace d'au moins 6 m en ligne droite vers une cible puis la touche d'un coup de bois au même tour, la cible subit 7 (2d6) dégâts supplémentaires et fait un JS de Force DD 14 ou tombe à terre. Perception +4. Comprend le Commun sans le parler.",
+      "particularity": "Un élan haut comme deux chevaux, qui traverse la plaine seul ou par trois. Les guides d'Eisengrund disent qu'il ne mange rien de ce qui pousse au sud des Eiseneis. (MJ : faune gardée par le froid de Kisaeth, l'oiseau de glace dispersé dans la plaine ; voir « Kisaeth (renaissante) ».) (Bloc SRD Élan géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Tigre à dents de sabre",
+    "type": "npc",
+    "img": "icons/creatures/mammals/cat-hunched-glowing-red.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 2 }, "con": { "mod": 2 },
+        "int": { "mod": -4 }, "wis": { "mod": 1 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 52, "max": 52, "temp": 0 }, "ac": { "value": 12 }, "speed": 12 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 1, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Griffe", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 1, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Odorat aiguisé. Bond : s'il se déplace d'au moins 6 m en ligne droite vers une créature puis la touche d'une griffe au même tour, elle fait un JS de Force DD 14 ou tombe à terre ; si elle est à terre, il peut la mordre par une action bonus. Perception +3, Discrétion +6.",
+      "particularity": "Les expéditions en ont rapporté des crânes, que les savants d'Altenburg attribuent à une espèce disparue. Il y en a encore. (MJ : faune gardée par le froid de Kisaeth, l'oiseau de glace dispersé dans la plaine ; voir « Kisaeth (renaissante) ».) (Bloc SRD Tigre à dents de sabre.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Mammouth de Kis",
+    "type": "npc",
+    "img": "icons/creatures/mammals/bull-horned-blue.webp",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "6",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 7 }, "dex": { "mod": -1 }, "con": { "mod": 5 },
+        "int": { "mod": -4 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 126, "max": 126, "temp": 0 }, "ac": { "value": 13 }, "speed": 12 },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Défenses (allonge 3 m)", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "4d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Piétinement (cible à terre)", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "4d10", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Charge écrasante : s'il se déplace d'au moins 6 m en ligne droite vers une créature puis la touche de ses défenses au même tour, elle fait un JS de Force DD 18 ou tombe à terre ; si elle est à terre, il peut la piétiner par une action bonus.",
+      "particularity": "Rare et solitaire. Les guides d'Eisengrund en ont vu, de loin, et n'en parlent qu'entre eux. (MJ : faune gardée par le froid de Kisaeth, l'oiseau de glace dispersé dans la plaine ; voir « Kisaeth (renaissante) ».) Avant la rupture, le gardien du site est un fragment d'esprit de Kisaeth, joué en narration, sans fiche : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. (Bloc SRD Mammouth.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Loup arctique",
+    "type": "npc",
+    "img": "icons/creatures/abilities/wolf-howl-moon-white.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": -2 }, "wis": { "mod": 1 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 75, "max": 75, "temp": 0 }, "ac": { "value": 13 }, "speed": 15 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Morsure", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["cold"],
+      "specialAbilities": "Immunisé contre le froid. Ouïe et odorat aiguisés. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible. Camouflage des neiges : avantage aux jets de Discrétion en terrain enneigé. Morsure : une créature fait un JS de Force DD 14 ou tombe à terre. Souffle glacé (recharge 5-6) : cône de 4,50 m, JS de Dextérité DD 12, 18 (4d8) dégâts de froid, moitié en cas de réussite. Perception +5, Discrétion +3. Parle le Commun.",
+      "particularity": "Un loup blanc plus grand qu'un poney, dont le souffle gèle, et qui parle. (MJ : n'apparaît qu'une fois la pierre de Kis brisée. Bloc SRD Loup arctique.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Méphite de glace",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-mischief-fire-ice-blue.webp",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/2",
+      "size": "p",
+      "abilities": {
+        "str": { "mod": -2 }, "dex": { "mod": 1 }, "con": { "mod": 0 },
+        "int": { "mod": -1 }, "wis": { "mod": 0 }, "cha": { "mod": 1 }
+      },
+      "attributes": { "hp": { "value": 21, "max": 21, "temp": 0 }, "ac": { "value": 11 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Griffes", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "1d4", "type": "cold" }
+        }
+      ],
+      "damageImmunities": ["cold", "poison"],
+      "damageVulnerabilities": ["bludgeoning", "fire"],
+      "specialAbilities": "Vol 9 m. Vision dans le noir 18 m. Vulnérable aux dégâts contondants et de feu ; immunisé contre le froid, le poison et l'état empoisonné. Explosion mortelle : quand il meurt, il éclate en échardes de glace ; chaque créature à 1,50 m fait un JS de Dextérité DD 10 ou subit 4 (1d8) dégâts tranchants, moitié en cas de réussite. Faux-semblant : immobile, il ne se distingue pas d'un éclat de glace. Nappe de brouillard (1/jour, inné). Souffle de givre (recharge 6) : cône de 4,50 m, JS de Dextérité DD 10, 5 (2d4) dégâts de froid, moitié en cas de réussite. Perception +2, Discrétion +3.",
+      "particularity": "Un éclat de froid animé, malicieux et cruel, de la taille d'un enfant. (MJ : n'apparaît qu'une fois la pierre de Kis brisée. Bloc SRD Méphite de glace.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Kisaeth (renaissante)",
+    "type": "npc",
+    "img": "icons/creatures/abilities/wings-birdlike-blue.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "6",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 0 }, "con": { "mod": 4 },
+        "int": { "mod": -2 }, "wis": { "mod": 0 }, "cha": { "mod": 1 }
+      },
+      "attributes": { "hp": { "value": 133, "max": 133, "temp": 0 }, "ac": { "value": 17 }, "speed": 24 },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Bec (allonge 3 m)", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d8", "type": "cold" }
+        },
+        {
+          "name": "Serres", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["cold"],
+      "specialAbilities": "Vol 24 m, 12 m au sol. Vision aveugle 9 m, vision dans le noir 36 m. Immunisée contre le froid. Marche sur la glace : elle se déplace sur la glace et y grimpe sans jet de caractéristique ; la glace et la neige ne sont pas pour elle un terrain difficile. Attaques multiples : un coup de bec et deux de serres. Souffle de givre (recharge 5-6) : cône de 9 m, JS de Constitution DD 15, 45 (10d8) dégâts de froid, moitié en cas de réussite. Jets de sauvegarde : Dex +3, Con +7, Sag +3, Cha +4. Perception +6, Discrétion +3.",
+      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Au Scellement, Varhun s'est sacrifié et Kisaeth s'est dispersée dans la plaine : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site, joué en narration. Elle renaît quand la pierre est brisée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. À sa renaissance, elle est faible et sa mémoire est éparse. (MJ : phase 1, statistiques exactes du Jeune dragon blanc SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Kisaeth (éveillée)",
+    "type": "npc",
+    "img": "icons/creatures/abilities/wings-birdlike-blue.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "13",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 6 }, "dex": { "mod": 0 }, "con": { "mod": 6 },
+        "int": { "mod": -1 }, "wis": { "mod": 1 }, "cha": { "mod": 1 }
+      },
+      "attributes": { "hp": { "value": 200, "max": 200, "temp": 0 }, "ac": { "value": 18 }, "speed": 24 },
+      "xpReward": 10000,
+      "attacks": [
+        {
+          "name": "Bec (allonge 3 m)", "ability": "str", "bonus": 5, "magic": false,
+          "damage": { "dice": "2d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d8", "type": "cold" }
+        },
+        {
+          "name": "Serres", "ability": "str", "bonus": 5, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Queue (allonge 4,50 m)", "ability": "str", "bonus": 5, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["cold"],
+      "specialAbilities": "Vol 24 m, 12 m au sol. Vision aveugle 18 m, vision dans le noir 36 m. Immunisée contre le froid. Marche sur la glace : elle se déplace sur la glace et y grimpe sans jet de caractéristique ; la glace et la neige ne sont pas pour elle un terrain difficile. Résistance légendaire (3/jour) : si elle rate un jet de sauvegarde, elle peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui la voit fait un JS de Sagesse DD 14 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de givre (recharge 5-6) : cône de 18 m, JS de Constitution DD 19, 54 (12d8) dégâts de froid, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 3 m fait un JS de Dextérité DD 19 ou subit 13 (2d6 + 6) dégâts contondants et tombe à terre, puis elle vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +5, Con +11, Sag +6, Cha +6. Perception +11, Discrétion +5.",
+      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Au Scellement, Varhun s'est sacrifié et Kisaeth s'est dispersée dans la plaine : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site, joué en narration. Elle renaît quand la pierre est brisée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 2, statistiques exactes du Dragon blanc adulte SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 2, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Kisaeth (pleine puissance)",
+    "type": "npc",
+    "img": "icons/creatures/abilities/wings-birdlike-blue.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "20",
+      "size": "gig",
+      "abilities": {
+        "str": { "mod": 8 }, "dex": { "mod": 0 }, "con": { "mod": 8 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 333, "max": 333, "temp": 0 }, "ac": { "value": 20 }, "speed": 24 },
+      "xpReward": 25000,
+      "attacks": [
+        {
+          "name": "Bec (allonge 4,50 m)", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "2d8", "type": "cold" }
+        },
+        {
+          "name": "Serres (allonge 3 m)", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Queue (allonge 6 m)", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["cold"],
+      "specialAbilities": "Vol 24 m, 12 m au sol. Vision aveugle 18 m, vision dans le noir 36 m. Immunisée contre le froid. Marche sur la glace : elle se déplace sur la glace et y grimpe sans jet de caractéristique ; la glace et la neige ne sont pas pour elle un terrain difficile. Résistance légendaire (3/jour) : si elle rate un jet de sauvegarde, elle peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui la voit fait un JS de Sagesse DD 16 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de givre (recharge 5-6) : cône de 27 m, JS de Constitution DD 22, 72 (16d8) dégâts de froid, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 4,50 m fait un JS de Dextérité DD 22 ou subit 15 (2d6 + 8) dégâts contondants et tombe à terre, puis elle vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +6, Con +14, Sag +7, Cha +8. Perception +13, Discrétion +6.",
+      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Au Scellement, Varhun s'est sacrifié et Kisaeth s'est dispersée dans la plaine : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site, joué en narration. Elle renaît quand la pierre est brisée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 3, statistiques exactes du Dragon blanc ancien SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Varhun (oisillon)",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-fire-orange.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 0 }, "con": { "mod": 3 },
+        "int": { "mod": 1 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 75, "max": 75, "temp": 0 }, "ac": { "value": 17 }, "speed": 18 },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Bec", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d6", "type": "fire" }
+        }
+      ],
+      "damageImmunities": ["fire"],
+      "specialAbilities": "Vol 18 m, 9 m au sol, escalade 9 m. Vision aveugle 3 m, vision dans le noir 18 m. Immunisé contre le feu. Souffle de flammes (recharge 5-6) : cône de 4,50 m, JS de Dextérité DD 13, 24 (7d6) dégâts de feu, moitié en cas de réussite. Jets de sauvegarde : Dex +2, Con +5, Sag +2, Cha +4. Perception +4, Discrétion +2.",
+      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 1, à l'éclosion, statistiques exactes du Dragonnet rouge SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Varhun (jeune)",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-fire-orange.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "10",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 6 }, "dex": { "mod": 0 }, "con": { "mod": 5 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 4 }
+      },
+      "attributes": { "hp": { "value": 178, "max": 178, "temp": 0 }, "ac": { "value": 18 }, "speed": 24 },
+      "xpReward": 5900,
+      "attacks": [
+        {
+          "name": "Bec (allonge 3 m)", "ability": "str", "bonus": 4, "magic": false,
+          "damage": { "dice": "2d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "1d6", "type": "fire" }
+        },
+        {
+          "name": "Serres", "ability": "str", "bonus": 4, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["fire"],
+      "specialAbilities": "Vol 24 m, 12 m au sol, escalade 12 m. Vision aveugle 9 m, vision dans le noir 36 m. Immunisé contre le feu. Attaques multiples : un coup de bec et deux de serres. Souffle de flammes (recharge 5-6) : cône de 9 m, JS de Dextérité DD 17, 56 (16d6) dégâts de feu, moitié en cas de réussite. Jets de sauvegarde : Dex +4, Con +9, Sag +4, Cha +8. Perception +8, Discrétion +4.",
+      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 2, statistiques exactes du Jeune dragon rouge SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 2, "habitat": "siteKis" }
+    }
+  },
+  {
+    "name": "Varhun (adulte)",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-fire-orange.webp",
+    "system": {
+      "creatureType": "monstrosity",
+      "challengeRating": "17",
+      "size": "tg",
+      "abilities": {
+        "str": { "mod": 8 }, "dex": { "mod": 0 }, "con": { "mod": 7 },
+        "int": { "mod": 3 }, "wis": { "mod": 1 }, "cha": { "mod": 5 }
+      },
+      "attributes": { "hp": { "value": 256, "max": 256, "temp": 0 }, "ac": { "value": 19 }, "speed": 24 },
+      "xpReward": 18000,
+      "attacks": [
+        {
+          "name": "Bec (allonge 3 m)", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "2d6", "type": "fire" }
+        },
+        {
+          "name": "Serres", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Queue (allonge 4,50 m)", "ability": "str", "bonus": 6, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageImmunities": ["fire"],
+      "specialAbilities": "Vol 24 m, 12 m au sol, escalade 12 m. Vision aveugle 18 m, vision dans le noir 36 m. Immunisé contre le feu. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui le voit fait un JS de Sagesse DD 19 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de flammes (recharge 5-6) : cône de 18 m, JS de Dextérité DD 21, 63 (18d6) dégâts de feu, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 3 m fait un JS de Dextérité DD 22 ou subit 15 (2d6 + 8) dégâts contondants et tombe à terre, puis il vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +6, Con +13, Sag +7, Cha +11. Perception +13, Discrétion +6.",
+      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 3, statistiques exactes du Dragon rouge adulte SRD, en oiseau.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
+    }
   }
 ]

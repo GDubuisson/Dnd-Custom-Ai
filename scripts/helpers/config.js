@@ -429,6 +429,7 @@ DND_CUSTOM.bestiaryHabitats = {
   abyss: "DND_CUSTOM.Bestiary.Habitats.abyss",
   siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne",
   siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark",
+  siteKis: "DND_CUSTOM.Bestiary.Habitats.siteKis",
   // Premier grand méchant de la campagne : sa bande (phase 0) et ses paliers après chaque pierre absorbée.
   ulrichBand: "DND_CUSTOM.Bestiary.Habitats.ulrichBand"
 };

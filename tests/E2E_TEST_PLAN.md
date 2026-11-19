@@ -233,7 +233,7 @@ deux champs de texte libre ci-dessous.
 | T-MOUNT-001 | Compendium Montures et véhicules | P2 | E2E | Ouvrir le compendium "Montures et véhicules" | 5 montures (Actor `mount`) et 4 véhicules (Actor `vehicle`) attendus, compendium consultable par un joueur |
 | T-MOUNT-002 | Monture importée | P2 | E2E | Importer le Destrier fleurainais dans le monde | Bloc SRD conservé (19 PV, sabots 2d6), fiche PNJ ouverte avec la Charge piétinante |
 | T-MOUNT-003 | Description de véhicule | P2 | E2E | Importer le Chariot de convoi, ouvrir sa fiche | Capacité 2 270 kg, description commençant par le prix |
-| T-ADV-005 | Bestiaire par phases | P2 | E2E | Ouvrir le compendium "Adversaires" après l'import | Chaque créature rangée dans un dossier phase > milieu (Kraken au large en phase 0, Kraken affaibli sur les côtes en phase 1, faune aberrante de la Logne et de la Sümpfenmark en phase 0, Moorlicht en phase 1, bande d'Ulrich en phase 0 et ses paliers en phases 1 à 3 dans « Ulrich et sa bande »), aucune créature hors dossier |
+| T-ADV-005 | Bestiaire par phases | P2 | E2E | Ouvrir le compendium "Adversaires" après l'import | Chaque créature rangée dans un dossier phase > milieu (Kraken au large en phase 0, Kraken affaibli sur les côtes en phase 1, faune aberrante de la Logne et de la Sümpfenmark en phase 0, Moorlicht en phase 1, bande d'Ulrich en phase 0 et ses paliers en phases 1 à 3 dans « Ulrich et sa bande », faune figée de Kis en phase 0, Kisaeth renaissante en phase 1 et Varhun adulte en phase 3), aucune créature hors dossier |
 | T-ADV-006 | Bestiaire invisible des joueurs | P1 | E2E | Se connecter en Joueur | Compendium "Adversaires" ni visible ni observable |
 
 ---

@@ -462,5 +462,19 @@
       "price": { "pc": 0, "pa": 0, "po": 500, "pp": 0 },
       "description": "Épais dossier de tables du ciel recopiées et comparées, couvert de calculs et de notes en azhari, avec une lettre d'envoi adressée au Cercle de l'Étoile Polaire."
     }
+  },
+  {
+    "name": "L'œuf de Varhun",
+    "type": "gear",
+    "img": "icons/consumables/eggs/egg-nest-dotted-red.webp",
+    "flags": {
+      "dnd-custom-ai": { "region": "secrets" }
+    },
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+      "description": "Un œuf de la taille d'un bouclier, à la coquille rouge sombre veinée d'or. Il reste chaud au toucher, même posé dans la neige."
+    }
   }
 ]

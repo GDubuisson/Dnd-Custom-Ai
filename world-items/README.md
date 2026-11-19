@@ -26,7 +26,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `weapons.json` | 37 armes SRD 5e (courantes et de guerre) + 10 ouvrages rituels (+1/+2) | `weapon` | Items du monde |
 | `gear.json` | 52 objets d'aventurier SRD 5e (dont munitions et contenants) + 4 préparations rituelles et 3 préparations d'herboriste | `gear` | Items du monde |
 | `regional.json` | 74 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
-| `historical.json` | 25 pièces historiques uniques, sans pouvoir ni bonus, dont 4 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
+| `historical.json` | 26 pièces historiques uniques, sans pouvoir ni bonus, dont 5 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 84 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 96 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 84 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 96 Actors `npc` prêts à
 glisser sur une scène.
 
-84 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+96 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
 **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
 scellé : humains et bêtes réelles de chaque région, faune aberrante autour des sites de la forêt de Logne
 et de la Sümpfenmark (grenouille, crapaud, grand serpent, avec patrouilleurs et tourbiers), et, seul
@@ -198,7 +198,11 @@ reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d
 recalculé). Dossier à part « Ulrich et sa bande », premier grand méchant de la campagne : sa bande en
 phase 0 (homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8
 au FP 3) et Ulrich, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée
-(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3).
+(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3). Site du désert gelé de Kis : faune figée
+en phase 0 (chouette des glaces, grand élan, tigre à dents de sabre, mammouth), loup arctique et
+méphite de glace en phase 1, et les deux oiseaux de l'ancien monde, Kisaeth (glace : renaissante,
+éveillée, pleine puissance) et Varhun (feu : oisillon, jeune, adulte), en phases 1 à 3, aux
+statistiques exactes des dragons blanc et rouge SRD.
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle

@@ -381,7 +381,7 @@
   },
   {
     "name": "Les papiers d'Hartmut le Sourd",
-    "lore": "SECRET. Hartmut le Sourd (Altmeister 337–360) força en 341 l'admission de la Sümpfenmark en tranchant lui-même un vote à égalité. La version officielle parle de la tourbe ; en réalité, il savait quelque chose de la pierre du marais, au-delà du Schilfbach. Ses papiers personnels ont disparu à sa mort.\n\nLes papiers ne nomment pas la pierre. Ils montrent un homme qui avait relevé les coins calmes, les disparitions et l'effet des coutumes sümpfer, et qui jugeait qu'un marais pareil ne devait pas tomber dans d'autres mains. Ils peuvent aussi évoquer l'ordonnance du Moorvogt qui interdit le rituel dans le marais.\n\nAccroche suggérée : amorce « Sümpfenmark » (trois morts cet été, rapport du Moorvogt en retard, patrouilles d'Ostbruchwacht raccourcies)."
+    "lore": "SECRET. Hartmut le Sourd (Altmeister 337–360) força en 341 l'admission de la Sümpfenmark en tranchant lui-même un vote à égalité. La version officielle parle de la tourbe ; en réalité, il savait quelque chose de la pierre du marais, au-delà du Schilfbach. Ses papiers personnels ont disparu à sa mort ; ils sont aujourd'hui entre les mains d'Ulrich (bestiaire, dossier « Ulrich et sa bande »).\n\nLes papiers ne nomment pas la pierre. Ils montrent un homme qui avait relevé les coins calmes, les disparitions et l'effet des coutumes sümpfer, et qui jugeait qu'un marais pareil ne devait pas tomber dans d'autres mains. Ils peuvent aussi évoquer l'ordonnance du Moorvogt qui interdit le rituel dans le marais.\n\nAccroche suggérée : amorce « Sümpfenmark » (trois morts cet été, rapport du Moorvogt en retard, patrouilles d'Ostbruchwacht raccourcies)."
   },
   {
     "name": "Les carnets de relevé d'Éloi de Montclair",
@@ -394,5 +394,9 @@
   {
     "name": "Le dossier de Layla bint Amir",
     "lore": "SECRET. Layla bint Amir (Qasirah, née en 843) a constaté que les tables du ciel de Zaynab ne concordent pas avec les traditions orales, et en déduit qu'il manque du temps. Ses collègues tiennent les traditions pour fausses ; elle n'est plus publiée depuis 881 et écrit au Cercle une lettre par saison. Le dossier est incompréhensible pour qui n'est pas astronome.\n\nAccroche suggérée : amorce « la lettre de Layla » (porter le dossier à Saint-Lys en main propre, sans passer par la Maison ; plusieurs personnes voudraient qu'il n'arrive pas)."
+  },
+  {
+    "name": "L'œuf de Varhun",
+    "lore": "SECRET. Avant le Scellement vivaient deux oiseaux inséparables, Kisaeth, l'oiseau de glace, et Varhun, l'oiseau de feu. Au Scellement, Varhun s'est sacrifié ; Kisaeth s'est dispersée dans la plaine, qui a gelé et qu'on appelle aujourd'hui le Désert gelé de Kis. Quand la pierre de Kis est brisée, Kisaeth renaît, et cet œuf apparaît près du site. Il ne vaut rien pour qui ne sait pas ce que c'est, et tout pour Kisaeth.\n\nAccroche suggérée : quête secondaire. Protéger l'œuf, le garder au chaud, le mener là où il pourra éclore ; Kisaeth, renaissante, peut devenir l'alliée de ceux qui le protègent. Ce qui éclot (bestiaire, dossier du site de Kis : « Varhun (oisillon) », puis jeune et adulte) dépend de ce que les PJ en font."
   }
 ]

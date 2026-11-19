@@ -78,7 +78,10 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Moorlicht": [phase1, label("Bestiary.Habitats.siteSumpfenmark")],
         "Lieutenant d'Ulrich": [phase0, label("Bestiary.Habitats.ulrichBand")],
         "Ulrich (1 pierre)": [phase1, label("Bestiary.Habitats.ulrichBand")],
-        "Ulrich (5 pierres)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.ulrichBand")]
+        "Ulrich (5 pierres)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.ulrichBand")],
+        "Mammouth de Kis": [phase0, label("Bestiary.Habitats.siteKis")],
+        "Kisaeth (renaissante)": [phase1, label("Bestiary.Habitats.siteKis")],
+        "Varhun (adulte)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.siteKis")]
       };
       for (const [name, path] of Object.entries(expected)) {
         expect(byName.get(name), `"${name}" absent`).to.exist;

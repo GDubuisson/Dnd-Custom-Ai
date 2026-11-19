@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-84 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+96 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
 **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
 scellé : humains et bêtes réelles de chaque région, faune aberrante autour des sites de la forêt de Logne
 et de la Sümpfenmark (grenouille, crapaud, grand serpent, avec patrouilleurs et tourbiers), et, seul
@@ -21,7 +21,11 @@ reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d
 recalculé). Dossier à part « Ulrich et sa bande », premier grand méchant de la campagne : sa bande en
 phase 0 (homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8
 au FP 3) et Ulrich, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée
-(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3).
+(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3). Site du désert gelé de Kis : faune figée
+en phase 0 (chouette des glaces, grand élan, tigre à dents de sabre, mammouth), loup arctique et
+méphite de glace en phase 1, et les deux oiseaux de l'ancien monde, Kisaeth (glace : renaissante,
+éveillée, pleine puissance) et Varhun (feu : oisillon, jeune, adulte), en phases 1 à 3, aux
+statistiques exactes des dragons blanc et rouge SRD.
 
 Les dossiers sont créés par l'import d'après les flags `phase` et `habitat` de chaque entrée
 (`scripts/helpers/bestiary.js`) ; une créature déjà présente sans dossier y est rangée au chargement

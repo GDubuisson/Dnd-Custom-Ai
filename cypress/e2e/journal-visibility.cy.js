@@ -73,12 +73,12 @@ describe("Visibilité des Journaux générés par le système", () => {
       const altenmark = chronicles.pages.getName(pageName("altenmark")).text.content;
       expect(altenmark, "aucun secret sur la page d'une nation").to.not.include("Hartmut le Sourd</h3>");
       const secrets = chronicles.pages.getName(pageName("secrets")).text.content;
-      for (const name of ["Les papiers d'Hartmut le Sourd", "Les carnets de relevé d'Éloi de Montclair", "Les rapports de l'expédition de Tirwen", "Le dossier de Layla bint Amir"]) {
+      for (const name of ["Les papiers d'Hartmut le Sourd", "Les carnets de relevé d'Éloi de Montclair", "Les rapports de l'expédition de Tirwen", "Le dossier de Layla bint Amir", "L'œuf de Varhun"]) {
         expect(secrets, `page Secrets : ${name}`).to.include(name);
       }
     });
 
-    // Les 4 objets liés aux secrets : rangés dans leur dossier, invisibles du joueur.
+    // Les 5 objets liés aux secrets : rangés dans leur dossier, invisibles du joueur.
     cy.window({ timeout: 25000 }).should((win) => {
       const player = win.game.users.find((user) => !user.isGM);
       const secretFolder = win.game.folders.find(
@@ -86,7 +86,7 @@ describe("Visibilité des Journaux générés par le système", () => {
       );
       expect(secretFolder, "dossier « Secrets (MJ) » créé").to.exist;
       const items = win.game.items.filter((item) => item.folder?.id === secretFolder.id);
-      expect(items, "4 objets dans le dossier des secrets").to.have.length(4);
+      expect(items, "5 objets dans le dossier des secrets").to.have.length(5);
       for (const item of items) {
         expect(item.testUserPermission(player, "OBSERVER"), `${item.name} invisible du joueur`).to.be.false;
       }
