@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 73 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 84 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 73 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 84 Actors `npc` prêts à
 glisser sur une scène.
 
-73 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
+84 créatures, rangées dans des dossiers par **phase de campagne** (nombre de pierres brisées) puis par
 **milieu** (Partout, une nation, côtes ou large de la Mer intérieure, site de pierre). Phase 0, monde
 scellé : humains et bêtes réelles de chaque région, faune aberrante autour des sites de la forêt de Logne
 et de la Sümpfenmark (grenouille, crapaud, grand serpent, avec patrouilleurs et tourbiers), et, seul
@@ -194,7 +194,11 @@ surnaturel possible avant la première pierre, les créatures du large de la Mer
 survit), dont le Kraken endormi. Phase 1, premières fissures : créatures du suintement de la Logne
 (arbres et arbustes éveillés, lutin, loup gris, liés à la Dame de Logne), de la Sümpfenmark (Moorlicht,
 morts et goules de tourbière, tourbe qui marche) et le Kraken affaibli qui approche des côtes. Toutes
-reprennent exactement un bloc SRD 5.1 (seul le Kraken affaibli est dérivé, FP recalculé).
+reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont dérivés, FP
+recalculé). Dossier à part « Ulrich et sa bande », premier grand méchant de la campagne : sa bande en
+phase 0 (homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8
+au FP 3) et Ulrich, qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée
+(1 à 5 pierres, FP 5, 8, 11, 14 et 17, phases 1 à 3).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle

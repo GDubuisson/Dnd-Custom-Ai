@@ -3443,5 +3443,981 @@
     "flags": {
       "dnd-custom-ai": { "phase": 1, "habitat": "siteSumpfenmark" }
     }
+  },
+  {
+    "name": "Homme de main d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 1 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 11, "max": 11, "temp": 0 }, "ac": { "value": 12 }, "speed": 9 },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète légère (24/96 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "",
+      "particularity": "Recruté parmi les portefaix d'Altenburg et les tourbiers sans ouvrage, payé par le négoce de tourbe d'Ulrich. Ne connaît que son lieutenant. (MJ : bloc SRD Bandit.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète légère", "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+        "system": {
+          "weaponType": "rangedSimple",
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 2.3,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": true, "reloadValue": 1, "range": { "normal": 24, "long": 96 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2,
+          "quantity": 1,
+          "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false,
+          "description": "Quelques pièces d'argent et de cuivre."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Cogneur d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 0 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 32, "max": 32, "temp": 0 }, "ac": { "value": 11 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Masse d'armes", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible. Intimidation +2.",
+      "particularity": "Recouvre les dettes du négoce de tourbe et fait taire ceux qui parlent trop. Craint Ulrich davantage que le Landrecht. (MJ : bloc SRD Malfrat.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes", "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "bludgeoning" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1, "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Guetteur d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 0 }, "dex": { "mod": 2 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 16, "max": 16, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arc long (45/180 m)", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
+      "particularity": "Ancien tourbier ou patrouilleur renvoyé : connaît les chenaux de la Sümpfenmark et mène les équipes au-delà du Schilfbach, là où la garnison ne patrouille plus. (MJ : bloc SRD Éclaireur.)"
+    },
+    "items": [
+      {
+        "name": "Épée courte", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long", "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 45, "long": 180 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Bagarreur d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 3 },
+        "int": { "mod": -1 }, "wis": { "mod": 0 }, "cha": { "mod": -1 }
+      },
+      "attributes": { "hp": { "value": 67, "max": 67, "temp": 0 }, "ac": { "value": 13 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Grande hache", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d12", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Téméraire : au début de son tour, il peut obtenir l'avantage à toutes ses attaques d'arme au corps à corps pendant ce tour ; les attaques contre lui ont alors l'avantage jusqu'au début de son tour suivant.",
+      "particularity": "Ulrich l'a battu à mains nues, puis l'a gardé. Il ne se bat pour personne d'autre. (MJ : bloc SRD Berserker.)"
+    },
+    "items": [
+      {
+        "name": "Grande hache", "type": "weapon",
+        "img": "icons/weapons/axes/axe-double-black.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+          "damage": { "dice": "1d12", "type": "slashing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 3.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Peau", "type": "armor",
+        "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+        "system": {
+          "armorType": "medium",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Lieutenant d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 3 }, "con": { "mod": 2 },
+        "int": { "mod": 2 }, "wis": { "mod": 0 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 65, "max": 65, "temp": 0 }, "ac": { "value": 15 }, "speed": 9 },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Dague", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques au corps à corps (deux de cimeterre, une de dague), ou deux de dague lancée (6/18 m). Parade (réaction) : +2 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Jets de sauvegarde : For +4, Dex +5, Sag +2. Athlétisme +4, Tromperie +4.",
+      "particularity": "Dirige les équipes d'Ulrich sur le terrain et répond de leurs pertes. Seul de la bande à savoir où se trouve le chef. (MJ : bloc SRD Capitaine bandit.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "offHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Déserteur des Passwachten",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": 1 }, "con": { "mod": 2 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": 0 }
+      },
+      "attributes": { "hp": { "value": 58, "max": 58, "temp": 0 }, "ac": { "value": 17 }, "speed": 9 },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Épée courte", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d6", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Arbalète lourde", "ability": "dex", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d10", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue ; s'il a dégainé son épée courte, il peut faire en plus une attaque d'épée courte. Épée longue à deux mains : 1d10. Athlétisme +5, Perception +2.",
+      "particularity": "A quitté les cols d'Eisenpass pour suivre Ulrich, qu'il a connu enfant au pied des garnisons. Sait que le chef est le fils de quelqu'un, pas de qui. (MJ : bloc SRD Vétéran.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Épée courte", "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde", "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "damage": { "dice": "1d10", "type": "piercing" },
+          "damageVersatile": { "dice": "" },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded", "versatile": false, "finesse": false, "light": false, "thrown": false, "heavy": true, "reach": false, "reload": true, "reloadValue": 1, "range": { "normal": 30, "long": 120 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": { "pc": 0, "pa": 0, "po": 400, "pp": 0 },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false,
+          "description": "Solde d'engagement, en partie déjà dépensé."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Ulrich (1 pierre)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 4 }, "dex": { "mod": 2 }, "con": { "mod": 3 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 2 }
+      },
+      "attributes": { "hp": { "value": 112, "max": 112, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5.",
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Il règne sur sa bande par la force et par le combat, sous la couverture d'un négoce de tourbe à Altenburg, et a des contacts dans tout le monde connu. Il possède les papiers personnels d'Hartmut le Sourd, disparus à sa mort en 360 : ce sont eux qui l'ont mené à la pierre de la Sümpfenmark. Les trois noyades de l'été sont ses tourbiers, envoyés creuser au-delà du Schilfbach ; le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le Moorvogt, tenu, ne rend pas son rapport. Pistes plus lointaines, au choix du MJ : les ritualistes qui cherchent les filons d'Eisengrund (les rituels réussissent mieux près d'une pierre), les registres de la Maison des Cent Portes, l'argent prêté aux seigneurs de Bellerive, le butin des pirates recelé par les Maisons lucentiennes. Il n'a aucune fiche avant sa transformation : les PJ le rencontrent quand il sort de la salle de la pierre qu'il vient de briser, au milieu de sa bande, trop nombreuse pour eux. Chaque pierre qu'il brise, il l'absorbe : une fiche par pierre absorbée (1 à 5). Profil de boss dérivé du Gladiateur SRD ; FP recalculé par la méthode de création de monstres : PV effectifs 127 (régénération comprise) et CA 17 avec la parade → FP défensif 5 ; 35 dégâts par round à +7 → FP offensif 5."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Ulrich (2 pierres)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "8",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 5 }, "dex": { "mod": 2 }, "con": { "mod": 4 },
+        "int": { "mod": 0 }, "wis": { "mod": 1 }, "cha": { "mod": 3 }
+      },
+      "attributes": { "hp": { "value": 127, "max": 127, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 3900,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (1/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 16 ou tombe à terre. Jets de sauvegarde : For +8, Dex +5, Con +7. Athlétisme +11, Intimidation +6.",
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Il règne sur sa bande par la force et par le combat, sous la couverture d'un négoce de tourbe à Altenburg, et a des contacts dans tout le monde connu. Palier à 2 pierres absorbées (voir « Ulrich (1 pierre) » pour ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD ; FP recalculé par la méthode de création de monstres : PV effectifs 177 (régénération et résistance légendaire comprises) et CA 17 avec la parade → FP défensif 8 ; 52 dégâts par round à +8 → FP offensif 8."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 2, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Ulrich (3 pierres)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "11",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 5 }, "dex": { "mod": 2 }, "con": { "mod": 5 },
+        "int": { "mod": 0 }, "wis": { "mod": 2 }, "cha": { "mod": 3 }
+      },
+      "attributes": { "hp": { "value": 142, "max": 142, "temp": 0 }, "ac": { "value": 17 }, "speed": 9 },
+      "xpReward": 7200,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 4, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 4, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+1 à la CA, déjà comptée). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (2/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +9, Dex +6, Con +9, Sag +6. Athlétisme +13, Intimidation +7.",
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Il règne sur sa bande par la force et par le combat, sous la couverture d'un négoce de tourbe à Altenburg, et a des contacts dans tout le monde connu. Palier à 3 pierres absorbées (voir « Ulrich (1 pierre) » pour ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD ; FP recalculé par la méthode de création de monstres : PV effectifs 232 et CA 18 avec la parade → FP défensif 11 ; 66 dégâts par round (actions légendaires comprises) à +9 → FP offensif 11."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 2, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Ulrich (4 pierres)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "14",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 6 }, "dex": { "mod": 2 }, "con": { "mod": 5 },
+        "int": { "mod": 0 }, "wis": { "mod": 2 }, "cha": { "mod": 4 }
+      },
+      "attributes": { "hp": { "value": 152, "max": 152, "temp": 0 }, "ac": { "value": 18 }, "speed": 9 },
+      "xpReward": 11500,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 5, "magic": false,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 5, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+2 à la CA, déjà comptés). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 19 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 17 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +11, Dex +7, Con +10, Sag +7. Athlétisme +16, Intimidation +9.",
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Il règne sur sa bande par la force et par le combat, sous la couverture d'un négoce de tourbe à Altenburg, et a des contacts dans tout le monde connu. Palier à 4 pierres absorbées (voir « Ulrich (1 pierre) » pour ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD ; FP recalculé par la méthode de création de monstres : PV effectifs 272 et CA 19 avec la parade → FP défensif 14 ; 86 dégâts par round (actions légendaires comprises) à +11 → FP offensif 14."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 3, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Ulrich (5 pierres)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "17",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 7 }, "dex": { "mod": 2 }, "con": { "mod": 6 },
+        "int": { "mod": 0 }, "wis": { "mod": 2 }, "cha": { "mod": 4 }
+      },
+      "attributes": { "hp": { "value": 189, "max": 189, "temp": 0 }, "ac": { "value": 19 }, "speed": 9 },
+      "xpReward": 18000,
+      "attacks": [
+        {
+          "name": "Épée longue", "ability": "str", "bonus": 6, "magic": true,
+          "damage": { "dice": "2d8", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Coup de bouclier", "ability": "str", "bonus": 6, "magic": true,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing", "slashing"],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+3 à la CA, déjà comptés). Résistant aux dégâts contondants, perforants et tranchants des attaques non magiques. Force de l'ancien monde : ses attaques d'arme sont magiques. Vigueur de la pierre : au début de chacun de ses tours, il récupère 15 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 21 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 18 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Onde de la pierre (recharge 5-6, action) : il frappe le sol ; chaque créature à 6 m fait un JS de Constitution DD 21, subit 6d10 dégâts de force et tombe à terre en cas d'échec, la moitié des dégâts seulement en cas de réussite. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +13, Dex +8, Con +12, Sag +8. Athlétisme +19, Intimidation +10.",
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Il règne sur sa bande par la force et par le combat, sous la couverture d'un négoce de tourbe à Altenburg, et a des contacts dans tout le monde connu. Palier à 5 pierres absorbées (voir « Ulrich (1 pierre) » pour ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD ; FP recalculé par la méthode de création de monstres : PV effectifs 324 et CA 20 avec la parade → FP défensif 17 ; 98 dégâts par round (actions légendaires et onde comprises) à +13 → FP offensif 17."
+    },
+    "items": [
+      {
+        "name": "Épée longue", "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": { "pc": 0, "pa": 0, "po": 15, "pp": 0 },
+          "damage": { "dice": "1d8", "type": "slashing" },
+          "damageVersatile": { "dice": "1d10" },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": true, "finesse": false, "light": false, "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0, "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier", "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 3, "habitat": "ulrichBand" }
+    }
   }
 ]

@@ -75,7 +75,10 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Arbre éveillé": [phase1, logne],
         "Kraken (affaibli près des côtes)": [phase1, label("Bestiary.Habitats.coast")],
         "Crapaud des fondrières": [phase0, label("Bestiary.Habitats.siteSumpfenmark")],
-        "Moorlicht": [phase1, label("Bestiary.Habitats.siteSumpfenmark")]
+        "Moorlicht": [phase1, label("Bestiary.Habitats.siteSumpfenmark")],
+        "Lieutenant d'Ulrich": [phase0, label("Bestiary.Habitats.ulrichBand")],
+        "Ulrich (1 pierre)": [phase1, label("Bestiary.Habitats.ulrichBand")],
+        "Ulrich (5 pierres)": [label("Bestiary.Phases.3"), label("Bestiary.Habitats.ulrichBand")]
       };
       for (const [name, path] of Object.entries(expected)) {
         expect(byName.get(name), `"${name}" absent`).to.exist;

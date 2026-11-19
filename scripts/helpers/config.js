@@ -428,7 +428,9 @@ DND_CUSTOM.bestiaryHabitats = {
   // Le large : la magie y survit, seul surnaturel possible dès la phase 0.
   abyss: "DND_CUSTOM.Bestiary.Habitats.abyss",
   siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne",
-  siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark"
+  siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark",
+  // Premier grand méchant de la campagne : sa bande (phase 0) et ses paliers après chaque pierre absorbée.
+  ulrichBand: "DND_CUSTOM.Bestiary.Habitats.ulrichBand"
 };
 
 /** Habitats où le surnaturel existe dès la phase 0 (le large de la Mer intérieure). */
