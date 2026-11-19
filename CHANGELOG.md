@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.7.0] - 2026-11-19
+
+**Bestiaire : l'ordre des ruptures n'est plus figé.**
+- L'ordre et l'auteur des ruptures de pierres dépendent de la table : seul le début est prévu (la forêt
+  de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark). Chaque **site de pierre** forme donc son
+  propre dossier dans le compendium « Adversaires », découpé en « Avant la rupture » et « Après la
+  rupture », au lieu d'être rangé sous une phase globale.
+- « Ulrich et sa bande » tient en un seul dossier, ses paliers se lisant dans les noms.
+- Les phases de campagne ne rangent plus que ce qui dépend du monde entier (Kraken, et à venir les
+  morts-vivants, démons, dragons…).
+- Migration automatique au chargement : les créatures déjà importées sont déplacées dans leur nouveau
+  dossier et les anciens dossiers vides du bestiaire supprimés (un dossier créé à la main sous un autre
+  nom n'est jamais touché).
+
 ## [1.6.0] - 2026-11-19
 
 **Site de pierre du désert gelé de Kis.**
