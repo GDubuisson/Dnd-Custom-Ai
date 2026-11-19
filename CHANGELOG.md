@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.6.0] - 2026-11-19
+
+**Site de pierre du désert gelé de Kis.**
+- Nouveau dossier « Site de pierre : désert gelé de Kis » dans le compendium « Adversaires » (réservé au
+  MJ) : **12 créatures**, soit 96 au total, toutes aux statistiques SRD 5.1 exactes.
+  - Faune figée, gardée par le froid, en phase 0 : chouette des glaces, grand élan de Kis, tigre à
+    dents de sabre, mammouth de Kis. Le gardien du site, fragment d'esprit de l'oiseau de glace, est
+    joué en narration (note MJ, sans fiche).
+  - Phase 1, après la rupture : loup arctique et méphite de glace.
+  - Les deux oiseaux de l'ancien monde, en oiseaux : **Kisaeth**, l'oiseau de glace dont la dispersion a
+    fait le désert, renaissante, éveillée puis en pleine puissance (dragons blancs jeune, adulte et
+    ancien) ; **Varhun**, l'oiseau de feu, oisillon, jeune puis adulte (dragons rouges dragonnet,
+    jeune et adulte), du FP 4 au FP 20.
+- **L'œuf de Varhun**, cinquième objet des Secrets du MJ, point de départ d'une quête secondaire, avec
+  son histoire dans les Chroniques. L'histoire des papiers d'Hartmut le Sourd précise désormais qu'Ulrich
+  les détient.
+
 ## [1.5.0] - 2026-11-19
 
 **Ulrich et sa bande, premier grand méchant de la campagne.**
