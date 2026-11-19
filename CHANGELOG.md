@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.9.1] - 2026-11-19
+
+**Alignement sur le document MJ mis à jour.**
+- Ulrich : à la tête de toute la pègre d'Altenmark depuis 877 environ ; les papiers d'Hartmut le Sourd,
+  disparus à sa mort en 362, lui viennent du coffre scellé des Moorvogt, remis vers 878 par le Moorvogt
+  actuel, endetté. Olivier, copiste du Cercle de l'Étoile Polaire, porte des éclats de la pierre de
+  Logne ; le moment de sa mort est au choix du MJ.
+- Kis : Varhun s'est sacrifié dans la pierre de Kis ; la faune figée est cantonnée au quart nord-est, et
+  ce sont des guides, non des expéditions, qui en ont rapporté des crânes.
+- Mer intérieure : la magie fonctionne encore dans ses profondeurs, où dort le Kraken, dont les courants
+  rendent la traversée suicidaire ; la piste des pirates « qui lisent les courants » est abandonnée.
+- Chroniques : l'accroche des carnets d'Éloi renvoie à la première session avec Olivier ; l'histoire des
+  papiers d'Hartmut raconte le coffre du Moorvogt.
+
 ## [1.9.0] - 2026-11-19
 
 **Ulrich : la mafia d'Altenmark et les fragments de pierre.**
