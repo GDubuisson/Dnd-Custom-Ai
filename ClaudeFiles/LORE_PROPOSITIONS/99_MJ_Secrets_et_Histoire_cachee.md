@@ -10,8 +10,9 @@
 > 6. **§12, nouvelle section** : Kisaeth et Varhun, les oiseaux de glace et de feu, et l'œuf de Varhun.
 >
 > Hors de ce fichier, également décidé et pas encore dans le lore : la pierre de la forêt de Logne est brisée
-> par les PJ dès la première session, chaque pierre brisée ramène un peu de magie, de dieux et de démons, et la
-> Mer intérieure abrite le Kraken endormi.
+> par les PJ dès la première session, puis Ulrich brise celle de la Sümpfenmark ; **au-delà de ce début,
+> l'ordre et l'auteur des ruptures dépendent de la table**. Chaque pierre brisée ramène un peu de magie, de
+> dieux et de démons, et la Mer intérieure abrite le Kraken endormi.
 
 # DOCUMENT DU MAÎTRE DE JEU
 ### Histoire cachée, secrets et indices — **NE PAS DISTRIBUER**
