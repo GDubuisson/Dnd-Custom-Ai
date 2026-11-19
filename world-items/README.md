@@ -205,7 +205,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8 au FP 3) et Ulrich,
   qui n'a pas de fiche avant sa transformation. Il se renforce avec le temps, en cinq étapes calées
   sur le niveau des PJ (FP 5, 8, 11, 14 et 17, une pierre absorbée), et chaque pierre de plus qu'il
-  absorbe ajoute un gabarit cumulable (environ +3 FP), décrit sur ses fiches.
+  absorbe ajoute un gabarit cumulable (environ +3 FP),
+  chaque fragment de pierre un plus petit (environ +1 FP), tous deux décrits sur ses fiches.
 
 Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont
 dérivés, FP recalculé).
