@@ -227,8 +227,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande (homme de main,
   cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8 au FP 3) et Ulrich,
-  qui n'a pas de fiche avant sa transformation, en un palier par pierre absorbée (1 à 5 pierres,
-  FP 5, 8, 11, 14 et 17).
+  qui n'a pas de fiche avant sa transformation. Il se renforce avec le temps, en cinq étapes calées
+  sur le niveau des PJ (FP 5, 8, 11, 14 et 17, une pierre absorbée), et chaque pierre de plus qu'il
+  absorbe ajoute un gabarit cumulable (environ +3 FP), décrit sur ses fiches.
 
 Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont
 dérivés, FP recalculé).

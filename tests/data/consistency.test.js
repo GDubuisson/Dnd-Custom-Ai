@@ -20,7 +20,8 @@ import {
   WORLD_REGIONAL,
   WORLD_HISTORICAL,
   ITEM_LORE,
-  GLOSSARY
+  GLOSSARY,
+  RETIRED_CONTENT
 } from "../support/fixtures.js";
 import { LOCALES } from "../support/i18n.js";
 import { bestiaryFolderKeys, bestiaryFolderLabelKeys, fitsSealedWorld } from "../../scripts/helpers/bestiary.js";
@@ -417,6 +418,16 @@ describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () 
   test("chaque créature a une phase et un milieu connus (dossier du compendium)", () => {
     for (const npc of WORLD_NPCS) {
       assert.ok(bestiaryFolderKeys(npc).length > 0, `flags phase/habitat absents ou inconnus sur "${npc.name}"`);
+    }
+  });
+
+  // Un nom retiré encore présent dans le JSON serait supprimé puis recréé à chaque chargement.
+  test("entrées retirées (retired-content.json) : absentes du JSON courant, fichiers connus", () => {
+    const current = { "npcs.json": WORLD_NPCS };
+    for (const [file, names] of Object.entries(RETIRED_CONTENT)) {
+      assert.ok(current[file], `fichier inconnu dans retired-content.json : ${file}`);
+      const present = new Set(current[file].map((entry) => entry.name));
+      for (const name of names) assert.ok(!present.has(name), `"${name}" est retiré mais toujours dans ${file}`);
     }
   });
 

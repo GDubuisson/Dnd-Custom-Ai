@@ -85,8 +85,8 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Kisaeth (renaissante)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],
-        "Ulrich (1 pierre)": [ulrich],
-        "Ulrich (5 pierres)": [ulrich]
+        "Ulrich (PJ niv. 3-4)": [ulrich],
+        "Ulrich (PJ niv. 17-20)": [ulrich]
       };
       for (const [name, path] of Object.entries(expected)) {
         expect(byName.get(name), `"${name}" absent`).to.exist;

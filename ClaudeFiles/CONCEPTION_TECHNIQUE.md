@@ -685,6 +685,13 @@ dossier, paliers lisibles dans les noms. `filePackDocuments` déplace aussi les 
 un ancien découpage, puis `prunePackFolders` supprime les dossiers vides portant un libellé géré
 (`bestiaryFolderLabelKeys()`), jamais un dossier créé à la main sous un autre nom.
 
+**Entrées retirées ou renommées (1.8.0)** : l'import rapproche par nom et ne supprime jamais rien de
+lui-même, donc un renommage laissait l'ancienne fiche en double dans les mondes existants.
+`scripts/data/retired-content.json` liste, par fichier de compendium, les noms à supprimer ;
+`deleteRetiredEntries` les efface avant le rangement et la création. Un test de cohérence interdit
+qu'un nom retiré figure encore dans le JSON courant (sinon : suppression puis recréation à chaque
+chargement). Premier usage : les fiches « Ulrich (N pierres) » devenues « Ulrich (PJ niv. X-Y) ».
+
 - `scripts/helpers/bestiary.js` : `bestiaryFolderKeys(entry)` (clés i18n du chemin de dossier,
   `[]` si flags absents/inconnus) et `fitsSealedWorld(entry)` (phase 0 hors `bestiaryMagicHabitats`
   → humanoid/beast seulement), testés en unitaire et appliqués à tout `npcs.json` par les tests de

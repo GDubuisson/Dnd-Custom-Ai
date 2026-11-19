@@ -195,8 +195,20 @@ async function syncWorldItemFile(spec) {
   return { imported: missing.length, updated: staleUpdates.length };
 }
 
+/**
+ * Supprime du compendium les entrées retirées ou renommées du JSON (`scripts/data/retired-content.json`,
+ * noms par fichier) : sans cela, un renommage laisserait l'ancienne fiche en double dans les mondes existants.
+ */
+async function deleteRetiredEntries(compendium, file, index, retiredByFile) {
+  const retired = new Set(retiredByFile[file] ?? []);
+  const ids = index.filter((entry) => retired.has(entry.name)).map((entry) => entry._id);
+  if (!ids.length) return;
+  await compendium.documentClass.deleteDocuments(ids, { pack: compendium.collection });
+  console.log(`${SYSTEM_ID} | ${compendium.collection} : ${ids.length} entrée(s) retirée(s) supprimée(s)`);
+}
+
 /** Synchronise un fichier `world-items/*.json` avec son compendium du système. */
-async function syncCompendiumFile({ file, pack: packId, folderPath, folderLabels }) {
+async function syncCompendiumFile({ file, pack: packId, folderPath, folderLabels }, retiredByFile = {}) {
   const compendium = game.packs.get(packId);
   if (!compendium) {
     console.warn(`${SYSTEM_ID} | Compendium ${packId} introuvable, ${file} ignoré`);
@@ -210,6 +222,7 @@ async function syncCompendiumFile({ file, pack: packId, folderPath, folderLabels
   const data = await loadSystemJson(`world-items/${file}`);
   // `getIndex()` garantit un index chargé (le getter `index` peut être encore vide).
   const index = await compendium.getIndex();
+  await deleteRetiredEntries(compendium, file, index, retiredByFile);
   const existingNames = new Set(index.map((entry) => entry.name));
   const missing = data.filter((entry) => !existingNames.has(entry.name));
   if (folderPath) {
@@ -249,7 +262,8 @@ export async function importSystemContent({ notifyIfEmpty = true } = {}) {
     totalUpdated += updated;
   };
   for (const spec of WORLD_ITEM_FILES) tally(await syncWorldItemFile(spec)); // NOSONAR : séquentiel voulu
-  for (const spec of COMPENDIUM_FILES) tally(await syncCompendiumFile(spec)); // NOSONAR : séquentiel voulu
+  const retiredByFile = await loadSystemJson("scripts/data/retired-content.json");
+  for (const spec of COMPENDIUM_FILES) tally(await syncCompendiumFile(spec, retiredByFile)); // NOSONAR : séquentiel voulu
 
   if (totalImported > 0 || totalUpdated > 0 || notifyIfEmpty) {
     ui.notifications.info(
