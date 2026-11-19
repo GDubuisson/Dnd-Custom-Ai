@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.8.0] - 2026-11-19
+
+**Ulrich : le temps et les pierres.**
+- Ulrich se renforce avec le temps, même sans nouvelle pierre : ses 5 fiches deviennent **5 étapes
+  calées sur le niveau des PJ**, « Ulrich (PJ niv. 3-4) » à « Ulrich (PJ niv. 17-20) » (FP 5, 8, 11,
+  14 et 17), chacune avec une seule pierre absorbée.
+- **Chaque pierre de plus** qu'il absorbe ajoute un gabarit cumulable, décrit en fin de capacités
+  spéciales : +30 PV, Vigueur de la pierre +5, +1 aux attaques et aux DD, +1d8 dégâts de force par coup,
+  attaques magiques dès 3 pierres. Environ +3 FP par pierre (un peu moins au-delà du FP 20).
+- Les anciennes fiches « Ulrich (N pierres) » sont supprimées automatiquement des mondes existants :
+  nouvelle liste d'entrées retirées (`scripts/data/retired-content.json`), pour qu'un renommage ne
+  laisse plus de doublon.
+
 ## [1.7.0] - 2026-11-19
 
 **Bestiaire : l'ordre des ruptures n'est plus figé.**
