@@ -1,0 +1,342 @@
+> **PROPOSITION DE MODIFICATION — 2026-11-19 (à fusionner dans `JEU_DE_ROLES_HISTOIRE/`, puis supprimer cet encadré et ce fichier)**
+>
+> Copie de ta version du doc 99. L'original n'a pas été touché. Un seul changement, décidé en vérifiant
+> l'alignement du bestiaire (système v1.9.1) :
+> 1. **§1, « Le Kraken »** : la magie de l'ancien monde fonctionne encore dans les profondeurs de la Mer
+>    intérieure (pas en surface) ; le Kraken dort au fond.
+
+# DOCUMENT DU MAÎTRE DE JEU
+### Histoire cachée, secrets et indices — **NE PAS DISTRIBUER**
+
+> **Statut : pré-première session (887).** Ce document décrit le monde tel qu'il est avant que les PJ ne brisent la première pierre, comme les documents joueurs. Ce qui change ensuite se suit au §2 (« État des pierres ») et au §8.
+
+---
+
+## 1. La vérité
+
+Il y a environ mille ans, ce monde était un monde de haute fantasy.
+
+La magie y était libre, puissante, accessible. Des divinités bienveillantes et malveillantes y intervenaient directement. Des démons y avaient prise. Les prouesses individuelles étaient légendaires. Il existait d'autres royaumes, d'autres peuples, d'autres langues, dont il ne reste **rien**.
+
+Les conflits n'ont cessé de croître, et leurs armes avec eux, jusqu'à un point de non-retour. **Douze sages** ont alors accompli ce qui demeure le plus grand acte magique de l'histoire du monde : ils ont **jugulé les puissances** — magie, divin, démoniaque — et les ont scellées dans des **pierres** dispersées en six lieux du monde.
+
+Le résultat fut brutal. Plus de magie, plus de dieux, plus de prodiges. Le monde s'est effondré : famines, ruine des structures politiques qui reposaient sur la puissance, perte de l'écriture, dépeuplement massif. Ce que les chroniques appellent aujourd'hui **les Années Muettes** est en réalité le siècle d'agonie qui a suivi le Scellement.
+
+Puis les survivants ont reconstruit. À partir de zéro, sans mémoire, sans texte. Personne ne se souvient. Il n'existe aucun écrit. Ce n'est pas un oubli progressif : c'est une coupure nette. Les documents joueurs présentent les Années Muettes comme un temps *sans* lettres, jamais comme un temps où on les aurait *perdues*.
+
+### Les langues
+
+Une seule langue de l'ancien monde a survécu au Scellement : celle des survivants du continent. Pendant les Années Muettes, parlée par des clans isolés, elle s'est éclatée en patois innombrables mais proches. Les disciples d'Estevan en ont fixé un par écrit, et c'est le Commun. Les langues nationales en dérivent toutes.
+
+Les documents joueurs présentent cette histoire comme parfaitement ordinaire (des patois de clans, un parler devenu langue écrite). Rien n'y doit être signalé comme étrange.
+
+### Points de règle implicites
+
+- La magie résiduelle du monde est ce qui **fuit** des pierres. C'est pourquoi les rituels sont possibles, longs et faibles.
+- Plus on est près d'une pierre, plus les rituels réussissent. C'est l'explication de la « superstition de métier » des ritualistes, des registres réservés de la Maison des Cent Portes, et des champs que les guildes lucentiennes achètent à prix d'or.
+- Les grâces cléricales sont réelles mais infimes. Elles ne viennent pas de l'Unique, qui n'existe pas au sens où la Foi l'entend.
+- Un site de pierre présente des anomalies locales : faune absente ou aberrante, désorientation, perte de repères, sons, comportement animal anormal.
+- **Chaque pierre brisée** libère un peu de ce qu'elle contenait : un peu de magie, un peu de divin, un peu de démoniaque. Le retour se répand depuis le site brisé, et s'ajoute à chaque nouvelle rupture.
+
+### Le Kraken
+
+La magie de l'ancien monde **fonctionne encore dans les profondeurs** de la Mer intérieure, pas en surface. C'est là, au fond, que dort le **Kraken**. Sa présence crée au large des courants très dangereux, suicidaires pour qui s'y risque : c'est la vraie raison pour laquelle on ne traverse pas la Mer intérieure. Pour tout le monde, ce ne sont que les courants du large. Aucun document joueur ne le mentionne.
+
+---
+
+## 2. Les six sites
+
+| # | Lieu | Ce qu'en disent les documents joueurs | Ce qu'il y a réellement |
+|---|---|---|---|
+| 1 | **Nord-ouest de la Forêt de Logne** (Fleuraine), au-delà de Sylvecourt et Logneval | Des communautés de bûcherons sous chartes royales, hors seigneurie, présentées comme un problème fiscal. La Dame de Logne, parmi d'autres légendes. | Pierre. Les communautés locales sont des gardiens dégénérés qui ne savent plus ce qu'ils gardent — les chartes sont le vestige juridique de leur charge. La zone (environ 40 lieues²) n'a jamais été relevée : sur la carte d'Éloi, elle est figurée en forêt comme le reste, sans un nom ni un chemin, et seuls ses carnets de relevé la marquent « non relevé ». Aucun document joueur ne la signale. |
+| 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* du Scellement, non son décor : Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée (§12). Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
+| 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
+| 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
+| 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre. Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
+| 6 | **Île de Tirwen** | Faune hardie, plantes toxiques, trois colonisations abandonnées. Présentée parmi d'autres îles sans intérêt. | Pierre. Fuite magique diffuse et continue affectant le vivant depuis mille ans. |
+
+### État des pierres
+
+À tenir au fil de la campagne. L'ordre des découvertes et des ruptures, et leurs auteurs, ne sont pas fixés d'avance : ils dépendent des joueurs.
+
+| # | Site | État | Brisée par | Session / date | Effets constatés |
+|---|---|---|---|---|---|
+| 1 | Nord-ouest de la Forêt de Logne | Intacte | | | |
+| 2 | Nord-est du Désert gelé de Kis | Intacte | | | |
+| 3 | Marais de Sümpfenmark | Intacte | | | |
+| 4 | Souterrain de la Grande Cathédrale de Velencia | Intacte | | | |
+| 5 | Désert de Zahir | Intacte | | | |
+| 6 | Île de Tirwen | Intacte | | | |
+
+### Sur les douze sages
+
+Douze sages, six pierres : **deux sages par pierre**. Ce détail n'apparaît nulle part dans les documents joueurs. Le **Collège des Douze** du Saint-siège en est le vestige institutionnel : les premiers membres, en l'an 34, étaient — ou croyaient être — les héritiers d'une charge dont ils ne connaissaient déjà plus l'objet. Le nombre a survécu à sa raison d'être.
+
+L'indice n'est visible que par recoupement : le doc 00 mentionne les **neuf** disciples qui rédigent le *Premier Codex* en l'an 17 ; le doc 07 présente le **Collège des Douze** institué en l'an 34. Aucun document ne rapproche les deux chiffres.
+
+---
+
+## 3. Ce qu'il faut tenir
+
+### Les joueurs ne savent rien
+
+Aucun document joueur ne mentionne le Scellement, les sages, les pierres, ou l'existence d'un âge antérieur. Les anomalies y sont toutes présentées comme :
+
+- des faits pratiques (terrain difficile, mauvais climat, absence de puits) ;
+- du folklore, au même titre que le folklore des lieux sans secret ;
+- des questions politiques ou fiscales ;
+- des erreurs d'instrument classées par les savants.
+
+**Aucun PNJ influent ne dit la vérité.** Ceux qui approchent quelque chose ou bien se taisent, ou bien passent pour fous.
+
+### Qui sait, qui soupçonne, qui se tait
+
+| Personne | Ce qu'elle a | Pourquoi cela ne sort pas | Présence dans les documents joueurs |
+|---|---|---|---|
+| **Layla bint Amir** (Qasirah, née en 843) | Les tables de Zaynab ne concordent pas avec les traditions orales. Elle en déduit qu'il manque du temps. | Ses collègues considèrent que ce sont les traditions orales qui sont fausses. Elle n'est plus publiée depuis 881. On la traite comme une excentrique douée. Elle écrit au Cercle une lettre par saison ; on lui a répondu deux fois en six ans. **C'est la « folle » du corpus.** | **Aucune.** À introduire en jeu. |
+| **Maître Éloi de Montclair** (Saint-Lys) | Deux zones « non relevées » dans ses carnets, qu'il a figurées sur la carte sans y porter ni nom ni chemin. Il a constaté que le nord-ouest de Logne est infranchissable, et pas seulement non relevé. Il a lu les rapports de Tirwen 704. | Il ne conclut rien publiquement. Il refuse d'inventer, ce qui passe pour de la maniaquerie. Il répond à Layla par prudence. | Figure du doc 01, présentée comme un cartographe rigoureux. Les zones non relevées ne sont pas mentionnées. |
+| **Sœur Amadea de Monteluz** (Velencia) | Archiviste en chef. Elle a trouvé, dans les plans de fondation de 288, que le chantier a **contourné** une structure existante. Elle a vu la description originale de l'appareil du mur du tombeau : personne ne sait tailler ainsi. | Elle a fait fermer trois salles d'archives en janvier « pour travaux » qui n'ont pas commencé. Elle n'a rien publié en vingt-trois ans. Elle protège l'institution, non la vérité. | Une ligne dans le doc 07 (sa charge). La fermeture des salles est à révéler en jeu. |
+| **Hiérarque Anselmo IX** | Amadea lui a parlé une fois, en 885. Il a écouté et n'a rien dit. | Il a soixante-treize ans, il est malade, et il ne voit aucun bénéfice à ouvrir ce dossier. | Doc 07. La vacance du siège est publiquement attribuée aux calculs autour de la canonisation d'Inés ; le vrai motif reste à la discrétion du MJ. |
+| **La Maison des Cent Portes** | Les registres de rituels : la liste des sites où les rituels réussissent mieux. | Traitée comme un secret **commercial**, non comme une énigme. Personne n'a fait le lien avec autre chose. Les guildes lucentiennes offrent des fortunes pour l'obtenir. | Doc 06, noyée parmi d'autres fonds réservés (relevés hydrauliques, cartes de la Passe). |
+| **Les guides d'Eisengrund et de Bir Azraq** | Le refus des chiens dans le quart nord-est de Kis ; les distances et les étoiles fausses au Zahir. | Ils n'écrivent pas et n'en parlent qu'entre eux, ou à qui paie le voyage. | **Aucune.** À recueillir en jeu. |
+| **Les anciens de Sümpfenmark** | Rien de conscient. Des interdits transmis, efficaces, dont ils ignorent l'objet. | Ils répondent « ce sont de vieilles bêtises » à toute question et respectent scrupuleusement les règles. | Doc 02, parmi le folklore des autres marches. |
+| **Les bûcherons de Logne** | De même : des droits, des usages, une frontière que l'on ne franchit pas. | Ils ne relèvent de personne et ne parlent à personne. | Doc 01, sous l'angle fiscal. |
+| **Ulrich** (Altenburg, né en 845) | Les papiers personnels d'Hartmut le Sourd : il sait qu'il y a quelque chose de puissant au-delà du Schilfbach, et il le cherche. Il ignore ce que c'est. | Il ne veut pas comprendre, il veut le pouvoir, et il ne partage rien. Voir §11. | **Aucune.** À introduire en jeu. |
+| **Le Moorvogt de Moorburg** | Rien de ce que contenaient les papiers : il a remis le coffre sans l'ouvrir. | Il doit trop d'argent à la pègre d'Ulrich, et il a peur. | Doc 02, par son rapport non rendu. |
+
+**Règle de table :** si un joueur formule la bonne hypothèse à voix haute devant un PNJ, la réaction par défaut n'est pas la panique, c'est l'incrédulité polie. Un savant lui expliquera pourquoi c'est impossible, et il aura de bons arguments.
+
+---
+
+## 4. Où sont les indices, document par document
+
+Les indices réels sont délibérément mêlés à des **leurres** (marqués ◇) : des étrangetés sans rapport avec les pierres, écrites sur le même ton et avec le même poids. Aucun site ne doit être le lieu le plus étrange de son document.
+
+| Document | Indices semés |
+|---|---|
+| **00 – Calendrier** | Les Jours Muets : l'explication calendaire est savante et a posteriori, mais les interdits populaires qui s'y attachent sont universels. Les neuf disciples (à croiser avec les Douze du doc 07). Les ruines « sans mortier » attribuées aux Années Muettes. |
+| **01 – Fleuraine** | Les chartes de Logne, hors seigneurie. La Dame de Logne. Éloi qui ne porte que ce qu'il a vérifié. Ne pas nommer un enfant aux Jours Muets. ◇ Sainte Colombe. |
+| **02 – Altenmark** | Les *stille Stellen*, les Moorlichter, le nom caché la nuit. Hartmut et la tourbe. Les Passwachten maintenus contre toute réduction. Les trois morts de l'été et les patrouilles raccourcies d'Ostbruchwacht. ◇ L'Eisenmann, le Waldvater, les Hausgeister. |
+| **03 – Lucentia** | Les champs sans valeur achetés cinq fois leur prix par les guildes. ◇ Le Silver Lake. ◇ Le Signore delle Strade. |
+| **04 – Ravenmoor** | Aucun site. ◇ Les Collines de l'écho. ◇ La forêt des murmures et son budget triplé. ◇ Les corbeaux. ◇ L'article 23. |
+| **05 – Valdera** | L'interdiction totale du rituel. ◇ Le pas de l'autel. ◇ La mort d'Alonso II (intrigue politique réelle, sans lien avec les pierres). |
+| **06 – Azhar** | Les sâkin et l'annonce du nom dans les lieux vides, pratiquée à Bir Azraq face au Zahir. Les registres de rituels réservés. Les expéditions archivées. ◇ Les jours sans poids. |
+| **07 – Saint-siège** | Le Collège des Douze. La Faute (« prendre ce qui doit être reçu »). Le tombeau muré et la veille du Hiérarque. La phrase du scribe. La superstition de métier. Le siège vacant. |
+| **08 – Terres sans maître** | Kis (gibier absent, guides prudents), Zahir, Tirwen — présentés au milieu des mers et des îlots sans intérêt. Le nord-ouest de Logne et la Sümpfenmark n'y figurent pas. |
+
+---
+
+## 5. Divergences entre chroniques nationales
+
+À utiliser pour les enquêtes en bibliothèque : deux sources officielles ne racontent pas la même chose.
+
+| Épisode | Version A | Version B | Réalité |
+|---|---|---|---|
+| **Guerre des Trois Bannières (366–389)** | Saint-Lys : provoquée par un affront de la Westmark, Aymeric III a réagi. | Altenburg : agression fleurainaise pure et simple ; Grenzfestung en est la preuve. · Ravenhold : les seigneurs de Bellerive ont voulu la guerre ; Ravenmoor n'est venu qu'en 383, à la demande du roi de Fleuraine, pour garder la paix d'une marche abandonnée. | Fleuraine a voulu la guerre, Altenmark l'a subie, Ravenmoor l'a financée puis s'est payé. Ce que les chroniques taisent n'est pas la participation de Ravenmoor, mais sa nature : un gage encaissé. Voir ci-dessous. |
+| **Le Serment Brisé (604)** | Ravenhold : Valdera n'a pas bougé, quarante et un navires perdus. | Torralba : le signal n'a jamais été reçu, flotte à quai pour avarie. | Au choix du MJ. La version valdérienne est techniquement plausible ; le fait que Ravenmoor ait délié son propre roi suggère qu'à Ravenhold on a jugé la faute partagée. |
+| **Annexion de la Sümpfenmark (341)** | Altenburg : la tourbe pour chauffer la capitale, et un marais qu'il ne fallait pas laisser acheter par un autre. Hartmut force l'admission en tranchant lui-même un vote à égalité. | — | Motif réel inconnu de tous. Hartmut savait quelque chose. Ses papiers personnels ont disparu à sa mort, en 362 ; ils sont aujourd'hui entre les mains d'Ulrich (§11). |
+| **Guerres de la Passe (402–851)** | Torralba : marchands molestés, hérétiques accueillis à Qasirah, péages de Ravenmoor. Les Ordres parlent de guerre sainte. | Qasirah : douze invasions repoussées, aucune riposte au-delà de la Passe. | Valdera a attaqué chaque fois ; Azhar n'a jamais franchi la Passe. Le motif initial est économique (une route vers le sud sans Ravenmoor), il devient politique (terres, commandements, naissance des Ordres), et l'habillage religieux vient en dernier. Aucun Hiérarque n'a béni une campagne : c'est la vraie raison, jamais dite, du refus de canoniser Inés. |
+| **Mort d'Alonso II (851)** | Torralba : fièvre soudaine, deux mois après la Trêve. | — | Piste ouverte : les Ordres de Ferveur. Rien n'a jamais été prouvé et le dossier n'a jamais été ouvert. |
+| **Guerre des Greniers (641–648)** | Chacun accuse son voisin d'avoir fermé ses silos. | — | Tous les six l'ont fait. |
+
+### La Guerre des Trois Bannières, ce qui s'est réellement passé
+
+Guerre purement politique, **sans aucun lien avec l'histoire cachée**.
+
+> *Ravenmoor n'a pas allumé le feu. Il a vendu le bois.*
+
+**Les causes réelles.** Depuis des décennies, les seigneurs de la marche orientale de Fleuraine (Bellerive) et ceux de la Westmark se pillent le long de La Velle ; Bellerive convoite Teilenburg et les bois du Nordwald. À l'avènement d'Aymeric III, en 366, les seigneurs de l'est renouvellent leur Serment à une condition qui n'est écrite nulle part : qu'il leur donne Teilenburg. Il le promet. La guerre est décidée avant le mariage.
+
+**L'étincelle : le mariage de Ravenhold (366).** La sœur du roi Osric Ier (père d'Osric II) épouse le fils de l'Altmeister alors en charge. Le protocole ravenmoorois place l'Altmeister et Aymeric au même rang : à Ravenhold, un roi juré et un chef élu tiennent tous deux leur charge du consentement des autres. Aymeric exige la préséance et ne l'obtient pas ; un seigneur de la Westmark retourne contre lui la formule fleurainaise : *« Qu'il garde donc sa place, puisqu'il ne la possède pas. »* Aymeric quitte la noce. L'affront est réel, mais c'est un prétexte : Teilenburg tombe dès l'été suivant, ce qu'aucune campagne improvisée n'aurait permis. Le protocole de Ravenmoor est sincère et n'a rien d'un complot ; mais Ravenhold savait comment Aymeric le prendrait, et n'a rien fait pour l'éviter.
+
+**367–380, la guerre des marches.** Teilenburg prise, puis quatorze ans de raids sur La Velle et le Nordwald. L'Eismark et l'Ostheim ne votent à la Diète que le strict minimum. Ravenmoor vend du grain et des chevaux aux deux camps : Altenmark paie comptant, Fleuraine achète à crédit.
+
+**381–382, Grenzfestung.** Endetté, Aymeric veut un coup décisif et lance l'armée de Bellerive. La Diète élit Adelheid Altmeister en 381 alors qu'elle est déjà enfermée dans la forteresse. Elle tient onze mois. Ce que le rapport de la Diète ne dit pas : pendant l'hiver 381–382, **Ravenmoor cesse de livrer à crédit l'armée assiégeante**. Ravenhold a calculé qu'une Fleuraine battue ne pourrait plus payer, et devrait donc donner un gage. Affamés, les assiégeants lèvent le siège.
+
+**382–389, la troisième bannière.**
+- En 382, Aymeric met en gage auprès de Ravenmoor les revenus et les places fortes de la marche orientale, sans l'accord de ses seigneurs.
+- En 383, l'Assemblée des Terres consent (article 13) à envoyer des garnisons de soldats payés, et non de levées (article 12), pour « garder le gage ». Pendant six ans, trois bannières s'affrontent dans la marche : les garnisons ravenmooroises, les seigneurs de Bellerive qui refusent le gage, et la Westmark qui harcèle tout le monde. C'est de là que vient le nom de la guerre.
+- En 384, l'Aube Blanche cite Aymeric. Le vrai motif : un roi de Fleuraine a engagé des terres tenues sous serment, alors qu'il ne possède rien, il garde. Il renvoie la citation sans l'ouvrir ; elle ne l'a jamais été depuis.
+
+**389, la paix.** Signée à Ravenhold, dans la grange de 156, Ravenmoor étant hôte et arbitre. Aymeric III meurt cette année-là ; son fils bâtard, Raoul, à qui les seigneurs viennent de renouveler le Serment, signe. Teilenburg est rendue à Altenmark ; Ravenmoor garde le gage jusqu'au remboursement. Aucune chronique ne dit où la paix a été signée.
+
+**Les suites.**
+- Saint-Lys ne rembourse jamais. Les seigneurs de Bellerive rachètent eux-mêmes leur marche, morceau par morceau, en deux générations (vers 389–450) : d'où leur conviction de ne devoir leurs terres à aucun roi, et le proverbe « un serment se renouvelle, il ne se donne pas ».
+- Les Grands Départs (391–410) emportent vers la plaine centrale les paysans de la marche orientale, qui ont payé deux fois (aux percepteurs ravenmoorois, puis pour le rachat), les villages frontaliers de la Westmark et du Nordwald, et les soldats licenciés des garnisons ravenmooroises. D'où les familles fleurainaises de Villa Serena et de Castelmare, altenmarkoises de Valdoro, ravenmooroises de San Brizio.
+- Ravenmoor sort de la guerre enrichi par les intérêts, le grain et les sommes du rachat. Osric II, fils du roi qui en avait profité, croira en 418 pouvoir vendre ainsi des troupes à Valdera ; mais en 383 l'Assemblée avait consenti, et en 418 il ne lui avait rien demandé.
+
+**Ce que chaque chronique tait.**
+
+| Chronique | Responsable désigné | Ce qu'elle tait |
+|---|---|---|
+| **Saint-Lys** (doc 01) | Altenmark, à cause de l'affront | La promesse faite aux seigneurs de l'est, l'armée prête avant la noce, le gage, le motif de la citation |
+| **Altenburg** (doc 02) | Fleuraine, agresseur | Les raids de la Westmark avant 366, le grain acheté à Ravenmoor, et le fait que l'arrêt du crédit a sauvé Grenzfestung autant qu'Adelheid |
+| **Ravenhold** (doc 04) | Les seigneurs de Bellerive | Le protocole et ce qu'il savait, l'arrêt du crédit, le gage, le profit tiré de toute la guerre |
+
+**Pistes pour la table.**
+- **La citation scellée de Rochemont.** L'ouvrir en 887 révélerait que la Couronne a mis en gage la marche de Bellerive, au moment même où Bellerive tarde à prêter serment.
+- **La dernière parcelle.** Un droit n'a jamais été racheté, par exemple un péage sur La Velle à Bellerive. L'acte dort dans les archives de Ravenhold ; Cedric IV pourrait s'en servir, ou le vendre.
+- **L'écho de 366.** En 887, de nouveau, les seigneurs de l'est marchandent leur serment avec un jeune roi nommé Aymeric.
+
+---
+
+## 6. Les pirates de la Mer intérieure (874–)
+
+Le seul fil rouge du présent. Les faits : premières flottes en 874, recrudescence depuis 884, flottes organisées, connaissance des calendriers de départ, base inconnue, trois campagnes de répression infructueuses armées à Castelmare, accusation ravenmooroise contre trois Maisons lucentiennes sans preuve.
+
+Les pirates n'ont **aucune capacité extraordinaire**. Ils cabotent comme tout le monde, mais ils sont plus téméraires que les autres : ils naviguent plus loin du rivage, de nuit et par plus mauvais temps. Ils y perdent des navires, et ils l'acceptent.
+
+Deux pistes possibles, à trancher selon la campagne.
+
+**A — Mercantile (la plus simple).** Ce sont bien des Maisons lucentiennes. Chaque attaque renchérit la route terrestre. Aucun lien avec l'histoire cachée. Bonne intrigue politique, pas de surnaturel.
+
+**B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps.
+
+*Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre n'ose faire, et le paie en navires. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
+
+Dans les deux cas : **Serafina Aldobrandi vient d'une maison d'assurance maritime de Castelmare**, ce qui la rend suspecte à tout le monde et probablement innocente. Elle a confié l'enquête à un membre du Conseil, ce qui est soit de la naïveté, soit un piège tendu à ce membre.
+
+---
+
+## 7. Amorces de campagne
+
+**Bas niveau — la Sümpfenmark.** Trois morts cet été, un rapport en retard, une garnison d'Ostbruchwacht qui a raccourci ses patrouilles au-delà du Schilfbach sans autorisation. Enquête locale, folklore, terrain. Les PJ apprennent les règles sümpfer et découvrent qu'elles fonctionnent. Aucune révélation, beaucoup d'inquiétude. Derrière les noyades, les patrouilles et le rapport : les équipes d'Ulrich, qui cherchent la pierre (§11).
+
+**Première session — la zone non relevée.** Olivier, copiste fleurainais au service du Cercle de l'Étoile Polaire, mène les PJ à un temple en ruine du nord-ouest de Logne. Sur un piédestal, une pierre pulse ; touchée, elle se brise, et ses éclats se logent dans tous les présents. C'est la première pierre brisée de la campagne, et le moment de la création des personnages. Les bûcherons de Logne, eux, ne voulaient pas qu'on y aille.
+
+**Niveau moyen — les registres.** Une guilde de ritualistes de Vespera engage les PJ pour obtenir les registres de rituels de la Maison des Cent Portes, à Qasirah. Vol, corruption ou négociation. Ce qu'ils y trouveront, ce sont six régions.
+
+**Niveau moyen — la lettre de Layla.** Layla bint Amir cherche quelqu'un pour porter un dossier à Saint-Lys, en main propre, sans passer par les canaux de la Maison. Le dossier est incompréhensible pour les PJ. Plusieurs personnes voudraient qu'il n'arrive pas.
+
+**Haut niveau — la Crypte.** Anselmo IX se meurt. Le Collège n'est pas au complet. Sœur Amadea cherche à faire ouvrir le tombeau avant qu'un nouveau Hiérarque ne renouvelle le sceau lors de sa nuit de veille. Valdera veut sa canonisation. L'Ordre de la Flamme est à un jour et demi de marche, à Cortelba.
+
+**Politique, sans surnaturel.** Le renouvellement de la Trêve de la Passe, la marche orientale de Fleuraine autour de Bellerive, l'accusation ravenmooroise contre Vespera. Trois crises qui peuvent occuper une campagne entière sans jamais approcher l'histoire cachée.
+
+**Politique — les terres vaines.** Aucun voisin n'a jamais renoncé formellement à la plaine centrale (doc 03). Les actes de la Couronne fleurainaise n'ont jamais rayé la plaine des « terres vaines » du royaume. Un clerc formé au collège des Registres pourrait soutenir que l'ouest de Lucentia, de Villa Serena à Castelmare, n'a jamais cessé d'en faire partie. L'argument est juridiquement faible et politiquement explosif : en temps normal personne ne le prendrait au sérieux, mais avec la crise des pirates et Bellerive qui tarde à jurer, il devient un levier. Qui l'exhume, et pour le compte de qui (la Couronne pour se refaire une autorité, Bellerive pour faire monter les enchères, une Maison lucentienne pour faire tomber Serafina, née à Castelmare), reste au choix du MJ.
+
+**Politique — le mariage.** Aymeric V (24 ans) et l'Infante Beatriz (28 ans) ne sont mariés ni l'un ni l'autre. Aucun document joueur n'évoque une union ; c'est au MJ de la faire naître, par une rumeur, une ambassade ou une fuite. Ce qu'elle mettrait en jeu :
+- **Pour** : la Couronne fleurainaise, qui y trouverait l'appui de Valdera contre Bellerive ; les Ordres de Ferveur, qui voient d'un bon œil une reine dévote sur le trône de l'ouest ; le Banco, qui a des créances des deux côtés.
+- **Contre** : Velencia, qui ne veut pas d'une Valdera plus forte avant de trancher la canonisation d'Inés ; Ravenhold, qui se retrouverait entre deux couronnes alliées ; Bellerive, qui perdrait son levier ; Altenburg, qui a déjà révoqué un Altmeister pour un mariage fleurainais.
+- **Le poids du passé** : Torralba n'a pas oublié le mariage des Jours Muets de 474. Elle exigera une date vérifiée devant l'autel, et toute hésitation de Saint-Lys sur le calendrier des noces sera lue comme une trahison préparée.
+- **Une Aldobrandi dans l'arbre** : la reine Bianca (763) fait de la maison de Serafina une lointaine parente de la Couronne fleurainaise, ce que les adversaires de Serafina au Conseil pourraient rappeler si Vespera se mêlait de l'affaire.
+
+---
+
+## 8. Rappels de cohérence
+
+- **887 est l'année en cours.** Toutes les dates des documents joueurs sont vérifiées entre elles.
+- **Avant la première rupture** (état des documents joueurs) : la magie ne se lance pas en combat, jamais ; un rituel prend des jours et coûte cher. Aucune divinité n'intervient ; les grâces cléricales sont infimes et non reproductibles.
+- **Après chaque rupture**, ces deux règles s'assouplissent un peu, en partant du site brisé (§1, §2).
+- Aucune arme à poudre.
+- **Le Saint-siège a une côte** (au sud et à l'est) et comprend Almendra. Cortelba est valdérienne, à un jour et demi de Velencia.
+- **Wickhollow est un cul-de-sac** : le fort tient la crête des Greyspine jusqu'à la Passe. La seule route entre Ravenmoor et Azhar passe par Ashbourne et Hisn al-Hajar.
+- **Lucentia et l'Altenmark** ne sont reliés que par la Grande Route du Nord (Vespera, Porto Vero, Bellerive, Grenzfestung) ; Valdoro est au bout de sa route.
+- **Valdera et Azhar n'ont pas de frontière terrestre.** Ils ne se touchent qu'à la Passe, le bras de mer de Poerto del Robis (« la Passe » est un nom commun, pas un toponyme). Les Montagnes de Greyspine séparent Ravenmoor d'Azhar. Azhar n'a jamais été l'agresseur.
+- **La Mer intérieure ne se traverse pas.** Le cabotage en vue de côte est ordinaire ; couper au large est mortel, à cause des courants que crée le Kraken endormi (§1). Aucune liaison maritime entre le nord et le sud du monde connu. Tirwen n'est accessible que par le chapelet d'îlots du sud-ouest fleurainais, quelques semaines par an.
+- Il n'existe aucun écrit antérieur à l'an 0. Le *Premier Codex* est le plus ancien texte du monde, et sa première phrase est du scribe, non du prophète.
+- Les ruines trouvées dans les campagnes sont attribuées aux Années Muettes par tout le monde. Elles sont bien plus anciennes.
+
+---
+
+## 9. Glossaire des noms propres canoniques
+
+Aucun toponyme hors de cette liste ne doit apparaître dans les documents. Tous proviennent des cartes.
+
+**Fleuraine** — Saint-Lys (capitale), Port-Lys, Rivebleue, Bléval, Bellerive, Rochemont, Sylvecourt, Logneval. Forêt de Logne. Rivières : La Lysaine, La Velle.
+
+**Altenmark** — Altenburg (capitale). *Nordwald* : Teilenburg, Winterheim, Eberwald, Wechselhof. *Eismark* : Eisenpass, Eisengrund, Eisburg. *Ostheim* : Ostfurt, Seehafen, Grünfeld. *Westmark* : Grenzfestung, Baümedorf, Randewaldes, Weizenweiler. *Sümpfenmark* : Moorburg, Westbruchwacht, Ostbruchwacht, Grünbruch. Montagnes : Graufels, Eiseneis, Schwarzgebirge. Forêt de Grenzwald. Rivières : Tannenbach, Eberbach, Eisenbach, Silberbach, Ostbach, Altenfluss, Schilfbach.
+
+**Lucentia** — Vespera (capitale), Porto Vero, Castelmare, Valdoro, Villa Serena, San Brizio. Silver Lake.
+
+**Ravenmoor** — Ravenhold (capitale), Blackwych, Stoneford, Crowmere, Goldenhill, Amberlake, Ashbourne, Wickhollow. Collines de l'écho. Forêt de Blackwood, forêt des murmures. Montagnes de Greyspine. Rivières : Amber, du Corbeau. Brimwater.
+
+**Valdera** — Torralba (capitale), Porto Alta, Valdencio, Monteluz, Lloren, Vellamar, Sanvila, Caladoria, Serancha, Marisenda, Las Ventas, Varela, Cortelba, Poerto del Robis. Monts de Velencia. Forêts d'Albenar, d'Aldarion, de Varela.
+
+**Azhar** — Qasirah (capitale), Port Sahir, Safwan, Dar al-Qamar, Zafira, Hisn al-Hajar, Bir Azraq, Ramlah, Tazrout, Miraj, Sahelia, Bahira. Forêt d'Al-Murrah, bois de Tamaris. Rivière Zuhral.
+
+**Saint-siège de Valencia** — Velencia (ville), Almendra.
+
+**Terres sans maître** — Désert gelé de Kis, désert de Zahir, île de Tirwen. Mer intérieure, mer du Serment Brisé.
+
+### Corrections appliquées
+
+Les premières versions de ces documents contenaient des noms erronés ou inventés, désormais remplacés partout :
+Valencia (ville) → **Velencia** ; l'entité politique conserve le nom de **Saint-siège de Valencia** · Oasirah → **Qasirah** · Grisepierre → **Greyspine** · forêt des Brumes → **forêt des murmures** · rivière Ambre → **rivière Amber** · Monts de Vernaz → **Monts de Velencia** · rivière Zahral → **rivière Zuhral** · forêt d'Al-Murad → **forêt d'Al-Murrah** · La Vaille → **La Velle** · lac d'Argent → **Silver Lake** · Amberlin → **Rochemont** · Val-Nourrin → **Bléval** · Montclair (ville) → supprimée, ne subsiste que comme patronyme · Greymarch, Thornwick, Ashfold, Bell Harrow → **Stoneford, Crowmere, Goldenhill, Amberlake** · Alcaraz, Peñabranca, Miralvo, Puerto Alegre → **Poerto del Robis, Cortelba, Monteluz, Porto Alta** · Al-Murad (ville), Tanim, Sabhat an-Nur → **Zafira, Hisn al-Hajar, Bir Azraq**.
+
+---
+
+## 10. Principes de rédaction des documents joueurs
+
+À respecter pour tout nouveau document (villes et villages, scénarios, aides de jeu).
+
+1. **Voix interne.** Chaque document est écrit par quelqu'un du monde, qui ne trouve pas ces lieux étranges. Pas de clin d'œil du narrateur (« personne ne sait pourquoi », « ce qui n'était pas la question », « les travaux n'ont pas commencé »).
+2. **Budget d'étrangeté égal.** Chaque nation a son folklore. Un site de pierre ne doit jamais recevoir plus de lignes, ni une formulation plus inquiétante, que les leurres de son propre document.
+3. **Explication banale publique.** Toute anomalie liée à un site est accompagnée de l'explication que le monde lui donne, énoncée comme un fait : fiscalité, fierté locale, géologie, dépense jugée inutile.
+4. **Pas de regroupement.** Aucun document ne rassemble les sites comme une série. Les indices qui se répondent sont dispersés dans des documents différents et ne se citent jamais.
+5. **Les personnages qui savent restent en retrait.** Ils apparaissent par leur fonction, jamais par leur doute. Ce qu'ils soupçonnent se découvre en jeu.
+6. **Ce qui ne s'écrit pas.** Ce que seuls les guides, les bergers ou les anciens savent reste oral : on le recueille à la table, pas dans un livre.
+
+---
+
+## 11. Ulrich, premier grand méchant
+
+### Qui il est
+
+**Ulrich**, sans nom de famille, est né en **845** à Eisenpass. C'est le fils non reconnu de **Reinmar von Eisburg**, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark ; sans nom, il n'y a jamais eu sa place. La Fédération se flatte de n'accorder aucun privilège de naissance, mais elle l'a écarté pour la sienne. Il en garde une haine viscérale de l'ordre et du monde qui le porte.
+
+C'est un combattant. Il règne par la force et par ses talents au combat, pas par la ruse. Depuis une dizaine d'années (vers 877), il dirige **toute la pègre d'Altenmark**, dans les cinq marches. Il vit à **Altenburg**, où il passe pour un marchand de tourbe. Ce **négoce de tourbe** n'est qu'une couverture : un commerce en déclin, qui chauffait la capitale au temps d'Hartmut et ne rapporte plus grand-chose, mais qui explique son argent et justifie des équipes dans le marais. Il a des contacts dans tout le monde connu.
+
+Il ne sait pas ce qu'il libère. Il ne cherche ni la vérité ni le passé : il veut le pouvoir, régner, le plus possible, avidement. Quand il trouvera la pierre, il y verra une source de pouvoir, rien de plus.
+
+Reinmar sait-il qu'il a un fils ? Au choix du MJ. Si l'affaire sort, c'est un scandale qui peut coûter sa charge à l'Altmeister.
+
+### Comment il sait : le coffre du Moorvogt
+
+- **360.** Fin du mandat d'Hartmut le Sourd.
+- **362.** Mort d'Hartmut. Ses papiers personnels disparaissent d'Altenburg. En réalité, le **premier Moorvogt**, dont Hartmut avait créé la charge en 342 et qu'il avait choisi lui-même, les emporte à Moorburg dans un coffre scellé. Il en tire l'ordonnance qui interdit le rituel dans le marais (§2), sans jamais dire d'où elle vient.
+- **362–vers 878.** Le coffre passe d'un Moorvogt à l'autre avec la charge. L'usage veut qu'on ne l'ouvre pas ; avec les siècles, plus personne ne sait pourquoi, et il n'est plus qu'un meuble de la charge.
+- **Vers 878.** Le Moorvogt actuel, endetté auprès de la pègre, ne peut pas payer. Il remet le coffre en gage, ou le vend, à Ulrich, qui vient d'en prendre la tête. Ulrich l'ouvre.
+- **Ce que disent les papiers.** Qu'il y a, au-delà du Schilfbach, quelque chose de puissant qu'Hartmut voulait tenir hors de portée de tout autre. Pas l'emplacement exact. D'où des années de recherches dans le marais.
+
+### Les fils vers 887
+
+- **Proches (Sümpfenmark, doc 02).** Les trois morts de l'été sont de vraies noyades : ce sont ses tourbiers, envoyés creuser au-delà du Schilfbach. Le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le manque d'hommes est réel, mais c'est un prétexte. Le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport.
+- **Plus lointains, au choix du MJ.** Les ritualistes que l'Eismark commande pour chercher de nouveaux filons à Eisengrund, s'ils travaillent pour lui : les rituels réussissent mieux près d'une pierre, ce qui en fait un détecteur. La guilde de Vespera qui veut les registres de la Maison des Cent Portes (§7). L'argent prêté aux seigneurs de Bellerive pour que leur délai dure. Le butin des pirates, recelé par l'intermédiaire de Maisons lucentiennes, sans qu'il commande les flottes.
+
+### La rupture et la transformation
+
+Ulrich brise la **pierre de la Sümpfenmark**, pour le pouvoir, sans savoir ce qu'il libère, et il **absorbe** ce qu'elle contenait.
+
+Cela se produit **au moment où les PJ arrivent sur le site**. La bande tient les abords, nombreuse, sans son chef. Pendant que les PJ s'y heurtent, Ulrich, dans la salle de la pierre, prend le pouvoir ; il en sort transformé. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
+
+Ensuite, il recommence avec chaque pierre qu'il trouve. Il se renforce avec le temps, et chaque pierre absorbée lui donne un gros saut de puissance. Quelles pierres il obtient, et dans quel ordre, dépend de la table.
+
+### Olivier
+
+Ulrich **blesse mortellement Olivier**, et sent alors qu'il peut **absorber le pouvoir d'Olivier**, c'est-à-dire les éclats de la première pierre logés en lui. Il les aspire. Olivier meurt à cet instant, de la blessure et des éclats arrachés ensemble. Ulrich comprend ce jour-là que les éclats se prennent sur les vivants comme sur les pierres ; les PJ, qui portent les mêmes, deviennent des proies. Ils ont dès lors une raison personnelle de le haïr, et une autre de l'arrêter que d'empêcher qu'il prenne d'autres pierres. Un fragment le renforce un peu ; une pierre entière reste le vrai saut. Le moment et les circonstances sont au choix du MJ.
+
+### Fiches de jeu
+
+Compendium « Adversaires », dossier « Ulrich et sa bande » : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en cinq étapes dans le temps calées sur le niveau des PJ, plus un gabarit à appliquer pour chaque pierre absorbée en plus, et un plus petit pour chaque fragment.
+
+---
+
+## 12. Kisaeth et Varhun, les oiseaux de Kis
+
+### Le mythe
+
+Avant le Scellement vivaient deux grandes bêtes volantes, inséparables, liées comme des frères ou des amants : **Kisaeth**, l'oiseau de glace, et **Varhun**, l'oiseau de feu. Le Scellement les a séparés. **Varhun s'est sacrifié dans la pierre de Kis.** Kisaeth s'est dispersée dans la plaine du nord, et c'est elle qui l'a gelée : le Désert gelé de Kis, c'est elle. Le nom de **Kis** est le seul fragment du sien qui ait survécu, venu d'une des langues dont il ne reste rien (§1). Personne ne le remarque.
+
+### Avant la rupture
+
+Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site. Il n'a pas de fiche et se joue en narration : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. Son froid a gardé une **faune d'un autre âge** : grands élans, tigres à dents de sabre, mammouths, rares et solitaires, cantonnés au quart nord-est où personne ne va. Les quelques crânes que des guides en ont rapportés sont attribués par les savants d'Altenburg à des espèces disparues ; aucun document joueur ne les mentionne (le doc 08 dit que les expéditions n'ont rien rapporté).
+
+### Quand la pierre est brisée
+
+Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth renaît**, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
+
+### L'œuf de Varhun : quête secondaire
+
+L'œuf ne vaut rien pour qui ignore ce qu'il est, et tout pour Kisaeth. Il faut le protéger, le garder au chaud et le mener là où il pourra éclore. Kisaeth peut devenir l'alliée de ceux qui le protègent. Ce qui en sort, et ce que devient Varhun, dépend de ce que les PJ en font.
+
+Les fiches de jeu (compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis ») : la faune figée et le suintement, Kisaeth en trois états (renaissante, éveillée, pleine puissance) et Varhun en trois âges (oisillon, jeune, adulte). L'œuf est un objet du dossier « Secrets (MJ) ».
