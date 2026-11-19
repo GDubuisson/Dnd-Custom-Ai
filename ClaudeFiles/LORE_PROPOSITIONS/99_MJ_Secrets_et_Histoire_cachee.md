@@ -272,7 +272,7 @@ Valencia (ville) → **Velencia** ; l'entité politique conserve le nom de **Sai
 
 **Ulrich**, sans nom de famille, est né en **845** à Eisenpass. C'est le fils non reconnu de **Reinmar von Eisburg**, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark ; sans nom, il n'y a jamais eu sa place. La Fédération se flatte de n'accorder aucun privilège de naissance, mais elle l'a écarté pour la sienne. Il en garde une haine viscérale de l'ordre et du monde qui le porte.
 
-C'est un combattant. Il règne sur sa bande par la force et par ses talents au combat, pas par la ruse. Il vit à **Altenburg**, sous la couverture d'un **négoce de tourbe**, le commerce qui chauffe la capitale depuis Hartmut, et il a des contacts dans tout le monde connu. Il veut faire pencher le pouvoir de son côté partout.
+C'est un combattant. Il dirige **toute la mafia d'Altenmark**, qu'il tient par la force et par ses talents au combat, pas par la ruse. Il vit à **Altenburg** ; le **négoce de tourbe**, le commerce qui chauffe la capitale depuis Hartmut, n'est que sa couverture. Il a des contacts dans tout le monde connu. Il veut faire pencher le pouvoir de son côté partout.
 
 Reinmar sait-il qu'il a un fils ? Au choix du MJ. Si l'affaire sort, c'est un scandale qui peut coûter sa charge à l'Altmeister.
 
@@ -289,9 +289,13 @@ Il possède les **papiers personnels d'Hartmut le Sourd**, disparus à sa mort e
 
 Ulrich brise la **deuxième pierre**, celle de la Sümpfenmark, pour le pouvoir. Il **absorbe** ce qu'elle contenait, et il recommence avec chaque pierre qu'il trouve. Il se renforce avec le temps, et chaque pierre absorbée lui donne un gros saut de puissance. Quelles pierres il obtient, et dans quel ordre, dépend de la table.
 
-Les PJ arrivent sur le site au moment de la rupture. La bande est déjà là, nombreuse, sans le chef. Ulrich sort de la salle de la pierre, déjà transformé. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
+Les PJ arrivent sur le site au moment de la rupture. La bande est déjà là, nombreuse, sans le chef : Ulrich prend le pouvoir de la pierre à l'instant où ils arrivent. Il n'est pas surpuissant, mais ses hommes sont trop nombreux pour quatre PJ, qui doivent fuir.
 
-Les fiches de jeu (compendium « Adversaires », dossier « Ulrich et sa bande ») : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en cinq étapes dans le temps calées sur le niveau des PJ, plus un gabarit à appliquer pour chaque pierre absorbée en plus.
+### La mort d'Olivier
+
+**Olivier**, PNJ allié des PJ, porte un **fragment de la pierre de Logne**. Ulrich le blesse mortellement ; Olivier meurt au moment où Ulrich aspire son fragment. Ulrich découvre ainsi qu'il peut prendre le pouvoir de ceux qui portent des fragments. Les PJ en portent eux aussi depuis la Logne : ils deviennent des cibles. Un fragment le renforce un peu ; une pierre entière reste le vrai saut.
+
+Les fiches de jeu (compendium « Adversaires », dossier « Ulrich et sa bande ») : sa bande, humains ordinaires du FP 1/8 au FP 3, et Ulrich lui-même, qui n'a pas de fiche avant sa transformation, en cinq étapes dans le temps calées sur le niveau des PJ, plus un gabarit à appliquer pour chaque pierre absorbée en plus et un plus petit pour chaque fragment.
 
 ---
 
