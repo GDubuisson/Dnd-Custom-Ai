@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.5.0] - 2026-11-19
+
+**Ulrich et sa bande, premier grand méchant de la campagne.**
+- Nouveau dossier « Ulrich et sa bande » dans le compendium « Adversaires » (toujours réservé au MJ),
+  soit 84 créatures au total.
+- **La bande**, en phase 0 (humains ordinaires, statistiques SRD 5.1 exactes) : homme de main (Bandit),
+  cogneur (Malfrat), guetteur (Éclaireur), bagarreur (Berserker), lieutenant (Capitaine bandit) et
+  déserteur des Passwachten (Vétéran), du FP 1/8 au FP 3.
+- **Ulrich**, fils non reconnu de l'Altmeister, n'a pas de fiche avant sa transformation : un profil de
+  boss combattant, dérivé du Gladiateur SRD, en **un palier par pierre absorbée** (1 à 5 pierres :
+  FP 5, 8, 11, 14 et 17, phases 1 à 3). Vigueur de la pierre (régénération), autorité sur sa bande,
+  puis résistances et actions légendaires, cri et onde de la pierre. FP recalculés par la méthode de
+  création de monstres, détail du calcul et note MJ sur chaque fiche.
+
 ## [1.4.0] - 2026-11-16
 
 **Bestiaire par phases de campagne.**
