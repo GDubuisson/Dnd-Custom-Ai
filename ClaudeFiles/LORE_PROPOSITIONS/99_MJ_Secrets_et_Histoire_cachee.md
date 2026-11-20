@@ -186,11 +186,21 @@ Le seul fil rouge du présent. Les faits : premières flottes en 874, recrudesce
 
 Les pirates n'ont **aucune capacité extraordinaire**. Ils cabotent comme tout le monde, mais ils sont plus téméraires que les autres : ils naviguent plus loin du rivage, de nuit et par plus mauvais temps. Ils y perdent des navires, et ils l'acceptent.
 
-Deux pistes possibles, à trancher selon la campagne.
+### Le capitaine et Ulrich
+
+Les flottes ont un chef, dont le nom est au choix du MJ. C'est un **Altenmarkois**, qui a grandi dans la pègre d'Altenmark **aux côtés d'Ulrich** (§11). Vers 877, quand Ulrich en prend la tête par la force, il refuse de plier et descend la Grande Route du Nord jusqu'à Porto Vero. Il prend la mer, rallie les flottes qui écument la Mer intérieure depuis 874 et les organise : c'est lui qui explique le redoublement de 884 et les flottes devenues organisées.
+
+Les deux hommes ne s'aiment pas, mais **un accord d'argent les lie**. Ulrich recèle le butin, par l'intermédiaire de Maisons lucentiennes. En retour, chaque navire pris renchérit la mer et pousse le commerce vers la Grande Route du Nord, que la pègre d'Ulrich rançonne. L'Altenmark n'a pas de côte sur la Mer intérieure : personne ne pense à y chercher un lien. Aucun ne commande l'autre. L'accord tient tant qu'il arrange les deux, et chacun vendrait l'autre s'il y gagnait davantage.
+
+Ce que cela donne en jeu : remonter la filière du recel mène des pirates à Ulrich, ou d'Ulrich aux pirates ; la rancune entre les deux hommes est une prise pour les PJ, qui peuvent s'allier un temps à l'un contre l'autre ; et l'accord peut se rompre si l'un devient trop puissant.
+
+Le capitaine n'a **aucune capacité extraordinaire** : il est simplement le plus téméraire de tous. Il ignore tout des pierres. Fiche de jeu : « Capitaine pirate », compendium « Adversaires », côtes de la Mer intérieure, phase 0.
+
+Deux pistes possibles pour sa base et ses appuis, à trancher selon la campagne. Le lien avec Ulrich vaut dans les deux cas.
 
 **A — Mercantile (la plus simple).** Ce sont bien des Maisons lucentiennes. Chaque attaque renchérit la route terrestre. Aucun lien avec l'histoire cachée. Bonne intrigue politique, pas de surnaturel.
 
-**B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps.
+**B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps. Avec le capitaine : c'est lui qui a établi la base. Ce qu'il y a trouvé, ce qu'il en fera, et si Ulrich l'apprend, reste au choix du MJ.
 
 *Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre n'ose faire, et le paie en navires. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
 
@@ -301,7 +311,7 @@ Reinmar sait-il qu'il a un fils ? Au choix du MJ. Si l'affaire sort, c'est un sc
 ### Les fils vers 887
 
 - **Proches (Sümpfenmark, doc 02).** Les trois morts de l'été sont de vraies noyades : ce sont ses tourbiers, envoyés creuser au-delà du Schilfbach. Le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le manque d'hommes est réel, mais c'est un prétexte. Le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport.
-- **Plus lointains, au choix du MJ.** Les ritualistes que l'Eismark commande pour chercher de nouveaux filons à Eisengrund, s'ils travaillent pour lui : les rituels réussissent mieux près d'une pierre, ce qui en fait un détecteur. La guilde de Vespera qui veut les registres de la Maison des Cent Portes (§7). L'argent prêté aux seigneurs de Bellerive pour que leur délai dure. Le butin des pirates, recelé par l'intermédiaire de Maisons lucentiennes, sans qu'il commande les flottes.
+- **Plus lointains, au choix du MJ.** Les ritualistes que l'Eismark commande pour chercher de nouveaux filons à Eisengrund, s'ils travaillent pour lui : les rituels réussissent mieux près d'une pierre, ce qui en fait un détecteur. La guilde de Vespera qui veut les registres de la Maison des Cent Portes (§7). L'argent prêté aux seigneurs de Bellerive pour que leur délai dure. Le butin des pirates, recelé par l'intermédiaire de Maisons lucentiennes, sans qu'il commande les flottes : leur capitaine est son ancien associé, parti fâché vers 877, avec qui il reste lié par un accord d'argent (§6).
 
 ### La rupture et la transformation
 
