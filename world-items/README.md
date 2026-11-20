@@ -183,17 +183,19 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 96 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 97 Actors `npc` prêts à
 glisser sur une scène.
 
-96 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+97 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
   bêtes réelles de chaque région et, seul surnaturel possible avant la première pierre, les créatures
-  du large de la Mer intérieure (la magie fonctionne encore dans ses profondeurs), dont le Kraken
-  endormi au fond ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken
-  affaibli qui approche des côtes.
+  du large de la Mer intérieure : les profondeurs du centre sont hors de portée des six pierres, et la
+  magie de l'ancien monde y fonctionne encore, mais seulement au fond (en surface et sur les côtes, la
+  règle commune s'applique). Le Kraken y dort, le plus grand des êtres aquatiques de l'ancien monde
+  qui y survivent ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken affaibli qui
+  approche des côtes, dans la portée des pierres.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
   arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
@@ -208,9 +210,13 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   sur le niveau des PJ (FP 5, 8, 11, 14 et 17, une pierre absorbée), et chaque pierre de plus qu'il
   absorbe ajoute un gabarit cumulable (environ +3 FP),
   chaque fragment de pierre un plus petit (environ +1 FP), tous deux décrits sur ses fiches.
+- **Capitaine pirate** (côtes de la Mer intérieure, phase 0) : chef des flottes, ancien associé
+  d'Ulrich parti fâché vers 877, lié à lui par un accord d'argent (Ulrich recèle le butin, la
+  piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
+  profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
-Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont
-dérivés, FP recalculé).
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, les paliers d'Ulrich et le
+Capitaine pirate sont dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle
