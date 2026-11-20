@@ -650,6 +650,104 @@
     }
   },
   {
+    "name": "Capitaine pirate",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": { "mod": 2 }, "dex": { "mod": 4 }, "con": { "mod": 3 },
+        "int": { "mod": 1 }, "wis": { "mod": 1 }, "cha": { "mod": 3 }
+      },
+      "attributes": { "hp": { "value": 112, "max": 112, "temp": 0 }, "ac": { "value": 16 }, "speed": 9 },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Cimeterre", "ability": "dex", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d6", "bonus": 0, "type": "slashing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        },
+        {
+          "name": "Dague", "ability": "dex", "bonus": 3, "magic": false,
+          "damage": { "dice": "2d4", "bonus": 0, "type": "piercing" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques au corps à corps (deux de cimeterre, une de dague), ou deux de dague lancée (6/18 m). Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Pied marin : le roulis, un pont glissant ou le gréement ne le gênent jamais, et il grimpe à sa vitesse normale. Autorité : tant qu'il est debout et visible, ses pirates à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Jets de sauvegarde : For +5, Dex +7, Con +6. Acrobaties +7, Athlétisme +5, Intimidation +6.",
+      "particularity": "Chef des flottes pirates de la Mer intérieure ; son nom est au choix du MJ. Altenmarkois, il a grandi dans la pègre d'Altenmark aux côtés d'Ulrich. Vers 877, quand Ulrich en prend la tête par la force, il refuse de plier et descend la Grande Route du Nord jusqu'à Porto Vero. Il prend la mer, rallie les flottes qui écument la Mer intérieure depuis 874 et les organise : d'où le redoublement des attaques depuis 884. Les deux hommes ne s'aiment pas, mais un accord d'argent les lie : Ulrich recèle le butin par l'intermédiaire de Maisons lucentiennes, et chaque navire pris renchérit la mer et pousse le commerce vers la Grande Route du Nord, que la pègre d'Ulrich rançonne. Aucun ne commande l'autre ; l'accord tient tant qu'il arrange les deux, et chacun vendrait l'autre s'il y gagnait davantage. Il n'a aucune capacité extraordinaire : il est seulement plus téméraire que les autres, navigue plus loin du rivage, de nuit et par gros temps, et accepte d'y perdre des navires. Qui l'abrite ou le finance (des Maisons lucentiennes, ou une base à Tirwen) reste au choix du MJ. Profil de boss dérivé du Gladiateur SRD, en duelliste ; FP recalculé par la méthode de création de monstres : 112 PV et CA 17 avec la parade → FP défensif 5 ; 31 dégâts par round à +7 → FP offensif 5."
+    },
+    "items": [
+      {
+        "name": "Cimeterre", "type": "weapon", "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial", "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+          "damage": { "dice": "1d6", "type": "slashing" }, "damageVersatile": { "dice": "" },
+          "slot": "mainHand", "weight": 1.4, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": false, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 0, "long": 0 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Dague", "type": "weapon", "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple", "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+          "damage": { "dice": "1d4", "type": "piercing" }, "damageVersatile": { "dice": "" },
+          "slot": "offHand", "weight": 0.45, "quantity": 1, "equipped": true, "description": "",
+          "properties": {
+            "handedness": "oneHanded", "versatile": false, "finesse": true, "light": true,
+            "thrown": true, "heavy": false, "reach": false, "reload": false, "reloadValue": 0,
+            "range": { "normal": 6, "long": 18 }, "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté", "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": { "pc": 0, "pa": 0, "po": 45, "pp": 0 },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      },
+      {
+        "name": "Bourse bien garnie", "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4, "quantity": 1, "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+          "equipped": false, "capacityBonus": 0,
+          "use": { "type": "none", "light": { "bright": 0, "dim": 0 }, "healBase": 1, "healSkill": "medicine" },
+          "lit": false, "description": "Sa part de la dernière prise."
+        }
+      },
+      {
+        "name": "Lettre de change de Porto Vero", "type": "gear",
+        "img": "icons/sundries/scrolls/scroll-writing-brown-gold.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": { "pc": 0, "pa": 0, "po": 0, "pp": 0 },
+          "description": "Lettre de change tirée sur une Maison de Porto Vero, payable à Altenburg à un négociant en tourbe. Elle ne porte aucun nom.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": { "phase": 0, "habitat": "coast" }
+    }
+  },
+  {
     "name": "Passwacht",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",
@@ -4021,7 +4119,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre.",
-      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Il possède les papiers personnels d'Hartmut le Sourd, disparus à sa mort en 362 : le premier Moorvogt les avait emportés à Moorburg dans un coffre scellé, transmis avec la charge sans être ouvert, et le Moorvogt actuel, endetté auprès de la pègre, l'a remis à Ulrich vers 878. Les papiers disent qu'il y a au-delà du Schilfbach quelque chose de puissant, sans en donner l'emplacement : Ulrich ignore ce que c'est et ne veut que le pouvoir. Les trois noyades de l'été sont ses tourbiers, envoyés creuser au-delà du Schilfbach ; le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport. Pistes plus lointaines, au choix du MJ : les ritualistes qui cherchent les filons d'Eisengrund (les rituels réussissent mieux près d'une pierre), les registres de la Maison des Cent Portes, l'argent prêté aux seigneurs de Bellerive, le butin des pirates recelé par les Maisons lucentiennes. Il n'a aucune fiche avant sa transformation : il prend le pouvoir de la pierre de la Sümpfenmark au moment où les PJ arrivent sur le site, au milieu de sa bande, trop nombreuse pour eux. Il blesse mortellement Olivier, copiste du Cercle de l'Étoile Polaire et allié des PJ, qui porte comme eux des éclats de la pierre de Logne (moment et circonstances au choix du MJ) ; Olivier meurt quand Ulrich aspire ses éclats (appliquer une fois le gabarit de fragment). Ulrich comprend que les éclats se prennent sur les vivants comme sur les pierres : les PJ deviennent des proies. Sa puissance a deux moteurs : le temps, qui le rend plus fort d'étape en étape (cinq fiches calées sur le niveau des PJ, chacune avec une seule pierre absorbée), et chaque pierre de plus qu'il absorbe, qui lui donne un gros saut (gabarit en fin de capacités spéciales). L'ordre des pierres suivantes, et s'il les obtient, dépend de la table. Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 127 (régénération comprise) et CA 17 avec la parade → FP défensif 5 ; 35 dégâts par round à +7 → FP offensif 5."
+      "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Il possède les papiers personnels d'Hartmut le Sourd, disparus à sa mort en 362 : le premier Moorvogt les avait emportés à Moorburg dans un coffre scellé, transmis avec la charge sans être ouvert, et le Moorvogt actuel, endetté auprès de la pègre, l'a remis à Ulrich vers 878. Les papiers disent qu'il y a au-delà du Schilfbach quelque chose de puissant, sans en donner l'emplacement : Ulrich ignore ce que c'est et ne veut que le pouvoir. Les trois noyades de l'été sont ses tourbiers, envoyés creuser au-delà du Schilfbach ; le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport. Pistes plus lointaines, au choix du MJ : les ritualistes qui cherchent les filons d'Eisengrund (les rituels réussissent mieux près d'une pierre), les registres de la Maison des Cent Portes, l'argent prêté aux seigneurs de Bellerive, le butin des pirates, que leur capitaine, son ancien associé parti fâché vers 877, lui confie à receler par les Maisons lucentiennes (voir « Capitaine pirate »). Il n'a aucune fiche avant sa transformation : il prend le pouvoir de la pierre de la Sümpfenmark au moment où les PJ arrivent sur le site, au milieu de sa bande, trop nombreuse pour eux. Il blesse mortellement Olivier, copiste du Cercle de l'Étoile Polaire et allié des PJ, qui porte comme eux des éclats de la pierre de Logne (moment et circonstances au choix du MJ) ; Olivier meurt quand Ulrich aspire ses éclats (appliquer une fois le gabarit de fragment). Ulrich comprend que les éclats se prennent sur les vivants comme sur les pierres : les PJ deviennent des proies. Sa puissance a deux moteurs : le temps, qui le rend plus fort d'étape en étape (cinq fiches calées sur le niveau des PJ, chacune avec une seule pierre absorbée), et chaque pierre de plus qu'il absorbe, qui lui donne un gros saut (gabarit en fin de capacités spéciales). L'ordre des pierres suivantes, et s'il les obtient, dépend de la table. Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 127 (régénération comprise) et CA 17 avec la parade → FP défensif 5 ; 35 dégâts par round à +7 → FP offensif 5."
     },
     "items": [
       {
