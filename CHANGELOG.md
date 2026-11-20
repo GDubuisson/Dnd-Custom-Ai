@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.10.1] - 2026-11-20
+
+**Alignement sur le document MJ mis à jour.**
+- Kraken : les profondeurs du centre de la Mer intérieure sont hors de portée des six pierres ; la
+  magie de l'ancien monde n'y fonctionne qu'au fond, et le Kraken est le plus grand des êtres
+  aquatiques de l'ancien monde qui y survivent. Version affaiblie : près des côtes, il entre dans la
+  portée des pierres.
+- Capitaine pirate : il ne parle pas de ses associés, et ignore tout des pierres ; ses appuis sont au
+  choix du MJ (des Maisons lucentiennes, certaines corrompues par lui ou par Ulrich, ou une base à
+  Tirwen).
+- Documentation du bestiaire (`world-items/README.md`) : la fiche du capitaine, oubliée en 1.10.0.
+
 ## [1.10.0] - 2026-11-20
 
 **Le capitaine des pirates, ancien associé d'Ulrich.**
