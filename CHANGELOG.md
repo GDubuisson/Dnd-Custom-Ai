@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.10.0] - 2026-11-20
+
+**Le capitaine des pirates, ancien associé d'Ulrich.**
+- Nouvelle fiche **« Capitaine pirate »** (compendium « Adversaires », côtes de la Mer intérieure,
+  phase 0) : chef des flottes, ancien associé d'Ulrich dans la pègre d'Altenmark, parti fâché vers
+  877 quand Ulrich en a pris la tête. Il a organisé les flottes (le redoublement de 884).
+- Lien indirect avec Ulrich (note MJ) : un accord d'argent, sans qu'aucun ne commande l'autre. Ulrich
+  recèle le butin par des Maisons lucentiennes, et la piraterie pousse le commerce vers la Grande
+  Route du Nord, que sa pègre rançonne. Le butin du capitaine (lettre de change de Porto Vero payable
+  à un négociant en tourbe d'Altenburg) mène vers Ulrich.
+- Aucun pouvoir : profil de boss duelliste dérivé du Gladiateur SRD, FP 5 recalculé (112 PV, CA 16,
+  parade, trois attaques, pied marin, autorité sur son équipage).
+- Fiche « Ulrich (PJ niv. 3-4) » : renvoi vers le capitaine dans les pistes du recel.
+
 ## [1.9.1] - 2026-11-19
 
 **Alignement sur le document MJ mis à jour.**
