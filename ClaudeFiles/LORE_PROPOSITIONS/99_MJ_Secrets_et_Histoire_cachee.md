@@ -347,11 +347,11 @@ Avant le Scellement vivaient deux grandes bêtes volantes, inséparables, liées
 
 ### Avant la rupture
 
-Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site. Il n'a pas de fiche et se joue en narration : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. Son froid a gardé une **faune d'un autre âge** : grands élans, tigres à dents de sabre, mammouths, rares et solitaires, cantonnés au quart nord-est où personne ne va. Les quelques crânes que des guides en ont rapportés sont attribués par les savants d'Altenburg à des espèces disparues ; aucun document joueur ne les mentionne (le doc 08 dit que les expéditions n'ont rien rapporté).
+Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site : le froid qui mord plus fort, le vent qui tourne, une voix, et les chiens qui refusent d'avancer dans le quart nord-est. Quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, **elle se réveille**, encore faible, mais elle ne peut pas sortir du périmètre du site tant que la pierre tient. Son froid a gardé une **faune d'un autre âge** : grands élans, tigres à dents de sabre, mammouths, rares et solitaires, cantonnés au quart nord-est où personne ne va. Les quelques crânes que des guides en ont rapportés sont attribués par les savants d'Altenburg à des espèces disparues ; aucun document joueur ne les mentionne (le doc 08 dit que les expéditions n'ont rien rapporté).
 
 ### Quand la pierre est brisée
 
-Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth renaît**, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
+Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth est libérée** du site, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
 
 ### Si c'est un porteur de pierre (mauvaise fin)
 
@@ -365,7 +365,7 @@ En option, le **grand froid** : privée de Varhun, Kisaeth laisse déborder son 
 
 L'œuf ne vaut rien pour qui ignore ce qu'il est, et tout pour Kisaeth. Il faut le protéger, le garder au chaud et le mener là où il pourra éclore. Kisaeth peut devenir l'alliée de ceux qui le protègent. Ce qui en sort, et ce que devient Varhun, dépend de ce que les PJ en font.
 
-Les fiches de jeu (compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis ») : la faune figée et le suintement, Kisaeth en trois états (renaissante, éveillée, pleine puissance) et Varhun en trois âges (oisillon, jeune, adulte). L'œuf est un objet du dossier « Secrets (MJ) ».
+Les fiches de jeu (compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis ») : la faune figée et le suintement, Kisaeth en trois états (renaissante, déjà présente avant la rupture et confinée au site, puis éveillée et pleine puissance) et Varhun en trois âges (oisillon, jeune, adulte). L'œuf est un objet du dossier « Secrets (MJ) ».
 
 ---
 
