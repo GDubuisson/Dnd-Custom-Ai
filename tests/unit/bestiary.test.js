@@ -52,6 +52,12 @@ describe("fitsSealedWorld — le surnaturel n'existe qu'au large avant la premi�
     assert.equal(fitsSealedWorld(creature(0, "siteLogne", "monstrosity")), false);
   });
 
+  test("phase 0 à Tirwen : plantes admises (fuite de la pierre), monstruosité toujours refusée", () => {
+    assert.equal(fitsSealedWorld(creature(0, "siteTirwen", "plant")), true);
+    assert.equal(fitsSealedWorld(creature(0, "siteTirwen", "monstrosity")), false);
+    assert.equal(fitsSealedWorld(creature(0, "siteLogne", "plant")), false);
+  });
+
   test("phase 0 au large : monstruosité acceptée (Kraken)", () => {
     assert.equal(fitsSealedWorld(creature(0, "abyss", "monstrosity")), true);
   });

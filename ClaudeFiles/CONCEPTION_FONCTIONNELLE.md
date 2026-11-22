@@ -216,7 +216,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-105 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+124 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -234,6 +234,11 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
   monde après, Kisaeth (glace : renaissante, éveillée, pleine puissance) et Varhun (feu : oisillon,
   jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
+  Île de Tirwen : pas de gardien, la pierre fuit sur tout le vivant. Avant la rupture, dix bêtes
+  géantes (mille-pattes, lézard, serpent venimeux, chauve-souris, guêpe, araignée, hyène, scorpion,
+  crocodile, singe), cinq plantes (champignon violet, ronce-griffe, ronce-aiguille, liane
+  étrangleuse, tertre errant) et les hommes du capitaine (sentinelle, pilote, traître, fidèle), avec
+  la vitalité de Tirwen ; rien n'apparaît après la rupture, l'île devient plus tranquille.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten
@@ -250,8 +255,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   chaque fragment de pierre un plus petit (environ +1 FP), tous deux décrits sur ses fiches.
 - **Capitaine pirate** (côtes de la Mer intérieure, phase 0) : chef des flottes, ancien associé
   d'Ulrich parti fâché vers 877, lié à lui par un accord d'argent (Ulrich recèle le butin, la
-  piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
-  profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
+  piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Base à Tirwen ;
+  aucun pouvoir conscient, mais la fuite de la pierre le garde jeune et rend son équipage plus
+  vigoureux (vitalité de Tirwen : résistance au poison) ; profil de boss duelliste dérivé du
+  Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
 Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich, le
 Champion d'Ulrich et le Capitaine pirate sont dérivés, FP recalculé).

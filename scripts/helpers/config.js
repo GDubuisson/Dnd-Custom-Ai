@@ -430,6 +430,7 @@ DND_CUSTOM.bestiaryHabitats = {
   siteLogne: "DND_CUSTOM.Bestiary.Habitats.siteLogne",
   siteSumpfenmark: "DND_CUSTOM.Bestiary.Habitats.siteSumpfenmark",
   siteKis: "DND_CUSTOM.Bestiary.Habitats.siteKis",
+  siteTirwen: "DND_CUSTOM.Bestiary.Habitats.siteTirwen",
   // Premier grand méchant de la campagne : sa bande (phase 0) et ses paliers après chaque pierre absorbée.
   ulrichBand: "DND_CUSTOM.Bestiary.Habitats.ulrichBand"
 };
@@ -438,7 +439,7 @@ DND_CUSTOM.bestiaryHabitats = {
  * Sites de pierre : l'ordre et l'auteur des ruptures dépendent de la table, ils forment donc chacun un
  * dossier de premier niveau, découpé en avant/après la rupture (flag `phase` 0 ou 1+).
  */
-DND_CUSTOM.bestiarySiteHabitats = ["siteLogne", "siteSumpfenmark", "siteKis"];
+DND_CUSTOM.bestiarySiteHabitats = ["siteLogne", "siteSumpfenmark", "siteKis", "siteTirwen"];
 
 /** Milieux rangés dans un seul dossier de premier niveau, hors phases (paliers lisibles dans les noms). */
 DND_CUSTOM.bestiaryStandaloneHabitats = ["ulrichBand"];
@@ -451,6 +452,12 @@ DND_CUSTOM.bestiaryRupture = {
 
 /** Habitats où le surnaturel existe dès la phase 0 (le large de la Mer intérieure). */
 DND_CUSTOM.bestiaryMagicHabitats = ["abyss"];
+
+/**
+ * Sites dont la pierre fuit sur le vivant depuis le Scellement : types de créatures admis en plus des
+ * bêtes et des humanoïdes dès la phase 0 (Tirwen : plantes hardies et toxiques, doc 99 §2).
+ */
+DND_CUSTOM.bestiaryLeakTypes = { siteTirwen: ["plant"] };
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {

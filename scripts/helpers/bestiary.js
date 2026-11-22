@@ -33,10 +33,12 @@ export function bestiaryFolderLabelKeys() {
 
 /**
  * Vrai si la créature respecte le monde scellé : en phase 0 (pour un site, avant sa rupture), hors du
- * large de la Mer intérieure, seuls les humanoïdes et les bêtes existent.
+ * large de la Mer intérieure, seuls les humanoïdes et les bêtes existent, plus les types qu'admet la
+ * fuite d'une pierre sur son site (`bestiaryLeakTypes`, ex. les plantes de Tirwen).
  */
 export function fitsSealedWorld(entry) {
   const flags = entry.flags?.[SYSTEM_ID] ?? {};
   if (flags.phase !== 0 || DND_CUSTOM.bestiaryMagicHabitats.includes(flags.habitat)) return true;
-  return ["humanoid", "beast"].includes(entry.system?.creatureType);
+  const leakTypes = DND_CUSTOM.bestiaryLeakTypes[flags.habitat] ?? [];
+  return ["humanoid", "beast", ...leakTypes].includes(entry.system?.creatureType);
 }

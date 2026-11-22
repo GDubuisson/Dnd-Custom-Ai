@@ -41,6 +41,16 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     }
   });
 
+  test("Tirwen : les fiches citées existent, avec les fins et le cas du capitaine", () => {
+    for (const name of ["Capitaine pirate", "Fidèle du capitaine", "Traître de l'équipage", "Pilote du passage", "Sentinelle de la base", "Singe géant de Tirwen", "Tertre errant de Tirwen", "Crocodile géant de Tirwen", "Araignée géante de Tirwen", "Ronce-aiguille de Tirwen", "Liane étrangleuse de Tirwen", "Scorpion géant de Tirwen", "Guêpe géante de Tirwen", "Hyène géante de Tirwen"]) {
+      assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+    }
+    const text = JSON.stringify(SITES.find((site) => site.name === "Île de Tirwen"));
+    for (const word of ["Bonne fin", "Mauvaise fin", "Rattraper la mauvaise fin", "Le capitaine saute le pas", "Quelle que soit l'issue"]) {
+      assert.ok(text.includes(word), `Tirwen : « ${word} » manquant`);
+    }
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

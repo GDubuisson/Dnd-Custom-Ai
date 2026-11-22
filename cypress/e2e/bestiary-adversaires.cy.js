@@ -45,14 +45,16 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
     });
   });
 
-  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes (T-ADV-002)", () => {
+  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes, plus les plantes de Tirwen (T-ADV-002)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const docs = await win.game.packs.get("dnd-custom-ai.adversaires").getDocuments();
       for (const doc of docs) {
         const { phase, habitat } = doc.flags["dnd-custom-ai"] ?? {};
         if (phase !== 0 || habitat === "abyss") continue;
-        expect(["humanoid", "beast"], `"${doc.name}" : ${doc.system.creatureType} en phase 0`).to.include(doc.system.creatureType);
+        // Tirwen : la fuite de la pierre fait pousser des plantes hardies dès le monde scellé.
+        const allowed = habitat === "siteTirwen" ? ["humanoid", "beast", "plant"] : ["humanoid", "beast"];
+        expect(allowed, `"${doc.name}" : ${doc.system.creatureType} en phase 0`).to.include(doc.system.creatureType);
       }
     });
   });
@@ -71,6 +73,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const logne = label("Bestiary.Habitats.siteLogne");
       const sumpfenmark = label("Bestiary.Habitats.siteSumpfenmark");
       const kis = label("Bestiary.Habitats.siteKis");
+      const tirwen = label("Bestiary.Habitats.siteTirwen");
       const ulrich = label("Bestiary.Habitats.ulrichBand");
       const expected = {
         "Brigand": [phase0, label("Bestiary.Habitats.common")],
@@ -83,6 +86,9 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Crapaud des fondrières": [sumpfenmark, before],
         "Moorlicht": [sumpfenmark, after],
         "Mammouth de Kis": [kis, before],
+        "Singe géant de Tirwen": [tirwen, before],
+        "Tertre errant de Tirwen": [tirwen, before],
+        "Fidèle du capitaine": [tirwen, before],
         "Kisaeth (renaissante)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],

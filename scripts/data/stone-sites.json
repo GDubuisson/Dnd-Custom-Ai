@@ -54,7 +54,12 @@
           "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante en phase 1, éveillée en phase 2, pleine puissance en phase 3), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
         ],
         "table": {
-          "head": ["PJ", "Faune figée (avant la rupture)", "Bande", "Après la rupture"],
+          "head": [
+            "PJ",
+            "Faune figée (avant la rupture)",
+            "Bande",
+            "Après la rupture"
+          ],
           "rows": [
             [
               "niv. 3-4",
@@ -85,6 +90,128 @@
               "La faune figée ne fait plus le poids : elle sert de décor ou de fuite.",
               "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17) ; le porteur et un maître ritualiste au niv. 20, en phase 3.",
               "Kisaeth pleine puissance ; Varhun adulte s'il a grandi."
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Île de Tirwen",
+    "sections": [
+      {
+        "title": "Le site",
+        "paragraphs": [
+          "Île de Tirwen, au-delà du chapelet d'îlots du sud-ouest fleurainais. La pierre fuit sur le vivant depuis le Scellement : faune géante et hardie, plantes qui empoisonnent et qui marchent. Il n'y a pas de gardien ; c'est l'île elle-même.",
+          "L'accès : le passage n'est praticable que quelques semaines par an, sauf pour les pilotes du capitaine des pirates, qui le font en toute saison. Ses flottes hivernent dans une anse du nord, derrière les palissades de leur base.",
+          "Fiches : compendium « Adversaires », dossier « Site de pierre : île de Tirwen » (faune, plantes, sentinelles, pilotes, traîtres et fidèles du capitaine), plus le capitaine pirate et son équipage, rangés avec les côtes de la Mer intérieure. Rien de nouveau n'apparaît après la rupture : l'île devient plus tranquille."
+        ]
+      },
+      {
+        "title": "Les camps",
+        "items": [
+          {
+            "label": "Le capitaine",
+            "text": "Il sait où est le site, sans savoir ce que c'est, et n'y entre pas, par prudence. La fuite lui a donné une jeunesse sans fin : il a l'âge d'Ulrich et en paraît vingt-cinq. Aucun pouvoir conscient."
+          },
+          {
+            "label": "L'équipage",
+            "text": "Plus vigoureux depuis qu'il hiverne sur l'île (résistance au poison), il croit que ce don vient du capitaine ou de l'île, et le défend avec ferveur."
+          },
+          {
+            "label": "Les traîtres",
+            "text": "Jaloux du capitaine ou achetés par la pègre d'Ulrich, souvent parmi les pilotes, ils croient qu'un « grand pouvoir » dort sur l'île. Ils guident en secret un homme de la bande, le porteur, jusqu'au site. Ulrich tient à ce que le capitaine n'en sache rien."
+          },
+          {
+            "label": "Les PJ",
+            "text": "Il leur faut un pilote, donc le capitaine, ses hommes ou les traîtres."
+          }
+        ]
+      },
+      {
+        "title": "Qui arrive le premier",
+        "items": [
+          {
+            "label": "Les PJ seuls",
+            "text": "Ils passent grâce au capitaine ou à l'un de ses pilotes, et doivent traverser l'île jusqu'au site. Si le capitaine comprend ce qu'ils cherchent, il peut s'y opposer : briser la pierre lui coûterait sa jeunesse."
+          },
+          {
+            "label": "La bande seule",
+            "text": "Les traîtres ont mené le porteur au site pendant que la base dormait. Les PJ arrivent pendant l'opération ou après, quand le porteur cherche à quitter l'île avec les pilotes traîtres."
+          },
+          {
+            "label": "Les deux",
+            "text": "Course à travers l'île. L'équipage fidèle, la faune et les plantes s'en prennent aux intrus, quel que soit leur camp."
+          },
+          {
+            "label": "Le capitaine saute le pas",
+            "text": "S'il en apprend trop, par les PJ ou par la bande, il peut absorber la pierre lui-même : sa fiche plus le gabarit de pierre (environ FP 8), avec le don de Tirwen, et son âge ne compte plus, sans qu'il devienne impossible à tuer. Il devient une proie pour Ulrich."
+          }
+        ]
+      },
+      {
+        "title": "Bonne et mauvaise fin",
+        "items": [
+          {
+            "label": "Bonne fin",
+            "text": "Les PJ brisent la pierre, ou arrêtent le porteur : le pouvoir se disperse en éclats dans tous les présents (Éclat de Tirwen, ou Éclat absorbé (+2)). Si le capitaine est là, il reçoit des éclats lui aussi."
+          },
+          {
+            "label": "Mauvaise fin",
+            "text": "Le porteur quitte l'île avec les traîtres et rejoint Ulrich, qui l'aspire et prend la vie de l'île : la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison."
+          },
+          {
+            "label": "Rattraper la mauvaise fin",
+            "text": "Arrêter le porteur et les traîtres avant qu'ils quittent l'île. Comme les traîtres sont des pilotes, les fidèles du capitaine peuvent aider les PJ à tenir le passage, s'ils sont convaincus. Une fois Ulrich servi, la suite est au choix du MJ."
+          },
+          {
+            "label": "Quelle que soit l'issue",
+            "text": "Dès que la pierre est brisée, par qui que ce soit, la fuite cesse. Le capitaine reprend son âge jour après jour ; des dissensions naissent dans l'équipage, mais un noyau dur lui reste fidèle. La faune et les plantes perdent un peu de leur vitalité."
+          }
+        ]
+      },
+      {
+        "title": "Rencontres conseillées (4 PJ)",
+        "paragraphs": [
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches)."
+        ],
+        "table": {
+          "head": [
+            "PJ",
+            "Faune et plantes",
+            "Équipage du capitaine",
+            "Bande et traîtres"
+          ],
+          "rows": [
+            [
+              "niv. 3-4",
+              "Deux araignées géantes et deux ronces-aiguilles (difficile) ; un scorpion géant et deux guêpes géantes au niv. 4.",
+              "Un fidèle du capitaine et deux sentinelles (difficile au niv. 3 comme au niv. 4).",
+              "Deux traîtres et un pilote (difficile) ; porteur : déserteur des Passwachten avec le gabarit (environ FP 6, mortel), à jouer en poursuite."
+            ],
+            [
+              "niv. 5-8",
+              "Un crocodile géant et une hyène géante, ou un tertre errant et deux lianes étrangleuses (difficile au niv. 5) ; le singe géant et deux hyènes au niv. 8.",
+              "Le capitaine et deux sentinelles (difficile au niv. 5) ; le capitaine et deux fidèles au niv. 8.",
+              "Porteur : exécuteur avec le gabarit (environ FP 8), seul (difficile au niv. 5) ; avec un traître au niv. 8."
+            ],
+            [
+              "niv. 9-12",
+              "Deux singes géants (difficile au niv. 9) ; avec un tertre errant au niv. 12.",
+              "Le capitaine devenu porteur et un fidèle (difficile au niv. 9) ; avec trois fidèles au niv. 12.",
+              "Porteur : lame avec le gabarit (environ FP 11), seul (difficile au niv. 9) ; avec deux traîtres au niv. 12."
+            ],
+            [
+              "niv. 13-16",
+              "Trois singes géants (difficile au niv. 13) ; au-delà, la faune sert de décor ou de diversion.",
+              "Même devenu porteur, le capitaine ne fait plus le poids : l'équipage sert d'allié ou d'obstacle, pas de combat principal.",
+              "Porteur : champion d'Ulrich avec le gabarit (environ FP 14) et un traître (difficile au niv. 13) ; avec deux traîtres au niv. 16."
+            ],
+            [
+              "niv. 17-20",
+              "Décor ou diversion.",
+              "Allié ou obstacle.",
+              "Porteur : champion à deux gabarits (environ FP 17) et un traître (difficile au niv. 17) ; avec deux traîtres au niv. 20."
             ]
           ]
         }

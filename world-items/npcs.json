@@ -511,8 +511,9 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "",
-      "particularity": "Pirate des flottes qui écument la Mer intérieure depuis 874 : aborde les caboteurs en bande, connaît les calendriers de départ, et disparaît en mer sans qu'on sache où il hiverne."
+      "damageResistances": ["poison"],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée.",
+      "particularity": "Pirate des flottes qui écument la Mer intérieure depuis 874 : aborde les caboteurs en bande, connaît les calendriers de départ, et disparaît en mer sans qu'on sache où il hiverne. (MJ : les flottes hivernent à Tirwen, où le capitaine a établi sa base.)"
     },
     "items": [
       {
@@ -593,8 +594,9 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "",
-      "particularity": "Commande l'abordage d'une flotte pirate de la Mer intérieure : sait d'avance quel convoi est le mieux chargé, et rompt le combat dès que la prise est faite."
+      "damageResistances": ["poison"],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée.",
+      "particularity": "Commande l'abordage d'une flotte pirate de la Mer intérieure : sait d'avance quel convoi est le mieux chargé, et rompt le combat dès que la prise est faite. (MJ : les flottes hivernent à Tirwen, où le capitaine a établi sa base.)"
     },
     "items": [
       {
@@ -675,8 +677,9 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : trois attaques au corps à corps (deux de cimeterre, une de dague), ou deux de dague lancée (6/18 m). Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Pied marin : le roulis, un pont glissant ou le gréement ne le gênent jamais, et il grimpe à sa vitesse normale. Autorité : tant qu'il est debout et visible, ses pirates à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Jets de sauvegarde : For +5, Dex +7, Con +6. Acrobaties +7, Athlétisme +5, Intimidation +6.",
-      "particularity": "Chef des flottes pirates de la Mer intérieure ; son nom est au choix du MJ. Altenmarkois, il a grandi dans la pègre d'Altenmark aux côtés d'Ulrich. Vers 877, quand Ulrich en prend la tête par la force, il refuse de plier et descend la Grande Route du Nord jusqu'à Porto Vero. Il prend la mer, rallie les flottes qui écument la Mer intérieure depuis 874 et les organise : d'où le redoublement des attaques depuis 884. Les deux hommes ne s'aiment pas, mais un accord d'argent les lie : Ulrich recèle le butin par l'intermédiaire de Maisons lucentiennes, et chaque navire pris renchérit la mer et pousse le commerce vers la Grande Route du Nord, que la pègre d'Ulrich rançonne. Aucun ne commande l'autre ; l'accord tient tant qu'il arrange les deux, et chacun vendrait l'autre s'il y gagnait davantage. Il ne parle pas de ses associés, et Ulrich ne parle pas de lui. Il n'a aucune capacité extraordinaire et ignore tout des pierres : il est seulement plus téméraire que les autres, navigue plus loin du rivage, de nuit et par gros temps, et accepte d'y perdre des navires. Sa base et ses appuis restent au choix du MJ : des Maisons lucentiennes qui profitent de la piraterie, certaines corrompues par lui ou par Ulrich, ou une base qu'il a établie à Tirwen. Profil de boss dérivé du Gladiateur SRD, en duelliste ; FP recalculé par la méthode de création de monstres : 112 PV et CA 17 avec la parade → FP défensif 5 ; 31 dégâts par round à +7 → FP offensif 5."
+      "damageResistances": ["poison"],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée. Attaques multiples : trois attaques au corps à corps (deux de cimeterre, une de dague), ou deux de dague lancée (6/18 m). Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Pied marin : le roulis, un pont glissant ou le gréement ne le gênent jamais, et il grimpe à sa vitesse normale. Autorité : tant qu'il est debout et visible, ses pirates à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Jets de sauvegarde : For +5, Dex +7, Con +6. Acrobaties +7, Athlétisme +5, Intimidation +6.",
+      "particularity": "Chef des flottes pirates de la Mer intérieure ; son nom est au choix du MJ. Altenmarkois, il a grandi dans la pègre d'Altenmark aux côtés d'Ulrich. Vers 877, quand Ulrich en prend la tête par la force, il refuse de plier et descend la Grande Route du Nord jusqu'à Porto Vero. Il prend la mer, rallie les flottes qui écument la Mer intérieure depuis 874 et les organise : d'où le redoublement des attaques depuis 884. Les deux hommes ne s'aiment pas, mais un accord d'argent les lie : Ulrich recèle le butin par l'intermédiaire de Maisons lucentiennes, et chaque navire pris renchérit la mer et pousse le commerce vers la Grande Route du Nord, que la pègre d'Ulrich rançonne. Aucun ne commande l'autre ; l'accord tient tant qu'il arrange les deux, et chacun vendrait l'autre s'il y gagnait davantage. Il ne parle pas de ses associés, et Ulrich ne parle pas de lui. Il n'a aucun pouvoir conscient et ignore tout des pierres : il est plus téméraire que les autres, navigue plus loin du rivage, de nuit et par gros temps, et accepte d'y perdre des navires. Sa base est à Tirwen, où ses flottes hivernent : il sait où se trouve le site de la pierre, sans savoir ce que c'est, et n'y entre pas, par prudence. La fuite de la pierre lui a donné une jeunesse sans fin : il a l'âge d'Ulrich et en paraît vingt-cinq. Son équipage, plus vigoureux depuis qu'il hiverne sur l'île, croit que ce don vient de lui ou de l'île, et le défend avec ferveur. Sur le continent, des Maisons lucentiennes profitent de la piraterie, certaines corrompues par lui ou par Ulrich. S'il en apprend trop, par les PJ ou par la bande d'Ulrich, il peut sauter le pas et absorber la pierre : sa fiche plus le gabarit de pierre décrit sur les fiches d'Ulrich (environ FP 8), avec le don de Tirwen (Vigueur de la pierre à +10, insensible au poison), et son âge ne compte plus, sans qu'il devienne pour autant impossible à tuer. Si quelqu'un d'autre la brise, il reprend son âge jour après jour ; des dissensions naissent dans l'équipage, mais un noyau dur lui reste fidèle (journal « Sites de pierre », page de l'île de Tirwen). Profil de boss dérivé du Gladiateur SRD, en duelliste ; FP recalculé par la méthode de création de monstres : 112 PV et CA 17 avec la parade → FP défensif 5 ; 31 dégâts par round à +7 → FP offensif 5."
     },
     "items": [
       {
@@ -3574,6 +3577,1916 @@
     }
   },
   {
+    "name": "Mille-pattes géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -3
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -5
+        },
+        "wis": {
+          "mod": -2
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 4,
+          "max": 4,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Escalade 9 m. Vision aveugle 9 m. Morsure : JS de Constitution DD 11 ou les dégâts de poison ; tombée à 0 PV par ce poison, la cible est stable mais empoisonnée 1 heure, et paralysée tant qu'elle l'est.",
+      "particularity": "Long comme un bras, il grouille sous l'humus et dans les vieux murs des colonies abandonnées. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Mille-pattes géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Lézard géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 19,
+          "max": 19,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Escalade 9 m. Vision dans le noir 9 m.",
+      "particularity": "Un lézard de la taille d'un cheval, qui se chauffe sur les rochers du rivage et ne s'écarte pas devant l'homme. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Lézard géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Serpent venimeux géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure (allonge 3 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Nage 9 m. Vision aveugle 3 m. Perception +2. Morsure : JS de Constitution DD 11, dégâts de poison divisés par deux en cas de réussite.",
+      "particularity": "Il chasse dans les hautes herbes près des sources ; les colons de 704 en ont compté plus que de lapins. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Serpent venimeux géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Chauve-souris géante de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 3
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vol 18 m. Vision aveugle 18 m (écholocalisation, inopérante si elle est assourdie). Ouïe fine : avantage aux tests de Sagesse (Perception) fondés sur l'ouïe.",
+      "particularity": "Elles nichent par centaines dans les grottes de la côte et sortent au crépuscule, en nuées qui cachent la lune. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Chauve-souris géante.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Guêpe géante de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -5
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 13,
+          "max": 13,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 3
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Dard",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Vol 15 m. Dard : JS de Constitution DD 11, dégâts de poison divisés par deux en cas de réussite ; tombée à 0 PV par ce poison, la cible est stable mais empoisonnée 1 heure, et paralysée tant qu'elle l'est.",
+      "particularity": "Grosse comme un chien, elle bâtit des nids de la taille d'une chaumière dans les grands arbres. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Guêpe géante.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Araignée géante de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 26,
+          "max": 26,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "2d8",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Escalade 9 m. Vision aveugle 3 m, vision dans le noir 18 m. Discrétion +7. Pattes d'araignée : escalade les surfaces difficiles et les plafonds sans test. Perception des toiles : sait où se trouve toute créature qui touche sa toile. Marche dans les toiles. Morsure : JS de Constitution DD 11, dégâts de poison divisés par deux en cas de réussite ; tombée à 0 PV par ce poison, la cible est stable mais empoisonnée 1 heure, et paralysée tant qu'elle l'est. Toile (recharge 5-6) : attaque à distance +5, 9/18 m, la cible est entravée (évasion ou rupture : test de Force DD 12 ; la toile a CA 10 et 5 PV, est vulnérable au feu et immunisée contre les dégâts contondants, de poison et psychiques).",
+      "particularity": "Ses toiles barrent les sentiers entre deux arbres ; les colons y perdaient des chèvres. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Araignée géante.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Hyène géante de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 45,
+          "max": 45,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 15
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Perception +3. Saccage : quand elle fait tomber une créature à 0 PV au corps à corps, elle peut, par une action bonus, se déplacer de la moitié de sa vitesse et mordre.",
+      "particularity": "Elles chassent en bande autour de la base des pirates, attirées par les ordures, et n'ont jamais appris la peur. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Hyène géante.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Scorpion géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -5
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 52,
+          "max": 52,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 12
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Pince",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dard",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "4d10",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 18 m. Attaques multiples : deux pinces et un dard. Pince : la cible est agrippée (évasion DD 12) ; deux pinces, une cible chacune. Dard : JS de Constitution DD 12, dégâts de poison divisés par deux en cas de réussite.",
+      "particularity": "Il hante les éboulis du sud de l'île, là où les rapports de 704 situent le dernier camp des colons. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Scorpion géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Crocodile géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "5",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 85,
+          "max": 85,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "3d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Queue (allonge 3 m)",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Nage 15 m. Discrétion +5. Apnée : 30 minutes. Attaques multiples : une morsure et un coup de queue. Morsure : la cible est agrippée (évasion DD 16) et entravée ; il ne peut pas mordre une autre cible. Queue : contre une cible qu'il n'agrippe pas, JS de Force DD 16 ou à terre.",
+      "particularity": "Il dort dans les mangroves de l'est, aussi long qu'une barque de pêche. Les pirates n'y mouillent jamais. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Crocodile géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Singe géant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "7",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 157,
+          "max": 157,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 12
+      },
+      "xpReward": 2900,
+      "attacks": [
+        {
+          "name": "Poing (allonge 3 m)",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "3d10",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Rocher (15/30 m)",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "7d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Escalade 12 m. Athlétisme +9, Perception +4. Attaques multiples : deux coups de poing.",
+      "particularity": "Les pirates l'appellent le Vieux. Il vit sur les hauteurs du centre de l'île et descend parfois jusqu'aux palissades de la base. (MJ : faune grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Singe géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Champignon violet de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -4
+        },
+        "dex": {
+          "mod": -5
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -5
+        },
+        "wis": {
+          "mod": -4
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 18,
+          "max": 18,
+          "temp": 0
+        },
+        "ac": {
+          "value": 5
+        },
+        "speed": 1
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Contact putréfiant (allonge 3 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 4,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vitesse 1,50 m. Vision aveugle 9 m (aveugle au-delà). Immunisé contre les états aveuglé, assourdi et effrayé. Fausse apparence : immobile, impossible à distinguer d'un champignon ordinaire. Attaques multiples : 1d4 contacts putréfiants.",
+      "particularity": "Des champignons hauts comme un enfant, au pied des arbres morts ; les bêtes qui s'y frottent pourrissent sur pied. (MJ : plante grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Champignon violet.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Ronce-griffe de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "1/8",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 4,
+          "max": 4,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 6
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Vision aveugle 18 m (aveugle au-delà). Discrétion +3. Immunisée contre les états aveuglé et assourdi. Fausse apparence : immobile, impossible à distinguer d'un buisson sec.",
+      "particularity": "Un buisson sec qui se déplace la nuit, en bandes, et s'enracine autour des feux de camp. (MJ : plante grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Brindille infectée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Ronce-aiguille de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Aiguilles (9/18 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 18 m (aveugle au-delà). Immunisée contre les états aveuglé et assourdi.",
+      "particularity": "Une silhouette d'épines, voûtée, qui projette ses aiguilles. Les colons croyaient à des arbustes poussés de travers. (MJ : plante grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Aiguilles infectées.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Liane étrangleuse de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 26,
+          "max": 26,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 3
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Étreinte (allonge 3 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 18 m (aveugle au-delà). Discrétion +1. Immunisée contre les états aveuglé et assourdi. Fausse apparence : immobile, impossible à distinguer d'un enchevêtrement de lianes. Étreinte : la cible est agrippée (évasion DD 12) et entravée ; la liane ne peut pas étreindre une autre cible. Plantes enchevêtrantes (recharge 5-6) : dans un rayon de 4,50 m autour d'elle, le sol devient un terrain difficile pendant 1 minute ; chaque créature de la zone qui n'est pas une plante fait un JS de Force DD 12 ou est entravée (elle retente le jet à chacun de ses tours).",
+      "particularity": "Elle pend des grands arbres comme n'importe quelle liane, jusqu'à ce qu'elle se resserre. (MJ : plante grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Liane infectée.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Tertre errant de Tirwen",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 136,
+          "max": 136,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 6
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire"
+      ],
+      "damageImmunities": [
+        "lightning"
+      ],
+      "specialAbilities": "Nage 6 m. Vision aveugle 18 m (aveugle au-delà). Discrétion +2. Immunisé contre les états aveuglé, assourdi et l'épuisement. Absorption de la foudre : la foudre le soigne d'autant au lieu de le blesser. Attaques multiples : deux coups ; si les deux touchent une cible de taille M ou moins, elle est agrippée (évasion DD 14) et engloutie : aveuglée, entravée, sans air, elle fait un JS de Constitution DD 14 au début de chacun de ses tours ou subit 2d8 + 4 dégâts contondants ; s'il se déplace, elle suit. Un seul englouti à la fois.",
+      "particularity": "Un amas de racines et de pourriture qui marche dans les marais du centre. Les pirates l'appellent la Meule. (MJ : plante grandie par la fuite de la pierre de Tirwen, qui agit sur le vivant depuis le Scellement ; après la rupture, l'île est plus tranquille et elle perd un peu de sa vitalité. Bloc SRD Tertre errant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Sentinelle de la base",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée.",
+      "particularity": "Veille sur les palissades de la base des pirates, à l'abri d'une anse du nord de Tirwen, face aux bêtes plus qu'aux hommes. (MJ : bloc SRD Garde, plus la vitalité de Tirwen, sans effet sur le FP.)",
+      "damageResistances": [
+        "poison"
+      ]
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Gambison",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 3.6,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère matelassée. Portée trop longtemps, elle finit par se dégrader (désavantage aux tests de Discrétion)."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 3,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Quelques pièces de cuivre et d'argent."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Pilote du passage",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 16,
+          "max": 16,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée. Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
+      "particularity": "L'un des rares à connaître le chapelet d'îlots en toute saison. Sans les pilotes du capitaine, personne n'atteint Tirwen hors des quelques semaines où le passage s'ouvre. (MJ : les traîtres se recrutent volontiers parmi eux ; bloc SRD Éclaireur, plus la vitalité de Tirwen, sans effet sur le FP.)",
+      "damageResistances": [
+        "poison"
+      ]
+    },
+    "items": [
+      {
+        "name": "Épée courte",
+        "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Traître de l'équipage",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 27,
+          "max": 27,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète de poing",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée.",
+      "particularity": "Jaloux du capitaine ou acheté par la pègre d'Ulrich, il croit qu'un « grand pouvoir » dort sur l'île et que le capitaine le garde pour lui. (MJ : il guide l'homme de la bande d'Ulrich, le porteur, jusqu'au site, sans savoir ce qu'il y trouvera ; bloc SRD Espion, plus la vitalité de Tirwen, sans effet sur le FP.)",
+      "damageResistances": [
+        "poison"
+      ]
+    },
+    "items": [
+      {
+        "name": "Épée courte",
+        "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète de poing",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-slotted.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "offHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 9,
+              "long": 36
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Outils de voleur",
+        "type": "tool",
+        "img": "icons/tools/hand/lockpicks-steel-grey.webp",
+        "system": {
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": false,
+          "useEffect": {
+            "skill": "sleightOfHand",
+            "bonus": 0
+          },
+          "descriptionRP": "Confère la maîtrise de l'outil : ajoute le bonus de maîtrise du personnage à tout test de Dextérité (Escamotage) impliquant crochetage de serrure ou désamorçage de piège."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-silver-grey.webp",
+        "system": {
+          "weight": 0.2,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'argent et un message codé illisible."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
+    "name": "Fidèle du capitaine",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 58,
+          "max": 58,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vitalité de Tirwen (passive, sans pouvoir conscient) : résistance au poison et avantage aux jets de sauvegarde contre le poison, depuis qu'il hiverne sur l'île ; elle s'éteint peu à peu si la pierre est brisée.",
+      "particularity": "Du noyau dur de l'équipage : il croit que la jeunesse du capitaine et la vigueur des hommes viennent de lui ou de l'île, et il mourrait pour l'un comme pour l'autre. (MJ : même quand la pierre est brisée et que le capitaine vieillit, ce noyau reste fidèle ; bloc SRD Vétéran, plus la vitalité de Tirwen, sans effet sur le FP.)",
+      "damageResistances": [
+        "poison"
+      ]
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 400,
+            "pp": 0
+          },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 20,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Solde d'engagement, en partie déjà dépensé."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteTirwen"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",
@@ -5500,7 +7413,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu.",
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Il possède les papiers personnels d'Hartmut le Sourd, disparus à sa mort en 362 : le premier Moorvogt les avait emportés à Moorburg dans un coffre scellé, transmis avec la charge sans être ouvert, et le Moorvogt actuel, endetté auprès de la pègre, l'a remis à Ulrich vers 878. Les papiers disent qu'il y a au-delà du Schilfbach quelque chose de puissant, sans en donner l'emplacement : Ulrich ignore ce que c'est et ne veut que le pouvoir. Les trois noyades de l'été sont ses tourbiers, envoyés creuser au-delà du Schilfbach ; le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport. Pistes plus lointaines, au choix du MJ : les ritualistes qui cherchent les filons d'Eisengrund (les rituels réussissent mieux près d'une pierre), les registres de la Maison des Cent Portes, l'argent prêté aux seigneurs de Bellerive, le butin des pirates, que leur capitaine, son ancien associé parti fâché vers 877, lui confie à receler par les Maisons lucentiennes (voir « Capitaine pirate »). Il n'a aucune fiche avant sa transformation : il prend le pouvoir de la pierre de la Sümpfenmark au moment où les PJ arrivent sur le site, au milieu de sa bande, trop nombreuse pour eux. Il blesse mortellement Olivier, copiste du Cercle de l'Étoile Polaire et allié des PJ, qui porte comme eux des éclats de la pierre de Logne (moment et circonstances au choix du MJ) ; Olivier meurt quand Ulrich aspire ses éclats (appliquer une fois le gabarit de fragment). Ulrich comprend que les éclats se prennent sur les vivants comme sur les pierres : les PJ deviennent des proies. Sa puissance a deux moteurs : le temps, qui le rend plus fort d'étape en étape (cinq fiches calées sur le niveau des PJ, chacune avec une seule pierre absorbée), et chaque pierre de plus qu'il absorbe, qui lui donne un gros saut (gabarit en fin de capacités spéciales). L'ordre des pierres suivantes, et s'il les obtient, dépend de la table. Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 127 (régénération comprise) et CA 17 avec la parade → FP défensif 5 ; 35 dégâts par round à +7 → FP offensif 5."
     },
     "items": [
@@ -5585,7 +7498,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (1/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 16 ou tombe à terre. Jets de sauvegarde : For +8, Dex +5, Con +7. Athlétisme +11, Intimidation +6. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (1/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 16 ou tombe à terre. Jets de sauvegarde : For +8, Dex +5, Con +7. Athlétisme +11, Intimidation +6. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 2 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 177 (régénération et résistance légendaire comprises) et CA 17 avec la parade → FP défensif 8 ; 52 dégâts par round à +8 → FP offensif 8."
     },
     "items": [
@@ -5670,7 +7583,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+1 à la CA, déjà comptée). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (2/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +9, Dex +6, Con +9, Sag +6. Athlétisme +13, Intimidation +7. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+1 à la CA, déjà comptée). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (2/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +9, Dex +6, Con +9, Sag +6. Athlétisme +13, Intimidation +7. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 3 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 232 et CA 18 avec la parade → FP défensif 11 ; 66 dégâts par round (actions légendaires comprises) à +9 → FP offensif 11."
     },
     "items": [
@@ -5755,7 +7668,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+2 à la CA, déjà comptés). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 19 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 17 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +11, Dex +7, Con +10, Sag +7. Athlétisme +16, Intimidation +9. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu.",
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+2 à la CA, déjà comptés). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 19 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 17 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +11, Dex +7, Con +10, Sag +7. Athlétisme +16, Intimidation +9. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 4 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 272 et CA 19 avec la parade → FP défensif 14 ; 86 dégâts par round (actions légendaires comprises) à +11 → FP offensif 14."
     },
     "items": [
@@ -5841,7 +7754,7 @@
         }
       ],
       "damageResistances": ["bludgeoning", "piercing", "slashing"],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+3 à la CA, déjà comptés). Résistant aux dégâts contondants, perforants et tranchants des attaques non magiques. Force de l'ancien monde : ses attaques d'arme sont magiques. Vigueur de la pierre : au début de chacun de ses tours, il récupère 15 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 21 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 18 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Onde de la pierre (recharge 5-6, action) : il frappe le sol ; chaque créature à 6 m fait un JS de Constitution DD 21, subit 6d10 dégâts de force et tombe à terre en cas d'échec, la moitié des dégâts seulement en cas de réussite. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +13, Dex +8, Con +12, Sag +8. Athlétisme +19, Intimidation +10. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+3 à la CA, déjà comptés). Résistant aux dégâts contondants, perforants et tranchants des attaques non magiques. Force de l'ancien monde : ses attaques d'arme sont magiques. Vigueur de la pierre : au début de chacun de ses tours, il récupère 15 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 21 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 18 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Onde de la pierre (recharge 5-6, action) : il frappe le sol ; chaque créature à 6 m fait un JS de Constitution DD 21, subit 6d10 dégâts de force et tombe à terre en cas d'échec, la moitié des dégâts seulement en cas de réussite. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +13, Dex +8, Con +12, Sag +8. Athlétisme +19, Intimidation +10. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 5 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 324 et CA 20 avec la parade → FP défensif 17 ; 98 dégâts par round (actions légendaires et onde comprises) à +13 → FP offensif 17."
     },
     "items": [
