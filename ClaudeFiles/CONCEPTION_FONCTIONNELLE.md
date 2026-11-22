@@ -221,7 +221,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+144 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -232,7 +232,12 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   magie de l'ancien monde y fonctionne encore, mais seulement au fond (en surface et sur les côtes, la
   règle commune s'applique). Le Kraken y dort, le plus grand des êtres aquatiques de l'ancien monde
   qui y survivent ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken affaibli qui
-  approche des côtes, dans la portée des pierres.
+  approche des côtes, dans la portée des pierres. Le folklore des nations
+  prend corps à partir de la phase 1 : Hausgeist (phase 1), arbre du Waldvater (phase 3) et
+  Waldvater (phase 4) en Altenmark ; esprit du Silver Lake (phase 2) à Lucentia ; feu follet
+  (phase 1), guenaude des murmures et Écho des collines (phase 2) à Ravenmoor ; guenaude du mauvais
+  œil (phase 2) à Valdera ; esprit des Sceaux (phase 2) puis grand esprit des Sceaux (phase 4,
+  dérivé, FP 9) à Azhar.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

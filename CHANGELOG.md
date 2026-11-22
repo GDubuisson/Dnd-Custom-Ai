@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.19.0] - 2026-11-22
+
+**Le folklore des nations prend corps.**
+- 10 fiches dans les dossiers des phases, par nation, pour le folklore que le MJ a choisi de rendre
+  réel (le reste demeure du folklore) :
+  - Altenmark : **Hausgeist** (Lutin SRD, phase 1, ne se montre presque jamais), **arbre du
+    Waldvater** (Arbre éveillé SRD, phase 3), **Waldvater** (Sylvanien SRD, phase 4) ;
+  - Lucentia : **esprit du Silver Lake** (Ondin SRD, phase 2), peu puissant ;
+  - Ravenmoor : **feu follet des murmures** (phase 1), **guenaude des murmures** (Guenaude verte
+    SRD, phase 2), **l'Écho des collines** (Banshie SRD, phase 2) ;
+  - Valdera : **guenaude du mauvais œil** (Guenaude verte SRD, phase 2) ;
+  - Azhar : **esprit des Sceaux** (Élémentaire de l'eau SRD, phase 2) puis **grand esprit des
+    Sceaux** (dérivé, taille TG, FP 9 recalculé, phase 4), lié aux Sceaux d'Eau.
+
 ## [1.18.0] - 2026-11-22
 
 **Six phases pour le retour de la magie.**

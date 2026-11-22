@@ -6770,6 +6770,785 @@
     }
   },
   {
+    "name": "Hausgeist",
+    "type": "npc",
+    "img": "icons/creatures/magical/fae-fairy-winged-glowing-green.webp",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "1/4",
+      "size": "tp",
+      "abilities": {
+        "str": {
+          "mod": -4
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 2,
+          "max": 2,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 12
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Épée minuscule",
+          "ability": "str",
+          "bonus": 6,
+          "magic": false,
+          "damage": {
+            "dice": "1",
+            "bonus": 4,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (12/48 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1",
+            "bonus": -4,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vol (12 m), 3 m au sol. Flèche : JS de Constitution DD 10 ou empoisonné 1 minute ; avec un résultat de 5 ou moins, inconscient pour la même durée (réveillé par des dégâts ou une action). Vision du cœur : en touchant une créature, connaît son état émotionnel ; sur un JS de Charisme DD 10 raté, aussi son alignement. Invisibilité (concentration) : devient invisible avec ce qu'il porte. Perception +3, Discrétion +8.",
+      "particularity": "L'esprit du foyer, à qui l'on laisse la première louche sur le rebord de la fenêtre et que l'on avertit en déménageant. Avec le retour de la magie, il existe pour de bon, mais il ne se montre presque jamais : un bol vide au matin, un outil rangé, une porte qui claque derrière qui a quitté la maison en silence. (MJ : bloc SRD Lutin. Il ne combat que pour défendre son foyer ; un foyer quitté sans l'avertir peut le rendre hostile au nouvel occupant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Arbre du Waldvater",
+    "type": "npc",
+    "img": "icons/environment/wilderness/tree-oak.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "2",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": -2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 59,
+          "max": 59,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 6
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Coup (allonge 3 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un arbre ordinaire.",
+      "particularity": "Le premier ou le dernier arbre d'une coupe du Nordwald, laissé debout par la coutume. Avec le retour de la magie, certains s'éveillent : ils n'oublient ni la hache ni ceux qui ont respecté l'usage. (MJ : bloc SRD Arbre éveillé ; il sert le Waldvater quand celui-ci paraît.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Waldvater",
+    "type": "npc",
+    "img": "icons/environment/wilderness/tree-oak.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "9",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 138,
+          "max": 138,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Rocher (18/54 m)",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "4d10",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Attaques multiples : deux coups. Fausse apparence : immobile, impossible à distinguer d'un arbre ordinaire. Engin de siège : dégâts doublés contre les objets et les bâtiments. Animation des arbres (1/jour) : anime jusqu'à deux arbres à 18 m (« Arbre du Waldvater ») ; ils agissent à son initiative et redeviennent des arbres au bout d'un jour, ou s'il meurt ou s'éloigne de plus de 36 m.",
+      "particularity": "Le « père de la forêt » du Nordwald, pour qui l'on épargne le premier et le dernier arbre de chaque coupe. Au retour de l'âge des prodiges, il prend corps : il ne hait pas les bûcherons, seulement ceux qui ont oublié l'usage. (MJ : bloc SRD Sylvanien.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Esprit du Silver Lake",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 58,
+          "max": 58,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 0
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Étreinte (allonge 3 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "fire",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Nage 18 m, aucune vitesse hors de l'eau. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre épuisement, agrippé, paralysé, empoisonné, entravé, à terre et inconscient. Vision aveugle 9 m. Invisible dans l'eau. Lié à l'eau : il meurt s'il quitte le lac. Étreinte : la cible est agrippée (évasion DD 13) et entravée ; l'esprit tente de la noyer et ne peut étreindre qu'une créature à la fois.",
+      "particularity": "On ne pêche pas sur le Silver Lake la nuit et l'on n'y jette rien de brisé : le lac rend ce qu'on lui donne. Avec le retour de la magie, l'esprit du lac s'éveille, peu puissant mais rancunier, et rend en effet ce qu'on lui a donné. (MJ : bloc SRD Ondin.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Feu follet des murmures",
+    "type": "npc",
+    "img": "icons/creatures/magical/spirit-mischief-fire-blue.webp",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "2",
+      "size": "tp",
+      "abilities": {
+        "str": {
+          "mod": -5
+        },
+        "dex": {
+          "mod": 9
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 15
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Décharge (attaque de sort)",
+          "ability": "dex",
+          "bonus": -5,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": -9,
+            "type": "lightning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "cold",
+        "fire",
+        "necrotic",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "lightning",
+        "poison"
+      ],
+      "specialAbilities": "Vol stationnaire (15 m), aucune vitesse au sol. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre épuisement, agrippé, paralysé, empoisonné, à terre, entravé et inconscient. Vision dans le noir 36 m. Consumer la vie (action bonus) : une créature à 1,50 m tombée à 0 PV fait un JS de Constitution DD 10 ou meurt ; le Moorlicht regagne 3d6 PV. Éphémère : ne peut rien porter. Mouvement incorporel (1d10 dégâts de force s'il finit son tour dans un objet). Lumière variable : vive dans un rayon de 1,50 à 6 m, faible au-delà sur autant, au choix. Invisibilité (concentration) : devient invisible.",
+      "particularity": "Une lueur entre les troncs de la forêt des murmures, là où les convois s'égarent. Les Veilleurs n'y laissent passer personne sans escorte : ils avaient raison avant même que la magie revienne. (MJ : bloc SRD Feu follet, comme le Moorlicht de la Sümpfenmark.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Guenaude des murmures",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 82,
+          "max": 82,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Amphibie. Vision dans le noir 18 m. Arcanes +3, Tromperie +4, Perception +4, Discrétion +3. Incantation innée (Sagesse, DD 12), à volonté : lumières dansantes, illusion mineure, moquerie cruelle. Imitation : imite les cris d'animaux et les voix ; JS de Sagesse (Perspicacité) DD 14 pour déceler l'imitation. Apparence illusoire : se couvre, elle et ce qu'elle porte, d'une illusion qui la fait paraître autre (une vieille du village, une jeune femme), jusqu'à ce qu'elle y mette fin ou meure ; test d'Intelligence (Investigation) DD 20 pour la percer. Passage invisible : devient invisible jusqu'à ce qu'elle attaque, lance un sort ou rompe sa concentration ; elle ne laisse aucune trace.",
+      "particularity": "Ce que la forêt des murmures cachait derrière ses égarés et ses mauvais souvenirs : une vieille qui imite les voix des compagnons perdus pour mener les voyageurs hors de la route des Veilleurs. (MJ : bloc SRD Guenaude verte.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "L'Écho des collines",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 58,
+          "max": 58,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 12
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Toucher corrupteur",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "cold",
+        "necrotic",
+        "poison"
+      ],
+      "specialAbilities": "Vol stationnaire (12 m), aucune vitesse au sol. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre charmé, épuisement, effrayé, agrippé, paralysé, pétrifié, empoisonné, à terre et entravé. Vision dans le noir 18 m. Jets de sauvegarde : Sag +2, Cha +5. Détection de la vie : sent les créatures vivantes à 8 km et leur type, sans leur position. Mouvement incorporel (1d10 dégâts de force s'il finit son tour dans un objet). Visage terrifiant : chaque créature non morte-vivante à 18 m qui le voit fait un JS de Sagesse DD 13 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours, avec désavantage si elle le voit encore) ; réussie, elle est immunisée 24 heures. Lamentation (1/jour, hors de la lumière du soleil) : il appelle un nom. Chaque créature à 9 m qui l'entend, hors créatures artificielles et morts-vivants, fait un JS de Constitution DD 13 : ratée, elle tombe à 0 PV ; réussie, elle subit 3d6 dégâts psychiques.",
+      "particularity": "Dans les Collines de l'écho, entendre son propre nom annonce une mort dans l'année : la croyance était une superstition. Avec le retour de la magie, quelque chose appelle vraiment, et la superstition devient un danger. Les bergers de Goldenhill, qui font des lieues pour prévenir ceux dont ils ont entendu le nom, n'en mesurent pas encore le prix. (MJ : bloc SRD Banshie.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Guenaude du mauvais œil",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 82,
+          "max": 82,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Amphibie. Vision dans le noir 18 m. Arcanes +3, Tromperie +4, Perception +4, Discrétion +3. Incantation innée (Sagesse, DD 12), à volonté : lumières dansantes, illusion mineure, moquerie cruelle. Imitation : imite les cris d'animaux et les voix ; JS de Sagesse (Perspicacité) DD 14 pour déceler l'imitation. Apparence illusoire : se couvre, elle et ce qu'elle porte, d'une illusion qui la fait paraître autre (une vieille du village, une jeune femme), jusqu'à ce qu'elle y mette fin ou meure ; test d'Intelligence (Investigation) DD 20 pour la percer. Passage invisible : devient invisible jusqu'à ce qu'elle attaque, lance un sort ou rompe sa concentration ; elle ne laisse aucune trace.",
+      "particularity": "Le mauvais œil, contre lequel on noue un ruban rouge au poignet des nourrissons et un rameau au-dessus de l'étable. Avec le retour de la magie, il a un visage : une vieille du bourg que personne ne soupçonne, ou une inconnue qui fait trop de compliments. Les rubans bénis à la sortie de l'office n'y peuvent pas grand-chose. (MJ : bloc SRD Guenaude verte.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Esprit des Sceaux",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 114,
+          "max": 114,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Nage 27 m. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre épuisement, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient. Vision dans le noir 18 m. Attaques multiples : deux coups. Forme d'eau : peut entrer dans l'espace d'une créature hostile et passer par une ouverture large de 2,5 cm sans se faufiler. Gel : s'il subit des dégâts de froid, il gèle en partie et perd 6 m de vitesse jusqu'à la fin de son prochain tour. Submersion (recharge 4-6) : chaque créature dans son espace fait un JS de Force DD 15 ; ratée, elle subit 2d8+4 dégâts contondants et reste agrippée (évasion DD 14), entravée et incapable de respirer ; réussie, elle est expulsée de son espace. Il peut agripper une créature de taille G ou jusqu'à deux de taille M ou inférieure.",
+      "particularity": "L'eau d'Azhar a un gardien, et personne ne le sait. Le premier seau versé à terre est la seule politesse qu'on lui fait encore. Avec le retour de la magie, il s'éveille dans les puits : le noble qui entretient mal ses Sceaux d'Eau voit ses puits tourner, ses canaux déborder, ses forages s'effondrer, et accuse ses ouvriers. (MJ : bloc SRD Élémentaire de l'eau. Il grandit à l'âge des prodiges : « Grand esprit des Sceaux ».)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Grand esprit des Sceaux",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "9",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 157,
+          "max": 157,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Nage 27 m. Résiste aux dégâts physiques d'armes non magiques. Immunisé contre épuisement, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient. Vision dans le noir 18 m. Attaques multiples : deux coups. Forme d'eau et Gel : comme l'esprit des Sceaux. Submersion (recharge 4-6) : chaque créature dans son espace fait un JS de Force DD 18 ; ratée, elle subit 4d8+6 dégâts contondants et reste agrippée (évasion DD 18), entravée et incapable de respirer ; réussie, elle est expulsée de son espace. Il peut agripper une créature de taille TG ou jusqu'à quatre de taille M ou inférieure. Crue (1/jour) : un puits ou un canal à 36 m déborde ; chaque créature à 6 m du point choisi fait un JS de Force DD 18 ou est renversée et emportée de 6 m (sans dégâts, non comptée dans le FP).",
+      "particularity": "L'esprit des Sceaux d'Eau dans toute sa force, à l'âge des prodiges. Il ne connaît ni la Charte des Puits ni les nobles, seulement l'eau et ceux qui la soignent ; un Sceau négligé peut lui coûter une ville. (MJ : dérivé de l'Élémentaire de l'eau SRD, en taille TG ; FP recalculé par la méthode de création de monstres : 157 PV, ×1,5 pour les résistances (235 effectifs), CA 15 → FP défensif 10 ; deux coups à +10 (39 par round) ou submersion sur deux cibles (48), en moyenne 42 par round, bonus et DD supérieurs à l'attendu → FP offensif 8 ; FP 9.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

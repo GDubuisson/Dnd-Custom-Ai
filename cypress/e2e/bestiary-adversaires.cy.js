@@ -69,6 +69,8 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const label = (key) => win.game.i18n.localize(`DND_CUSTOM.${key}`);
       const phase0 = label("Bestiary.Phases.0");
       const phase1 = label("Bestiary.Phases.1");
+      const phase2 = label("Bestiary.Phases.2");
+      const phase4 = label("Bestiary.Phases.4");
       const before = label("Bestiary.Rupture.before");
       const after = label("Bestiary.Rupture.after");
       const logne = label("Bestiary.Habitats.siteLogne");
@@ -83,6 +85,9 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Passwacht": [phase0, label("Regions.altenmark")],
         "Kraken": [phase0, label("Bestiary.Habitats.abyss")],
         "Kraken (affaibli près des côtes)": [phase1, label("Bestiary.Habitats.coast")],
+        "Hausgeist": [phase1, label("Regions.altenmark")],
+        "L'Écho des collines": [phase2, label("Regions.ravenmoor")],
+        "Grand esprit des Sceaux": [phase4, label("Regions.azhar")],
         "Grand-loup de Logne": [logne, before],
         "Arbre éveillé": [logne, after],
         "Jeune arbre éveillé": [logne, after],

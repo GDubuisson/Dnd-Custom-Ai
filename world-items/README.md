@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 134 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 144 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -199,10 +199,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 134 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 144 Actors `npc` prêts à
 glisser sur une scène.
 
-134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+144 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -213,7 +213,12 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   magie de l'ancien monde y fonctionne encore, mais seulement au fond (en surface et sur les côtes, la
   règle commune s'applique). Le Kraken y dort, le plus grand des êtres aquatiques de l'ancien monde
   qui y survivent ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken affaibli qui
-  approche des côtes, dans la portée des pierres.
+  approche des côtes, dans la portée des pierres. Le folklore des nations
+  prend corps à partir de la phase 1 : Hausgeist (phase 1), arbre du Waldvater (phase 3) et
+  Waldvater (phase 4) en Altenmark ; esprit du Silver Lake (phase 2) à Lucentia ; feu follet
+  (phase 1), guenaude des murmures et Écho des collines (phase 2) à Ravenmoor ; guenaude du mauvais
+  œil (phase 2) à Valdera ; esprit des Sceaux (phase 2) puis grand esprit des Sceaux (phase 4,
+  dérivé, FP 9) à Azhar.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
