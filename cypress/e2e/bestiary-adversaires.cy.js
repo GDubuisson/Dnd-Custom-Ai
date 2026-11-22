@@ -86,6 +86,8 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Kisaeth (renaissante)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],
+        "Champion d'Ulrich": [ulrich],
+        "Ritualiste d'Ulrich": [ulrich],
         "Ulrich (PJ niv. 3-4)": [ulrich],
         "Ulrich (PJ niv. 17-20)": [ulrich]
       };

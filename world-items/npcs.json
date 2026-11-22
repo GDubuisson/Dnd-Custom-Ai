@@ -3600,7 +3600,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Recruté parmi les portefaix d'Altenburg et les tourbiers sans ouvrage, payé par le négoce de tourbe d'Ulrich. Ne connaît que son lieutenant. (MJ : bloc SRD Bandit.)"
+      "particularity": "Recruté parmi les portefaix d'Altenburg et les tourbiers sans ouvrage, payé par le négoce de tourbe d'Ulrich. Ne connaît que son lieutenant. (MJ : palier PJ niv. 1-4 ; bloc SRD Bandit.)"
     },
     "items": [
       {
@@ -3703,7 +3703,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Tactique de meute : avantage aux jets d'attaque si un allié valide est à 1,50 m de la cible. Intimidation +2.",
-      "particularity": "Recouvre les dettes du négoce de tourbe et fait taire ceux qui parlent trop. Craint Ulrich davantage que le Landrecht. (MJ : bloc SRD Malfrat.)"
+      "particularity": "Recouvre les dettes du négoce de tourbe et fait taire ceux qui parlent trop. Craint Ulrich davantage que le Landrecht. (MJ : palier PJ niv. 1-4 ; bloc SRD Malfrat.)"
     },
     "items": [
       {
@@ -3790,7 +3790,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
-      "particularity": "Ancien tourbier ou patrouilleur renvoyé : connaît les chenaux de la Sümpfenmark et mène les équipes au-delà du Schilfbach, là où la garnison ne patrouille plus. (MJ : bloc SRD Éclaireur.)"
+      "particularity": "Ancien tourbier ou patrouilleur renvoyé : connaît les chenaux de la Sümpfenmark et mène les équipes au-delà du Schilfbach, là où la garnison ne patrouille plus. (MJ : palier PJ niv. 1-4 ; bloc SRD Éclaireur.)"
     },
     "items": [
       {
@@ -3872,7 +3872,7 @@
         }
       ],
       "specialAbilities": "Téméraire : au début de son tour, il peut obtenir l'avantage à toutes ses attaques d'arme au corps à corps pendant ce tour ; les attaques contre lui ont alors l'avantage jusqu'au début de son tour suivant.",
-      "particularity": "Ulrich l'a battu à mains nues, puis l'a gardé. Il ne se bat pour personne d'autre. (MJ : bloc SRD Berserker.)"
+      "particularity": "Ulrich l'a battu à mains nues, puis l'a gardé. Il ne se bat pour personne d'autre. (MJ : palier PJ niv. 1-4 ; bloc SRD Berserker.)"
     },
     "items": [
       {
@@ -3941,7 +3941,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : trois attaques au corps à corps (deux de cimeterre, une de dague), ou deux de dague lancée (6/18 m). Parade (réaction) : +2 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Jets de sauvegarde : For +4, Dex +5, Sag +2. Athlétisme +4, Tromperie +4.",
-      "particularity": "Dirige les équipes d'Ulrich sur le terrain et répond de leurs pertes. Seul de la bande à savoir où se trouve le chef. (MJ : bloc SRD Capitaine bandit.)"
+      "particularity": "Dirige les équipes d'Ulrich sur le terrain et répond de leurs pertes. Seul de la bande à savoir où se trouve le chef. (MJ : palier PJ niv. 1-4 ; bloc SRD Capitaine bandit.)"
     },
     "items": [
       {
@@ -4031,7 +4031,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : deux attaques d'épée longue ; s'il a dégainé son épée courte, il peut faire en plus une attaque d'épée courte. Épée longue à deux mains : 1d10. Athlétisme +5, Perception +2.",
-      "particularity": "A quitté les cols d'Eisenpass pour suivre Ulrich, qu'il a connu enfant au pied des garnisons. Sait que le chef est le fils de quelqu'un, pas de qui. (MJ : bloc SRD Vétéran.)"
+      "particularity": "A quitté les cols d'Eisenpass pour suivre Ulrich, qu'il a connu enfant au pied des garnisons. Sait que le chef est le fils de quelqu'un, pas de qui. (MJ : palier PJ niv. 1-4 ; bloc SRD Vétéran. Avec le gabarit de pierre, porteur de pierre à ce palier.)"
     },
     "items": [
       {
@@ -4121,6 +4121,1357 @@
     ],
     "flags": {
       "dnd-custom-ai": { "phase": 0, "habitat": "ulrichBand" }
+    }
+  },
+  {
+    "name": "Fidèle de la pierre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 9,
+          "max": 9,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Sombre dévotion : avantage aux jets de sauvegarde contre les états charmé et effrayé. Tromperie +2, Religion +2.",
+      "particularity": "Tourbier, portefaix ou fils de rien qui a vu Ulrich sortir changé de la salle de la pierre, ou en a entendu le récit, et le suit comme on suit un saint. Ulrich n'y croit pas, mais il s'en sert. (MJ : palier PJ niv. 1-8, à partir de la phase 1, après la rupture de la Sümpfenmark ; bloc SRD Cultiste.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Fanatique de la pierre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 33,
+          "max": 33,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Blessure (attaque de sort au contact)",
+          "ability": "dex",
+          "bonus": 1,
+          "magic": false,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Sombre dévotion : avantage aux jets de sauvegarde contre les états charmé et effrayé. Incantation (niveau 4, Sagesse, DD 11, +3 au toucher) : tours de magie Lumière, Flamme sacrée (1d8 radiant, JS de Dextérité), Thaumaturgie ; niveau 1 (4 emplacements) Injonction, Blessure, Bouclier de la foi ; niveau 2 (3 emplacements) Immobilisation de personne, Arme spirituelle. Tromperie +4, Persuasion +4, Religion +2.",
+      "particularity": "Prêche dans les marches que la pierre a choisi Ulrich et qu'elle choisira ceux qui le servent. Ses grâces, infimes autrefois, répondent depuis que les pierres tombent. (MJ : palier PJ niv. 3-8, à partir de la phase 2, retour de la magie ; bloc SRD Fanatique de secte.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "offHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Exécuteur d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 112,
+          "max": 112,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Lance (à deux mains : 2d8)",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Coup de bouclier",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques au corps à corps, ou deux attaques à distance (lance lancée, 6/18 m). Brute : un dé de dégâts supplémentaire (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Parade (réaction) : +3 à la CA. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5.",
+      "particularity": "Ancien champion de lices passé à la pègre. Ulrich l'envoie quand il veut qu'on sache qui a frappé. (MJ : palier PJ niv. 5-8 ; bloc SRD Gladiateur. Avec le gabarit de pierre, porteur de pierre à ce palier.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir clouté",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 45,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 30,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Lame d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "8",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 3900,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "7d6",
+            "type": "poison"
+          }
+        },
+        {
+          "name": "Arbalète légère (24/96 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "7d6",
+            "type": "poison"
+          }
+        }
+      ],
+      "damageResistances": [
+        "poison"
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques à l'épée courte. Poison : JS de Constitution DD 15, dégâts de poison divisés par deux en cas de réussite. Assassinat : avantage contre toute créature qui n'a pas encore joué ; toute attaque qui touche une créature surprise est un coup critique. Attaque sournoise (1/tour) : +4d6 si avantage ou allié à 1,50 m de la cible. Esquive totale. Jets de sauvegarde : Dex +6, Int +4. Discrétion +9, Acrobaties +6.",
+      "particularity": "Ne figure sur aucune liste de la bande. Ceux qui ont trahi Ulrich la rencontrent une fois. (MJ : palier PJ niv. 9-12 ; bloc SRD Assassin. Avec le gabarit de pierre, porteur de pierre à ce palier.)"
+    },
+    "items": [
+      {
+        "name": "Épée courte",
+        "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète légère",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+        "system": {
+          "weaponType": "rangedSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 2.3,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 24,
+              "long": 96
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 45,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Ritualiste d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 3
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 40,
+          "max": 40,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 14, +6 au toucher) : tours de magie Trait de feu (2d10), Lumière, Main de mage, Prestidigitation ; niveau 1 (4 emplacements) Détection de la magie, Armure de mage, Projectile magique, Bouclier ; niveau 2 (3) Pas brumeux, Suggestion ; niveau 3 (3) Contresort, Boule de feu (8d6, JS de Dextérité DD 14), Vol ; niveau 4 (3) Invisibilité supérieure, Tempête de grêle ; niveau 5 (1) Cône de froid. CA 15 sous Armure de mage, qu'il lance avant le combat. Jets de sauvegarde : Int +6, Sag +4. Arcanes +6, Histoire +6.",
+      "particularity": "Ritualiste de métier, de ceux que l'Eismark loue pour chercher des filons à Eisengrund ; Ulrich paie mieux. Depuis que les pierres tombent, ce qui lui prenait des jours de rituel se lance en un souffle. (MJ : palier PJ niv. 5-12, à partir de la phase 2, retour de la magie ; bloc SRD Mage.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "offHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Champion d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "11",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 221,
+          "max": 221,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 7200,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Coup de bouclier",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Riposte (réaction) : quand une créature le rate au corps à corps, il lui porte une attaque d'épée longue. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Jets de sauvegarde : For +9, Dex +6, Con +8. Athlétisme +13, Intimidation +6.",
+      "particularity": "Le meilleur combattant de la bande après le chef, et le seul qui ait tenu trois passes contre lui. (MJ : palier PJ niv. 13-16 ; avec le gabarit de pierre, porteur de pierre des derniers sites, deux gabarits pour les PJ niv. 17-20. Dérivé du Gladiateur SRD, aucun humanoïde martial du SRD n'atteignant ce FP ; FP recalculé par la méthode de création de monstres : 221 PV et CA 19 → FP défensif 11 ; 80 dégâts par round, riposte comprise, à +9 → FP offensif 12 ; FP 11.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Demi-plate",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 750,
+            "pp": 0
+          },
+          "baseAC": 15,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 60,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "ulrichBand"
+      }
+    }
+  },
+  {
+    "name": "Maître ritualiste d'Ulrich",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": false,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et autres effets magiques. Résistance aux dégâts contondants, perforants et tranchants non magiques, tant que dure Peau de pierre, lancé avant le combat. Incantation (niveau 18, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de feu (4d10), Lumière, Main de mage, Prestidigitation, Poigne électrique ; niveau 1 (4 emplacements) Détection de la magie, Identification, Armure de mage, Projectile magique ; niveau 2 (3) Détection des pensées, Image miroir, Pas brumeux ; niveau 3 (3) Contresort, Vol, Éclair (8d6, JS de Dextérité DD 17) ; niveau 4 (3) Bannissement, Bouclier de feu, Peau de pierre ; niveau 5 (3) Cône de froid, Scrutation, Mur de force ; niveau 6 (1) Globe d'invulnérabilité ; niveau 7 (1) Téléportation ; niveau 8 (1) Esprit impénétrable ; niveau 9 (1) Arrêt du temps. CA 15 sous Armure de mage. Jets de sauvegarde : Int +9, Sag +6. Arcanes +13, Histoire +13.",
+      "particularity": "Ce que les ritualistes d'autrefois tenaient pour des contes, il le lance. Il sert Ulrich parce que chaque pierre que prend le chef lui rend un peu plus de l'ancien savoir. (MJ : palier PJ niv. 13-20, phase 3, l'ancien monde ; bloc SRD Archimage.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "offHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 100,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "ulrichBand"
+      }
     }
   },
   {

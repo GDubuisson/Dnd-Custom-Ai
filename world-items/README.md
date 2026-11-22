@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 98 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 105 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 98 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 105 Actors `npc` prêts à
 glisser sur une scène.
 
-98 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+105 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -204,9 +204,17 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
   monde après, Kisaeth (glace : renaissante, éveillée, pleine puissance) et Varhun (feu : oisillon,
   jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
-- **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande (homme de main,
-  cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten, du FP 1/8 au FP 3) et Ulrich,
-  qui n'a pas de fiche avant sa transformation. Il se renforce avec le temps, en cinq étapes calées
+- **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
+  des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
+  - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten
+    (FP 1/8 à 3) ; fidèle de la pierre (FP 1/8) dès la phase 1.
+  - PJ niv. 5-8 : exécuteur (FP 5) ; fanatique de la pierre (FP 2) et ritualiste (FP 6) dès la phase 2.
+  - PJ niv. 9-12 : lame (FP 8), ritualistes.
+  - PJ niv. 13-16 : champion d'Ulrich (FP 11) ; maître ritualiste (FP 12) en phase 3.
+  - PJ niv. 17-20 : champions et maîtres ritualistes, autour d'Ulrich ou d'un porteur de pierre.
+  - Un **porteur de pierre** (l'homme qu'Ulrich envoie absorber une pierre à sa place) est la fiche la
+    plus forte du palier avec le gabarit de pierre d'Ulrich : déserteur, exécuteur, lame, champion,
+    puis champion à deux gabarits (FP proches de ceux d'Ulrich au même palier). Il se renforce avec le temps, en cinq étapes calées
   sur le niveau des PJ (FP 5, 8, 11, 14 et 17, une pierre absorbée), et chaque pierre de plus qu'il
   absorbe ajoute un gabarit cumulable (environ +3 FP),
   chaque fragment de pierre un plus petit (environ +1 FP), tous deux décrits sur ses fiches.
@@ -215,8 +223,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
   profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
-Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich et le
-Capitaine pirate sont dérivés, FP recalculé).
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich, le
+Champion d'Ulrich et le Capitaine pirate sont dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle
