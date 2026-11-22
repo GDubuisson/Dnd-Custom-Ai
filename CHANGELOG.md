@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.12.0] - 2026-11-22
+
+**Les éclats : récompenses de l'arc des pierres.**
+- Nouveau dossier **« Éclats »** dans le compendium « Dons », 9 dons donnés par le MJ :
+  - **Marque d'éclat**, pour tout porteur : +1 à une caractéristique et **Sens des éclats** (direction
+    d'une pierre intacte ou d'un autre porteur), dont la portée grandit avec la **Résonance**, le
+    nombre de pierres brisées dans le monde, par qui que ce soit ;
+  - **Résonance (3 pierres)** et **Résonance (5 pierres)** : +1 à une caractéristique chacune ;
+  - pour chaque pierre brisée par les PJ, au choix, le **don d'éclat du site** ou **Éclat absorbé
+    (+2)**, seul don prenable plusieurs fois. Kis : résistance au froid, Rayon de givre. Zahir : Pas
+    brumeux une fois par repos long, jamais perdu. Tirwen : +1 PV max par niveau, résistance au
+    poison. Velencia : Sanctuaire une fois par repos long, avantage contre charmé et effrayé.
+    Sümpfenmark : vision dans le noir, Lueurs féeriques une fois par repos long.
+  - Un porteur peut dépasser 20 dans une caractéristique, jusqu'à 22.
+- Un don qui accorde des sorts les ajoute à la fiche quand on le glisse dessus ; avec une utilisation
+  par repos long, le sort se lance gratuitement une fois, puis avec les emplacements d'un lanceur.
+- Les sorts accordés par un don à une classe sans sorts utilisent le Charisme.
+- Nouveaux sorts SRD : **Rayon de givre**, **Lueurs féeriques**, **Pas brumeux** (45 sorts).
+
 ## [1.11.0] - 2026-11-22
 
 **Un premier combat jouable au niveau 1 dans la forêt de Logne.**
