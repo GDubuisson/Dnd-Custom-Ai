@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.14.0] - 2026-11-22
+
+**Le Désert gelé de Kis : bonne et mauvaise fin.**
+- Nouveau journal **« Sites de pierre (MJ) »**, réservé au MJ, une page par site, en commençant par
+  le Désert gelé de Kis : le site, les trois scénarios selon qui arrive le premier (les PJ, la
+  bande, les deux), la bonne et la mauvaise fin, comment rattraper la mauvaise, l'option du grand
+  froid, et des rencontres conseillées par palier de niveau (faune figée, bande et porteur de
+  pierre, créatures d'après la rupture).
+- Ce journal se resynchronise à chaque chargement : les pages des prochains sites y arriveront
+  d'elles-mêmes. Une page ajoutée par le MJ n'est jamais touchée ; une page du système est
+  réécrite si elle a été modifiée.
+- Mauvaise fin de Kis : si un porteur de pierre d'Ulrich brise la pierre, il absorbe l'essence de
+  Varhun, et aucun œuf n'apparaît ; Kisaeth renaît en deuil et traque le porteur puis Ulrich. Elle
+  se rattrape si les PJ raisonnent Kisaeth et arrêtent le porteur avant qu'il rejoigne Ulrich.
+  Notes ajoutées sur les fiches de Kisaeth (mêmes statistiques, autre camp), de Varhun, d'Ulrich
+  (pierre de Kis : dégâts de feu au lieu de force, résistance au feu) et dans l'histoire de l'œuf.
+
 ## [1.13.0] - 2026-11-22
 
 **La bande d'Ulrich grandit avec les PJ.**
