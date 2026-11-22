@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.11.0] - 2026-11-22
+
+**Un premier combat jouable au niveau 1 dans la forêt de Logne.**
+- Nouvelle fiche **« Jeune arbre éveillé »** (compendium « Adversaires », forêt de Logne, après la
+  rupture) : le premier combat de la campagne a lieu en sortant du temple, avec des PJ de niveau 1,
+  et l'Arbre éveillé SRD (FP 2) y est mortel. Dérivé de l'arbre SRD : taille G, 26 PV, coup 1d8+3,
+  FP 1/2 recalculé ; compositions conseillées pour 4 PJ niv. 1 sur la fiche (seul, facile ; avec 2 à
+  4 arbustes éveillés, moyen ; avec un loup gris, difficile).
+- Documentation du compendium « Adversaires » (`packs/adversaires/README.md`) : la fiche du
+  capitaine pirate, oubliée en 1.10.0.
+
 ## [1.10.1] - 2026-11-20
 
 **Alignement sur le document MJ mis à jour.**
