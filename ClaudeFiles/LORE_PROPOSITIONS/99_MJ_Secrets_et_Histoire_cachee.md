@@ -47,7 +47,7 @@ Les **profondeurs du centre de la Mer intérieure** sont hors de portée des six
 | 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* du Scellement, non son décor : Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée (§12). Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
 | 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
 | 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
-| 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre. Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
+| 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre, au cœur d'un palais invisible depuis le désert, et fondue avec ses deux sages devenus un seul être mort-vivant (§15). Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
 | 6 | **Île de Tirwen** | Faune hardie, plantes toxiques, trois colonisations abandonnées. Présentée parmi d'autres îles sans intérêt. | Pierre. Fuite magique diffuse et continue affectant le vivant depuis mille ans. |
 
 ### État des pierres
@@ -317,6 +317,8 @@ Cela se produit **au moment où les PJ arrivent sur le site**, après avoir expl
 
 Ensuite, il recommence avec chaque pierre qu'il trouve. Il se renforce avec le temps, et chaque pierre absorbée lui donne un gros saut de puissance. Quelles pierres il obtient, et dans quel ordre, dépend de la table.
 
+Après quelques échecs à atteindre le palais du Zahir (§15), Ulrich découvre qu'il peut aussi **céder** une part de son pouvoir : il transmet un fragment à un sbire, qui gagne le sens des éclats (§13) et peut guider la bande là où l'espace ment. Ulrich reprend ce fragment en aspirant le sbire.
+
 ### Olivier
 
 À la Sümpfenmark, selon les choix des joueurs et le cours de la séance, Olivier **se sacrifie** pour couvrir la fuite des PJ, ou il est **capturé** par la bande. Captif, il reste en vie tant qu'Ulrich le juge utile, ce qui ouvre une piste de sauvetage.
@@ -398,3 +400,25 @@ S'il en apprend trop, par les PJ ou par la bande, le capitaine peut absorber la 
 - **Mauvaise fin** : le porteur quitte l'île avec les traîtres et rejoint Ulrich, qui prend la vie de l'île.
 - **Rattraper la mauvaise fin** : arrêter le porteur et les traîtres avant qu'ils quittent l'île ; les fidèles du capitaine peuvent aider à tenir le passage, s'ils sont convaincus.
 - **Quelle que soit l'issue**, dès que la pierre est brisée, la fuite cesse. Le capitaine reprend son âge jour après jour ; des dissensions naissent dans l'équipage, mais un noyau dur lui reste fidèle. L'île ne meurt pas : sa faune et ses plantes perdent seulement un peu de leur vitalité, et elle devient plus tranquille.
+
+---
+
+## 15. Le sage du Zahir, celui qui demeure
+
+### Ce qui s'est passé
+
+Au Scellement, quelque chose a mal tourné au Zahir. Les deux sages de la pierre se sont réveillés dans un seul corps : seuls physiquement, deux intérieurement, avec un pouvoir sans limite et la sensation d'aspirer la magie alentour. Ils ont voulu quitter le palais, sans jamais y parvenir. Depuis mille ans, ils ne dorment pas et ne mangent pas, et ils ont sombré dans la folie. Ils parlent à deux voix, qui ne veulent pas toujours la même chose.
+
+Le sage est un mort-vivant, une sorte de liche pharaon, et la pierre est son cœur : il meurt avec elle. C'est le plus ancien des **sâkin**, « ceux qui demeurent » (doc 06), et l'usage d'annoncer son nom devant les lieux vides, que les caravaniers de Bir Azraq pratiquent en regardant vers le sud, est une vraie protection devenue folklore : il écoute qui se présente avant de frapper. Il appelle à lui des serviteurs morts-vivants, momies et squelettes, qui ne sont que ses invocations.
+
+### Atteindre le palais
+
+Le palais, au centre du désert, n'est pas visible : mirages et espace replié. Le vrai danger du Zahir est l'absence de repères. Les porteurs d'éclats en sentent vaguement la direction ; sans éclats, la traversée coûte beaucoup d'hommes et de vivres, ce qui pousse Ulrich à céder une part de son pouvoir à un sbire (§11).
+
+### Les fins
+
+- **Apaiser le sage** est possible, mais coûteux : il faut le neutraliser, puis le calmer (sorts de soins de l'esprit, paroles adressées à ses deux voix). Apaisé, il lâche la pierre et livre des bribes de vérité sur le Scellement avant de mourir avec elle.
+- **Bonne fin** : les PJ l'apaisent, ou le détruisent et brisent la pierre, ou arrêtent le porteur ; le pouvoir se disperse en éclats dans tous les présents (§13). Détruit, le sage ne dit rien.
+- **Mauvaise fin** : le porteur prend la pierre et rejoint Ulrich, qui l'aspire et prend la distorsion : il peut apparaître presque où il veut. Le sage meurt sans rien révéler.
+- **Rattraper la mauvaise fin** : arrêter le porteur avant qu'il rejoigne Ulrich ; il traverse un désert qui ment encore, alors que les PJ gardent leur direction.
+- En option, la distorsion libérée **déborde** sur les routes de Bir Azraq et de Ramlah, et le commerce d'Azhar vacille.
