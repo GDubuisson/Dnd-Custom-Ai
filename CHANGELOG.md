@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.18.0] - 2026-11-22
+
+**Six phases pour le retour de la magie.**
+- Le bestiaire compte désormais six phases : monde scellé, premières fissures, l'éveil, retour de
+  la magie, âge des prodiges, l'ancien monde. Les pierres brisées fixent le plafond (chaque pierre
+  au-delà de la deuxième ouvre une phase), le temps fait monter jusqu'à lui avec des délais qui
+  s'allongent, et le retour part des sites brisés.
+- Nouvelle page **« Les phases du retour »** dans le journal « Sites de pierre (MJ) » : le principe,
+  le tableau des phases (pierres, délai indicatif, ce qui revient) et leur usage à la table.
+- Fiches renumérotées : Kisaeth éveillée et Varhun jeune en phase 3, Kisaeth pleine puissance et
+  Varhun adulte en phase 5, le maître ritualiste d'Ulrich dès la phase 4 ; la page de Kis ne
+  dépend plus de « deux pierres ou plus » (incohérent avec Logne et la Sümpfenmark brisées tôt).
+
 ## [1.17.4] - 2026-11-22
 
 **Kisaeth se réveille avant la rupture.**

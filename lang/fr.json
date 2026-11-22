@@ -275,8 +275,10 @@
       "Phases": {
         "0": "Phase 0 — Monde scellé",
         "1": "Phase 1 — Premières fissures",
-        "2": "Phase 2 — Retour de la magie",
-        "3": "Phase 3 — L'ancien monde"
+        "2": "Phase 2 — L'éveil",
+        "3": "Phase 3 — Retour de la magie",
+        "4": "Phase 4 — Âge des prodiges",
+        "5": "Phase 5 — L'ancien monde"
       },
       "Habitats": {
         "common": "Partout",

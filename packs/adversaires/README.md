@@ -11,7 +11,9 @@ doublon (comparaison par nom) et sans action du MJ.
 
 134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
-- **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
+- **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
+  fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
+  page « Les phases du retour ») puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
   bêtes réelles de chaque région et, seul surnaturel possible avant la première pierre, les créatures
   du large de la Mer intérieure (la magie fonctionne encore dans ses profondeurs), dont le Kraken
@@ -43,7 +45,7 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
     (FP 1/8 à 3) ; fidèle de la pierre (FP 1/8) dès la phase 1.
   - PJ niv. 5-8 : exécuteur (FP 5) ; fanatique de la pierre (FP 2) et ritualiste (FP 6) dès la phase 2.
   - PJ niv. 9-12 : lame (FP 8), ritualistes.
-  - PJ niv. 13-16 : champion d'Ulrich (FP 11) ; maître ritualiste (FP 12) en phase 3.
+  - PJ niv. 13-16 : champion d'Ulrich (FP 11) ; maître ritualiste (FP 12) dès la phase 4.
   - PJ niv. 17-20 : champions et maîtres ritualistes, autour d'Ulrich ou d'un porteur de pierre.
   - Un **porteur de pierre** (l'homme qu'Ulrich envoie absorber une pierre à sa place) est la fiche la
     plus forte du palier avec le gabarit de pierre d'Ulrich : déserteur, exécuteur, lame, champion,

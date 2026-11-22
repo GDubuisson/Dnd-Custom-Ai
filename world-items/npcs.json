@@ -7553,7 +7553,7 @@
         }
       ],
       "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Sombre dévotion : avantage aux jets de sauvegarde contre les états charmé et effrayé. Incantation (niveau 4, Sagesse, DD 11, +3 au toucher) : tours de magie Lumière, Flamme sacrée (1d8 radiant, JS de Dextérité), Thaumaturgie ; niveau 1 (4 emplacements) Injonction, Blessure, Bouclier de la foi ; niveau 2 (3 emplacements) Immobilisation de personne, Arme spirituelle. Tromperie +4, Persuasion +4, Religion +2.",
-      "particularity": "Prêche dans les marches que la pierre a choisi Ulrich et qu'elle choisira ceux qui le servent. Ses grâces, infimes autrefois, répondent depuis que les pierres tombent. (MJ : palier PJ niv. 3-8, à partir de la phase 2, retour de la magie ; bloc SRD Fanatique de secte.)"
+      "particularity": "Prêche dans les marches que la pierre a choisi Ulrich et qu'elle choisira ceux qui le servent. Ses grâces, infimes autrefois, répondent depuis que les pierres tombent. (MJ : palier PJ niv. 3-8, à partir de la phase 2, l'éveil ; bloc SRD Fanatique de secte.)"
     },
     "items": [
       {
@@ -8148,7 +8148,7 @@
         }
       ],
       "specialAbilities": "Incantation (niveau 9, Intelligence, DD 14, +6 au toucher) : tours de magie Trait de feu (2d10), Lumière, Main de mage, Prestidigitation ; niveau 1 (4 emplacements) Détection de la magie, Armure de mage, Projectile magique, Bouclier ; niveau 2 (3) Pas brumeux, Suggestion ; niveau 3 (3) Contresort, Boule de feu (8d6, JS de Dextérité DD 14), Vol ; niveau 4 (3) Invisibilité supérieure, Tempête de grêle ; niveau 5 (1) Cône de froid. CA 15 sous Armure de mage, qu'il lance avant le combat. Jets de sauvegarde : Int +6, Sag +4. Arcanes +6, Histoire +6.",
-      "particularity": "Ritualiste de métier, de ceux que l'Eismark loue pour chercher des filons à Eisengrund ; Ulrich paie mieux. Depuis que les pierres tombent, ce qui lui prenait des jours de rituel se lance en un souffle. (MJ : palier PJ niv. 5-12, à partir de la phase 2, retour de la magie ; bloc SRD Mage.)"
+      "particularity": "Ritualiste de métier, de ceux que l'Eismark loue pour chercher des filons à Eisengrund ; Ulrich paie mieux. Depuis que les pierres tombent, ce qui lui prenait des jours de rituel se lance en un souffle. (MJ : palier PJ niv. 5-12, à partir de la phase 2, l'éveil ; bloc SRD Mage.)"
     },
     "items": [
       {
@@ -8547,7 +8547,7 @@
         "slashing"
       ],
       "specialAbilities": "Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et autres effets magiques. Résistance aux dégâts contondants, perforants et tranchants non magiques, tant que dure Peau de pierre, lancé avant le combat. Incantation (niveau 18, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de feu (4d10), Lumière, Main de mage, Prestidigitation, Poigne électrique ; niveau 1 (4 emplacements) Détection de la magie, Identification, Armure de mage, Projectile magique ; niveau 2 (3) Détection des pensées, Image miroir, Pas brumeux ; niveau 3 (3) Contresort, Vol, Éclair (8d6, JS de Dextérité DD 17) ; niveau 4 (3) Bannissement, Bouclier de feu, Peau de pierre ; niveau 5 (3) Cône de froid, Scrutation, Mur de force ; niveau 6 (1) Globe d'invulnérabilité ; niveau 7 (1) Téléportation ; niveau 8 (1) Esprit impénétrable ; niveau 9 (1) Arrêt du temps. CA 15 sous Armure de mage. Jets de sauvegarde : Int +9, Sag +6. Arcanes +13, Histoire +13.",
-      "particularity": "Ce que les ritualistes d'autrefois tenaient pour des contes, il le lance. Il sert Ulrich parce que chaque pierre que prend le chef lui rend un peu plus de l'ancien savoir. (MJ : palier PJ niv. 13-20, phase 3, l'ancien monde ; bloc SRD Archimage.)"
+      "particularity": "Ce que les ritualistes d'autrefois tenaient pour des contes, il le lance. Il sert Ulrich parce que chaque pierre que prend le chef lui rend un peu plus de l'ancien savoir. (MJ : palier PJ niv. 13-20, à partir de la phase 4, âge des prodiges ; bloc SRD Archimage.)"
     },
     "items": [
       {
@@ -8665,7 +8665,7 @@
     ],
     "flags": {
       "dnd-custom-ai": {
-        "phase": 3,
+        "phase": 4,
         "habitat": "ulrichBand"
       }
     }
@@ -9356,11 +9356,11 @@
       ],
       "damageImmunities": ["cold"],
       "specialAbilities": "Vol 24 m, 12 m au sol. Vision aveugle 18 m, vision dans le noir 36 m. Immunisée contre le froid. Marche sur la glace : elle se déplace sur la glace et y grimpe sans jet de caractéristique ; la glace et la neige ne sont pas pour elle un terrain difficile. Résistance légendaire (3/jour) : si elle rate un jet de sauvegarde, elle peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui la voit fait un JS de Sagesse DD 14 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de givre (recharge 5-6) : cône de 18 m, JS de Constitution DD 19, 54 (12d8) dégâts de froid, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 3 m fait un JS de Dextérité DD 19 ou subit 13 (2d6 + 6) dégâts contondants et tombe à terre, puis elle vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +5, Con +11, Sag +6, Cha +6. Perception +11, Discrétion +5.",
-      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Le Scellement les a séparés : Varhun s'est sacrifié dans la pierre de Kis, et Kisaeth s'est dispersée dans la plaine, qu'elle a gelée : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site ; quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, elle se réveille sous sa forme renaissante, sans pouvoir quitter le périmètre du site tant que la pierre tient. Quand la pierre est brisée, elle en est libérée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 2, statistiques exactes du Dragon blanc adulte SRD, en oiseau.) Mauvaise fin, si c'est un porteur de pierre d'Ulrich qui brise la pierre : il absorbe l'essence de Varhun, et aucun œuf n'apparaît. Kisaeth renaît en deuil, sent Varhun dans le porteur puis dans Ulrich, et les traque. Elle se méfie des PJ, porteurs d'éclats eux aussi : il faut la raisonner pour s'en faire une alliée. Si les PJ la raisonnent et arrêtent le porteur avant qu'il rejoigne Ulrich, le feu de Varhun se disperse et l'œuf peut se former. Mêmes statistiques, autre camp (journal « Sites de pierre », page du Désert gelé de Kis)."
+      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Le Scellement les a séparés : Varhun s'est sacrifié dans la pierre de Kis, et Kisaeth s'est dispersée dans la plaine, qu'elle a gelée : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site ; quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, elle se réveille sous sa forme renaissante, sans pouvoir quitter le périmètre du site tant que la pierre tient. Quand la pierre est brisée, elle en est libérée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 3, statistiques exactes du Dragon blanc adulte SRD, en oiseau.) Mauvaise fin, si c'est un porteur de pierre d'Ulrich qui brise la pierre : il absorbe l'essence de Varhun, et aucun œuf n'apparaît. Kisaeth renaît en deuil, sent Varhun dans le porteur puis dans Ulrich, et les traque. Elle se méfie des PJ, porteurs d'éclats eux aussi : il faut la raisonner pour s'en faire une alliée. Si les PJ la raisonnent et arrêtent le porteur avant qu'il rejoigne Ulrich, le feu de Varhun se disperse et l'œuf peut se former. Mêmes statistiques, autre camp (journal « Sites de pierre », page du Désert gelé de Kis)."
     },
     "items": [],
     "flags": {
-      "dnd-custom-ai": { "phase": 2, "habitat": "siteKis" }
+      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
     }
   },
   {
@@ -9396,11 +9396,11 @@
       ],
       "damageImmunities": ["cold"],
       "specialAbilities": "Vol 24 m, 12 m au sol. Vision aveugle 18 m, vision dans le noir 36 m. Immunisée contre le froid. Marche sur la glace : elle se déplace sur la glace et y grimpe sans jet de caractéristique ; la glace et la neige ne sont pas pour elle un terrain difficile. Résistance légendaire (3/jour) : si elle rate un jet de sauvegarde, elle peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui la voit fait un JS de Sagesse DD 16 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de givre (recharge 5-6) : cône de 27 m, JS de Constitution DD 22, 72 (16d8) dégâts de froid, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 4,50 m fait un JS de Dextérité DD 22 ou subit 15 (2d6 + 8) dégâts contondants et tombe à terre, puis elle vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +6, Con +14, Sag +7, Cha +8. Perception +13, Discrétion +6.",
-      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Le Scellement les a séparés : Varhun s'est sacrifié dans la pierre de Kis, et Kisaeth s'est dispersée dans la plaine, qu'elle a gelée : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site ; quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, elle se réveille sous sa forme renaissante, sans pouvoir quitter le périmètre du site tant que la pierre tient. Quand la pierre est brisée, elle en est libérée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 3, statistiques exactes du Dragon blanc ancien SRD, en oiseau.) Mauvaise fin, si c'est un porteur de pierre d'Ulrich qui brise la pierre : il absorbe l'essence de Varhun, et aucun œuf n'apparaît. Kisaeth renaît en deuil, sent Varhun dans le porteur puis dans Ulrich, et les traque. Elle se méfie des PJ, porteurs d'éclats eux aussi : il faut la raisonner pour s'en faire une alliée. Si les PJ la raisonnent et arrêtent le porteur avant qu'il rejoigne Ulrich, le feu de Varhun se disperse et l'œuf peut se former. Mêmes statistiques, autre camp (journal « Sites de pierre », page du Désert gelé de Kis)."
+      "particularity": "Kisaeth, l'oiseau de glace de l'ancien monde. Avant le Scellement, elle et Varhun, l'oiseau de feu, étaient inséparables. Le Scellement les a séparés : Varhun s'est sacrifié dans la pierre de Kis, et Kisaeth s'est dispersée dans la plaine, qu'elle a gelée : le Désert gelé, c'est elle, et le nom de Kis est le seul fragment du sien qui ait survécu, sans que personne le remarque. Avant la rupture, il n'en reste qu'un fragment d'esprit, gardien du site ; quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, elle se réveille sous sa forme renaissante, sans pouvoir quitter le périmètre du site tant que la pierre tient. Quand la pierre est brisée, elle en est libérée, et un œuf de Varhun apparaît (objet « L'œuf de Varhun », dans Secrets MJ). Alliée potentielle des PJ, surtout s'ils protègent l'œuf. (MJ : phase 5, statistiques exactes du Dragon blanc ancien SRD, en oiseau.) Mauvaise fin, si c'est un porteur de pierre d'Ulrich qui brise la pierre : il absorbe l'essence de Varhun, et aucun œuf n'apparaît. Kisaeth renaît en deuil, sent Varhun dans le porteur puis dans Ulrich, et les traque. Elle se méfie des PJ, porteurs d'éclats eux aussi : il faut la raisonner pour s'en faire une alliée. Si les PJ la raisonnent et arrêtent le porteur avant qu'il rejoigne Ulrich, le feu de Varhun se disperse et l'œuf peut se former. Mêmes statistiques, autre camp (journal « Sites de pierre », page du Désert gelé de Kis)."
     },
     "items": [],
     "flags": {
-      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
+      "dnd-custom-ai": { "phase": 5, "habitat": "siteKis" }
     }
   },
   {
@@ -9461,11 +9461,11 @@
       ],
       "damageImmunities": ["fire"],
       "specialAbilities": "Vol 24 m, 12 m au sol, escalade 12 m. Vision aveugle 9 m, vision dans le noir 36 m. Immunisé contre le feu. Attaques multiples : un coup de bec et deux de serres. Souffle de flammes (recharge 5-6) : cône de 9 m, JS de Dextérité DD 17, 56 (16d6) dégâts de feu, moitié en cas de réussite. Jets de sauvegarde : Dex +4, Con +9, Sag +4, Cha +8. Perception +8, Discrétion +4.",
-      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié dans la pierre de Kis au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 2, statistiques exactes du Jeune dragon rouge SRD, en oiseau.) Mauvaise fin (un porteur de pierre d'Ulrich a brisé la pierre et absorbé l'essence de Varhun) : pas d'œuf, tant que la mauvaise fin n'est pas rattrapée (voir « Kisaeth (renaissante) »)."
+      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié dans la pierre de Kis au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 3, statistiques exactes du Jeune dragon rouge SRD, en oiseau.) Mauvaise fin (un porteur de pierre d'Ulrich a brisé la pierre et absorbé l'essence de Varhun) : pas d'œuf, tant que la mauvaise fin n'est pas rattrapée (voir « Kisaeth (renaissante) »)."
     },
     "items": [],
     "flags": {
-      "dnd-custom-ai": { "phase": 2, "habitat": "siteKis" }
+      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
     }
   },
   {
@@ -9501,11 +9501,11 @@
       ],
       "damageImmunities": ["fire"],
       "specialAbilities": "Vol 24 m, 12 m au sol, escalade 12 m. Vision aveugle 18 m, vision dans le noir 36 m. Immunisé contre le feu. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Attaques multiples : Présence terrifiante, puis un coup de bec et deux de serres. Présence terrifiante : chaque créature de son choix à 36 m qui le voit fait un JS de Sagesse DD 19 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours ; immunisée 24 h après une réussite). Souffle de flammes (recharge 5-6) : cône de 18 m, JS de Dextérité DD 21, 63 (18d6) dégâts de feu, moitié en cas de réussite. Actions légendaires (3 par round) : Détection (test de Sagesse (Perception)) ; Coup de queue ; Battement d'ailes (coûte 2 actions), chaque créature à 3 m fait un JS de Dextérité DD 22 ou subit 15 (2d6 + 8) dégâts contondants et tombe à terre, puis il vole de la moitié de sa vitesse. Jets de sauvegarde : Dex +6, Con +13, Sag +7, Cha +11. Perception +13, Discrétion +6.",
-      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié dans la pierre de Kis au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 3, statistiques exactes du Dragon rouge adulte SRD, en oiseau.) Mauvaise fin (un porteur de pierre d'Ulrich a brisé la pierre et absorbé l'essence de Varhun) : pas d'œuf, tant que la mauvaise fin n'est pas rattrapée (voir « Kisaeth (renaissante) »)."
+      "particularity": "Varhun, l'oiseau de feu de l'ancien monde, inséparable de Kisaeth. Il s'est sacrifié dans la pierre de Kis au Scellement ; quand la pierre de Kis est brisée, il en reste un œuf (objet « L'œuf de Varhun », dans Secrets MJ), au cœur d'une quête secondaire : ce qui éclot dépend de ce que les PJ en font. (MJ : phase 5, statistiques exactes du Dragon rouge adulte SRD, en oiseau.) Mauvaise fin (un porteur de pierre d'Ulrich a brisé la pierre et absorbé l'essence de Varhun) : pas d'œuf, tant que la mauvaise fin n'est pas rattrapée (voir « Kisaeth (renaissante) »)."
     },
     "items": [],
     "flags": {
-      "dnd-custom-ai": { "phase": 3, "habitat": "siteKis" }
+      "dnd-custom-ai": { "phase": 5, "habitat": "siteKis" }
     }
   }
 ]

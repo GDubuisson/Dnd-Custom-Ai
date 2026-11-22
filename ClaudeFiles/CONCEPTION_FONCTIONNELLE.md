@@ -175,10 +175,12 @@ ajoutée par le MJ n'est jamais touchée ; les pages d'un Journal créé avant c
 sont reprises par leur nom (une annotation du MJ sur ces pages-là est écrasée). L'en-tête de la fiche de
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
-Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ et resynchronisé de la même façon, a une page par site de pierre (le site,
+Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ et resynchronisé de la même façon, a une page
+par site de pierre et une page « Les phases du retour » (six phases, plafond fixé par les pierres
+brisées, délais indicatifs, ce qui revient à chaque phase). Chaque page de site décrit le site,
 les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, plus une troisième à Velencia
 où la pierre peut rester intacte, rencontres conseillées par
-palier de niveau).
+palier de niveau.
 
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
@@ -221,7 +223,9 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
 134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
-- **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
+- **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
+  fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
+  page « Les phases du retour ») puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
   bêtes réelles de chaque région et, seul surnaturel possible avant la première pierre, les créatures
   du large de la Mer intérieure : les profondeurs du centre sont hors de portée des six pierres, et la
@@ -255,7 +259,7 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
     (FP 1/8 à 3) ; fidèle de la pierre (FP 1/8) dès la phase 1.
   - PJ niv. 5-8 : exécuteur (FP 5) ; fanatique de la pierre (FP 2) et ritualiste (FP 6) dès la phase 2.
   - PJ niv. 9-12 : lame (FP 8), ritualistes.
-  - PJ niv. 13-16 : champion d'Ulrich (FP 11) ; maître ritualiste (FP 12) en phase 3.
+  - PJ niv. 13-16 : champion d'Ulrich (FP 11) ; maître ritualiste (FP 12) dès la phase 4.
   - PJ niv. 17-20 : champions et maîtres ritualistes, autour d'Ulrich ou d'un porteur de pierre.
   - Un **porteur de pierre** (l'homme qu'Ulrich envoie absorber une pierre à sa place) est la fiche la
     plus forte du palier avec le gabarit de pierre d'Ulrich : déserteur, exécuteur, lame, champion,

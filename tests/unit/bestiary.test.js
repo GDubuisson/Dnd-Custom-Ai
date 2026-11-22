@@ -10,6 +10,8 @@ const creature = (phase, habitat, creatureType = "beast") => ({
 describe("bestiaryFolderKeys — dossier du compendium par phase puis milieu, sites et Ulrich à part", () => {
   test("phase 0, Fleuraine : libellés de phase puis de région", () => {
     assert.deepEqual(bestiaryFolderKeys(creature(0, "fleuraine")), ["DND_CUSTOM.Bestiary.Phases.0", "DND_CUSTOM.Regions.fleuraine"]);
+    // Six phases, du monde scellé (0) à l'ancien monde (5).
+    assert.deepEqual(bestiaryFolderKeys(creature(5, "common")), ["DND_CUSTOM.Bestiary.Phases.5", "DND_CUSTOM.Bestiary.Habitats.common"]);
   });
 
   test("site de pierre : le site, puis avant (phase 0) ou après la rupture (phase 1 et au-delà)", () => {

@@ -412,7 +412,9 @@ DND_CUSTOM.bestiaryPhases = {
   0: "DND_CUSTOM.Bestiary.Phases.0",
   1: "DND_CUSTOM.Bestiary.Phases.1",
   2: "DND_CUSTOM.Bestiary.Phases.2",
-  3: "DND_CUSTOM.Bestiary.Phases.3"
+  3: "DND_CUSTOM.Bestiary.Phases.3",
+  4: "DND_CUSTOM.Bestiary.Phases.4",
+  5: "DND_CUSTOM.Bestiary.Phases.5"
 };
 
 /** Milieux du bestiaire (flag `habitat`) : sous-dossiers d'une phase, sauf sites et milieux autonomes. */

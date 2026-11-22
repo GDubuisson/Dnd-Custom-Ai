@@ -275,8 +275,10 @@
       "Phases": {
         "0": "Phase 0 — Sealed world",
         "1": "Phase 1 — First cracks",
-        "2": "Phase 2 — Return of magic",
-        "3": "Phase 3 — The ancient world"
+        "2": "Phase 2 — The awakening",
+        "3": "Phase 3 — Return of magic",
+        "4": "Phase 4 — Age of wonders",
+        "5": "Phase 5 — The ancient world"
       },
       "Habitats": {
         "common": "Everywhere",

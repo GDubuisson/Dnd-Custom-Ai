@@ -51,7 +51,7 @@
       {
         "title": "Rencontres conseillées (4 PJ)",
         "paragraphs": [
-          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante, confinée au site tant que la pierre tient, puis libre ; éveillée en phase 2, pleine puissance en phase 3), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante, confinée au site tant que la pierre tient, puis libre ; éveillée en phase 3, pleine puissance en phase 5), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
         ],
         "table": {
           "head": [
@@ -77,7 +77,7 @@
               "niv. 9-12",
               "Deux mammouths (difficile au niv. 9) ; trois au niv. 12.",
               "Porteur : lame avec le gabarit (environ FP 11), seul (difficile au niv. 9) ; avec un ritualiste au niv. 12, dès la phase 2.",
-              "Quatre loups arctiques (moyen au niv. 9) ; Kisaeth éveillée si deux pierres ou plus sont tombées."
+              "Quatre loups arctiques (moyen au niv. 9) ; Kisaeth éveillée dès la phase 3."
             ],
             [
               "niv. 13-16",
@@ -88,7 +88,7 @@
             [
               "niv. 17-20",
               "La faune figée ne fait plus le poids : elle sert de décor ou de fuite.",
-              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17) ; le porteur et un maître ritualiste au niv. 20, en phase 3.",
+              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17) ; le porteur et un maître ritualiste au niv. 20, dès la phase 4.",
               "Kisaeth pleine puissance ; Varhun adulte s'il a grandi."
             ]
           ]
@@ -499,10 +499,88 @@
               "niv. 17-20",
               "Comme au palier précédent.",
               "Pièges : DD 19 ou +11, 18d10. Visions : DD 19, 18d10 psychiques.",
-              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17). Ou Ulrich en personne (fiche niv. 17-20) et une lame (difficile au niv. 17) ; avec un maître ritualiste au niv. 20, en phase 3."
+              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17). Ou Ulrich en personne (fiche niv. 17-20) et une lame (difficile au niv. 17) ; avec un maître ritualiste au niv. 20, dès la phase 4."
             ]
           ]
         }
+      }
+    ]
+  },
+  {
+    "name": "Les phases du retour",
+    "sections": [
+      {
+        "title": "Le principe",
+        "paragraphs": [
+          "Le retour de la magie, du divin et du démoniaque se compte en six phases. Les pierres brisées en fixent le plafond : chaque pierre au-delà de la deuxième ouvre une phase de plus, quel que soit celui qui l'a brisée. Le temps fait monter jusqu'à ce plafond : une phase ne commence qu'après un délai depuis la précédente, et ce délai s'allonge, car les grands êtres ne reviennent pas du jour au lendemain.",
+          "Le retour part des sites brisés : une nouvelle phase se voit d'abord autour des pierres tombées, puis gagne le reste du monde. Ce tableau est un guide, pas un automatisme : le MJ décide quand une phase commence. Les fiches du compendium « Adversaires » sont rangées selon ces phases."
+        ]
+      },
+      {
+        "title": "Les six phases",
+        "table": {
+          "head": [
+            "Phase",
+            "Pierres brisées",
+            "Délai indicatif",
+            "Ce qui revient"
+          ],
+          "rows": [
+            [
+              "0 — Monde scellé",
+              "aucune",
+              "—",
+              "Humains, bêtes ; le surnaturel ne survit qu'au large de la Mer intérieure, et sur les sites eux-mêmes."
+            ],
+            [
+              "1 — Premières fissures",
+              "1 ou 2",
+              "immédiat",
+              "Petits esprits discrets (Hausgeister), feux follets, méphites, bêtes éveillées, premiers morts mineurs ; premiers dons chez quelques humains."
+            ],
+            [
+              "2 — L'éveil",
+              "3",
+              "quelques semaines",
+              "Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages."
+            ],
+            [
+              "3 — Retour de la magie",
+              "4",
+              "quelques mois",
+              "Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens."
+            ],
+            [
+              "4 — Âge des prodiges",
+              "5",
+              "une saison à un an",
+              "Grands morts-vivants, démons, golems, sylvaniens, grands esprits."
+            ],
+            [
+              "5 — L'ancien monde",
+              "6",
+              "plusieurs années",
+              "Dragons, grands démons et diables, célestes, vrais dieux ; ce qui n'était que folklore peut s'imprégner de magie."
+            ]
+          ]
+        }
+      },
+      {
+        "title": "Sur la table",
+        "items": [
+          {
+            "label": "Le début de campagne",
+            "text": "Logne puis la Sümpfenmark tombent tôt : la campagne reste en phase 1 pendant les premiers niveaux, quoi qu'il arrive."
+          },
+          {
+            "label": "Les créatures des sites",
+            "text": "Ce qui vit sur un site suit sa propre règle (avant ou après la rupture du site), mais ce qui évolue avec le monde, comme Kisaeth ou Varhun, suit ces phases."
+          },
+          {
+            "label": "Les humains",
+            "text": "À mesure que la magie revient, chacun peut recouvrer des pouvoirs ; les porteurs d'éclats restent les plus puissants."
+          }
+        ]
       }
     ]
   }
