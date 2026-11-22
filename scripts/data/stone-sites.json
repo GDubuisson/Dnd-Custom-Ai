@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Désert gelé de Kis",
+    "sections": [
+      {
+        "title": "Le site",
+        "paragraphs": [
+          "Nord-est du Désert gelé de Kis. Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée. Avant la rupture, il ne reste d'elle qu'un fragment d'esprit, gardien du site, joué en narration : le froid qui mord plus fort, le vent qui tourne, une voix, les chiens qui refusent d'avancer. Son froid garde une faune d'un autre âge, cantonnée au quart nord-est.",
+          "Pour trouver le site : le Sens des éclats, à portée suffisante, et les guides d'Eisengrund, qui savent où les chiens s'arrêtent sans l'avoir jamais écrit.",
+          "Fiches : compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis » (avant la rupture : chouette des glaces, grand élan, tigre à dents de sabre, mammouth ; après : loup arctique, méphite de glace, Kisaeth en trois états, Varhun en trois âges). L'œuf de Varhun est dans le dossier « Secrets (MJ) »."
+        ]
+      },
+      {
+        "title": "Qui arrive le premier",
+        "items": [
+          {
+            "label": "Les PJ seuls",
+            "text": "Le site est intact. La faune figée et le gardien éprouvent ceux qui approchent. Briser la pierre ou non reste leur choix ; s'ils la brisent, c'est la bonne fin."
+          },
+          {
+            "label": "La bande seule",
+            "text": "Les PJ arrivent pendant les fouilles (bande sur place, harcelée par la faune) ou après : la pierre est brisée, le porteur est reparti vers Ulrich, et Kisaeth, en deuil, est déjà sur ses traces. Il reste une poursuite à jouer."
+          },
+          {
+            "label": "Les deux",
+            "text": "Course vers la pierre. La faune et le gardien s'en prennent à quiconque entre dans le quart nord-est, quel que soit son camp. Le porteur peut atteindre la salle pendant que les PJ se battent contre la bande."
+          }
+        ]
+      },
+      {
+        "title": "Bonne et mauvaise fin",
+        "items": [
+          {
+            "label": "Bonne fin",
+            "text": "Les PJ brisent la pierre, ou arrêtent le porteur : le pouvoir se disperse en éclats dans tous les présents (Éclat de Kis, ou Éclat absorbé (+2)). Kisaeth renaît, faible, alliée potentielle ; l'œuf de Varhun apparaît près du site, et avec lui la quête secondaire."
+          },
+          {
+            "label": "Mauvaise fin",
+            "text": "Le porteur absorbe la pierre, et avec elle l'essence de Varhun : aucun œuf n'apparaît. Kisaeth renaît en deuil, sent Varhun dans le porteur puis dans Ulrich, et les traque. Elle se méfie des PJ, porteurs d'éclats eux aussi. Quand le porteur rejoint Ulrich, celui-ci prend le saut de puissance, et le feu : les dégâts de son gabarit de pierre deviennent des dégâts de feu, et il résiste au feu."
+          },
+          {
+            "label": "Rattraper la mauvaise fin",
+            "text": "Les PJ doivent raisonner Kisaeth et arrêter le porteur avant qu'il rejoigne Ulrich. Le feu de Varhun se disperse alors, et l'œuf peut se former. Une fois Ulrich servi, la suite est au choix du MJ."
+          },
+          {
+            "label": "Option : le grand froid",
+            "text": "Privée de Varhun, Kisaeth laisse déborder son chagrin : le Désert gelé avance sur l'Eismark, le pays de Reinmar von Eisburg, père d'Ulrich, et la faune figée descend vers les cols d'Eisengrund."
+          }
+        ]
+      },
+      {
+        "title": "Rencontres conseillées (4 PJ)",
+        "paragraphs": [
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante en phase 1, éveillée en phase 2, pleine puissance en phase 3), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
+        ],
+        "table": {
+          "head": ["PJ", "Faune figée (avant la rupture)", "Bande", "Après la rupture"],
+          "rows": [
+            [
+              "niv. 3-4",
+              "Un tigre à dents de sabre et deux chouettes des glaces (difficile) ; deux tigres et une chouette au niv. 4. Le mammouth est une menace à éviter.",
+              "Porteur : déserteur des Passwachten avec le gabarit (environ FP 6, mortel) ; à jouer en poursuite, ou avec Kisaeth qui s'en prend à lui.",
+              "Un loup arctique et deux méphites de glace (mortel au niv. 3, difficile au niv. 4)."
+            ],
+            [
+              "niv. 5-8",
+              "Un mammouth et un tigre à dents de sabre (difficile au niv. 5) ; un tigre de plus au niv. 8.",
+              "Porteur : exécuteur avec le gabarit (environ FP 8), seul (difficile au niv. 5) ; avec un déserteur au niv. 8.",
+              "Deux loups arctiques et quatre méphites de glace (difficile au niv. 5)."
+            ],
+            [
+              "niv. 9-12",
+              "Deux mammouths (difficile au niv. 9) ; trois au niv. 12.",
+              "Porteur : lame avec le gabarit (environ FP 11), seul (difficile au niv. 9) ; avec un ritualiste au niv. 12, dès la phase 2.",
+              "Quatre loups arctiques (moyen au niv. 9) ; Kisaeth éveillée si deux pierres ou plus sont tombées."
+            ],
+            [
+              "niv. 13-16",
+              "Trois mammouths (difficile au niv. 13) ; au-delà, la faune figée ne suffit plus seule.",
+              "Porteur : champion d'Ulrich avec le gabarit (environ FP 14) et un exécuteur (difficile au niv. 13) ; le porteur et une lame au niv. 16.",
+              "Kisaeth éveillée ou pleine puissance selon la phase ; Varhun jeune s'il a éclos."
+            ],
+            [
+              "niv. 17-20",
+              "La faune figée ne fait plus le poids : elle sert de décor ou de fuite.",
+              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17) ; le porteur et un maître ritualiste au niv. 20, en phase 3.",
+              "Kisaeth pleine puissance ; Varhun adulte s'il a grandi."
+            ]
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -92,4 +92,38 @@ describe("Visibilité des Journaux générés par le système", () => {
       }
     });
   });
+
+  // Journal resynchronisé à chaque chargement : une page du système modifiée est restaurée,
+  // une page ajoutée par le MJ n'est jamais touchée.
+  it("le journal « Sites de pierre » est réservé au MJ et se resynchronise sans toucher aux pages du MJ (T-JOURNAL-004)", () => {
+    const KIS = "Désert gelé de Kis";
+    const NOTES = "Notes du MJ (test)";
+    cy.loginAsGM();
+    cy.window({ timeout: 25000 }).should((win) => {
+      expect(journalByKey(win, "DND_CUSTOM.Journal.StoneSitesTitle"), "journal créé au chargement").to.exist;
+    });
+    cy.window().then(async (win) => {
+      const journal = journalByKey(win, "DND_CUSTOM.Journal.StoneSitesTitle");
+      const kis = journal.pages.getName(KIS);
+      await kis.update(win.JSON.parse(JSON.stringify({ "text.content": "<p>abîmé</p>", "flags.dnd-custom-ai.source": "ancienne" })));
+      await journal.createEmbeddedDocuments(
+        "JournalEntryPage",
+        win.JSON.parse(JSON.stringify([{ name: NOTES, type: "text", text: { format: 1, content: "<p>mes notes</p>" } }]))
+      );
+    });
+
+    cy.loginAsGM();
+    cy.window({ timeout: 25000 }).should((win) => {
+      const player = win.game.users.find((user) => !user.isGM);
+      const journal = journalByKey(win, "DND_CUSTOM.Journal.StoneSitesTitle");
+      expect(journal.ownership.default, "réservé au MJ").to.equal(NONE);
+      expect(journal.testUserPermission(player, "OBSERVER"), "invisible du joueur").to.be.false;
+      const kis = journal.pages.getName(KIS).text.content;
+      expect(kis, "page du système restaurée").to.include("Rattraper la mauvaise fin");
+      expect(kis).to.not.include("abîmé");
+      expect(journal.pages.getName(NOTES)?.text.content, "page du MJ conservée").to.include("mes notes");
+    });
+
+    cy.window().then((win) => journalByKey(win, "DND_CUSTOM.Journal.StoneSitesTitle").pages.getName(NOTES)?.delete());
+  });
 });

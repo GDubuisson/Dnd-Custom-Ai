@@ -317,6 +317,7 @@ gérées séparément) — étendue ici aux sauvegardes normales, sur demande ex
 | T-SHARD-002 | Sort d'éclat gratuit une fois | P1 | E2E | Glisser Éclat de Zahir sur un Guerrier, lancer Pas brumeux deux fois | Sort octroyé au dépôt ; 1er lancer gratuit (utilisation consommée), 2e refusé faute d'emplacement |
 | T-SHARD-003 | Éclat absorbé cumulable | P1 | E2E | Glisser Marque d'éclat puis deux fois Éclat absorbé (+2), choisir Force | Trois dons sur la fiche, Force +5 |
 | T-SHARD-004 | PV de l'Éclat de Tirwen | P2 | E2E | Glisser Éclat de Tirwen | PV max + niveau |
+| T-JOURNAL-004 | Journal « Sites de pierre » | P2 | E2E | Abîmer la page de Kis, ajouter une page du MJ, recharger | Journal réservé au MJ ; page de Kis restaurée ; page du MJ conservée (`journal-visibility.cy.js`) |
 
 Implémenté dans `cypress/e2e/shard-feats.cy.js`.
 

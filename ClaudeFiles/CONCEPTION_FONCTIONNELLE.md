@@ -171,6 +171,12 @@ régionaux et historiques, une page par région, plus une page « Secrets (MJ) �
 l'histoire cachée, à ne jamais partager) restent réservés au MJ, qui en partage ce qu'il veut. L'en-tête de la fiche de
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
+Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ, a une page par site de pierre (le site,
+les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, rencontres conseillées par
+palier de niveau). Contrairement aux autres, il se resynchronise à chaque chargement pour recevoir les
+pages des nouveaux sites : une page du système modifiée est réécrite, une page ajoutée par le MJ n'est
+jamais touchée.
+
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
 joueur** : uniquement la progression relative vers le niveau suivant (%), jamais le total ni les

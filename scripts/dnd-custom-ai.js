@@ -22,6 +22,7 @@ import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { ensurePlayerGuideJournal } from "./helpers/player-guide-journal.js";
 import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
 import { ensureItemLoreJournal } from "./helpers/item-lore-journal.js";
+import { syncStoneSitesJournal } from "./helpers/stone-sites-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
@@ -146,6 +147,7 @@ Hooks.once("ready", async () => {
   await ensurePlayerGuideJournal();
   await ensureGmGuideJournal();
   await ensureItemLoreJournal();
+  await syncStoneSitesJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
   await ensureTokenResyncMacro();
