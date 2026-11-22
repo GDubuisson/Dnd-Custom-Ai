@@ -388,7 +388,9 @@ DND_CUSTOM.armorSlotOptions = {
 DND_CUSTOM.languageCategories = {
   common: "DND_CUSTOM.Item.LanguageCategories.common",
   origin: "DND_CUSTOM.Item.LanguageCategories.origin",
-  special: "DND_CUSTOM.Item.LanguageCategories.special"
+  special: "DND_CUSTOM.Item.LanguageCategories.special",
+  // Langue d'un peuple revenu avec la magie (gobelins, orcs…) : jamais apprise par un personnage.
+  people: "DND_CUSTOM.Item.LanguageCategories.people"
 };
 
 /** Régions du monde : rangement des objets régionaux et historiques, pages des Chroniques des objets. */

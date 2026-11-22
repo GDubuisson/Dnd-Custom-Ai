@@ -367,14 +367,14 @@ export class SpellData extends foundry.abstract.TypeDataModel {
   }
 }
 
-/** Langue connue : catégorie commune, d'Origine ou spéciale. */
+/** Langue connue : catégorie commune, d'Origine, spéciale, ou langue d'un peuple (ne s'apprend pas). */
 export class LanguageData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       category: new StringField({
         required: true,
         initial: "special",
-        choices: ["common", "origin", "special"]
+        choices: ["common", "origin", "special", "people"]
       }),
       // Langue à connaître déjà pour pouvoir apprendre celle-ci (nom exact) ; vide = aucune.
       requiredLanguage: new StringField({ required: false, blank: true, initial: "" }),

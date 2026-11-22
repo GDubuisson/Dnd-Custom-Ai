@@ -900,28 +900,29 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
   });
   // Le sümpfer exige l'altenmarkois : refusé sur un personnage de Fleuraine qui ne le parle pas,
   // accepté une fois l'altenmarkois ajouté.
+  const dropLanguage = (name) =>
+    cy.window().then((win) =>
+      win.game.packs
+        .get("dnd-custom-ai.langues")
+        .getDocuments()
+        .then((docs) => {
+          const source = docs.find((doc) => doc.name === name);
+          expect(source, `langue "${name}" introuvable dans le compendium`).to.exist;
+          const dataTransfer = new win.DataTransfer();
+          dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: source.uuid }));
+          const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
+          win.document.querySelector(".application.character").dispatchEvent(dropEvent);
+        })
+    );
+  const languageNames = () =>
+    cy.window().then((win) =>
+      win.game.actors
+        .get(languagesActorId)
+        .items.filter((item) => item.type === "language")
+        .map((item) => item.name)
+    );
+
   it("le sümpfer ne s'ajoute qu'à un personnage qui parle déjà l'altenmarkois (T-ABIL-027)", () => {
-    const dropLanguage = (name) =>
-      cy.window().then((win) =>
-        win.game.packs
-          .get("dnd-custom-ai.langues")
-          .getDocuments()
-          .then((docs) => {
-            const source = docs.find((doc) => doc.name === name);
-            expect(source, `langue "${name}" introuvable dans le compendium`).to.exist;
-            const dataTransfer = new win.DataTransfer();
-            dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: source.uuid }));
-            const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
-            win.document.querySelector(".application.character").dispatchEvent(dropEvent);
-          })
-      );
-    const languageNames = () =>
-      cy.window().then((win) =>
-        win.game.actors
-          .get(languagesActorId)
-          .items.filter((item) => item.type === "language")
-          .map((item) => item.name)
-      );
 
     // Sans altenmarkois : refus, rien n'est ajouté.
     dropLanguage("Sümpfer");
@@ -948,5 +949,12 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
       const added = actor.items.filter((item) => ["Altenmarkois", "Sümpfer"].includes(item.name)).map((item) => item.id);
       return actor.deleteEmbeddedDocuments("Item", added);
     });
+  });
+
+  // Les langues des peuples revenus avec la magie (gobelin, orc…) ne s'apprennent pas.
+  it("une langue de peuple (orc) est refusée sur un personnage (T-ABIL-028)", () => {
+    dropLanguage("Orc");
+    cy.get("#notifications .notification", { timeout: 10000 }).should("contain.text", "Orc");
+    languageNames().should("not.include", "Orc");
   });
 });

@@ -221,7 +221,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-144 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+151 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -238,6 +238,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   (phase 1), guenaude des murmures et Écho des collines (phase 2) à Ravenmoor ; guenaude du mauvais
   œil (phase 2) à Valdera ; esprit des Sceaux (phase 2) puis grand esprit des Sceaux (phase 4,
   dérivé, FP 9) à Azhar.
+  Les peuples de l'ancien monde reviennent eux aussi, progressivement : gobelin et kobold
+  (phase 2), orc (né de la terre), homme-lézard, gnoll (Azhar, fait par un démon) et elfes
+  sauvages, éclaireur et druide (phase 3), blocs SRD avec, sur chaque fiche, leur comportement selon
+  la phase (sauvages d'abord, puis bandes qui parlent, puis peuples).
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
@@ -323,7 +327,7 @@ interne en kg**.
 | `class`/`subclass` | nom, description (flavor uniquement), sauvegardes maîtrisées, quota de compétences, maîtrises d'armes | la donnée mécanique réelle (capacités par niveau) vit dans `CONFIG.DND_CUSTOM` + `world-items/features.json`, pas sur cet Item |
 | `tool` (outil) | nom, prix, poids, compétence/bonus lié, description RP | bouton "Utiliser" lance le test de compétence lié (bonus de maîtrise + bonus éventuel) |
 | `spell` (sort) | classes autorisées (cases à cocher), niveau, détails (temps, portée, durée), type d'action, concentration, rituel, attaque, sauvegarde (moitié, état), dégâts, soin, état posé, lumière | filtré par classe au glisser-déposer ; octroyé par classe à la montée de niveau ; bouton "Lancer" automatisé |
-| `language` (langue) | nom, catégorie, langue requise (`requiredLanguage`), description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium, refusées (avertissement) si leur langue requise manque — ex. le Sümpfer exige l'Altenmarkois |
+| `language` (langue) | nom, catégorie (commune, d'Origine, spéciale, ou d'un peuple), langue requise (`requiredLanguage`), description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium, refusées (avertissement) si leur langue requise manque — ex. le Sümpfer exige l'Altenmarkois ; une langue d'un peuple (Gobelin, Orc…) est toujours refusée sur un personnage |
 
 ## Classes, sous-classes et capacités (référence de contenu)
 

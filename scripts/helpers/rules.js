@@ -88,6 +88,11 @@ export function hasFeature(items, name) {
   return items.some((item) => item.type === "feature" && item.name === name);
 }
 
+/** Langue d'un peuple revenu avec la magie (catégorie `people`) : un personnage ne peut pas l'apprendre. */
+export function isUnlearnableLanguage(item) {
+  return item?.type === "language" && item.system?.category === "people";
+}
+
 /**
  * Langue que `language` exige déjà de connaître (ex. le sümpfer exige l'altenmarkois) et que
  * `items` ne contient pas ; `null` si l'ajout est permis.

@@ -7549,6 +7549,1213 @@
     }
   },
   {
+    "name": "Gobelin",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 7,
+          "max": 7,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (24/96 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Discrétion +6. Fuite agile : se désengager ou se cacher par une action bonus.",
+      "particularity": "Un petit peuple de l'ancien monde, dispersé au Scellement, qui se reforme dans les forêts et les ravins à mesure que la magie revient. Il revient sans mémoire. (MJ : bloc SRD Gobelin. Comportement selon la phase : en phase 2, des chapardeurs sauvages et sans langue, qui volent le bétail et fuient ; en phase 3, des bandes qui parlent le gobelin et attaquent les fermes isolées ; à partir de la phase 4, des chefs plus grands et plus forts les mènent. Hostiles, mais on peut traiter avec eux.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc court",
+        "type": "weapon",
+        "img": "icons/weapons/bows/shortbow-leather.webp",
+        "system": {
+          "weaponType": "rangedSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 24,
+              "long": 96
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Kobold",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": -1
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": -2
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 5,
+          "max": 5,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Fronde (9/36 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Sensibilité au soleil : désavantage aux jets d'attaque et aux tests de Sagesse (Perception) fondés sur la vue en plein soleil. Tactique de groupe : avantage contre une créature si un allié du kobold se trouve à 1,50 m d'elle et n'est pas neutralisé.",
+      "particularity": "Remonté des mines profondes, là où la portée des pierres ne descendait pas, par les galeries que les mineurs d'Eisengrund ont percées trop loin. Craintif, il ne se bat que s'il est acculé, et en nombre. (MJ : bloc SRD Kobold. À partir de la phase 2 ; il parle le kobold dès son retour.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Orc",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 15,
+          "max": 15,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Grande hache",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d12",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Javeline (9/36 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Intimidation +2. Agressif : par une action bonus, se déplace de sa vitesse vers une créature hostile qu'il voit.",
+      "particularity": "Né de la terre : là où la magie suinte dans les cavernes, les orcs surgissent du sol déjà adultes, sauvages et nombreux, comme une poussée après la pluie. On ne les voit pas venir ; on trouve la grotte vide et la terre retournée. (MJ : bloc SRD Orc. Comportement selon la phase : en phase 3, des meutes sauvages qui crient sans parler ; en phase 4, des bandes de guerre menées par des chefs, qui parlent l'orc ; plus tard, une société dure, avec qui la négociation devient possible.)"
+    },
+    "items": [
+      {
+        "name": "Grande hache",
+        "type": "weapon",
+        "img": "icons/weapons/axes/axe-double-black.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 30,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d12",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 3.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Peau",
+        "type": "armor",
+        "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Homme-lézard",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Gourdin lourd",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Bouclier à pointes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Javeline (9/36 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Nage 9 m. Perception +3, Discrétion +4, Survie +5. Retenir son souffle : 15 minutes. Attaques multiples : deux attaques au corps à corps, chacune avec une arme différente.",
+      "particularity": "Un peuple de l'ancien monde qui se reforme dans les marais, à commencer par la Sümpfenmark. Territorial, d'abord neutre : il chasse, il garde ses eaux, et il ne cherche pas la guerre. On peut lui parler, à condition de respecter ses limites. (MJ : bloc SRD Homme-lézard. À partir de la phase 3 ; il parle le saurien.)"
+    },
+    "items": [
+      {
+        "name": "Gourdin",
+        "type": "weapon",
+        "img": "icons/weapons/clubs/club-banded-brown.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 1,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Gnoll",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Lance à deux mains : 1d8. Déchaînement : quand il réduit une créature à 0 PV au corps à corps, il peut, par une action bonus, se déplacer de la moitié de sa vitesse et faire une attaque de morsure.",
+      "particularity": "Des hyènes touchées par un démon, debout et armées : elles servent ce qui les a faites. On les rencontre surtout en Azhar, où les hyènes ne manquent pas, autour des puits taris et des caravanes isolées. (MJ : bloc SRD Gnoll. À partir de la phase 3, avec les premiers démons ; toujours hostile, sans langue à apprendre, sans évolution sociale.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Peau",
+        "type": "armor",
+        "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Elfe sauvage (éclaireur)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 16,
+          "max": 16,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5. Vision dans le noir 18 m. Ascendance féerique : avantage aux jets de sauvegarde contre l'état charmé, et la magie ne peut pas l'endormir. Transe : quatre heures de méditation valent un repos long.",
+      "particularity": "Il renaît dans les forêts profondes, sans mémoire, et ses souvenirs de l'ancien monde reviennent un à un avec les phases. Méfiant mais pas hostile, il observe longtemps avant de se montrer. Il pourrait savoir, un jour, ce que personne ne sait plus. (MJ : bloc SRD Éclaireur, avec les traits elfiques. À partir de la phase 3 ; il parle l'elfique ancien, qu'il retrouve mot à mot.)"
+    },
+    "items": [
+      {
+        "name": "Épée courte",
+        "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Elfe sauvage (druide)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 27,
+          "max": 27,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 9
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Bâton",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Produire une flamme (attaque de sort, 9 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": -1,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Ascendance féerique : avantage aux jets de sauvegarde contre l'état charmé, et la magie ne peut pas l'endormir. Transe : quatre heures de méditation valent un repos long. Médecine +4, Nature +3, Perception +4. Bâton à deux mains : 1d8 ; avec Gourdin magique : +4 au toucher, 1d8+2. Incantation (niveau 4, Sagesse, DD 12, +4 au toucher) : tours de magie Druidisme, Produire une flamme, Gourdin magique ; niveau 1 (4 emplacements) Enchevêtrement, Grande foulée, Communication avec les animaux, Vague tonnante ; niveau 2 (3) Messager animal, Peau d'écorce (CA 16).",
+      "particularity": "La mémoire des elfes sauvages : c'est en elle que l'ancien monde revient le plus vite, par bribes et par rêves. Elle parle pour les siens, et c'est à elle qu'on s'adresse si l'on veut entrer dans leur forêt. (MJ : bloc SRD Druide, avec les traits elfiques. À partir de la phase 3 ; interlocutrice possible, source de bribes de vérité sur l'ancien monde, au choix du MJ.)"
+    },
+    "items": [
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

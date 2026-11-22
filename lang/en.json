@@ -440,7 +440,8 @@
       "DropHint": "Drag an item here from another open sheet (or a compendium) to add it to the inventory.",
       "DropError": "Could not move this item (insufficient permissions).",
       "SpellWrongClass": "{spell} isn't on this class's spell list.",
-      "LanguageRequired": "{language} can only be learned by someone who already speaks {required}."
+      "LanguageRequired": "{language} can only be learned by someone who already speaks {required}.",
+      "LanguageNotLearnable": "{language} is a people's tongue: a character cannot learn it."
     },
     "Currency": {
       "pc": "Copper pieces",
@@ -706,7 +707,8 @@
       "LanguageCategories": {
         "common": "Common",
         "origin": "Origin",
-        "special": "Special"
+        "special": "Special",
+        "people": "People's tongue"
       },
       "Fields": {
         "GmOnlyNotice": "Locked sheet: only the GM can edit this Feature. Use the dedicated button on the Features tab to spend a charge.",

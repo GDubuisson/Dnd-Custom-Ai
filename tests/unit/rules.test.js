@@ -33,6 +33,7 @@ import {
   weaponAttackDamage,
   hasFeature,
   missingRequiredLanguage,
+  isUnlearnableLanguage,
   canUseReaction,
   opportunityAttackTrigger
 } from "../../scripts/helpers/rules.js";
@@ -54,6 +55,16 @@ describe("missingRequiredLanguage (langue à connaître déjà, ex. sümpfer -> 
   test("langue sans prérequis ou autre type d'Item -> null", () => {
     assert.equal(missingRequiredLanguage(language("Argot des rues"), []), null);
     assert.equal(missingRequiredLanguage({ type: "spell", name: "Lumière", system: {} }, []), null);
+  });
+});
+
+describe("isUnlearnableLanguage (langue d'un peuple : jamais apprise par un personnage)", () => {
+  test("catégorie people -> true", () => {
+    assert.equal(isUnlearnableLanguage({ type: "language", name: "Orc", system: { category: "people" } }), true);
+  });
+  test("autres catégories ou autre type d'Item -> false", () => {
+    assert.equal(isUnlearnableLanguage({ type: "language", name: "Sümpfer", system: { category: "special" } }), false);
+    assert.equal(isUnlearnableLanguage({ type: "spell", name: "Lumière", system: {} }), false);
   });
 });
 

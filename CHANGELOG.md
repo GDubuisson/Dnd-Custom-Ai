@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.20.0] - 2026-11-22
+
+**Les premiers peuples de l'ancien monde.**
+- 7 fiches, blocs SRD, avec sur chacune le comportement du peuple selon la phase (sauvage, puis
+  bandes qui parlent, puis peuple) : **gobelin** et **kobold** (phase 2) ; **orc**, né de la
+  terre, **homme-lézard**, **gnoll** (Azhar, fait par un démon, toujours hostile) et **elfes
+  sauvages**, éclaireur et druide (phase 3).
+- Nouvelle catégorie de langue **« Langue d'un peuple »** et 5 langues au compendium (Gobelin,
+  Kobold, Orc, Saurien, Elfique ancien) : un personnage ne peut pas les apprendre, le
+  glisser-déposer est refusé avec un avertissement.
+- Page « Les phases du retour » : les dragons ne figurent plus dans la phase 5 (hors campagne).
+
 ## [1.19.0] - 2026-11-22
 
 **Le folklore des nations prend corps.**

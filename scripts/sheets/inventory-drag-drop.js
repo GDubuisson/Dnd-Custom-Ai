@@ -3,6 +3,7 @@ import {
   carryingCapacityBonus,
   carriedWeight,
   isOffHandEligible,
+  isUnlearnableLanguage,
   missingRequiredLanguage
 } from "../helpers/rules.js";
 import { DND_CUSTOM } from "../helpers/config.js";
@@ -166,6 +167,10 @@ export function InventoryDragDropMixin(Base) {
         ui.notifications.warn(
           game.i18n.format("DND_CUSTOM.Inventory.SpellWrongClass", { spell: item.name })
         );
+        return null;
+      }
+      if (this.actor.type === "character" && isUnlearnableLanguage(item)) {
+        ui.notifications.warn(game.i18n.format("DND_CUSTOM.Inventory.LanguageNotLearnable", { language: item.name }));
         return null;
       }
       const requiredLanguage = missingRequiredLanguage(item, this.actor.items.contents);
