@@ -104,3 +104,19 @@ export async function grantLanguages(actor, originKey) {
   }
   return toGrant.map((item) => item.name);
 }
+
+/**
+ * Octroie les Sorts nommés par un don glissé à la main (`grantsSpells`, ex. Éclat de Kis), s'ils manquent.
+ * Les Capacités de classe passent par `grantClassContent` ; seuls les dons sans classe sont traités ici.
+ * @returns {Promise<string[]>} noms des Sorts octroyés
+ */
+export async function grantFeatSpells(actor, feature) {
+  if (actor.type !== "character" || feature.type !== "feature" || feature.system.class) return [];
+  const wantedNames = new Set(feature.system.grantsSpells ?? []);
+  if (!wantedNames.size) return [];
+  const ownedNames = new Set(actor.items.contents.map((item) => item.name));
+  const spells = await findClassContentCandidates("spell", "sorts", () => true);
+  const toGrant = spells.filter((item) => wantedNames.has(item.name) && !ownedNames.has(item.name));
+  if (toGrant.length) await actor.createEmbeddedDocuments("Item", toGrant.map((item) => item.toObject()));
+  return toGrant.map((item) => item.name);
+}

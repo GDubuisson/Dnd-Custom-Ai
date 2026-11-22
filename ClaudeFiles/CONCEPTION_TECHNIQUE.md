@@ -732,6 +732,14 @@ natif Foundry) : aucune notion de durée ni de **propriétaire** n'est tracée n
 Rage : le bonus/la résistance dépend de `actor.statuses.has("raging")`, pas de la possession de la
 Capacité "Rage").
 
+- **Dons d'éclat (v1.12.0)** : `FeatureData#abilityChoiceBonus` (1 ou 2) s'additionne dans
+  `deriveAbilities` pour chaque don à `offersAbilityChoice` réglé, sans plafond codé (22 est une règle
+  écrite) ; `FeatureData#repeatable` laisse `_onDropItem` créer un exemplaire de plus au lieu de garder
+  l'existant. Un don sans classe qui a `grantsSpells` octroie ses sorts au dépôt (`grantFeatSpells`,
+  class-content.js) ; s'il a aussi `uses.max > 0`, `#resolveSpellSlotCost` le rend gratuit tant qu'il
+  reste une utilisation, puis repasse aux emplacements (les Capacités de classe qui ont `grantsSpells`
+  restent toujours gratuites). `spellcastingAbilityKey` replie sur le Charisme pour une classe non
+  lanceuse. Éclat de Tirwen lu par nom dans `deriveHitPointsAndDefense`, comme Tenace.
 - **`FeatureData#grantsCondition`/`SpellData#grantsCondition`** (item-data.js, sibling l'un de
   l'autre) : pose un état sur CHAQUE cible actuellement ciblée SANS jet associé (contrairement à
   `appliesCondition`/`save.appliesCondition`, qui dépendent d'un jet de sauvegarde). Câblé côté

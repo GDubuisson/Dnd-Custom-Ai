@@ -172,18 +172,21 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   }
 }
 
-/** Totaux et modificateurs de caractéristiques : Origine, Doué, Athlète, Résilient (et sa maîtrise de sauvegarde). */
+/** Totaux et modificateurs de caractéristiques : Origine, Doué, dons à caractéristique choisie (et maîtrise de Résilient). */
 function deriveAbilities(system, items) {
   const originData = game.dndCustomAi?.origins?.[system.origin];
   const originBonuses = originData?.abilityBonuses ?? {};
   // Don Doué : +1 Charisme.
   const gracefulChaBonus = hasFeature(items, "Doué") ? 1 : 0;
-  // Dons Athlète et Résilient : +1 à la caractéristique choisie, cumulables.
+  // Dons Athlète, Résilient, Marque d'éclat, Résonance (+1) et Éclat absorbé (+2) : bonus à la caractéristique choisie, cumulables.
   const abilityChoiceFeats = items.filter(
     (item) => item.type === "feature" && item.system?.offersAbilityChoice && item.system?.chosenAbility
   );
   for (const key of ABILITY_KEYS) {
-    const featBonus = (key === "cha" ? gracefulChaBonus : 0) + abilityChoiceFeats.filter((item) => item.system.chosenAbility === key).length;
+    const choiceBonus = abilityChoiceFeats
+      .filter((item) => item.system.chosenAbility === key)
+      .reduce((total, item) => total + (item.system.abilityChoiceBonus ?? 1), 0);
+    const featBonus = (key === "cha" ? gracefulChaBonus : 0) + choiceBonus;
     system.abilities[key].total = system.abilities[key].value + (originBonuses[key] ?? 0) + featBonus;
     // Modificateur exposé pour les formules `@abilities.<clé>.mod`.
     system.abilities[key].mod = abilityModifier(system.abilities[key].total);
@@ -211,8 +214,10 @@ function deriveHitPointsAndDefense(system, items) {
   const toughFeatBonus = hasFeature(items, "Tenace") ? 2 * system.attributes.level : 0;
   // Résilience draconique : +1 PV max par niveau.
   const draconicResilienceBonus = hasFeature(items, "Résilience draconique") ? system.attributes.level : 0;
+  // Éclat de Tirwen : +1 PV max par niveau.
+  const tirwenShardBonus = hasFeature(items, "Éclat de Tirwen") ? system.attributes.level : 0;
   system.attributes.hp.max = exhaustionMaxHp(
-    maxHitPoints(hitDie, system.attributes.level, conMod) + toughFeatBonus + draconicResilienceBonus,
+    maxHitPoints(hitDie, system.attributes.level, conMod) + toughFeatBonus + draconicResilienceBonus + tirwenShardBonus,
     system.attributes.exhaustion
   );
 

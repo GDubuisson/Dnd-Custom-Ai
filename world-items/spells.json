@@ -582,5 +582,48 @@
       "damage": { "dice": "4d6", "type": "force" },
       "description": "Vous vous téléportez instantanément, avec jusqu'à un autre créature consentante à 1,50 m de vous, jusqu'à un endroit que vous avez visualisé et qui vous est familier ou clairement visible, à 150 m maximum. Si la destination est occupée ou insuffisante, vous et votre passager subissez chacun 4d6 dégâts de force et êtes déplacés au point inoccupé le plus proche : bouton \"Jet de dégâts\" disponible pour ce cas précis (à ne cliquer que si la destination était effectivement occupée/insuffisante)."
     }
+  },
+  {
+    "name": "Rayon de givre",
+    "type": "spell",
+    "img": "icons/magic/light/beam-impact-deflect-teal.webp",
+    "system": {
+      "classes": ["sorcerer", "wizard"],
+      "level": 0,
+      "details": "1 action, 18 m, Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "attack": true,
+      "damage": { "dice": "1d8", "type": "cold" },
+      "description": "Un rayon glacial d'un blanc bleuté file vers une créature à portée. Effectuez un jet d'attaque à distance de sort contre la cible. En cas de réussite, elle subit 1d8 dégâts de froid et sa vitesse est réduite de 3 m jusqu'au début de votre prochain tour. Les dégâts augmentent de 1d8 aux niveaux 5 (2d8), 11 (3d8) et 17 (4d8)."
+    }
+  },
+  {
+    "name": "Lueurs féeriques",
+    "type": "spell",
+    "img": "icons/magic/light/beam-explosion-pink-purple.webp",
+    "system": {
+      "classes": ["bard", "druid"],
+      "level": 1,
+      "details": "1 action, 18 m, Concentration, jusqu'à 1 minute",
+      "concentration": true,
+      "ritual": false,
+      "save": { "ability": "dex", "halfOnSave": false },
+      "description": "Chaque objet dans un cube de 6 m d'arête à portée est souligné d'une lumière bleue, verte ou violette (au choix). Chaque créature dans la zone au moment du lancer est aussi soulignée si elle rate un jet de sauvegarde de Dextérité. Pendant la durée du sort, les objets et créatures affectés émettent une lumière faible dans un rayon de 3 m. Les jets d'attaque contre une créature ou un objet affecté ont l'avantage si l'attaquant peut le voir, et la créature ou l'objet affecté ne tire aucun bénéfice de l'invisibilité."
+    }
+  },
+  {
+    "name": "Pas brumeux",
+    "type": "spell",
+    "img": "icons/magic/movement/trail-streak-zigzag-teal.webp",
+    "system": {
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "level": 2,
+      "details": "1 action bonus, personnelle, Instantanée",
+      "concentration": false,
+      "ritual": false,
+      "activation": "bonusAction",
+      "description": "Brièvement entouré d'une brume argentée, vous vous téléportez jusqu'à 9 m vers un espace inoccupé que vous pouvez voir."
+    }
   }
 ]

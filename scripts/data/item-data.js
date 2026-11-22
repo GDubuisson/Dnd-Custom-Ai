@@ -263,6 +263,10 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       offersAbilityChoice: new BooleanField({ required: true, initial: false }),
       // Caractéristique choisie, lue par CharacterData.
       chosenAbility: new StringField({ required: false, blank: true, initial: "", choices: ABILITY_KEYS }),
+      // Montant ajouté à la caractéristique choisie (+1 pour Athlète, +2 pour un Éclat absorbé).
+      abilityChoiceBonus: new NumberField({ required: true, integer: true, min: 1, max: 2, initial: 1 }),
+      // Don prenable plusieurs fois : un nouveau glisser crée un exemplaire de plus (Éclat absorbé).
+      repeatable: new BooleanField({ required: true, initial: false }),
       // Magie d'initié : choix d'une classe, de 2 tours de magie et d'1 sort de niveau 1.
       offersSpellChoice: new BooleanField({ required: true, initial: false }),
       // Classe choisie (Magie d'initié).

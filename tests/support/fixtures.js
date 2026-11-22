@@ -15,6 +15,7 @@ export const ORIGINS = loadJson("scripts/data/origins.json");
 export const SPELL_SLOT_TABLES = loadJson("scripts/data/spell-slots.json");
 export const WORLD_SPELLS = loadJson("world-items/spells.json");
 export const WORLD_FEATURES = loadJson("world-items/features.json");
+export const WORLD_FEATS = loadJson("world-items/feats.json");
 export const WORLD_WEAPONS = loadJson("world-items/weapons.json");
 export const WORLD_ARMORS = loadJson("world-items/armors.json");
 export const WORLD_GEAR = loadJson("world-items/gear.json");

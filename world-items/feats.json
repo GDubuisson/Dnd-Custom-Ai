@@ -143,5 +143,212 @@
       "source": "PHB",
       "description": "Don : avantage aux jets d'attaque contre une créature à pied plus petite que votre monture — automatisé (Actor de type Monture ciblé puis bouton \"Monter\", onglet Statistiques) tant que la monture porte une taille inférieure à celle de la cible actuellement ciblée ; ne distingue pas \"à pied\" d'une créature elle-même montée. Vous pouvez rediriger vers vous une attaque visant votre monture, si elle vous a pour seule cible possible : non automatisé (demanderait une vraie interruption du jet de l'attaquant, hors scope). Votre monture réussit automatiquement tout jet de sauvegarde de Dextérité que vous réussissez vous-même : un rappel apparaît sur vos jets de sauvegarde de Dextérité tant que vous êtes monté (aucune sauvegarde n'étant comparée à un DD par ce système, la réussite reste jugée par le MJ, jamais appliquée automatiquement à la monture)."
     }
+  },
+  {
+    "name": "Marque d'éclat",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-rough-green.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "offersAbilityChoice": true,
+      "abilityChoiceBonus": 1,
+      "description": "Des éclats microscopiques de la pierre de Logne logés sous la peau depuis sa rupture : tout porteur d'éclats a ce don. +1 à une caractéristique au choix (à régler sur la fiche de ce don, le bonus s'applique alors automatiquement) ; un porteur peut dépasser 20, jusqu'à 22 au maximum. Sens des éclats : vous percevez la direction d'une pierre encore intacte ou d'un autre porteur d'éclats à portée, sans en connaître la distance exacte ni la nature. La portée dépend de la Résonance, le nombre de pierres brisées dans le monde, par qui que ce soit : 1 pierre, 1 lieue ; 2 pierres, 5 lieues ; 3 pierres, 20 lieues ; 4 pierres, 50 lieues ; 5 pierres ou plus, tout le continent. (MJ : la règle vaut pour tous les porteurs, Ulrich et ses porteurs compris.)"
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Résonance (3 pierres)",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-cluster-teal.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "offersAbilityChoice": true,
+      "abilityChoiceBonus": 1,
+      "description": "Quand 3 pierres ont été brisées dans le monde, par qui que ce soit, l'éclat de chaque porteur s'éveille : +1 à une caractéristique au choix (maximum 22). Le MJ le glisse sur la fiche de chaque porteur. La portée du Sens des éclats suit la Marque d'éclat."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Résonance (5 pierres)",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-cluster-purple.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "offersAbilityChoice": true,
+      "abilityChoiceBonus": 1,
+      "description": "Quand 5 pierres ont été brisées dans le monde, par qui que ce soit, l'éclat de chaque porteur s'éveille encore : +1 à une caractéristique au choix (maximum 22). Le MJ le glisse sur la fiche de chaque porteur."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat absorbé (+2)",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-radiant-teal.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "offersAbilityChoice": true,
+      "abilityChoiceBonus": 2,
+      "repeatable": true,
+      "description": "Récompense d'une pierre brisée par les PJ, ou du pouvoir d'un porteur dispersé, au choix à la place du don d'éclat du site : +2 à une caractéristique au choix (à régler sur la fiche de ce don ; maximum 22 pour un porteur). Se prend une fois par pierre : chaque glisser sur la fiche ajoute un exemplaire."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat de Kis",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-cluster-blue-white.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "grantsSpells": [
+        "Rayon de givre"
+      ],
+      "description": "Don d'éclat (pierre du Désert gelé de Kis), reçu quand les PJ brisent cette pierre ou dispersent le pouvoir d'un porteur qui l'a absorbée ; au choix à la place d'« Éclat absorbé (+2) ». Le froid de Kisaeth vous habite. Résistance aux dégâts de froid (à régler par le MJ dans les résistances de la fiche). Vous ne subissez aucun effet du froid extrême et marchez sur la glace sans difficulté. Vous connaissez le tour de magie Rayon de givre, ajouté à vos sorts avec ce don. Caractéristique d'incantation : celle de votre classe, le Charisme pour une classe sans sorts."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat de Zahir",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-octagon-yellow.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "grantsSpells": [
+        "Pas brumeux"
+      ],
+      "uses": {
+        "max": 1,
+        "value": 1,
+        "recharge": "longRest"
+      },
+      "description": "Don d'éclat (pierre du désert de Zahir), reçu quand les PJ brisent cette pierre ou dispersent le pouvoir d'un porteur qui l'a absorbée ; au choix à la place d'« Éclat absorbé (+2) ». L'espace distordu de Zahir vous obéit un instant. Pas brumeux, ajouté à vos sorts avec ce don, se lance gratuitement une fois par repos long (un lanceur de sorts peut aussi le lancer avec ses emplacements). Vous ne vous perdez jamais : vous savez toujours où est le nord et estimez exactement les distances parcourues, même là où elles mentent. Caractéristique d'incantation : celle de votre classe, le Charisme pour une classe sans sorts."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat de Tirwen",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-large-green.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "description": "Don d'éclat (pierre de l'île de Tirwen), reçu quand les PJ brisent cette pierre ou dispersent le pouvoir d'un porteur qui l'a absorbée ; au choix à la place d'« Éclat absorbé (+2) ». La vie débordante de Tirwen coule en vous. Vos PV maximum augmentent de 1 par niveau (calculé automatiquement). Résistance aux dégâts de poison (à régler par le MJ dans les résistances de la fiche) et avantage aux jets de sauvegarde contre le poison."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat de Velencia",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-round-white.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "grantsSpells": [
+        "Sanctuaire"
+      ],
+      "uses": {
+        "max": 1,
+        "value": 1,
+        "recharge": "longRest"
+      },
+      "description": "Don d'éclat (pierre du souterrain de la Grande Cathédrale de Velencia), reçu quand les PJ brisent cette pierre ou dispersent le pouvoir d'un porteur qui l'a absorbée ; au choix à la place d'« Éclat absorbé (+2) ». Le sceau que les Hiérarques renouvelaient vous protège. Sanctuaire, ajouté à vos sorts avec ce don, se lance gratuitement une fois par repos long (un lanceur de sorts peut aussi le lancer avec ses emplacements). Avantage aux jets de sauvegarde contre les états charmé et effrayé. Caractéristique d'incantation : celle de votre classe, le Charisme pour une classe sans sorts."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
+  },
+  {
+    "name": "Éclat de la Sümpfenmark",
+    "type": "feature",
+    "img": "icons/commodities/gems/gem-faceted-round-black.webp",
+    "system": {
+      "class": "",
+      "subclass": "",
+      "level": 1,
+      "requiresRoll": false,
+      "rollFormula": "",
+      "source": "Campagne",
+      "grantsSpells": [
+        "Lueurs féeriques"
+      ],
+      "uses": {
+        "max": 1,
+        "value": 1,
+        "recharge": "longRest"
+      },
+      "description": "Don d'éclat (pierre du marais de la Sümpfenmark), reçu quand les PJ brisent cette pierre ou dispersent le pouvoir d'un porteur qui l'a absorbée ; au choix à la place d'« Éclat absorbé (+2) ». Les lumières du marais vous suivent. Vision dans le noir sur 18 m (si vous l'avez déjà, sa portée augmente de 18 m). Lueurs féeriques, ajouté à vos sorts avec ce don, se lance gratuitement une fois par repos long (un lanceur de sorts peut aussi le lancer avec ses emplacements). Caractéristique d'incantation : celle de votre classe, le Charisme pour une classe sans sorts."
+    },
+    "flags": {
+      "dnd-custom-ai": {
+        "shard": true
+      }
+    }
   }
 ]

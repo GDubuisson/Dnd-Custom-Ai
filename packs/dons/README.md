@@ -16,6 +16,7 @@ de caractéristiques de son personnage (niveaux définis par `DND_CUSTOM.ability
 ne force pas ce choix ni ne l'automatise (comme pour la Métamagie/les Invocations occultes,
 laissées à convenir avec le MJ), il fournit seulement la liste de Dons à glisser sur la fiche.
 
-Les 10 dons pré-écrits dans `world-items/feats.json` y sont importés **automatiquement au
+Les 10 dons du manuel et les 9 dons d'éclat (dossier « Éclats », récompenses de l'arc des pierres)
+de `world-items/feats.json` y sont importés **automatiquement au
 chargement du monde** (hook `ready`, cf. `scripts/dnd-custom-ai.js` et
 `scripts/helpers/content-import.js`), sans doublon (comparaison par nom) et sans action du MJ.

@@ -28,9 +28,9 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `regional.json` | 74 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
 | `historical.json` | 26 pièces historiques uniques, sans pouvoir ni bonus, dont 5 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
-| `spells.json` | 42 sorts SRD 5e (9 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
+| `spells.json` | 45 sorts SRD 5e (10 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
-| `feats.json` | 10 dons PHB (règle optionnelle, `class`/`subclass` vides — jamais auto-octroyés) | `feature` | Compendium "Dons" |
+| `feats.json` | 10 dons PHB (règle optionnelle, `class`/`subclass` vides — jamais auto-octroyés) et 9 dons d'éclat (récompenses de l'arc des pierres, dossier « Éclats ») | `feature` | Compendium "Dons" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
@@ -102,7 +102,7 @@ donne pas.
 
 ## Note sur les sorts
 
-`spells.json` ne couvre que 42 sorts (9 tours de magie + niveaux 1 à 5) choisis pour être
+`spells.json` ne couvre que 45 sorts (10 tours de magie + niveaux 1 à 5) choisis pour être
 représentatifs, pas la liste complète du SRD 5e (~300 sorts) — complétez-la à la main depuis
 le compendium "Sorts" selon les besoins de votre table. Aucun sort n'est rattaché à une liste
 de classes précise (l'Item Sort est générique) : à vous de dupliquer/filtrer selon qui peut
@@ -251,6 +251,18 @@ comme les Capacités de classe, mais avec `class`/`subclass` vides : `grantClass
 octroie donc jamais automatiquement, ils se glissent toujours à la main depuis ce compendium
 vers l'onglet "Capacités" de la fiche — le MJ et le joueur décident ensemble s'il remplace une
 Amélioration de caractéristiques ou s'ajoute en plus, ce système ne l'impose pas.
+
+**Dons d'éclat** (dossier « Éclats » du compendium, flag `shard`) : récompenses de l'arc des
+pierres, données par le MJ. **Marque d'éclat** pour tout porteur (+1 à une caractéristique, Sens des
+éclats dont la portée suit la Résonance), **Résonance (3 pierres)** et **(5 pierres)** (+1 chacune),
+puis pour chaque pierre brisée par les PJ, au choix, le don d'éclat du site (**Kis**, **Zahir**,
+**Tirwen**, **Velencia**, **Sümpfenmark**) ou **Éclat absorbé (+2)**, seul don prenable plusieurs fois.
+Un porteur peut dépasser 20, jusqu'à 22.
+Les sorts nommés par un don (`grantsSpells` : Rayon de givre, Pas brumeux, Sanctuaire, Lueurs
+féeriques) arrivent sur la fiche avec lui ; avec `uses`, ils se lancent gratuitement une fois par repos
+long (un lanceur peut aussi dépenser un emplacement). Caractéristique d'incantation : celle de la
+classe, ou le Charisme pour une classe sans sorts. Résistances, avantages et vision dans le noir
+restent à régler par le MJ, comme écrit dans chaque don.
 
 ## Note sur les classes, sous-classes, origines, sorts et capacités de classe
 

@@ -319,6 +319,13 @@ Agripper et Bousculer (test opposé, cf. "Combat — règles fonctionnelles" ci-
 caractéristiques (niveaux 4, 8, 12, 16, 19), jamais octroyés automatiquement — Athlète, Doué,
 Sentinelle, Alerte, Tenace, Chanceux, Magie d'initié, Résilient, Guérisseur, Combat monté.
 
+**Dons d'éclat** (dossier « Éclats » du compendium, flag `shard`) : récompenses de l'arc des
+pierres, données par le MJ. **Marque d'éclat** pour tout porteur (+1 à une caractéristique, Sens des
+éclats dont la portée suit la Résonance), **Résonance (3 pierres)** et **(5 pierres)** (+1 chacune),
+puis pour chaque pierre brisée par les PJ, au choix, le don d'éclat du site (**Kis**, **Zahir**,
+**Tirwen**, **Velencia**, **Sümpfenmark**) ou **Éclat absorbé (+2)**, seul don prenable plusieurs fois.
+Un porteur peut dépasser 20, jusqu'à 22.
+
 ## Combat — règles fonctionnelles
 
 - Jet d'attaque comparé automatiquement à la CA de la cible sélectionnée (touché/raté affiché) ;

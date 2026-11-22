@@ -7,6 +7,7 @@ import {
   SPELL_SLOT_TABLES,
   WORLD_SPELLS,
   WORLD_FEATURES,
+  WORLD_FEATS,
   WORLD_WEAPONS,
   WORLD_ARMORS,
   WORLD_GEAR,
@@ -657,5 +658,34 @@ describe("world-items/languages.json — cohérence avec scripts/data/origins.js
   test("aucun nom de langue en double", () => {
     const names = WORLD_LANGUAGES.map((entry) => entry.name);
     assert.equal(new Set(names).size, names.length);
+  });
+});
+
+// Éclats (récompenses des pierres) : dons rangés dans « Éclats », sorts octroyés présents dans le compendium.
+describe("world-items/feats.json — dons d'éclat", () => {
+  const SHARDS = WORLD_FEATS.filter((feat) => feat.flags?.["dnd-custom-ai"]?.shard);
+  const SPELL_NAMES = new Set(WORLD_SPELLS.map((spell) => spell.name));
+
+  test("les 9 dons d'éclat sont présents et marqués", () => {
+    assert.equal(SHARDS.length, 9);
+    assert.ok(SHARDS.some((feat) => feat.name === "Marque d'éclat"));
+  });
+
+  for (const feat of SHARDS) {
+    test(`${feat.name} : don sans classe, sorts octroyés existants, bonus de caractéristique cohérent`, () => {
+      assert.equal(feat.system.class, "");
+      for (const name of feat.system.grantsSpells ?? []) {
+        assert.ok(SPELL_NAMES.has(name), `"${feat.name}" octroie un sort absent de spells.json : "${name}"`);
+      }
+      if (feat.system.abilityChoiceBonus) assert.equal(feat.system.offersAbilityChoice, true);
+      // Un sort à utilisation limitée (une fois par repos long) n'a de sens qu'avec un sort octroyé.
+      if (feat.system.uses?.max) assert.ok(feat.system.grantsSpells?.length, `"${feat.name}" a des utilisations sans sort`);
+    });
+  }
+
+  test("seul Éclat absorbé (+2) se prend plusieurs fois, et donne +2", () => {
+    const repeatable = SHARDS.filter((feat) => feat.system.repeatable);
+    assert.deepEqual(repeatable.map((feat) => feat.name), ["Éclat absorbé (+2)"]);
+    assert.equal(repeatable[0].system.abilityChoiceBonus, 2);
   });
 });

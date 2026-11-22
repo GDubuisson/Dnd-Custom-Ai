@@ -9,6 +9,11 @@ function regionSubfolder(entry) {
   return DND_CUSTOM.regions[entry.flags?.[SYSTEM_ID]?.region];
 }
 
+/** Dons d'éclat (flag `shard`) rangés dans le dossier « Éclats » du compendium des dons. */
+function featFolderKeys(entry) {
+  return entry.flags?.[SYSTEM_ID]?.shard ? ["DND_CUSTOM.Folders.Shards"] : [];
+}
+
 // Fichiers importés dans les Items du monde (rangés par dossier) ; les autres contenus
 // vont directement dans leur compendium (Item, ou Actor pour les adversaires).
 const WORLD_ITEM_FILES = [
@@ -36,7 +41,12 @@ const COMPENDIUM_FILES = [
   { file: "origins.json", pack: `${SYSTEM_ID}.origines` },
   { file: "spells.json", pack: `${SYSTEM_ID}.sorts` },
   { file: "features.json", pack: `${SYSTEM_ID}.capacites` },
-  { file: "feats.json", pack: `${SYSTEM_ID}.dons` },
+  {
+    file: "feats.json",
+    pack: `${SYSTEM_ID}.dons`,
+    folderPath: featFolderKeys,
+    folderLabels: () => ["DND_CUSTOM.Folders.Shards"]
+  },
   { file: "languages.json", pack: `${SYSTEM_ID}.langues` },
   // Compendiums Actor : montures et véhicules, puis le bestiaire (toujours en dernier : les specs
   // attendent la fin de l'import sur le compte des adversaires).

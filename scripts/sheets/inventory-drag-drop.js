@@ -7,6 +7,7 @@ import {
 } from "../helpers/rules.js";
 import { DND_CUSTOM } from "../helpers/config.js";
 import { itemFromTarget } from "../helpers/sheet-items.js";
+import { grantFeatSpells } from "../helpers/class-content.js";
 
 const { DialogV2 } = foundry.applications.api;
 
@@ -189,13 +190,15 @@ export function InventoryDragDropMixin(Base) {
           const addedQuantity = item.system.quantity ?? 1;
           await existing.update({ "system.quantity": (existing.system.quantity ?? 0) + addedQuantity });
           result = existing;
-        } else if (existing && !PHYSICAL_TYPES.has(item.type)) {
-          // Capacité ou Sort déjà possédé : conservé tel quel.
+        } else if (existing && !PHYSICAL_TYPES.has(item.type) && !item.system.repeatable) {
+          // Capacité ou Sort déjà possédé : conservé tel quel (sauf don prenable plusieurs fois).
           result = existing;
         } else {
           // Nouvel objet, ou arme/armure jamais empilée.
           const [created] = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
           result = created;
+          // Don qui accorde des Sorts (Éclats) : ses Sorts arrivent avec lui.
+          if (created?.type === "feature") await grantFeatSpells(this.actor, created);
         }
 
         if (item.actor) await item.delete();

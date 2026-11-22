@@ -23,6 +23,11 @@ import { requestActorUpdate, requestToggleStatusEffect } from "../helpers/actor-
 
 const SYSTEM_ID = "dnd-custom-ai";
 
+/** Caractéristique d'incantation : celle de la classe, ou le Charisme pour une classe non lanceuse (sorts d'Éclat). */
+function spellcastingAbilityKey(classKey) {
+  return DND_CUSTOM.spellcastingAbility[classKey] ?? "cha";
+}
+
 // Capacités d'Incantation rituelle : sorts rituels lancés sans emplacement.
 const RITUAL_CASTING_FEATURES = ["Incantation rituelle (Clerc)", "Incantation rituelle (Druide)"];
 
@@ -154,9 +159,15 @@ export function SpellcastingSheetMixin(Base) {
       // Sort rituel gratuit avec la Capacité Incantation rituelle de la classe.
       const castsAsFreeRitual =
         item.system.ritual && RITUAL_CASTING_FEATURES.some((name) => hasFeature(this.actor.items.contents, name));
-      // Sorts accordés par une Capacité de sous-classe : toujours gratuits.
-      const castsAsFreeSubclassSpell = this.actor.items.some(
+      const grantingFeatures = this.actor.items.filter(
         (feature) => feature.type === "feature" && feature.system.grantsSpells?.has?.(item.name)
+      );
+      // Don à utilisations limitées (Éclats) : gratuit tant qu'il lui reste une utilisation.
+      const isLimitedGrant = (feature) => !feature.system.class && feature.system.uses?.max > 0;
+      // Sorts accordés par une Capacité de sous-classe : toujours gratuits.
+      const castsAsFreeSubclassSpell = grantingFeatures.some((feature) => !isLimitedGrant(feature));
+      const limitedGrantFeature = grantingFeatures.find(
+        (feature) => isLimitedGrant(feature) && feature.system.uses.value > 0
       );
       // Sort de Magie d'initié : gratuit une fois par repos long.
       const initiateFeature = this.actor.items.find(
@@ -165,7 +176,8 @@ export function SpellcastingSheetMixin(Base) {
       const castsAsFreeInitiateSpell = initiateFeature?.system.uses.value > 0;
       // Palier réellement dépensé (bonus de Disciple de la vie).
       let effectiveSpellLevel = item.system.level;
-      if (item.system.level > 0 && !castsAsFreeRitual && !castsAsFreeSubclassSpell && !castsAsFreeInitiateSpell) {
+      const castsForFree = castsAsFreeRitual || castsAsFreeSubclassSpell || castsAsFreeInitiateSpell || !!limitedGrantFeature;
+      if (item.system.level > 0 && !castsForFree) {
         const slots = this.actor.system.spells.slots;
         // Palier exact, ou surclassement choisi ; `null` si impossible ou annulé.
         const chosenLevel = await chooseSpellSlotLevel(item.name, item.system.level, slots);
@@ -178,8 +190,10 @@ export function SpellcastingSheetMixin(Base) {
   
         // Magie sauvage (Ensorceleur) : Surtenance sauvage à chaque emplacement dépensé.
         if (this.actor.system.subclass === "wildSorcery") await rollWildSurge(this.actor, "sorcerer");
-      } else if (castsAsFreeInitiateSpell) {
+      } else if (item.system.level > 0 && castsAsFreeInitiateSpell) {
         await initiateFeature.update({ "system.uses.value": 0 });
+      } else if (item.system.level > 0 && limitedGrantFeature && !castsAsFreeRitual && !castsAsFreeSubclassSpell) {
+        await limitedGrantFeature.update({ "system.uses.value": limitedGrantFeature.system.uses.value - 1 });
       }
       return effectiveSpellLevel;
     }
@@ -200,7 +214,7 @@ export function SpellcastingSheetMixin(Base) {
     /** Jet d'attaque de sort ; un critique est mémorisé pour les dégâts de ce sort. */
     async #castAttackSpell(item, event) {
       const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbility = spellcastingAbilityKey(system.class);
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
       const attackBonus = spellAttackBonus(proficiencyBonus(system.attributes.level), spellAbilityMod);
       const cond = conditionRollEffects(this.actor, "attack");
@@ -217,7 +231,7 @@ export function SpellcastingSheetMixin(Base) {
     /** Sort à sauvegarde : jet automatique de chaque cible contre le DD du lanceur, résultat mémorisé pour les dégâts. */
     async #castSaveSpell(item, event) {
       const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbility = spellcastingAbilityKey(system.class);
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
       const dc = spellSaveDC(proficiencyBonus(system.attributes.level), spellAbilityMod);
       const abilityLabel = game.i18n.localize(DND_CUSTOM.abilities[item.system.save.ability]);
@@ -254,7 +268,7 @@ export function SpellcastingSheetMixin(Base) {
     /** Sort de soin : dés + modificateur d'incantation, avec bouton « Appliquer le soin ». */
     async #castHealSpell(item, effectiveSpellLevel) {
       const system = this.actor.system;
-      const spellAbility = DND_CUSTOM.spellcastingAbility[system.class];
+      const spellAbility = spellcastingAbilityKey(system.class);
       const spellAbilityMod = spellAbility ? abilityModifier(system.abilities[spellAbility].total) : 0;
       // Disciple de la vie : +2 + palier au-delà du 1er, sorts de niveau 1+.
       const disciplineOfLifeBonus =

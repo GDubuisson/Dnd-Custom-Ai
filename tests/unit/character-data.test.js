@@ -119,6 +119,25 @@ describe("CharacterData#prepareDerivedData — caractéristiques", () => {
       assert.equal(fixture.abilities.con.total, 16); // 14 + 1 (Athlète) + 1 (Résilient)
       assert.equal(fixture.saves.con.proficient, true); // toujours accordée par Résilient
     });
+
+    test("Éclats : Éclat absorbé (+2) pris deux fois et Marque d'éclat (+1) -> +5, au-delà de 20", () => {
+      const shard = (name, chosenAbility, abilityChoiceBonus) => ({
+        type: "feature",
+        name,
+        system: { offersAbilityChoice: true, chosenAbility, abilityChoiceBonus }
+      });
+      const fixture = buildCharacterFixture({
+        abilities: { str: { value: 17, total: 0 } },
+        items: [
+          shard("Marque d'éclat", "str", 1),
+          shard("Éclat absorbé (+2)", "str", 2),
+          shard("Éclat absorbé (+2)", "str", 2)
+        ]
+      });
+      prepare(fixture);
+      assert.equal(fixture.abilities.str.total, 22);
+      assert.equal(fixture.abilities.str.mod, 6);
+    });
   });
 });
 
@@ -145,6 +164,19 @@ describe("CharacterData#prepareDerivedData — PV max", () => {
     });
     prepare(fixture);
     assert.equal(fixture.attributes.hp.max, 6); // floor(12/2)
+  });
+
+  describe("Éclat de Tirwen — +1 PV max par niveau, appliqué automatiquement", () => {
+    test("niveau 5 -> +5 PV max", () => {
+      const fixture = buildCharacterFixture({
+        class: "fighter",
+        attributes: { level: 5 },
+        abilities: { con: { value: 14, total: 14 } },
+        items: [{ type: "feature", name: "Éclat de Tirwen" }]
+      });
+      prepare(fixture);
+      assert.equal(fixture.attributes.hp.max, 49); // 44 (base) + 1×5 (Éclat de Tirwen)
+    });
   });
 
   describe("Don 'Tenace' — +2 PV max par niveau, appliqué automatiquement", () => {

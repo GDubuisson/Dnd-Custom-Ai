@@ -309,6 +309,17 @@ Implémenté dans `cypress/e2e/combat-criticals.cy.js`. Écart volontaire au RAW
 le SRD de base ne donne cette règle qu'aux jets d'attaque (et aux sauvegardes de mort, déjà
 gérées séparément) — étendue ici aux sauvegardes normales, sur demande explicite.
 
+## 18. Dons d'éclat (`feats.json`, flag `shard`)
+
+| ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
+|---|---|---|---|---|---|
+| T-SHARD-001 | Rangement du compendium Dons | P2 | E2E | Ouvrir le compendium « Dons » après l'import | Les 9 dons d'éclat dans « Éclats », les dons du manuel hors dossier |
+| T-SHARD-002 | Sort d'éclat gratuit une fois | P1 | E2E | Glisser Éclat de Zahir sur un Guerrier, lancer Pas brumeux deux fois | Sort octroyé au dépôt ; 1er lancer gratuit (utilisation consommée), 2e refusé faute d'emplacement |
+| T-SHARD-003 | Éclat absorbé cumulable | P1 | E2E | Glisser Marque d'éclat puis deux fois Éclat absorbé (+2), choisir Force | Trois dons sur la fiche, Force +5 |
+| T-SHARD-004 | PV de l'Éclat de Tirwen | P2 | E2E | Glisser Éclat de Tirwen | PV max + niveau |
+
+Implémenté dans `cypress/e2e/shard-feats.cy.js`.
+
 ---
 
 ## Hors scope (rappel, cf. `tests/README.md` et mémoire projet)
