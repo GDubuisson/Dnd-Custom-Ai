@@ -28,7 +28,7 @@ Les documents joueurs présentent cette histoire comme parfaitement ordinaire (d
 - **Chaque pierre a une portée.** Le Scellement a vidé de ses puissances tout ce qui se trouvait dans la portée d'une des six pierres, c'est-à-dire tout le monde habité. Ce qui était hors de portée y a échappé (voir « Le Kraken » ci-dessous).
 - Dans la portée des pierres, la magie résiduelle est ce qui **fuit** d'elles. C'est pourquoi les rituels sont possibles, longs et faibles.
 - Plus on est près d'une pierre, plus les rituels réussissent. C'est l'explication de la « superstition de métier » des ritualistes, des registres réservés de la Maison des Cent Portes, et des champs que les guildes lucentiennes achètent à prix d'or.
-- Les grâces cléricales sont réelles mais infimes. Elles ne viennent pas de l'Unique, qui n'existe pas au sens où la Foi l'entend.
+- Les grâces cléricales sont réelles mais infimes. Elles ne viennent pas de l'Unique, qui n'existe pas au sens où la Foi l'entend : les prières tirent sur le peu de magie qui fuit de la pierre de Velencia, et cette magie passe par Estevan, qui bride la puissance (§16).
 - Un site de pierre présente des anomalies locales : faune absente ou aberrante, désorientation, perte de repères, sons, comportement animal anormal.
 - **Chaque pierre brisée** libère un peu de ce qu'elle contenait : un peu de magie, un peu de divin, un peu de démoniaque. Le retour se répand depuis le site brisé, et s'ajoute à chaque nouvelle rupture.
 - **À mesure que la magie revient, tout le monde recouvre peu à peu des pouvoirs** : en jeu, les PNJ gagnent des classes et des capacités. Les **porteurs d'éclats**, ceux qui ont des éclats d'une pierre sous la peau, restent les plus puissants (§13).
@@ -46,7 +46,7 @@ Les **profondeurs du centre de la Mer intérieure** sont hors de portée des six
 | 1 | **Nord-ouest de la Forêt de Logne** (Fleuraine), au-delà de Sylvecourt et Logneval | Des communautés de bûcherons sous chartes royales, hors seigneurie, présentées comme un problème fiscal. La Dame de Logne, parmi d'autres légendes. | Pierre. Les communautés locales sont des gardiens dégénérés qui ne savent plus ce qu'ils gardent — les chartes sont le vestige juridique de leur charge. La zone (environ 40 lieues²) n'a jamais été relevée : sur la carte d'Éloi, elle est figurée en forêt comme le reste, sans un nom ni un chemin, et seuls ses carnets de relevé la marquent « non relevé ». Aucun document joueur ne la signale. |
 | 2 | **Nord-est du Désert gelé de Kis** | Plaine vide, gibier presque absent, guides qui ne dépassent pas les bordures. Les Passwachten sont présentés comme gardes des mines et des cols, maintenus par fierté et par marchandage politique. | Pierre. Le Désert gelé est *le résultat* du Scellement, non son décor : Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée (§12). Les guides d'Eisengrund savent que les chiens refusent d'avancer dans le quart nord-est ; ce n'est écrit nulle part. |
 | 3 | **Marais de Sümpfenmark** (Altenmark), au-delà du Schilfbach | Coutumes sümpfer parmi d'autres folklores, *stille Stellen* tenues pour des fondrières, disparitions présentées comme des accidents de tourbière ordinaires. | Pierre. Les coutumes sümpfer (ne pas donner son nom, ne pas désigner les lumières) sont des protections réelles devenues folklore. Le rituel y est interdit par une ordonnance du Moorvogt, absente des documents joueurs, à découvrir sur place. Hartmut le Sourd a annexé la marche en 341 parce qu'il *savait* quelque chose ; la tourbe était un prétexte. |
-| 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre. Estevan a prêché *là* parce qu'il en subissait l'influence. La cathédrale a été bâtie **autour** d'une structure préexistante. La veille nocturne est le moment où le Hiérarque renouvelle le sceau. |
+| 4 | **Souterrain de la Grande Cathédrale de Velencia** | Le tombeau muré du prophète, jamais rouvert. La nuit de veille du Hiérarque à son avènement. | Pierre, dans une pièce souterraine aux murs d'avant le Scellement. Estevan était l'un des deux sages de cette pierre : il est resté en vie sciemment, a fondé la Foi, puis s'est enfermé avec elle ; il y est encore, végétatif (§16). La cathédrale a été bâtie **autour** de la pièce. Pendant sa nuit de veille, le Hiérarque « s'harmonise avec l'Unique » : il communie en réalité avec Estevan. |
 | 5 | **Désert de Zahir** (au-delà de Bir Azraq et Ramlah) | Désert sans intérêt, trois expéditions dont les relevés dorment aux archives. Les caravaniers y annoncent leur nom, comme devant tout lieu vide. | Pierre, au cœur d'un palais invisible depuis le désert, et fondue avec ses deux sages devenus un seul être mort-vivant (§15). Distorsion spatiale résiduelle. Les relevés contradictoires des expéditions de 671, 744 et 858 sont **tous les trois exacts**. Les guides de Bir Azraq disent, autour du feu, que les distances ne correspondent pas au temps de marche et que les étoiles ne sont pas à leur place ; ce n'est écrit nulle part. |
 | 6 | **Île de Tirwen** | Faune hardie, plantes toxiques, trois colonisations abandonnées. Présentée parmi d'autres îles sans intérêt. | Pierre. Fuite magique diffuse et continue affectant le vivant depuis mille ans. |
 
@@ -91,7 +91,7 @@ Aucun document joueur ne mentionne le Scellement, les sages, les pierres, ou l'e
 | **Layla bint Amir** (Qasirah, née en 843) | Les tables de Zaynab ne concordent pas avec les traditions orales. Elle en déduit qu'il manque du temps. | Ses collègues considèrent que ce sont les traditions orales qui sont fausses. Elle n'est plus publiée depuis 881. On la traite comme une excentrique douée. Elle écrit au Cercle une lettre par saison ; on lui a répondu deux fois en six ans. **C'est la « folle » du corpus.** | **Aucune.** À introduire en jeu. |
 | **Maître Éloi de Montclair** (Saint-Lys) | Deux zones « non relevées » dans ses carnets, qu'il a figurées sur la carte sans y porter ni nom ni chemin. Il a constaté que le nord-ouest de Logne est infranchissable, et pas seulement non relevé. Il a lu les rapports de Tirwen 704. | Il ne conclut rien publiquement. Il refuse d'inventer, ce qui passe pour de la maniaquerie. Il répond à Layla par prudence. | Figure du doc 01, présentée comme un cartographe rigoureux. Les zones non relevées ne sont pas mentionnées. |
 | **Sœur Amadea de Monteluz** (Velencia) | Archiviste en chef. Elle a trouvé, dans les plans de fondation de 288, que le chantier a **contourné** une structure existante. Elle a vu la description originale de l'appareil du mur du tombeau : personne ne sait tailler ainsi. | Elle a fait fermer trois salles d'archives en janvier « pour travaux » qui n'ont pas commencé. Elle n'a rien publié en vingt-trois ans. Elle protège l'institution, non la vérité. | Une ligne dans le doc 07 (sa charge). La fermeture des salles est à révéler en jeu. |
-| **Hiérarque Anselmo IX** | Amadea lui a parlé une fois, en 885. Il a écouté et n'a rien dit. | Il a soixante-treize ans, il est malade, et il ne voit aucun bénéfice à ouvrir ce dossier. | Doc 07. La vacance du siège est publiquement attribuée aux calculs autour de la canonisation d'Inés ; le vrai motif reste à la discrétion du MJ. |
+| **Hiérarque Anselmo IX** | Amadea lui a parlé une fois, en 885. Il a écouté et n'a rien dit. La nuit de son avènement, en 869, il a reçu devant le mur des visions qu'il n'a jamais su lire (§16). | Il a soixante-treize ans, il est malade, et il ne voit aucun bénéfice à ouvrir ce dossier. | Doc 07. La vacance du siège est publiquement attribuée aux calculs autour de la canonisation d'Inés ; le vrai motif reste à la discrétion du MJ. |
 | **La Maison des Cent Portes** | Les registres de rituels : la liste des sites où les rituels réussissent mieux. | Traitée comme un secret **commercial**, non comme une énigme. Personne n'a fait le lien avec autre chose. Les guildes lucentiennes offrent des fortunes pour l'obtenir. | Doc 06, noyée parmi d'autres fonds réservés (relevés hydrauliques, cartes de la Passe). |
 | **Les guides d'Eisengrund et de Bir Azraq** | Le refus des chiens dans le quart nord-est de Kis ; les distances et les étoiles fausses au Zahir. | Ils n'écrivent pas et n'en parlent qu'entre eux, ou à qui paie le voyage. | **Aucune.** À recueillir en jeu. |
 | **Les anciens de Sümpfenmark** | Rien de conscient. Des interdits transmis, efficaces, dont ils ignorent l'objet. | Ils répondent « ce sont de vieilles bêtises » à toute question et respectent scrupuleusement les règles. | Doc 02, parmi le folklore des autres marches. |
@@ -214,7 +214,7 @@ Dans les deux cas : **Serafina Aldobrandi vient d'une maison d'assurance maritim
 
 **Niveau moyen — la lettre de Layla.** Layla bint Amir cherche quelqu'un pour porter un dossier à Saint-Lys, en main propre, sans passer par les canaux de la Maison. Le dossier est incompréhensible pour les PJ. Plusieurs personnes voudraient qu'il n'arrive pas.
 
-**Haut niveau — la Crypte.** Anselmo IX se meurt. Le Collège n'est pas au complet. Sœur Amadea cherche à faire ouvrir le tombeau avant qu'un nouveau Hiérarque ne renouvelle le sceau lors de sa nuit de veille. Valdera veut sa canonisation. L'Ordre de la Flamme est à un jour et demi de marche, à Cortelba.
+**Haut niveau — la Crypte.** Anselmo IX se meurt. Le Collège n'est pas au complet. Sœur Amadea cherche à faire ouvrir le tombeau avant qu'un nouveau Hiérarque ne passe sa nuit de veille devant le mur. Valdera veut sa canonisation. L'Ordre de la Flamme est à un jour et demi de marche, à Cortelba.
 
 **Politique, sans surnaturel.** Le renouvellement de la Trêve de la Passe, la marche orientale de Fleuraine autour de Bellerive, l'accusation ravenmooroise contre Vespera. Trois crises qui peuvent occuper une campagne entière sans jamais approcher l'histoire cachée.
 
@@ -239,7 +239,7 @@ Dans les deux cas : **Serafina Aldobrandi vient d'une maison d'assurance maritim
 - **Lucentia et l'Altenmark** ne sont reliés que par la Grande Route du Nord (Vespera, Porto Vero, Bellerive, Grenzfestung) ; Valdoro est au bout de sa route.
 - **Valdera et Azhar n'ont pas de frontière terrestre.** Ils ne se touchent qu'à la Passe, le bras de mer de Poerto del Robis (« la Passe » est un nom commun, pas un toponyme). Les Montagnes de Greyspine séparent Ravenmoor d'Azhar. Azhar n'a jamais été l'agresseur.
 - **La Mer intérieure ne se traverse pas.** Le cabotage en vue de côte est ordinaire ; couper au large est mortel, à cause des courants que crée le Kraken endormi (§1). Aucune liaison maritime entre le nord et le sud du monde connu. Tirwen n'est accessible que par le chapelet d'îlots du sud-ouest fleurainais, quelques semaines par an.
-- Il n'existe aucun écrit antérieur à l'an 0. Le *Premier Codex* est le plus ancien texte du monde, et sa première phrase est du scribe, non du prophète.
+- Il n'existe aucun écrit antérieur à l'an 0. Le *Premier Codex* est le plus ancien texte du monde, et sa première phrase est du scribe, non du prophète. Estevan savait écrire l'écriture d'avant le Scellement ; il a feint d'être illettré pour que ses disciples en inventent une autre (§16).
 - Les ruines trouvées dans les campagnes sont attribuées aux Années Muettes par tout le monde. Elles sont bien plus anciennes.
 
 ---
@@ -422,3 +422,37 @@ Le palais, au centre du désert, n'est pas visible : mirages et espace replié. 
 - **Mauvaise fin** : le porteur prend la pierre et rejoint Ulrich, qui l'aspire et prend la distorsion : il peut apparaître presque où il veut. Le sage meurt sans rien révéler.
 - **Rattraper la mauvaise fin** : arrêter le porteur avant qu'il rejoigne Ulrich ; il traverse un désert qui ment encore, alors que les PJ gardent leur direction.
 - En option, la distorsion libérée **déborde** sur les routes de Bir Azraq et de Ramlah, et le commerce d'Azhar vacille.
+
+---
+
+## 16. Estevan, celui qui veille sous Velencia
+
+### Ce qui s'est passé
+
+Les deux sages de la pierre de Velencia l'ont scellée dans une pièce souterraine aux murs d'avant le Scellement, si solides que personne ne sait plus les tailler. L'un est mort ce jour-là. L'autre, **Estevan**, est resté en vie **sciemment** : c'était voulu.
+
+Il a vécu en berger sur la colline, au-dessus de la pièce, et il a longtemps réfléchi avant de fonder la Foi. Il savait lire et écrire l'écriture d'avant ; il s'est fait passer pour illettré pour que ses disciples en inventent une autre, et la phrase du scribe, *« Nous écrivons parce que nous avons appris à écrire »*, le dit sans le dire. La Faute, « vouloir prendre ce qui doit être reçu », est la doctrine qui garde les pierres ; « le monde est sobre par volonté » est le Scellement présenté comme une grâce ; et le nombre du Collège des Douze vient de lui.
+
+Il savait aussi ouvrir la pièce. En l'an 17, il s'y est enfermé avec la pierre ; on l'a cru mort, ou « rappelé auprès de l'Unique », et ses disciples ont fait du mur fermé son tombeau. C'est ce que dit le doc 07, et ce que sœur Amadea a entrevu dans les plans de 288 et dans la description de l'appareil du mur.
+
+### Ce qu'il est devenu
+
+Il y est encore, dans un état proche du coma, à côté de la pierre. Chaque nouveau Hiérarque passe la nuit de son avènement seul devant le mur pour « s'harmoniser avec l'Unique » : il communie en réalité avec Estevan, et c'est ce qui garde à celui-ci une forme de conscience et lui a épargné la folie du sage du Zahir (§15). Estevan envoie au Hiérarque des visions pour guider l'Église selon l'enseignement qu'il voulait donner ; au fil des siècles, elles sont devenues de plus en plus cryptiques. Les Hiérarques ne savent pas qu'il vit.
+
+### Les prières bridées
+
+Quand les prêtres et les fidèles prient, ils tirent sans le savoir sur le peu de magie qui fuit de la pierre. Elle passe par Estevan, qui bride la puissance : d'où des miracles minuscules, gratuits et rares. À mesure que les pierres tombent, la parole des vrais dieux et démons revient. L'un d'eux peut se faire passer pour l'Unique, et Estevan, trop faible, n'y peut rien.
+
+### Près du mur
+
+Les porteurs d'éclats reçoivent près du mur des messages psychiques et peuvent lui répondre par ce biais, comme dans un rêve, toujours de manière énigmatique. On ne le convainc pas : il a vu ce qu'a amené la magie avant le Scellement, il a entendu des prières folles pendant des siècles, et il ne croit plus à une fin heureuse. Contre quiconque veut libérer la magie, PJ comme bande d'Ulrich, il envoie des visions du chaos d'avant, ou des visions d'horreur plus ou moins mensongères.
+
+Le lieu est aussi le sanctuaire suprême de l'Église, gardé en conséquence : gardes d'apparat, grilles, pièges. Le Saint-siège interdit toute troupe étrangère sur son territoire ; la bande n'y entre qu'en petit nombre.
+
+### Les fins
+
+- **Le sceau tient** : les PJ défendent la crypte et repartent sans briser la pierre. Estevan continue de veiller, les prières restent bridées. Pas d'éclats ; Ulrich sait désormais où est la pierre.
+- **Bonne fin** : les PJ brisent la pierre contre la volonté d'Estevan. Il tombe en poussière à l'instant et disparaît, sans un mot. Le pouvoir se disperse en éclats dans tous les présents (§13). Les prières ne sont plus bridées : les grâces grandissent avec le retour de la magie.
+- **Mauvaise fin** : le porteur, ou Ulrich en personne, prend la pierre. Estevan tombe en poussière sans rien transmettre. Ulrich prend le sceau : il peut contrer la magie et bannir. Il ne devient pas le passage des prières, qui ne sont plus bridées par personne.
+- **Rattraper la mauvaise fin** : arrêter le porteur avant qu'il quitte le Saint-siège. Si Ulrich est venu lui-même, il aspire la pierre sur place, et il n'y a rien à rattraper.
+- En option, **le sacrilège** : quel qu'en soit l'auteur, l'Église répond, par l'interdit, par les Ordres de Ferveur ou par la Flamme de Cortelba, au choix du MJ.
