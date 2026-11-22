@@ -502,3 +502,29 @@ L'ancien monde avait d'autres peuples (§1). Ils reviennent eux aussi, progressi
 - **D'autres** viendront plus tard, à définir. Les dragons restent hors de la campagne.
 
 Leurs langues (gobelin, kobold, orc, saurien, elfique ancien) naissent ou reviennent avec eux ; aucun humain ne peut les apprendre.
+
+---
+
+## 18. Les humains face au retour
+
+Les humains du continent réagissent à ce qui revient, mais jamais d'un coup : le monde ne bascule pas plus vite que les PJ ne peuvent agir. Ce sont des principes, pas des événements ; le MJ décide quand une affaire locale devient régionale.
+
+- **Local d'abord.** Chaque incident commence isolé, expliqué avec ce qu'on connaît (des loups, des brigands, une fièvre, un fou). La première réaction est l'incrédulité polie (§3).
+- **Chacun avec ses outils**, à son rythme ; personne n'a d'armée prête contre des êtres qu'il ne croyait pas réels.
+- **Des accroches, pas des catastrophes** : chaque nouveauté arrive d'abord à l'échelle des PJ (une vallée, un village, une route).
+- **Le rythme** : rumeurs et primes en phases 1-2 ; milices, lisières vidées, réfugiés et escortes en phase 3 ; la politique nationale en phase 4 ; tout le continent en phase 5, qui a eu des années pour s'adapter.
+- **Les freins** : aucune ville ne tombe et aucun royaume n'est menacé avant la phase 4.
+
+### Par nation
+
+- **Fleuraine** : L'Aube Blanche enquête, le Parlement des Bannières délibère, et rien ne bouge tant que la marche orientale n'a pas juré : les seigneurs de Bellerive se défendent seuls, comme toujours. Si les PJ règlent l'affaire de Bellerive, le royaume retrouve son unité et peut agir d'une seule voix. (L'argent qu'Ulrich prête à Bellerive pour que le délai dure en fait aussi une affaire d'Ulrich.)
+- **Altenmark** : Les Passwachten ferment un col ou doublent l'appel, chaque marche se débrouille, et la Diète discute longtemps avant de lever qui que ce soit. La Sümpfenmark, habituée aux interdits, s'adapte la première.
+- **Lucentia** : Les Compagnies de la Route font payer l'escorte, les assurances renchérissent, et les guildes cherchent à tirer profit de tout ce qui revient, magie comprise.
+- **Ravenmoor** : Les Veilleurs escortent, ferment les routes forestières et ouvrent un registre. Le royaume note, juge et budgète : il réagit tard, mais en ordre.
+- **Valdera** : L'Ordre de la Flamme y voit une croisade et se met en marche vite, parfois trop. Le moindre gnoll près de la Passe devient un argument contre la Trêve.
+- **Azhar** : On double les gardes des caravanes, la Maison des Cent Portes enquête et tient registre, et l'on cherche d'abord à savoir avant de frapper.
+- **L'Église** : Elle y voit la Faute : vouloir prendre ce qui doit être reçu. Ceux qui ont des pouvoirs, PJ compris, deviennent suspects, et les prêtres dont les grâces grandissent ne savent pas comment l'annoncer.
+
+### Tensions à exploiter
+
+Les gnolls d'Azhar donnent à Valdera un prétexte pour rompre la Trêve de la Passe ; les guildes lucentiennes voudraient acheter la magie, et ceux qui en ont ; l'Église se méfie des porteurs d'éclats.
