@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 96 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 98 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 97 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 98 Actors `npc` prêts à
 glisser sur une scène.
 
-97 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+98 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -197,8 +197,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   qui y survivent ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken affaibli qui
   approche des côtes, dans la portée des pierres.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
-  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
-  arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
+  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
+  arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
   crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
   tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
   tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
@@ -215,7 +215,7 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
   profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
-Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, les paliers d'Ulrich et le
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich et le
 Capitaine pirate sont dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et

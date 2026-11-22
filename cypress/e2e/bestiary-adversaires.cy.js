@@ -79,6 +79,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Kraken (affaibli près des côtes)": [phase1, label("Bestiary.Habitats.coast")],
         "Grand-loup de Logne": [logne, before],
         "Arbre éveillé": [logne, after],
+        "Jeune arbre éveillé": [logne, after],
         "Crapaud des fondrières": [sumpfenmark, before],
         "Moorlicht": [sumpfenmark, after],
         "Mammouth de Kis": [kis, before],

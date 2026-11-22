@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-96 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+98 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -18,8 +18,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   endormi au fond ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken
   affaibli qui approche des côtes.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
-  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
-  arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
+  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
+  arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
   crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
   tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
   tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
@@ -31,9 +31,13 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   sur le niveau des PJ (FP 5, 8, 11, 14 et 17, une pierre absorbée), et chaque pierre de plus qu'il
   absorbe ajoute un gabarit cumulable (environ +3 FP),
   chaque fragment de pierre un plus petit (environ +1 FP), tous deux décrits sur ses fiches.
+- **Capitaine pirate** (côtes de la Mer intérieure, phase 0) : chef des flottes, ancien associé
+  d'Ulrich parti fâché vers 877, lié à lui par un accord d'argent (Ulrich recèle le butin, la
+  piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
+  profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
-Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli et les paliers d'Ulrich sont
-dérivés, FP recalculé).
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich et le
+Capitaine pirate sont dérivés, FP recalculé).
 
 Les dossiers sont créés par l'import d'après les flags `phase` et `habitat` de chaque entrée
 (`scripts/helpers/bestiary.js`) ; une créature déjà présente sans dossier, ou rangée selon un ancien

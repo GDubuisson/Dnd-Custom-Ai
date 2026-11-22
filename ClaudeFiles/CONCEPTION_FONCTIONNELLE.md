@@ -210,7 +210,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-97 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+98 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -221,8 +221,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   qui y survivent ; ses courants rendent la traversée suicidaire. Phase 1 : le Kraken affaibli qui
   approche des côtes, dans la portée des pierres.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
-  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres et
-  arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
+  que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
+  arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
   crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
   tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
   tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
@@ -239,7 +239,7 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   piraterie pousse le commerce vers la Grande Route du Nord que sa pègre rançonne). Aucun pouvoir ;
   profil de boss duelliste dérivé du Gladiateur SRD (FP 5), butin qui mène vers Ulrich.
 
-Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, les paliers d'Ulrich et le
+Toutes reprennent exactement un bloc SRD 5.1 (seuls le Kraken affaibli, le Jeune arbre éveillé, les paliers d'Ulrich et le
 Capitaine pirate sont dérivés, FP recalculé).
 
 Rangement voulu par le MJ (arc de campagne) : dès la première session les PJ brisent la pierre de la

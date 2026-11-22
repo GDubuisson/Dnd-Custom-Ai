@@ -3115,6 +3115,37 @@
     }
   },
   {
+    "name": "Jeune arbre éveillé",
+    "type": "npc",
+    "img": "icons/environment/wilderness/tree-ash.webp",
+    "system": {
+      "creatureType": "plant",
+      "challengeRating": "1/2",
+      "size": "g",
+      "abilities": {
+        "str": { "mod": 3 }, "dex": { "mod": -2 }, "con": { "mod": 1 },
+        "int": { "mod": 0 }, "wis": { "mod": 0 }, "cha": { "mod": -2 }
+      },
+      "attributes": { "hp": { "value": 26, "max": 26, "temp": 0 }, "ac": { "value": 13 }, "speed": 6 },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Coup", "ability": "str", "bonus": 2, "magic": false,
+          "damage": { "dice": "1d8", "bonus": 0, "type": "bludgeoning" },
+          "secondaryDamage": { "dice": "", "type": "" }
+        }
+      ],
+      "damageResistances": ["bludgeoning", "piercing"],
+      "damageVulnerabilities": ["fire"],
+      "specialAbilities": "Fausse apparence : immobile, impossible à distinguer d'un arbre ordinaire.",
+      "particularity": "Un rejet poussé sur la souche d'un arbre abattu, à peine plus haut qu'un homme, que les bûcherons laissent grandir par coutume. (MJ : éveillé par la Dame de Logne avec les autres arbres au moment de la rupture ; adversaire du premier combat, en sortant du temple. Pour 4 PJ niv. 1 : seul, facile ; avec 2 à 4 arbustes éveillés, moyen ; avec un loup gris, difficile. Dérivé de l'Arbre éveillé SRD : taille G, 26 PV, coup 1d8+3 ; FP recalculé par la méthode de création de monstres : PV effectifs 39 avec résistances → FP défensif 1/4 ; 7,5 dégâts par round à +5 → FP offensif 1 ; moyenne 1/2.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": { "phase": 1, "habitat": "siteLogne" }
+    }
+  },
+  {
     "name": "Lutin de Logne",
     "type": "npc",
     "img": "icons/creatures/magical/fae-fairy-winged-glowing-green.webp",
