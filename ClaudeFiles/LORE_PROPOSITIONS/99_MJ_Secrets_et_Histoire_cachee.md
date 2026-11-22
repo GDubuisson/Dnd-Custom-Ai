@@ -97,7 +97,7 @@ Aucun document joueur ne mentionne le Scellement, les sages, les pierres, ou l'e
 | **Les anciens de Sümpfenmark** | Rien de conscient. Des interdits transmis, efficaces, dont ils ignorent l'objet. | Ils répondent « ce sont de vieilles bêtises » à toute question et respectent scrupuleusement les règles. | Doc 02, parmi le folklore des autres marches. |
 | **Les bûcherons de Logne** | De même : des droits, des usages, une frontière que l'on ne franchit pas. | Ils ne relèvent de personne et ne parlent à personne. | Doc 01, sous l'angle fiscal. |
 | **Ulrich** (Altenburg, né en 845) | Les papiers personnels d'Hartmut le Sourd : il sait qu'il y a quelque chose de puissant au-delà du Schilfbach, et il le cherche. Il ignore ce que c'est. | Il ne veut pas comprendre, il veut le pouvoir, et il ne partage rien. Voir §11. | **Aucune.** À introduire en jeu. |
-| **Le capitaine des pirates** | Rien sur les pierres. Il sait ce que vaut l'accord avec Ulrich, et ce qu'Ulrich vaut. | Il ne parle pas de ses associés, et Ulrich ne parle pas de lui. Voir §6. | Doc 03, par les flottes, sans nom ni visage. |
+| **Le capitaine des pirates** | Rien sur les pierres, mais il sait où est le site de Tirwen, sans savoir ce que c'est, et n'y entre pas. Il sait ce que vaut l'accord avec Ulrich, et ce qu'Ulrich vaut. | Il ne parle pas de ses associés, et Ulrich ne parle pas de lui. Voir §6. | Doc 03, par les flottes, sans nom ni visage. |
 | **Le Moorvogt de Moorburg** | Rien de ce que contenaient les papiers : il a remis le coffre sans l'ouvrir. | Il doit trop d'argent à la pègre d'Ulrich, et il a peur. | Doc 02, par son rapport non rendu. |
 
 **Règle de table :** si un joueur formule la bonne hypothèse à voix haute devant un PNJ, la réaction par défaut n'est pas la panique, c'est l'incrédulité polie. Un savant lui expliquera pourquoi c'est impossible, et il aura de bons arguments.
@@ -180,7 +180,7 @@ Guerre purement politique, **sans aucun lien avec l'histoire cachée**.
 
 Le seul fil rouge du présent. Les faits : premières flottes en 874, recrudescence depuis 884, flottes organisées, connaissance des calendriers de départ, base inconnue, trois campagnes de répression infructueuses armées à Castelmare, accusation ravenmooroise contre trois Maisons lucentiennes sans preuve.
 
-Les pirates n'ont **aucune capacité extraordinaire**. Ils cabotent comme tout le monde, mais ils sont plus téméraires que les autres : ils naviguent plus loin du rivage, de nuit et par plus mauvais temps. Ils y perdent des navires, et ils l'acceptent.
+Les pirates n'ont **aucun pouvoir conscient** ; seule leur vigueur doit quelque chose à l'île où ils hivernent (voir « La base de Tirwen »). Ils cabotent comme tout le monde, mais ils sont plus téméraires que les autres : ils naviguent plus loin du rivage, de nuit et par plus mauvais temps. Ils y perdent des navires, et ils l'acceptent.
 
 ### Le capitaine et Ulrich
 
@@ -190,13 +190,13 @@ Les deux hommes ne s'aiment pas, mais **un accord d'argent les lie**. Ulrich rec
 
 Ce que cela donne en jeu : remonter la filière du recel mène des pirates à Ulrich, ou d'Ulrich aux pirates ; la rancune entre les deux hommes est une prise pour les PJ, qui peuvent s'allier un temps à l'un contre l'autre ; et l'accord peut se rompre si l'un devient trop puissant.
 
-Le capitaine n'a **aucune capacité extraordinaire** : il est simplement le plus téméraire de tous. Il ignore tout des pierres. Fiche de jeu : « Capitaine pirate », compendium « Adversaires », côtes de la Mer intérieure, phase 0.
+Le capitaine n'a **aucun pouvoir conscient** : il est simplement le plus téméraire de tous. Il ignore tout des pierres. Fiche de jeu : « Capitaine pirate », compendium « Adversaires », côtes de la Mer intérieure, phase 0.
 
-Deux pistes possibles pour sa base et ses appuis, à trancher selon la campagne. Le lien avec Ulrich vaut dans les deux cas.
+### La base de Tirwen
 
-**A — Mercantile (la plus simple).** Des Maisons lucentiennes en profitent, et certaines sont corrompues par les pirates ou par Ulrich. Chaque attaque renchérit la route terrestre. Aucun lien avec l'histoire cachée. Bonne intrigue politique, pas de surnaturel.
+Les flottes hivernent à **Tirwen**, le seul lieu que plus personne ne visite : c'est le capitaine qui y a établi la base, dans une anse du nord. La piraterie est le financement, non le but. Sur le continent, des **Maisons lucentiennes** profitent de la piraterie, et certaines sont corrompues par les pirates ou par Ulrich : chaque attaque renchérit la route terrestre.
 
-**B — Tirwen (recommandée).** Les flottes hivernent à Tirwen, le seul lieu que plus personne ne visite. Quelqu'un y a établi une base, et y a découvert quelque chose. La piraterie est le financement, non le but. Permet de relier le présent au site n° 6 sans rien révéler avant longtemps. Avec le capitaine : c'est lui qui a établi la base. Ce qu'il y a trouvé, ce qu'il en fera, et si Ulrich l'apprend, reste au choix du MJ.
+Ce que le capitaine y a trouvé, c'est le site de la pierre. Il sait où il est, sans savoir ce que c'est, et il n'y entre pas : il ne veut pas prendre ce risque. Mais vivre près de la fuite (§2, « affectant le vivant ») lui a donné une **jeunesse sans fin** : il a l'âge d'Ulrich et en paraît vingt-cinq. Son **équipage**, qui hiverne sur l'île, a gagné une vitalité accrue. Personne n'a de pouvoir conscient. Tous croient que ce don vient du capitaine, ou de l'île, et l'équipage le défend avec ferveur. Les fins du site sont au §14.
 
 *Attention : le passage des îlots vers Tirwen n'est praticable que quelques semaines par an et exige un pilote qui l'a déjà fait. Une flotte qui l'emprunte régulièrement, en toute saison, fait donc déjà quelque chose que personne d'autre n'ose faire, et le paie en navires. C'est un indice majeur, et c'est le premier que les enquêteurs de Vespera devraient relever s'ils cherchaient au bon endroit.*
 
@@ -377,3 +377,24 @@ Les éclats de la pierre de Logne, logés dans la peau des PJ et d'Olivier, sont
 - **Ulrich.** Quand c'est lui qui prend une pierre, c'est lui qui fait le saut (§11). Les PJ n'en gardent que la résonance.
 
 Fiches de jeu : compendium « Dons », dossier « Éclats » (la marque, deux paliers de résonance, un don par site et un don de caractéristique à prendre une fois par pierre).
+
+---
+
+## 14. Tirwen, l'île qui garde jeune
+
+Il n'y a pas de gardien à Tirwen : la pierre fuit sur tout le vivant de l'île, faune géante et hardie, plantes qui empoisonnent et qui marchent. Pour y accéder hors des quelques semaines où le passage s'ouvre, il faut les pilotes du capitaine (§6).
+
+### La voie d'Ulrich
+
+Ulrich ne veut pas que le capitaine sache. Il passe par des **traîtres** de l'équipage, jaloux du capitaine ou achetés, souvent parmi les pilotes : ils croient qu'un « grand pouvoir » dort sur l'île, sans savoir ce que c'est, et ils guident en secret un homme de la bande, le porteur de pierre (§11), jusqu'au site.
+
+### Le capitaine peut sauter le pas
+
+S'il en apprend trop, par les PJ ou par la bande, le capitaine peut absorber la pierre lui-même. Il en gagne les dons, et son âge ne compte plus : il est immortel au sens où il ne vieillit plus, mais on peut toujours le tuer. Il devient alors une proie pour Ulrich.
+
+### Les fins
+
+- **Bonne fin** : les PJ brisent la pierre, ou arrêtent le porteur ; le pouvoir se disperse en éclats dans tous les présents (§13).
+- **Mauvaise fin** : le porteur quitte l'île avec les traîtres et rejoint Ulrich, qui prend la vie de l'île.
+- **Rattraper la mauvaise fin** : arrêter le porteur et les traîtres avant qu'ils quittent l'île ; les fidèles du capitaine peuvent aider à tenir le passage, s'ils sont convaincus.
+- **Quelle que soit l'issue**, dès que la pierre est brisée, la fuite cesse. Le capitaine reprend son âge jour après jour ; des dissensions naissent dans l'équipage, mais un noyau dur lui reste fidèle. L'île ne meurt pas : sa faune et ses plantes perdent seulement un peu de leur vitalité, et elle devient plus tranquille.
