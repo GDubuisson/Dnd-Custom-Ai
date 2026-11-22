@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.13.0] - 2026-11-22
+
+**La bande d'Ulrich grandit avec les PJ.**
+- 7 nouvelles fiches dans le dossier « Ulrich et sa bande », chacune avec son palier de niveau des
+  PJ et la phase à partir de laquelle elle apparaît :
+  - **Fidèle de la pierre** (FP 1/8, dès la phase 1) et **Fanatique de la pierre** (FP 2, dès la
+    phase 2) : ceux qui voient en Ulrich transformé un élu ; il s'en sert sans y croire ;
+  - **Exécuteur d'Ulrich** (FP 5, PJ niv. 5-8) et **Lame d'Ulrich** (FP 8, PJ niv. 9-12) ;
+  - **Ritualiste d'Ulrich** (FP 6, dès la phase 2) et **Maître ritualiste d'Ulrich** (FP 12,
+    phase 3) : les ritualistes de métier, dont les rituels se lancent en un souffle quand la magie
+    revient ;
+  - **Champion d'Ulrich** (FP 11, PJ niv. 13-16), dérivé du Gladiateur SRD, FP recalculé.
+- Les 6 fiches existantes de la bande portent leur palier (PJ niv. 1-4).
+- **Porteurs de pierre** : la fiche la plus forte de chaque palier, avec le gabarit de pierre
+  d'Ulrich, donne l'homme qu'il envoie absorber une pierre à sa place (déserteur, exécuteur, lame,
+  champion, puis champion à deux gabarits), noté sur ces fiches et dans la documentation.
+
 ## [1.12.0] - 2026-11-22
 
 **Les éclats : récompenses de l'arc des pierres.**
