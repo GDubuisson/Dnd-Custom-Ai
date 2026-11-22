@@ -318,6 +318,7 @@ gérées séparément) — étendue ici aux sauvegardes normales, sur demande ex
 | T-SHARD-003 | Éclat absorbé cumulable | P1 | E2E | Glisser Marque d'éclat puis deux fois Éclat absorbé (+2), choisir Force | Trois dons sur la fiche, Force +5 |
 | T-SHARD-004 | PV de l'Éclat de Tirwen | P2 | E2E | Glisser Éclat de Tirwen | PV max + niveau |
 | T-JOURNAL-004 | Journal « Sites de pierre » | P2 | E2E | Abîmer la page de Kis, ajouter une page du MJ, recharger | Journal réservé au MJ ; page de Kis restaurée ; page du MJ conservée (`journal-visibility.cy.js`) |
+| T-JOURNAL-005 | Chroniques et Guide du MJ resynchronisés | P2 | E2E | Recréer chaque Journal comme un ancien monde (pages sans flag, contenu périmé) plus une page du MJ, recharger | Pages reprises par leur nom, sans doublon, contenu courant (mauvaise fin de l'œuf de Varhun) ; page du MJ conservée (`journal-visibility.cy.js`) |
 
 Implémenté dans `cypress/e2e/shard-feats.cy.js`.
 

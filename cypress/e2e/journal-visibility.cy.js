@@ -49,8 +49,8 @@ describe("Visibilité des Journaux générés par le système", () => {
     });
   });
 
-  // Les Chroniques ne sont jamais réécrites : on les supprime pour qu'elles soient régénérées
-  // au rechargement, avec le contenu courant (dont la page « Secrets (MJ) »).
+  // On supprime les Chroniques pour vérifier qu'elles sont recréées au rechargement, avec le
+  // contenu courant (dont la page « Secrets (MJ) »).
   it("les Chroniques des objets sont réservées au MJ, une page par région, secrets à part (T-JOURNAL-003)", () => {
     cy.loginAsGM();
     cy.window().then((win) => journalByKey(win, "DND_CUSTOM.Journal.ItemLoreTitle")?.delete());
@@ -125,5 +125,61 @@ describe("Visibilité des Journaux générés par le système", () => {
     });
 
     cy.window().then((win) => journalByKey(win, "DND_CUSTOM.Journal.StoneSitesTitle").pages.getName(NOTES)?.delete());
+  });
+
+  // Monde d'avant la resynchronisation : pages créées une seule fois, sans flag, au contenu périmé.
+  // Au rechargement, elles sont reprises par leur nom (sans doublon) et réécrites ; la page du MJ reste.
+  it("les Chroniques des objets et le Guide du MJ reprennent les pages d'un ancien monde (T-JOURNAL-005)", () => {
+    const KEYS = ["DND_CUSTOM.Journal.ItemLoreTitle", "DND_CUSTOM.Journal.GmGuideTitle"];
+    const OLD = "<p>ancienne version</p>";
+    const NOTES = "Notes du MJ (test)";
+    const systemPageNames = {};
+    cy.loginAsGM();
+    // Attendre la resynchronisation du chargement (pages du système marquées).
+    cy.window({ timeout: 25000 }).should((win) => {
+      for (const key of KEYS) {
+        const pages = journalByKey(win, key)?.pages.filter((page) => page.flags?.["dnd-custom-ai"]?.systemPage);
+        expect(pages, `« ${key} » : pages du système marquées`).to.not.be.empty;
+      }
+    });
+    cy.window().then(async (win) => {
+      for (const key of KEYS) {
+        const journal = journalByKey(win, key);
+        systemPageNames[key] = journal.pages.filter((page) => page.flags?.["dnd-custom-ai"]?.systemPage).map((page) => page.name);
+        expect(systemPageNames[key], `« ${key} » : pages du système`).to.not.be.empty;
+        const name = journal.name;
+        await journal.delete();
+        const pages = [...systemPageNames[key], NOTES].map((pageName, index) => ({
+          name: pageName,
+          type: "text",
+          sort: (index + 1) * 100,
+          text: { format: 1, content: pageName === NOTES ? "<p>mes notes</p>" : OLD }
+        }));
+        await win.JournalEntry.create(win.JSON.parse(JSON.stringify({ name, ownership: { default: NONE }, pages })));
+      }
+    });
+
+    cy.loginAsGM();
+    cy.window({ timeout: 25000 }).should((win) => {
+      for (const key of KEYS) {
+        const journal = journalByKey(win, key);
+        expect(journal.pages.map((page) => page.name), `« ${key} » : pages reprises, sans doublon`).to.have.members([
+          ...systemPageNames[key],
+          NOTES
+        ]);
+        for (const name of systemPageNames[key]) {
+          const page = journal.pages.getName(name);
+          expect(page.flags?.["dnd-custom-ai"]?.systemPage, `${name} reprise`).to.be.true;
+          expect(page.text.content, `${name} réécrite`).to.not.include("ancienne version");
+        }
+        expect(journal.pages.getName(NOTES).text.content, "page du MJ conservée").to.include("mes notes");
+      }
+      const secrets = journalByKey(win, KEYS[0]).pages.getName(win.game.i18n.localize("DND_CUSTOM.Regions.secrets")).text.content;
+      expect(secrets, "mauvaise fin de l'œuf de Varhun").to.include("Mauvaise fin");
+    });
+
+    cy.window().then(async (win) => {
+      for (const key of KEYS) await journalByKey(win, key).pages.getName(NOTES)?.delete();
+    });
   });
 });

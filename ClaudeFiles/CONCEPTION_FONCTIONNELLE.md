@@ -163,20 +163,22 @@ Guide du Joueur (`scripts/data/glossary.json`). Le texte libre (descriptions d'o
 biographie) n'est volontairement pas concerné.
 
 ### Journaux générés dans le monde
-Quatre Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
-librement) : **Guide du Joueur** (glossaire, règles de base, sorts, classes, origines, langues,
-équipement) et **Comparatif des Origines** sont visibles de tous les joueurs (`ownership` par
-défaut = Observateur) ; le **Guide du MJ** et les **Chroniques des objets** (histoire des objets
-régionaux et historiques, une page par région, plus une page « Secrets (MJ) » pour les objets liés à
-l'histoire cachée, à ne jamais partager) restent réservés au MJ, qui en partage ce qu'il veut. L'en-tête de la fiche de
+Deux Journaux créés une fois au premier chargement (jamais réécrits ensuite, le MJ les édite
+librement), visibles de tous les joueurs (`ownership` par défaut = Observateur) : **Guide du
+Joueur** (glossaire, règles de base, sorts, classes, origines, langues, équipement) et
+**Comparatif des Origines**. Deux Journaux réservés au MJ, qui en partage ce qu'il veut, se
+resynchronisent à chaque chargement, pour que leurs mises à jour atteignent aussi les mondes
+existants : le **Guide du MJ** et les **Chroniques des objets** (histoire des objets régionaux et
+historiques, une page par région, plus une page « Secrets (MJ) » pour les objets liés à l'histoire
+cachée, à ne jamais partager). Une page du système y est réécrite si sa source a changé, une page
+ajoutée par le MJ n'est jamais touchée ; les pages d'un Journal créé avant cette resynchronisation
+sont reprises par leur nom (une annotation du MJ sur ces pages-là est écrasée). L'en-tête de la fiche de
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
-Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ, a une page par site de pierre (le site,
+Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ et resynchronisé de la même façon, a une page par site de pierre (le site,
 les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, plus une troisième à Velencia
 où la pierre peut rester intacte, rencontres conseillées par
-palier de niveau). Contrairement aux autres, il se resynchronise à chaque chargement pour recevoir les
-pages des nouveaux sites : une page du système modifiée est réécrite, une page ajoutée par le MJ n'est
-jamais touchée.
+palier de niveau).
 
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au

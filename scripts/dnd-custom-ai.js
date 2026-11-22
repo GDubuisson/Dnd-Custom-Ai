@@ -20,8 +20,8 @@ import {
 } from "./sheets/item-sheets.js";
 import { ensureOriginsJournal } from "./helpers/origins-journal.js";
 import { ensurePlayerGuideJournal } from "./helpers/player-guide-journal.js";
-import { ensureGmGuideJournal } from "./helpers/gm-guide-journal.js";
-import { ensureItemLoreJournal } from "./helpers/item-lore-journal.js";
+import { syncGmGuideJournal } from "./helpers/gm-guide-journal.js";
+import { syncItemLoreJournal } from "./helpers/item-lore-journal.js";
 import { syncStoneSitesJournal } from "./helpers/stone-sites-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
@@ -145,8 +145,8 @@ Hooks.once("init", async () => {
 Hooks.once("ready", async () => {
   await ensureOriginsJournal();
   await ensurePlayerGuideJournal();
-  await ensureGmGuideJournal();
-  await ensureItemLoreJournal();
+  await syncGmGuideJournal();
+  await syncItemLoreJournal();
   await syncStoneSitesJournal();
   await ensureAwardXpMacro();
   await ensureContentImportMacro();

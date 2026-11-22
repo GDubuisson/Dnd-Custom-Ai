@@ -37,8 +37,10 @@ export async function ensureGmAuthoredJournal(title, buildPages, { ownership } =
  * du système (flag `systemPage`) absentes sont ajoutées, celles dont la source a changé sont réécrites.
  * Les pages créées par le MJ ne sont jamais touchées. La source est comparée via le flag `source`,
  * car Foundry peut normaliser le HTML enregistré.
+ * `adoptUnflagged` : pour un Journal autrefois créé une seule fois (`ensureGmAuthoredJournal`, pages
+ * sans flag), une page sans flag qui porte le nom d'une page du système est reprise et réécrite.
  */
-export async function syncGmAuthoredJournal(title, buildPages, { ownership } = {}) {
+export async function syncGmAuthoredJournal(title, buildPages, { ownership, adoptUnflagged = false } = {}) {
   if (!game.user.isGM) return;
   const pages = await buildPages();
   if (!pages?.length) return;
@@ -61,7 +63,18 @@ export async function syncGmAuthoredJournal(title, buildPages, { ownership } = {
   const updates = [];
   pages.forEach((page, index) => {
     const current = existing.pages.find((entry) => entry.name === page.name && entry.flags?.[SYSTEM_ID]?.systemPage);
-    if (!current) creates.push(pageData(page, index));
+    const legacy =
+      !current && adoptUnflagged
+        ? existing.pages.find((entry) => entry.name === page.name && !entry.flags?.[SYSTEM_ID]?.systemPage)
+        : null;
+    if (legacy) {
+      updates.push({
+        _id: legacy.id,
+        "text.content": page.content,
+        [`flags.${SYSTEM_ID}.systemPage`]: true,
+        [`flags.${SYSTEM_ID}.source`]: page.content
+      });
+    } else if (!current) creates.push(pageData(page, index));
     else if (current.flags[SYSTEM_ID].source !== page.content) {
       updates.push({ _id: current.id, "text.content": page.content, [`flags.${SYSTEM_ID}.source`]: page.content });
     }

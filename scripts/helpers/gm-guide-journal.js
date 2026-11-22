@@ -1,6 +1,6 @@
 import { DND_CUSTOM } from "./config.js";
 import { loadSystemJson } from "./system-json.js";
-import { ensureGmAuthoredJournal } from "./journal.js";
+import { syncGmAuthoredJournal } from "./journal.js";
 
 function buildOverviewPage() {
   return `
@@ -225,9 +225,12 @@ async function buildProgressionPage() {
   `;
 }
 
-/** Crée le Journal « Guide du MJ », réservé au MJ, s'il n'existe pas encore. */
-export function ensureGmGuideJournal() {
-  return ensureGmAuthoredJournal(
+/**
+ * Crée ou resynchronise le Journal « Guide du MJ », réservé au MJ : ses mises à jour atteignent aussi
+ * les mondes existants ; les pages ajoutées par le MJ restent intactes.
+ */
+export function syncGmGuideJournal() {
+  return syncGmAuthoredJournal(
     game.i18n.localize("DND_CUSTOM.Journal.GmGuideTitle"),
     async () => [
       { titleKey: "DND_CUSTOM.Journal.GmGuidePageOverview", content: buildOverviewPage() },
@@ -235,6 +238,6 @@ export function ensureGmGuideJournal() {
       { titleKey: "DND_CUSTOM.Journal.GmGuidePageSimplifications", content: buildSimplificationsPage() },
       { titleKey: "DND_CUSTOM.Journal.GmGuidePageProgression", content: await buildProgressionPage() }
     ].map(({ titleKey, content }) => ({ name: game.i18n.localize(titleKey), content })),
-    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE } }
+    { ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE }, adoptUnflagged: true }
   );
 }

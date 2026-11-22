@@ -100,15 +100,18 @@ scripts/
     death.js                    # agonie/mort, stabilisation
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
     item-lore-journal.js        # Journal « Chroniques des objets » (MJ seul), une page par région,
-                                 # construit depuis regional.json, historical.json et item-lore.json
+                                 # construit depuis regional.json, historical.json et item-lore.json,
+                                 # resynchronisé à chaque chargement (syncGmAuthoredJournal, adoptUnflagged)
     stone-sites-journal.js      # Journal « Sites de pierre (MJ) », une page par site (stone-sites.json),
                                  # resynchronisé à chaque chargement (syncGmAuthoredJournal, journal.js :
                                  # pages flag systemPage, source comparée via le flag source ; pages du MJ intactes)
     origins-journal.js, player-guide-journal.js, gm-guide-journal.js  # génération du contenu
-                                 # de référence dans le Journal du monde ; création via
-                                 # ensureGmAuthoredJournal (journal.js, garde MJ + anti-écrasement).
-                                 # Guide du Joueur + Comparatif des Origines : ownership.default =
-                                 # OBSERVER (visibles des joueurs) ; Guide du MJ : NONE. Un Journal
+                                 # de référence dans le Journal du monde ; Guide du Joueur et
+                                 # Comparatif des Origines créés une fois via ensureGmAuthoredJournal
+                                 # (journal.js, garde MJ + anti-écrasement), ownership.default =
+                                 # OBSERVER (visibles des joueurs) ; Guide du MJ (NONE) resynchronisé
+                                 # via syncGmAuthoredJournal. adoptUnflagged : les pages sans flag d'un
+                                 # Journal créé avant la resynchronisation sont reprises par leur nom. Un Journal
                                  # créé « Aucun » avant ce param est remonté à OBSERVER au chargement.
     handlebars-helpers.js       # helpers Handlebars custom
     tactical-distance.js        # MELEE_REACH_METERS, tokenCenter, distanceBetweenPoints —

@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.17.2] - 2026-11-22
+
+**Les Chroniques des objets et le Guide du MJ se mettent à jour dans les mondes existants.**
+- Ces deux Journaux réservés au MJ étaient créés une seule fois : une histoire d'objet ajoutée
+  ensuite (comme la mauvaise fin de l'œuf de Varhun) ou une mise à jour du Guide du MJ n'atteignait
+  jamais un monde déjà créé. Ils se resynchronisent désormais à chaque chargement, comme le journal
+  « Sites de pierre » : une page du système dont la source a changé est réécrite, une page ajoutée
+  par le MJ n'est jamais touchée.
+- Dans un monde existant, les anciennes pages sont reprises par leur nom au premier chargement,
+  sans doublon ; une annotation du MJ écrite sur ces pages-là est écrasée.
+
 ## [1.17.1] - 2026-11-22
 
 **Documentation des sorts remise à jour.**

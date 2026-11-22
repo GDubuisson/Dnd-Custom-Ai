@@ -1,5 +1,5 @@
 import { DND_CUSTOM } from "./config.js";
-import { ensureGmAuthoredJournal } from "./journal.js";
+import { syncGmAuthoredJournal } from "./journal.js";
 import { loadSystemJson } from "./system-json.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -40,9 +40,13 @@ async function buildPages() {
     .filter((page) => page.content);
 }
 
-/** Crée le Journal « Chroniques des objets », réservé au MJ, s'il n'existe pas encore. */
-export function ensureItemLoreJournal() {
-  return ensureGmAuthoredJournal(game.i18n.localize("DND_CUSTOM.Journal.ItemLoreTitle"), buildPages, {
-    ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE }
+/**
+ * Crée ou resynchronise le Journal « Chroniques des objets », réservé au MJ : une histoire ajoutée ou
+ * modifiée dans item-lore.json atteint aussi les mondes existants ; les pages du MJ restent intactes.
+ */
+export function syncItemLoreJournal() {
+  return syncGmAuthoredJournal(game.i18n.localize("DND_CUSTOM.Journal.ItemLoreTitle"), buildPages, {
+    ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE },
+    adoptUnflagged: true
   });
 }
