@@ -107,50 +107,5 @@
       "category": "special",
       "description": "Langue secrète des druides, transmise oralement de génération en génération : permet d'y dissimuler des messages que seul un autre druide peut déchiffrer. Généralement connue de tout Druide dès sa formation — ajout manuel : à glisser sur la fiche à la création d'un personnage Druide."
     }
-  },
-  {
-    "name": "Gobelin",
-    "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
-    "system": {
-      "category": "people",
-      "description": "Glapissements, mots arrachés aux langues humaines et noms donnés aux choses volées. Les gobelins reviennent sans langue ; celle-ci naît avec leurs premières bandes, et change d'une vallée à l'autre. Langue d'un peuple revenu avec la magie : un personnage ne peut pas l'apprendre."
-    }
-  },
-  {
-    "name": "Kobold",
-    "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
-    "system": {
-      "category": "people",
-      "description": "Sifflements et claquements de langue, faits pour les galeries où l'on ne parle pas fort. Les kobolds le parlent dès qu'ils remontent des mines profondes. Langue d'un peuple revenu avec la magie : un personnage ne peut pas l'apprendre."
-    }
-  },
-  {
-    "name": "Orc",
-    "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
-    "system": {
-      "category": "people",
-      "description": "Une langue rude, née avec eux de la terre, qui se forme à mesure que les orcs passent des cris aux bandes de guerre, puis des bandes à une société. Langue d'un peuple revenu avec la magie : un personnage ne peut pas l'apprendre."
-    }
-  },
-  {
-    "name": "Saurien",
-    "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
-    "system": {
-      "category": "people",
-      "description": "La langue des hommes-lézards : sifflements, claquements de mâchoire et longs silences, dont une part se dit avec la queue et la crête. Elle revient avec eux dans les marais. Langue d'un peuple revenu avec la magie : un personnage ne peut pas l'apprendre."
-    }
-  },
-  {
-    "name": "Elfique ancien",
-    "type": "language",
-    "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
-    "system": {
-      "category": "people",
-      "description": "Une langue de l'ancien monde, que les elfes sauvages retrouvent mot à mot à mesure que leur mémoire revient. Aucun humain ne la connaît ; certains de ses mots ressemblent à des noms de lieux qu'on croyait sans origine. Langue d'un peuple revenu avec la magie : un personnage ne peut pas l'apprendre."
-    }
   }
 ]

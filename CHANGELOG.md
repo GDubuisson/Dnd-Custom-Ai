@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.21.0] - 2026-11-22
+
+**Les humains face au retour ; langues des peuples cachées aux joueurs.**
+- Nouvelle page **« Les humains face au retour »** dans le journal « Sites de pierre (MJ) » :
+  principes (local d'abord, chacun avec ses outils, des accroches plutôt que des catastrophes),
+  rythme par phase, freins (aucune ville ne tombe avant la phase 4), réactions par nation et de
+  l'Église, tensions à exploiter. Fleuraine reste paralysée tant que Bellerive n'a pas juré, et
+  retrouve son unité si les PJ règlent l'affaire.
+- Les 5 langues des peuples quittent le compendium « Langues », visible des joueurs : elles sont
+  désormais des Items du monde, dossier « Langues des peuples (MJ) », réservé au MJ
+  (`world-items/people-languages.json`), et sont retirées du compendium des mondes existants.
+
 ## [1.20.0] - 2026-11-22
 
 **Les premiers peuples de l'ancien monde.**

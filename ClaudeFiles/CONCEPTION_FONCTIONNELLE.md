@@ -176,8 +176,9 @@ sont reprises par leur nom (une annotation du MJ sur ces pages-là est écrasée
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
 Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ et resynchronisé de la même façon, a une page
-par site de pierre et une page « Les phases du retour » (six phases, plafond fixé par les pierres
-brisées, délais indicatifs, ce qui revient à chaque phase). Chaque page de site décrit le site,
+par site de pierre, une page « Les phases du retour » (six phases, plafond fixé par les pierres
+brisées, délais indicatifs, ce qui revient à chaque phase) et une page « Les humains face au retour »
+(principes, rythme par phase, freins, réactions par nation, tensions à exploiter). Chaque page de site décrit le site,
 les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, plus une troisième à Velencia
 où la pierre peut rester intacte, rencontres conseillées par
 palier de niveau.
@@ -327,7 +328,7 @@ interne en kg**.
 | `class`/`subclass` | nom, description (flavor uniquement), sauvegardes maîtrisées, quota de compétences, maîtrises d'armes | la donnée mécanique réelle (capacités par niveau) vit dans `CONFIG.DND_CUSTOM` + `world-items/features.json`, pas sur cet Item |
 | `tool` (outil) | nom, prix, poids, compétence/bonus lié, description RP | bouton "Utiliser" lance le test de compétence lié (bonus de maîtrise + bonus éventuel) |
 | `spell` (sort) | classes autorisées (cases à cocher), niveau, détails (temps, portée, durée), type d'action, concentration, rituel, attaque, sauvegarde (moitié, état), dégâts, soin, état posé, lumière | filtré par classe au glisser-déposer ; octroyé par classe à la montée de niveau ; bouton "Lancer" automatisé |
-| `language` (langue) | nom, catégorie (commune, d'Origine, spéciale, ou d'un peuple), langue requise (`requiredLanguage`), description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium, refusées (avertissement) si leur langue requise manque — ex. le Sümpfer exige l'Altenmarkois ; une langue d'un peuple (Gobelin, Orc…) est toujours refusée sur un personnage |
+| `language` (langue) | nom, catégorie (commune, d'Origine, spéciale, ou d'un peuple), langue requise (`requiredLanguage`), description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium, refusées (avertissement) si leur langue requise manque — ex. le Sümpfer exige l'Altenmarkois ; une langue d'un peuple (Gobelin, Orc…), rangée hors compendium dans les Items du monde réservés au MJ (« Langues des peuples (MJ) »), est toujours refusée sur un personnage |
 
 ## Classes, sous-classes et capacités (référence de contenu)
 

@@ -33,7 +33,10 @@ const WORLD_ITEM_FILES = [
   { file: "tools.json", type: "tool", folderKey: "DND_CUSTOM.Folders.Tools" },
   // Fichiers à types mélangés, rangés par région (flag `region`).
   { file: "regional.json", folderKey: "DND_CUSTOM.Folders.Regional", subfolder: regionSubfolder },
-  { file: "historical.json", folderKey: "DND_CUSTOM.Folders.Historical", subfolder: regionSubfolder }
+  { file: "historical.json", folderKey: "DND_CUSTOM.Folders.Historical", subfolder: regionSubfolder },
+  // Langues des peuples revenus avec la magie : Items du monde (réservés au MJ), pas le compendium
+  // « Langues », visible des joueurs, pour ne pas annoncer ces peuples avant qu'ils paraissent.
+  { file: "people-languages.json", folderKey: "DND_CUSTOM.Folders.PeopleLanguages" }
 ];
 const COMPENDIUM_FILES = [
   { file: "classes.json", pack: `${SYSTEM_ID}.classes` },

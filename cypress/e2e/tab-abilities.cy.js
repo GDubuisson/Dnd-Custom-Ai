@@ -951,10 +951,37 @@ describe("Onglet Capacités/Sorts — langues connues", () => {
     });
   });
 
-  // Les langues des peuples revenus avec la magie (gobelin, orc…) ne s'apprennent pas.
-  it("une langue de peuple (orc) est refusée sur un personnage (T-ABIL-028)", () => {
-    dropLanguage("Orc");
+  // Les langues des peuples revenus avec la magie (gobelin, orc…) : Items du monde réservés au MJ,
+  // absentes du compendium Langues (visible des joueurs), et jamais apprises par un personnage.
+  it("une langue de peuple (orc) est cachée aux joueurs et refusée sur un personnage (T-ABIL-028)", () => {
+    // Côté joueur : Item du monde sans permission (Foundry envoie le document, mais il n'est pas
+    // visible), et absent du compendium Langues.
+    cy.window().then(async (win) => {
+      expect(win.game.items.find((item) => item.name === "Orc")?.visible ?? false, "invisible du joueur").to.be.false;
+      const packNames = (await win.game.packs.get("dnd-custom-ai.langues").getIndex()).map((entry) => entry.name);
+      expect(packNames, "absente du compendium Langues").to.not.include("Orc");
+    });
+
+    // Côté MJ : l'Item existe dans son dossier réservé, mais le personnage le refuse.
+    cy.loginAsGM();
+    cy.window({ timeout: 25000 }).should((win) => {
+      const orc = win.game.items.find((item) => item.type === "language" && item.name === "Orc");
+      expect(orc, "langue Orc importée dans les Items du monde").to.exist;
+      expect(orc.folder?.name).to.equal(win.game.i18n.localize("DND_CUSTOM.Folders.PeopleLanguages"));
+      const player = win.game.users.find((user) => !user.isGM);
+      expect(orc.testUserPermission(player, "LIMITED"), "aucune permission du joueur").to.be.false;
+    });
+    cy.window().then((win) => win.game.actors.get(languagesActorId).sheet.render(true));
+    cy.get(".application.character", { timeout: 10000 }).should("be.visible");
+    cy.window().then((win) => {
+      const orc = win.game.items.find((item) => item.type === "language" && item.name === "Orc");
+      const dataTransfer = new win.DataTransfer();
+      dataTransfer.setData("text/plain", win.JSON.stringify({ type: "Item", uuid: orc.uuid }));
+      const dropEvent = new win.DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer });
+      win.document.querySelector(".application.character").dispatchEvent(dropEvent);
+    });
     cy.get("#notifications .notification", { timeout: 10000 }).should("contain.text", "Orc");
     languageNames().should("not.include", "Orc");
+    cy.window().then((win) => win.game.actors.get(languagesActorId).sheet.close());
   });
 });

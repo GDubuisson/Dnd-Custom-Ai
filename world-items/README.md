@@ -34,6 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
+| `people-languages.json` | 5 langues des peuples revenus avec la magie (catégorie `people`, jamais apprises par un personnage) | `language` | Items du monde, dossier « Langues des peuples (MJ) », réservé au MJ |
 | `npcs.json` | 151 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 

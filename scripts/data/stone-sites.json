@@ -583,5 +583,120 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Les humains face au retour",
+    "sections": [
+      {
+        "title": "Le principe",
+        "paragraphs": [
+          "Les humains du continent réagissent à ce qui revient, mais jamais d'un coup : le monde ne bascule pas plus vite que les PJ ne peuvent agir. Ce qui suit donne des principes et des réactions par nation, pas des événements : le MJ décide quand une affaire locale devient régionale."
+        ],
+        "items": [
+          {
+            "label": "Local d'abord",
+            "text": "Chaque incident commence isolé, et on l'explique avec ce qu'on connaît : des loups, des brigands, une fièvre, un fou. La première réaction est l'incrédulité polie, comme pour toute hypothèse trop étrange."
+          },
+          {
+            "label": "Chacun avec ses outils",
+            "text": "Chaque nation répond avec ses institutions et à son rythme (ci-dessous). Personne n'a d'armée prête contre des êtres qu'il ne croyait pas réels."
+          },
+          {
+            "label": "Des accroches, pas des catastrophes",
+            "text": "Chaque nouveauté arrive d'abord comme une affaire que les PJ peuvent traiter à leur échelle : une vallée, un village, une route. Primes, escortes, enquêtes, négociations avec les peuples qui parlent."
+          }
+        ]
+      },
+      {
+        "title": "Le rythme",
+        "table": {
+          "head": [
+            "Phase",
+            "Ce que vivent les humains"
+          ],
+          "rows": [
+            [
+              "1-2",
+              "Rumeurs, incidents isolés, primes sur des « bêtes » ; les autorités minimisent."
+            ],
+            [
+              "3",
+              "Milices de village, lisières qui se vident, premiers réfugiés, escortes payantes, cols et routes forestières fermés la nuit."
+            ],
+            [
+              "4",
+              "La politique nationale s'en mêle : alliances, conflits de compétence, exploitation par les guildes et les cultes."
+            ],
+            [
+              "5",
+              "Tout le continent, mais il a eu des années pour s'adapter."
+            ]
+          ]
+        }
+      },
+      {
+        "title": "Les freins",
+        "items": [
+          {
+            "label": "Pas de chute",
+            "text": "Aucune ville ne tombe et aucun royaume n'est menacé avant la phase 4."
+          },
+          {
+            "label": "À hauteur de table",
+            "text": "Une nouvelle menace se présente d'abord à l'échelle des PJ, et le reste du monde n'avance que si le MJ le décide."
+          }
+        ]
+      },
+      {
+        "title": "Par nation",
+        "items": [
+          {
+            "label": "Fleuraine",
+            "text": "L'Aube Blanche enquête, le Parlement des Bannières délibère, et rien ne bouge tant que la marche orientale n'a pas juré : les seigneurs de Bellerive se défendent seuls, comme toujours. Si les PJ règlent l'affaire de Bellerive, le royaume retrouve son unité et peut agir d'une seule voix. (L'argent qu'Ulrich prête à Bellerive pour que le délai dure en fait aussi une affaire d'Ulrich.)"
+          },
+          {
+            "label": "Altenmark",
+            "text": "Les Passwachten ferment un col ou doublent l'appel, chaque marche se débrouille, et la Diète discute longtemps avant de lever qui que ce soit. La Sümpfenmark, habituée aux interdits, s'adapte la première."
+          },
+          {
+            "label": "Lucentia",
+            "text": "Les Compagnies de la Route font payer l'escorte, les assurances renchérissent, et les guildes cherchent à tirer profit de tout ce qui revient, magie comprise."
+          },
+          {
+            "label": "Ravenmoor",
+            "text": "Les Veilleurs escortent, ferment les routes forestières et ouvrent un registre. Le royaume note, juge et budgète : il réagit tard, mais en ordre."
+          },
+          {
+            "label": "Valdera",
+            "text": "L'Ordre de la Flamme y voit une croisade et se met en marche vite, parfois trop. Le moindre gnoll près de la Passe devient un argument contre la Trêve."
+          },
+          {
+            "label": "Azhar",
+            "text": "On double les gardes des caravanes, la Maison des Cent Portes enquête et tient registre, et l'on cherche d'abord à savoir avant de frapper."
+          },
+          {
+            "label": "L'Église",
+            "text": "Elle y voit la Faute : vouloir prendre ce qui doit être reçu. Ceux qui ont des pouvoirs, PJ compris, deviennent suspects, et les prêtres dont les grâces grandissent ne savent pas comment l'annoncer."
+          }
+        ]
+      },
+      {
+        "title": "Tensions à exploiter",
+        "items": [
+          {
+            "label": "La Passe",
+            "text": "Les gnolls d'Azhar donnent à Valdera un prétexte pour rompre la Trêve de la Passe."
+          },
+          {
+            "label": "La magie à vendre",
+            "text": "Les guildes lucentiennes voudraient « acheter » la magie, et ceux qui en ont."
+          },
+          {
+            "label": "Les porteurs",
+            "text": "L'Église se méfie des porteurs d'éclats ; ce qui fait la force des PJ peut les rendre suspects."
+          }
+        ]
+      }
+    ]
   }
 ]

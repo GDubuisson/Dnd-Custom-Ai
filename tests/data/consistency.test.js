@@ -16,6 +16,7 @@ import {
   WORLD_SUBCLASSES,
   WORLD_ORIGIN_ITEMS,
   WORLD_LANGUAGES,
+  WORLD_PEOPLE_LANGUAGES,
   WORLD_NPCS,
   WORLD_MOUNTS,
   WORLD_REGIONAL,
@@ -424,7 +425,7 @@ describe("world-items/npcs.json — cohérence (NpcData) + butin embarqué", () 
 
   // Un nom retiré encore présent dans le JSON serait supprimé puis recréé à chaque chargement.
   test("entrées retirées (retired-content.json) : absentes du JSON courant, fichiers connus", () => {
-    const current = { "npcs.json": WORLD_NPCS };
+    const current = { "npcs.json": WORLD_NPCS, "languages.json": WORLD_LANGUAGES };
     for (const [file, names] of Object.entries(RETIRED_CONTENT)) {
       assert.ok(current[file], `fichier inconnu dans retired-content.json : ${file}`);
       const present = new Set(current[file].map((entry) => entry.name));
@@ -658,6 +659,18 @@ describe("world-items/languages.json — cohérence avec scripts/data/origins.js
   test("aucun nom de langue en double", () => {
     const names = WORLD_LANGUAGES.map((entry) => entry.name);
     assert.equal(new Set(names).size, names.length);
+  });
+
+  test("langues des peuples : à part (people-languages.json, Items du monde réservés au MJ), jamais dans le compendium Langues", () => {
+    assert.ok(WORLD_PEOPLE_LANGUAGES.length > 0);
+    const compendiumNames = new Set(WORLD_LANGUAGES.map((entry) => entry.name));
+    for (const entry of WORLD_PEOPLE_LANGUAGES) {
+      assert.equal(entry.type, "language", `"${entry.name}" : type language attendu`);
+      assert.equal(entry.system.category, "people", `"${entry.name}" : catégorie people attendue`);
+      assert.ok(!compendiumNames.has(entry.name), `"${entry.name}" ne doit pas être dans languages.json`);
+      assert.equal(entry.img, "systems/dnd-custom-ai/assets/icons/languages/others.webp");
+    }
+    assert.ok(!WORLD_LANGUAGES.some((entry) => entry.system.category === "people"), "aucune langue de peuple dans le compendium");
   });
 });
 

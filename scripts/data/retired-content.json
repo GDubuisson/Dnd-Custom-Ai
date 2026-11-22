@@ -5,5 +5,12 @@
     "Ulrich (3 pierres)",
     "Ulrich (4 pierres)",
     "Ulrich (5 pierres)"
+  ],
+  "languages.json": [
+    "Gobelin",
+    "Kobold",
+    "Orc",
+    "Saurien",
+    "Elfique ancien"
   ]
 }
