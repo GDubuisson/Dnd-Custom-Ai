@@ -456,3 +456,32 @@ Le lieu est aussi le sanctuaire suprême de l'Église, gardé en conséquence : 
 - **Mauvaise fin** : le porteur, ou Ulrich en personne, prend la pierre. Estevan tombe en poussière sans rien transmettre. Ulrich prend le sceau : il peut contrer la magie et bannir. Il ne devient pas le passage des prières, qui ne sont plus bridées par personne.
 - **Rattraper la mauvaise fin** : arrêter le porteur avant qu'il quitte le Saint-siège. Si Ulrich est venu lui-même, il aspire la pierre sur place, et il n'y a rien à rattraper.
 - En option, **le sacrilège** : quel qu'en soit l'auteur, l'Église répond, par l'interdit, par les Ordres de Ferveur ou par la Flamme de Cortelba, au choix du MJ.
+
+---
+
+## 17. Les phases du retour
+
+Le retour de la magie, du divin et du démoniaque se compte en **six phases**. Les pierres brisées en fixent le **plafond** : chaque pierre au-delà de la deuxième ouvre une phase de plus, quel que soit celui qui l'a brisée. Le **temps** fait monter jusqu'à ce plafond : une phase ne commence qu'après un délai depuis la précédente, et ce délai s'allonge, car les grands êtres ne reviennent pas du jour au lendemain. Le retour part des sites brisés (§1) et gagne ensuite le reste du monde. Ce n'est pas un automatisme : le MJ décide quand une phase commence.
+
+| Phase | Pierres brisées | Délai indicatif | Ce qui revient |
+|---|---|---|---|
+| 0 — Monde scellé | aucune | — | Humains, bêtes ; le surnaturel ne survit qu'au large et sur les sites. |
+| 1 — Premières fissures | 1 ou 2 | immédiat | Petits esprits discrets, feux follets, méphites, bêtes éveillées, premiers morts mineurs ; premiers dons chez quelques humains. |
+| 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages. |
+| 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens. |
+| 4 — Âge des prodiges | 5 | une saison à un an | Grands morts-vivants, démons, golems, sylvaniens, grands esprits. |
+| 5 — L'ancien monde | 6 | plusieurs années | Dragons, grands démons et diables, célestes, vrais dieux. |
+
+Logne puis la Sümpfenmark tombent tôt : la campagne reste en phase 1 pendant les premiers niveaux. Ce qui évolue avec le monde, comme Kisaeth et Varhun (§12), suit ces phases.
+
+### Le folklore qui devient réel
+
+Le folklore des documents joueurs ne devient pas réel en bloc. Ce qui prend corps, et à partir de quand :
+
+- **Fleuraine** : le serment sur le fer ne s'imprègne de magie qu'en phase 5 ; Sainte Colombe, les « attendus » et le denier de l'Aube restent du folklore.
+- **Altenmark** : les Hausgeister reviennent dès les premières phases, mais ne se montrent presque jamais. L'Eisenmann reste du folklore, mais quand des golems de fer apparaîtront, les gens les appelleront ainsi. Le Waldvater prend la forme d'arbres éveillés (phase 3), puis de sylvaniens (phase 4).
+- **Lucentia** : la Fortune est un ancien dieu de la chance, peu puissant. Le Silver Lake abrite un esprit des eaux, peu puissant lui aussi. Le Signore delle Strade et l'heure des vêpres restent du folklore.
+- **Ravenmoor** : l'Écho des collines devient une banshie, et la croyance devient dangereuse. La forêt des murmures se peuple de feux follets et de fées hostiles, puis d'une guenaude. Les corbeaux de Ravenhold, l'Invité silencieux et les pierres de serment restent du folklore ; les corbeaux sont intelligents par nature, magie ou pas.
+- **Valdera** : le culte d'Inés peut devenir un point de lore majeur, un démon pouvant s'en servir ; d'autres cultes peuvent s'installer peu à peu. Le mauvais œil devient une guenaude. Le pas de l'autel et les saints de village restent du folklore.
+- **Azhar** : les sâkin ne sont que le sage du Zahir (§15) ; ailleurs, ce n'est que du folklore. Un esprit de l'eau puissant est lié aux Sceaux d'Eau, sans que personne le sache : les nobles qui entretiennent mal leurs Sceaux voient les ennuis arriver. L'hôte de trois jours, les étoiles et les jours sans poids restent du folklore.
+- **Partout** : les ruines « sans mortier » ne sont que des pierres.
