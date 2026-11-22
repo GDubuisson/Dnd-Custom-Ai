@@ -5,6 +5,26 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.16.0] - 2026-11-22
+
+**Le désert de Zahir et le sage qui demeure.**
+- Nouveau dossier **« Site de pierre : désert de Zahir »** dans le compendium « Adversaires », 7
+  fiches :
+  - vautour, serpent venimeux et scorpion géants, et le **guide de Bir Azraq**, allié possible ;
+  - **Le sage du Zahir** : les deux sages de la pierre, fondus au Scellement en un seul
+    mort-vivant fou, enfermé depuis mille ans dans un palais invisible. Statistiques exactes du
+    Seigneur momie SRD (FP 15), fixes quelle que soit la phase. La pierre est son cœur ;
+  - ses **invocations**, momie et squelette, qui n'existent que par lui.
+- Exception voulue au monde scellé : au Zahir, le sage et ses invocations existent dès la phase 0.
+- **Ulrich** : la pierre du Zahir lui donne Pas brumeux à volonté et Porte dimensionnelle une fois
+  par jour ; et, après quelques échecs à atteindre le palais, il découvre qu'il peut céder un
+  fragment à un sbire, qui gagne le Sens des éclats.
+- Page **« Désert de Zahir »** dans le journal « Sites de pierre (MJ) » : la traversée (trois jours
+  réussis, avantage avec le Sens des éclats), l'usage d'annoncer son nom, l'apaisement du sage
+  (le neutraliser, puis trois réussites), une règle optionnelle où il aspire la magie, les
+  scénarios, la bonne et la mauvaise fin, le rattrapage, l'option du débordement, et des rencontres
+  par palier.
+
 ## [1.15.0] - 2026-11-22
 
 **L'île de Tirwen, la base des pirates et la jeunesse du capitaine.**
