@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.17.3] - 2026-11-22
+
+**Deux noms fixés.**
+- **Olivier de Vauclerc**, copiste du Cercle de l'Étoile Polaire, issu d'une petite famille noble
+  de Fleuraine (fiche d'Ulrich, Chroniques des objets). La fiche d'Ulrich suit aussi le déroulé
+  retenu à la Sümpfenmark : Olivier se sacrifie ou est capturé, puis meurt quand Ulrich aspire ses
+  éclats.
+- Le capitaine des pirates : **« le Noyé »** pour les gens de mer, « Capitaine » pour ses hommes ;
+  son vrai nom, **Kaspar**, n'est connu que d'Ulrich et des anciens de la pègre (fiches du
+  capitaine et d'Ulrich, page de l'île de Tirwen).
+
 ## [1.17.2] - 2026-11-22
 
 **Les Chroniques des objets et le Guide du MJ se mettent à jour dans les mondes existants.**
