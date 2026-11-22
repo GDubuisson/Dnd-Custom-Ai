@@ -351,6 +351,14 @@ Il ne reste de Kisaeth qu'un **fragment d'esprit**, gardien du site. Il n'a pas 
 
 Qui la brise n'est pas tranché : Ulrich, les PJ, ou un autre. **Kisaeth renaît**, encore faible et la mémoire éparse, puis retrouve sa puissance au fil des pierres brisées. C'est une **alliée potentielle** des PJ. Avec elle apparaissent des loups arctiques et des méphites de glace, et surtout **un œuf de Varhun**.
 
+### Si c'est un porteur de pierre (mauvaise fin)
+
+Varhun est *dans* la pierre : celui qui l'absorbe prend son essence. Si c'est un porteur de pierre d'Ulrich (§11), **aucun œuf n'apparaît**. Kisaeth renaît **en deuil** ; elle sent Varhun dans le porteur, puis dans Ulrich, et elle les traque. Elle se méfie des PJ, qui portent des éclats eux aussi. Quand le porteur rejoint Ulrich, celui-ci prend le saut de puissance, et le feu de Varhun avec lui.
+
+La mauvaise fin se rattrape : si les PJ **raisonnent Kisaeth** et **arrêtent le porteur** avant qu'il rejoigne Ulrich, le feu de Varhun se disperse, et l'œuf peut se former. Une fois Ulrich servi, la suite est au choix du MJ.
+
+En option, le **grand froid** : privée de Varhun, Kisaeth laisse déborder son chagrin. Le Désert gelé avance sur l'Eismark, le pays de Reinmar von Eisburg, et la faune figée descend vers les cols d'Eisengrund.
+
 ### L'œuf de Varhun : quête secondaire
 
 L'œuf ne vaut rien pour qui ignore ce qu'il est, et tout pour Kisaeth. Il faut le protéger, le garder au chaud et le mener là où il pourra éclore. Kisaeth peut devenir l'alliée de ceux qui le protègent. Ce qui en sort, et ce que devient Varhun, dépend de ce que les PJ en font.
