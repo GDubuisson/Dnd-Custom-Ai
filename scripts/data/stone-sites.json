@@ -5,9 +5,9 @@
       {
         "title": "Le site",
         "paragraphs": [
-          "Nord-est du Désert gelé de Kis. Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée. Avant la rupture, il ne reste d'elle qu'un fragment d'esprit, gardien du site, joué en narration : le froid qui mord plus fort, le vent qui tourne, une voix, les chiens qui refusent d'avancer. Son froid garde une faune d'un autre âge, cantonnée au quart nord-est.",
+          "Nord-est du Désert gelé de Kis. Varhun, l'oiseau de feu, s'est sacrifié dans la pierre ; Kisaeth, l'oiseau de glace, s'est dispersée dans la plaine et l'a gelée. Avant la rupture, il ne reste d'elle qu'un fragment d'esprit, gardien du site : le froid qui mord plus fort, le vent qui tourne, une voix, les chiens qui refusent d'avancer. Quand quelqu'un s'approche de la pierre, PJ ou bande d'Ulrich, elle se réveille sous sa forme renaissante, sans pouvoir quitter le périmètre du site tant que la pierre tient. Son froid garde une faune d'un autre âge, cantonnée au quart nord-est.",
           "Pour trouver le site : le Sens des éclats, à portée suffisante, et les guides d'Eisengrund, qui savent où les chiens s'arrêtent sans l'avoir jamais écrit.",
-          "Fiches : compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis » (avant la rupture : chouette des glaces, grand élan, tigre à dents de sabre, mammouth ; après : loup arctique, méphite de glace, Kisaeth en trois états, Varhun en trois âges). L'œuf de Varhun est dans le dossier « Secrets (MJ) »."
+          "Fiches : compendium « Adversaires », dossier « Site de pierre : désert gelé de Kis » (avant la rupture : chouette des glaces, grand élan, tigre à dents de sabre, mammouth, et Kisaeth renaissante, confinée au site ; après : loup arctique, méphite de glace, Kisaeth éveillée puis pleine puissance, Varhun en trois âges). L'œuf de Varhun est dans le dossier « Secrets (MJ) »."
         ]
       },
       {
@@ -32,7 +32,7 @@
         "items": [
           {
             "label": "Bonne fin",
-            "text": "Les PJ brisent la pierre, ou arrêtent le porteur : le pouvoir se disperse en éclats dans tous les présents (Éclat de Kis, ou Éclat absorbé (+2)). Kisaeth renaît, faible, alliée potentielle ; l'œuf de Varhun apparaît près du site, et avec lui la quête secondaire."
+            "text": "Les PJ brisent la pierre, ou arrêtent le porteur : le pouvoir se disperse en éclats dans tous les présents (Éclat de Kis, ou Éclat absorbé (+2)). Kisaeth, libérée du site, encore faible, devient une alliée potentielle ; l'œuf de Varhun apparaît près du site, et avec lui la quête secondaire."
           },
           {
             "label": "Mauvaise fin",
@@ -51,7 +51,7 @@
       {
         "title": "Rencontres conseillées (4 PJ)",
         "paragraphs": [
-          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante en phase 1, éveillée en phase 2, pleine puissance en phase 3), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich (environ +3 FP, détaillé sur ses fiches). L'état de Kisaeth dépend du nombre de pierres brisées (renaissante, confinée au site tant que la pierre tient, puis libre ; éveillée en phase 2, pleine puissance en phase 3), pas du niveau des PJ : en bonne fin elle aide, en mauvaise fin elle ne frappe les PJ que s'ils ne savent pas la raisonner."
         ],
         "table": {
           "head": [

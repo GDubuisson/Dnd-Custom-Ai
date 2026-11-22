@@ -64,6 +64,11 @@ describe("fitsSealedWorld — le surnaturel n'existe qu'au large avant la premi�
     assert.equal(fitsSealedWorld(creature(0, "common", "undead")), false);
   });
 
+  test("phase 0 à Kis : Kisaeth renaissante admise (monstruosité confinée au site)", () => {
+    assert.equal(fitsSealedWorld(creature(0, "siteKis", "monstrosity")), true);
+    assert.equal(fitsSealedWorld(creature(0, "common", "monstrosity")), false);
+  });
+
   test("phase 0 au large : monstruosité acceptée (Kraken)", () => {
     assert.equal(fitsSealedWorld(creature(0, "abyss", "monstrosity")), true);
   });

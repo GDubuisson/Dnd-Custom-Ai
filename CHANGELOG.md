@@ -5,6 +5,15 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.17.4] - 2026-11-22
+
+**Kisaeth se réveille avant la rupture.**
+- Quand quelqu'un s'approche du site de Kis, PJ ou bande d'Ulrich, Kisaeth se réveille sous sa
+  forme renaissante, mais ne peut pas quitter le périmètre du site tant que la pierre tient ; elle
+  en est libérée à la rupture. La fiche « Kisaeth (renaissante) » passe dans « Avant la rupture »
+  (exception au monde scellé limitée au site de Kis), et la page de Kis, l'histoire de l'œuf de
+  Varhun et les autres fiches de Kisaeth sont mises à jour.
+
 ## [1.17.3] - 2026-11-22
 
 **Deux noms fixés.**

@@ -458,9 +458,10 @@ DND_CUSTOM.bestiaryMagicHabitats = ["abyss"];
 /**
  * Sites dont la pierre fuit sur le vivant depuis le Scellement : types de créatures admis en plus des
  * bêtes et des humanoïdes dès la phase 0 (Tirwen : plantes hardies et toxiques, doc 99 §2 ; Zahir : le sage
- * fondu avec la pierre et ses invocations, confinés au palais).
+ * fondu avec la pierre et ses invocations, confinés au palais ; Kis : Kisaeth renaissante, réveillée à
+ * l'approche du site et confinée à son périmètre tant que la pierre tient).
  */
-DND_CUSTOM.bestiaryLeakTypes = { siteTirwen: ["plant"], siteZahir: ["undead"] };
+DND_CUSTOM.bestiaryLeakTypes = { siteTirwen: ["plant"], siteZahir: ["undead"], siteKis: ["monstrosity"] };
 
 /** Valeur d'une pièce en équivalent Pièces de Cuivre (PC). 1 PP = 50 PO ; 1 PO = 10 PA = 100 PC. */
 DND_CUSTOM.currencyToCopper = {

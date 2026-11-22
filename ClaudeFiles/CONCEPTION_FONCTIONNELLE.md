@@ -234,8 +234,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
   crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
   tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
-  tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
-  monde après, Kisaeth (glace : renaissante, éveillée, pleine puissance) et Varhun (feu : oisillon,
+  tigre à dents de sabre, mammouth, et Kisaeth renaissante, réveillée à l'approche et confinée au
+  site), loup arctique, méphite de glace et les deux oiseaux de l'ancien monde après, Kisaeth
+  (glace : éveillée, pleine puissance) et Varhun (feu : oisillon,
   jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
   Île de Tirwen : pas de gardien, la pierre fuit sur tout le vivant. Avant la rupture, dix bêtes
   géantes (mille-pattes, lézard, serpent venimeux, chauve-souris, guêpe, araignée, hyène, scorpion,

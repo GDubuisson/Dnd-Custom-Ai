@@ -45,15 +45,15 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
     });
   });
 
-  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes, plus les plantes de Tirwen et le sage du Zahir (T-ADV-002)", () => {
+  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes, plus les plantes de Tirwen, le sage du Zahir et Kisaeth (T-ADV-002)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const docs = await win.game.packs.get("dnd-custom-ai.adversaires").getDocuments();
       for (const doc of docs) {
         const { phase, habitat } = doc.flags["dnd-custom-ai"] ?? {};
         if (phase !== 0 || habitat === "abyss") continue;
-        // Tirwen et Zahir : la fuite de la pierre fait exister plantes et morts-vivants dès le monde scellé.
-        const leakTypes = { siteTirwen: ["plant"], siteZahir: ["undead"] }[habitat] ?? [];
+        // Tirwen, Zahir et Kis : la pierre fait exister plantes, morts-vivants et Kisaeth dès le monde scellé.
+        const leakTypes = { siteTirwen: ["plant"], siteZahir: ["undead"], siteKis: ["monstrosity"] }[habitat] ?? [];
         const allowed = ["humanoid", "beast", ...leakTypes];
         expect(allowed, `"${doc.name}" : ${doc.system.creatureType} en phase 0`).to.include(doc.system.creatureType);
       }
@@ -95,7 +95,8 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Le sage du Zahir": [zahir, before],
         "Momie invoquée": [zahir, before],
         "Chanoine veilleur": [velencia, before],
-        "Kisaeth (renaissante)": [kis, after],
+        "Kisaeth (renaissante)": [kis, before],
+        "Kisaeth (éveillée)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],
         "Champion d'Ulrich": [ulrich],

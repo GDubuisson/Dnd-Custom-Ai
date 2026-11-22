@@ -217,8 +217,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
   crapaud, grand serpent, patrouilleurs et tourbiers avant, Moorlicht, morts et goules de tourbière,
   tourbe qui marche après. Désert gelé de Kis : faune figée avant (chouette des glaces, grand élan,
-  tigre à dents de sabre, mammouth), loup arctique, méphite de glace et les deux oiseaux de l'ancien
-  monde après, Kisaeth (glace : renaissante, éveillée, pleine puissance) et Varhun (feu : oisillon,
+  tigre à dents de sabre, mammouth, et Kisaeth renaissante, réveillée à l'approche et confinée au
+  site), loup arctique, méphite de glace et les deux oiseaux de l'ancien monde après, Kisaeth
+  (glace : éveillée, pleine puissance) et Varhun (feu : oisillon,
   jeune, adulte), aux statistiques exactes des dragons blanc et rouge SRD.
   Île de Tirwen : pas de gardien, la pierre fuit sur tout le vivant. Avant la rupture, dix bêtes
   géantes (mille-pattes, lézard, serpent venimeux, chauve-souris, guêpe, araignée, hyène, scorpion,
@@ -257,7 +258,7 @@ Champion d'Ulrich et le Capitaine pirate sont dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle
-en phase 0 hors du large (`fitsSealedWorld`), sauf les plantes de Tirwen et le sage du Zahir avec ses
+en phase 0 hors du large (`fitsSealedWorld`), sauf Kisaeth renaissante, confinée au site de Kis, les plantes de Tirwen et le sage du Zahir avec ses
 invocations, que la pierre fait exister dès le monde scellé (`DND_CUSTOM.bestiaryLeakTypes`). Bloc SRD recopié au schéma simplifié : jet d'attaque =
 modificateur + `bonus`, dégâts = dés + modificateur + `damage.bonus` ; ce que le schéma ne modélise
 pas (attaques multiples, sauvegardes, nuées, actions légendaires) est écrit dans `specialAbilities`.
