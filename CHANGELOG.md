@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.17.0] - 2026-11-22
+
+**Le souterrain de Velencia et Estevan derrière le mur.**
+- Nouveau dossier **« Site de pierre : souterrain de Velencia »** dans le compendium
+  « Adversaires », 3 fiches pour la garde de l'Église : **garde d'apparat** (Garde SRD, donne
+  l'alerte), **sergent** (Vétéran SRD, clé des grilles) et **chanoine veilleur** (Acolyte SRD,
+  dont les prières restent bridées tant que la pierre tient). Estevan, vivant et végétatif près
+  de la pierre, n'a pas de fiche : on ne le combat pas.
+- **Ulrich** : la pierre de Velencia lui donne le sceau, Contresort trois fois par jour et
+  Bannissement une fois par jour ; il ne devient pas le passage des prières.
+- Page **« Souterrain de Velencia »** dans le journal « Sites de pierre (MJ) » : Estevan, la
+  communion du Hiérarque et les prières bridées, l'accès à la crypte (garde, pièges, ouvrir le
+  mur, nuit de veille), les messages et visions de dissuasion d'Estevan (calibrés sur les tables
+  SRD des pièges), les scénarios, trois fins (le sceau tient, bonne, mauvaise), le rattrapage
+  (impossible si Ulrich vient en personne), l'option du sacrilège, et des rencontres par palier.
+
 ## [1.16.0] - 2026-11-22
 
 **Le désert de Zahir et le sage qui demeure.**
