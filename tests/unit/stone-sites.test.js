@@ -51,6 +51,16 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     }
   });
 
+  test("Zahir : les fiches citées existent, avec l'apaisement et les fins", () => {
+    for (const name of ["Le sage du Zahir", "Momie invoquée", "Squelette invoqué", "Guide de Bir Azraq", "Vautour géant du Zahir", "Serpent venimeux géant du Zahir", "Scorpion géant du Zahir"]) {
+      assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+    }
+    const text = JSON.stringify(SITES.find((site) => site.name === "Désert de Zahir"));
+    for (const word of ["Apaiser le sage", "Annoncer son nom", "Bonne fin", "Mauvaise fin", "Rattraper la mauvaise fin", "Option : le débordement"]) {
+      assert.ok(text.includes(word), `Zahir : « ${word} » manquant`);
+    }
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

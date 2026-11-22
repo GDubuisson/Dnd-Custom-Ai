@@ -58,6 +58,12 @@ describe("fitsSealedWorld — le surnaturel n'existe qu'au large avant la premi�
     assert.equal(fitsSealedWorld(creature(0, "siteLogne", "plant")), false);
   });
 
+  test("phase 0 au Zahir : morts-vivants admis (le sage fondu avec la pierre et ses invocations), confinés au site", () => {
+    assert.equal(fitsSealedWorld(creature(0, "siteZahir", "undead")), true);
+    assert.equal(fitsSealedWorld(creature(0, "siteZahir", "plant")), false);
+    assert.equal(fitsSealedWorld(creature(0, "common", "undead")), false);
+  });
+
   test("phase 0 au large : monstruosité acceptée (Kraken)", () => {
     assert.equal(fitsSealedWorld(creature(0, "abyss", "monstrosity")), true);
   });

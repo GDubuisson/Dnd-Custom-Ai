@@ -217,5 +217,144 @@
         }
       }
     ]
+  },
+  {
+    "name": "Désert de Zahir",
+    "sections": [
+      {
+        "title": "Le site",
+        "paragraphs": [
+          "Au sud-ouest d'Azhar, au-delà de Bir Azraq et de Ramlah. Au centre du désert, un palais que personne ne voit : mirages, espace replié. Les relevés contradictoires des expéditions de 671, 744 et 858 sont tous exacts. Le vrai danger n'est pas la faune, c'est l'absence de repères.",
+          "Dans le palais : le sage du Zahir, celui qui demeure. Au Scellement, quelque chose a mal tourné : les deux sages de la pierre se sont réveillés dans un seul corps, deux voix pour un être, avec un pouvoir sans limite et la sensation d'aspirer la magie alentour. Ils n'ont jamais pu sortir. Mille ans sans dormir ni manger les ont rendus fous. La pierre est son cœur : il meurt avec elle.",
+          "Fiches : compendium « Adversaires », dossier « Site de pierre : désert de Zahir » (vautour, serpent et scorpion géants, guide de Bir Azraq, le sage aux statistiques exactes du Seigneur momie SRD, FP 15 fixe, et ses invocations, momies et squelettes, qui n'existent que par lui)."
+        ]
+      },
+      {
+        "title": "Traverser le désert",
+        "items": [
+          {
+            "label": "Atteindre le palais",
+            "text": "Il faut trois jours réussis : chaque jour, un test de Sagesse (Survie) DD 15 pour le groupe. Un échec coûte un jour, et un niveau d'épuisement à qui manque d'eau. Le palais n'apparaît qu'au troisième succès."
+          },
+          {
+            "label": "Le Sens des éclats",
+            "text": "Les PJ sentent vaguement la direction du palais : avantage au test. Un guide de Bir Azraq connaît les bordures, mais pas le centre."
+          },
+          {
+            "label": "Sans éclats",
+            "text": "Le test passe à DD 20, et chaque échec coûte des hommes, des bêtes ou des vivres. C'est le cas de la bande d'Ulrich, jusqu'à ce qu'il découvre, après quelques échecs, qu'il peut céder une part de son pouvoir à un sbire (gabarit de fragment, Sens des éclats). Ses ritualistes peuvent aussi servir de détecteur : les rituels réussissent mieux près d'une pierre."
+          },
+          {
+            "label": "Annoncer son nom",
+            "text": "L'usage des caravaniers devant les lieux vides est une vraie protection : qui entre dans le palais en annonçant qui il est et pourquoi il vient, le sage l'écoute avant de frapper."
+          }
+        ]
+      },
+      {
+        "title": "Apaiser le sage",
+        "items": [
+          {
+            "label": "Le neutraliser",
+            "text": "Il doit être entravé, agrippé, étourdi ou neutralisé ; il est immunisé contre les états charmé, effrayé et paralysé."
+          },
+          {
+            "label": "Le calmer",
+            "text": "Tant qu'il est neutralisé, il faut trois réussites avant trois échecs : Apaisement des émotions (il fait son JS de Charisme, avec l'avantage de sa résistance à la magie), Restauration partielle, Restauration supérieure (compte pour deux), ou un test de Persuasion, Religion ou Perspicacité DD 18 en s'adressant à l'une des deux voix. Trois échecs : il se libère et le combat reprend."
+          },
+          {
+            "label": "Ce qu'on y gagne",
+            "text": "Apaisé, il lâche la pierre de lui-même et livre des bribes de vérité sur le Scellement avant de mourir avec elle : au MJ de choisir lesquelles."
+          },
+          {
+            "label": "Règle optionnelle : il aspire la magie",
+            "text": "Tant qu'il n'est pas neutralisé, chaque sort lancé à 9 m de lui lui rend 5 PV par niveau du sort (2 pour un tour de magie). Non comptée dans son FP."
+          }
+        ]
+      },
+      {
+        "title": "Qui arrive le premier",
+        "items": [
+          {
+            "label": "Les PJ seuls",
+            "text": "Ils traversent, entrent, et choisissent : parler au sage, l'apaiser, le détruire ou repartir. À bas niveau, on ne le combat pas."
+          },
+          {
+            "label": "La bande seule",
+            "text": "La bande y laisse beaucoup de ressources. Les PJ arrivent pendant l'assaut ou après : le sbire doté, devenu porteur, repart à travers le désert avec la pierre."
+          },
+          {
+            "label": "Les deux",
+            "text": "Le sage s'en prend à tous les intrus. Après l'assaut de la bande, il peut être affaibli (PV entamés, emplacements et actions légendaires dépensés), ce qui rend un combat jouable plus tôt."
+          }
+        ]
+      },
+      {
+        "title": "Bonne et mauvaise fin",
+        "items": [
+          {
+            "label": "Bonne fin",
+            "text": "Les PJ apaisent le sage, ou le détruisent et brisent la pierre exposée dans sa poussière, ou arrêtent le porteur : le pouvoir se disperse en éclats dans tous les présents (Éclat de Zahir, ou Éclat absorbé (+2)). Le sage meurt avec la pierre ; il n'a parlé que s'il a été apaisé."
+          },
+          {
+            "label": "Mauvaise fin",
+            "text": "Le porteur prend la pierre et rejoint Ulrich, qui l'aspire et prend la distorsion : Pas brumeux à volonté et Porte dimensionnelle une fois par jour. Le sage meurt sans rien révéler."
+          },
+          {
+            "label": "Rattraper la mauvaise fin",
+            "text": "Arrêter le porteur avant qu'il rejoigne Ulrich. Il repart à travers un désert qui ment encore un temps, alors que les PJ gardent leur direction : la poursuite leur est favorable. Une fois Ulrich servi, la suite est au choix du MJ."
+          },
+          {
+            "label": "Option : le débordement",
+            "text": "La distorsion libérée déborde sur les routes de Bir Azraq et de Ramlah : distances fausses, caravanes perdues, et le commerce d'Azhar vacille."
+          }
+        ]
+      },
+      {
+        "title": "Rencontres conseillées (4 PJ)",
+        "paragraphs": [
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich ; avant de prendre la pierre, le sbire doté n'a que le gabarit de fragment (environ 2 FP de moins). Le sage (FP 15, 13 000 XP) n'est pas fait pour être combattu avant le niv. 12 environ, d'autant que ses actions légendaires et ses invocations le rendent plus dur que son FP."
+        ],
+        "table": {
+          "head": [
+            "PJ",
+            "Désert",
+            "Palais",
+            "Bande"
+          ],
+          "rows": [
+            [
+              "niv. 3-4",
+              "Deux vautours géants et deux serpents venimeux géants (difficile) ; un scorpion géant et deux serpents au niv. 4.",
+              "Une momie et un squelette invoqués (difficile au niv. 3) ; une momie et deux squelettes au niv. 4. Le sage : à éviter, ou à qui l'on parle.",
+              "Porteur : déserteur des Passwachten avec le gabarit (environ FP 6, mortel), à jouer en poursuite."
+            ],
+            [
+              "niv. 5-8",
+              "Trois scorpions géants (difficile au niv. 5) ; quatre scorpions et deux vautours au niv. 8.",
+              "Trois momies invoquées (difficile au niv. 5) ; quatre momies et quatre squelettes au niv. 8. Le sage : mortel, sauf affaibli.",
+              "Porteur : exécuteur avec le gabarit (environ FP 8), seul (difficile au niv. 5) ; avec un déserteur au niv. 8."
+            ],
+            [
+              "niv. 9-12",
+              "Quatre scorpions géants et quatre vautours (difficile au niv. 9) ; au-delà, le désert tue par la soif plus que par les bêtes.",
+              "Six momies invoquées (difficile au niv. 9) ; le sage seul au niv. 12 (difficile sur le papier, plus dur en pratique).",
+              "Porteur : lame avec le gabarit (environ FP 11), seul (difficile au niv. 9) ; avec un ritualiste au niv. 12."
+            ],
+            [
+              "niv. 13-16",
+              "Décor et épreuve de survie.",
+              "Le sage seul (difficile au niv. 13, actions légendaires comprises) ; avec une momie invoquée au niv. 16.",
+              "Porteur : champion d'Ulrich avec le gabarit (environ FP 14) et un exécuteur (difficile au niv. 13) ; avec une lame au niv. 16."
+            ],
+            [
+              "niv. 17-20",
+              "Décor et épreuve de survie.",
+              "Le sage et quatre momies invoquées (difficile au niv. 17) ; avec six squelettes en plus au niv. 20.",
+              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17) ; avec un maître ritualiste au niv. 20."
+            ]
+          ]
+        }
+      }
+    ]
   }
 ]

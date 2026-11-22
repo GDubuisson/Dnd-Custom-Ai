@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 124 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 131 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 124 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 131 Actors `npc` prêts à
 glisser sur une scène.
 
-124 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+131 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -209,6 +209,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   crocodile, singe), cinq plantes (champignon violet, ronce-griffe, ronce-aiguille, liane
   étrangleuse, tertre errant) et les hommes du capitaine (sentinelle, pilote, traître, fidèle), avec
   la vitalité de Tirwen ; rien n'apparaît après la rupture, l'île devient plus tranquille.
+  Désert de Zahir : vautour, serpent venimeux et scorpion géants, guide de Bir Azraq, et dans le
+  palais invisible le sage du Zahir, deux sages fondus avec la pierre en un mort-vivant (Seigneur
+  momie SRD exact, FP 15 fixe), avec ses invocations (momie, squelette) qui n'existent que par lui.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten
@@ -235,8 +238,8 @@ Champion d'Ulrich et le Capitaine pirate sont dérivés, FP recalculé).
 
 Chaque entrée porte `flags["dnd-custom-ai"].phase` (0 à 3, `DND_CUSTOM.bestiaryPhases`) et
 `.habitat` (`DND_CUSTOM.bestiaryHabitats`) ; un test de cohérence refuse toute créature surnaturelle
-en phase 0 hors du large (`fitsSealedWorld`), sauf les plantes de Tirwen, que la fuite de la pierre
-fait pousser dès le monde scellé (`DND_CUSTOM.bestiaryLeakTypes`). Bloc SRD recopié au schéma simplifié : jet d'attaque =
+en phase 0 hors du large (`fitsSealedWorld`), sauf les plantes de Tirwen et le sage du Zahir avec ses
+invocations, que la pierre fait exister dès le monde scellé (`DND_CUSTOM.bestiaryLeakTypes`). Bloc SRD recopié au schéma simplifié : jet d'attaque =
 modificateur + `bonus`, dégâts = dés + modificateur + `damage.bonus` ; ce que le schéma ne modélise
 pas (attaques multiples, sauvegardes, nuées, actions légendaires) est écrit dans `specialAbilities`.
 

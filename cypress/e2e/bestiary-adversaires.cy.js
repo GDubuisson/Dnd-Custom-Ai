@@ -45,15 +45,16 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
     });
   });
 
-  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes, plus les plantes de Tirwen (T-ADV-002)", () => {
+  it("monde scellé : en phase 0, hors du large, uniquement des humanoïdes et des bêtes, plus les plantes de Tirwen et le sage du Zahir (T-ADV-002)", () => {
     waitForAdversairesImport();
     cy.window().then(async (win) => {
       const docs = await win.game.packs.get("dnd-custom-ai.adversaires").getDocuments();
       for (const doc of docs) {
         const { phase, habitat } = doc.flags["dnd-custom-ai"] ?? {};
         if (phase !== 0 || habitat === "abyss") continue;
-        // Tirwen : la fuite de la pierre fait pousser des plantes hardies dès le monde scellé.
-        const allowed = habitat === "siteTirwen" ? ["humanoid", "beast", "plant"] : ["humanoid", "beast"];
+        // Tirwen et Zahir : la fuite de la pierre fait exister plantes et morts-vivants dès le monde scellé.
+        const leakTypes = { siteTirwen: ["plant"], siteZahir: ["undead"] }[habitat] ?? [];
+        const allowed = ["humanoid", "beast", ...leakTypes];
         expect(allowed, `"${doc.name}" : ${doc.system.creatureType} en phase 0`).to.include(doc.system.creatureType);
       }
     });
@@ -74,6 +75,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const sumpfenmark = label("Bestiary.Habitats.siteSumpfenmark");
       const kis = label("Bestiary.Habitats.siteKis");
       const tirwen = label("Bestiary.Habitats.siteTirwen");
+      const zahir = label("Bestiary.Habitats.siteZahir");
       const ulrich = label("Bestiary.Habitats.ulrichBand");
       const expected = {
         "Brigand": [phase0, label("Bestiary.Habitats.common")],
@@ -89,6 +91,8 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Singe géant de Tirwen": [tirwen, before],
         "Tertre errant de Tirwen": [tirwen, before],
         "Fidèle du capitaine": [tirwen, before],
+        "Le sage du Zahir": [zahir, before],
+        "Momie invoquée": [zahir, before],
         "Kisaeth (renaissante)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],

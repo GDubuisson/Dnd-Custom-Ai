@@ -5487,6 +5487,692 @@
     }
   },
   {
+    "name": "Vautour géant du Zahir",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 10
+        },
+        "speed": 3
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Bec",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Serres",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vol 18 m. Perception +3. Odorat et vue aiguisés : avantage aux tests de Sagesse (Perception) fondés sur la vue ou l'odorat. Tactique de groupe : avantage contre une créature si un allié du vautour se trouve à 1,50 m d'elle et n'est pas neutralisé. Attaques multiples : un coup de bec et un coup de serres.",
+      "particularity": "Ils suivent les expéditions à distance, des jours durant, en attendant que le désert fasse son œuvre. (MJ : faune du Zahir ; le vrai danger du désert reste l'absence de repères, que la pierre aggrave. Bloc SRD Vautour géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Serpent venimeux géant du Zahir",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure (allonge 3 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Nage 9 m. Vision aveugle 3 m. Perception +2. Morsure : JS de Constitution DD 11, dégâts de poison divisés par deux en cas de réussite.",
+      "particularity": "Il dort sous le sable à l'ombre des rochers, et les bergers de bordure ne posent jamais la main à plat dans le Zahir. (MJ : faune du Zahir ; le vrai danger du désert reste l'absence de repères, que la pierre aggrave. Bloc SRD Serpent venimeux géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Scorpion géant du Zahir",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "beast",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -5
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 52,
+          "max": 52,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 12
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Pince",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dard",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "4d10",
+            "type": "poison"
+          }
+        }
+      ],
+      "specialAbilities": "Vision aveugle 18 m. Attaques multiples : deux pinces et un dard. Pince : la cible est agrippée (évasion DD 12) ; deux pinces, une cible chacune. Dard : JS de Constitution DD 12, dégâts de poison divisés par deux en cas de réussite.",
+      "particularity": "Les relevés de 744 en dessinent un, de mémoire, en marge d'une carte qui ne correspond à aucune autre. (MJ : faune du Zahir ; le vrai danger du désert reste l'absence de repères, que la pierre aggrave. Bloc SRD Scorpion géant.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Guide de Bir Azraq",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 16,
+          "max": 16,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps ou deux à distance. Ouïe et vue aiguisées. Nature +4, Perception +5, Discrétion +6, Survie +5.",
+      "particularity": "Il connaît les bordures du Zahir et ne s'avance pas plus loin que ce qu'on le paie. Il sait, sans l'avoir jamais écrit, que les distances n'y correspondent pas au temps de marche et que les étoiles n'y sont pas à leur place ; il annonce son nom en regardant vers le sud, comme devant tout lieu vide. (MJ : allié possible des PJ ; bloc SRD Éclaireur.)"
+    },
+    "items": [
+      {
+        "name": "Épée courte",
+        "type": "weapon",
+        "img": "icons/weapons/swords/sword-guard-worn-purple.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Le sage du Zahir",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "15",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 97,
+          "max": 97,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 6
+      },
+      "xpReward": 13000,
+      "attacks": [
+        {
+          "name": "Poing putréfiant",
+          "ability": "str",
+          "bonus": 5,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "6d6",
+            "type": "necrotic"
+          }
+        },
+        {
+          "name": "Éclair traçant (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 9,
+          "magic": false,
+          "damage": {
+            "dice": "4d6",
+            "bonus": 0,
+            "type": "radiant"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Immunisé contre les dégâts contondants, perforants et tranchants d'attaques non magiques, et contre les états charmé, épuisé, effrayé, paralysé et empoisonné. Vision dans le noir 18 m. Jets de sauvegarde : Con +8, Int +5, Sag +9, Cha +8. Histoire +5, Religion +5. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et autres effets magiques. Renouveau : détruit, il se reforme en 24 heures tant que la pierre, qui est son cœur, n'est pas brisée. Incantation (niveau 10, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée, Thaumaturgie ; niveau 1 (4 emplacements) Injonction, Éclair traçant, Bouclier de la foi ; niveau 2 (3) Immobilisation de personne, Silence, Arme spirituelle ; niveau 3 (3) Animation des morts, Dissipation de la magie ; niveau 4 (3) Divination, Gardien de la foi ; niveau 5 (2) Contagion, Fléau d'insectes ; niveau 6 (1) Contamination. Attaques multiples : un regard terrifiant et un poing putréfiant. Poing putréfiant : JS de Constitution DD 16 ou maudit par la pourriture de momie (ne peut pas récupérer de PV, perd 3d6 PV maximum toutes les 24 heures, tombe en poussière à 0 PV maximum ; se lève avec Délivrance des malédictions ou plus). Regard terrifiant : une créature visible à 18 m fait un JS de Sagesse DD 16 ou est effrayée jusqu'à la fin du prochain tour du sage ; ratée de 5 ou plus, elle est aussi paralysée ; réussie, elle est immunisée contre le regard de toute momie pendant 24 heures. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Attaquer (un poing ou un regard) ; Poussière aveuglante (chaque créature à 1,50 m fait un JS de Constitution DD 16 ou est aveuglée jusqu'à la fin de son prochain tour) ; Parole impie (2 actions : chaque créature non morte-vivante à 3 m qui l'entend fait un JS de Constitution DD 16 ou est étourdie jusqu'à la fin de son prochain tour) ; Énergie négative (2 actions : aucune créature à 18 m ne peut récupérer de PV jusqu'à la fin de son prochain tour) ; Tourbillon de sable (2 actions : se change en tourbillon de sable, se déplace de 18 m et reprend sa forme ; immunisé contre tous les dégâts pendant ce temps, aucune attaque d'opportunité). Invocations : momies et squelettes, qui n'existent que par lui (voir « Momie invoquée » et « Squelette invoqué »).",
+      "particularity": "Celui qui demeure : le plus ancien des sâkin. Les deux sages de la pierre du Zahir se sont réveillés au Scellement dans un seul corps, seuls physiquement mais deux intérieurement, avec un pouvoir sans limite et la sensation d'aspirer la magie alentour. Ils n'ont jamais pu quitter le palais ; mille ans sans dormir ni manger les ont rendus fous, et ils parlent à deux voix qui ne veulent pas toujours la même chose. Le palais, au centre du désert, n'est pas visible : mirages et espace replié. (MJ : statistiques exactes du Seigneur momie SRD, fixes quelle que soit la phase ; à bas niveau, on l'évite, on lui parle ou on le fuit. La pierre est son cœur : il meurt avec elle. Apaisé, il livre des bribes de vérité sur le Scellement avant de mourir ; détruit, il ne dit rien. Annoncer son nom en entrant, comme les caravaniers devant les lieux vides, lui fait écouter avant de frapper. Apaisement, règle optionnelle d'aspiration de la magie et fins : journal « Sites de pierre », page du désert de Zahir.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Momie invoquée",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 58,
+          "max": 58,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 6
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Poing putréfiant",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "necrotic"
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Résistance aux dégâts contondants, perforants et tranchants d'attaques non magiques ; immunisée contre les états charmé, épuisé, effrayé, paralysé et empoisonné. Vision dans le noir 18 m. Jets de sauvegarde : Sag +2. Attaques multiples : un regard terrifiant et un poing putréfiant. Poing putréfiant : JS de Constitution DD 12 ou maudit par la pourriture de momie. Regard terrifiant : une créature visible à 18 m fait un JS de Sagesse DD 11 ou est effrayée jusqu'à la fin du prochain tour de la momie.",
+      "particularity": "Une silhouette de bandelettes et de sable, au service du sage. (MJ : invocation du sage du Zahir, pas un être à part entière : elle n'existe que dans le palais et disparaît quand le sage tombe ou s'apaise. Bloc SRD Momie.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
+    "name": "Squelette invoqué",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 13,
+          "max": 13,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (24/96 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "bludgeoning"
+      ],
+      "specialAbilities": "Immunisé contre les états épuisé et empoisonné. Vision dans le noir 18 m.",
+      "particularity": "Des ossements qui se lèvent du sable des cours du palais. (MJ : invocation du sage du Zahir, pas un être à part entière : il n'existe que dans le palais et disparaît quand le sage tombe ou s'apaise. Bloc SRD Squelette.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "siteZahir"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",
@@ -7413,7 +8099,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 5 PV s'il lui en reste au moins 1. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 15 ou tombe à terre. Jets de sauvegarde : For +7, Dex +5, Con +6. Athlétisme +10, Intimidation +5. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison. Pierre du Zahir : celui qui l'absorbe prend la distorsion ; il peut lancer Pas brumeux à volonté et Porte dimensionnelle une fois par jour, sans composantes. Céder une part de son pouvoir (découvert après quelques échecs à atteindre le palais du Zahir, au choix du MJ) : il peut transmettre un fragment à un sbire, qui gagne le gabarit de fragment et le Sens des éclats, tandis qu'Ulrich perd ce gabarit jusqu'à ce qu'il le reprenne en aspirant le sbire.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Il possède les papiers personnels d'Hartmut le Sourd, disparus à sa mort en 362 : le premier Moorvogt les avait emportés à Moorburg dans un coffre scellé, transmis avec la charge sans être ouvert, et le Moorvogt actuel, endetté auprès de la pègre, l'a remis à Ulrich vers 878. Les papiers disent qu'il y a au-delà du Schilfbach quelque chose de puissant, sans en donner l'emplacement : Ulrich ignore ce que c'est et ne veut que le pouvoir. Les trois noyades de l'été sont ses tourbiers, envoyés creuser au-delà du Schilfbach ; le capitaine d'Ostbruchwacht est payé pour raccourcir les patrouilles ; le Moorvogt, tenu par ses dettes et par la peur, ne rend pas son rapport. Pistes plus lointaines, au choix du MJ : les ritualistes qui cherchent les filons d'Eisengrund (les rituels réussissent mieux près d'une pierre), les registres de la Maison des Cent Portes, l'argent prêté aux seigneurs de Bellerive, le butin des pirates, que leur capitaine, son ancien associé parti fâché vers 877, lui confie à receler par les Maisons lucentiennes (voir « Capitaine pirate »). Il n'a aucune fiche avant sa transformation : il prend le pouvoir de la pierre de la Sümpfenmark au moment où les PJ arrivent sur le site, au milieu de sa bande, trop nombreuse pour eux. Il blesse mortellement Olivier, copiste du Cercle de l'Étoile Polaire et allié des PJ, qui porte comme eux des éclats de la pierre de Logne (moment et circonstances au choix du MJ) ; Olivier meurt quand Ulrich aspire ses éclats (appliquer une fois le gabarit de fragment). Ulrich comprend que les éclats se prennent sur les vivants comme sur les pierres : les PJ deviennent des proies. Sa puissance a deux moteurs : le temps, qui le rend plus fort d'étape en étape (cinq fiches calées sur le niveau des PJ, chacune avec une seule pierre absorbée), et chaque pierre de plus qu'il absorbe, qui lui donne un gros saut (gabarit en fin de capacités spéciales). L'ordre des pierres suivantes, et s'il les obtient, dépend de la table. Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 127 (régénération comprise) et CA 17 avec la parade → FP défensif 5 ; 35 dégâts par round à +7 → FP offensif 5."
     },
     "items": [
@@ -7498,7 +8184,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (1/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 16 ou tombe à terre. Jets de sauvegarde : For +8, Dex +5, Con +7. Athlétisme +11, Intimidation +6. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (1/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 16 ou tombe à terre. Jets de sauvegarde : For +8, Dex +5, Con +7. Athlétisme +11, Intimidation +6. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison. Pierre du Zahir : celui qui l'absorbe prend la distorsion ; il peut lancer Pas brumeux à volonté et Porte dimensionnelle une fois par jour, sans composantes. Céder une part de son pouvoir (découvert après quelques échecs à atteindre le palais du Zahir, au choix du MJ) : il peut transmettre un fragment à un sbire, qui gagne le gabarit de fragment et le Sens des éclats, tandis qu'Ulrich perd ce gabarit jusqu'à ce qu'il le reprenne en aspirant le sbire.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 2 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 177 (régénération et résistance légendaire comprises) et CA 17 avec la parade → FP défensif 8 ; 52 dégâts par round à +8 → FP offensif 8."
     },
     "items": [
@@ -7583,7 +8269,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+1 à la CA, déjà comptée). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (2/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +9, Dex +6, Con +9, Sag +6. Athlétisme +13, Intimidation +7. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+1 à la CA, déjà comptée). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Résistance légendaire (2/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 17 ou tombe à terre. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +9, Dex +6, Con +9, Sag +6. Athlétisme +13, Intimidation +7. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison. Pierre du Zahir : celui qui l'absorbe prend la distorsion ; il peut lancer Pas brumeux à volonté et Porte dimensionnelle une fois par jour, sans composantes. Céder une part de son pouvoir (découvert après quelques échecs à atteindre le palais du Zahir, au choix du MJ) : il peut transmettre un fragment à un sbire, qui gagne le gabarit de fragment et le Sens des éclats, tandis qu'Ulrich perd ce gabarit jusqu'à ce qu'il le reprenne en aspirant le sbire.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 3 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 232 et CA 18 avec la parade → FP défensif 11 ; 66 dégâts par round (actions légendaires comprises) à +9 → FP offensif 11."
     },
     "items": [
@@ -7668,7 +8354,7 @@
           "secondaryDamage": { "dice": "", "type": "" }
         }
       ],
-      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+2 à la CA, déjà comptés). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 19 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 17 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +11, Dex +7, Con +10, Sag +7. Athlétisme +16, Intimidation +9. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+2 à la CA, déjà comptés). Vigueur de la pierre : au début de chacun de ses tours, il récupère 10 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 19 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 17 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +11, Dex +7, Con +10, Sag +7. Athlétisme +16, Intimidation +9. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison. Pierre du Zahir : celui qui l'absorbe prend la distorsion ; il peut lancer Pas brumeux à volonté et Porte dimensionnelle une fois par jour, sans composantes. Céder une part de son pouvoir (découvert après quelques échecs à atteindre le palais du Zahir, au choix du MJ) : il peut transmettre un fragment à un sbire, qui gagne le gabarit de fragment et le Sens des éclats, tandis qu'Ulrich perd ce gabarit jusqu'à ce qu'il le reprenne en aspirant le sbire.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 4 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 272 et CA 19 avec la parade → FP défensif 14 ; 86 dégâts par round (actions légendaires comprises) à +11 → FP offensif 14."
     },
     "items": [
@@ -7754,7 +8440,7 @@
         }
       ],
       "damageResistances": ["bludgeoning", "piercing", "slashing"],
-      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+3 à la CA, déjà comptés). Résistant aux dégâts contondants, perforants et tranchants des attaques non magiques. Force de l'ancien monde : ses attaques d'arme sont magiques. Vigueur de la pierre : au début de chacun de ses tours, il récupère 15 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 21 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 18 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Onde de la pierre (recharge 5-6, action) : il frappe le sol ; chaque créature à 6 m fait un JS de Constitution DD 21, subit 6d10 dégâts de force et tombe à terre en cas d'échec, la moitié des dégâts seulement en cas de réussite. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +13, Dex +8, Con +12, Sag +8. Athlétisme +19, Intimidation +10. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison.",
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue et un coup de bouclier. Brute : un dé de dégâts supplémentaire à chaque attaque d'arme (déjà compté). Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +3 à la CA contre une attaque au corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme. Autorité : tant qu'il est debout et visible, les membres de sa bande à 18 m ne peuvent pas être effrayés ; dès qu'il tombe sous la moitié de ses PV, chacun d'eux fait un JS de Sagesse DD 10 ou fuit pendant 1 minute. Chair de pierre : sa peau s'est durcie (+3 à la CA, déjà comptés). Résistant aux dégâts contondants, perforants et tranchants des attaques non magiques. Force de l'ancien monde : ses attaques d'arme sont magiques. Vigueur de la pierre : au début de chacun de ses tours, il récupère 15 PV s'il lui en reste au moins 1. Volonté de fer : immunisé contre les états charmé et effrayé. Résistance légendaire (3/jour) : s'il rate un jet de sauvegarde, il peut choisir de le réussir. Coup de bouclier : une cible de taille M ou moins fait un JS de Force DD 21 ou tombe à terre. Cri de la pierre (recharge 5-6, action) : chaque créature de son choix à 9 m qui l'entend fait un JS de Sagesse DD 18 ou est effrayée 1 minute (nouveau JS à la fin de chacun de ses tours). Onde de la pierre (recharge 5-6, action) : il frappe le sol ; chaque créature à 6 m fait un JS de Constitution DD 21, subit 6d10 dégâts de force et tombe à terre en cas d'échec, la moitié des dégâts seulement en cas de réussite. Actions légendaires (3 par round, à la fin du tour d'une autre créature) : Déplacement, il se déplace de la moitié de sa vitesse sans provoquer d'attaque d'opportunité ; Attaque (coûte 2 actions), une attaque d'épée longue ; Coup de bouclier (coûte 2 actions). Jets de sauvegarde : For +13, Dex +8, Con +12, Sag +8. Athlétisme +19, Intimidation +10. Pierre absorbée en plus de la première (gabarit cumulable, environ +3 FP par pierre, un peu moins au-delà du FP 20, à appliquer à la main) : +30 PV maximum, Vigueur de la pierre +5, +1 aux jets d'attaque et aux DD de ses capacités, et +1d8 dégâts de force à chaque attaque d'arme réussie (à porter en dégâts secondaires des attaques). Dès 3 pierres absorbées au total, ses attaques d'arme sont magiques. Fragment absorbé (gabarit cumulable, environ +1 FP par fragment, à appliquer à la main) : +15 PV maximum et +2 dégâts à chaque attaque d'arme réussie. Un fragment ne compte pas comme une pierre. Pierre de Kis : celui qui l'absorbe prend l'essence de Varhun ; les dégâts de son gabarit sont de feu au lieu de force, et il résiste au feu. Pierre de Tirwen : celui qui l'absorbe prend la vie de l'île ; la Vigueur de la pierre de son gabarit passe à +10, et il devient insensible au poison. Pierre du Zahir : celui qui l'absorbe prend la distorsion ; il peut lancer Pas brumeux à volonté et Porte dimensionnelle une fois par jour, sans composantes. Céder une part de son pouvoir (découvert après quelques échecs à atteindre le palais du Zahir, au choix du MJ) : il peut transmettre un fragment à un sbire, qui gagne le gabarit de fragment et le Sens des éclats, tandis qu'Ulrich perd ce gabarit jusqu'à ce qu'il le reprenne en aspirant le sbire.",
       "particularity": "Né en 845 à Eisenpass, fils non reconnu de Reinmar von Eisburg, alors jeune Passwacht, Altmeister depuis 871, et d'une cantinière des garnisons. Le service des Passwachten est héréditaire dans les familles de l'Eismark : sans nom, il n'y a jamais eu sa place. Il hait l'ordre qui se dit juste et ne l'a jamais compté. Depuis 877 environ, il dirige toute la pègre d'Altenmark, dans les cinq marches, et la tient par la force et par le combat ; le négoce de tourbe d'Altenburg, commerce en déclin, n'est que sa couverture. Il a des contacts dans tout le monde connu. Étape 5 sur 5 dans le temps, avec une seule pierre absorbée ; pour chaque pierre de plus, et pour chaque fragment absorbé (dont les éclats d'Olivier), appliquer les gabarits en fin de capacités spéciales (voir « Ulrich (PJ niv. 3-4) » pour son histoire et ses liens avec les problèmes de 887). Profil de boss dérivé du Gladiateur SRD, une pierre absorbée ; FP recalculé par la méthode de création de monstres : PV effectifs 324 et CA 20 avec la parade → FP défensif 17 ; 98 dégâts par round (actions légendaires et onde comprises) à +13 → FP offensif 17."
     },
     "items": [

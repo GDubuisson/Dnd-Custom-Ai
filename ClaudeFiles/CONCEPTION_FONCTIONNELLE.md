@@ -216,7 +216,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-124 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+131 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -239,6 +239,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   crocodile, singe), cinq plantes (champignon violet, ronce-griffe, ronce-aiguille, liane
   étrangleuse, tertre errant) et les hommes du capitaine (sentinelle, pilote, traître, fidèle), avec
   la vitalité de Tirwen ; rien n'apparaît après la rupture, l'île devient plus tranquille.
+  Désert de Zahir : vautour, serpent venimeux et scorpion géants, guide de Bir Azraq, et dans le
+  palais invisible le sage du Zahir, deux sages fondus avec la pierre en un mort-vivant (Seigneur
+  momie SRD exact, FP 15 fixe), avec ses invocations (momie, squelette) qui n'existent que par lui.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten
