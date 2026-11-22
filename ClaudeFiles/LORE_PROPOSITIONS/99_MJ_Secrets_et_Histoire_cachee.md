@@ -470,7 +470,7 @@ Le retour de la magie, du divin et du démoniaque se compte en **six phases**. L
 | 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages. |
 | 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens. |
 | 4 — Âge des prodiges | 5 | une saison à un an | Grands morts-vivants, démons, golems, sylvaniens, grands esprits. |
-| 5 — L'ancien monde | 6 | plusieurs années | Dragons, grands démons et diables, célestes, vrais dieux. |
+| 5 — L'ancien monde | 6 | plusieurs années | Grands démons et diables, célestes, vrais dieux. |
 
 Logne puis la Sümpfenmark tombent tôt : la campagne reste en phase 1 pendant les premiers niveaux. Ce qui évolue avec le monde, comme Kisaeth et Varhun (§12), suit ces phases.
 
@@ -487,3 +487,18 @@ Le folklore des documents joueurs ne devient pas réel en bloc. Ce qui prend cor
 - **Partout** : les ruines « sans mortier » ne sont que des pierres.
 
 Fiches de jeu : compendium « Adversaires », dossiers des phases, par nation (Hausgeist, arbre du Waldvater, Waldvater, esprit du Silver Lake, feu follet et guenaude des murmures, Écho des collines, guenaude du mauvais œil, esprit des Sceaux et grand esprit des Sceaux). La Fortune, dieu, se joue en narration.
+
+### Les peuples qui reviennent
+
+L'ancien monde avait d'autres peuples (§1). Ils reviennent eux aussi, progressivement, jamais tous à la fois, et pas tous hostiles. Beaucoup reviennent ensauvagés et retrouvent peu à peu leur esprit et leur vie sociale. Les personnages restent humains : ces peuples sont des PNJ.
+
+- **Gobelins** (phase 2) : un petit peuple dispersé au Scellement, comme Kisaeth, qui se reforme dans les forêts et les ravins. D'abord des chapardeurs sauvages et sans langue, puis des bandes qui parlent (phase 3), puis des chefs plus grands et plus forts (phase 4). Hostiles, mais on peut traiter avec eux.
+- **Kobolds** (phase 2) : remontés des mines profondes, là où la portée des pierres ne descendait pas. Craintifs, ils ne se battent que s'ils sont acculés.
+- **Orcs** (phase 3) : ils naissent de la terre. Là où la magie suinte dans les cavernes, ils surgissent du sol déjà adultes, sauvages et nombreux. Bandes de guerre et chefs en phase 4 ; plus tard, une société dure, avec qui la négociation devient possible.
+- **Hommes-lézards** (phase 3) : ils se reforment dans les marais, à commencer par la Sümpfenmark. Territoriaux, d'abord neutres ; on peut leur parler.
+- **Gnolls** (phase 3, avec les premiers démons) : des hyènes touchées par un démon, surtout en Azhar. Toujours hostiles : ils servent ce qui les a faits.
+- **Elfes sauvages** (phase 3) : ils renaissent dans les forêts profondes, sans mémoire, et leurs souvenirs de l'ancien monde reviennent avec les phases. Méfiants, pas hostiles : des interlocuteurs, et peut-être un jour une source de vérité sur l'avant.
+- **Trolls** (phase 4) : pétrifiés au Scellement dans les montagnes ; certains rochers des Greyspine et du Graufels se réveillent. Hostiles, peu d'esprit.
+- **D'autres** viendront plus tard, à définir. Les dragons restent hors de la campagne.
+
+Leurs langues (gobelin, kobold, orc, saurien, elfique ancien) naissent ou reviennent avec eux ; aucun humain ne peut les apprendre.
