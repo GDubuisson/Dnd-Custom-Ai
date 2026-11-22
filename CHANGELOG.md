@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.17.1] - 2026-11-22
+
+**Documentation des sorts remise à jour.**
+- `world-items/README.md`, « Note sur les sorts » : les sorts ont une liste de classes (octroi à
+  la montée de niveau, Initié à la magie, refus au glisser-déposer) et des champs automatisés au
+  lancer (attaque, sauvegarde, dégâts, soin, états, concentration, lumière) ; décompte corrigé
+  (12 tours de magie, 45 sorts).
+- `packs/sorts/README.md` (45 sorts et non 15) et tableau des types d'Item de la conception
+  fonctionnelle (champs réels du sort, sans école ni composantes) alignés.
+
 ## [1.17.0] - 2026-11-22
 
 **Le souterrain de Velencia et Estevan derrière le mur.**

@@ -28,7 +28,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `regional.json` | 74 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
 | `historical.json` | 26 pièces historiques uniques, sans pouvoir ni bonus, dont 5 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
-| `spells.json` | 45 sorts SRD 5e (10 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
+| `spells.json` | 45 sorts SRD 5e (12 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
 | `features.json` | 103 capacités de classe (50 de classe de base niveaux 1 à 9, + 53 de sous-classe) — sélection non exhaustive | `feature` | Compendium "Capacités de classe" |
 | `feats.json` | 10 dons PHB (règle optionnelle, `class`/`subclass` vides — jamais auto-octroyés) et 9 dons d'éclat (récompenses de l'arc des pierres, dossier « Éclats ») | `feature` | Compendium "Dons" |
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
@@ -102,13 +102,29 @@ donne pas.
 
 ## Note sur les sorts
 
-`spells.json` ne couvre que 45 sorts (10 tours de magie + niveaux 1 à 5) choisis pour être
-représentatifs, pas la liste complète du SRD 5e (~300 sorts) — complétez-la à la main depuis
-le compendium "Sorts" selon les besoins de votre table. Aucun sort n'est rattaché à une liste
-de classes précise (l'Item Sort est générique) : à vous de dupliquer/filtrer selon qui peut
-l'apprendre. Les dégâts, DD et effets détaillés restent dans la description ; il n'y a pas de
-champ dédié (comme pour les Capacités de classe), l'automatisation s'arrête au décompte de
-l'emplacement de sort au moment de lancer (cf. bouton "Lancer" de l'onglet Sorts).
+`spells.json` ne couvre que 45 sorts (12 tours de magie, puis 13, 8, 2, 7 et 3 sorts des
+niveaux 1 à 5) choisis pour être représentatifs, pas la liste complète du SRD 5e (~300 sorts) —
+complétez-la à la main depuis le compendium "Sorts" selon les besoins de votre table.
+
+**Listes de classes.** Chaque sort porte la liste des classes SRD qui y ont accès (`classes`,
+clés stables, ex. `["sorcerer", "wizard"]` pour Trait de feu). Elle sert à trois endroits :
+- à la montée de niveau, les sorts de la classe accessibles au niveau atteint sont ajoutés
+  automatiquement à la fiche (`grantClassContent`, `scripts/helpers/class-content.js`) ;
+- le don Initié à la magie propose les tours de magie et sorts de niveau 1 de la classe choisie ;
+- au glisser-déposer, un sort hors de la liste de la classe du personnage est refusé (un sort
+  sans liste, ou un personnage sans classe, reste accepté).
+Les sorts octroyés par un don sans classe (`grantsSpells`, ex. les dons d'éclats) passent par
+ce don, pas par la liste de classes.
+
+**Champs automatisés.** Le bouton "Lancer" de l'onglet Sorts décompte l'emplacement, sauf
+sort gratuit (rituel avec la Capacité Incantation rituelle, sort de sous-classe, Magie d'initié,
+don d'éclat tant qu'il lui reste une utilisation), puis s'appuie sur les champs du sort : type
+d'action (`activation`, compté dans l'économie d'actions du tour), concentration, jet d'attaque de sort
+(`attack`), jet de sauvegarde des cibles (`save` : caractéristique, moitié des dégâts sur
+réussite, état posé sur échec), dégâts (`damage`), soin (`heal`), état posé sans jet
+(`grantsCondition`) et lumière portée par les tokens du lanceur (`light`). Ce que ces champs
+ne modélisent pas (zones, effets particuliers, montée en puissance détaillée) reste dans la
+description.
 
 ## Note sur les capacités de classe
 

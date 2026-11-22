@@ -310,7 +310,7 @@ interne en kg**.
 | `origin` | nom, gentilé, langue, description, image, bonus de caractéristiques, compétences avantagées, trait spécial | champs mécaniques indispensables — appliqués à l'Actor à l'attribution |
 | `class`/`subclass` | nom, description (flavor uniquement), sauvegardes maîtrisées, quota de compétences, maîtrises d'armes | la donnée mécanique réelle (capacités par niveau) vit dans `CONFIG.DND_CUSTOM` + `world-items/features.json`, pas sur cet Item |
 | `tool` (outil) | nom, prix, poids, compétence/bonus lié, description RP | bouton "Utiliser" lance le test de compétence lié (bonus de maîtrise + bonus éventuel) |
-| `spell` (sort) | classes autorisées (cases à cocher), niveau, école, composantes, formule de dégâts/soin | filtré par classe au glisser-déposer sur la fiche |
+| `spell` (sort) | classes autorisées (cases à cocher), niveau, détails (temps, portée, durée), type d'action, concentration, rituel, attaque, sauvegarde (moitié, état), dégâts, soin, état posé, lumière | filtré par classe au glisser-déposer ; octroyé par classe à la montée de niveau ; bouton "Lancer" automatisé |
 | `language` (langue) | nom, catégorie, langue requise (`requiredLanguage`), description | Commun + langue d'Origine toujours connus ; langues "spéciales" ajoutables par glisser-déposer depuis le compendium, refusées (avertissement) si leur langue requise manque — ex. le Sümpfer exige l'Altenmarkois |
 
 ## Classes, sous-classes et capacités (référence de contenu)
