@@ -5,6 +5,29 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.15.0] - 2026-11-22
+
+**L'île de Tirwen, la base des pirates et la jeunesse du capitaine.**
+- Nouveau dossier **« Site de pierre : île de Tirwen »** dans le compendium « Adversaires », 19
+  fiches, toutes avant la rupture (rien n'apparaît après : l'île devient plus tranquille) :
+  - 10 bêtes géantes du SRD, grandies par la fuite de la pierre : mille-pattes, lézard, serpent
+    venimeux, chauve-souris, guêpe, araignée, hyène, scorpion, crocodile et singe géants ;
+  - 5 plantes du SRD : champignon violet, ronce-griffe, ronce-aiguille, liane étrangleuse, tertre
+    errant. Exception voulue au monde scellé : la fuite de Tirwen les fait pousser dès la phase 0 ;
+  - les hommes du capitaine : sentinelle de la base, pilote du passage, traître de l'équipage,
+    fidèle du capitaine.
+- **Vitalité de Tirwen** (résistance au poison, avantage contre le poison, sans pouvoir conscient)
+  sur l'équipage du capitaine, y compris le matelot pirate et le capitaine d'abordage.
+- **Capitaine pirate** : sa base est à Tirwen ; il sait où est le site, sans savoir ce que c'est,
+  et n'y entre pas. La fuite le garde jeune : il a l'âge d'Ulrich et en paraît vingt-cinq. S'il
+  absorbe la pierre, sa fiche plus le gabarit de pierre, et il ne vieillit plus.
+- **Ulrich** : la pierre de Tirwen porte la Vigueur de la pierre de son gabarit à +10 et le rend
+  insensible au poison.
+- Page **« Île de Tirwen »** dans le journal « Sites de pierre (MJ) » : l'accès par les pilotes,
+  les camps (capitaine, équipage, traîtres, PJ), les scénarios dont celui où le capitaine absorbe
+  la pierre, la bonne et la mauvaise fin, le rattrapage, ce que devient le capitaine quelle que
+  soit l'issue, et des rencontres conseillées par palier.
+
 ## [1.14.0] - 2026-11-22
 
 **Le Désert gelé de Kis : bonne et mauvaise fin.**
