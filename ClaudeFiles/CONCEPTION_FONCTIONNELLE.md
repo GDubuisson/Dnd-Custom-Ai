@@ -172,7 +172,8 @@ l'histoire cachée, à ne jamais partager) restent réservés au MJ, qui en part
 personnage porte un bouton « Guide du Joueur » (icône ?) qui ouvre le premier directement.
 
 Un cinquième Journal, **Sites de pierre (MJ)**, réservé au MJ, a une page par site de pierre (le site,
-les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, rencontres conseillées par
+les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, plus une troisième à Velencia
+où la pierre peut rester intacte, rencontres conseillées par
 palier de niveau). Contrairement aux autres, il se resynchronise à chaque chargement pour recevoir les
 pages des nouveaux sites : une page du système modifiée est réécrite, une page ajoutée par le MJ n'est
 jamais touchée.
@@ -216,7 +217,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-131 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -242,6 +243,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Désert de Zahir : vautour, serpent venimeux et scorpion géants, guide de Bir Azraq, et dans le
   palais invisible le sage du Zahir, deux sages fondus avec la pierre en un mort-vivant (Seigneur
   momie SRD exact, FP 15 fixe), avec ses invocations (momie, squelette) qui n'existent que par lui.
+  Souterrain de Velencia : la garde de l'Église autour du tombeau d'Estevan (garde d'apparat,
+  sergent, chanoine veilleur aux prières bridées) ; Estevan, vivant et végétatif près de la pierre,
+  n'a pas de fiche : il ne se combat pas, ses visions sont décrites dans le journal des sites.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten

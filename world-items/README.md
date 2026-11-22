@@ -34,7 +34,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `classes.json` | Les 12 classes SRD 5e avec description (dé de vie, sauvegardes maîtrisées, compétences, lanceur de sorts) | `class` | Compendium "Classes" |
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
-| `npcs.json` | 131 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 134 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -183,10 +183,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 131 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 134 Actors `npc` prêts à
 glisser sur une scène.
 
-131 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -212,6 +212,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Désert de Zahir : vautour, serpent venimeux et scorpion géants, guide de Bir Azraq, et dans le
   palais invisible le sage du Zahir, deux sages fondus avec la pierre en un mort-vivant (Seigneur
   momie SRD exact, FP 15 fixe), avec ses invocations (momie, squelette) qui n'existent que par lui.
+  Souterrain de Velencia : la garde de l'Église autour du tombeau d'Estevan (garde d'apparat,
+  sergent, chanoine veilleur aux prières bridées) ; Estevan, vivant et végétatif près de la pierre,
+  n'a pas de fiche : il ne se combat pas, ses visions sont décrites dans le journal des sites.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten

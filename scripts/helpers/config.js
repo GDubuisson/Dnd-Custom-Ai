@@ -432,6 +432,7 @@ DND_CUSTOM.bestiaryHabitats = {
   siteKis: "DND_CUSTOM.Bestiary.Habitats.siteKis",
   siteTirwen: "DND_CUSTOM.Bestiary.Habitats.siteTirwen",
   siteZahir: "DND_CUSTOM.Bestiary.Habitats.siteZahir",
+  siteVelencia: "DND_CUSTOM.Bestiary.Habitats.siteVelencia",
   // Premier grand méchant de la campagne : sa bande (phase 0) et ses paliers après chaque pierre absorbée.
   ulrichBand: "DND_CUSTOM.Bestiary.Habitats.ulrichBand"
 };
@@ -440,7 +441,7 @@ DND_CUSTOM.bestiaryHabitats = {
  * Sites de pierre : l'ordre et l'auteur des ruptures dépendent de la table, ils forment donc chacun un
  * dossier de premier niveau, découpé en avant/après la rupture (flag `phase` 0 ou 1+).
  */
-DND_CUSTOM.bestiarySiteHabitats = ["siteLogne", "siteSumpfenmark", "siteKis", "siteTirwen", "siteZahir"];
+DND_CUSTOM.bestiarySiteHabitats = ["siteLogne", "siteSumpfenmark", "siteKis", "siteTirwen", "siteZahir", "siteVelencia"];
 
 /** Milieux rangés dans un seul dossier de premier niveau, hors phases (paliers lisibles dans les noms). */
 DND_CUSTOM.bestiaryStandaloneHabitats = ["ulrichBand"];

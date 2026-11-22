@@ -76,6 +76,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const kis = label("Bestiary.Habitats.siteKis");
       const tirwen = label("Bestiary.Habitats.siteTirwen");
       const zahir = label("Bestiary.Habitats.siteZahir");
+      const velencia = label("Bestiary.Habitats.siteVelencia");
       const ulrich = label("Bestiary.Habitats.ulrichBand");
       const expected = {
         "Brigand": [phase0, label("Bestiary.Habitats.common")],
@@ -93,6 +94,7 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Fidèle du capitaine": [tirwen, before],
         "Le sage du Zahir": [zahir, before],
         "Momie invoquée": [zahir, before],
+        "Chanoine veilleur": [velencia, before],
         "Kisaeth (renaissante)": [kis, after],
         "Varhun (adulte)": [kis, after],
         "Lieutenant d'Ulrich": [ulrich],

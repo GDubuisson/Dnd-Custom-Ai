@@ -356,5 +356,154 @@
         }
       }
     ]
+  },
+  {
+    "name": "Souterrain de Velencia",
+    "sections": [
+      {
+        "title": "Le site",
+        "paragraphs": [
+          "Sous le chœur de la Grande Cathédrale, une pièce souterraine aux murs d'avant le Scellement, que personne ne sait tailler. C'est là que les deux sages de Velencia ont scellé leur pierre ; l'un est mort ce jour-là. La cathédrale, commencée en 288, a été bâtie autour : les plans de fondation, aux archives de sœur Amadea, montrent que le chantier a contourné la structure.",
+          "L'autre sage, c'est Estevan. Il est resté en vie sciemment, a vécu en berger sur la colline et a longtemps réfléchi avant de fonder la Foi. Il savait lire et écrire l'écriture d'avant ; il s'est fait passer pour illettré pour que ses disciples en inventent une autre. Il savait aussi ouvrir la pièce : il s'y est enfermé avec la pierre, et l'on a cru qu'il était mort ou « rappelé auprès de l'Unique ». Ses disciples ont trouvé le mur fermé et en ont fait son tombeau.",
+          "Il y est encore, dans un état proche du coma, à côté de la pierre. Chaque nouveau Hiérarque passe la nuit de son avènement seul devant le mur pour « s'harmoniser avec l'Unique » : il communie en réalité avec Estevan, ce qui garde à celui-ci une forme de conscience et lui a évité la folie du Zahir. Estevan lui envoie des visions pour guider l'Église ; au fil des siècles, elles sont devenues de plus en plus cryptiques.",
+          "Les prières des prêtres et des fidèles tirent, sans qu'ils le sachent, sur le peu de magie qui fuit de la pierre. Elle passe par Estevan, qui bride la puissance : d'où des miracles minuscules. Avec chaque pierre brisée, la parole des vrais dieux et démons revient ; l'un d'eux peut se faire passer pour l'Unique, et Estevan, trop faible, n'y peut rien.",
+          "Fiches : compendium « Adversaires », dossier « Site de pierre : souterrain de Velencia » (garde d'apparat, sergent, chanoine veilleur) ; les frères de l'Ordre de la Flamme (dossier de Valdera) sont à un jour et demi, à Cortelba. Estevan n'a pas de fiche : on ne le combat pas."
+        ]
+      },
+      {
+        "title": "Atteindre la crypte",
+        "items": [
+          {
+            "label": "La garde de l'Église",
+            "text": "Gardes d'apparat aux portes du chœur et dans les galeries, sergents aux grilles, chanoines qui veillent la nuit devant le mur. Toute troupe étrangère est interdite sur le territoire du Saint-siège : la bande ne peut entrer qu'en petit nombre, déguisée en pèlerins. Une alerte ferme les portes de la cathédrale, puis celles de la ville."
+          },
+          {
+            "label": "Les pièges",
+            "text": "Grilles à aiguilles empoisonnées, dalles basculantes sur une fosse, herses, cloches d'alarme. Calibrage SRD : DD 12 à 15 et +6 à +8 pour un piège dangereux, DD 16 à 20 et +9 à +12 pour un piège mortel ; dégâts selon le palier (tableau ci-dessous). Les sergents savent où ils sont."
+          },
+          {
+            "label": "Ouvrir le mur",
+            "text": "Estevan savait ouvrir la pièce. Le mécanisme se retrouve avec les plans de 288 et la description de l'appareil du mur, aux archives (les trois salles qu'Amadea a fait fermer), puis un test d'Intelligence (Investigation) DD 20 au pied du mur, avec avantage si l'on a les plans, et une heure de travail. Sans le mécanisme, seul un porteur d'une pierre entière, ou un sort de niveau 5 ou plus une fois la magie revenue, en vient à bout, en une heure de vacarme qui alerte toute la cathédrale."
+          },
+          {
+            "label": "La nuit de veille",
+            "text": "La seule nuit où le chœur est vidé : le nouveau Hiérarque est seul devant le mur, la garde tient les portes de l'extérieur. Anselmo IX se meurt ; la prochaine veille viendra."
+          }
+        ]
+      },
+      {
+        "title": "Estevan derrière le mur",
+        "items": [
+          {
+            "label": "Les messages",
+            "text": "Près du mur, les porteurs d'éclats reçoivent des messages psychiques et peuvent lui répondre par ce biais, comme dans un rêve. Ses paroles sont énigmatiques ; il ne parle à personne d'autre que les porteurs et les Hiérarques."
+          },
+          {
+            "label": "On ne le convainc pas",
+            "text": "Estevan a vu ce qu'a amené la magie avant le Scellement, et il a entendu des prières folles pendant des siècles : il ne croit plus à une fin heureuse et veut garder le monde bridé. Aucun argument, aucun test ne le fait changer d'avis, même face à Ulrich."
+          },
+          {
+            "label": "Les visions de dissuasion",
+            "text": "Contre quiconque veut ouvrir la pièce ou prendre la pierre, PJ comme bande, il envoie des visions : le chaos d'avant le Scellement, ou des horreurs plus ou moins mensongères. Un JS de Sagesse est demandé en touchant au mur pour l'ouvrir, en entrant dans la pièce, puis à chaque tentative de prendre ou de briser la pierre. En cas d'échec, la créature subit des dégâts psychiques et est effrayée pendant 1 minute (nouveau JS à la fin de chacun de ses tours) ; en cas de réussite, elle subit la moitié des dégâts. DD et dégâts selon le palier (tableau ci-dessous)."
+          },
+          {
+            "label": "Vrai ou faux",
+            "text": "Un test de Sagesse (Perspicacité) DD 15 distingue une vraie vision de l'ancien monde d'une vision mensongère. Les vraies sont des bribes de vérité sur le Scellement, au choix du MJ."
+          },
+          {
+            "label": "Option : le siège vacant",
+            "text": "Si le siège reste longtemps vacant, Estevan n'a plus de communion. Il glisse vers la folie : ses visions de dissuasion gagnent +2 au DD, et des rêves déroutants gagnent les pèlerins de l'hospice."
+          }
+        ]
+      },
+      {
+        "title": "Qui arrive le premier",
+        "items": [
+          {
+            "label": "Les PJ seuls",
+            "text": "Ils trouvent un accès (archives, veille, ruse), passent la garde et les pièges, et affrontent les visions d'Estevan. Devant la pierre, ils choisissent : la laisser ou la briser."
+          },
+          {
+            "label": "La bande seule",
+            "text": "Quelques hommes déguisés en pèlerins, un membre du Collège acheté, ou l'attente de la nuit de veille. Le porteur force le mur dans le vacarme ; les visions coûtent des hommes à la bande. Les PJ arrivent pendant l'assaut ou après : le porteur fuit à travers une ville en alerte."
+          },
+          {
+            "label": "Les deux",
+            "text": "La garde frappe tous les intrus, et les visions d'Estevan aussi : chacun, la bande comme les PJ, doit les traverser pour atteindre la pierre."
+          }
+        ]
+      },
+      {
+        "title": "Les fins",
+        "items": [
+          {
+            "label": "Le sceau tient",
+            "text": "Les PJ défendent la crypte contre la bande et repartent sans briser la pierre. Estevan continue de veiller et les prières restent bridées. Pas d'éclats ni de résonance ; Ulrich sait désormais où est la pierre, et peut revenir, peut-être en personne."
+          },
+          {
+            "label": "Bonne fin",
+            "text": "Les PJ brisent la pierre contre la volonté d'Estevan, qui lutte par ses visions jusqu'au bout. Il tombe en poussière à l'instant, sans un mot, et disparaît. Le pouvoir se disperse en éclats dans tous les présents (Éclat de Velencia, ou Éclat absorbé (+2)). Les prières ne passent plus par lui : elles ne sont plus bridées, et les grâces grandissent avec les phases jusqu'à faire des prêtres de vrais clercs. Devant le mur, les Hiérarques ne trouvent plus que le silence, ou une autre voix."
+          },
+          {
+            "label": "Mauvaise fin",
+            "text": "Le porteur, ou Ulrich en personne, prend la pierre. Estevan tombe en poussière et disparaît sans avoir rien transmis. Ulrich prend le sceau : Contresort trois fois par jour et Bannissement une fois par jour. Il ne devient pas le passage des prières, qui ne sont plus bridées par personne, comme en bonne fin."
+          },
+          {
+            "label": "Rattraper la mauvaise fin",
+            "text": "Arrêter le porteur avant qu'il quitte le Saint-siège : il fuit à travers une ville en alerte, aux portes fermées, et les PJ le sentent. Si Ulrich est venu en personne, il aspire la pierre sur place : il n'y a rien à rattraper."
+          },
+          {
+            "label": "Option : le sacrilège",
+            "text": "Le lieu le plus sacré du continent a été profané, par les PJ ou par la bande. L'Église peut répondre par l'interdit, par les Ordres de Ferveur, par la Flamme de Cortelba ; et elle cherchera des coupables, au choix du MJ."
+          }
+        ]
+      },
+      {
+        "title": "Rencontres conseillées (4 PJ)",
+        "paragraphs": [
+          "Difficulté calculée avec les seuils d'XP du SRD pour 4 PJ, au plus bas niveau du palier sauf mention. Le porteur de pierre est la fiche indiquée avec le gabarit de pierre d'Ulrich. Ulrich en personne se joue avec sa fiche d'étape, plus le gabarit de chaque pierre qu'il a prise en plus : la difficulté indiquée est un minimum. Pièges et visions suivent les tables SRD des pièges (DD et dégâts « dangereux » selon le niveau)."
+        ],
+        "table": {
+          "head": [
+            "PJ",
+            "Garde de l'Église",
+            "Pièges et visions",
+            "Bande"
+          ],
+          "rows": [
+            [
+              "niv. 3-4",
+              "Un sergent et deux gardes d'apparat (difficile) ; un sergent et quatre gardes au niv. 4.",
+              "Pièges : DD 13 ou +7, 2d10. Visions : JS de Sagesse DD 13, 2d10 psychiques.",
+              "Porteur : déserteur des Passwachten avec le gabarit (environ FP 6, mortel) ; à faire arrêter par la garde plutôt qu'à combattre."
+            ],
+            [
+              "niv. 5-8",
+              "Deux frères de l'Ordre de la Flamme et un sergent (difficile au niv. 5) ; quatre frères et deux gardes au niv. 8.",
+              "Pièges : DD 14 ou +7, 4d10. Visions : DD 15, 4d10 psychiques.",
+              "Porteur : exécuteur avec le gabarit (environ FP 8), seul (difficile au niv. 5) ; avec un déserteur au niv. 8."
+            ],
+            [
+              "niv. 9-12",
+              "Quatre frères et deux sergents (difficile au niv. 9) ; six frères et quatre sergents au niv. 12. L'enjeu n'est plus de vaincre la garde, mais de ne pas devenir des profanateurs.",
+              "Pièges : DD 15 ou +8, 4d10 (10d10 dès le niv. 11). Visions : DD 16, 4d10 psychiques (10d10 dès le niv. 11).",
+              "Porteur : lame avec le gabarit (environ FP 11), seul (difficile au niv. 9) ; avec un ritualiste au niv. 12, dès la phase 2. Ou Ulrich en personne (fiche niv. 9-12)."
+            ],
+            [
+              "niv. 13-16",
+              "La garde ne fait plus le poids : elle sonne l'alerte et ferme la ville, et chaque garde tué est un sacrilège de plus.",
+              "Pièges : DD 17 ou +10, 10d10. Visions : DD 17, 10d10 psychiques.",
+              "Porteur : champion d'Ulrich avec le gabarit (environ FP 14) et un exécuteur (difficile au niv. 13). Ou Ulrich en personne (fiche niv. 13-16) et un exécuteur (difficile au niv. 13) ; avec une lame au niv. 16."
+            ],
+            [
+              "niv. 17-20",
+              "Comme au palier précédent.",
+              "Pièges : DD 19 ou +11, 18d10. Visions : DD 19, 18d10 psychiques.",
+              "Porteur : champion à deux gabarits (environ FP 17) et une lame (difficile au niv. 17). Ou Ulrich en personne (fiche niv. 17-20) et une lame (difficile au niv. 17) ; avec un maître ritualiste au niv. 20, en phase 3."
+            ]
+          ]
+        }
+      }
+    ]
   }
 ]

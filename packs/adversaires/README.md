@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-131 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+134 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (nombre de pierres brisées) puis **milieu** (Partout, une nation, côtes ou
   large de la Mer intérieure) pour ce qui dépend du monde entier. Phase 0, monde scellé : humains et
@@ -33,6 +33,9 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Désert de Zahir : vautour, serpent venimeux et scorpion géants, guide de Bir Azraq, et dans le
   palais invisible le sage du Zahir, deux sages fondus avec la pierre en un mort-vivant (Seigneur
   momie SRD exact, FP 15 fixe), avec ses invocations (momie, squelette) qui n'existent que par lui.
+  Souterrain de Velencia : la garde de l'Église autour du tombeau d'Estevan (garde d'apparat,
+  sergent, chanoine veilleur aux prières bridées) ; Estevan, vivant et végétatif près de la pierre,
+  n'a pas de fiche : il ne se combat pas, ses visions sont décrites dans le journal des sites.
 - **« Ulrich et sa bande »**, premier grand méchant de la campagne : sa bande, par palier de niveau
   des PJ (noté sur chaque fiche), et Ulrich, qui n'a pas de fiche avant sa transformation.
   - PJ niv. 1-4 : homme de main, cogneur, guetteur, bagarreur, lieutenant, déserteur des Passwachten

@@ -61,6 +61,16 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     }
   });
 
+  test("Velencia : les fiches citées existent, avec les visions d'Estevan et les trois fins", () => {
+    for (const name of ["Garde d'apparat de la cathédrale", "Sergent de la garde d'apparat", "Chanoine veilleur", "Frère de l'Ordre de la Flamme", "Déserteur des Passwachten", "Exécuteur d'Ulrich", "Lame d'Ulrich", "Champion d'Ulrich", "Ulrich (PJ niv. 9-12)", "Ulrich (PJ niv. 17-20)"]) {
+      assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+    }
+    const text = JSON.stringify(SITES.find((site) => site.name === "Souterrain de Velencia"));
+    for (const word of ["Ouvrir le mur", "Les visions de dissuasion", "On ne le convainc pas", "Le sceau tient", "Bonne fin", "Mauvaise fin", "Rattraper la mauvaise fin", "Option : le sacrilège"]) {
+      assert.ok(text.includes(word), `Velencia : « ${word} » manquant`);
+    }
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
