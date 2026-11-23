@@ -468,7 +468,7 @@ Le retour de la magie, du divin et du démoniaque se compte en **six phases**. L
 | 0 — Monde scellé | aucune | — | Humains, bêtes ; le surnaturel ne survit qu'au large et sur les sites. |
 | 1 — Premières fissures | 1 ou 2 | immédiat | Petits esprits discrets, feux follets, méphites, bêtes éveillées, premiers morts mineurs ; premiers dons chez quelques humains. |
 | 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages. |
-| 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens. |
+| 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent. |
 | 4 — Âge des prodiges | 5 | une saison à un an | Grands morts-vivants, démons, golems, sylvaniens, grands esprits ; chefs des peuples revenus (hobgobelins, gobelours, chefs de guerre orcs), trolls réveillés. |
 | 5 — L'ancien monde | 6 | plusieurs années | Grands démons et diables, célestes, vrais dieux. |
 
@@ -479,7 +479,7 @@ Logne puis la Sümpfenmark tombent tôt : la campagne reste en phase 1 pendant l
 Le folklore des documents joueurs ne devient pas réel en bloc. Ce qui prend corps, et à partir de quand :
 
 - **Fleuraine** : le serment sur le fer ne s'imprègne de magie qu'en phase 5 ; Sainte Colombe, les « attendus » et le denier de l'Aube restent du folklore.
-- **Altenmark** : les Hausgeister reviennent dès les premières phases, mais ne se montrent presque jamais. L'Eisenmann reste du folklore, mais quand des golems de fer apparaîtront, les gens les appelleront ainsi. Le Waldvater prend la forme d'arbres éveillés (phase 3), puis de sylvaniens (phase 4).
+- **Altenmark** : les Hausgeister reviennent dès les premières phases, mais ne se montrent presque jamais. L'Eisenmann reste du folklore, mais quand des golems de fer apparaîtront, les gens les appelleront ainsi. Ces golems sont des agrégats nés dans les profondeurs et pris dans la pierre : jusqu'à la phase 2, ce ne sont que des filons, qu'on exploite sans rien savoir ; la magie les anime ensuite (phases 3 à 5). Seuls les filons de l'Eismark sont assez grands pour le fer ; dans les autres montagnes s'éveillent des golems de pierre, plus faibles. Le xorn, qui ne perçoit que les êtres magiques de métal, les chasse et ignore les êtres de chair. Le Waldvater prend la forme d'arbres éveillés (phase 3), puis de sylvaniens (phase 4).
 - **Lucentia** : la Fortune est un ancien dieu de la chance, peu puissant. Le Silver Lake abrite un esprit des eaux, peu puissant lui aussi. Le Signore delle Strade et l'heure des vêpres restent du folklore.
 - **Ravenmoor** : l'Écho des collines devient une banshie, et la croyance devient dangereuse. La forêt des murmures se peuple de feux follets et de fées hostiles, puis d'une guenaude. Les pierres de serment suivent le serment sur le fer de Fleuraine : elles ne s'imprègnent de magie qu'en phase 5. Les corbeaux de Ravenhold et l'Invité silencieux restent du folklore ; les corbeaux sont intelligents par nature, magie ou pas.
 - **Valdera** : le culte d'Inés peut devenir un point de lore majeur, un démon pouvant s'en servir ; d'autres cultes peuvent s'installer peu à peu. Le mauvais œil devient une guenaude. Le pas de l'autel et les saints de village restent du folklore.
