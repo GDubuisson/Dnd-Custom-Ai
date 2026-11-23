@@ -7621,7 +7621,7 @@
         }
       ],
       "specialAbilities": "Vision dans le noir 18 m. Discrétion +6. Fuite agile : se désengager ou se cacher par une action bonus.",
-      "particularity": "Un petit peuple de l'ancien monde, dispersé au Scellement, qui se reforme dans les forêts et les ravins à mesure que la magie revient. Il revient sans mémoire. (MJ : bloc SRD Gobelin. Comportement selon la phase : en phase 2, des chapardeurs sauvages et sans langue, qui volent le bétail et fuient ; en phase 3, des bandes qui parlent le gobelin et attaquent les fermes isolées ; à partir de la phase 4, des chefs plus grands et plus forts les mènent. Hostiles, mais on peut traiter avec eux.)"
+      "particularity": "Un petit peuple de l'ancien monde, dispersé au Scellement, qui se reforme dans les forêts et les ravins à mesure que la magie revient. Il revient sans mémoire. (MJ : bloc SRD Gobelin. Comportement selon la phase : en phase 2, des chapardeurs sauvages et sans langue, qui volent le bétail et fuient ; en phase 3, des bandes qui parlent le gobelin et attaquent les fermes isolées ; à partir de la phase 4, des chefs plus grands et plus forts les mènent : certains gobelins grandissent et deviennent hobgobelins ou gobelours (voir ces fiches). Hostiles, mais on peut traiter avec eux.)"
     },
     "items": [
       {
@@ -7959,7 +7959,7 @@
         }
       ],
       "specialAbilities": "Vision dans le noir 18 m. Intimidation +2. Agressif : par une action bonus, se déplace de sa vitesse vers une créature hostile qu'il voit.",
-      "particularity": "Né de la terre : là où la magie suinte dans les cavernes, les orcs surgissent du sol déjà adultes, sauvages et nombreux, comme une poussée après la pluie. On ne les voit pas venir ; on trouve la grotte vide et la terre retournée. (MJ : bloc SRD Orc. Comportement selon la phase : en phase 3, des meutes sauvages qui crient sans parler ; en phase 4, des bandes de guerre menées par des chefs, qui parlent l'orc ; plus tard, une société dure, avec qui la négociation devient possible.)"
+      "particularity": "Né de la terre : là où la magie suinte dans les cavernes, les orcs surgissent du sol déjà adultes, sauvages et nombreux, comme une poussée après la pluie. On ne les voit pas venir ; on trouve la grotte vide et la terre retournée. (MJ : bloc SRD Orc. Comportement selon la phase : en phase 3, des meutes sauvages qui crient sans parler ; en phase 4, des bandes de guerre menées par des chefs (voir Chef de guerre orc), qui parlent l'orc ; plus tard, une société dure, avec qui la négociation devient possible.)"
     },
     "items": [
       {
@@ -8751,6 +8751,718 @@
     "flags": {
       "dnd-custom-ai": {
         "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Hobgobelin",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Épée longue à deux mains : 1d10. Avantage martial : une fois par tour, +2d6 dégâts à une créature touchée par une attaque d'arme si un allié non neutralisé du hobgobelin se trouve à 1,50 m de cette créature.",
+      "particularity": "Un gobelin que la magie a fait grandir : à l'âge des prodiges, certains gobelins d'une bande s'allongent, s'élargissent et prennent la tête. Disciplinés, ils tiennent les autres par l'ordre et par les armes. (MJ : bloc SRD Hobgobelin ; même peuple que les gobelins, parle le gobelin. Comportement selon la phase : en phase 4, chefs et sous-officiers qui font des bandes gobelines de petites troupes, avec guetteurs, tours de garde et retraites ordonnées ; en phase 5, des camps fortifiés, et des chefs avec qui l'on peut traiter, durement.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Gobelours",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 27,
+          "max": 27,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morgenstern",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Javeline (corps à corps)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Javeline (9/36 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Discrétion +6, Survie +2. Brute : ses armes de corps à corps infligent un dé de dégâts de plus (déjà compté). Attaque surprise : s'il surprend une créature et la touche au premier round, +2d6 dégâts.",
+      "particularity": "Un gobelin que la magie a fait grandir autrement : massif, velu, silencieux. Il ne commande pas, il frappe ; les bandes s'en servent comme brute et comme guetteur, et certains vivent seuls dans les bois, à l'affût de ce qui passe. (MJ : bloc SRD Gobelours ; même peuple que les gobelins, parle le gobelin. Comportement selon la phase : en phase 4, embusqués seuls ou dans les bandes menées par les hobgobelins ; en phase 5, gardes du corps et hommes de main des chefs, qu'un marché peut acheter.)"
+    },
+    "items": [
+      {
+        "name": "Morgenstern",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-cube-spiked-steel.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Javeline",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/javelin-flared.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 9,
+              "long": 36
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Peau",
+        "type": "armor",
+        "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure intermédiaire fabriquée à partir de peaux et de fourrures épaisses."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Chef de guerre orc",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 102,
+          "max": 102,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Grande hache",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d12",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Javeline (9/36 m)",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Intimidation +4. Attaques multiples : deux attaques de grande hache. Agressif : par une action bonus, se déplace de sa vitesse vers une créature hostile qu'il voit. Cri de guerre (recharge 5-6) : par une action bonus, chaque orc allié à 9 m qui l'entend ajoute 1d4 à ses jets d'attaque et ne peut pas être effrayé jusqu'au début du prochain tour du chef.",
+      "particularity": "Le premier sorti de la poussée, et le plus gros : dans chaque grotte qui s'ouvre, un orc sort de terre plus grand que les autres, et les autres le suivent. Il commande en criant et tue ceux qui hésitent. (MJ : dérivé de l'Orc SRD ; FP recalculé par la méthode de création de monstres : 102 PV, CA 16 (3 de plus que la CA attendue, +1) → FP défensif 4 ; deux coups de grande hache à +6, 21 dégâts par round (FP 3, bonus d'attaque 2 de plus que l'attendu, +1) → FP offensif 4 ; FP 4. Le cri de guerre, qui ne sert que ses alliés, n'est pas compté. Comportement selon la phase : en phase 4, il mène une bande de guerre ; plus tard, chef de clan d'une société dure, avec qui la négociation devient possible.)"
+    },
+    "items": [
+      {
+        "name": "Grande hache",
+        "type": "weapon",
+        "img": "icons/weapons/axes/axe-double-black.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 30,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d12",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 3.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Javeline",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/javelin-flared.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 9,
+              "long": 36
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Troll",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "giant",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 84,
+          "max": 84,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffe",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Perception +2. Odorat aiguisé : avantage aux tests de Sagesse (Perception) qui reposent sur l'odorat. Régénération : récupère 10 PV au début de son tour ; s'il a subi des dégâts d'acide ou de feu, la régénération ne fonctionne pas au début de son prochain tour. Il ne meurt que s'il commence son tour à 0 PV sans se régénérer. Attaques multiples : une morsure et deux griffes.",
+      "particularity": "Pétrifiés au Scellement dans les hautes montagnes : dans les Greyspine et le Graufels, les bergers montrent du doigt de gros rochers aux formes vaguement humaines. À l'âge des prodiges, la pierre se fendille et ils se relèvent, un par un. Passifs : ils errent seuls, dorment des jours entiers, mangent ce qu'ils trouvent, bétail compris, et n'attaquent que si on les dérange, les blesse ou les accule. (MJ : bloc SRD Troll, à partir de la phase 4 ; sans langue et sans vie sociale, même en phase 5. Passif ne veut pas dire inoffensif : un troll provoqué tue, et sa régénération le rend très difficile à abattre sans feu ni acide.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
         "habitat": "common"
       }
     }

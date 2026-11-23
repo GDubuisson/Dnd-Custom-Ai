@@ -35,7 +35,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 | `people-languages.json` | 5 langues des peuples revenus avec la magie (catégorie `people`, jamais apprises par un personnage) | `language` | Items du monde, dossier « Langues des peuples (MJ) », réservé au MJ |
-| `npcs.json` | 151 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 155 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -200,10 +200,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 151 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 155 Actors `npc` prêts à
 glisser sur une scène.
 
-151 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+155 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -222,8 +222,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   dérivé, FP 9) à Azhar.
   Les peuples de l'ancien monde reviennent eux aussi, progressivement : gobelin et kobold
   (phase 2), orc (né de la terre), homme-lézard, gnoll (Azhar, fait par un démon) et elfes
-  sauvages, éclaireur et druide (phase 3), blocs SRD avec, sur chaque fiche, leur comportement selon
-  la phase (sauvages d'abord, puis bandes qui parlent, puis peuples).
+  sauvages, éclaireur et druide (phase 3), puis hobgobelin et gobelours (des gobelins que la magie a
+  fait grandir), chef de guerre orc (dérivé, FP 4) et troll (pétrifié dans les montagnes, passif
+  tant qu'on ne le provoque pas) en phase 4 ; blocs SRD avec, sur chaque fiche, leur comportement
+  selon la phase (sauvages d'abord, puis bandes qui parlent, puis peuples).
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

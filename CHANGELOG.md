@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.22.0] - 2026-11-23
+
+**Les peuples à l'âge des prodiges (phase 4).**
+- **Hobgobelin** (FP 1/2) et **gobelours** (FP 1), blocs SRD : même peuple que les gobelins, que la
+  magie a fait grandir ; le hobgobelin commande les bandes, le gobelours frappe et guette. Ils parlent
+  le gobelin.
+- **Chef de guerre orc** (FP 4), dérivé de l'Orc SRD et recalculé par la méthode de création de
+  monstres : deux coups de grande hache, cri de guerre pour ses alliés.
+- **Troll** (FP 5), bloc SRD : pétrifié au Scellement dans les Greyspine et le Graufels, il se réveille
+  en phase 4 ; passif, sans langue ni vie sociale, il n'attaque que si on le provoque.
+- Fiches Gobelin et Orc : renvoi vers leurs chefs de phase 4. Page « Les phases du retour » : la
+  phase 4 cite les chefs des peuples et les trolls.
+
 ## [1.21.0] - 2026-11-22
 
 **Les humains face au retour ; langues des peuples cachées aux joueurs.**

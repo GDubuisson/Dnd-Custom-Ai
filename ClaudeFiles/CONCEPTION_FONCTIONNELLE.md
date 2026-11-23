@@ -222,7 +222,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-151 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+155 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -241,8 +241,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   dérivé, FP 9) à Azhar.
   Les peuples de l'ancien monde reviennent eux aussi, progressivement : gobelin et kobold
   (phase 2), orc (né de la terre), homme-lézard, gnoll (Azhar, fait par un démon) et elfes
-  sauvages, éclaireur et druide (phase 3), blocs SRD avec, sur chaque fiche, leur comportement selon
-  la phase (sauvages d'abord, puis bandes qui parlent, puis peuples).
+  sauvages, éclaireur et druide (phase 3), puis hobgobelin et gobelours (des gobelins que la magie a
+  fait grandir), chef de guerre orc (dérivé, FP 4) et troll (pétrifié dans les montagnes, passif
+  tant qu'on ne le provoque pas) en phase 4 ; blocs SRD avec, sur chaque fiche, leur comportement
+  selon la phase (sauvages d'abord, puis bandes qui parlent, puis peuples).
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
