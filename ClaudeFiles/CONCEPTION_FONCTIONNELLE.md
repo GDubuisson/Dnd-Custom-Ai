@@ -222,7 +222,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-234 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+260 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -269,6 +269,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Les démons, blocs SRD dans le dossier commun (aucun céleste ni diable dans ce monde) : dretch, quasit,
   succube ou incube et guenaude nocturne (phase 3) ; destrier de cauchemar, vrock, hezrou, glabrezu
   (phase 4) ; nalfeshnee, marilith et un balor générique (phase 5).
+  Morts-vivants, fées et élémentaires, blocs SRD dans le dossier commun : squelette, zombi, goule et
+  méphites (phase 1) ; ombre, spectre, blême, fantôme, esprit follet, satyre, dryade (phase 2) ;
+  nécrophage, momie, âme-en-peine, les quatre élémentaires, gargouille (phase 3) ; traqueur invisible
+  (phase 4) ; djinn et éfrit (phase 5). Ni vampires ni liches dans cette campagne.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

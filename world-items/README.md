@@ -35,7 +35,7 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 | `subclasses.json` | 3 sous-classes par classe (36 — 1 SRD 5e d'origine + 2 inspirées de Baldur's Gate 3), avec description | `subclass` | Compendium "Sous-classes" |
 | `origins.json` | Les 6 Origines de ce système (mêmes données que `scripts/data/origins.json`) | `origin` | Compendium "Origines" |
 | `people-languages.json` | 5 langues des peuples revenus avec la magie (catégorie `people`, jamais apprises par un personnage) | `language` | Items du monde, dossier « Langues des peuples (MJ) », réservé au MJ |
-| `npcs.json` | 234 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
+| `npcs.json` | 260 créatures prêtes à l'emploi, rangées par phase de campagne puis par milieu (flags `phase`/`habitat`), butin embarqué pour les humains | Actor `npc` | Compendium "Adversaires" |
 | `mounts.json` | 5 montures (blocs SRD exacts : cheval de selle, destrier, cheval de trait, mule, chameau) et 4 véhicules (chariot, traîneau, navire de cabotage, barque), prix en description | Actor `mount` / `vehicle` | Compendium "Montures et véhicules" |
 
 Ces fichiers ne sont pas censés être modifiés directement (données de référence versionnées
@@ -200,10 +200,10 @@ Capacités de classe de base :
 
 ## Note sur les Adversaires
 
-`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 234 Actors `npc` prêts à
+`npcs.json` (compendium "Adversaires", `packs/adversaires`) contient 260 Actors `npc` prêts à
 glisser sur une scène.
 
-234 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+260 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -250,6 +250,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Les démons, blocs SRD dans le dossier commun (aucun céleste ni diable dans ce monde) : dretch, quasit,
   succube ou incube et guenaude nocturne (phase 3) ; destrier de cauchemar, vrock, hezrou, glabrezu
   (phase 4) ; nalfeshnee, marilith et un balor générique (phase 5).
+  Morts-vivants, fées et élémentaires, blocs SRD dans le dossier commun : squelette, zombi, goule et
+  méphites (phase 1) ; ombre, spectre, blême, fantôme, esprit follet, satyre, dryade (phase 2) ;
+  nécrophage, momie, âme-en-peine, les quatre élémentaires, gargouille (phase 3) ; traqueur invisible
+  (phase 4) ; djinn et éfrit (phase 5). Ni vampires ni liches dans cette campagne.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

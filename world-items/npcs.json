@@ -23923,6 +23923,2108 @@
     }
   },
   {
+    "name": "Squelette",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 13,
+          "max": 13,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (24/96 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "bludgeoning"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Vulnérable aux dégâts contondants ; immunisé contre le poison et les états épuisé et empoisonné.",
+      "particularity": "Des os qui se relèvent dans un charnier ou une crypte oubliée, et reprennent les gestes qu'ils faisaient de leur vivant. (MJ : bloc SRD Squelette. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Zombi",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1/4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": -2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": -2
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 8
+        },
+        "speed": 6
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Robustesse de mort-vivant : réduit à 0 PV, il fait un JS de Constitution DD 5 + les dégâts subis ; réussi, il reste à 1 PV (sauf dégâts radiants ou coup critique). Immunisé contre le poison et l'état empoisonné. JS de Sagesse +0.",
+      "particularity": "Un mort qui ne reste pas couché. Les premiers, on les prend pour des malades ou des fous. (MJ : bloc SRD Zombi. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Goule",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "dex",
+          "bonus": 0,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Griffes : une cible qui n'est ni un mort-vivant ni un elfe fait un JS de Constitution DD 10 ou est paralysée 1 minute (elle refait le JS à la fin de chacun de ses tours). Immunisée contre le poison et les états charmé, épuisé et empoisonné.",
+      "particularity": "Elle rôde autour des cimetières et des champs de bataille, et mange ce qu'elle y trouve. (MJ : bloc SRD Goule. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Méphite de poussière",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/2",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -3
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 17,
+          "max": 17,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Vol 9 m. Vision dans le noir 18 m. Souffle aveuglant (recharge 6) : cône de 4,5 m, JS de Dextérité DD 10 ou aveuglé 1 minute. Sommeil (1/jour, inné). Explosion mortelle : à sa mort, chaque créature à 1,50 m fait un JS de Constitution DD 10 ou est aveuglée 1 minute. Vulnérable au feu ; immunisé contre le poison. Perception +2, Discrétion +4.",
+      "particularity": "Petit esprit élémentaire, malicieux et lâche, qui se glisse par les premières fissures du monde. (MJ : bloc SRD Méphite de poussière. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Méphite de boue",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 27,
+          "max": 27,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 6
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Poings",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 6 m, nage 6 m. Vision dans le noir 18 m. Souffle de boue (recharge 6) : une créature à 1,50 m fait un JS de Dextérité DD 11 ou est entravée 1 minute. Faux-semblant : immobile, il passe pour un tas de boue. Explosion mortelle : à sa mort, chaque créature à 1,50 m fait un JS de Dextérité DD 11 ou est entravée jusqu'à la fin de son prochain tour. Immunisé contre le poison. Discrétion +3.",
+      "particularity": "Petit esprit élémentaire, malicieux et lâche, qui se glisse par les premières fissures du monde. (MJ : bloc SRD Méphite de boue. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Méphite de vapeur",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -3
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 21,
+          "max": 21,
+          "temp": 0
+        },
+        "ac": {
+          "value": 10
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d4",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vol 9 m. Vision dans le noir 18 m. Souffle de vapeur (recharge 6) : cône de 4,5 m, JS de Dextérité DD 10, 1d8 dégâts de feu (moitié si réussi). Flou (1/jour, inné). Explosion mortelle : à sa mort, 1d8 dégâts de feu à chaque créature à 1,50 m (JS de Dextérité DD 10, moitié). Immunisé contre le feu et le poison.",
+      "particularity": "Petit esprit élémentaire, malicieux et lâche, qui se glisse par les premières fissures du monde. (MJ : bloc SRD Méphite de vapeur. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Méphite de magma",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/2",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 9
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d4",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "cold"
+      ],
+      "specialAbilities": "Vol 9 m. Vision dans le noir 18 m. Souffle de feu (recharge 6) : cône de 4,5 m, JS de Dextérité DD 11, 2d6 dégâts de feu (moitié si réussi). Chauffer le métal (1/jour, inné, DD 10). Faux-semblant : immobile, il passe pour un tas de magma. Explosion mortelle : à sa mort, 2d6 dégâts de feu à chaque créature à 1,50 m (JS de Dextérité DD 11, moitié). Vulnérable au froid ; immunisé contre le feu et le poison. Discrétion +3.",
+      "particularity": "Petit esprit élémentaire, malicieux et lâche, qui se glisse par les premières fissures du monde. (MJ : bloc SRD Méphite de magma. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Méphite de fumée",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vol 9 m. Vision dans le noir 18 m. Souffle de cendres (recharge 6) : cône de 4,5 m, JS de Dextérité DD 10 ou aveuglé jusqu'à la fin du prochain tour du méphite. Lumières dansantes (1/jour, inné). Explosion mortelle : à sa mort, un nuage de fumée de 1,50 m de rayon masque la zone pendant 1 minute. Immunisé contre le feu et le poison. Perception +2, Discrétion +4.",
+      "particularity": "Petit esprit élémentaire, malicieux et lâche, qui se glisse par les premières fissures du monde. (MJ : bloc SRD Méphite de fumée. À partir de la phase 1 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Ombre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 16,
+          "max": 16,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 12
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Absorption de force",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "radiant"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Absorption de force : la Force de la cible baisse de 1d4 jusqu'à un repos court ou long ; à 0, elle meurt, et un humanoïde tué ainsi se relève en ombre 1d4 heures plus tard. Amorphe : elle passe par un interstice de 2,5 cm. Discrétion de l'ombre : elle se cache par une action bonus dans la pénombre ou le noir. Faiblesse au soleil : désavantage aux attaques, tests et JS en plein soleil. Vulnérable aux dégâts radiants ; résistance à l'acide, au froid, au feu, à la foudre, au tonnerre et aux dégâts physiques d'armes non magiques ; immunisée contre les dégâts nécrotiques et le poison, et contre les états épuisé, effrayé, agrippé, paralysé, pétrifié, empoisonné, à terre et entravé. Discrétion +4 (+6 dans la pénombre).",
+      "particularity": "Une ombre qui ne suit plus personne. Elle boit la force des vivants et en fait d'autres ombres. (MJ : bloc SRD Ombre. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Spectre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 15
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Absorption de vie",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": -2,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison"
+      ],
+      "specialAbilities": "Vol 15 m (stationnaire) ; il ne marche pas. Vision dans le noir 18 m. Absorption de vie : la cible fait un JS de Constitution DD 10 ou ses PV maximum baissent d'autant jusqu'à un repos long ; à 0, elle meurt. Mouvement incorporel : il traverse créatures et objets comme un terrain difficile (1d10 dégâts de force s'il y finit son tour). Sensibilité au soleil : désavantage aux attaques et aux tests de Perception visuelle en plein soleil. Résistance à l'acide, au froid, au feu, à la foudre, au tonnerre et aux dégâts physiques d'armes non magiques ; immunisé contre les dégâts nécrotiques et le poison, et contre les états charmé, épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient.",
+      "particularity": "Ce qui reste d'un mort qui n'a pas trouvé le repos : une silhouette froide, qui hait les vivants. (MJ : bloc SRD Spectre. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Blême",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 36,
+          "max": 36,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 0,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "necrotic"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Griffes : une cible qui n'est pas un mort-vivant fait un JS de Constitution DD 10 ou est paralysée 1 minute (elle refait le JS à la fin de chacun de ses tours). Puanteur : une créature qui commence son tour à 1,50 m fait un JS de Constitution DD 10 ou est empoisonnée jusqu'au début de son tour suivant ; réussi, elle y est immunisée 24 heures. Défi au renvoi : lui et les goules à 9 m ont l'avantage aux JS contre le renvoi des morts-vivants. Résistance aux dégâts nécrotiques ; immunisé contre le poison et les états charmé, épuisé et empoisonné.",
+      "particularity": "Le chef d'une meute de goules, plus rusé et plus puant qu'elles. (MJ : bloc SRD Blême. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Fantôme",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 45,
+          "max": 45,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 12
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Contact flétrissant",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "4d6",
+            "bonus": 2,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "cold",
+        "necrotic",
+        "poison"
+      ],
+      "specialAbilities": "Vol 12 m (stationnaire) ; il ne marche pas. Vision dans le noir 18 m. Vue éthérée : il voit à 18 m dans le plan éthéré quand il est dans le monde, et inversement. Mouvement incorporel : il traverse créatures et objets comme un terrain difficile (1d10 dégâts de force s'il y finit son tour). Forme éthérée : il passe du monde au plan éthéré, ou l'inverse. Visage terrifiant : chaque créature à 18 m qui le voit, sauf les morts-vivants, fait un JS de Sagesse DD 13 ou est effrayée 1 minute ; si elle rate de 5 ou plus, elle vieillit de 1d4 × 10 ans. Possession (recharge 6) : un humanoïde à 1,50 m fait un JS de Charisme DD 13 ou est possédé ; le fantôme disparaît dans son corps et le contrôle jusqu'à ce qu'il tombe à 0 PV, qu'on le chasse ou qu'il parte. Résistance à l'acide, au feu, à la foudre, au tonnerre et aux dégâts physiques d'armes non magiques ; immunisé contre le froid, les dégâts nécrotiques et le poison, et contre les états charmé, épuisé, effrayé, agrippé, paralysé, pétrifié, empoisonné, à terre et entravé.",
+      "particularity": "Un mort qui a une affaire à finir. Il hante un lieu, une famille ou un objet, et ne partira pas avant d'avoir obtenu ce qu'il veut. (MJ : bloc SRD Fantôme. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Esprit follet",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "1/4",
+      "size": "tp",
+      "abilities": {
+        "str": {
+          "mod": -4
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 2,
+          "max": 2,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 3
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 6,
+          "magic": false,
+          "damage": {
+            "dice": "1",
+            "bonus": 4,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (12/48 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1",
+            "bonus": -4,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vol 12 m. Arc court : la cible fait un JS de Constitution DD 10 ou est empoisonnée 1 minute ; si elle rate de 5 ou plus, elle tombe inconsciente aussi longtemps. Vue du cœur : en touchant une créature, il connaît son état émotionnel et, sur un JS de Charisme DD 10 raté, son alignement. Invisibilité (à volonté, concentration). Perception +3, Discrétion +8.",
+      "particularity": "Une petite fée ailée, susceptible et fière, qui garde un bosquet ou une source et juge les cœurs de ceux qui passent. (MJ : bloc SRD Esprit follet. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Satyre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "1/2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 31,
+          "max": 31,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 12
+      },
+      "xpReward": 100,
+      "attacks": [
+        {
+          "name": "Coup de cornes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Épée courte",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc court (24/96 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Perception +2, Représentation +6, Discrétion +5.",
+      "particularity": "Mi-homme, mi-bouc, il danse dans les clairières et entraîne les imprudents dans des fêtes dont on ne revient pas toujours. (MJ : bloc SRD Satyre. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Dryade",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fey",
+      "challengeRating": "1",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 22,
+          "max": 22,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 9
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Gourdin",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Incantation innée (Charisme, DD 14) : à volonté Druidisme ; 3/jour chacun Enchevêtrement, Baies nourricières ; 1/jour chacun Peau d'écorce (CA 16), Passage sans trace, Gourdin magique (+6 au toucher, 1d8+4). Charme féerique : un humanoïde ou une bête à 9 m fait un JS de Sagesse DD 14 ou est charmé (un jour, renouvelé tant qu'elle le veut). Passage par les arbres : une fois par tour, elle entre dans un arbre et ressort d'un autre à 18 m. Parler aux bêtes et aux plantes. Résistance à la magie. Perception +4, Discrétion +5.",
+      "particularity": "L'esprit d'un arbre, lié à lui pour la vie. Elle le défend, et retient près d'elle ceux qu'elle aime. (MJ : bloc SRD Dryade. À partir de la phase 2 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Nécrophage",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 45,
+          "max": 45,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Absorption de vie",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "necrotic",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Attaques multiples : deux attaques d'épée longue ou deux tirs d'arc long ; une absorption de vie peut remplacer une attaque d'épée. Absorption de vie : la cible fait un JS de Constitution DD 13 ou ses PV maximum baissent d'autant ; un humanoïde tué ainsi se relève en zombi à son service 24 heures plus tard (douze au plus). Épée longue à deux mains : 1d10. Sensibilité au soleil : désavantage aux attaques et aux tests de Perception visuelle en plein soleil. Résistance aux dégâts nécrotiques et aux dégâts physiques d'armes non magiques non argentées ; immunisé contre le poison et les états épuisé et empoisonné. Perception +3, Discrétion +4.",
+      "particularity": "Un mort qui a gardé sa volonté et sa haine, et qui commande à d'autres morts. (MJ : bloc SRD Nécrophage. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Momie",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 58,
+          "max": 58,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 6
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Poing pourrissant",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "necrotic"
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "fire"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Attaques multiples : un regard effroyable et un poing pourrissant. Poing pourrissant : la cible fait un JS de Constitution DD 12 ou contracte la pourriture de momie (aucun soin, PV maximum -3d6 toutes les 24 heures, mort à 0 ; Délivrance des malédictions y met fin). Regard effroyable : une créature à 18 m qui la voit fait un JS de Sagesse DD 11 ou est effrayée jusqu'à la fin du prochain tour de la momie ; si elle rate de 5 ou plus, elle est aussi paralysée. Vulnérable au feu ; résistance aux dégâts physiques d'armes non magiques ; immunisée contre les dégâts nécrotiques et le poison, et contre les états charmé, épuisé, effrayé, paralysé et empoisonné. JS de Sagesse +2.",
+      "particularity": "Un mort embaumé et gardé par un rite ancien, qui se lève pour punir qui le dérange. (MJ : bloc SRD Momie (fiche générique ; celles du Zahir ont la leur). À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Âme-en-peine",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "undead",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -2
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 67,
+          "max": 67,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 18
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Absorption de vie",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "4d8",
+            "bonus": 0,
+            "type": "necrotic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "necrotic",
+        "poison"
+      ],
+      "specialAbilities": "Vol 18 m (stationnaire) ; elle ne marche pas. Vision dans le noir 18 m. Absorption de vie : la cible fait un JS de Constitution DD 14 ou ses PV maximum baissent d'autant ; à 0, elle meurt. Création de spectre : elle relève en spectre à son service un humanoïde mort violemment depuis moins d'une minute, à 3 m (sept au plus). Mouvement incorporel : il traverse créatures et objets comme un terrain difficile (1d10 dégâts de force s'il y finit son tour). Sensibilité au soleil : désavantage aux attaques et aux tests de Perception visuelle en plein soleil. Résistance à l'acide, au froid, au feu, à la foudre, au tonnerre et aux dégâts physiques d'armes non magiques non argentées ; immunisée contre les dégâts nécrotiques et le poison, et contre les états charmé, épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre et entravé.",
+      "particularity": "Une âme mauvaise qui refuse de partir, et qui traîne derrière elle les spectres de ceux qu'elle a tués. (MJ : bloc SRD Âme-en-peine. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Élémentaire de l'air",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 90,
+          "max": 90,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 27
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 27 m (stationnaire) ; il ne marche pas. Vision dans le noir 18 m. Attaques multiples : deux coups. Tourbillon (recharge 4-6) : chaque créature dans son espace fait un JS de Force DD 13 ; ratée, 3d8+2 dégâts contondants, projetée à 6 m et à terre ; réussie, moitié des dégâts. Forme d'air : il entre dans l'espace d'une autre créature et passe par un interstice de 2,5 cm. Résistance à la foudre, au tonnerre et aux dégâts physiques d'armes non magiques ; immunisé contre le poison. Immunisé contre les états épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient.",
+      "particularity": "Un vent qui a pris conscience de lui-même. (MJ : bloc SRD Élémentaire de l'air. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Élémentaire de la terre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 126,
+          "max": 126,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "thunder"
+      ],
+      "specialAbilities": "Creusement 9 m. Vision dans le noir 18 m. Perception des vibrations 18 m. Attaques multiples : deux coups. Glissement dans la terre : il traverse la terre et la pierre sans les déranger. Démolisseur : dégâts doublés contre les objets et les structures. Vulnérable au tonnerre ; résistance aux dégâts physiques d'armes non magiques ; immunisé contre le poison. Immunisé contre les états épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient.",
+      "particularity": "La terre qui se lève. À ne pas confondre avec les filons éveillés de l'Eismark : celui-ci n'est fait que de roche et de terre, et il a une volonté. (MJ : bloc SRD Élémentaire de la terre. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Élémentaire du feu",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 102,
+          "max": 102,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 15
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Contact",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Attaques multiples : deux contacts. Contact : une cible ou un objet inflammable s'embrase et subit 1d10 dégâts de feu au début de chacun de ses tours, jusqu'à ce qu'on l'éteigne (action). Forme de feu : qui le touche ou le frappe au corps à corps à 1,50 m subit 1d10 dégâts de feu ; il entre dans l'espace des autres créatures, qui s'embrasent. Illumination : lumière vive sur 9 m, faible sur 9 m de plus. Sensibilité à l'eau : 1 dégât de froid par 1,50 m parcouru dans l'eau ou par 4 litres d'eau jetés sur lui. Résistance aux dégâts physiques d'armes non magiques ; immunisé contre le feu et le poison. Immunisé contre les états épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient.",
+      "particularity": "Une flamme qui marche, et qui brûle tout ce qu'elle approche. (MJ : bloc SRD Élémentaire du feu. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Élémentaire de l'eau",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 114,
+          "max": 114,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "acid",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Nage 27 m. Vision dans le noir 18 m. Attaques multiples : deux coups. Submersion (recharge 4-6) : chaque créature dans son espace fait un JS de Force DD 15 ; ratée, 2d8+4 dégâts contondants, agrippée (évasion DD 14), entravée et incapable de respirer ; réussie, expulsée de son espace. Forme d'eau : il entre dans l'espace des autres créatures et passe par un interstice de 2,5 cm. Gel : s'il subit des dégâts de froid, sa vitesse baisse de 6 m jusqu'à la fin de son prochain tour. Résistance à l'acide et aux dégâts physiques d'armes non magiques ; immunisé contre le poison. Immunisé contre les états épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient.",
+      "particularity": "Une vague qui ne retombe pas. (MJ : bloc SRD Élémentaire de l'eau (fiche générique ; les esprits des Sceaux d'Azhar ont la leur). À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Gargouille",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 52,
+          "max": 52,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 18 m. Vision dans le noir 18 m. Attaques multiples : une morsure et des griffes. Faux-semblant : immobile, rien ne la distingue d'une statue. Résistance aux dégâts physiques d'armes non magiques ; immunisée contre le poison et les états épuisé, pétrifié et empoisonné.",
+      "particularity": "Les statues des toits et des clochers ; certaines, maintenant, ne sont plus à la même place le matin. (MJ : bloc SRD Gargouille. À partir de la phase 3 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Traqueur invisible",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 104,
+          "max": 104,
+          "temp": 0
+        },
+        "ac": {
+          "value": 14
+        },
+        "speed": 15
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 15 m (stationnaire). Vision dans le noir 18 m. Attaques multiples : deux coups. Invisibilité : il est invisible. Pisteur infaillible : son invocateur lui désigne une proie, et il en connaît toujours la direction et la distance. Résistance aux dégâts physiques d'armes non magiques ; immunisé contre le poison. Immunisé contre les états épuisé, agrippé, paralysé, pétrifié, empoisonné, à terre, entravé et inconscient. Perception +8, Discrétion +10.",
+      "particularity": "Un vent qu'on a lié à une seule tâche : trouver quelqu'un. Il ne s'arrête pas avant. (MJ : bloc SRD Traqueur invisible. À partir de la phase 4 ; dossier commun.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Djinn",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "11",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 6
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 161,
+          "max": 161,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 7200,
+      "attacks": [
+        {
+          "name": "Cimeterre",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d6",
+            "type": "lightning"
+          }
+        }
+      ],
+      "damageImmunities": [
+        "lightning",
+        "thunder"
+      ],
+      "specialAbilities": "Vol 27 m. Vision dans le noir 36 m. Attaques multiples : trois attaques de cimeterre ; dégâts secondaires de foudre ou de tonnerre, au choix. Incantation innée (Charisme, DD 17, +9 au toucher) : à volonté Détection du mal et du bien, Détection de la magie, Vague tonnante ; 3/jour chacun Création de nourriture et d'eau, Langues, Forme gazeuse du vent ; 1/jour chacun Invocation d'élémentaire (air), Création, Forme gazeuse, Invisibilité, Image majeure, Changement de plan. Créer un tourbillon : cylindre de 1,50 m de rayon et 9 m de haut à 36 m ; une créature dedans fait un JS de Force DD 18 ou est entravée. Fin élémentaire : à sa mort, il se dissout en une brise tiède. Immunisé contre la foudre et le tonnerre. Jets de sauvegarde : Dex +6, Sag +7, Cha +9.",
+      "particularity": "Un génie de l'air, fier et capricieux, qui se souvient d'un monde où l'on traitait avec lui. (MJ : bloc SRD Djinn. À partir de la phase 5 ; dossier commun. Rien à voir avec les sâkin du folklore azhari : seul le sage du Zahir en est un)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Éfrit",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "11",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 7
+        },
+        "int": {
+          "mod": 3
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 200,
+          "max": 200,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 12
+      },
+      "xpReward": 7200,
+      "attacks": [
+        {
+          "name": "Cimeterre",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "2d6",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Jet de flammes (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 6,
+          "magic": false,
+          "damage": {
+            "dice": "5d6",
+            "bonus": -1,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire"
+      ],
+      "specialAbilities": "Vol 18 m. Vision dans le noir 36 m. Attaques multiples : deux attaques de cimeterre ou deux jets de flammes. Incantation innée (Charisme, DD 15, +7 au toucher) : à volonté Détection de la magie ; 3/jour chacun Agrandissement/Rapetissement, Langues ; 1/jour chacun Invocation d'élémentaire (feu), Forme gazeuse, Invisibilité, Image majeure, Changement de plan, Mur de feu. Fin élémentaire : à sa mort, il se dissout en un éclair de flammes et une bouffée de fumée. Immunisé contre le feu. Jets de sauvegarde : Int +7, Sag +6, Cha +7.",
+      "particularity": "Un génie du feu, cruel et orgueilleux, qui ne sert que contraint et n'oublie jamais qui l'a contraint. (MJ : bloc SRD Éfrit. À partir de la phase 5 ; dossier commun. Rien à voir avec les sâkin du folklore azhari : seul le sage du Zahir en est un)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

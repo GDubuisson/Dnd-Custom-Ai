@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.29.0] - 2026-11-23
+
+**Morts-vivants, fées et élémentaires.**
+- 26 fiches, blocs SRD, dans le dossier commun :
+  - phase 1 : **squelette**, **zombi**, **goule**, cinq **méphites** (poussière, boue, vapeur, magma,
+    fumée) ;
+  - phase 2 : **ombre**, **spectre**, **blême**, **fantôme** ; **esprit follet**, **satyre**,
+    **dryade** ;
+  - phase 3 : **nécrophage**, **momie**, **âme-en-peine** ; élémentaires de l'**air**, de la
+    **terre**, du **feu** et de l'**eau**, **gargouille** ;
+  - phase 4 : **traqueur invisible** ;
+  - phase 5 : **djinn** et **éfrit**, sans lien avec les sâkin d'Azhar.
+- Ni vampires ni liches dans cette campagne.
+
 ## [1.28.0] - 2026-11-23
 
 **Les démons.**
