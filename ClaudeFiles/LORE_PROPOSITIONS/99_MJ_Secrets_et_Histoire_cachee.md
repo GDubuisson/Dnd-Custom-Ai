@@ -470,7 +470,7 @@ Le retour de la magie, du divin et du démoniaque se compte en **six phases**. L
 | 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages. |
 | 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent. |
 | 4 — Âge des prodiges | 5 | une saison à un an | Grands morts-vivants, démons, golems, sylvaniens, grands esprits ; chefs des peuples revenus (hobgobelins, gobelours, chefs de guerre orcs), trolls réveillés. |
-| 5 — L'ancien monde | 6 | plusieurs années | Grands démons et diables, célestes, vrais dieux. |
+| 5 — L'ancien monde | 6 | plusieurs années | Grands démons, vrais dieux. |
 
 Logne puis la Sümpfenmark tombent tôt : la campagne reste en phase 1 pendant les premiers niveaux. Ce qui évolue avec le monde, comme Kisaeth et Varhun (§12), suit ces phases.
 
