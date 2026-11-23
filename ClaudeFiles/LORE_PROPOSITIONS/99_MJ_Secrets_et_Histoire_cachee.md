@@ -525,6 +525,12 @@ Les humains du continent réagissent à ce qui revient, mais jamais d'un coup : 
 - **Azhar** : On double les gardes des caravanes, la Maison des Cent Portes enquête et tient registre, et l'on cherche d'abord à savoir avant de frapper.
 - **L'Église** : Elle y voit la Faute : vouloir prendre ce qui doit être reçu. Ceux qui ont des pouvoirs, PJ compris, deviennent suspects, et les prêtres dont les grâces grandissent ne savent pas comment l'annoncer.
 
+### Ceux qui recouvrent des pouvoirs
+
+- **Les ordres** suivent une carrière, un rang par phase de 2 à 5. L'Aube Blanche devient un ordre de paladins du serment : ils sentent le parjure et citent à comparaître. L'Ordre de la Flamme devient un ordre de paladins du feu. Les Passwachten et les Veilleurs deviennent des rôdeurs, des cols pour les uns, des forêts et du Registre pour les autres. Les guerriers d'Azhar font de la Mesure une discipline du corps. Les Compagnies de la Route ne reçoivent rien : elles achètent leur magie aux guildes.
+- **Les prières contournent Estevan** (§16). Tant que la pierre de Velencia tient, il bride ce qui passe par lui, et les prêtres de l'Unique n'obtiennent que des miracles minuscules. Mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas, et les prières trouvent d'autres oreilles, dieux ou démons. Des cultes nouveaux peuvent naître dans n'importe quel pays ; les fidèles de l'Unique sont exaucés sans savoir par qui ; Azhar n'a pas de prêtres, mais ses croyances peuvent être exaucées elles aussi.
+- **Les ritualistes** deviennent de vrais mages. Ceux de Valdera continuent de fuir le royaume, à toutes les phases ; ceux qui restent se cachent derrière la Foi, sciemment ou non. En Azhar, ce sont les astrologues de la Maison des Cent Portes qui tirent leur pouvoir des étoiles.
+
 ### Tensions à exploiter
 
 Les gnolls d'Azhar donnent à Valdera un prétexte pour rompre la Trêve de la Passe ; les guildes lucentiennes voudraient acheter la magie, et ceux qui en ont ; l'Église se méfie des porteurs d'éclats.
