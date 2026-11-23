@@ -5,6 +5,13 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.27.1] - 2026-11-23
+
+**Ni célestes ni diables dans ce monde.**
+- Page « Les phases du retour » : la phase 5 ne cite plus que les grands démons et les vrais dieux.
+- Fiches du culte démoniaque : la marque du démon brûle en terre consacrée (et non plus en présence
+  d'un céleste).
+
 ## [1.27.0] - 2026-11-23
 
 **Ceniza, le démon du culte d'Inés.**
