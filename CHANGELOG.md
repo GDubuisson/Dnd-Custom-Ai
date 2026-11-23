@@ -5,6 +5,11 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.29.1] - 2026-11-23
+
+- Page « Les phases du retour » : la phase 4 ne cite plus de « grands morts-vivants » (ni vampires ni
+  liches dans cette campagne).
+
 ## [1.29.0] - 2026-11-23
 
 **Morts-vivants, fées et élémentaires.**
