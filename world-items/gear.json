@@ -666,5 +666,258 @@
       "use": { "type": "heal", "healDice": "2d4", "healBase": 0, "healSkill": "", "consumable": true },
       "description": "Préparation d'herboriste. Pot de graisse et d'herbes qui referme les coupures en quelques heures. Rend 2d4 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée."
     }
+  },
+  {
+    "name": "Symbole de l'Unique",
+    "type": "gear",
+    "img": "icons/equipment/neck/amulet-round-engraved-gold.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Le signe de la Foi, en laiton pour les prêtres, en bois pour les fidèles : un anneau ouvert vers le haut, traversé de trois branches qui se rejoignent en son centre, monté sur un court manche qu'on tient en main pour bénir. On dit que l'anneau reste ouvert pour recevoir, jamais pour prendre, que les trois branches sont les trois enseignements d'Estevan, et que le manche rappelle son bâton de berger. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Symbole sacré",
+    "type": "gear",
+    "img": "icons/equipment/neck/amulet-engraved-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Amulette, emblème ou reliquaire d'un autre culte que la Foi : saint local, dieu ancien, puissance qu'on prie sans la nommer. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur arcanique (cristal)",
+    "type": "gear",
+    "img": "icons/commodities/treasure/glass-crystal-green.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Cristal taillé, assez petit pour tenir dans le poing, sur lequel un ritualiste fixe son attention. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur arcanique (orbe)",
+    "type": "gear",
+    "img": "icons/commodities/treasure/crystal-ball-blue-purple.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 20, "pp": 0 },
+      "description": "Sphère de verre ou de cristal poli, posée sur un petit socle. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur arcanique (baguette)",
+    "type": "gear",
+    "img": "icons/weapons/wands/wand-gem-violet.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Baguette de bois sombre, sertie d'une pierre à son extrémité. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur arcanique (bâton)",
+    "type": "gear",
+    "img": "icons/weapons/staves/staff-engraved-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Bâton de marche gravé de signes sur toute sa longueur ; il ne vaut rien comme arme. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur arcanique (sceptre)",
+    "type": "gear",
+    "img": "icons/commodities/treasure/sceptre-jeweled-gold.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Court sceptre de métal ouvragé, coiffé d'une pierre. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur druidique (brin de gui)",
+    "type": "gear",
+    "img": "icons/consumables/fruit/berry-clustered-white.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Brin de gui aux baies blanches, cueilli sans fer et noué d'un fil. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur druidique (totem)",
+    "type": "gear",
+    "img": "icons/commodities/treasure/totem-wood-face-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Petite figure sculptée, plume, os ou dent, porté au cou ou à la ceinture. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur druidique (bâton de bois)",
+    "type": "gear",
+    "img": "icons/weapons/staves/staff-nature.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.8,
+      "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
+      "description": "Bâton taillé dans une branche vivante, l'écorce laissée par endroits. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Focaliseur druidique (baguette d'if)",
+    "type": "gear",
+    "img": "icons/weapons/wands/wand-totem.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Baguette d'if lissée à la main, sans ornement. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Sacoche à composantes",
+    "type": "gear",
+    "img": "icons/containers/bags/pouch-leather-green.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Sacoche de cuir à compartiments, attachée à la ceinture : herbes, poudres, plumes, éclats de minerai, tout le bric-à-brac des rituels. Objet d'ambiance : le système ne compte pas les composantes."
+    }
+  },
+  {
+    "name": "Grimoire",
+    "type": "gear",
+    "img": "icons/sundries/books/book-purple-glyph.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "description": "Livre relié de cuir, aux pages couvertes de formules, de schémas et de notes de rituels. Objet d'ambiance : aucun sort du système n'en a besoin."
+    }
+  },
+  {
+    "name": "Cornemuse",
+    "type": "gear",
+    "img": "icons/tools/instruments/horn-flared-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.7,
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "description": "Outre de peau et tuyaux de bois : on l'entend d'une vallée à l'autre, et c'est bien le but."
+    }
+  },
+  {
+    "name": "Tambour",
+    "type": "gear",
+    "img": "icons/tools/instruments/drum-brown-red.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 6, "pp": 0 },
+      "description": "Caisse de bois tendue de peau, qui marque le pas des marches et le rythme des danses."
+    }
+  },
+  {
+    "name": "Tympanon",
+    "type": "gear",
+    "img": "icons/tools/instruments/harp-lap-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 4.5,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Caisse plate à cordes tendues, qu'on frappe de deux petits marteaux posé sur les genoux ou sur une table."
+    }
+  },
+  {
+    "name": "Flûte",
+    "type": "gear",
+    "img": "icons/tools/instruments/flute-simple-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Flûte de bois percée de six trous : l'instrument des bergers et des enfants."
+    }
+  },
+  {
+    "name": "Luth",
+    "type": "gear",
+    "img": "icons/tools/instruments/lute-gold-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 35, "pp": 0 },
+      "description": "Instrument à cordes pincées, à caisse bombée et manche court : celui des tavernes comme des cours."
+    }
+  },
+  {
+    "name": "Lyre",
+    "type": "gear",
+    "img": "icons/tools/instruments/harp-yellow-teal.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "description": "Petit cadre de bois à cordes tendues, qu'on tient contre soi pour accompagner un récit."
+    }
+  },
+  {
+    "name": "Cor",
+    "type": "gear",
+    "img": "icons/tools/instruments/horn-white-gray.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 3, "pp": 0 },
+      "description": "Corne évidée ou cuivre recourbé : il sert aux chasses, aux appels et aux alertes."
+    }
+  },
+  {
+    "name": "Flûte de Pan",
+    "type": "gear",
+    "img": "icons/tools/instruments/pipe-flute-tan.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.9,
+      "price": { "pc": 0, "pa": 0, "po": 12, "pp": 0 },
+      "description": "Tuyaux de roseau de longueurs inégales, liés côte à côte."
+    }
+  },
+  {
+    "name": "Chalemie",
+    "type": "gear",
+    "img": "icons/tools/instruments/pipe-flute-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 2, "pp": 0 },
+      "description": "Hautbois rustique à anche double, au son aigre qui porte loin sur les places de foire."
+    }
+  },
+  {
+    "name": "Viole",
+    "type": "gear",
+    "img": "icons/tools/instruments/lute-gold-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 30, "pp": 0 },
+      "description": "Instrument à cordes frottées à l'archet, au son grave et long."
+    }
   }
 ]

@@ -52,6 +52,7 @@ deviendra un `it(...)` Cypress ou un test Quench une fois écrite.
 | T-WIZ-012 | Liaison automatique au joueur | P1 | E2E+Quench | Terminer l'assistant en tant que Joueur (pas GM) | `ownership.<userId>` = OWNER sur l'Actor, `game.user.character` pointe vers cet Actor |
 | T-WIZ-013 | Pas de liaison automatique pour le MJ | P2 | E2E | Terminer l'assistant en tant que GM | `game.user.character` n'est pas modifié |
 | T-WIZ-014 | Équipement de départ attribué | P1 | E2E+Quench | Terminer l'assistant avec une classe ayant arme+armure de départ (ex. Guerrier) | Les deux Items apparaissent sur l'Actor avec `system.equipped = true` |
+| T-WIZ-024 | Objet d'ambiance du lanceur | P2 | E2E | Terminer l'assistant avec un Clerc | L'Actor reçoit « Symbole de l'Unique » (gear) non équipé, en plus de l'arme et de l'armure équipées |
 | T-WIZ-015 | Équipement de départ manquant → avertissement non bloquant | P2 | Quench | Terminer l'assistant sans que les Items du monde `world-items/weapons.json`/`armors.json` soient importés | Notification d'avertissement `StartingEquipmentMissing`, la création du personnage aboutit quand même |
 | T-WIZ-016 | Capacités/sorts de niveau 1 octroyés | P1 | E2E+Quench | Terminer l'assistant avec une classe lanceuse de sorts | Les capacités de classe niveau 1 et les sorts/tours de magie de niveau 1 apparaissent sur l'Actor |
 | T-WIZ-017 | Langues octroyées | P2 | Quench | Terminer l'assistant avec n'importe quelle origine | L'Actor possède un Item "Commun" + la langue propre à l'origine choisie |

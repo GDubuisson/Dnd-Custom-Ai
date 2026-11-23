@@ -511,7 +511,52 @@ describe("classStartingEquipment — les noms référencés existent dans world-
         assert.ok(armorNames.has(kit.armor), `armure "${kit.armor}" introuvable dans world-items/armors.json`);
       });
     }
+    for (const name of kit.gear ?? []) {
+      test(`${classKey} : objet d'ambiance "${name}" existe dans gear.json`, () => {
+        assert.ok(WORLD_GEAR.some((entry) => entry.name === name), `"${name}" introuvable dans world-items/gear.json`);
+      });
+    }
   }
+});
+
+// Équipement des lanceurs : objets d'ambiance, aucun effet de jeu (pas de bouton Utiliser, pas de bonus).
+describe("world-items — équipement des lanceurs, objets d'ambiance sans mécanique", () => {
+  const casterGear = [
+    "Symbole de l'Unique", "Symbole sacré", "Sacoche à composantes", "Grimoire",
+    ...["cristal", "orbe", "baguette", "bâton", "sceptre"].map((kind) => `Focaliseur arcanique (${kind})`),
+    ...["brin de gui", "totem", "bâton de bois", "baguette d'if"].map((kind) => `Focaliseur druidique (${kind})`),
+    "Cornemuse", "Tambour", "Tympanon", "Flûte", "Luth", "Lyre", "Cor", "Flûte de Pan", "Chalemie", "Viole"
+  ];
+  const regionalCasterGear = {
+    "Sphère céleste d'astrologue": "azhar",
+    "Charme de guilde": "lucentia",
+    "Baguette de sourcier d'Eisengrund": "altenmark",
+    "Bornes de garde de domaine": "fleuraine",
+    "Recueil de rituels enregistré": "ravenmoor",
+    "Livre d'heures annoté": "valdera",
+    "Chapelet de l'Unique": "saintSiege"
+  };
+  const byName = new Map([...WORLD_GEAR, ...WORLD_REGIONAL].map((entry) => [entry.name, entry]));
+
+  for (const name of [...casterGear, ...Object.keys(regionalCasterGear)]) {
+    test(`${name} : objet simple (gear), avec prix, poids et description, sans effet`, () => {
+      const entry = byName.get(name);
+      assert.ok(entry, `${name} introuvable`);
+      assert.equal(entry.type, "gear");
+      assert.ok(entry.system.description.length > 20);
+      assert.ok(entry.system.weight >= 0 && entry.system.price);
+      assert.ok(!entry.system.use && !entry.system.capacityBonus, `${name} ne doit avoir aucun usage`);
+    });
+  }
+  for (const [name, region] of Object.entries(regionalCasterGear)) {
+    test(`${name} : variante régionale (${region})`, () => {
+      assert.equal(byName.get(name).flags?.["dnd-custom-ai"]?.region, region);
+    });
+  }
+  test("le symbole de l'Unique décrit l'anneau ouvert, les trois branches et le manche", () => {
+    const text = byName.get("Symbole de l'Unique").system.description;
+    for (const word of ["anneau ouvert vers le haut", "trois branches", "manche"]) assert.ok(text.includes(word), word);
+  });
 });
 
 describe("scripts/data/glossary.json — utilisé par le Guide du Joueur (player-guide-journal.js)", () => {

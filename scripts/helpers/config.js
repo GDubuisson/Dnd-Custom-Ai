@@ -537,18 +537,21 @@ DND_CUSTOM.xpThresholds = [
 /** Niveaux offrant une Amélioration de caractéristiques. */
 DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
 
-/** Équipement de départ par classe (noms d'Items de weapons.json / armors.json) ; arme toujours maîtrisée. */
+/**
+ * Équipement de départ par classe (noms d'Items de weapons.json / armors.json) ; arme toujours maîtrisée.
+ * `gear` : objets d'ambiance du lanceur (gear.json), donnés non équipés ; aucun sort n'en dépend.
+ */
 DND_CUSTOM.classStartingEquipment = {
   barbarian: { weapon: "Grande hache", armor: null },
-  bard: { weapon: "Dague", armor: "Cuir" },
-  cleric: { weapon: "Masse d'armes", armor: "Écailles" },
-  druid: { weapon: "Faucille", armor: "Peau" },
+  bard: { weapon: "Dague", armor: "Cuir", gear: ["Luth"] },
+  cleric: { weapon: "Masse d'armes", armor: "Écailles", gear: ["Symbole de l'Unique"] },
+  druid: { weapon: "Faucille", armor: "Peau", gear: ["Focaliseur druidique (brin de gui)"] },
   fighter: { weapon: "Épée longue", armor: "Cotte de mailles" },
   monk: { weapon: "Bâton", armor: null },
-  paladin: { weapon: "Épée longue", armor: "Cotte de mailles" },
+  paladin: { weapon: "Épée longue", armor: "Cotte de mailles", gear: ["Symbole de l'Unique"] },
   ranger: { weapon: "Arc long", armor: "Cuir clouté" },
   rogue: { weapon: "Dague", armor: "Cuir" },
-  sorcerer: { weapon: "Dague", armor: null },
-  warlock: { weapon: "Dague", armor: "Cuir" },
-  wizard: { weapon: "Dague", armor: null }
+  sorcerer: { weapon: "Dague", armor: null, gear: ["Focaliseur arcanique (cristal)"] },
+  warlock: { weapon: "Dague", armor: "Cuir", gear: ["Sacoche à composantes"] },
+  wizard: { weapon: "Dague", armor: null, gear: ["Grimoire"] }
 };

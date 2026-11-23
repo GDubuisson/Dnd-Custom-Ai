@@ -398,5 +398,33 @@
   {
     "name": "L'œuf de Varhun",
     "lore": "SECRET. Avant le Scellement vivaient deux oiseaux inséparables, Kisaeth, l'oiseau de glace, et Varhun, l'oiseau de feu. Le Scellement les a séparés : Varhun s'est sacrifié dans la pierre de Kis, et Kisaeth s'est dispersée dans la plaine, qu'elle a gelée et qu'on appelle aujourd'hui le Désert gelé de Kis. Kisaeth se réveille quand on approche du site, mais n'en sort pas tant que la pierre tient ; quand la pierre de Kis est brisée, elle en est libérée, et cet œuf apparaît près du site. Il ne vaut rien pour qui ne sait pas ce que c'est, et tout pour Kisaeth.\n\nAccroche suggérée : quête secondaire. Protéger l'œuf, le garder au chaud, le mener là où il pourra éclore ; Kisaeth, renaissante, peut devenir l'alliée de ceux qui le protègent. Ce qui éclot (bestiaire, dossier du site de Kis : « Varhun (oisillon) », puis jeune et adulte) dépend de ce que les PJ en font.\n\nMauvaise fin : si c'est un porteur de pierre d'Ulrich qui brise la pierre, il absorbe l'essence de Varhun et l'œuf n'apparaît pas. Il peut encore se former si les PJ raisonnent Kisaeth et arrêtent le porteur avant qu'il rejoigne Ulrich."
+  },
+  {
+    "name": "Sphère céleste d'astrologue",
+    "lore": "Les astrologues de la Maison des Cent Portes calculent avant de prédire : la sphère sert d'abord à vérifier les tables du ciel, ensuite seulement à placer les étoiles d'une naissance ou d'un rituel. La Maison enseigne le rituel sous l'œil du Divan, et accueille depuis des siècles les ritualistes que Valdera exile.\n\nBase SRD : focaliseur arcanique (orbe), sans effet de jeu."
+  },
+  {
+    "name": "Charme de guilde",
+    "lore": "À Lucentia, les guildes de ritualistes tiennent boutique comme les autres corps de métier et paient leur patente. Le charme prouve que l'ouvrage a été fait par la guilde et payé ; un client qui n'en a pas reçu a traité avec un officiant sans patente, et ne peut se plaindre à personne.\n\nObjet d'ambiance, sans effet de jeu."
+  },
+  {
+    "name": "Baguette de sourcier d'Eisengrund",
+    "lore": "Le filon principal d'Eisengrund s'appauvrit, et l'Eismark a recommencé à commander des rituels de recherche des filons. Le sourcier marche des jours entiers, la baguette en main, avant de dire où creuser ; les autres marches parlent de ce que tout cela coûtera. En Altenmark, les ritualistes sont autorisés et soumis au Landrecht.\n\nBase SRD : focaliseur druidique (baguette d'if), sans effet de jeu."
+  },
+  {
+    "name": "Bornes de garde de domaine",
+    "lore": "À Fleuraine, les ritualistes sont tolérés sous patronage seigneurial et enregistrés : chacun sert un domaine et n'ouvrage que pour lui. Une protection durable sur un bâtiment est l'un des rares effets qu'un rituel obtienne vraiment ; les bornes en marquent les limites.\n\nObjet d'ambiance, sans effet de jeu."
+  },
+  {
+    "name": "Recueil de rituels enregistré",
+    "lore": "Au Ravenmoor, les ritualistes sont autorisés, inscrits au Grand Registre et étroitement surveillés. Chaque rituel qu'ils pratiquent doit figurer dans leur recueil, qu'ils présentent au commis à chaque révision du Registre, tous les douze ans, et chaque fois qu'on le leur demande.\n\nBase SRD : grimoire, sans effet de jeu."
+  },
+  {
+    "name": "Livre d'heures annoté",
+    "lore": "À Valdera, les ritualistes sont interdits : peine capitale en théorie, exil en pratique. La plupart partent pour Qasirah ; ceux qui restent se cachent derrière la Foi, sciemment ou non, et notent leurs formules là où personne ne pense à les chercher.\n\nBase SRD : livre, sans effet de jeu."
+  },
+  {
+    "name": "Chapelet de l'Unique",
+    "lore": "Les fidèles l'égrènent en récitant les trois enseignements d'Estevan. Les miracles se reçoivent et ne s'obtiennent pas : un chapelet ne demande rien, il remercie.\n\nBase SRD : symbole sacré (emblème), sans effet de jeu."
   }
 ]

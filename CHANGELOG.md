@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.31.0] - 2026-11-23
+
+**L'équipement des lanceurs, pour l'ambiance.**
+- 23 objets d'ambiance, sans effet de jeu (aucun sort n'exige de focaliseur ni de composante) :
+  - **symbole de l'Unique** : un anneau ouvert vers le haut, traversé de trois branches qui se
+    rejoignent au centre, monté sur un court manche ; et un **symbole sacré** pour les autres cultes ;
+  - **focaliseurs arcaniques** (cristal, orbe, baguette, bâton, sceptre) et **druidiques** (brin de
+    gui, totem, bâton de bois, baguette d'if) ;
+  - **sacoche à composantes** et **grimoire** ;
+  - 10 **instruments** de musique (cornemuse, tambour, tympanon, flûte, luth, lyre, cor, flûte de
+    Pan, chalemie, viole), en simples objets, sans bouton « Utiliser ».
+- 7 variantes régionales, avec leur histoire dans les Chroniques des objets : sphère céleste
+  d'astrologue (Azhar), charme de guilde (Lucentia), baguette de sourcier d'Eisengrund (Altenmark),
+  bornes de garde de domaine (Fleuraine), recueil de rituels enregistré (Ravenmoor), livre d'heures
+  annoté (Valdera), chapelet de l'Unique (Saint-siège).
+- Assistant de création : les lanceurs reçoivent en plus un objet d'ambiance, rangé non équipé
+  (clerc et paladin : symbole de l'Unique ; barde : luth ; druide : brin de gui ; ensorceleur :
+  cristal ; occultiste : sacoche à composantes ; magicien : grimoire).
+
 ## [1.30.1] - 2026-11-23
 
 **Tests.**

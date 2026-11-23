@@ -289,18 +289,26 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     this.actor.sheet.render(true);
   }
 
-  /** Équipement de départ de la classe, copié depuis les Items du monde s'ils existent. */
+  /**
+   * Équipement de départ de la classe, copié depuis les Items du monde s'ils existent : arme et armure
+   * équipées, objets d'ambiance du lanceur (`gear`) simplement rangés dans l'inventaire.
+   */
   static async #grantStartingEquipment(actor, classKey) {
     const kit = DND_CUSTOM.classStartingEquipment[classKey];
     if (!kit) return;
 
-    const names = [kit.weapon, kit.armor].filter(Boolean);
+    const equippedNames = [kit.weapon, kit.armor].filter(Boolean);
+    const names = [...equippedNames, ...(kit.gear ?? [])];
     const items = names.map((name) => game.items.getName(name)).filter(Boolean);
 
     if (items.length) {
       await actor.createEmbeddedDocuments(
         "Item",
-        items.map((item) => foundry.utils.mergeObject(item.toObject(), { "system.equipped": true }))
+        items.map((item) =>
+          equippedNames.includes(item.name)
+            ? foundry.utils.mergeObject(item.toObject(), { "system.equipped": true })
+            : item.toObject()
+        )
       );
     }
     if (items.length < names.length) {

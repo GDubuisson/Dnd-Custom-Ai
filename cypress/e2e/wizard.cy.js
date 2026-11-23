@@ -271,6 +271,32 @@ describe("Assistant de création de personnage — session Joueur", () => {
     });
   });
 
+  it("donne au lanceur son objet d'ambiance, rangé non équipé à côté de l'arme et de l'armure (T-WIZ-024)", () => {
+    let actorId;
+    createBlankCharacter("Frère Anselme").then((id) => { actorId = id; });
+    getWizardForm().should("be.visible");
+
+    cy.get('input[name="name"]').clear();
+    cy.get('input[name="name"]').type("Frère Anselme");
+    cy.get('select[name="origin"]').select("valdera");
+    cy.get('select[name="classKey"]').select("cleric");
+    cy.get('input[type="checkbox"][name="skills.religion"]').check();
+    cy.get('input[type="checkbox"][name="skills.medicine"]').check();
+    cy.get('form.character-wizard button[type="submit"]').click();
+
+    cy.contains(".notification", "Frère Anselme", { timeout: 10000 }).should("exist");
+    getWizardForm().should("not.exist");
+
+    cy.window().should((win) => {
+      const actor = win.game.actors.get(actorId);
+      const symbol = actor.items.find((item) => item.type === "gear" && item.name === "Symbole de l'Unique");
+      expect(symbol, "symbole de l'Unique du clerc introuvable — Items du monde importés ?").to.exist;
+      expect(symbol.system.equipped, "objet d'ambiance jamais équipé d'office").to.not.equal(true);
+      expect(actor.items.find((item) => item.type === "weapon" && item.name === "Masse d'armes").system.equipped).to.be.true;
+      expect(actor.items.find((item) => item.type === "armor" && item.name === "Écailles").system.equipped).to.be.true;
+    });
+  });
+
   it("remplit les emplacements de sorts au maximum pour une classe lanceuse à la création (anomalie 2026-08-19)", () => {
     let actorId;
     createBlankCharacter("Elowen l'Étincelante").then((id) => { actorId = id; });

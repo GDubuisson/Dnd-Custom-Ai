@@ -1476,5 +1476,103 @@
     "flags": {
       "dnd-custom-ai": { "region": "saintSiege" }
     }
+  },
+  {
+    "name": "Sphère céleste d'astrologue",
+    "type": "gear",
+    "img": "icons/environment/cosmos/astronomy-planetary-orbits.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "description": "Petite sphère de laiton aux cercles mobiles, gravée des étoiles fixes et de chiffres azharis, qui tient dans la paume."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "azhar" }
+    }
+  },
+  {
+    "name": "Charme de guilde",
+    "type": "gear",
+    "img": "icons/commodities/treasure/token-engraved-spiral-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Jeton de cuivre frappé au sceau d'une guilde de ritualistes, percé pour être porté, remis au client avec la quittance."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "lucentia" }
+    }
+  },
+  {
+    "name": "Baguette de sourcier d'Eisengrund",
+    "type": "gear",
+    "img": "icons/weapons/staves/staff-forked-wood.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0.5,
+      "price": { "pc": 0, "pa": 0, "po": 1, "pp": 0 },
+      "description": "Branche fourchue de coudrier, ferrée à la pointe, que le sourcier tient à deux mains pour suivre un filon."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "altenmark" }
+    }
+  },
+  {
+    "name": "Bornes de garde de domaine",
+    "type": "gear",
+    "img": "icons/commodities/treasure/token-carved-stone-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 10, "pp": 0 },
+      "description": "Coffret de quatre petites bornes de pierre gravées au blason d'un seigneur, à poser aux angles d'un domaine."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "fleuraine" }
+    }
+  },
+  {
+    "name": "Recueil de rituels enregistré",
+    "type": "gear",
+    "img": "icons/sundries/books/book-embossed-steel-brown.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 1.4,
+      "price": { "pc": 0, "pa": 0, "po": 50, "pp": 0 },
+      "description": "Cahier relié de toile grise, coté et paraphé page par page par un commis du Grand Registre. Une page sans paraphe suffit à faire convoquer son propriétaire."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "ravenmoor" }
+    }
+  },
+  {
+    "name": "Livre d'heures annoté",
+    "type": "gear",
+    "img": "icons/sundries/books/book-red-cross.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 2.3,
+      "price": { "pc": 0, "pa": 0, "po": 25, "pp": 0 },
+      "description": "Livre d'heures valdérien en apparence ordinaire. Dans les marges, d'une écriture minuscule, des formules qui n'ont rien de pieux."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "valdera" }
+    }
+  },
+  {
+    "name": "Chapelet de l'Unique",
+    "type": "gear",
+    "img": "icons/equipment/neck/necklace-simple-bead-grey.webp",
+    "system": {
+      "quantity": 1,
+      "weight": 0,
+      "price": { "pc": 0, "pa": 5, "po": 0, "pp": 0 },
+      "description": "Chapelet de grains de buis, terminé par un petit symbole de l'Unique."
+    },
+    "flags": {
+      "dnd-custom-ai": { "region": "saintSiege" }
+    }
   }
 ]

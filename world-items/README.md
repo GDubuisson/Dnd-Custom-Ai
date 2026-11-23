@@ -24,8 +24,8 @@ demande (ex. juste après une mise à jour du système, sans attendre le prochai
 |---|---|---|---|
 | `armors.json` | 13 armures SRD 5e (dont le bouclier) + 26 ouvrages rituels et pièces rares : armures et bouclier +1/+2, acier d'Eisengrund (mithral du SRD), armures de résistance, accessoires (Anneau et Cape de protection, Bracelets de défense, 10 Anneaux de résistance) | `armor` | Items du monde |
 | `weapons.json` | 37 armes SRD 5e (courantes et de guerre) + 10 ouvrages rituels (+1/+2) | `weapon` | Items du monde |
-| `gear.json` | 52 objets d'aventurier SRD 5e (dont munitions et contenants) + 4 préparations rituelles et 3 préparations d'herboriste | `gear` | Items du monde |
-| `regional.json` | 74 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
+| `gear.json` | 52 objets d'aventurier SRD 5e (dont munitions et contenants) + 4 préparations rituelles et 3 préparations d'herboriste + 23 objets d'ambiance des lanceurs (symboles, focaliseurs, sacoche, grimoire, 10 instruments), sans effet de jeu | `gear` | Items du monde |
+| `regional.json` | 81 objets propres aux 6 nations et au Saint-siège (armes, armures, outils, objets du quotidien) | mélangé | Items du monde, dossier « Objets régionaux » > région |
 | `historical.json` | 26 pièces historiques uniques, sans pouvoir ni bonus, dont 5 liées aux secrets du MJ (région `secrets`) | mélangé | Items du monde, dossier « Objets historiques » > région |
 | `tools.json` | 24 outils SRD 5e (outils d'artisan, kits...) | `tool` | Items du monde |
 | `spells.json` | 45 sorts SRD 5e (12 tours de magie, niveaux 1 à 5) — sélection non exhaustive, à compléter selon vos besoins | `spell` | Compendium "Sorts" |
@@ -369,7 +369,8 @@ vers la fiche.
 ## Dépendance de l'assistant de création de personnage
 
 L'assistant de création (bouton "Créer un personnage" sur la fiche) donne un équipement de
-départ simplifié (une arme + une armure typiques par classe, cf.
+départ simplifié (une arme + une armure typiques par classe, équipées, et pour les lanceurs un objet
+d'ambiance rangé dans l'inventaire, cf.
 `DND_CUSTOM.classStartingEquipment` dans `scripts/helpers/config.js`) en cherchant les noms
 exacts dans les Items du monde — **la Macro d'import ci-dessus doit avoir été exécutée au
 moins une fois** pour que `weapons.json`/`armors.json` y soient présents, sinon l'équipement

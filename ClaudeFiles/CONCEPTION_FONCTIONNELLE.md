@@ -139,6 +139,13 @@ bloqués en cas de dépassement. Seuls les objets à bonus de capacité de charg
 disponible pour tout objet utilisable. Les outils voient leur quantité décrémentée à l'utilisation
 (écart assumé au SRD, sur confirmation explicite testeur).
 
+Équipement des lanceurs (symbole de l'Unique, symbole sacré, focaliseurs arcaniques et druidiques,
+sacoche à composantes, grimoire, instruments de musique, variantes régionales) : objets d'ambiance
+seulement, sans bouton « Utiliser » ni effet. Aucun sort n'exige de focaliseur ni de composante.
+L'assistant de création en range un dans l'inventaire des lanceurs (clerc et paladin : symbole de
+l'Unique ; barde : luth ; druide : brin de gui ; ensorceleur : cristal ; occultiste : sacoche ;
+magicien : grimoire), non équipé, à côté de l'arme et de l'armure.
+
 ### Onglet "Capacités" / "Sorts"
 Intitulé et contenu dépendent de la classe (`templates/actor/abilities/<classe>.hbs`, un template
 dédié par classe + `default.hbs`) :
