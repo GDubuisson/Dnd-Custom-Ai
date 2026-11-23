@@ -747,3 +747,18 @@ describe("world-items/feats.json — dons d'éclat", () => {
     assert.equal(repeatable[0].system.abilityChoiceBonus, 2);
   });
 });
+
+describe("world-items — descriptions lues par les joueurs, sans notes d'implémentation", () => {
+  // Les écarts au SRD et les limites du système relèvent du Guide du MJ, pas de la fiche du joueur.
+  const META = [/SRD/, /D&D/, /ce système/i, /simplifi/i, /non modélis/i, /automatis/i, /hors scope/i, /\btoken\b/i];
+  const playerFacing = [
+    ...WORLD_FEATURES, ...WORLD_FEATS, ...WORLD_SPELLS, ...WORLD_SUBCLASSES, ...WORLD_CLASSES, ...WORLD_ORIGIN_ITEMS,
+    ...WORLD_WEAPONS, ...WORLD_ARMORS, ...WORLD_GEAR, ...WORLD_TOOLS, ...WORLD_LANGUAGES, ...WORLD_REGIONAL, ...WORLD_HISTORICAL
+  ];
+  for (const entry of playerFacing) {
+    test(`"${entry.name}" : pas de jargon technique ni de source dans la description`, () => {
+      const text = entry.system?.description ?? "";
+      for (const pattern of META) assert.doesNotMatch(text, pattern);
+    });
+  }
+});

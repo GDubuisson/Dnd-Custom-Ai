@@ -449,7 +449,7 @@
         "type": "light",
         "light": { "bright": 9, "dim": 9 }
       },
-      "description": "Lanterne de fer à volet, dont la flamme reste cachée tant qu'on ne l'ouvre pas, pour ne pas être prise de loin pour un Moorlicht. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+      "description": "Lanterne de fer à volet, dont la flamme reste cachée tant qu'on ne l'ouvre pas, pour ne pas être prise de loin pour un Moorlicht. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du jeton."
     },
     "flags": {
       "dnd-custom-ai": { "region": "altenmark" }
@@ -832,7 +832,7 @@
         "type": "light",
         "light": { "bright": 9, "dim": 9 }
       },
-      "description": "Lanterne de fer à volet, faite pour signaler d'une tour à l'autre. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+      "description": "Lanterne de fer à volet, faite pour signaler d'une tour à l'autre. Lumière vive sur 9 m et faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du jeton."
     }
   },
   {

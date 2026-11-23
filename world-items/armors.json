@@ -404,7 +404,7 @@
       "weight": 5.9,
       "quantity": 1,
       "equipped": false,
-      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de feu tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de feu tant qu'elle est portée. Harmonisation requise.",
       "damageResistances": ["fire"]
     }
   },
@@ -422,7 +422,7 @@
       "weight": 9,
       "quantity": 1,
       "equipped": false,
-      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de froid tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de froid tant qu'elle est portée. Harmonisation requise.",
       "damageResistances": ["cold"]
     }
   },
@@ -440,7 +440,7 @@
       "weight": 18.1,
       "quantity": 1,
       "equipped": false,
-      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de foudre tant qu'elle est portée (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter).",
+      "description": "Ouvrage rituel rare. Une protection durable a été tissée dans l'armure au terme d'un long rituel : résistance aux dégâts de foudre tant qu'elle est portée. Harmonisation requise.",
       "damageResistances": ["lightning"]
     }
   },
@@ -459,7 +459,7 @@
       "quantity": 1,
       "equipped": false,
       "saveBonus": 1,
-      "description": "Ouvrage rituel rare. Un anneau d'argent qui porte une protection durable : +1 à la CA et aux jets de sauvegarde tant qu'il est porté (appliqués automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau d'argent qui porte une protection durable : +1 à la CA et aux jets de sauvegarde tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -477,7 +477,7 @@
       "quantity": 1,
       "equipped": false,
       "saveBonus": 1,
-      "description": "Ouvrage rituel peu courant. Une cape doublée dans laquelle un ritualiste a fixé une protection : +1 à la CA et aux jets de sauvegarde tant qu'elle est portée (appliqués automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel peu courant. Une cape doublée dans laquelle un ritualiste a fixé une protection : +1 à la CA et aux jets de sauvegarde tant qu'elle est portée. Harmonisation requise."
     }
   },
   {
@@ -495,7 +495,7 @@
       "quantity": 1,
       "equipped": false,
       "unarmoredOnly": true,
-      "description": "Ouvrage rituel rare. Des bracelets de cuir renforcé consacrés par rituel : +2 à la CA tant que le porteur n'a ni armure ni bouclier (appliqué automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Des bracelets de cuir renforcé consacrés par rituel : +2 à la CA tant que le porteur n'a ni armure ni bouclier. Harmonisation requise."
     }
   },
   {
@@ -513,7 +513,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["acid"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de acide tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de acide tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -531,7 +531,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["cold"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de froid tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de froid tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -549,7 +549,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["fire"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de feu tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de feu tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -567,7 +567,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["force"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de force tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de force tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -585,7 +585,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["lightning"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de foudre tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de foudre tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -603,7 +603,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["necrotic"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de nécrotique tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de nécrotique tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -621,7 +621,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["poison"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de poison tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de poison tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -639,7 +639,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["psychic"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de psychique tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de psychique tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -657,7 +657,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["radiant"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de radiant tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de radiant tant qu'il est porté. Harmonisation requise."
     }
   },
   {
@@ -675,7 +675,7 @@
       "quantity": 1,
       "equipped": false,
       "damageResistances": ["thunder"],
-      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de tonnerre tant qu'il est porté (appliquée automatiquement). Harmonisation requise (non suivie par le système : au MJ de la faire respecter)."
+      "description": "Ouvrage rituel rare. Un anneau de métal gravé, lié par rituel à un seul type de dégâts : résistance aux dégâts de tonnerre tant qu'il est porté. Harmonisation requise."
     }
   }
 ]

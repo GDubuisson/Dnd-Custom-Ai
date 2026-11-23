@@ -31,7 +31,7 @@
       "weight": 0.45,
       "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
       "use": { "type": "light", "light": { "bright": 6, "dim": 6 } },
-      "description": "Brûle pendant 1 heure, apportant une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
+      "description": "Brûle pendant 1 heure, apportant une lumière vive dans un rayon de 6 m et une lumière faible sur 6 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du jeton."
     }
   },
   {
@@ -87,7 +87,7 @@
       "weight": 0.9,
       "price": { "pc": 0, "pa": 0, "po": 5, "pp": 0 },
       "use": { "type": "light", "light": { "bright": 9, "dim": 9 } },
-      "description": "Lumière vive dans un rayon de 9 m et lumière faible sur 9 m supplémentaires. Un flacon d'huile permet 6 heures d'éclairage. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
+      "description": "Lumière vive dans un rayon de 9 m et lumière faible sur 9 m supplémentaires. Un flacon d'huile permet 6 heures d'éclairage. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du jeton."
     }
   },
   {
@@ -167,7 +167,7 @@
       "weight": 0,
       "price": { "pc": 1, "pa": 0, "po": 0, "pp": 0 },
       "use": { "type": "light", "light": { "bright": 0, "dim": 1.5 } },
-      "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du token."
+      "description": "Brûle pendant 1 heure, apportant une lumière faible dans un rayon de 1,50 m. Utilisez l'objet depuis l'inventaire pour allumer/éteindre la lumière du jeton."
     }
   },
   {
@@ -525,7 +525,7 @@
         "type": "light",
         "light": { "bright": 4.5, "dim": 9 }
       },
-      "description": "Brûle 6 heures avec un flacon d'huile : lumière vive sur 4,50 m et lumière faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du token."
+      "description": "Brûle 6 heures avec un flacon d'huile : lumière vive sur 4,50 m et lumière faible sur 9 m supplémentaires. Utilisez l'objet depuis l'inventaire pour allumer ou éteindre la lumière du jeton."
     }
   },
   {

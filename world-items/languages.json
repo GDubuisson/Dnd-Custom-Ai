@@ -69,7 +69,7 @@
     "system": {
       "category": "special",
       "requiredLanguage": "Altenmarkois",
-      "description": "Le parler des marais de la Sümpfenmark, né de l'altenmarkois mais qui s'en est écarté plus que tous les autres accents : il n'est pas rare qu'un marchand d'Ostfurt passe au Commun pour se faire comprendre à Moorburg. Ajout manuel, réservé à un personnage qui parle déjà l'altenmarkois : à glisser sur la fiche si le personnage a vécu dans les marais ou parmi les Sümpfer."
+      "description": "Le parler des marais de la Sümpfenmark, né de l'altenmarkois mais qui s'en est écarté plus que tous les autres accents : il n'est pas rare qu'un marchand d'Ostfurt passe au Commun pour se faire comprendre à Moorburg. Réservé à un personnage qui parle déjà l'altenmarkois : à glisser sur la fiche si le personnage a vécu dans les marais ou parmi les Sümpfer."
     }
   },
   {
@@ -78,7 +78,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "Langage codé utilisé dans les milieux interlopes (voleurs, contrebandiers, mendiants) pour communiquer discrètement en public, même en présence de non-initiés. Ajout manuel : à glisser sur la fiche si le passé du personnage le justifie."
+      "description": "Langage codé utilisé dans les milieux interlopes (voleurs, contrebandiers, mendiants) pour communiquer discrètement en public, même en présence de non-initiés. À glisser sur la fiche si le passé du personnage le justifie."
     }
   },
   {
@@ -87,7 +87,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "Signaux, abréviations et code de communication utilisés par les soldats sur le champ de bataille et dans les casernes. Ajout manuel : à glisser sur la fiche si le personnage a servi dans une armée."
+      "description": "Signaux, abréviations et code de communication utilisés par les soldats sur le champ de bataille et dans les casernes. À glisser sur la fiche si le personnage a servi dans une armée."
     }
   },
   {
@@ -96,7 +96,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "Forme la plus ancienne du Commun, celle du Premier Codex, que la liturgie de la Foi de l'Unique a figée : on l'entend à l'office, avec des tournures que plus personne n'emploie ailleurs. Enseignée dans les abbayes et les écoles de la Foi. Ajout manuel : à glisser sur la fiche si le personnage a reçu une éducation religieuse."
+      "description": "Forme la plus ancienne du Commun, celle du Premier Codex, que la liturgie de la Foi de l'Unique a figée : on l'entend à l'office, avec des tournures que plus personne n'emploie ailleurs. Enseignée dans les abbayes et les écoles de la Foi. À glisser sur la fiche si le personnage a reçu une éducation religieuse."
     }
   },
   {
@@ -105,7 +105,7 @@
     "img": "systems/dnd-custom-ai/assets/icons/languages/others.webp",
     "system": {
       "category": "special",
-      "description": "Langue secrète des druides, transmise oralement de génération en génération : permet d'y dissimuler des messages que seul un autre druide peut déchiffrer. Généralement connue de tout Druide dès sa formation — ajout manuel : à glisser sur la fiche à la création d'un personnage Druide."
+      "description": "Langue secrète des druides, transmise oralement de génération en génération : permet d'y dissimuler des messages que seul un autre druide peut déchiffrer. Généralement connue de tout Druide dès sa formation : à glisser sur la fiche à la création d'un personnage Druide."
     }
   }
 ]

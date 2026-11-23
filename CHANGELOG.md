@@ -5,6 +5,21 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.32.0] - 2026-11-23
+
+**Des descriptions écrites pour les joueurs.**
+- Environ 120 descriptions nettoyées (71 capacités de classe, 10 sorts, 10 dons, 16 armures et
+  anneaux magiques, 10 armes magiques, 5 langues) : plus de sources (« SRD 5e », noms anglais),
+  plus de notes d'implémentation (« non modélisé par ce système », « simplifié : normalement… »,
+  « automatisé », « (appliqué automatiquement) »).
+- Les consignes utiles restent, dites simplement : quel bouton utiliser, quel état poser,
+  ce qui se règle avec le MJ.
+- Embuscade des ténèbres : vision dans le noir à 18 m, ou portée augmentée de 9 m si le
+  personnage en dispose déjà (la fiche indiquait 60 m).
+- « lumière du token » devient « lumière du jeton » (torche, lanterne, bougie, lampe).
+- Nouveau test de cohérence : aucune description lue par les joueurs ne contient de jargon
+  technique ni de référence de source.
+
 ## [1.31.0] - 2026-11-23
 
 **L'équipement des lanceurs, pour l'ambiance.**
