@@ -101,6 +101,21 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     });
   });
 
+  test("Humains face au retour : chaque fiche du tableau des cultes existe, à la phase de sa colonne, dans le dossier commun", () => {
+    const npcs = JSON.parse(readFileSync(new URL("../../world-items/npcs.json", import.meta.url), "utf8"));
+    const flagsOf = new Map(npcs.map((npc) => [npc.name, npc.flags["dnd-custom-ai"]]));
+    const page = SITES.find((site) => site.name === "Les humains face au retour");
+    const { table } = page.sections.find((section) => section.title === "Les cultes : des carrières sans pays");
+    assert.equal(table.rows.length, 3);
+    for (const [, ...priests] of table.rows) {
+      priests.forEach((name, index) => {
+        assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+        assert.deepEqual(flagsOf.get(name), { phase: index + 2, habitat: "common" }, name);
+      });
+    }
+    for (const name of ["Sectateur", "Fanatique de culte"]) assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

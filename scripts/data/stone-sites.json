@@ -816,6 +816,44 @@
         ]
       },
       {
+        "title": "Les cultes : des carrières sans pays",
+        "paragraphs": [
+          "Un culte commence petit : des sectateurs dès la phase 1, un fanatique en phase 2, avant que ce qu'ils prient réponde vraiment. Ensuite, trois carrières génériques, à placer où le MJ le veut. Le dieu ancien prend un domaine au choix (Lumière, Tempête, Nature, Ruse) ; la Fortune de Lucentia relève de la Ruse, et ses prêtres restent modestes. Les démons eux-mêmes ne sont pas des fiches de ce tableau."
+        ],
+        "table": {
+          "head": [
+            "Culte",
+            "Phase 2 (FP 4)",
+            "Phase 3 (FP 6)",
+            "Phase 4 (FP 9)",
+            "Phase 5 (FP 12)"
+          ],
+          "rows": [
+            [
+              "Fidèles de l'Unique exaucés",
+              "Prêtre exaucé",
+              "Abbé thaumaturge",
+              "Saint vivant",
+              "Voix de l'Unique"
+            ],
+            [
+              "Dieu ancien",
+              "Fidèle d'un dieu ancien",
+              "Prêtre d'un dieu ancien",
+              "Grand prêtre d'un dieu ancien",
+              "Élu d'un dieu ancien"
+            ],
+            [
+              "Démon",
+              "Initié démoniaque",
+              "Prêtre démoniaque",
+              "Grand prêtre démoniaque",
+              "Possédé"
+            ]
+          ]
+        }
+      },
+      {
         "title": "Tensions à exploiter",
         "items": [
           {

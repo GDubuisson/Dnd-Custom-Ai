@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.25.0] - 2026-11-23
+
+**Les prières trouvent d'autres oreilles : cultes et prêtres exaucés.**
+- **Sectateur** (phase 1) et **fanatique de culte** (phase 2), blocs SRD exacts, valables pour
+  n'importe quel culte : les cultes naissent avant que leurs dieux répondent.
+- 12 fiches de carrière génériques (sans pays attitré), un rang par phase de 2 à 5 (FP 4, 6, 9 et 12),
+  dérivées du Prêtre SRD et recalculées par la méthode de création de monstres :
+  - **Fidèles de l'Unique exaucés** : prêtre exaucé, abbé thaumaturge, saint vivant, Voix de
+    l'Unique. Ils ne savent pas qui les exauce, et c'est au MJ de le choisir.
+  - **Culte d'un dieu ancien** : fidèle, prêtre, grand prêtre, élu. Le domaine est au choix du MJ
+    (Lumière, Tempête, Nature, Ruse). La Fortune de Lucentia relève de la Ruse, et ses prêtres
+    restent modestes.
+  - **Culte démoniaque** : initié, prêtre, grand prêtre démoniaque, possédé. Les démons eux-mêmes
+    viendront avec les créatures génériques.
+- Page « Les humains face au retour » : tableau des cultes.
+
 ## [1.24.0] - 2026-11-23
 
 **Les ritualistes deviennent des mages : une carrière par nation.**

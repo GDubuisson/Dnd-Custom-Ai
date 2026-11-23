@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-200 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+214 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -40,6 +40,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   la Maison des Cent Portes (Azhar), charmeurs de la guilde (Lucentia), géomanciens (Altenmark), mages
   de domaine (Fleuraine) et illusionnistes du Registre (Ravenmoor) ; aucun à Valdera, où ils sont
   interdits.
+  Les prières trouvent d'autres oreilles : sectateur (phase 1) et fanatique de culte (phase 2), blocs
+  SRD valables pour tout culte, puis trois carrières génériques de prêtres, sans pays attitré :
+  fidèles de l'Unique exaucés sans savoir par qui, culte d'un dieu ancien (domaine au choix du MJ)
+  et culte démoniaque, jusqu'au possédé.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

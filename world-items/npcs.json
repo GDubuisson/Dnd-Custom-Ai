@@ -19511,6 +19511,2708 @@
     }
   },
   {
+    "name": "Sectateur",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "1/8",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 9,
+          "max": 9,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 25,
+      "attacks": [
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Dévotion obscure : avantage aux jets de sauvegarde contre les états charmé et effrayé. Tromperie +2, Religion +2.",
+      "particularity": "Il s'est mis à prier quelque chose de neuf, avec quelques voisins, la nuit et en secret. Pour l'instant, rien ne lui répond vraiment, mais il est sûr que ça viendra. (MJ : bloc SRD Sectateur, valable pour n'importe quel culte, d'un dieu ancien ou d'un démon. À partir de la phase 1 : les cultes naissent avant que leurs dieux répondent. Voir aussi le fanatique de culte, puis les carrières des cultes en phase 2.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Quelques pièces d'argent et de cuivre."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 1,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Fanatique de culte",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "2",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 33,
+          "max": 33,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 9
+      },
+      "xpReward": 450,
+      "attacks": [
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques au corps à corps. Dévotion obscure : avantage aux jets de sauvegarde contre les états charmé et effrayé. Incantation (niveau 4, Sagesse, DD 11, +3 au toucher) : tours de magie Lumière, Flamme sacrée, Thaumaturgie ; niveau 1 (4 emplacements) Injonction, Infliction de blessures, Bouclier de la foi ; niveau 2 (3) Immobilisation de personne, Arme spirituelle. Tromperie +4, Persuasion +4, Religion +2.",
+      "particularity": "Celui qui tient le culte : il prêche, il recrute, et depuis peu ses prières lui obéissent. Il prend cela pour une preuve. (MJ : bloc SRD Fanatique, valable pour n'importe quel culte. À partir de la phase 2, quand les dieux et les démons commencent à répondre.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 11,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 4.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir bouilli."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Prêtre exaucé",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 14, 3d8 dégâts radiants par tour, moitié en cas de réussite. Incantation (niveau 5, Sagesse, DD 14, +6 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance, Lumière ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi, Sanctuaire ; niveau 2 (3) Arme spirituelle, Restauration partielle, Aide ; niveau 3 (2) Esprits gardiens, Retour à la vie, Lueur d'espoir. Renvoi des morts-vivants (1/repos court) : chaque mort-vivant à 9 m qui le voit ou l'entend fait un JS de Sagesse DD 14 ou fuit pendant 1 minute. Jets de sauvegarde : Sag +6, Cha +3. Religion +4, Perspicacité +6.",
+      "particularity": "Il prie comme il a toujours prié, et pour la première fois la fièvre tombe sous sa main. Il ne sait pas comment l'annoncer à son évêque ; il ne sait pas non plus qui l'a entendu. (MJ : carrière des fidèles de l'Unique exaucés, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Prêtre SRD. Il croit prier l'Unique. Ce qui l'exauce est au choix du MJ : un dieu ancien qui se fait passer pour l'Unique, un démon, plusieurs voix, ou personne qu'on puisse nommer ; la fiche ne change pas. Tant que la pierre de Velencia tient, Estevan bride la prière qui passe par lui, mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 78 PV et CA 18 → FP défensif 3 ; sur trois rounds, esprits gardiens sur deux cibles (27), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5) deux rounds, soit 38,7 dégâts par round avec un DD de 14 → FP offensif 5 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Abbé thaumaturge",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 95,
+          "max": 95,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 15, 3d8 dégâts radiants par tour, moitié en cas de réussite. Incantation (niveau 9, Sagesse, DD 15, +7 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance, Lumière ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi, Sanctuaire ; niveau 2 (3) Arme spirituelle, Restauration partielle, Aide ; niveau 3 (3) Esprits gardiens, Retour à la vie, Lueur d'espoir ; niveau 4 (3) Gardien de la foi, Bannissement ; niveau 5 (1) Colonne de flamme, Soins de groupe, Rappel à la vie. Renvoi des morts-vivants (1/repos court) : chaque mort-vivant à 9 m qui le voit ou l'entend fait un JS de Sagesse DD 15 ou fuit pendant 1 minute ; un mort-vivant de FP 1 ou moins est détruit. Jets de sauvegarde : Sag +7, Cha +5. Religion +7, Perspicacité +7.",
+      "particularity": "Son abbaye guérit, protège, et voit venir les pèlerins par centaines. La Foi enseigne que les miracles se reçoivent et ne s'obtiennent pas : les siens s'obtiennent. (MJ : carrière des fidèles de l'Unique exaucés, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Prêtre SRD. Il croit prier l'Unique. Ce qui l'exauce est au choix du MJ : un dieu ancien qui se fait passer pour l'Unique, un démon, plusieurs voix, ou personne qu'on puisse nommer ; la fiche ne change pas. Tant que la pierre de Velencia tient, Estevan bride la prière qui passe par lui, mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 95 PV et CA 18 → FP défensif 4 ; sur trois rounds, esprits gardiens (27), puis colonne de flamme sur deux cibles et esprits gardiens (83), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5), soit 51,5 dégâts par round avec un DD de 15 → FP offensif 8 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Saint vivant",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 125,
+          "max": 125,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 8,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 4,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 4d8 dégâts radiants par tour, moitié en cas de réussite. Incantation (niveau 13, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance, Lumière ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi, Sanctuaire ; niveau 2 (3) Arme spirituelle, Restauration partielle, Aide ; niveau 3 (3) Esprits gardiens, Retour à la vie, Lueur d'espoir ; niveau 4 (3) Gardien de la foi, Bannissement ; niveau 5 (2) Colonne de flamme, Soins de groupe, Rappel à la vie ; niveau 6 (1) Guérison, Barrière de lames ; niveau 7 (1) Tempête de feu, Résurrection. Renvoi des morts-vivants (1/repos court) : chaque mort-vivant à 9 m qui le voit ou l'entend fait un JS de Sagesse DD 17 ou fuit pendant 1 minute ; un mort-vivant de FP 2 ou moins est détruit. Jets de sauvegarde : Sag +9, Cha +6. Religion +9, Perspicacité +9.",
+      "particularity": "Le peuple l'appelle saint de son vivant. Velencia ne dit rien, ni pour ni contre, et c'est ce silence qui inquiète le plus le Collège. (MJ : carrière des fidèles de l'Unique exaucés, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Prêtre SRD. Il croit prier l'Unique. Ce qui l'exauce est au choix du MJ : un dieu ancien qui se fait passer pour l'Unique, un démon, plusieurs voix, ou personne qu'on puisse nommer ; la fiche ne change pas. Tant que la pierre de Velencia tient, Estevan bride la prière qui passe par lui, mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 125 PV et CA 18 → FP défensif 6 ; sur trois rounds, esprits gardiens au niveau 4 (36), puis tempête de feu sur deux cibles et esprits gardiens (113), puis colonne de flamme et esprits gardiens (92), soit 80,3 dégâts par round avec un DD de 17 → FP offensif 12 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Voix de l'Unique",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 210,
+          "max": 210,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 5d8 dégâts radiants par tour, moitié en cas de réussite. Incantation (niveau 17, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance, Lumière ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi, Sanctuaire ; niveau 2 (3) Arme spirituelle, Restauration partielle, Aide ; niveau 3 (3) Esprits gardiens, Retour à la vie, Lueur d'espoir ; niveau 4 (3) Gardien de la foi, Bannissement ; niveau 5 (2) Colonne de flamme, Soins de groupe, Rappel à la vie ; niveau 6 (1) Guérison, Barrière de lames ; niveau 7 (1) Tempête de feu, Résurrection ; niveau 8 (1) Aura sacrée ; niveau 9 (1) Guérison de groupe. Renvoi des morts-vivants (1/repos court) : chaque mort-vivant à 9 m qui le voit ou l'entend fait un JS de Sagesse DD 17 ou fuit pendant 1 minute ; un mort-vivant de FP 4 ou moins est détruit. Jets de sauvegarde : Sag +9, Cha +7. Religion +9, Perspicacité +9.",
+      "particularity": "Il parle au nom de l'Unique, et l'Unique, dit-il, lui répond. Ce qui lui répond est réel et puissant ; personne ne peut dire si c'est l'Unique. (MJ : carrière des fidèles de l'Unique exaucés, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Prêtre SRD. Il croit prier l'Unique. Ce qui l'exauce est au choix du MJ : un dieu ancien qui se fait passer pour l'Unique, un démon, plusieurs voix, ou personne qu'on puisse nommer ; la fiche ne change pas. Tant que la pierre de Velencia tient, Estevan bride la prière qui passe par lui, mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas. Les rangs précédents restent en activité. Guérison de groupe (niveau 9, non comptée). FP recalculé par la méthode de création de monstres : 210 PV et CA 18 → FP défensif 10 ; sur trois rounds, esprits gardiens au niveau 5 (45), puis tempête de feu sur deux cibles et esprits gardiens (122), puis colonne de flamme au niveau 6 et esprits gardiens (108), soit 91,7 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Fidèle d'un dieu ancien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 14, 3d8 dégâts du type du domaine (radiants par défaut) par tour, moitié en cas de réussite. Incantation (niveau 5, Sagesse, DD 14, +6 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Aide ; niveau 3 (2) Esprits gardiens, Dissipation de la magie. Domaine, au choix du MJ, qui fixe le type de dégâts de ses esprits gardiens et de sa flamme sacrée, et ajoute ses sorts : Lumière (radiants ou feu ; Mains brûlantes, Boule de feu, Mur de feu) ; Tempête (foudre ou tonnerre ; Vague tonnante, Fracassement, Appel de la foudre) ; Nature (froid ou perforants ; Enchevêtrement, Croissance d'épines, Tempête de neige) ; Ruse (psychiques ; Déguisement, Image miroir, Porte dimensionnelle). La Fortune de Lucentia, dieu de la chance peu puissant, relève de la Ruse ; ses prêtres ne dépassent guère le deuxième rang. Faveur du dieu (1/repos court) : un effet du domaine, lumière qui aveugle 1 round, tonnerre qui repousse de 3 m, ronces qui entravent ou double illusoire, sur une créature à 9 m (JS DD 14). Jets de sauvegarde : Sag +6, Cha +3. Religion +4, Perspicacité +6.",
+      "particularity": "Elle a retrouvé un nom ancien, dans un chant de berger ou une inscription que personne ne lisait plus, et elle l'a prié. Il lui a répondu. (MJ : carrière d'un culte de dieu ancien, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Prêtre SRD. Fiche générique pour tout dieu ancien qui revient, la Fortune de Lucentia comprise ; le domaine se choisit au moment de la rencontre. Pas de culte prévu par pays : il en naît où le MJ le veut. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 78 PV et CA 18 → FP défensif 3 ; sur trois rounds, esprits gardiens sur deux cibles (27), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5) deux rounds, soit 38,7 dégâts par round avec un DD de 14 → FP offensif 5 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Prêtre d'un dieu ancien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 95,
+          "max": 95,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 15, 3d8 dégâts du type du domaine (radiants par défaut) par tour, moitié en cas de réussite. Incantation (niveau 9, Sagesse, DD 15, +7 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Aide ; niveau 3 (3) Esprits gardiens, Dissipation de la magie ; niveau 4 (3) Gardien de la foi, Divination ; niveau 5 (1) Colonne de flamme, Communion. Domaine, au choix du MJ, qui fixe le type de dégâts de ses esprits gardiens et de sa flamme sacrée, et ajoute ses sorts : Lumière (radiants ou feu ; Mains brûlantes, Boule de feu, Mur de feu) ; Tempête (foudre ou tonnerre ; Vague tonnante, Fracassement, Appel de la foudre) ; Nature (froid ou perforants ; Enchevêtrement, Croissance d'épines, Tempête de neige) ; Ruse (psychiques ; Déguisement, Image miroir, Porte dimensionnelle). La Fortune de Lucentia, dieu de la chance peu puissant, relève de la Ruse ; ses prêtres ne dépassent guère le deuxième rang. Faveur du dieu (1/repos court) : un effet du domaine, lumière qui aveugle 1 round, tonnerre qui repousse de 3 m, ronces qui entravent ou double illusoire, sur une créature à 9 m (JS DD 15). Jets de sauvegarde : Sag +7, Cha +5. Religion +7, Perspicacité +7.",
+      "particularity": "Il tient un sanctuaire neuf, sur une colline ou au bord d'une source, et les fidèles y viennent de plus en plus loin. L'Église le traite d'hérétique ; ses miracles, eux, sont réels. (MJ : carrière d'un culte de dieu ancien, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Prêtre SRD. Fiche générique pour tout dieu ancien qui revient, la Fortune de Lucentia comprise ; le domaine se choisit au moment de la rencontre. Pas de culte prévu par pays : il en naît où le MJ le veut. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 95 PV et CA 18 → FP défensif 4 ; sur trois rounds, esprits gardiens (27), puis colonne de flamme sur deux cibles et esprits gardiens (83), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5), soit 51,5 dégâts par round avec un DD de 15 → FP offensif 8 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Grand prêtre d'un dieu ancien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 125,
+          "max": 125,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 8,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 4,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 4d8 dégâts du type du domaine (radiants par défaut) par tour, moitié en cas de réussite. Incantation (niveau 13, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Aide ; niveau 3 (3) Esprits gardiens, Dissipation de la magie ; niveau 4 (3) Gardien de la foi, Divination ; niveau 5 (2) Colonne de flamme, Communion ; niveau 6 (1) Barrière de lames, Allié planaire ; niveau 7 (1) Tempête de feu, Mot divin. Domaine, au choix du MJ, qui fixe le type de dégâts de ses esprits gardiens et de sa flamme sacrée, et ajoute ses sorts : Lumière (radiants ou feu ; Mains brûlantes, Boule de feu, Mur de feu) ; Tempête (foudre ou tonnerre ; Vague tonnante, Fracassement, Appel de la foudre) ; Nature (froid ou perforants ; Enchevêtrement, Croissance d'épines, Tempête de neige) ; Ruse (psychiques ; Déguisement, Image miroir, Porte dimensionnelle). La Fortune de Lucentia, dieu de la chance peu puissant, relève de la Ruse ; ses prêtres ne dépassent guère le deuxième rang. Faveur du dieu (1/repos court) : un effet du domaine, lumière qui aveugle 1 round, tonnerre qui repousse de 3 m, ronces qui entravent ou double illusoire, sur une créature à 9 m (JS DD 17). Jets de sauvegarde : Sag +9, Cha +6. Religion +9, Perspicacité +9.",
+      "particularity": "Elle dirige un culte qui a ses temples, ses fêtes et ses prêtres. Son dieu est revenu pour de bon, et il n'est pas toujours commode. (MJ : carrière d'un culte de dieu ancien, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Prêtre SRD. Fiche générique pour tout dieu ancien qui revient, la Fortune de Lucentia comprise ; le domaine se choisit au moment de la rencontre. Pas de culte prévu par pays : il en naît où le MJ le veut. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 125 PV et CA 18 → FP défensif 6 ; sur trois rounds, esprits gardiens au niveau 4 (36), puis tempête de feu sur deux cibles et esprits gardiens (113), puis colonne de flamme et esprits gardiens (92), soit 80,3 dégâts par round avec un DD de 17 → FP offensif 12 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Élu d'un dieu ancien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 210,
+          "max": 210,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 5d8 dégâts du type du domaine (radiants par défaut) par tour, moitié en cas de réussite. Incantation (niveau 17, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée, Thaumaturgie, Assistance ; niveau 1 (4 emplacements) Bénédiction, Soins, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Aide ; niveau 3 (3) Esprits gardiens, Dissipation de la magie ; niveau 4 (3) Gardien de la foi, Divination ; niveau 5 (2) Colonne de flamme, Communion ; niveau 6 (1) Barrière de lames, Allié planaire ; niveau 7 (1) Tempête de feu, Mot divin ; niveau 8 (1) Contrôle du climat ; niveau 9 (1) Projection astrale. Domaine, au choix du MJ, qui fixe le type de dégâts de ses esprits gardiens et de sa flamme sacrée, et ajoute ses sorts : Lumière (radiants ou feu ; Mains brûlantes, Boule de feu, Mur de feu) ; Tempête (foudre ou tonnerre ; Vague tonnante, Fracassement, Appel de la foudre) ; Nature (froid ou perforants ; Enchevêtrement, Croissance d'épines, Tempête de neige) ; Ruse (psychiques ; Déguisement, Image miroir, Porte dimensionnelle). La Fortune de Lucentia, dieu de la chance peu puissant, relève de la Ruse ; ses prêtres ne dépassent guère le deuxième rang. Faveur du dieu (1/repos court) : un effet du domaine, lumière qui aveugle 1 round, tonnerre qui repousse de 3 m, ronces qui entravent ou double illusoire, sur une créature à 9 m (JS DD 17). Jets de sauvegarde : Sag +9, Cha +7. Religion +9, Perspicacité +9.",
+      "particularity": "Son dieu le regarde, et parfois regarde à travers lui. On ne sait plus très bien qui parle quand il parle. (MJ : carrière d'un culte de dieu ancien, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Prêtre SRD. Fiche générique pour tout dieu ancien qui revient, la Fortune de Lucentia comprise ; le domaine se choisit au moment de la rencontre. Pas de culte prévu par pays : il en naît où le MJ le veut. Les rangs précédents restent en activité. Projection astrale (niveau 9, non comptée). FP recalculé par la méthode de création de monstres : 210 PV et CA 18 → FP défensif 10 ; sur trois rounds, esprits gardiens au niveau 5 (45), puis tempête de feu sur deux cibles et esprits gardiens (122), puis colonne de flamme au niveau 6 et esprits gardiens (108), soit 91,7 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Initié démoniaque",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 14, 3d8 dégâts nécrotiques par tour, moitié en cas de réussite. Incantation (niveau 5, Sagesse, DD 14, +6 au toucher) : tours de magie Flamme sacrée (dégâts nécrotiques), Thaumaturgie, Main de mage ; niveau 1 (4 emplacements) Injonction, Infliction de blessures, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Immobilisation de personne, Silence ; niveau 3 (2) Esprits gardiens (nécrotiques), Animation des morts, Malédiction. Marque du démon : une marque cachée sur la peau, qui brûle en présence d'un céleste. Sacrifice (1/jour) : quand il tue une créature, il récupère un emplacement de sort de niveau 3 ou moins (non compté). Jets de sauvegarde : Sag +6, Cha +3. Religion +4, Perspicacité +6.",
+      "particularity": "Il a prié, et quelque chose a répondu tout de suite, plus vite et plus fort que ce qu'il espérait. Il ne pose pas de questions ; on le paie bien pour ne pas en poser. (MJ : carrière d'un culte démoniaque, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Prêtre SRD. Fiche générique pour un culte démoniaque, quel que soit le démon (celui qui se sert du culte d'Inés compris) ; les démons eux-mêmes viendront avec le lot des créatures génériques. Rien n'est mis en scène : le MJ décide où un culte s'installe. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 78 PV et CA 18 → FP défensif 3 ; sur trois rounds, esprits gardiens sur deux cibles (27), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5) deux rounds, soit 38,7 dégâts par round avec un DD de 14 → FP offensif 5 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Prêtre démoniaque",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 95,
+          "max": 95,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+4 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 15, 3d8 dégâts nécrotiques par tour, moitié en cas de réussite. Incantation (niveau 9, Sagesse, DD 15, +7 au toucher) : tours de magie Flamme sacrée (dégâts nécrotiques), Thaumaturgie, Main de mage ; niveau 1 (4 emplacements) Injonction, Infliction de blessures, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Immobilisation de personne, Silence ; niveau 3 (3) Esprits gardiens (nécrotiques), Animation des morts, Malédiction ; niveau 4 (3) Bannissement, Liberté de mouvement ; niveau 5 (1) Colonne de flamme (feu et nécrotiques), Contagion, Fléau d'insectes. Marque du démon : une marque cachée sur la peau, qui brûle en présence d'un céleste. Sacrifice (1/jour) : quand il tue une créature, il récupère un emplacement de sort de niveau 3 ou moins (non compté). Jets de sauvegarde : Sag +7, Cha +5. Religion +7, Perspicacité +7.",
+      "particularity": "Elle tient le culte d'une ville. Ses fidèles l'aiment, et elle leur rend des services qu'aucun prêtre de l'Unique ne rendrait. (MJ : carrière d'un culte démoniaque, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Prêtre SRD. Fiche générique pour un culte démoniaque, quel que soit le démon (celui qui se sert du culte d'Inés compris) ; les démons eux-mêmes viendront avec le lot des créatures génériques. Rien n'est mis en scène : le MJ décide où un culte s'installe. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 95 PV et CA 18 → FP défensif 4 ; sur trois rounds, esprits gardiens (27), puis colonne de flamme sur deux cibles et esprits gardiens (83), puis esprits gardiens, arme spirituelle et flamme sacrée (44,5), soit 51,5 dégâts par round avec un DD de 15 → FP offensif 8 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Grand prêtre démoniaque",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 125,
+          "max": 125,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 8,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 4,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 4d8 dégâts nécrotiques par tour, moitié en cas de réussite. Incantation (niveau 13, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée (dégâts nécrotiques), Thaumaturgie, Main de mage ; niveau 1 (4 emplacements) Injonction, Infliction de blessures, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Immobilisation de personne, Silence ; niveau 3 (3) Esprits gardiens (nécrotiques), Animation des morts, Malédiction ; niveau 4 (3) Bannissement, Liberté de mouvement ; niveau 5 (2) Colonne de flamme (feu et nécrotiques), Contagion, Fléau d'insectes ; niveau 6 (1) Blessure, Création de mort-vivant ; niveau 7 (1) Tempête de feu, Mot divin. Marque du démon : une marque cachée sur la peau, qui brûle en présence d'un céleste. Sacrifice (1/jour) : quand il tue une créature, il récupère un emplacement de sort de niveau 3 ou moins (non compté). Jets de sauvegarde : Sag +9, Cha +6. Religion +9, Perspicacité +9.",
+      "particularity": "Il connaît le nom de son maître, et son maître connaît le sien. Le culte a des prêtres dans plusieurs villes, et des amis là où il faut. (MJ : carrière d'un culte démoniaque, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Prêtre SRD. Fiche générique pour un culte démoniaque, quel que soit le démon (celui qui se sert du culte d'Inés compris) ; les démons eux-mêmes viendront avec le lot des créatures génériques. Rien n'est mis en scène : le MJ décide où un culte s'installe. Les rangs précédents restent en activité. FP recalculé par la méthode de création de monstres : 125 PV et CA 18 → FP défensif 6 ; sur trois rounds, esprits gardiens au niveau 4 (36), puis tempête de feu sur deux cibles et esprits gardiens (113), puis colonne de flamme et esprits gardiens (92), soit 80,3 dégâts par round avec un DD de 17 → FP offensif 12 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Possédé",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 5
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 210,
+          "max": 210,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Masse d'armes",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arme spirituelle (attaque de sort, 18 m)",
+          "ability": "str",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 3,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "fire",
+        "cold"
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques de masse d'armes. Arme spirituelle (action bonus, 18 m, une fois lancée) : 1d8+5 dégâts de force. Esprits gardiens : rayon de 4,5 m, JS de Sagesse DD 17, 5d8 dégâts nécrotiques par tour, moitié en cas de réussite. Incantation (niveau 17, Sagesse, DD 17, +9 au toucher) : tours de magie Flamme sacrée (dégâts nécrotiques), Thaumaturgie, Main de mage ; niveau 1 (4 emplacements) Injonction, Infliction de blessures, Bouclier de la foi ; niveau 2 (3) Arme spirituelle, Immobilisation de personne, Silence ; niveau 3 (3) Esprits gardiens (nécrotiques), Animation des morts, Malédiction ; niveau 4 (3) Bannissement, Liberté de mouvement ; niveau 5 (2) Colonne de flamme (feu et nécrotiques), Contagion, Fléau d'insectes ; niveau 6 (1) Blessure, Création de mort-vivant ; niveau 7 (1) Tempête de feu, Mot divin ; niveau 8 (1) Tremblement de terre ; niveau 9 (1) Portail. Marque du démon : une marque cachée sur la peau, qui brûle en présence d'un céleste. Sacrifice (1/jour) : quand il tue une créature, il récupère un emplacement de sort de niveau 3 ou moins (non compté). Possession : résistance au feu et au froid, vision dans le noir 36 m, il parle toutes les langues. Bannissement ou Dissipation du mal et du bien réussis chassent le démon pour 1 heure : il redevient un grand prêtre démoniaque, mêmes PV. Jets de sauvegarde : Sag +9, Cha +7. Religion +9, Perspicacité +9.",
+      "particularity": "Le démon a pris la place. Il parle par sa bouche, regarde par ses yeux, et ne la rendra pas de bon gré. (MJ : carrière d'un culte démoniaque, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Prêtre SRD. Fiche générique pour un culte démoniaque, quel que soit le démon (celui qui se sert du culte d'Inés compris) ; les démons eux-mêmes viendront avec le lot des créatures génériques. Rien n'est mis en scène : le MJ décide où un culte s'installe. Les rangs précédents restent en activité. Portail (niveau 9, non compté : il peut ouvrir la voie à son maître). FP recalculé par la méthode de création de monstres : 210 PV et CA 18 → FP défensif 10 ; sur trois rounds, esprits gardiens au niveau 5 (45), puis tempête de feu sur deux cibles et esprits gardiens (122), puis colonne de flamme au niveau 6 et esprits gardiens (108), soit 91,7 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Masse d'armes",
+        "type": "weapon",
+        "img": "icons/weapons/maces/mace-flanged-steel.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cotte de mailles",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 75,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 13,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 24.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde faite d'un tissu serré d'anneaux de métal entrelacés."
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",
