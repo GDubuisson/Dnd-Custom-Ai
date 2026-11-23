@@ -467,8 +467,8 @@ Le retour de la magie, du divin et du démoniaque se compte en **six phases**. L
 |---|---|---|---|
 | 0 — Monde scellé | aucune | — | Humains, bêtes ; le surnaturel ne survit qu'au large et sur les sites. |
 | 1 — Premières fissures | 1 ou 2 | immédiat | Petits esprits discrets, feux follets, méphites, bêtes éveillées, premiers morts mineurs ; premiers dons chez quelques humains. |
-| 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages. |
-| 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent. |
+| 2 — L'éveil | 3 | quelques semaines | Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages ; les premiers cadavres des profondeurs s'échouent. |
+| 3 — Retour de la magie | 4 | quelques mois | Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent ; les êtres des profondeurs remontent vers les côtes. |
 | 4 — Âge des prodiges | 5 | une saison à un an | Démons, golems, sylvaniens, grands esprits ; chefs des peuples revenus (hobgobelins, gobelours, chefs de guerre orcs), trolls réveillés. |
 | 5 — L'ancien monde | 6 | plusieurs années | Grands démons, vrais dieux. |
 
@@ -503,6 +503,14 @@ L'ancien monde avait d'autres peuples (§1). Ils reviennent eux aussi, progressi
 
 Leurs langues (gobelin, kobold, orc, saurien, elfique ancien) naissent ou reviennent avec eux ; aucun humain ne peut les apprendre.
 
+### Les êtres des profondeurs
+
+Les êtres aquatiques de l'ancien monde (§1, « Le Kraken ») vivent au fond depuis toujours. En phases 0 et 1, personne ne les voit. En phase 2, un ou deux cadavres s'échouent. À partir de la phase 3, ils remontent vers les côtes, mais restent très craintifs et fuient souvent. Ils ne sortent pas de l'eau : ils y respirent mal.
+
+- **Hommes-poissons** : neutres tant qu'on ne les chasse pas.
+- **Sahuagins, merrows, guenaudes marines** : hostiles, mais ils s'en prennent aux isolés et fuient devant le nombre.
+- **Les anciens** : des présences psychiques qui ne se montrent jamais. Ils parlent dans la tête des pêcheurs, parfois pour les aider, parfois pour les perdre, et n'atteignent les côtes que par l'esprit.
+
 ---
 
 ## 18. Les humains face au retour
@@ -527,7 +535,7 @@ Les humains du continent réagissent à ce qui revient, mais jamais d'un coup : 
 
 ### Ceux qui recouvrent des pouvoirs
 
-- **Les ordres** suivent une carrière, un rang par phase de 2 à 5. L'Aube Blanche devient un ordre de paladins du serment : ils sentent le parjure et citent à comparaître. L'Ordre de la Flamme devient un ordre de paladins du feu. Les Passwachten et les Veilleurs deviennent des rôdeurs, des cols pour les uns, des forêts et du Registre pour les autres. Les guerriers d'Azhar font de la Mesure une discipline du corps. Les Compagnies de la Route ne reçoivent rien : elles achètent leur magie aux guildes.
+- **Les ordres** suivent une carrière, un rang par phase de 2 à 5. L'Aube Blanche devient un ordre de paladins du serment : ils sentent le parjure et citent à comparaître. L'Ordre de la Flamme devient un ordre de paladins du feu. Les Passwachten et les Veilleurs deviennent des rôdeurs, des cols pour les uns, des forêts et du Registre pour les autres. Les guerriers d'Azhar font de la Mesure une discipline du corps. Les Compagnies de la Route ne reçoivent rien : elles achètent leur magie aux guildes. Les pirates n'ont aucun pouvoir propre, mais le retour de la magie les change comme les autres, et la mer d'abord ; le Noyé reste à part.
 - **Les prières contournent Estevan** (§16). Tant que la pierre de Velencia tient, il bride ce qui passe par lui, et les prêtres de l'Unique n'obtiennent que des miracles minuscules. Mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas, et les prières trouvent d'autres oreilles, dieux ou démons. Des cultes nouveaux peuvent naître dans n'importe quel pays ; les fidèles de l'Unique sont exaucés sans savoir par qui ; Azhar n'a pas de prêtres, mais ses croyances peuvent être exaucées elles aussi. Un culte commence petit, avant que ce qu'il prie réponde vraiment. Les dieux anciens qui reviennent ont chacun leur domaine (lumière, tempête, nature, ruse) ; la Fortune de Lucentia, dieu de la chance peu puissant, relève de la ruse. Un culte démoniaque peut aller jusqu'à la possession de son grand prêtre.
 - **Les ritualistes** deviennent de vrais mages, chaque nation avec sa spécialité. En Azhar, ce sont les astrologues de la Maison des Cent Portes qui tirent leur pouvoir des étoiles, surtout de nuit à ciel ouvert ; les croyances populaires sur les étoiles restent un leurre. À Lucentia, la guilde vend des charmes. En Altenmark, les géomanciens sentent les filons et font bouger la pierre. En Fleuraine, les mages de domaine gardent les terres de leur seigneur. À Ravenmoor, les illusionnistes inscrits au Registre restent surveillés. Ceux de Valdera continuent de fuir le royaume, à toutes les phases ; ceux qui restent se cachent derrière la Foi, sciemment ou non.
 
