@@ -105,7 +105,16 @@ scripts/
                                  # (mois = index 0-11, Jours Muets = mois intercalaire 12 hors semaine,
                                  # startingWeekday 1 : chaque mois commence un Prime) puis api.addNote
                                  # (annuelles, visibles de tous) pour les fêtes absentes ; relancée sur un
-                                 # calendrier déjà configuré, garde la date du jour et les réglages généraux
+                                 # calendrier déjà configuré, garde la date du jour et les réglages généraux.
+                                 # Cycles de Qasirah (calendar-qasirah.json) : computToQasirah (pur, testé)
+                                 # convertit une date du comput ; le 2e calendrier est AJOUTÉ au réglage
+                                 # `calendar-configuration` du module (son API ne crée pas de calendrier),
+                                 # puis reconfiguré via configureCalendar(config, id) ; leap rule custom
+                                 # mod 3 ; synchro par écart (`global-configuration` : syncCalendars true,
+                                 # calendarsSameTimestamp false) — le module compte les Jours Muets dans
+                                 # ses durées (dateToDays(..., true)), donc la synchro reste exacte.
+                                 # Lune des deux calendriers = mois moyen des Cycles (1063/36 j), nouvelle
+                                 # au 1er Moisson 141 = 1er Hilal, Cycle 1
     item-lore-journal.js        # Journal « Chroniques des objets » (MJ seul), une page par région,
                                  # construit depuis regional.json, historical.json et item-lore.json,
                                  # resynchronisé à chaque chargement (syncGmAuthoredJournal, adoptUnflagged)

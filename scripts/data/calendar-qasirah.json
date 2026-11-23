@@ -1,0 +1,73 @@
+{
+  "id": "dnd-custom-ai-qasirah",
+  "name": "Cycles de Qasirah",
+  "epoch": { "year": 141, "month": "Moisson", "day": 1 },
+  "leapEvery": 3,
+  "months": [
+    { "name": "Hilal", "abbreviation": "Hil", "days": 30, "description": "Le Croissant. Le Cycle s'ouvre." },
+    { "name": "Bir", "abbreviation": "Bir", "days": 29, "description": "Le Puits." },
+    { "name": "Dalw", "abbreviation": "Dal", "days": 30, "description": "Le Seau." },
+    { "name": "Qanat", "abbreviation": "Qan", "days": 29, "description": "La Galerie d'eau, comme celles que fit creuser Yusuf ibn Sahl." },
+    { "name": "Ayn", "abbreviation": "Ayn", "days": 30, "description": "La Source." },
+    { "name": "Nakhla", "abbreviation": "Nak", "days": 29, "description": "Le Palmier." },
+    { "name": "Qafila", "abbreviation": "Qaf", "days": 30, "description": "La Caravane." },
+    { "name": "Ramla", "abbreviation": "Ram", "days": 29, "description": "Le Sable." },
+    { "name": "Najm", "abbreviation": "Naj", "days": 30, "description": "L'Étoile. On marche de nuit." },
+    { "name": "Mizan", "abbreviation": "Miz", "days": 29, "description": "La Balance, et la Mesure." },
+    { "name": "Khatm", "abbreviation": "Kha", "days": 30, "description": "Le Sceau, comme les Sceaux d'Eau." },
+    { "name": "Qamar", "abbreviation": "Qam", "days": 29, "leapDays": 30, "description": "La Lune. Un Cycle sur trois, elle compte trente jours." }
+  ],
+  "weekdays": [
+    { "name": "Wahid", "abbreviation": "1", "description": "Premier jour de la dizaine." },
+    { "name": "Ithnan", "abbreviation": "2", "description": "Deuxième jour de la dizaine." },
+    { "name": "Thalatha", "abbreviation": "3", "description": "Troisième jour de la dizaine." },
+    { "name": "Arbaa", "abbreviation": "4", "description": "Quatrième jour de la dizaine." },
+    { "name": "Khamsa", "abbreviation": "5", "description": "Cinquième jour de la dizaine." },
+    { "name": "Sitta", "abbreviation": "6", "description": "Sixième jour de la dizaine." },
+    { "name": "Saba", "abbreviation": "7", "description": "Septième jour de la dizaine." },
+    { "name": "Thamaniya", "abbreviation": "8", "description": "Huitième jour de la dizaine." },
+    { "name": "Tisa", "abbreviation": "9", "description": "Neuvième jour de la dizaine." },
+    { "name": "Ashara", "abbreviation": "10", "description": "Dixième jour de la dizaine." }
+  ],
+  "noteCategories": [
+    { "name": "Fête azharie", "color": "#b5651d", "textColor": "#ffffff" }
+  ],
+  "feasts": [
+    {
+      "name": "La Nuit du Croissant",
+      "category": "Fête azharie",
+      "start": { "month": "Hilal", "day": 1 },
+      "end": { "month": "Hilal", "day": 1 },
+      "content": [
+        "Le nouvel an du Cycle. Les astronomes de Qasirah annoncent le premier croissant depuis l'observatoire, et la ville veille sur les toits pour le voir à son tour. On règle ce soir-là les comptes de l'année écoulée : un Azhari n'entre pas dans un Cycle avec une dette qu'il aurait pu payer."
+      ]
+    },
+    {
+      "name": "Le Jour des Puits",
+      "category": "Fête azharie",
+      "start": { "month": "Bir", "day": 10 },
+      "end": { "month": "Bir", "day": 10 },
+      "content": [
+        "Anniversaire de la Charte des Puits de 169, qui rendit les Sceaux d'Eau cessibles, transmissibles et négociables. On lit la Charte à voix haute sur les murs de la maison de Yusuf ibn Sahl, à Qasirah, et chaque village cure ses puits. Les familles de Sceaux y font voir leur fortune ; les autres comptent les seaux."
+      ]
+    },
+    {
+      "name": "L'Ouverture des Portes",
+      "category": "Fête azharie",
+      "start": { "month": "Mizan", "day": 1 },
+      "end": { "month": "Mizan", "day": 1 },
+      "content": [
+        "Anniversaire de la fondation de la Maison des Cent Portes, en 260. Ce jour-là, la Maison ouvre ses cent portes à qui veut entrer, et ses maîtres répondent aux questions de tous, fils de chamelier compris. Tous les trois ans, c'est aussi le premier jour des examens de vizir."
+      ]
+    },
+    {
+      "name": "La Nuit de Zaynab",
+      "category": "Fête azharie",
+      "start": { "month": "Najm", "day": 29 },
+      "end": { "month": "Najm", "day": 29 },
+      "content": [
+        "En mémoire de Zaynab al-Munira, qui fit bâtir l'observatoire de Qasirah en 455. C'est l'une des dernières nuits sans lune de Najm : on éteint les lampes et l'on observe le ciel jusqu'à l'aube. Les caravaniers disent que les étoiles ne mentent pas, et cette nuit-là tout le monde vérifie."
+      ]
+    }
+  ]
+}

@@ -333,14 +333,18 @@ Implémenté dans `cypress/e2e/shard-feats.cy.js`.
 Prérequis : le module `foundryvtt-simple-calendar-reborn` copié dans `data/Data/modules/` (dossier
 gitignoré, monté dans le conteneur), puis le monde relancé (`worldShutdown` + `launchWorld`) pour que
 le serveur le voie. La spec l'active pour ses tests, puis rend au monde son réglage de modules, sa
-date, et supprime notes, macro et dossier de notes du module.
+date et les réglages communs du module, et supprime notes, macro, calendrier d'Azhar et dossier de
+notes du module.
 
 | ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
 |---|---|---|---|---|---|
 | T-CAL-001 | Macro MJ créée | P2 | E2E | Activer le module, recharger | Macro « Configurer le calendrier » présente, qui appelle `game.dndCustomAi.configureCalendar()` |
 | T-CAL-002 | Comput appliqué | P1 | E2E | Partir du calendrier grégorien, lancer la configuration | 12 mois + Jours Muets intercalaires (5 j), Prime à Sixte (Sixte chômée), une lune ; date au 1er Reverdie 887, un Prime ; toutes les fêtes en notes visibles des joueurs, Sainte Colombe le 12 Reverdie |
 | T-CAL-003 | Semaine alignée sur les mois | P2 | E2E | Poser plusieurs dates | 12 Reverdie et 30 Longuenuit sont des Sixte ; 1er Moisson et 1er Bergerie 888 (après les Jours Muets) sont des Prime |
-| T-CAL-004 | Relance sans dégât | P1 | E2E | Poser le 15 Moisson 889, relancer la configuration | Date conservée, aucune fête en double |
+| T-CAL-004 | Relance sans dégât | P1 | E2E | Poser le 15 Moisson 889, relancer la configuration | Date conservée, Cycles recalés au 22 Qafila 771, un seul calendrier d'Azhar, aucune fête en double |
+| T-CAL-005 | Cycles de Qasirah créés | P1 | E2E | Après la configuration | 2e calendrier « Cycles de Qasirah » (12 mois, 10 jours de dizaine) au 13 Bir 769 ; le comput reste actif ; synchronisation activée ; 4 fêtes azharies visibles des joueurs |
+| T-CAL-006 | Cycles synchronisés, même lune | P1 | E2E | Poser le 1er Reverdie 887, le 1er Jour Muet 887, le 8 Bergerie 888 ; puis avancer le temps du monde d'un jour | Cycles au 13 Bir, 18 Qamar, 1er Hilal 770 ; même phase de lune dans les deux calendriers ; un jour de plus des deux côtés |
+| T-CAL-007 | Persistance | P1 | E2E | Recharger le monde | Cycles de Qasirah toujours là, toujours calés sur le comput |
 
 Implémenté dans `cypress/e2e/calendar.cy.js`.
 

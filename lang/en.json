@@ -244,9 +244,9 @@
     "Calendar": {
       "GmOnly": "GM only.",
       "ModuleMissing": "The Simple Calendar Reborn module must be installed and enabled in this world.",
-      "Confirm": "The active Simple Calendar calendar will take the months, weekdays, seasons and moon of the Velencia reckoning, and the year's feasts will be added to it. On a calendar already configured, the current date is kept. Continue?",
+      "Confirm": "The active Simple Calendar calendar will take the months, weekdays, seasons and moon of the Velencia reckoning. A second calendar, the Cycles of Qasirah (Azhar's lunar calendar), will be created and aligned with it, and both calendars will advance together. The year's feasts will be added to both. On a calendar already configured, the current date is kept. Continue?",
       "Failed": "The calendar could not be configured (see the console).",
-      "Done": "Reckoning calendar applied; {notes} feast(s) added."
+      "Done": "Reckoning and Cycles of Qasirah applied; {notes} feast(s) added."
     },
     "TokenSync": {
       "GmOnly": "GM only.",

@@ -37,8 +37,8 @@
   ],
   "moon": {
     "name": "La Lune",
-    "cycleLength": 29.53,
-    "firstNewMoon": { "year": 887, "month": "Bergerie", "day": 1 },
+    "cycleLength": 29.527777777777779,
+    "firstNewMoon": { "year": 141, "month": "Moisson", "day": 1 },
     "color": "#ffffff",
     "phases": [
       { "name": "Nouvelle lune", "icon": "new", "singleDay": true },

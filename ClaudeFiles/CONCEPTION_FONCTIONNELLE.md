@@ -203,6 +203,15 @@ d'Estevan, Jours Muets). Date de départ : 1er Reverdie 887. Relancée plus tard
 du jour et n'ajoute que les fêtes manquantes. Les noms des mois dans les langues nationales restent
 dans le lore (doc 00), pas dans le calendrier. Données : `scripts/data/calendar.json`.
 
+La même macro crée un second calendrier, les **Cycles de Qasirah** (calendrier lunaire d'Azhar), calé
+sur le comput et synchronisé avec lui (le temps qui passe dans l'un avance l'autre d'autant) : 12 mois
+alternant 30 et 29 jours (Hilal, Bir, Dalw, Qanat, Ayn, Nakhla, Qafila, Ramla, Najm, Mizan, Khatm,
+Qamar), Qamar à 30 jours un Cycle sur trois, chaque mois découpé en trois dizaines (Wahid à Ashara),
+pas de saisons (les mois glissent à travers l'année). Cycle 1 = 1er Moisson 141 ; le 1er Reverdie 887
+est le 13 Bir, Cycle 769. La lune des deux calendriers fait 29,528 jours : chaque mois azhari commence
+à moins d'un jour de la nouvelle lune. Quatre fêtes azharies en notes annuelles (Nuit du Croissant,
+Jour des Puits, Nuit de Zaynab, Ouverture des Portes). Données : `scripts/data/calendar-qasirah.json`.
+
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
 joueur** : uniquement la progression relative vers le niveau suivant (%), jamais le total ni les

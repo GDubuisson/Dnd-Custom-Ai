@@ -244,9 +244,9 @@
     "Calendar": {
       "GmOnly": "Réservé au MJ.",
       "ModuleMissing": "Le module Simple Calendar Reborn doit être installé et activé dans ce monde.",
-      "Confirm": "Le calendrier actif de Simple Calendar prendra les mois, les jours, les saisons et la lune du comput de Velencia, et les fêtes de l'année y seront ajoutées. Sur un calendrier déjà configuré, la date du jour est conservée. Continuer ?",
+      "Confirm": "Le calendrier actif de Simple Calendar prendra les mois, les jours, les saisons et la lune du comput de Velencia. Un second calendrier, les Cycles de Qasirah (le calendrier lunaire d'Azhar), sera créé et calé sur lui, et les calendriers avanceront ensemble. Les fêtes de l'année seront ajoutées aux deux. Sur un calendrier déjà configuré, la date du jour est conservée. Continuer ?",
       "Failed": "Le calendrier n'a pas pu être configuré (voir la console).",
-      "Done": "Calendrier du comput appliqué ; {notes} fête(s) ajoutée(s)."
+      "Done": "Comput et Cycles de Qasirah appliqués ; {notes} fête(s) ajoutée(s)."
     },
     "TokenSync": {
       "GmOnly": "Réservé au MJ.",

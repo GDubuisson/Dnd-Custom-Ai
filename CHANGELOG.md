@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.35.0] - 2026-11-23
+
+**Les Cycles de Qasirah, le calendrier lunaire d'Azhar.**
+- La macro « Configurer le calendrier » crée aussi un second calendrier, les Cycles de Qasirah, calé
+  sur le comput et synchronisé avec lui : quand le temps passe dans l'un, il passe dans l'autre.
+- Douze mois lunaires de 30 et 29 jours en alternance (Hilal, Bir, Dalw, Qanat, Ayn, Nakhla, Qafila,
+  Ramla, Najm, Mizan, Khatm, Qamar), Qamar à 30 jours un Cycle sur trois. Chaque mois se découpe en
+  trois dizaines, de Wahid à Ashara. Le Cycle 1 s'ouvre au 1er Moisson 141 ; la campagne commence le
+  13 Bir, Cycle 769.
+- Les deux calendriers partagent la même lune, réglée sur le mois moyen des Cycles (29,528 jours) :
+  chaque mois azhari commence à moins d'un jour de la nouvelle lune.
+- Quatre fêtes azharies en notes annuelles visibles des joueurs : la Nuit du Croissant, le Jour des
+  Puits, la Nuit de Zaynab et l'Ouverture des Portes. Elles changent de date au comput chaque année.
+
 ## [1.34.0] - 2026-11-23
 
 **Le calendrier du comput.**
