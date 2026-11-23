@@ -681,6 +681,89 @@
         ]
       },
       {
+        "title": "Les ordres : une carrière par phase",
+        "paragraphs": [
+          "Chaque ordre garde sa fiche de phase 0 et gagne un rang par phase, de la phase 2 à la phase 5. Les rangs précédents restent en service : en phase 4, un ordre aligne des membres de tous les rangs jusqu'au quatrième. Les fiches sont dans le compendium « Adversaires », dossier de la phase, puis de la nation."
+        ],
+        "table": {
+          "head": [
+            "Ordre",
+            "Phase 0",
+            "Phase 2 (FP 4)",
+            "Phase 3 (FP 6)",
+            "Phase 4 (FP 9)",
+            "Phase 5 (FP 12)"
+          ],
+          "rows": [
+            [
+              "Aube Blanche (Fleuraine)",
+              "Chevalier de l'Aube Blanche",
+              "Chevalier juré de l'Aube",
+              "Juge de l'Aube",
+              "Commandeur de l'Aube",
+              "Héraut de l'Aube"
+            ],
+            [
+              "Ordre de la Flamme (Valdera)",
+              "Frère de l'Ordre de la Flamme",
+              "Frère ardent",
+              "Chevalier de la Flamme",
+              "Commandeur de Cortelba",
+              "Épée d'Inés"
+            ],
+            [
+              "Passwachten (Altenmark)",
+              "Passwacht",
+              "Passwacht éveillé",
+              "Traqueur des cols",
+              "Capitaine de col",
+              "Gardien des hautes passes"
+            ],
+            [
+              "Veilleurs (Ravenmoor)",
+              "Veilleur de Ravenmoor",
+              "Veilleur des murmures",
+              "Enquêteur du Registre",
+              "Capitaine des Veilleurs",
+              "Haut-Veilleur"
+            ],
+            [
+              "Compagnies de la Route (Lucentia)",
+              "Cavalier des Compagnies de la Route",
+              "Lance de la Compagnie",
+              "Capolancia",
+              "Capitaine de Compagnie",
+              "Condottiere"
+            ],
+            [
+              "Guerriers de la Mesure (Azhar)",
+              "Garde de caravane azhari",
+              "Soldat de la Mesure",
+              "Maître d'armes de la Mesure",
+              "Capitaine de garnison",
+              "Sabre du Sultan"
+            ]
+          ]
+        }
+      },
+      {
+        "title": "La prière et les rituels",
+        "items": [
+          {
+            "label": "Les prières contournent Estevan",
+            "text": "Tant que la pierre de Velencia tient, Estevan bride ce qui passe par lui : en phase 0, les prêtres de l'Unique ne sont que de petits PNJ, sans fiche. Mais chaque autre pierre brisée ouvre un chemin qu'il ne contrôle pas, et les prières trouvent d'autres oreilles, dieux ou démons. Des cultes nouveaux peuvent naître dans n'importe quel pays, et les fidèles de l'Unique sont exaucés sans savoir par qui. Azhar n'a pas de prêtres, mais ses croyances, Unique ou autres, peuvent être exaucées elles aussi."
+          },
+          {
+            "label": "Qui répond aux ordres",
+            "text": "L'Aube Blanche et l'Ordre de la Flamme reçoivent une grâce dont personne ne connaît la source ; le MJ choisit, la fiche ne change pas. Les Passwachten, les Veilleurs et les guerriers de la Mesure tirent leur pouvoir d'eux-mêmes ; les Compagnies l'achètent."
+          },
+          {
+            "label": "Les ritualistes",
+            "text": "Partout, les rituels deviennent plus rapides puis instantanés. Les ritualistes valdériens continuent de quitter le royaume, à toutes les phases ; ceux qui restent se cachent derrière la Foi, sciemment ou non. En Azhar, ce sont les astrologues de la Maison des Cent Portes qui tirent leur pouvoir des étoiles."
+          }
+        ]
+      },
+      {
         "title": "Tensions à exploiter",
         "items": [
           {

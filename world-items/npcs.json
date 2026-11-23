@@ -777,7 +777,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Soldat des garnisons permanentes de l'Eismark, à Eisenpass et Eisengrund : garde les cols, les mines et les convois d'argent. Service dur, bien payé, souvent héréditaire ; on y fait l'appel deux fois par nuit."
+      "particularity": "Soldat des garnisons permanentes de l'Eismark, à Eisenpass et Eisengrund : garde les cols, les mines et les convois d'argent. Service dur, bien payé, souvent héréditaire ; on y fait l'appel deux fois par nuit. (MJ : début de carrière ; rangs suivants, à partir de la phase 2 : Passwacht éveillé, Traqueur des cols, Capitaine de col, Gardien des hautes passes.)"
     },
     "items": [
       {
@@ -875,7 +875,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Membre de la compagnie chargée des routes et des affaires qui ne relèvent d'aucun comté, une police plus qu'une armée : escorte les voyageurs par tronçons, notamment sur la route de la forêt des murmures."
+      "particularity": "Membre de la compagnie chargée des routes et des affaires qui ne relèvent d'aucun comté, une police plus qu'une armée : escorte les voyageurs par tronçons, notamment sur la route de la forêt des murmures. (MJ : début de carrière ; rangs suivants, à partir de la phase 2 : Veilleur des murmures, Enquêteur du Registre, Capitaine des Veilleurs, Haut-Veilleur.)"
     },
     "items": [
       {
@@ -962,7 +962,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Escorte sous contrat de la Compagnia del Sole ou de la Cavalcata Nera, domiciliées à San Brizio : peut porter les armes à l'étranger, arrêter et juger sommairement sur la route. Mieux payé que la plupart des soldats du continent."
+      "particularity": "Escorte sous contrat de la Compagnia del Sole ou de la Cavalcata Nera, domiciliées à San Brizio : peut porter les armes à l'étranger, arrêter et juger sommairement sur la route. Mieux payé que la plupart des soldats du continent. (MJ : début de carrière ; rangs suivants, à partir de la phase 2 : Lance de la Compagnie, Capolancia, Capitaine de Compagnie, Condottiere.)"
     },
     "items": [
       {
@@ -1048,7 +1048,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Membre de l'Ordre de Ferveur fondé par Inés la Brûlante à Cortelba en 501 : obéit au roi, répond au Hiérarque, et tient la Trêve de la Passe pour une erreur. Se rend rarement."
+      "particularity": "Membre de l'Ordre de Ferveur fondé par Inés la Brûlante à Cortelba en 501 : obéit au roi, répond au Hiérarque, et tient la Trêve de la Passe pour une erreur. Se rend rarement. (MJ : début de carrière ; rangs suivants, à partir de la phase 2 : Frère ardent, Chevalier de la Flamme, Commandeur de Cortelba, Épée d'Inés.)"
     },
     "items": [
       {
@@ -1130,7 +1130,7 @@
         }
       ],
       "specialAbilities": "",
-      "particularity": "Archer des caravanes qui se croisent à Qasirah : marche de nuit, tire depuis le dos d'un chameau, et ne quitte jamais le convoi pour poursuivre un ennemi."
+      "particularity": "Archer des caravanes qui se croisent à Qasirah : marche de nuit, tire depuis le dos d'un chameau, et ne quitte jamais le convoi pour poursuivre un ennemi. (MJ : début de carrière ; rangs suivants, à partir de la phase 2 : Soldat de la Mesure, Maître d'armes de la Mesure, Capitaine de garnison, Sabre du Sultan.)"
     },
     "items": [
       {
@@ -9464,6 +9464,6129 @@
       "dnd-custom-ai": {
         "phase": 4,
         "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Chevalier de l'Aube Blanche",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "3",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 52,
+          "max": 52,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue. Brave : avantage aux jets de sauvegarde contre la terreur. Commandement (recharge après un repos court ou long) : pendant 1 minute, chaque créature alliée qu'il voit à 9 m ou moins et qui l'entend ajoute 1d4 à ses jets d'attaque et de sauvegarde (concentration). Parade (réaction) : +2 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Chevalier de l'Ordre fondé en 204 par Guillaume de Rochemont, chargé de juger les manquements à l'honneur. Ses commanderies ne relèvent que du Grand Commandeur, et il peut citer n'importe qui à comparaître, roi compris. (MJ : bloc SRD Chevalier, épée longue et bouclier. Début de la carrière de l'Aube Blanche ; rangs suivants, à partir de la phase 2 : Chevalier juré de l'Aube, Juge de l'Aube, Commandeur de l'Aube, Héraut de l'Aube.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 0,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Chevalier juré de l'Aube",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 90,
+          "max": 90,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue. Sens du parjure : il sait quand une créature qu'il voit à 9 m ou moins prononce un mensonge délibéré, sans connaître la vérité. Châtiment : quand il touche au corps à corps, il peut dépenser un emplacement de sort pour infliger 2d8 dégâts radiants de plus, +1d8 par niveau d'emplacement au-delà du 1er (+1d8 contre un mort-vivant ou un fiélon). Imposition des mains : réserve de 25 PV, rendus par contact (action). Incantation (niveau 5, Charisme, DD 12, +4 au toucher) : niveau 1 (4 emplacements) Bénédiction, Injonction, Faveur divine, Héroïsme ; niveau 2 (2) Zone de vérité, Restauration partielle. Brave : avantage aux jets de sauvegarde contre la terreur. Parade (réaction) : +2 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Ses serments ont toujours pesé ; désormais il le sent. Un mensonge sonne faux à son oreille, et sa lame s'éclaire quand il frappe. (MJ : carrière de l'Aube Blanche, rang de la phase 2. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 5. D'où vient la grâce, nul ne le sait : l'Unique, un autre qui répond à sa place, ou le serment lui-même ; au choix du MJ, la fiche ne change pas. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 90 PV et CA 18 → FP défensif 4 ; deux coups d'épée longue (15) et un châtiment par round (12 en moyenne sur trois rounds), 27 dégâts par round à +5 → FP offensif 4 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Juge de l'Aube",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 125,
+          "max": 125,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue. Sens du parjure (18 m). Citation (1/jour, action) : une créature qu'il voit à 18 m ou moins fait un JS de Sagesse DD 14 ; ratée, pendant 1 minute elle est charmée par lui, doit venir à lui et répondre à ses questions, et ne peut pas mentir sciemment. Châtiment (comme le chevalier juré). Imposition des mains : 45 PV. Aura de protection : lui et ses alliés à 3 m ou moins ajoutent +3 à leurs jets de sauvegarde. Incantation (niveau 9, Charisme, DD 14, +6 au toucher) : niveau 1 (4) Bénédiction, Injonction, Faveur divine ; niveau 2 (3) Zone de vérité, Restauration partielle, Arme magique ; niveau 3 (2) Dissipation de la magie, Lueur d'espoir. Brave. Parade (réaction) : +3 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Celui que l'Ordre envoie quand on refuse de comparaître. Il n'a plus besoin de gardes pour amener l'accusé : il l'appelle, et l'accusé vient. (MJ : carrière de l'Aube Blanche, rang de la phase 3. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 9 ; l'aura sert surtout ses alliés et n'est pas comptée. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 125 PV et CA 18 → FP défensif 6 ; trois coups d'épée longue (25,5) et un châtiment par round (16,5), 42 dégâts par round à +7 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Commandeur de l'Aube",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 170,
+          "max": 170,
+          "temp": 0
+        },
+        "ac": {
+          "value": 20
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue. Châtiment amélioré : chaque coup d'épée inflige 1d8 dégâts radiants de plus (compté dans l'attaque). Châtiment (comme le chevalier juré). Sens du parjure (18 m). Citation (1/jour, DD 16). Imposition des mains : 65 PV. Aura de protection : +4 aux jets de sauvegarde (lui et ses alliés à 3 m). Aura de courage : ils ne peuvent pas être effrayés. Incantation (niveau 13, Charisme, DD 16, +8 au toucher) : niveau 1 (4) Bénédiction, Injonction, Faveur divine ; niveau 2 (3) Zone de vérité, Arme magique, Aide ; niveau 3 (3) Dissipation de la magie, Cercle magique, Lueur d'espoir ; niveau 4 (1) Bannissement, Liberté de mouvement. Brave. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Il tient une commanderie et ceux qui y servent. Autour de lui, personne ne recule, et l'on dit qu'aucun parjure n'a jamais soutenu son regard jusqu'au bout d'une phrase. (MJ : carrière de l'Aube Blanche, rang de la phase 4. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 13. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 170 PV et CA 20 → FP défensif 9 ; trois coups d'épée longue avec le châtiment amélioré (39) et un châtiment par round (19,5), 58,5 dégâts par round à +8 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier +1",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 500,
+            "pp": 0
+          },
+          "baseAC": 3,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel peu courant. Bouclier préparé des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Héraut de l'Aube",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 230,
+          "max": 230,
+          "temp": 0
+        },
+        "ac": {
+          "value": 20
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue. Châtiment amélioré : +1d8 radiants par coup (compté). Châtiment (comme le chevalier juré). Sens du parjure (36 m). Citation (1/jour, DD 17). Imposition des mains : 90 PV. Aura de protection : +5 aux jets de sauvegarde, et Aura de courage, toutes deux à 9 m. Lumière de l'aube (1/jour, action) : lumière vive sur 9 m pendant 1 minute ; un mort-vivant ou un fiélon qui y commence son tour subit 2d8 dégâts radiants. Incantation (niveau 17, Charisme, DD 17, +9 au toucher) : niveau 1 (4) Bénédiction, Injonction ; niveau 2 (3) Zone de vérité, Aide ; niveau 3 (3) Dissipation de la magie, Cercle magique ; niveau 4 (3) Bannissement, Liberté de mouvement ; niveau 5 (1) Dissipation du mal et du bien, Quête. Brave. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Quand l'Ordre envoie un héraut, il ne cite plus : il annonce. Sa venue suffit souvent à faire avouer une maison entière. (MJ : carrière de l'Aube Blanche, rang de la phase 5. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 17 ; la lumière de l'aube, qui ne vise que morts-vivants et fiélons, n'est pas comptée. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 230 PV et CA 20 → FP défensif 12 ; quatre coups d'épée longue avec le châtiment amélioré (56) et un châtiment par round (24), 80 dégâts par round à +9 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier +1",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 500,
+            "pp": 0
+          },
+          "baseAC": 3,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel peu courant. Bouclier préparé des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Frère ardent",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 90,
+          "max": 90,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue. Châtiment ardent : quand il touche au corps à corps, il peut dépenser un emplacement de sort pour infliger 2d8 dégâts de feu de plus, +1d8 par niveau d'emplacement au-delà du 1er. Ferveur : il ne peut pas être effrayé. Imposition des mains : réserve de 25 PV. Incantation (niveau 5, Charisme, DD 12, +4 au toucher) : niveau 1 (4) Bénédiction, Faveur divine, Héroïsme, Protection contre le mal et le bien ; niveau 2 (2) Arme magique, Restauration partielle. Parade (réaction) : +2 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "La prière qu'il répète depuis l'enfance a enfin trouvé preneur. Sa lame chauffe quand il frappe, et il y voit la main d'Inés. (MJ : carrière de l'Ordre de la Flamme, rang de la phase 2. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 5. Ce qui répond à la ferveur de l'Ordre n'est pas dit : l'Unique, un autre à sa place, ou ce qui se sert du culte d'Inés ; au choix du MJ, la fiche ne change pas. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 90 PV et CA 18 → FP défensif 4 ; deux coups d'épée longue (15) et un châtiment ardent par round (12 en moyenne sur trois rounds), 27 dégâts par round à +5 → FP offensif 4 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Image d'Inés",
+        "type": "gear",
+        "img": "icons/equipment/neck/pendant-gold-hook.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Chevalier de la Flamme",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 125,
+          "max": 125,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "fire"
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue. Châtiment ardent (comme le frère ardent). Ferveur : il ne peut pas être effrayé. Résistance au feu. Imposition des mains : 45 PV. Aura de ferveur : lui et ses alliés à 3 m ou moins ajoutent +3 à leurs jets de sauvegarde et ne peuvent pas être effrayés. Incantation (niveau 9, Charisme, DD 14, +6 au toucher) : niveau 1 (4) Bénédiction, Faveur divine, Héroïsme ; niveau 2 (3) Arme magique, Aide ; niveau 3 (2) Arme élémentaire, Dissipation de la magie. Parade (réaction) : +3 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Le feu ne le brûle plus. Ses frères le suivent dans la fumée sans se poser de question, et c'est bien ce qui inquiète Velencia. (MJ : carrière de l'Ordre de la Flamme, rang de la phase 3. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 9 ; l'aura sert surtout ses alliés et n'est pas comptée. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 125 PV et CA 18 → FP défensif 6 ; trois coups d'épée longue (25,5) et un châtiment ardent par round (16,5), 42 dégâts par round à +7 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 10,
+            "pp": 0
+          },
+          "baseAC": 2,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Bouclier de bois et de métal, tenu dans une main. Accorde un bonus de +2 à la Classe d'Armure."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Image d'Inés",
+        "type": "gear",
+        "img": "icons/equipment/neck/pendant-gold-hook.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Commandeur de Cortelba",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 170,
+          "max": 170,
+          "temp": 0
+        },
+        "ac": {
+          "value": 20
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "fire"
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue. Lame ardente : chaque coup d'épée inflige 1d8 dégâts de feu de plus (compté dans l'attaque). Châtiment ardent (comme le frère ardent). Ferveur. Résistance au feu. Imposition des mains : 65 PV. Aura de ferveur : +4 aux jets de sauvegarde, immunité à la terreur (lui et ses alliés à 3 m). Incantation (niveau 13, Charisme, DD 16, +8 au toucher) : niveau 1 (4) Bénédiction, Faveur divine ; niveau 2 (3) Arme magique, Aide ; niveau 3 (3) Arme élémentaire, Dissipation de la magie ; niveau 4 (1) Bannissement, Liberté de mouvement. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Il commande une maison de l'Ordre, et sa maison le suivrait jusqu'à la Passe sans attendre le roi. Les cierges s'allument seuls quand il entre dans une chapelle. (MJ : carrière de l'Ordre de la Flamme, rang de la phase 4 ; il peut y en avoir plusieurs, la maison mère comme les autres. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 13. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 170 PV et CA 20 → FP défensif 9 ; trois coups d'épée longue avec la lame ardente (39) et un châtiment ardent par round (19,5), 58,5 dégâts par round à +8 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier +1",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 500,
+            "pp": 0
+          },
+          "baseAC": 3,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel peu courant. Bouclier préparé des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Image d'Inés",
+        "type": "gear",
+        "img": "icons/equipment/neck/pendant-gold-hook.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Épée d'Inés",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 230,
+          "max": 230,
+          "temp": 0
+        },
+        "ac": {
+          "value": 20
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "fire"
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue. Lame ardente : +1d8 feu par coup (compté). Châtiment ardent (comme le frère ardent). Ferveur. Résistance au feu. Imposition des mains : 90 PV. Aura de ferveur : +5 aux jets de sauvegarde, immunité à la terreur, à 9 m. Incantation (niveau 17, Charisme, DD 17, +9 au toucher) : niveau 1 (4) Bénédiction, Faveur divine ; niveau 2 (3) Arme magique, Aide ; niveau 3 (3) Arme élémentaire, Dissipation de la magie ; niveau 4 (3) Bannissement, Liberté de mouvement ; niveau 5 (1) Dissipation du mal et du bien, Quête. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps.",
+      "particularity": "Les soldats chantent le Cantar d'Inés quand ils la voient passer. Elle se tient pour l'épée de la sainte, revenue ; personne, dans l'Ordre, n'ose lui demander qui lui parle. (MJ : carrière de l'Ordre de la Flamme, rang de la phase 5. Dérivé du Chevalier SRD avec les traits d'un paladin de niveau 17. Ce qui répond à la ferveur de l'Ordre n'est pas dit : l'Unique, un autre à sa place, ou ce qui se sert du culte d'Inés ; au choix du MJ, la fiche ne change pas. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 230 PV et CA 20 → FP défensif 12 ; quatre coups d'épée longue avec la lame ardente (56) et un châtiment ardent par round (24), 80 dégâts par round à +9 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bouclier +1",
+        "type": "armor",
+        "img": "icons/equipment/shield/round-wooden-boss-steel-brown.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 500,
+            "pp": 0
+          },
+          "baseAC": 3,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "offHand",
+          "weight": 2.7,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel peu courant. Bouclier préparé des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Plates",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 200,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 27.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure lourde combinant plaques de métal et cotte de mailles."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Image d'Inés",
+        "type": "gear",
+        "img": "icons/equipment/neck/pendant-gold-hook.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 5,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Petit carré de tissu brodé du visage d'une reine en armure, cousu de façon à se porter sous un vêtement, contre le cœur.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Passwacht éveillé",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 135,
+          "max": 135,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue ou deux tirs d'arbalète lourde (il recharge sans perdre de temps). Marque du chasseur : +1d6 dégâts à chaque coup contre la cible marquée (compté). Ennemi juré : géants et monstruosités ; avantage pour les pister et se souvenir de ce qu'on sait d'eux. Pied montagnard : la neige, la roche et les éboulis ne le ralentissent pas ; avantage aux jets contre le froid et les chutes. Incantation (niveau 5, Sagesse, DD 12, +4 au toucher) : niveau 1 (4) Marque du chasseur, Alarme, Grande foulée, Soins ; niveau 2 (2) Pas sans trace, Protection contre le poison. Perception +6, Survie +6, Athlétisme +5.",
+      "particularity": "Deux appels par nuit, toute sa vie. Maintenant il entend la montagne bouger avant qu'elle tombe, et il sait d'instinct où est passé ce qu'il traque. (MJ : carrière des Passwachten, rang de la phase 2. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 5. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 135 PV et CA 16 → FP défensif 5 ; deux coups d'épée longue avec la marque du chasseur, 22 dégâts par round à +5 → FP offensif 3 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 400,
+            "pp": 0
+          },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Corne d'appel des cols",
+        "type": "gear",
+        "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.9,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 3,
+            "pp": 0
+          },
+          "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Baume des Passwachten",
+        "type": "gear",
+        "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.23,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "use": {
+            "type": "heal",
+            "healDice": "1d4",
+            "healBase": 1,
+            "healSkill": "",
+            "consumable": true
+          },
+          "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Traqueur des cols",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois tirs d'arbalète lourde ou trois attaques d'épée longue. Marque du chasseur : +1d6 par coup (compté). Tueur de colosses (1/tour) : +1d8 dégâts contre une créature déjà blessée (compté). Ennemi juré : géants et monstruosités. Pied montagnard : la neige, la roche et les éboulis ne le ralentissent pas ; avantage aux jets contre le froid et les chutes. Incantation (niveau 9, Sagesse, DD 14, +6 au toucher) : niveau 1 (4) Marque du chasseur, Alarme, Soins ; niveau 2 (3) Pas sans trace, Silence ; niveau 3 (2) Protection contre une énergie, Mur de vent. Perception +9, Survie +9, Discrétion +6.",
+      "particularity": "On l'envoie quand quelque chose est descendu des hauteurs : il remonte la piste, seul ou à deux, et il en revient. (MJ : carrière des Passwachten, rang de la phase 3. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 9. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 140 PV et CA 17 → FP défensif 6 ; trois tirs d'arbalète lourde avec la marque du chasseur (36) et le tueur de colosses (4,5), 40,5 dégâts par round à +6 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 750,
+            "pp": 0
+          },
+          "baseAC": 15,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Corne d'appel des cols",
+        "type": "gear",
+        "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.9,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 3,
+            "pp": 0
+          },
+          "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Baume des Passwachten",
+        "type": "gear",
+        "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.23,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "use": {
+            "type": "heal",
+            "healDice": "1d4",
+            "healBase": 1,
+            "healSkill": "",
+            "consumable": true
+          },
+          "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Capitaine de col",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 185,
+          "max": 185,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue ou quatre tirs d'arbalète lourde. Marque du chasseur : +1d6 par coup (compté). Tueur de colosses (1/tour) : +2d8 contre une créature déjà blessée (compté). L'appel : il sait, à 1,5 km, quand l'un de ses hommes est blessé, capturé ou tué. Sonnerie (1/jour, action bonus) : chaque Passwacht à 18 m qui l'entend peut, par sa réaction, se déplacer de sa vitesse et faire une attaque. Ennemi juré : géants et monstruosités. Pied montagnard : la neige, la roche et les éboulis ne le ralentissent pas ; avantage aux jets contre le froid et les chutes. Incantation (niveau 13, Sagesse, DD 15, +7 au toucher) : niveau 1 (4) Marque du chasseur, Alarme ; niveau 2 (3) Pas sans trace, Silence ; niveau 3 (3) Mur de vent, Non-détection ; niveau 4 (1) Liberté de mouvement, Localisation de créature, Peau de pierre. Perception +11, Survie +11.",
+      "particularity": "Il tient un col et tout ce qui y passe. Ses hommes jurent qu'il compte les sentinelles en dormant ; dans l'Eismark, on dit qu'il a pris quelque chose à l'Eisenmann. (MJ : carrière des Passwachten, rang de la phase 4. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 13 ; la sonnerie, qui sert ses hommes, n'est pas comptée. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 185 PV et CA 18 → FP défensif 9 ; quatre coups d'épée longue avec la marque du chasseur (48) et le tueur de colosses (9), 57 dégâts par round à +8 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate +1",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Corne d'appel des cols",
+        "type": "gear",
+        "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.9,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 3,
+            "pp": 0
+          },
+          "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Baume des Passwachten",
+        "type": "gear",
+        "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.23,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "use": {
+            "type": "heal",
+            "healDice": "1d4",
+            "healBase": 1,
+            "healSkill": "",
+            "consumable": true
+          },
+          "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Gardien des hautes passes",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 228,
+          "max": 228,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "cold"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "cold"
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold"
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue ou quatre tirs d'arbalète lourde. Froid des cimes : chaque coup inflige 1d8 dégâts de froid de plus (compté dans l'attaque). Marque du chasseur : +1d6 par coup (compté). Tueur de colosses (1/tour) : +2d8 (compté). Résistance au froid. L'appel et la sonnerie (comme le capitaine de col). Ennemi juré : géants et monstruosités. Pied montagnard : la neige, la roche et les éboulis ne le ralentissent pas ; avantage aux jets contre le froid et les chutes. Incantation (niveau 17, Sagesse, DD 16, +8 au toucher) : niveau 1 (4) Marque du chasseur, Alarme ; niveau 2 (3) Pas sans trace ; niveau 3 (3) Mur de vent, Lumière du jour ; niveau 4 (3) Localisation de créature, Peau de pierre ; niveau 5 (1) Communion avec la nature. Perception +12, Survie +12.",
+      "particularity": "Il ne descend plus dans les vallées. Là-haut, la glace lui obéit un peu, et les trolls réveillés le laissent passer. (MJ : carrière des Passwachten, rang de la phase 5. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 17. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 228 PV et CA 19 → FP défensif 12 ; quatre coups d'épée longue avec le froid des cimes et la marque du chasseur (66) et le tueur de colosses (9), 75 dégâts par round à +8 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 15,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate +2",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 20000,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Corne d'appel des cols",
+        "type": "gear",
+        "img": "icons/commodities/bones/horn-worn-curved-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.9,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 3,
+            "pp": 0
+          },
+          "description": "Corne de bouquetin cerclée de fer. Son embouchure est usée par les lèvres de plusieurs générations.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Baume des Passwachten",
+        "type": "gear",
+        "img": "icons/consumables/plants/herb-tied-bundle-yellow-green.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0.23,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "use": {
+            "type": "heal",
+            "healDice": "1d4",
+            "healBase": 1,
+            "healSkill": "",
+            "consumable": true
+          },
+          "description": "Préparation d'herboriste. Graisse de marmotte et résine de pin dans une petite boîte de fer-blanc. Rend 1d4 + 1 PV. Utilisez l'objet depuis l'inventaire : les PV sont lancés et appliqués au porteur, et la préparation est consommée.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Lance de la Compagnie",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 110,
+          "max": 110,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Épée longue +1",
+          "ability": "str",
+          "bonus": 3,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 1,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d6",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue. Lame charmée : +1d6 dégâts de feu par coup (compté dans l'attaque). Charmes de guilde : Bouclier (3/jour, réaction : +5 à la CA jusqu'à son prochain tour), une fiole de soins (action bonus, 2d4+2 PV). Juge de la route : il peut arrêter et juger sommairement sur la route, en vertu de la Charte.",
+      "particularity": "La Compagnie a payé ses armes, et le contrat le dit : elles sont à elle, pas à lui. Depuis peu, ce qui était un luxe de capitaine équipe chaque lance. (MJ : carrière des Compagnies de la Route, rang de la phase 2. Dérivé du Vétéran SRD, armes et charmes compris. Il ne prie personne : ses pouvoirs sont des ouvrages rituels achetés aux guildes, que le retour de la magie rend enfin fiables. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 110 PV et CA 16 → FP défensif 4 ; deux coups d'épée longue +1 avec la lame charmée, 24 dégâts par round à +6 → FP offensif 4 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue +1",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 500,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel peu courant. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +1 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          },
+          "magic": true,
+          "enhancement": 1
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 750,
+            "pp": 0
+          },
+          "baseAC": 15,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Sceau de la Charte des Routes",
+        "type": "gear",
+        "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Capolancia",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Épée longue +2",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 2,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "1d6",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux attaques d'épée longue. Lame charmée : +1d6 feu par coup (compté). Charmes de guilde : Bouclier (3/jour), Pas brumeux (2/jour, action bonus), deux fioles de soins. Juge de la route. Commandement : ses lances à 9 m qui l'entendent ajoutent 1d4 à leurs jets d'attaque (action bonus, 1 minute, concentration).",
+      "particularity": "Chef de lance : il commande une dizaine d'hommes et signe les quittances. Il connaît le prix de chaque charme qu'il porte, et il le fait payer au client. (MJ : carrière des Compagnies de la Route, rang de la phase 3. Dérivé du Vétéran SRD, armes et charmes compris ; le commandement, qui sert ses hommes, n'est pas compté. Il ne prie personne : ses pouvoirs sont des ouvrages rituels achetés aux guildes, que le retour de la magie rend enfin fiables. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 140 PV et CA 17 → FP défensif 6 ; deux coups d'épée longue +2 avec la lame charmée, 28 dégâts par round à +9 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue +2",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          },
+          "magic": true,
+          "enhancement": 2
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate +1",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Sceau de la Charte des Routes",
+        "type": "gear",
+        "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Capitaine de Compagnie",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 185,
+          "max": 185,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Épée longue +2",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 2,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "2d6",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois attaques d'épée longue. Lame charmée : +2d6 feu par coup (compté). Charmes de guilde : Bouclier (3/jour), Pas brumeux (3/jour), Porte dimensionnelle (1/jour), trois fioles de soins supérieurs (4d4+4 PV). Juge de la route. Commandement (comme le capolancia).",
+      "particularity": "Il commande une compagnie entière pour le compte de la Compagnia del Sole ou de la Cavalcata Nera, et il négocie lui-même les contrats. Les comtés fleurainais lui envient ses hommes ; les guildes, ses comptes. (MJ : carrière des Compagnies de la Route, rang de la phase 4. Dérivé du Vétéran SRD, armes et charmes compris. Il ne prie personne : ses pouvoirs sont des ouvrages rituels achetés aux guildes, que le retour de la magie rend enfin fiables. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 185 PV et CA 19 → FP défensif 9 ; trois coups d'épée longue +2 avec la lame charmée, 52,5 dégâts par round à +10 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue +2",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          },
+          "magic": true,
+          "enhancement": 2
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate +2",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 20000,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Sceau de la Charte des Routes",
+        "type": "gear",
+        "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Condottiere",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 228,
+          "max": 228,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Épée longue +2",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 2,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "2d6",
+            "type": "fire"
+          }
+        },
+        {
+          "name": "Arbalète lourde (30/120 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre attaques d'épée longue. Lame charmée : +2d6 feu par coup (compté). Charmes de guilde : Bouclier (à volonté, réaction), Pas brumeux (3/jour), Porte dimensionnelle (2/jour), Invisibilité supérieure (1/jour), trois fioles de soins supérieurs. Juge de la route. Commandement (comme le capolancia).",
+      "particularity": "Il ne loue plus des hommes, il loue une armée, et les Maisons lui parlent d'égal à égal. Son armure a coûté le prix d'une ville ; il est le premier à le dire. (MJ : carrière des Compagnies de la Route, rang de la phase 5. Dérivé du Vétéran SRD, armes et charmes compris. Il ne prie personne : ses pouvoirs sont des ouvrages rituels achetés aux guildes, que le retour de la magie rend enfin fiables. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 228 PV et CA 19 → FP défensif 12 ; quatre coups d'épée longue +2 avec la lame charmée, 74 dégâts par round à +11 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Épée longue +2",
+        "type": "weapon",
+        "img": "icons/weapons/swords/greatsword-guard.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": "1d10"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          },
+          "magic": true,
+          "enhancement": 2
+        }
+      },
+      {
+        "name": "Arbalète lourde",
+        "type": "weapon",
+        "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d10",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 8.2,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": true,
+            "reloadValue": 1,
+            "range": {
+              "normal": 30,
+              "long": 120
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Harnois +1",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+        "system": {
+          "armorType": "heavy",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "baseAC": 19,
+          "strengthRequired": 15,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 29.5,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Sceau de la Charte des Routes",
+        "type": "gear",
+        "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Plaque de cire durcie scellée sur un parchemin, frappée d'une roue à quatre rayons.",
+          "equipped": false
+        }
+      },
+      {
+        "name": "Lettre de change de Porto Vero",
+        "type": "gear",
+        "img": "icons/sundries/scrolls/scroll-writing-brown-gold.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 0,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Lettre de change tirée sur une Maison de Porto Vero, payable à Altenburg à un négociant en tourbe. Elle ne porte aucun nom.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Veilleur des murmures",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 120,
+          "max": 120,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux tirs d'arc long ou deux attaques de lance. Marque du chasseur : +1d6 par coup (compté). Frappe de veille (1/tour) : +2d6 dégâts (compté). Ennemi juré : fées et morts-vivants. Oreille des murmures : avantage aux jets de sauvegarde contre l'état charmé et contre les illusions ; il ne se perd jamais en forêt, même par magie. Incantation (niveau 5, Sagesse, DD 12, +4 au toucher) : niveau 1 (4) Marque du chasseur, Alarme, Détection de la magie, Soins ; niveau 2 (2) Pas sans trace, Restauration partielle. Perception +6, Survie +6, Investigation +2.",
+      "particularity": "Il escorte toujours les convois dans la forêt des murmures, mais il entend maintenant ce qui murmure, et il sait lui répondre. (MJ : carrière des Veilleurs, rang de la phase 2. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 5. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 120 PV et CA 15 → FP défensif 4 ; deux tirs d'arc long avec la marque du chasseur (22) et la frappe de veille (7), 29 dégâts par round à +5 → FP offensif 4 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 45,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      },
+      {
+        "name": "Bourse de quelques pièces",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-simple-leather-tan.webp",
+        "system": {
+          "weight": 0.2,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Quelques pièces d'argent et de cuivre."
+        }
+      },
+      {
+        "name": "Cape grise de Veilleur",
+        "type": "gear",
+        "img": "icons/equipment/back/cloak-layered-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.4,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Enquêteur du Registre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 150,
+          "max": 150,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois tirs d'arc long ou trois attaques de lance. Marque du chasseur : +1d6 par coup (compté). Frappe de veille (1/tour) : +2d6 (compté). Œil du Veilleur : il voit les créatures invisibles et la vraie forme des créatures métamorphosées à 9 m ou moins. Le Registre (1/jour) : il lance Localisation de créature sur une personne inscrite au Grand Registre dont il a lu la fiche. Ennemi juré : fées et morts-vivants. Oreille des murmures : avantage aux jets de sauvegarde contre l'état charmé et contre les illusions ; il ne se perd jamais en forêt, même par magie. Incantation (niveau 9, Sagesse, DD 14, +6 au toucher) : niveau 1 (4) Marque du chasseur, Alarme, Détection de la magie ; niveau 2 (3) Pas sans trace, Localisation d'objet, Restauration partielle ; niveau 3 (2) Non-détection, Lumière du jour. Investigation +8, Perspicacité +9, Perception +9.",
+      "particularity": "Le royaume note, juge et budgète ; lui, il enquête. Il arrive avec un dossier et repart avec un nom. (MJ : carrière des Veilleurs, rang de la phase 3. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 9. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 150 PV et CA 16 → FP défensif 6 ; trois tirs d'arc long avec la marque du chasseur (36) et la frappe de veille (7), 43 dégâts par round à +7 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 45,
+            "pp": 0
+          },
+          "baseAC": 12,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Armure légère en cuir souple renforcée de rivets métalliques."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Cape grise de Veilleur",
+        "type": "gear",
+        "img": "icons/equipment/back/cloak-layered-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.4,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Capitaine des Veilleurs",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 4
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 198,
+          "max": 198,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        },
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois tirs d'arc long ou trois attaques de lance. Traits de veille : chaque coup inflige 1d8 dégâts radiants de plus (compté dans l'attaque). Marque du chasseur : +1d6 par coup (compté). Frappe de veille (1/tour) : +3d6 (compté). Œil du Veilleur (18 m). Le Registre (2/jour). Ennemi juré : fées et morts-vivants. Oreille des murmures : avantage aux jets de sauvegarde contre l'état charmé et contre les illusions ; il ne se perd jamais en forêt, même par magie. Incantation (niveau 13, Sagesse, DD 16, +8 au toucher) : niveau 1 (4) Marque du chasseur, Alarme ; niveau 2 (3) Pas sans trace, Localisation d'objet ; niveau 3 (3) Non-détection, Lumière du jour ; niveau 4 (1) Liberté de mouvement, Localisation de créature. Investigation +10, Perspicacité +12, Perception +12.",
+      "particularity": "Il tient une route ou un comté entier pour la compagnie. Les fées de la forêt des murmures connaissent son nom ; il n'a jamais dit le leur. (MJ : carrière des Veilleurs, rang de la phase 4. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 13. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 198 PV et CA 17 → FP défensif 9 ; trois tirs d'arc long avec les traits de veille et la marque du chasseur (49,5) et la frappe de veille (10,5), 60 dégâts par round à +8 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté +1",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "baseAC": 13,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Cape grise de Veilleur",
+        "type": "gear",
+        "img": "icons/equipment/back/cloak-layered-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.4,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Haut-Veilleur",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 4
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 228,
+          "max": 228,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        },
+        {
+          "name": "Lance",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "1d8",
+            "type": "radiant"
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre tirs d'arc long ou quatre attaques de lance. Traits de veille : +1d8 radiants par coup (compté). Marque du chasseur : +1d6 par coup (compté). Frappe de veille (1/tour) : +2d6 (compté). Œil du Veilleur (36 m). Le Registre (à volonté). Ennemi juré : fées et morts-vivants. Oreille des murmures : avantage aux jets de sauvegarde contre l'état charmé et contre les illusions ; il ne se perd jamais en forêt, même par magie. Incantation (niveau 17, Sagesse, DD 16, +8 au toucher) : niveau 1 (4) Marque du chasseur ; niveau 2 (3) Pas sans trace ; niveau 3 (3) Non-détection, Lumière du jour ; niveau 4 (3) Localisation de créature, Liberté de mouvement ; niveau 5 (1) Passage par les arbres. Investigation +11, Perspicacité +13, Perception +13.",
+      "particularity": "Le premier des Veilleurs répond à l'Assemblée et à personne d'autre. On dit qu'aucun nom inscrit au Registre ne peut plus se cacher de lui. (MJ : carrière des Veilleurs, rang de la phase 5. Dérivé du Vétéran SRD avec les traits d'un rôdeur de niveau 17. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 228 PV et CA 19 → FP défensif 12 ; quatre tirs d'arc long avec les traits de veille et la marque du chasseur (70) et la frappe de veille (7), 77 dégâts par round à +9 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Lance simple",
+        "type": "weapon",
+        "img": "icons/weapons/polearms/spear-flared-green.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuir clouté +2",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+        "system": {
+          "armorType": "light",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 20000,
+            "pp": 0
+          },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 5.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      },
+      {
+        "name": "Cape grise de Veilleur",
+        "type": "gear",
+        "img": "icons/equipment/back/cloak-layered-grey.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 1.4,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 1,
+            "pp": 0
+          },
+          "description": "Cape de laine grise à capuchon, agrafée par une broche d'étain sans motif.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Soldat de la Mesure",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 135,
+          "max": 135,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : deux tirs d'arc long ou deux attaques de cimeterre, à pied comme à dos de chameau. La Mesure : il ne peut pas être surpris tant qu'il est conscient, et il a l'avantage aux jets d'initiative. Coup pesé (1/tour) : quand il touche, +1d8 dégâts, et il peut au choix repousser la cible de 1,50 m ou lui imposer le désavantage à sa prochaine attaque. Parade (réaction) : +2 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps. Perception +4, Dressage +4.",
+      "particularity": "Soldat des garnisons de Sahelia, de Bahira ou de Hisn al-Hajar. Il a appris la Mesure à l'école comme tout le monde ; depuis peu, son corps la suit mieux que son esprit. (MJ : carrière des guerriers d'Azhar, rang de la phase 2. Dérivé du Vétéran SRD avec les traits d'un guerrier de niveau 5, sans magie : la Mesure devient une discipline du corps. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 135 PV et CA 16 → FP défensif 5 ; deux tirs d'arc long (15) et le coup pesé (4,5), 19,5 dégâts par round à +5 → FP offensif 3 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Cuirasse",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 400,
+            "pp": 0
+          },
+          "baseAC": 14,
+          "strengthRequired": 0,
+          "stealthDisadvantage": false,
+          "slot": "armor",
+          "weight": 9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plastron de métal forgé, complété par du cuir souple."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Outre de caravane",
+        "type": "gear",
+        "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": {
+            "pc": 0,
+            "pa": 3,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Maître d'armes de la Mesure",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 1
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 1
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : trois tirs d'arc long ou trois attaques de cimeterre. La Mesure : il ne peut pas être surpris tant qu'il est conscient, et il a l'avantage aux jets d'initiative. Coup pesé (1/tour) : quand il touche, +1d8 dégâts, et il peut au choix repousser la cible de 1,50 m ou lui imposer le désavantage à sa prochaine attaque. Riposte (réaction) : quand une créature le rate au corps à corps, il lui porte une attaque de cimeterre. Parade (réaction) : +3 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps. Acrobaties +8, Perception +5.",
+      "particularity": "Il enseigne l'arc et le sabre dans les garnisons, et l'on vient de loin pour le voir peser un adversaire avant de frapper : il ne frappe qu'une fois qu'il sait. (MJ : carrière des guerriers d'Azhar, rang de la phase 3. Dérivé du Vétéran SRD avec les traits d'un guerrier de niveau 9 ; au cimeterre, riposte comprise, il fait à peu près autant. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 140 PV et CA 17 → FP défensif 6 ; trois tirs d'arc long (28,5) et le coup pesé (4,5), 33 dégâts par round à +8 → FP offensif 6 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 750,
+            "pp": 0
+          },
+          "baseAC": 15,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Plates de métal couvrant l'essentiel du corps, laissant les articulations plus libres."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Outre de caravane",
+        "type": "gear",
+        "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": {
+            "pc": 0,
+            "pa": 3,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Capitaine de garnison",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 185,
+          "max": 185,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Arc long (45/180 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre tirs d'arc long ou quatre attaques de cimeterre. La Mesure : il ne peut pas être surpris tant qu'il est conscient, et il a l'avantage aux jets d'initiative. Coup pesé (1/tour) : quand il touche, +3d8 dégâts, et il peut au choix repousser la cible de 1,50 m ou lui imposer le désavantage à sa prochaine attaque. Riposte (réaction). Ordre pesé (1/jour, action bonus) : chaque allié à 18 m qui l'entend peut, par sa réaction, se déplacer de la moitié de sa vitesse et faire une attaque. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps. Perspicacité +7, Perception +7.",
+      "particularity": "Il commande une place forte de la frontière et ses comptes de douane. Il préfère qu'on ne se batte pas, et quand on se bat, il préfère que ce soit court. (MJ : carrière des guerriers d'Azhar, rang de la phase 4. Dérivé du Vétéran SRD avec les traits d'un guerrier de niveau 13 ; l'ordre pesé, qui sert ses hommes, n'est pas compté. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 185 PV et CA 18 → FP défensif 9 ; quatre tirs d'arc long (38) et le coup pesé (13,5), 51,5 dégâts par round à +9 → FP offensif 9 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 50,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Demi-plate +1",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "baseAC": 16,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Armure préparée des semaines durant par des ritualistes : +1 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Outre de caravane",
+        "type": "gear",
+        "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": {
+            "pc": 0,
+            "pa": 3,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Sabre du Sultan",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 2
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 228,
+          "max": 228,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Arc long +2 (45/180 m)",
+          "ability": "dex",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 2,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Cimeterre",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Attaques multiples : quatre tirs d'arc long ou quatre attaques de cimeterre. La Mesure : il ne peut pas être surpris tant qu'il est conscient, et il a l'avantage aux jets d'initiative. Coup pesé (1/tour) : quand il touche, +4d8 dégâts, et il peut au choix repousser la cible de 1,50 m ou lui imposer le désavantage à sa prochaine attaque. Riposte (réaction). Ordre pesé (1/jour). Indomptable (2/jour) : il relance un jet de sauvegarde raté. Parade (réaction) : +4 à la CA contre une attaque de corps à corps qui le toucherait, s'il voit l'attaquant et tient une arme de corps à corps. Perspicacité +8, Perception +8.",
+      "particularity": "Ils sont peu, et le Divan sait leurs noms. On les envoie là où une erreur coûterait une province ; ils reviennent avec un rapport chiffré. (MJ : carrière des guerriers d'Azhar, rang de la phase 5. Dérivé du Vétéran SRD avec les traits d'un guerrier de niveau 17. Les rangs précédents restent en service : un ordre aligne des membres de tous les rangs jusqu'à la phase en cours. FP recalculé par la méthode de création de monstres : 228 PV et CA 19 → FP défensif 12 ; quatre tirs d'arc long +2 (46) et le coup pesé (18), 64 dégâts par round à +11 → FP offensif 12 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Cimeterre",
+        "type": "weapon",
+        "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+        "system": {
+          "weaponType": "meleeMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "slashing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 1.4,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Arc long +2",
+        "type": "weapon",
+        "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+        "system": {
+          "weaponType": "rangedMartial",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 5000,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d8",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.9,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel rare. Arme consacrée par des ritualistes au terme de semaines de préparation : bonus de +2 aux jets d'attaque et de dégâts (appliqué automatiquement). Ses coups comptent comme magiques contre les créatures qui résistent aux armes ordinaires.",
+          "properties": {
+            "handedness": "twoHanded",
+            "versatile": false,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": true,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 45,
+              "long": 180
+            },
+            "special": ""
+          },
+          "magic": true,
+          "enhancement": 2
+        }
+      },
+      {
+        "name": "Demi-plate +2",
+        "type": "armor",
+        "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+        "system": {
+          "armorType": "medium",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 20000,
+            "pp": 0
+          },
+          "baseAC": 17,
+          "strengthRequired": 0,
+          "stealthDisadvantage": true,
+          "slot": "armor",
+          "weight": 18.1,
+          "quantity": 1,
+          "equipped": true,
+          "description": "Ouvrage rituel très rare. Armure préparée des semaines durant par des ritualistes : +2 à la CA (déjà inclus dans sa valeur)."
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      },
+      {
+        "name": "Outre de caravane",
+        "type": "gear",
+        "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+        "system": {
+          "quantity": 1,
+          "weight": 2.3,
+          "price": {
+            "pc": 0,
+            "pa": 3,
+            "po": 0,
+            "pp": 0
+          },
+          "description": "Grande outre de cuir épais. Une marque au fer rouge indique le puits où elle a été remplie pour la première fois.",
+          "equipped": false
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "azhar"
       }
     }
   },

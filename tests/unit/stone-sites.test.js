@@ -71,6 +71,21 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     }
   });
 
+  test("Humains face au retour : chaque fiche du tableau des carrières existe, à la phase de sa colonne", () => {
+    const npcs = JSON.parse(readFileSync(new URL("../../world-items/npcs.json", import.meta.url), "utf8"));
+    const phaseOf = new Map(npcs.map((npc) => [npc.name, npc.flags["dnd-custom-ai"].phase]));
+    const page = SITES.find((site) => site.name === "Les humains face au retour");
+    const { table } = page.sections.find((section) => section.title === "Les ordres : une carrière par phase");
+    const columnPhases = [0, 2, 3, 4, 5];
+    assert.equal(table.rows.length, 6);
+    for (const [order, ...careers] of table.rows) {
+      careers.forEach((name, index) => {
+        assert.ok(NPC_NAMES.has(name), `${order} : fiche absente : ${name}`);
+        assert.equal(phaseOf.get(name), columnPhases[index], `${name} : phase attendue ${columnPhases[index]}`);
+      });
+    }
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

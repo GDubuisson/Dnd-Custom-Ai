@@ -5,6 +5,27 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.23.0] - 2026-11-23
+
+**Les ordres recouvrent des pouvoirs : une carrière par phase.**
+- 24 fiches de carrière, un rang par phase de 2 à 5 pour chaque ordre (environ FP 4, 6, 9 et 12, FP
+  recalculés par la méthode de création de monstres et détaillés en note MJ) :
+  - **Aube Blanche** (Fleuraine) : chevalier juré, juge, commandeur, héraut. Ce sont des paladins du
+    serment qui sentent le parjure et citent à comparaître.
+  - **Ordre de la Flamme** (Valdera) : frère ardent, chevalier de la Flamme, commandeur de Cortelba,
+    Épée d'Inés.
+  - **Passwachten** (Altenmark) : Passwacht éveillé, traqueur des cols, capitaine de col, gardien des
+    hautes passes.
+  - **Veilleurs** (Ravenmoor) : Veilleur des murmures, enquêteur du Registre, capitaine des Veilleurs,
+    Haut-Veilleur.
+  - **Compagnies de la Route** (Lucentia) : lance de la Compagnie, capolancia, capitaine de Compagnie,
+    condottiere. Leur magie est achetée aux guildes : armes et armures rituelles, charmes.
+  - **Guerriers de la Mesure** (Azhar) : soldat, maître d'armes, capitaine de garnison, Sabre du Sultan.
+- Nouvelle fiche de base **Chevalier de l'Aube Blanche** (phase 0, bloc SRD Chevalier).
+- Les fiches de base des ordres renvoient vers leur carrière.
+- Page « Les humains face au retour » : nouvelles sections avec le tableau des carrières, les
+  prières qui contournent Estevan, et les ritualistes.
+
 ## [1.22.0] - 2026-11-23
 
 **Les peuples à l'âge des prodiges (phase 4).**
