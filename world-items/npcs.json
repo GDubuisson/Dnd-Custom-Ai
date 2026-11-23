@@ -15591,6 +15591,3926 @@
     }
   },
   {
+    "name": "Lecteur d'étoiles",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Trait stellaire (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "radiant"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 5, Intelligence, DD 14, +6 au toucher) : tours de magie Trait stellaire, Lumière, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie, Identification, Compréhension des langues ; niveau 2 (3) Rayons stellaires, Pas brumeux, Détection des pensées, Localisation d'objet ; niveau 3 (2) Pluie d'étoiles, Clairvoyance, Contresort. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Rayons stellaires : comme Rayon ardent, dégâts radiants ; Pluie d'étoiles : comme Boule de feu, dégâts radiants. Ciel ouvert : de nuit à ciel ouvert, ses sorts d'étoiles infligent un dé de dégâts de plus ; sous terre ou sous un toit de pierre, il ne peut pas les lancer, seulement ses autres sorts (non compté). Lecture du ciel (1/jour, de nuit) : il interroge le ciel, comme le sort Augure. Jets de sauvegarde : Int +6, Sag +3. Arcanes +6, Histoire +6.",
+      "particularity": "Il a appris à lire le ciel à la Maison des Cent Portes, comme on apprend le droit ou le calcul. Depuis peu, le ciel lui répond, et il en a peur autant qu'il s'en réjouit. (MJ : carrière des astrologues de la Maison des Cent Portes, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 2, on croise tous les rangs jusqu'à celui-ci. Les croyances populaires sur les étoiles restent un leurre : seule la discipline savante de la Maison fonctionne. FP recalculé par la méthode de création de monstres : 78 PV et CA 15 sous Armure de mage → FP défensif 2 ; deux sorts de zone de niveau 3 sur deux cibles (56 chacun) puis un sort de niveau 2 (21), soit 44,3 dégâts par round avec un DD de 14 → FP offensif 6 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Astrologue des Cent Portes",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Trait stellaire (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "radiant"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 15, +7 au toucher) : tours de magie Trait stellaire, Lumière, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie, Identification, Compréhension des langues ; niveau 2 (3) Rayons stellaires, Pas brumeux, Détection des pensées, Localisation d'objet ; niveau 3 (3) Pluie d'étoiles, Clairvoyance, Contresort ; niveau 4 (3) Œil magique, Localisation de créature ; niveau 5 (1) Lance stellaire, Scrutation, Mythes et légendes. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Rayons stellaires : comme Rayon ardent, dégâts radiants ; Pluie d'étoiles : comme Boule de feu, dégâts radiants ; Lance stellaire : comme Cône de froid, dégâts radiants. Ciel ouvert : de nuit à ciel ouvert, ses sorts d'étoiles infligent un dé de dégâts de plus ; sous terre ou sous un toit de pierre, il ne peut pas les lancer, seulement ses autres sorts (non compté). Lecture du ciel (1/jour, de nuit) : il interroge le ciel, comme le sort Augure. Jets de sauvegarde : Int +7, Sag +5. Arcanes +7, Histoire +7.",
+      "particularity": "Elle tient les registres de l'observatoire ; ses calculs annoncent maintenant ce qui va arriver, et ses étoiles tombent où elle le demande. (MJ : carrière des astrologues de la Maison des Cent Portes, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 3, on croise tous les rangs jusqu'à celui-ci. Les croyances populaires sur les étoiles restent un leurre : seule la discipline savante de la Maison fonctionne. FP recalculé par la méthode de création de monstres : 99 PV et CA 15 sous Armure de mage → FP défensif 3 ; un sort de zone de niveau 5 (72) puis deux de niveau 3 (56), deux cibles chacun, soit 61,3 dégâts par round avec un DD de 15 → FP offensif 9 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Maître de l'observatoire",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Trait stellaire (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "radiant"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 13, Intelligence, DD 17, +9 au toucher) : tours de magie Trait stellaire, Lumière, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie, Identification, Compréhension des langues ; niveau 2 (3) Rayons stellaires, Pas brumeux, Détection des pensées, Localisation d'objet ; niveau 3 (3) Pluie d'étoiles, Clairvoyance, Contresort ; niveau 4 (3) Œil magique, Localisation de créature ; niveau 5 (2) Lance stellaire, Scrutation, Mythes et légendes ; niveau 6 (1) Constellation, Vision suprême ; niveau 7 (1) Chute d'étoile, Téléportation. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Rayons stellaires : comme Rayon ardent, dégâts radiants ; Pluie d'étoiles : comme Boule de feu, dégâts radiants ; Lance stellaire : comme Cône de froid, dégâts radiants ; Constellation : comme Chaîne d'éclairs, dégâts radiants ; Chute d'étoile : comme Boule de feu à retardement lancée sans retard, dégâts radiants. Ciel ouvert : de nuit à ciel ouvert, ses sorts d'étoiles infligent un dé de dégâts de plus ; sous terre ou sous un toit de pierre, il ne peut pas les lancer, seulement ses autres sorts (non compté). Lecture du ciel (1/jour, de nuit) : il interroge le ciel, comme le sort Augure. Jets de sauvegarde : Int +9, Sag +6. Arcanes +9, Histoire +9.",
+      "particularity": "Il dirige l'observatoire de Qasirah et ses archives réservées. Le Divan l'écoute avant de décider ; parfois, il décide après lui. (MJ : carrière des astrologues de la Maison des Cent Portes, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 4, on croise tous les rangs jusqu'à celui-ci. Les croyances populaires sur les étoiles restent un leurre : seule la discipline savante de la Maison fonctionne. FP recalculé par la méthode de création de monstres : 140 PV et CA 15 sous Armure de mage → FP défensif 5 ; des sorts de zone de niveau 6 (90), 7 (84) et 5 (72), deux cibles chacun, soit 82 dégâts par round avec un DD de 17 → FP offensif 13 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Grand astrologue",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 215,
+          "max": 215,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Trait stellaire (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "radiant"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 17, Intelligence, DD 17, +9 au toucher) : tours de magie Trait stellaire, Lumière, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie, Identification, Compréhension des langues ; niveau 2 (3) Rayons stellaires, Pas brumeux, Détection des pensées, Localisation d'objet ; niveau 3 (3) Pluie d'étoiles, Clairvoyance, Contresort ; niveau 4 (3) Œil magique, Localisation de créature ; niveau 5 (2) Lance stellaire, Scrutation, Mythes et légendes ; niveau 6 (1) Constellation, Vision suprême ; niveau 7 (1) Chute d'étoile, Téléportation ; niveau 8 (1) Nuit des étoiles, Esprit impénétrable ; niveau 9 (1) Prémonition. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Rayons stellaires : comme Rayon ardent, dégâts radiants ; Pluie d'étoiles : comme Boule de feu, dégâts radiants ; Lance stellaire : comme Cône de froid, dégâts radiants ; Constellation : comme Chaîne d'éclairs, dégâts radiants ; Chute d'étoile : comme Boule de feu à retardement lancée sans retard, dégâts radiants ; Nuit des étoiles : comme Explosion solaire, 10d8 dégâts radiants. Ciel ouvert : de nuit à ciel ouvert, ses sorts d'étoiles infligent un dé de dégâts de plus ; sous terre ou sous un toit de pierre, il ne peut pas les lancer, seulement ses autres sorts (non compté). Lecture du ciel (1/jour, de nuit) : il interroge le ciel, comme le sort Augure. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Jets de sauvegarde : Int +9, Sag +7. Arcanes +9, Histoire +9.",
+      "particularity": "Il lit dans le ciel ce que les pierres ont caché pendant mille ans. Ce qu'il en dit au Divan, il le pèse longuement. (MJ : carrière des astrologues de la Maison des Cent Portes, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 5, on croise tous les rangs jusqu'à celui-ci. Les croyances populaires sur les étoiles restent un leurre : seule la discipline savante de la Maison fonctionne. FP recalculé par la méthode de création de monstres : 215 PV et CA 15 sous Armure de mage, +2 pour la résistance à la magie → FP défensif 10 ; des sorts de zone de niveau 6 (90), 7 (84) et 8 (90), deux cibles chacun, soit 88 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "azhar"
+      }
+    }
+  },
+  {
+    "name": "Charmeur de guilde",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 5, Intelligence, DD 14, +6 au toucher) : tours de magie Trait de feu, Main de mage, Prestidigitation, Réparation ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Identification, Charme-personne ; niveau 2 (3) Rayon ardent, Pas brumeux, Arme magique, Suggestion ; niveau 3 (2) Boule de feu, Contresort, Glyphe de garde. CA 15 sous Armure de mage, qu'il lance avant le combat. Charmes de guilde : il porte toujours trois ouvrages rituels prêts à servir, une fiole de soins (2d4+2 PV), un charme de Bouclier et un charme de Pas brumeux ; ce sont ceux qu'il vend aux Compagnies de la Route. Le prix : il préfère toujours négocier que se battre, et il propose un marché avant de lancer un sort. Jets de sauvegarde : Int +6, Sag +3. Arcanes +6, Histoire +6.",
+      "particularity": "Il fabriquait des charmes en trois semaines ; il les fait maintenant en une soirée, et la guilde a doublé ses commandes. Les Compagnies de la Route sont ses meilleurs clients. (MJ : carrière des ritualistes de la guilde, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 2, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 78 PV et CA 15 sous Armure de mage → FP défensif 2 ; deux sorts de zone de niveau 3 sur deux cibles (56 chacun) puis un sort de niveau 2 (21), soit 44,3 dégâts par round avec un DD de 14 → FP offensif 6 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Maître charmeur",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 15, +7 au toucher) : tours de magie Trait de feu, Main de mage, Prestidigitation, Réparation ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Identification, Charme-personne ; niveau 2 (3) Rayon ardent, Pas brumeux, Arme magique, Suggestion ; niveau 3 (3) Boule de feu, Contresort, Glyphe de garde ; niveau 4 (3) Invisibilité supérieure, Fabrication ; niveau 5 (1) Domination de personne, Quête. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Boule de feu lancée au niveau 5 : 10d6. Charmes de guilde : il porte toujours trois ouvrages rituels prêts à servir, une fiole de soins (2d4+2 PV), un charme de Bouclier et un charme de Pas brumeux ; ce sont ceux qu'il vend aux Compagnies de la Route. Le prix : il préfère toujours négocier que se battre, et il propose un marché avant de lancer un sort. Jets de sauvegarde : Int +7, Sag +5. Arcanes +7, Histoire +7.",
+      "particularity": "Elle signe les ouvrages de la guilde et en fixe le prix. Ce qu'elle charme ne rate plus. (MJ : carrière des ritualistes de la guilde, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 3, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 99 PV et CA 15 sous Armure de mage → FP défensif 3 ; un sort de zone de niveau 5 (70) puis deux de niveau 3 (56), deux cibles chacun, soit 60,7 dégâts par round avec un DD de 15 → FP offensif 9 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Doyen de la guilde",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 13, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de feu, Main de mage, Prestidigitation, Réparation ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Identification, Charme-personne ; niveau 2 (3) Rayon ardent, Pas brumeux, Arme magique, Suggestion ; niveau 3 (3) Boule de feu, Contresort, Glyphe de garde ; niveau 4 (3) Invisibilité supérieure, Fabrication ; niveau 5 (2) Domination de personne, Quête ; niveau 6 (1) Chaîne d'éclairs, Suggestion de groupe ; niveau 7 (1) Boule de feu à retardement, Téléportation. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Boule de feu lancée au niveau 5 : 10d6. Charmes de guilde : il porte toujours trois ouvrages rituels prêts à servir, une fiole de soins (2d4+2 PV), un charme de Bouclier et un charme de Pas brumeux ; ce sont ceux qu'il vend aux Compagnies de la Route. Le prix : il préfère toujours négocier que se battre, et il propose un marché avant de lancer un sort. Jets de sauvegarde : Int +9, Sag +6. Arcanes +9, Histoire +9.",
+      "particularity": "Il siège au conseil de la guilde et compte parmi les créanciers de plusieurs Maisons. On ne lui achète pas un charme : on lui demande une faveur. (MJ : carrière des ritualistes de la guilde, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 4, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 140 PV et CA 15 sous Armure de mage → FP défensif 5 ; des sorts de zone de niveau 6 (90), 7 (84) et 5 (70), deux cibles chacun, soit 81,3 dégâts par round avec un DD de 17 → FP offensif 13 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Grand maître de la guilde",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 215,
+          "max": 215,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Trait de feu (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "fire"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 17, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de feu, Main de mage, Prestidigitation, Réparation ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Identification, Charme-personne ; niveau 2 (3) Rayon ardent, Pas brumeux, Arme magique, Suggestion ; niveau 3 (3) Boule de feu, Contresort, Glyphe de garde ; niveau 4 (3) Invisibilité supérieure, Fabrication ; niveau 5 (2) Domination de personne, Quête ; niveau 6 (1) Chaîne d'éclairs, Suggestion de groupe ; niveau 7 (1) Boule de feu à retardement, Téléportation ; niveau 8 (1) Domination de monstre, Esprit impénétrable ; niveau 9 (1) Arrêt du temps. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Boule de feu lancée au niveau 5 : 10d6 ; Boule de feu lancée au niveau 8 : 13d6. Charmes de guilde : il porte toujours trois ouvrages rituels prêts à servir, une fiole de soins (2d4+2 PV), un charme de Bouclier et un charme de Pas brumeux ; ce sont ceux qu'il vend aux Compagnies de la Route. Le prix : il préfère toujours négocier que se battre, et il propose un marché avant de lancer un sort. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Jets de sauvegarde : Int +9, Sag +7. Arcanes +9, Histoire +9.",
+      "particularity": "Elle tient la guilde, donc une part du Conseil des Cent Maisons, donc la magie qui se vend sur tout le continent. Elle sait exactement ce que vaut un porteur d'éclats. (MJ : carrière des ritualistes de la guilde, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 5, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 215 PV et CA 15 sous Armure de mage, +2 pour la résistance à la magie → FP défensif 10 ; des sorts de zone de niveau 6 (90), 7 (84) et 8 (91), deux cibles chacun, soit 88,3 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "lucentia"
+      }
+    }
+  },
+  {
+    "name": "Sourcier de filons",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Éclat de roche (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 5, Intelligence, DD 14, +6 au toucher) : tours de magie Éclat de roche, Main de mage, Réparation, Lumière ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie ; niveau 2 (3) Grêle de cailloux, Pas brumeux, Localisation d'objet ; niveau 3 (2) Éboulis, Contresort, Glyphe de garde. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Grêle de cailloux : comme Rayon ardent, dégâts contondants ; Éboulis : comme Boule de feu, dégâts contondants, et la zone devient un terrain difficile. Sens des filons : il perçoit le métal, les filons et les cavités à 18 m à travers la roche. Pied de pierre : tant qu'il touche le sol, il a l'avantage aux jets de sauvegarde contre ce qui le jetterait à terre ou le déplacerait. Jets de sauvegarde : Int +6, Sag +3. Arcanes +6, Histoire +6.",
+      "particularity": "L'Eismark le payait pour trouver des filons, au bout de semaines de rituel et souvent pour rien. Maintenant, il entend le métal chanter sous ses pieds. (MJ : carrière des géomanciens soumis au Landrecht, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 2, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 78 PV et CA 15 sous Armure de mage → FP défensif 2 ; deux sorts de zone de niveau 3 sur deux cibles (56 chacun) puis un sort de niveau 2 (21), soit 44,3 dégâts par round avec un DD de 14 → FP offensif 6 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Géomancien d'Eisengrund",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Éclat de roche (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 15, +7 au toucher) : tours de magie Éclat de roche, Main de mage, Réparation, Lumière ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie ; niveau 2 (3) Grêle de cailloux, Pas brumeux, Localisation d'objet ; niveau 3 (3) Éboulis, Contresort, Glyphe de garde ; niveau 4 (3) Façonnage de la pierre, Peau de pierre ; niveau 5 (1) Coulée de pierres, Mur de pierre, Passe-muraille. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Grêle de cailloux : comme Rayon ardent, dégâts contondants ; Éboulis : comme Boule de feu, dégâts contondants, et la zone devient un terrain difficile ; Coulée de pierres : comme Cône de froid, dégâts contondants, et à terre sur un échec. Sens des filons : il perçoit le métal, les filons et les cavités à 18 m à travers la roche. Pied de pierre : tant qu'il touche le sol, il a l'avantage aux jets de sauvegarde contre ce qui le jetterait à terre ou le déplacerait. Jets de sauvegarde : Int +7, Sag +5. Arcanes +7, Histoire +7.",
+      "particularity": "Elle ouvre une galerie en une matinée et la referme derrière elle. Le Landrecht ne sait pas encore comment l'imposer. (MJ : carrière des géomanciens soumis au Landrecht, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 3, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 99 PV et CA 15 sous Armure de mage → FP défensif 3 ; un sort de zone de niveau 5 (72) puis deux de niveau 3 (56), deux cibles chacun, soit 61,3 dégâts par round avec un DD de 15 → FP offensif 9 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Maître des filons",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Éclat de roche (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 13, Intelligence, DD 17, +9 au toucher) : tours de magie Éclat de roche, Main de mage, Réparation, Lumière ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie ; niveau 2 (3) Grêle de cailloux, Pas brumeux, Localisation d'objet ; niveau 3 (3) Éboulis, Contresort, Glyphe de garde ; niveau 4 (3) Façonnage de la pierre, Peau de pierre ; niveau 5 (2) Coulée de pierres, Mur de pierre, Passe-muraille ; niveau 6 (1) Lances de pierre, Glissement de terrain ; niveau 7 (1) Effondrement, Inversion de la gravité. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Grêle de cailloux : comme Rayon ardent, dégâts contondants ; Éboulis : comme Boule de feu, dégâts contondants, et la zone devient un terrain difficile ; Coulée de pierres : comme Cône de froid, dégâts contondants, et à terre sur un échec ; Lances de pierre : comme Chaîne d'éclairs, dégâts perforants ; Effondrement : comme Boule de feu à retardement lancée sans retard, dégâts contondants. Sens des filons : il perçoit le métal, les filons et les cavités à 18 m à travers la roche. Pied de pierre : tant qu'il touche le sol, il a l'avantage aux jets de sauvegarde contre ce qui le jetterait à terre ou le déplacerait. Jets de sauvegarde : Int +9, Sag +6. Arcanes +9, Histoire +9.",
+      "particularity": "Il tient les mines d'une marche entière, et les Passwachten le consultent avant de fermer un col. (MJ : carrière des géomanciens soumis au Landrecht, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 4, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 140 PV et CA 15 sous Armure de mage → FP défensif 5 ; des sorts de zone de niveau 6 (90), 7 (84) et 5 (72), deux cibles chacun, soit 82 dégâts par round avec un DD de 17 → FP offensif 13 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Grand géomancien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 215,
+          "max": 215,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Éclat de roche (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 17, Intelligence, DD 17, +9 au toucher) : tours de magie Éclat de roche, Main de mage, Réparation, Lumière ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Détection de la magie ; niveau 2 (3) Grêle de cailloux, Pas brumeux, Localisation d'objet ; niveau 3 (3) Éboulis, Contresort, Glyphe de garde ; niveau 4 (3) Façonnage de la pierre, Peau de pierre ; niveau 5 (2) Coulée de pierres, Mur de pierre, Passe-muraille ; niveau 6 (1) Lances de pierre, Glissement de terrain ; niveau 7 (1) Effondrement, Inversion de la gravité ; niveau 8 (1) Faille, Esprit impénétrable ; niveau 9 (1) Métamorphose suprême. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Grêle de cailloux : comme Rayon ardent, dégâts contondants ; Éboulis : comme Boule de feu, dégâts contondants, et la zone devient un terrain difficile ; Coulée de pierres : comme Cône de froid, dégâts contondants, et à terre sur un échec ; Lances de pierre : comme Chaîne d'éclairs, dégâts perforants ; Effondrement : comme Boule de feu à retardement lancée sans retard, dégâts contondants ; Faille : comme Explosion solaire, 10d8 dégâts contondants, et à terre au lieu d'aveuglé. Sens des filons : il perçoit le métal, les filons et les cavités à 18 m à travers la roche. Pied de pierre : tant qu'il touche le sol, il a l'avantage aux jets de sauvegarde contre ce qui le jetterait à terre ou le déplacerait. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Jets de sauvegarde : Int +9, Sag +7. Arcanes +9, Histoire +9.",
+      "particularity": "La montagne bouge quand il le lui demande. Les marches se le disputent, et la Diète n'a jamais voté aussi vite. (MJ : carrière des géomanciens soumis au Landrecht, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 5, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 215 PV et CA 15 sous Armure de mage, +2 pour la résistance à la magie → FP défensif 10 ; des sorts de zone de niveau 6 (90), 7 (84) et 8 (90), deux cibles chacun, soit 88 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Ritualiste de domaine",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Trait de force (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 5, Intelligence, DD 14, +6 au toucher) : tours de magie Trait de force, Main de mage, Lumière, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Alarme, Protection contre le mal et le bien ; niveau 2 (3) Traits de garde, Pas brumeux, Verrou magique ; niveau 3 (2) Onde de garde, Contresort, Glyphe de garde, Dissipation de la magie. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Traits de garde : comme Rayon ardent, dégâts de force ; Onde de garde : comme Boule de feu, dégâts de force, et la cible est repoussée de 3 m sur un échec. Garde du domaine : sur les terres de son seigneur, il sait quand une créature franchit les limites qu'il a gardées, et ses glyphes y sont déjà posés. Jets de sauvegarde : Int +6, Sag +3. Arcanes +6, Histoire +6.",
+      "particularity": "Il gardait les coffres et les portes de son seigneur par des rituels de plusieurs jours. Ses gardes tiennent maintenant d'elles-mêmes, et repoussent ceux qui les forcent. (MJ : carrière des ritualistes sous patronage seigneurial, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 2, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 78 PV et CA 15 sous Armure de mage → FP défensif 2 ; deux sorts de zone de niveau 3 sur deux cibles (56 chacun) puis un sort de niveau 2 (21), soit 44,3 dégâts par round avec un DD de 14 → FP offensif 6 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Mage de domaine",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Trait de force (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 15, +7 au toucher) : tours de magie Trait de force, Main de mage, Lumière, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Alarme, Protection contre le mal et le bien ; niveau 2 (3) Traits de garde, Pas brumeux, Verrou magique ; niveau 3 (3) Onde de garde, Contresort, Glyphe de garde, Dissipation de la magie ; niveau 4 (3) Bannissement, Sanctuaire privé ; niveau 5 (1) Ressac de garde, Mur de force. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Traits de garde : comme Rayon ardent, dégâts de force ; Onde de garde : comme Boule de feu, dégâts de force, et la cible est repoussée de 3 m sur un échec ; Ressac de garde : comme Cône de froid, dégâts de force, repoussé de 3 m. Garde du domaine : sur les terres de son seigneur, il sait quand une créature franchit les limites qu'il a gardées, et ses glyphes y sont déjà posés. Jets de sauvegarde : Int +7, Sag +5. Arcanes +7, Histoire +7.",
+      "particularity": "Elle est inscrite au registre du domaine et ne sert que lui. Aucune porte qu'elle a fermée ne s'ouvre sans elle. (MJ : carrière des ritualistes sous patronage seigneurial, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 3, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 99 PV et CA 15 sous Armure de mage → FP défensif 3 ; un sort de zone de niveau 5 (72) puis deux de niveau 3 (56), deux cibles chacun, soit 61,3 dégâts par round avec un DD de 15 → FP offensif 9 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Mage-gardien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Trait de force (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 13, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de force, Main de mage, Lumière, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Alarme, Protection contre le mal et le bien ; niveau 2 (3) Traits de garde, Pas brumeux, Verrou magique ; niveau 3 (3) Onde de garde, Contresort, Glyphe de garde, Dissipation de la magie ; niveau 4 (3) Bannissement, Sanctuaire privé ; niveau 5 (2) Ressac de garde, Mur de force ; niveau 6 (1) Sentences de garde, Globe d'invulnérabilité ; niveau 7 (1) Rupture de garde, Symbole. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Traits de garde : comme Rayon ardent, dégâts de force ; Onde de garde : comme Boule de feu, dégâts de force, et la cible est repoussée de 3 m sur un échec ; Ressac de garde : comme Cône de froid, dégâts de force, repoussé de 3 m ; Sentences de garde : comme Chaîne d'éclairs, dégâts de force ; Rupture de garde : comme Boule de feu à retardement lancée sans retard, dégâts de force. Garde du domaine : sur les terres de son seigneur, il sait quand une créature franchit les limites qu'il a gardées, et ses glyphes y sont déjà posés. Jets de sauvegarde : Int +9, Sag +6. Arcanes +9, Histoire +9.",
+      "particularity": "Il garde un château entier, et parfois une ville. Les seigneurs se le disputent à prix d'or. (MJ : carrière des ritualistes sous patronage seigneurial, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 4, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 140 PV et CA 15 sous Armure de mage → FP défensif 5 ; des sorts de zone de niveau 6 (90), 7 (84) et 5 (72), deux cibles chacun, soit 82 dégâts par round avec un DD de 17 → FP offensif 13 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Haut mage-gardien",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 215,
+          "max": 215,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Trait de force (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "force"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 17, Intelligence, DD 17, +9 au toucher) : tours de magie Trait de force, Main de mage, Lumière, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Alarme, Protection contre le mal et le bien ; niveau 2 (3) Traits de garde, Pas brumeux, Verrou magique ; niveau 3 (3) Onde de garde, Contresort, Glyphe de garde, Dissipation de la magie ; niveau 4 (3) Bannissement, Sanctuaire privé ; niveau 5 (2) Ressac de garde, Mur de force ; niveau 6 (1) Sentences de garde, Globe d'invulnérabilité ; niveau 7 (1) Rupture de garde, Symbole ; niveau 8 (1) Mot de garde, Champ d'antimagie ; niveau 9 (1) Emprisonnement. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Traits de garde : comme Rayon ardent, dégâts de force ; Onde de garde : comme Boule de feu, dégâts de force, et la cible est repoussée de 3 m sur un échec ; Ressac de garde : comme Cône de froid, dégâts de force, repoussé de 3 m ; Sentences de garde : comme Chaîne d'éclairs, dégâts de force ; Rupture de garde : comme Boule de feu à retardement lancée sans retard, dégâts de force ; Mot de garde : comme Explosion solaire, 10d8 dégâts de force, et repoussé de 6 m au lieu d'aveuglé. Garde du domaine : sur les terres de son seigneur, il sait quand une créature franchit les limites qu'il a gardées, et ses glyphes y sont déjà posés. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Jets de sauvegarde : Int +9, Sag +7. Arcanes +9, Histoire +9.",
+      "particularity": "Elle garde les Bannières du roi. On dit qu'elle pourrait enfermer un démon ; on espère ne pas avoir à le vérifier. (MJ : carrière des ritualistes sous patronage seigneurial, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 5, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 215 PV et CA 15 sous Armure de mage, +2 pour la résistance à la magie → FP défensif 10 ; des sorts de zone de niveau 6 (90), 7 (84) et 8 (90), deux cibles chacun, soit 88 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "fleuraine"
+      }
+    }
+  },
+  {
+    "name": "Ritualiste inscrit",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 78,
+          "max": 78,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Dard de l'esprit (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "psychic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 5, Intelligence, DD 14, +6 au toucher) : tours de magie Dard de l'esprit, Illusion mineure, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Image silencieuse ; niveau 2 (3) Murmures acérés, Pas brumeux, Image miroir, Invisibilité, Détection des pensées ; niveau 3 (2) Cri des murmures, Contresort, Image majeure, Clairvoyance. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Murmures acérés : comme Rayon ardent, dégâts psychiques ; Cri des murmures : comme Boule de feu, dégâts psychiques, JS de Sagesse. Inscrit : son nom, son adresse et ses rituels figurent au Grand Registre ; les Veilleurs le surveillent, et il le sait. Voile (1/repos court) : par une action bonus, il fait apparaître des doubles illusoires, comme le sort Image miroir (non compté). Jets de sauvegarde : Int +6, Sag +3. Arcanes +6, Histoire +6.",
+      "particularity": "Il a déclaré ses rituels au Grand Registre, comme la loi l'exige. Il n'a pas encore déclaré ce qu'il fait depuis quelques semaines. (MJ : carrière des ritualistes inscrits au Grand Registre, rang de la phase 2 ; lanceur de sorts de niveau 5, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 2, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 78 PV et CA 15 sous Armure de mage → FP défensif 2 ; deux sorts de zone de niveau 3 sur deux cibles (56 chacun) puis un sort de niveau 2 (21), soit 44,3 dégâts par round avec un DD de 14 → FP offensif 6 ; FP 4.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 2,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Illusionniste du Registre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "6",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 99,
+          "max": 99,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Dard de l'esprit (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": -2,
+            "type": "psychic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 9, Intelligence, DD 15, +7 au toucher) : tours de magie Dard de l'esprit, Illusion mineure, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Image silencieuse ; niveau 2 (3) Murmures acérés, Pas brumeux, Image miroir, Invisibilité, Détection des pensées ; niveau 3 (3) Cri des murmures, Contresort, Image majeure, Clairvoyance ; niveau 4 (3) Invisibilité supérieure, Assassin imaginaire ; niveau 5 (1) Cauchemar éveillé, Scrutation, Apparence trompeuse. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Murmures acérés : comme Rayon ardent, dégâts psychiques ; Cri des murmures : comme Boule de feu, dégâts psychiques, JS de Sagesse ; Cauchemar éveillé : comme Cône de froid, dégâts psychiques, JS de Sagesse, et effrayé 1 round sur un échec. Inscrit : son nom, son adresse et ses rituels figurent au Grand Registre ; les Veilleurs le surveillent, et il le sait. Voile (1/repos court) : par une action bonus, il fait apparaître des doubles illusoires, comme le sort Image miroir (non compté). Jets de sauvegarde : Int +7, Sag +5. Arcanes +7, Histoire +7.",
+      "particularity": "Elle travaille pour le Registre lui-même : on l'envoie démasquer ce que les autres cachent, et elle cache fort bien ce qu'elle trouve. (MJ : carrière des ritualistes inscrits au Grand Registre, rang de la phase 3 ; lanceur de sorts de niveau 9, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 3, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 99 PV et CA 15 sous Armure de mage → FP défensif 3 ; un sort de zone de niveau 5 (72) puis deux de niveau 3 (56), deux cibles chacun, soit 61,3 dégâts par round avec un DD de 15 → FP offensif 9 ; FP 6.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse bien garnie",
+        "type": "gear",
+        "img": "icons/containers/bags/coinpouch-gold-red.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 25,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "La part du chef sur le butin récent de la bande."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Mage assermenté",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "9",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 2
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 140,
+          "max": 140,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Dard de l'esprit (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": -2,
+            "type": "psychic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 13, Intelligence, DD 17, +9 au toucher) : tours de magie Dard de l'esprit, Illusion mineure, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Image silencieuse ; niveau 2 (3) Murmures acérés, Pas brumeux, Image miroir, Invisibilité, Détection des pensées ; niveau 3 (3) Cri des murmures, Contresort, Image majeure, Clairvoyance ; niveau 4 (3) Invisibilité supérieure, Assassin imaginaire ; niveau 5 (2) Cauchemar éveillé, Scrutation, Apparence trompeuse ; niveau 6 (1) Visions croisées, Vision suprême, Illusion programmée ; niveau 7 (1) Terreur des murmures, Projection d'image. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Murmures acérés : comme Rayon ardent, dégâts psychiques ; Cri des murmures : comme Boule de feu, dégâts psychiques, JS de Sagesse ; Cauchemar éveillé : comme Cône de froid, dégâts psychiques, JS de Sagesse, et effrayé 1 round sur un échec ; Visions croisées : comme Chaîne d'éclairs, dégâts psychiques, JS de Sagesse ; Terreur des murmures : comme Boule de feu à retardement lancée sans retard, dégâts psychiques, JS de Sagesse. Inscrit : son nom, son adresse et ses rituels figurent au Grand Registre ; les Veilleurs le surveillent, et il le sait. Voile (1/repos court) : par une action bonus, il fait apparaître des doubles illusoires, comme le sort Image miroir (non compté). Jets de sauvegarde : Int +9, Sag +6. Arcanes +9, Histoire +9.",
+      "particularity": "Il a prêté serment devant l'Assemblée, et le royaume l'emploie là où il ne veut pas qu'on voie ses Veilleurs. (MJ : carrière des ritualistes inscrits au Grand Registre, rang de la phase 4 ; lanceur de sorts de niveau 13, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 4, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 140 PV et CA 15 sous Armure de mage → FP défensif 5 ; des sorts de zone de niveau 6 (90), 7 (84) et 5 (72), deux cibles chacun, soit 82 dégâts par round avec un DD de 17 → FP offensif 13 ; FP 9.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
+    "name": "Maître des voiles",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "humanoid",
+      "challengeRating": "12",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 215,
+          "max": 215,
+          "temp": 0
+        },
+        "ac": {
+          "value": 12
+        },
+        "speed": 9
+      },
+      "xpReward": 8400,
+      "attacks": [
+        {
+          "name": "Dard de l'esprit (attaque de sort, 36 m)",
+          "ability": "dex",
+          "bonus": 7,
+          "magic": true,
+          "damage": {
+            "dice": "4d10",
+            "bonus": -2,
+            "type": "psychic"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Dague",
+          "ability": "dex",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "specialAbilities": "Incantation (niveau 17, Intelligence, DD 17, +9 au toucher) : tours de magie Dard de l'esprit, Illusion mineure, Main de mage, Message ; niveau 1 (4 emplacements) Armure de mage, Bouclier, Image silencieuse ; niveau 2 (3) Murmures acérés, Pas brumeux, Image miroir, Invisibilité, Détection des pensées ; niveau 3 (3) Cri des murmures, Contresort, Image majeure, Clairvoyance ; niveau 4 (3) Invisibilité supérieure, Assassin imaginaire ; niveau 5 (2) Cauchemar éveillé, Scrutation, Apparence trompeuse ; niveau 6 (1) Visions croisées, Vision suprême, Illusion programmée ; niveau 7 (1) Terreur des murmures, Projection d'image ; niveau 8 (1) Folie, Labyrinthe ; niveau 9 (1) Ennemi subconscient. CA 15 sous Armure de mage, qu'il lance avant le combat. Sorts signatures, dérivés du SRD : Murmures acérés : comme Rayon ardent, dégâts psychiques ; Cri des murmures : comme Boule de feu, dégâts psychiques, JS de Sagesse ; Cauchemar éveillé : comme Cône de froid, dégâts psychiques, JS de Sagesse, et effrayé 1 round sur un échec ; Visions croisées : comme Chaîne d'éclairs, dégâts psychiques, JS de Sagesse ; Terreur des murmures : comme Boule de feu à retardement lancée sans retard, dégâts psychiques, JS de Sagesse ; Folie : comme Explosion solaire, 10d8 dégâts psychiques, JS de Sagesse, et confus 1 round au lieu d'aveuglé. Inscrit : son nom, son adresse et ses rituels figurent au Grand Registre ; les Veilleurs le surveillent, et il le sait. Voile (1/repos court) : par une action bonus, il fait apparaître des doubles illusoires, comme le sort Image miroir (non compté). Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Jets de sauvegarde : Int +9, Sag +7. Arcanes +9, Histoire +9.",
+      "particularity": "Le Registre ne sait plus où elle habite. Elle, elle sait où habitent tous les autres. (MJ : carrière des ritualistes inscrits au Grand Registre, rang de la phase 5 ; lanceur de sorts de niveau 17, dérivé du Mage et de l'Archimage SRD. Les rangs précédents restent en activité : en phase 5, on croise tous les rangs jusqu'à celui-ci. FP recalculé par la méthode de création de monstres : 215 PV et CA 15 sous Armure de mage, +2 pour la résistance à la magie → FP défensif 10 ; des sorts de zone de niveau 6 (90), 7 (84) et 8 (90), deux cibles chacun, soit 88 dégâts par round avec un DD de 17 → FP offensif 14 ; FP 12.)"
+    },
+    "items": [
+      {
+        "name": "Dague",
+        "type": "weapon",
+        "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 2,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d4",
+            "type": "piercing"
+          },
+          "damageVersatile": {
+            "dice": ""
+          },
+          "slot": "mainHand",
+          "weight": 0.45,
+          "quantity": 1,
+          "equipped": true,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": false,
+            "finesse": true,
+            "light": true,
+            "thrown": true,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 6,
+              "long": 18
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bâton",
+        "type": "weapon",
+        "img": "icons/weapons/staves/staff-simple.webp",
+        "system": {
+          "weaponType": "meleeSimple",
+          "price": {
+            "pc": 0,
+            "pa": 2,
+            "po": 0,
+            "pp": 0
+          },
+          "damage": {
+            "dice": "1d6",
+            "type": "bludgeoning"
+          },
+          "damageVersatile": {
+            "dice": "1d8"
+          },
+          "slot": "mainHand",
+          "weight": 1.8,
+          "quantity": 1,
+          "equipped": false,
+          "description": "",
+          "properties": {
+            "handedness": "oneHanded",
+            "versatile": true,
+            "finesse": false,
+            "light": false,
+            "thrown": false,
+            "heavy": false,
+            "reach": false,
+            "reload": false,
+            "reloadValue": 0,
+            "range": {
+              "normal": 0,
+              "long": 0
+            },
+            "special": ""
+          }
+        }
+      },
+      {
+        "name": "Bourse de noble",
+        "type": "gear",
+        "img": "icons/containers/bags/pouch-leather-gold-tan.webp",
+        "system": {
+          "weight": 0.4,
+          "quantity": 1,
+          "price": {
+            "pc": 0,
+            "pa": 0,
+            "po": 40,
+            "pp": 0
+          },
+          "equipped": false,
+          "capacityBonus": 0,
+          "use": {
+            "type": "none",
+            "light": {
+              "bright": 0,
+              "dim": 0
+            },
+            "healBase": 1,
+            "healSkill": "medicine"
+          },
+          "lit": false,
+          "description": "Pièces d'or frappées aux armes d'une maison noble."
+        }
+      }
+    ],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "ravenmoor"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

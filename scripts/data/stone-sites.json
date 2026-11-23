@@ -747,6 +747,58 @@
         }
       },
       {
+        "title": "Les ritualistes : une carrière par nation",
+        "paragraphs": [
+          "Les ritualistes deviennent des mages selon la même échelle que les ordres. Chaque nation a sa spécialité et ses sorts signatures. Valdera n'en a pas : ses ritualistes fuient le royaume, ou se cachent derrière la Foi."
+        ],
+        "table": {
+          "head": [
+            "Nation",
+            "Phase 2 (FP 4)",
+            "Phase 3 (FP 6)",
+            "Phase 4 (FP 9)",
+            "Phase 5 (FP 12)"
+          ],
+          "rows": [
+            [
+              "Azhar (astrologues)",
+              "Lecteur d'étoiles",
+              "Astrologue des Cent Portes",
+              "Maître de l'observatoire",
+              "Grand astrologue"
+            ],
+            [
+              "Lucentia (charmeurs)",
+              "Charmeur de guilde",
+              "Maître charmeur",
+              "Doyen de la guilde",
+              "Grand maître de la guilde"
+            ],
+            [
+              "Altenmark (géomanciens)",
+              "Sourcier de filons",
+              "Géomancien d'Eisengrund",
+              "Maître des filons",
+              "Grand géomancien"
+            ],
+            [
+              "Fleuraine (gardes)",
+              "Ritualiste de domaine",
+              "Mage de domaine",
+              "Mage-gardien",
+              "Haut mage-gardien"
+            ],
+            [
+              "Ravenmoor (illusions)",
+              "Ritualiste inscrit",
+              "Illusionniste du Registre",
+              "Mage assermenté",
+              "Maître des voiles"
+            ]
+          ]
+        }
+      },
+      {
         "title": "La prière et les rituels",
         "items": [
           {

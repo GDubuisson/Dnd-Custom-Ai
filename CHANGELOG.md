@@ -5,6 +5,26 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.24.0] - 2026-11-23
+
+**Les ritualistes deviennent des mages : une carrière par nation.**
+- 20 fiches, un rang par phase de 2 à 5 (FP 4, 6, 9 et 12), recalculés par la méthode de création de
+  monstres, avec un DD de sorts et deux cibles par sort de zone. Elles sont dérivées du Mage et de
+  l'Archimage SRD, avec des sorts signatures propres à chaque nation (sorts SRD dont le type de
+  dégâts change) :
+  - **Azhar**, astrologues de la Maison des Cent Portes (radiants, plus forts de nuit à ciel ouvert) :
+    lecteur d'étoiles, astrologue des Cent Portes, maître de l'observatoire, grand astrologue.
+  - **Lucentia**, charmeurs de la guilde (feu, charmes vendus aux Compagnies) : charmeur, maître
+    charmeur, doyen, grand maître de la guilde.
+  - **Altenmark**, géomanciens (pierre, sens des filons) : sourcier de filons, géomancien
+    d'Eisengrund, maître des filons, grand géomancien.
+  - **Fleuraine**, mages de domaine (force, gardes) : ritualiste de domaine, mage de domaine,
+    mage-gardien, haut mage-gardien.
+  - **Ravenmoor**, illusionnistes inscrits au Grand Registre (psychiques) : ritualiste inscrit,
+    illusionniste du Registre, mage assermenté, maître des voiles.
+- Aucun mage valdérien : les ritualistes fuient le royaume ou se cachent derrière la Foi.
+- Page « Les humains face au retour » : tableau des carrières de mages.
+
 ## [1.23.0] - 2026-11-23
 
 **Les ordres recouvrent des pouvoirs : une carrière par phase.**

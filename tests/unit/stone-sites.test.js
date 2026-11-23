@@ -86,6 +86,21 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     }
   });
 
+  test("Humains face au retour : chaque mage du tableau des ritualistes existe, à la phase de sa colonne et dans sa nation", () => {
+    const npcs = JSON.parse(readFileSync(new URL("../../world-items/npcs.json", import.meta.url), "utf8"));
+    const flagsOf = new Map(npcs.map((npc) => [npc.name, npc.flags["dnd-custom-ai"]]));
+    const page = SITES.find((site) => site.name === "Les humains face au retour");
+    const { table } = page.sections.find((section) => section.title === "Les ritualistes : une carrière par nation");
+    const habitats = ["azhar", "lucentia", "altenmark", "fleuraine", "ravenmoor"];
+    assert.equal(table.rows.length, habitats.length);
+    table.rows.forEach(([, ...mages], row) => {
+      mages.forEach((name, index) => {
+        assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
+        assert.deepEqual(flagsOf.get(name), { phase: index + 2, habitat: habitats[row] }, name);
+      });
+    });
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

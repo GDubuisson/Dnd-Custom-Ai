@@ -222,7 +222,7 @@ ni de maîtrise séparée — un **bonus direct** par caractéristique, la sauve
   configurée par défaut sur un PNJ neuf.
 
 ### Compendium "Adversaires" — bestiaire prêt à l'emploi
-180 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+200 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -251,6 +251,10 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   « Chevalier de l'Aube Blanche »), Ordre de la Flamme (Valdera, paladins du feu), Passwachten
   (Altenmark, rôdeurs des cols), Veilleurs (Ravenmoor, rôdeurs enquêteurs), Compagnies de la Route
   (Lucentia, guerriers qui achètent leur magie aux guildes) et guerriers de la Mesure (Azhar).
+  Les ritualistes deviennent des mages selon la même échelle, une carrière par nation : astrologues de
+  la Maison des Cent Portes (Azhar), charmeurs de la guilde (Lucentia), géomanciens (Altenmark), mages
+  de domaine (Fleuraine) et illusionnistes du Registre (Ravenmoor) ; aucun à Valdera, où ils sont
+  interdits.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,
