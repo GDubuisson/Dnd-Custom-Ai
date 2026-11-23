@@ -70,7 +70,10 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       const phase0 = label("Bestiary.Phases.0");
       const phase1 = label("Bestiary.Phases.1");
       const phase2 = label("Bestiary.Phases.2");
+      const phase3 = label("Bestiary.Phases.3");
       const phase4 = label("Bestiary.Phases.4");
+      const phase5 = label("Bestiary.Phases.5");
+      const common = label("Bestiary.Habitats.common");
       const before = label("Bestiary.Rupture.before");
       const after = label("Bestiary.Rupture.after");
       const logne = label("Bestiary.Habitats.siteLogne");
@@ -88,6 +91,22 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
         "Hausgeist": [phase1, label("Regions.altenmark")],
         "L'Écho des collines": [phase2, label("Regions.ravenmoor")],
         "Grand esprit des Sceaux": [phase4, label("Regions.azhar")],
+        // Peuples, carrières, cultes, golems, démons et profondeurs (v1.22.0 à v1.30.0).
+        "Troll": [phase4, common],
+        "Chevalier de l'Aube Blanche": [phase0, label("Regions.fleuraine")],
+        "Juge de l'Aube": [phase3, label("Regions.fleuraine")],
+        "Grand astrologue": [phase5, label("Regions.azhar")],
+        "Sectateur": [phase1, common],
+        "Possédé": [phase5, common],
+        "Eisenmann": [phase4, label("Regions.altenmark")],
+        "Xorn": [phase3, label("Regions.altenmark")],
+        "Rocher éveillé": [phase3, common],
+        "Ceniza (incarnée)": [phase4, label("Regions.valdera")],
+        "Balor": [phase5, common],
+        "Squelette": [phase1, common],
+        "Homme-poisson": [phase3, label("Bestiary.Habitats.coast")],
+        "Ancien des profondeurs": [phase3, label("Bestiary.Habitats.abyss")],
+        "Seigneur des courants": [phase5, label("Bestiary.Habitats.coast")],
         "Grand-loup de Logne": [logne, before],
         "Arbre éveillé": [logne, after],
         "Jeune arbre éveillé": [logne, after],
@@ -123,6 +142,30 @@ describe("Compendium \"Adversaires\" — présence et contenu", () => {
       // Les sites ne sont plus rangés sous une phase globale.
       const siteUnderPhase = pack.folders.filter((folder) => folder.name === logne && folder._source.folder);
       expect(siteUnderPhase.map((folder) => folder.name), "site rangé sous une phase").to.deep.equal([]);
+    });
+  });
+
+  it("golems, démons et carrières gardent leurs affinités de dégâts et leurs attaques magiques à l'import (T-ADV-007)", () => {
+    waitForAdversairesImport();
+    cy.window().then(async (win) => {
+      const byName = new Map((await win.game.packs.get("dnd-custom-ai.adversaires").getDocuments()).map((doc) => [doc.name, doc]));
+      // Eisenmann : immunisé aux armes non magiques et au feu, ses propres coups sont magiques.
+      const eisenmann = byName.get("Eisenmann").system;
+      for (const type of ["bludgeoning", "piercing", "slashing", "fire", "poison", "psychic"]) {
+        expect(eisenmann.damageImmunities.has(type), `Eisenmann immunisé : ${type}`).to.be.true;
+      }
+      expect(eisenmann.attacks[0].magic, "poing de fer magique").to.be.true;
+      // Ceniza : résistances physiques et élémentaires, immunité au feu, dégâts secondaires de foudre et de feu.
+      const ceniza = byName.get("Ceniza (pleine puissance)").system;
+      expect(ceniza.damageResistances.has("cold")).to.be.true;
+      expect(ceniza.damageImmunities.has("fire")).to.be.true;
+      expect(ceniza.attacks.map((attack) => attack.secondaryDamage.type)).to.deep.equal(["lightning", "fire"]);
+      // Rocher éveillé : vulnérable au tonnerre.
+      expect(byName.get("Rocher éveillé").system.damageVulnerabilities.has("thunder")).to.be.true;
+      // Carrière : arme rituelle +2 et butin embarqué.
+      const condottiere = byName.get("Condottiere");
+      expect(condottiere.system.attacks[0]).to.include({ bonus: 6, magic: true });
+      expect(condottiere.items.map((item) => item.name)).to.include.members(["Épée longue +2", "Harnois +1"]);
     });
   });
 });

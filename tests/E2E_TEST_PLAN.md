@@ -236,6 +236,7 @@ deux champs de texte libre ci-dessous.
 | T-MOUNT-003 | Description de véhicule | P2 | E2E | Importer le Chariot de convoi, ouvrir sa fiche | Capacité 2 270 kg, description commençant par le prix |
 | T-ADV-005 | Bestiaire par phases | P2 | E2E | Ouvrir le compendium "Adversaires" après l'import | Phase > milieu pour ce qui dépend du monde (Kraken au large en phase 0, Kraken affaibli sur les côtes en phase 1) ; un dossier par site de pierre découpé en avant/après la rupture (Logne, Sümpfenmark, Kis) ; « Ulrich et sa bande » en un seul dossier ; aucune créature hors dossier, aucun dossier vide laissé par un ancien rangement |
 | T-ADV-006 | Bestiaire invisible des joueurs | P1 | E2E | Se connecter en Joueur | Compendium "Adversaires" ni visible ni observable |
+| T-ADV-007 | Affinités et attaques magiques à l'import | P2 | E2E | Lire l'Eisenmann, Ceniza, le rocher éveillé et le condottiere dans le compendium | Immunités, résistances et vulnérabilités conservées, attaques magiques et dégâts secondaires intacts, butin rituel embarqué |
 
 ---
 

@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.30.1] - 2026-11-23
+
+**Tests.**
+- Spec E2E du bestiaire étendue :
+  - rangement de 15 fiches récentes (peuples, carrières, cultes, golems, démons, profondeurs) ;
+  - nouveau test T-ADV-007, qui vérifie que les affinités de dégâts, les attaques magiques, les dégâts
+    secondaires et le butin rituel survivent à l'import dans Foundry.
+- Suite E2E complète passée au vert sur Foundry 14.370 : 72 specs, 409 tests, en lots courts pour
+  ménager la mémoire.
+
 ## [1.30.0] - 2026-11-23
 
 **Les êtres des profondeurs, et les pirates qui changent avec la mer.**
