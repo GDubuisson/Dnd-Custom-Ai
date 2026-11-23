@@ -52,7 +52,51 @@ Trente jours font cinq semaines pleines. Chaque mois commence donc un Prime, et 
 
 ### La lune
 
-La lune fait son tour en vingt-neuf jours et demi. Elle ne s'accorde donc pas avec des mois de trente jours, et sa pleine lune glisse d'un mois sur l'autre. C'est ce qui a fait garder à Azhar les Cycles de Qasirah : le comput des clercs suit le soleil, et les astronomes azharis tiennent à compter aussi la lune.
+La lune fait son tour en vingt-neuf jours et demi, un peu plus : les tables de Qasirah disent vingt-neuf jours, douze heures et quarante minutes. Elle ne s'accorde donc pas avec des mois de trente jours, et sa pleine lune glisse d'un mois sur l'autre. C'est ce qui a fait garder à Azhar ses Cycles : le comput des clercs suit le soleil, et les astronomes azharis tiennent à compter aussi la lune.
+
+### Les Cycles de Qasirah
+
+Azhar compte en lunes. Son année, le **Cycle**, compte douze mois qui commencent chacun au premier croissant : trente jours, puis vingt-neuf, en alternance, soit trois cent cinquante-quatre jours. Les tables de la Maison des Cent Portes ajoutent un jour au dernier mois un Cycle sur trois, et avec cela le croissant n'a jamais plus d'un jour d'avance ou de retard sur le calendrier. Les astronomes de Qasirah en sont fiers ; ils disent que les étoiles ne mentent pas, et que la lune non plus, pourvu qu'on la compte bien.
+
+Le premier Cycle s'ouvrit au 1er Moisson 141, à la nouvelle lune qui suivit l'avènement de Yusuf ibn Sahl à Qasirah. L'an de grâce 887 s'ouvre en plein **Cycle 769** ; le Cycle 770 commence le 8 Bergerie 888.
+
+Un Cycle est plus court de onze jours que l'année du comput. Les mois azharis glissent donc à travers les saisons et en font le tour en trente-trois ans : Hilal tombe tantôt en hiver, tantôt en été, et les fêtes d'Azhar changent de date au comput d'une année sur l'autre.
+
+| | Mois | Sens |
+|---|---|---|
+| 1 | **Hilal** | le Croissant : le Cycle s'ouvre |
+| 2 | **Bir** | le Puits |
+| 3 | **Dalw** | le Seau |
+| 4 | **Qanat** | la Galerie d'eau, comme celles que fit creuser Yusuf |
+| 5 | **Ayn** | la Source |
+| 6 | **Nakhla** | le Palmier |
+| 7 | **Qafila** | la Caravane |
+| 8 | **Ramla** | le Sable |
+| 9 | **Najm** | l'Étoile : on marche de nuit |
+| 10 | **Mizan** | la Balance, et la Mesure |
+| 11 | **Khatm** | le Sceau, comme les Sceaux d'Eau |
+| 12 | **Qamar** | la Lune ; trente jours un Cycle sur trois |
+
+Azhar ne compte pas en semaines. Elle partage chaque mois en trois **dizaines** de nuits, dont elle nomme les jours par ses chiffres : Wahid, Ithnan, Thalatha, Arbaa, Khamsa, Sitta, Saba, Thamaniya, Tisa, Ashara. On dit « le Thalatha de la deuxième dizaine de Bir » pour le 13 Bir. Les marchés, eux, chôment la Sixte comme partout ailleurs.
+
+Les Jours Muets appartiennent au soleil et au comput, pas à la lune. Azhar les observe pourtant, comme *jours sans poids*, quelle que soit la date lunaire où ils tombent ; en 887, ils tombent du 18 au 22 Qamar.
+
+**Les fêtes azharies**
+
+| Date | Fête |
+|---|---|
+| 1er Hilal | **La Nuit du Croissant**, le nouvel an du Cycle |
+| 10 Bir | **Le Jour des Puits** (Charte des Puits, 169) |
+| 29 Najm | **La Nuit de Zaynab** (observatoire de Qasirah, 455) |
+| 1er Mizan | **L'Ouverture des Portes** (Maison des Cent Portes, 260) |
+
+**La Nuit du Croissant.** Les astronomes annoncent le premier croissant depuis l'observatoire, et la ville veille sur les toits pour le voir à son tour. On règle ce soir-là les comptes de l'année écoulée : un Azhari n'entre pas dans un Cycle avec une dette qu'il aurait pu payer.
+
+**Le Jour des Puits.** On lit la Charte à voix haute sur les murs de la maison de Yusuf ibn Sahl, et chaque village cure ses puits. Les familles de Sceaux y font voir leur fortune ; les autres comptent les seaux.
+
+**La Nuit de Zaynab.** L'une des dernières nuits sans lune de Najm : on éteint les lampes et l'on observe le ciel jusqu'à l'aube, en mémoire de la Sultane qui fit bâtir l'observatoire.
+
+**L'Ouverture des Portes.** La Maison ouvre ses cent portes à qui veut entrer, et ses maîtres répondent aux questions de tous, fils de chamelier compris. Tous les trois ans, c'est aussi le premier jour des examens de vizir.
 
 ### Les mois dans les langues des nations
 
@@ -83,7 +127,7 @@ Les noms du Commun valent dans tous les actes et tous les traités. Chaque langu
 
 **Valdera.** Le valdérien dit ses mois avec ampleur, et ne parle jamais d'un mois à venir sans ajouter « si l'Unique le veut ».
 
-**Azhar.** Azhar vit selon les Cycles de Qasirah. Avec les étrangers, elle emploie les noms du Commun et double la date sur ses actes.
+**Azhar.** Azhar vit selon les Cycles de Qasirah, qui ont leurs propres mois (voir plus haut). Avec les étrangers, elle emploie les noms du Commun et double la date sur ses actes : « 13 Bir, Cycle 769, soit le 1er Reverdie de l'an de grâce 887 ».
 
 ### Les fêtes de l'année
 
