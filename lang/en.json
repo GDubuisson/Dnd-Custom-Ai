@@ -238,7 +238,15 @@
       "ImportContent": "Import system content",
       "ImportContentDone": "Import complete: weapons/armor/gear/tools into world Items; Classes/Origins/Spells/Features/Languages into their compendiums (see console for details).",
       "ImportContentDoneWithUpdates": "Import complete: {updated} existing entry/entries resynced from the system's reference content (see console for details).",
-      "ResyncToken": "Resync a token"
+      "ResyncToken": "Resync a token",
+      "ConfigureCalendar": "Configure the calendar"
+    },
+    "Calendar": {
+      "GmOnly": "GM only.",
+      "ModuleMissing": "The Simple Calendar Reborn module must be installed and enabled in this world.",
+      "Confirm": "The active Simple Calendar calendar will take the months, weekdays, seasons and moon of the Velencia reckoning, and the year's feasts will be added to it. On a calendar already configured, the current date is kept. Continue?",
+      "Failed": "The calendar could not be configured (see the console).",
+      "Done": "Reckoning calendar applied; {notes} feast(s) added."
     },
     "TokenSync": {
       "GmOnly": "GM only.",

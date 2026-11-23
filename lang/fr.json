@@ -238,7 +238,15 @@
       "ImportContent": "Importer le contenu du système",
       "ImportContentDone": "Import terminé : armes/armures/objets/outils dans les Items du monde ; Classes/Origines/Sorts/Capacités/Langues dans leurs compendiums (voir la console pour le détail).",
       "ImportContentDoneWithUpdates": "Import terminé : {updated} entrée(s) existante(s) resynchronisée(s) depuis le contenu de référence du système (voir la console pour le détail).",
-      "ResyncToken": "Resynchroniser un token"
+      "ResyncToken": "Resynchroniser un token",
+      "ConfigureCalendar": "Configurer le calendrier"
+    },
+    "Calendar": {
+      "GmOnly": "Réservé au MJ.",
+      "ModuleMissing": "Le module Simple Calendar Reborn doit être installé et activé dans ce monde.",
+      "Confirm": "Le calendrier actif de Simple Calendar prendra les mois, les jours, les saisons et la lune du comput de Velencia, et les fêtes de l'année y seront ajoutées. Sur un calendrier déjà configuré, la date du jour est conservée. Continuer ?",
+      "Failed": "Le calendrier n'a pas pu être configuré (voir la console).",
+      "Done": "Calendrier du comput appliqué ; {notes} fête(s) ajoutée(s)."
     },
     "TokenSync": {
       "GmOnly": "Réservé au MJ.",

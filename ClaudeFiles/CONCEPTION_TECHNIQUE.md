@@ -99,6 +99,13 @@ scripts/
                                  # partagé par les DialogV2 de choix (sous-classe/Don/Forme sauvage)
     death.js                    # agonie/mort, stabilisation
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
+    calendar.js                 # macro MJ « Configurer le calendrier » (créée seulement si le module
+                                 # Simple Calendar Reborn est actif) : buildCalendarConfig/buildFeastNotes
+                                 # (purs, testés) depuis scripts/data/calendar.json → api.configureCalendar
+                                 # (mois = index 0-11, Jours Muets = mois intercalaire 12 hors semaine,
+                                 # startingWeekday 1 : chaque mois commence un Prime) puis api.addNote
+                                 # (annuelles, visibles de tous) pour les fêtes absentes ; relancée sur un
+                                 # calendrier déjà configuré, garde la date du jour et les réglages généraux
     item-lore-journal.js        # Journal « Chroniques des objets » (MJ seul), une page par région,
                                  # construit depuis regional.json, historical.json et item-lore.json,
                                  # resynchronisé à chaque chargement (syncGmAuthoredJournal, adoptUnflagged)

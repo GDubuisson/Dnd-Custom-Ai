@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.34.0] - 2026-11-23
+
+**Le calendrier du comput.**
+- Nouvelle macro MJ « Configurer le calendrier », créée quand le module Simple Calendar Reborn est
+  actif. Elle donne au calendrier le comput du lore : douze mois de trente jours (Bergerie, Agnelée,
+  Reverdie, Semailles, Tonte, Fenaison, Moisson, Estive, Vendange, Dévalée, Glandée, Longuenuit),
+  les cinq Jours Muets hors des mois et de la semaine, la semaine de six jours de Prime à Sixte (la
+  Sixte chômée), les saisons et une lune de vingt-neuf jours et demi.
+- Chaque mois commence un Prime : la Sixte tombe toujours le 6, le 12, le 18, le 24 et le 30.
+- La campagne commence le 1er Reverdie 887.
+- Les fêtes de l'année sont ajoutées en notes annuelles visibles des joueurs : les Trois Jours de la
+  Parole, la Paix de Vespera, Sainte Colombe, la foire d'Ashbourne et de Hisn al-Hajar, les fêtes
+  des cinq nations, la foire de Wechselhof, la Mémoire d'Estevan et les Jours Muets.
+- Relancée en cours de campagne, la macro garde la date du jour et n'ajoute que les fêtes qui
+  manquent.
+
 ## [1.33.0] - 2026-11-23
 
 **Les montures, des porteurs comme les véhicules.**

@@ -26,6 +26,7 @@ import { syncStoneSitesJournal } from "./helpers/stone-sites-journal.js";
 import { openAwardXpDialog, ensureAwardXpMacro } from "./helpers/xp.js";
 import { importSystemContent, ensureContentImportMacro } from "./helpers/content-import.js";
 import { resyncControlledToken, ensureTokenResyncMacro } from "./helpers/token-sync.js";
+import { configureCalendar, ensureCalendarMacro } from "./helpers/calendar.js";
 import { ensureWildSurgeTable } from "./helpers/wild-magic-tables.js";
 import { ensureBeastCompanionRequestListener } from "./helpers/companion.js";
 import { registerWildShapeFormRequestListener } from "./helpers/wild-shape-form.js";
@@ -136,7 +137,8 @@ Hooks.once("init", async () => {
     glossary: await loadGlossary(),
     openAwardXpDialog,
     importSystemContent,
-    resyncControlledToken
+    resyncControlledToken,
+    configureCalendar
   };
 });
 
@@ -150,6 +152,7 @@ Hooks.once("ready", async () => {
   await ensureAwardXpMacro();
   await ensureContentImportMacro();
   await ensureTokenResyncMacro();
+  await ensureCalendarMacro();
   await importSystemContent({ notifyIfEmpty: false });
   // Fin de l'import automatique (création ET resynchronisation), attendue par les tests E2E.
   game.dndCustomAi.contentImported = true;

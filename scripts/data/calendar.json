@@ -1,0 +1,172 @@
+{
+  "startDate": { "year": 887, "month": "Reverdie", "day": 1 },
+  "months": [
+    { "name": "Bergerie", "abbreviation": "Ber", "description": "Hiver. Les bêtes sont à l'abri." },
+    { "name": "Agnelée", "abbreviation": "Agn", "description": "Hiver. Les agneaux naissent." },
+    { "name": "Reverdie", "abbreviation": "Rev", "description": "Printemps. L'herbe revient." },
+    { "name": "Semailles", "abbreviation": "Sem", "description": "Printemps. On sème." },
+    { "name": "Tonte", "abbreviation": "Ton", "description": "Printemps. On tond les moutons." },
+    { "name": "Fenaison", "abbreviation": "Fen", "description": "Été. On fait les foins." },
+    { "name": "Moisson", "abbreviation": "Moi", "description": "Été. On coupe les blés." },
+    { "name": "Estive", "abbreviation": "Est", "description": "Été. Les troupeaux sont aux pâturages d'altitude." },
+    { "name": "Vendange", "abbreviation": "Ven", "description": "Automne. On vendange." },
+    { "name": "Dévalée", "abbreviation": "Dév", "description": "Automne. Les troupeaux redescendent." },
+    { "name": "Glandée", "abbreviation": "Gla", "description": "Automne. Les porcs vont aux glands." },
+    { "name": "Longuenuit", "abbreviation": "Lon", "description": "Hiver. Les nuits les plus longues de l'année." }
+  ],
+  "daysPerMonth": 30,
+  "silentDays": {
+    "name": "Jours Muets",
+    "abbreviation": "JM",
+    "days": 5,
+    "description": "Cinq jours hors des mois. Aucune date n'y vaut."
+  },
+  "weekdays": [
+    { "name": "Prime", "abbreviation": "Pr" },
+    { "name": "Seconde", "abbreviation": "Se" },
+    { "name": "Tierce", "abbreviation": "Ti" },
+    { "name": "Quarte", "abbreviation": "Qa" },
+    { "name": "Quinte", "abbreviation": "Qi" },
+    { "name": "Sixte", "abbreviation": "Sx", "restday": true, "description": "Jour chômé, jour de l'office." }
+  ],
+  "seasons": [
+    { "name": "Printemps", "month": "Reverdie", "color": "#46b946", "icon": "spring", "sunrise": "06:30", "sunset": "19:30" },
+    { "name": "Été", "month": "Fenaison", "color": "#e0c40b", "icon": "summer", "sunrise": "05:00", "sunset": "21:00" },
+    { "name": "Automne", "month": "Vendange", "color": "#ff8e47", "icon": "fall", "sunrise": "07:00", "sunset": "18:30" },
+    { "name": "Hiver", "month": "Longuenuit", "color": "#479dff", "icon": "winter", "sunrise": "08:15", "sunset": "17:00" }
+  ],
+  "moon": {
+    "name": "La Lune",
+    "cycleLength": 29.53,
+    "firstNewMoon": { "year": 887, "month": "Bergerie", "day": 1 },
+    "color": "#ffffff",
+    "phases": [
+      { "name": "Nouvelle lune", "icon": "new", "singleDay": true },
+      { "name": "Premier croissant", "icon": "waxing-crescent", "singleDay": false },
+      { "name": "Premier quartier", "icon": "first-quarter", "singleDay": true },
+      { "name": "Gibbeuse croissante", "icon": "waxing-gibbous", "singleDay": false },
+      { "name": "Pleine lune", "icon": "full", "singleDay": true },
+      { "name": "Gibbeuse décroissante", "icon": "waning-gibbous", "singleDay": false },
+      { "name": "Dernier quartier", "icon": "last-quarter", "singleDay": true },
+      { "name": "Dernier croissant", "icon": "waning-crescent", "singleDay": false }
+    ]
+  },
+  "noteCategories": [
+    { "name": "Foi", "color": "#c9a227", "textColor": "#000000" },
+    { "name": "Foire", "color": "#2e7d32", "textColor": "#ffffff" },
+    { "name": "Fête des nations", "color": "#1f5fa8", "textColor": "#ffffff" },
+    { "name": "Jours Muets", "color": "#4a4a4a", "textColor": "#ffffff" }
+  ],
+  "feasts": [
+    {
+      "name": "Les Jours Muets",
+      "category": "Jours Muets",
+      "start": { "month": "Jours Muets", "day": 1 },
+      "end": { "month": "Jours Muets", "day": 5 },
+      "content": [
+        "Cinq jours hors des mois, entre Longuenuit et Bergerie. Un jour qui n'appartient à aucun mois ne peut porter de date, et un acte sans date ne vaut rien : aucun contrat, aucun mariage, aucun jugement n'y est valide. On ne lève pas l'impôt, on ne fait pas la guerre.",
+        "À Fleuraine, on ne nomme ni un enfant ni un mort ; les enfants nés ces jours-là sont « les attendus ». À Lucentia, tout s'arrête et le Banco ferme. À Ravenmoor, on ne prête aucun serment. À Valdera, cinq jours de jeûne et de silence, sans cloches. À Azhar, ce sont les « jours sans poids », et l'on retourne les balances."
+      ]
+    },
+    {
+      "name": "Les Trois Jours de la Parole",
+      "category": "Foi",
+      "start": { "month": "Bergerie", "day": 1 },
+      "end": { "month": "Bergerie", "day": 3 },
+      "content": [
+        "L'année s'ouvre sur les trois jours où le berger Estevan prêcha pour la première fois sur la colline de Velencia, en l'an de grâce 0. Après le silence des Jours Muets, on lit à l'office les trois enseignements : il n'existe que l'Unique, Celui-qui-Demeure ; le monde est sobre par sa volonté ; cette sobriété est une grâce, non une privation.",
+        "À Fleuraine, les attendus reçoivent leur nom au premier de ces trois jours."
+      ]
+    },
+    {
+      "name": "Fête de la Paix de Vespera",
+      "category": "Fête des nations",
+      "start": { "month": "Agnelée", "day": 6 },
+      "end": { "month": "Agnelée", "day": 6 },
+      "content": [
+        "Anniversaire du traité général de 700, négocié par Chiara Della Costa. Lucentia le célèbre avec faste ; ailleurs, les chancelleries échangent des lettres de courtoisie, et chacun relit les clauses qui l'arrangent."
+      ]
+    },
+    {
+      "name": "Fête de Sainte Colombe",
+      "category": "Foi",
+      "start": { "month": "Reverdie", "day": 12 },
+      "end": { "month": "Reverdie", "day": 12 },
+      "content": [
+        "Le plus grand jour de l'année à Saint-Lys. Colombe, fille de meunier morte en 244, nourrit la ville pendant un siège. Le Saint-siège ne l'a jamais canonisée et n'en a jamais rien dit ; le clergé participe à la fête en détournant poliment le regard."
+      ]
+    },
+    {
+      "name": "Foire d'Ashbourne et de Hisn al-Hajar",
+      "category": "Foire",
+      "start": { "month": "Semailles", "day": 1 },
+      "end": { "month": "Semailles", "day": 6 },
+      "content": [
+        "La foire de printemps que les deux villes tiennent ensemble à la frontière de Ravenmoor et d'Azhar depuis 290. Elle ne s'est jamais interrompue, pas même pendant la Guerre des Greniers, où l'on y échangea surtout des nouvelles."
+      ]
+    },
+    {
+      "name": "Jour du Sacre",
+      "category": "Fête des nations",
+      "start": { "month": "Tonte", "day": 24 },
+      "end": { "month": "Tonte", "day": 24 },
+      "content": [
+        "Valdera fête le sacre de Rodrigo Ier à Velencia, en 85, qui fit naître le royaume. Processions, bénédictions et sermons des Ordres de Ferveur ; Torralba ne laisse jamais passer l'occasion de rappeler qu'elle fut la première couronne bénie."
+      ]
+    },
+    {
+      "name": "Jour des Bannières",
+      "category": "Fête des nations",
+      "start": { "month": "Fenaison", "day": 6 },
+      "end": { "month": "Fenaison", "day": 6 },
+      "content": [
+        "Fleuraine fête le Serment des Bannières de 131, par lequel Thibaud Ier fonda le royaume. Les seigneurs renouvellent leur serment la main sur une lame nue, comme on jurait dans la clairière des Bannières."
+      ]
+    },
+    {
+      "name": "Foire de Wechselhof",
+      "category": "Foire",
+      "start": { "month": "Moisson", "day": 15 },
+      "end": { "month": "Moisson", "day": 15 },
+      "content": [
+        "Chaque année, à la date du siège de 231, Wechselhof tient la plus ancienne foire du nord. Les marchands du Nordwald, de l'Eismark et de l'Ostheim s'y retrouvent sans avoir le droit de porter une arme dans l'enceinte. On ouvre la foire par la lecture du Dénombrement d'Otwin, la liste des morts du siège, en entier ; elle dure jusqu'au soir."
+      ]
+    },
+    {
+      "name": "Jour du Pacte",
+      "category": "Fête des nations",
+      "start": { "month": "Estive", "day": 18 },
+      "end": { "month": "Estive", "day": 18 },
+      "content": [
+        "Altenmark fête le Pacte d'Altenburg de 233, par lequel quatre marches fondèrent la Fédération. On lit le Pacte à la Diète, on boit à la santé des marches, et chacune imite l'accent des autres."
+      ]
+    },
+    {
+      "name": "Jour du Serment",
+      "category": "Fête des nations",
+      "start": { "month": "Vendange", "day": 12 },
+      "end": { "month": "Vendange", "day": 12 },
+      "content": [
+        "Ravenmoor fête le Serment de Ravenhold de 156, qui fit d'Aldric le Gris le premier roi. On relit le Serment à voix haute, article par article. Les Ravenmoorois disent de ce jour qu'il n'est « pas désagréable »."
+      ]
+    },
+    {
+      "name": "Mémoire d'Estevan",
+      "category": "Foi",
+      "start": { "month": "Dévalée", "day": 18 },
+      "end": { "month": "Dévalée", "day": 18 },
+      "content": [
+        "On garde la mémoire d'Estevan, mort en l'an 17, au mois où les troupeaux redescendent : « le berger est rentré ». Office du soir, une seule voix, et l'on laisse la porte de la bergerie ouverte jusqu'au matin."
+      ]
+    },
+    {
+      "name": "Fondation de la Principauté",
+      "category": "Fête des nations",
+      "start": { "month": "Glandée", "day": 24 },
+      "end": { "month": "Glandée", "day": 24 },
+      "content": [
+        "Lucentia fête sa fondation en 411 et son premier Prince, Aurelio Della Costa. Chaque ville la fête à sa façon et dans sa langue, et toutes prétendent la fêter mieux que Vespera."
+      ]
+    }
+  ]
+}

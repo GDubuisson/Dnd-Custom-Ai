@@ -190,6 +190,19 @@ les trois scénarios selon qui arrive le premier, bonne et mauvaise fin, plus un
 où la pierre peut rester intacte, rencontres conseillées par
 palier de niveau.
 
+### Calendrier du comput (module Simple Calendar Reborn)
+Le système ne gère pas le temps lui-même : il s'appuie sur le module **Simple Calendar Reborn**,
+facultatif. Quand le module est actif, une macro MJ « Configurer le calendrier » applique au
+calendrier actif le comput du lore : 12 mois de 30 jours aux noms d'usage du Commun (Bergerie,
+Agnelée, Reverdie, Semailles, Tonte, Fenaison, Moisson, Estive, Vendange, Dévalée, Glandée,
+Longuenuit), 5 Jours Muets hors des mois et hors de la semaine entre Longuenuit et Bergerie, semaine de
+6 jours (Prime à Sixte, la Sixte chômée), saisons (printemps en Reverdie, été en Fenaison, automne en
+Vendange, hiver en Longuenuit), une lune de 29,53 jours, et une note annuelle visible de tous pour
+chaque fête de l'année (Trois Jours de la Parole, Sainte Colombe, foires, fêtes des nations, Mémoire
+d'Estevan, Jours Muets). Date de départ : 1er Reverdie 887. Relancée plus tard, la macro garde la date
+du jour et n'ajoute que les fêtes manquantes. Les noms des mois dans les langues nationales restent
+dans le lore (doc 00), pas dans le calendrier. Données : `scripts/data/calendar.json`.
+
 ### Progression (XP, niveau)
 Progression basée sur des points d'expérience gérés en interne. **Barre de progression visible au
 joueur** : uniquement la progression relative vers le niveau suivant (%), jamais le total ni les

@@ -328,6 +328,24 @@ Implémenté dans `cypress/e2e/shard-feats.cy.js`.
 
 ---
 
+## 19. Calendrier du comput (`calendar.js`, module Simple Calendar Reborn)
+
+Prérequis : le module `foundryvtt-simple-calendar-reborn` copié dans `data/Data/modules/` (dossier
+gitignoré, monté dans le conteneur), puis le monde relancé (`worldShutdown` + `launchWorld`) pour que
+le serveur le voie. La spec l'active pour ses tests, puis rend au monde son réglage de modules, sa
+date, et supprime notes, macro et dossier de notes du module.
+
+| ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
+|---|---|---|---|---|---|
+| T-CAL-001 | Macro MJ créée | P2 | E2E | Activer le module, recharger | Macro « Configurer le calendrier » présente, qui appelle `game.dndCustomAi.configureCalendar()` |
+| T-CAL-002 | Comput appliqué | P1 | E2E | Partir du calendrier grégorien, lancer la configuration | 12 mois + Jours Muets intercalaires (5 j), Prime à Sixte (Sixte chômée), une lune ; date au 1er Reverdie 887, un Prime ; toutes les fêtes en notes visibles des joueurs, Sainte Colombe le 12 Reverdie |
+| T-CAL-003 | Semaine alignée sur les mois | P2 | E2E | Poser plusieurs dates | 12 Reverdie et 30 Longuenuit sont des Sixte ; 1er Moisson et 1er Bergerie 888 (après les Jours Muets) sont des Prime |
+| T-CAL-004 | Relance sans dégât | P1 | E2E | Poser le 15 Moisson 889, relancer la configuration | Date conservée, aucune fête en double |
+
+Implémenté dans `cypress/e2e/calendar.cy.js`.
+
+---
+
 ## Hors scope (rappel, cf. `tests/README.md` et mémoire projet)
 
 - Pas de Hit Dice côté joueur : ne pas écrire de test qui en suppose l'existence.
