@@ -22213,6 +22213,571 @@
     }
   },
   {
+    "name": "Filon éveillé",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "5",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 126,
+          "max": 126,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "damageVulnerabilities": [
+        "thunder"
+      ],
+      "specialAbilities": "Creusement 9 m. Vision dans le noir 18 m, perception des vibrations 18 m. Attaques multiples : deux coups. Glissement dans la roche : il traverse la pierre et le minerai sans les déranger. Démolisseur : dégâts doublés contre les objets et les structures. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme.",
+      "particularity": "Une masse de fer qui se détache de la paroi, lente et aveugle, et sort des galeries. Les mineurs de l'Eismark l'appellent déjà Eisenmann, comme l'homme de fer des veillées. (MJ : bloc de l'Élémentaire de terre SRD, en fer et rangé parmi les créatures artificielles ; FP 5 inchangé. Les golems de fer sont des agrégats nés dans les profondeurs et pris dans la pierre : jusqu'à la phase 2, ce ne sont que des filons, qu'on exploite sans rien savoir. Seuls les filons de l'Eismark sont assez grands pour en donner. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 3.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Eisenmann",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "10",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 100,
+          "max": 100,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 9
+      },
+      "xpReward": 5900,
+      "attacks": [
+        {
+          "name": "Poing de fer",
+          "ability": "str",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison",
+        "psychic",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Attaques multiples : deux coups de poing. Souffle de rouille (recharge 6) : cône de 4,5 m, JS de Constitution DD 16, 10d8 dégâts de poison, moitié en cas de réussite. Absorption du feu : les dégâts de feu le soignent au lieu de le blesser. Immunisé contre le feu, le poison, les dégâts psychiques et les dégâts physiques d'armes non magiques. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Armes magiques : ses attaques sont magiques.",
+      "particularity": "Haut comme deux hommes, il a pris forme humaine dans la montagne, et il marche hors des mines, dans les cols, les nuits de tempête. Les Passwachten font toujours l'appel deux fois par nuit ; maintenant, ils savent pourquoi. (MJ : dérivé du Golem de fer SRD, affaibli. Les golems de fer sont des agrégats nés dans les profondeurs et pris dans la pierre : jusqu'à la phase 2, ce ne sont que des filons, qu'on exploite sans rien savoir. Seuls les filons de l'Eismark sont assez grands pour en donner. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 4. FP recalculé par la méthode de création de monstres : 100 PV, ×2 pour les immunités (200 effectifs), CA 18 et +2 pour la résistance à la magie → FP défensif 11 ; souffle sur deux cibles (90) puis deux coups (39) deux rounds, 56 dégâts par round à +10 → FP offensif 9 ; FP 10.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Grand Eisenmann",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "16",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 7
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 210,
+          "max": 210,
+          "temp": 0
+        },
+        "ac": {
+          "value": 20
+        },
+        "speed": 9
+      },
+      "xpReward": 15000,
+      "attacks": [
+        {
+          "name": "Poing de fer",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Lame de fer (allonge 3 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "3d10",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison",
+        "psychic",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Attaques multiples : deux attaques au corps à corps. Souffle de rouille (recharge 6) : cône de 4,5 m, JS de Constitution DD 19, 10d8 dégâts de poison, moitié en cas de réussite. Absorption du feu. Immunisé contre le feu, le poison, les dégâts psychiques et les dégâts physiques d'armes non magiques. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Armes magiques : ses attaques sont magiques.",
+      "particularity": "Le plus vieux filon de l'Eismark s'est levé. Son bras s'achève en lame, et les cols lui appartiennent. (MJ : bloc SRD Golem de fer. Les golems de fer sont des agrégats nés dans les profondeurs et pris dans la pierre : jusqu'à la phase 2, ce ne sont que des filons, qu'on exploite sans rien savoir. Seuls les filons de l'Eismark sont assez grands pour en donner. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 5.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
+    "name": "Rocher éveillé",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 50,
+          "max": 50,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 6
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison",
+        "psychic"
+      ],
+      "damageVulnerabilities": [
+        "thunder"
+      ],
+      "specialAbilities": "Perception des vibrations 18 m (aveugle au-delà). Attaques multiples : deux coups. Faux rocher : tant qu'il ne bouge pas, rien ne le distingue d'un rocher. Résistance aux dégâts physiques d'armes non magiques ; immunisé contre le poison et les dégâts psychiques ; vulnérable au tonnerre. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme.",
+      "particularity": "Un rocher qui roule une fois, puis se relève. On le prend pour un éboulement jusqu'à ce qu'il revienne. (MJ : dérivé de l'Élémentaire de terre SRD, en plus petit. Même origine que les golems de fer de l'Eismark, mais dans la roche des autres montagnes (Greyspine, Graufels, Schwarzgebirge, l'échine de Fleuraine, les monts de Velencia) : plus petits, plus faibles. Jusqu'à la phase 2, ce ne sont que des rochers. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 3. FP recalculé : 50 PV, ×2 pour les résistances (100 effectifs), CA 15 → FP défensif 3 ; deux coups, 17 dégâts par round à +6 → FP offensif 3 ; FP 3.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Homme de pierre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "7",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 100,
+          "max": 100,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 6
+      },
+      "xpReward": 2900,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "4d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison",
+        "psychic"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Attaques multiples : deux coups. Résistance aux dégâts physiques d'armes non magiques ; immunisé contre le poison et les dégâts psychiques. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme.",
+      "particularity": "Il a pris forme humaine dans la montagne, grossièrement, comme une statue qu'on n'aurait pas finie. Les bergers le regardent passer de loin. (MJ : dérivé du Golem de pierre SRD, affaibli. Même origine que les golems de fer de l'Eismark, mais dans la roche des autres montagnes (Greyspine, Graufels, Schwarzgebirge, l'échine de Fleuraine, les monts de Velencia) : plus petits, plus faibles. Jusqu'à la phase 2, ce ne sont que des rochers. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 4. FP recalculé : 100 PV, ×1,5 pour les résistances (150 effectifs), CA 16 → FP défensif 6 ; deux coups, 46 dégâts par round à +8 → FP offensif 8 ; FP 7.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Golem de pierre",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "construct",
+      "challengeRating": "10",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 6
+        },
+        "dex": {
+          "mod": -1
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -4
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": -5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 178,
+          "max": 178,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 5900,
+      "attacks": [
+        {
+          "name": "Coup",
+          "ability": "str",
+          "bonus": 4,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageImmunities": [
+        "poison",
+        "psychic",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Attaques multiples : deux coups. Lenteur (recharge 5-6) : chaque créature de son choix à 3 m qui le voit fait un JS de Sagesse DD 17 ; ratée, pendant 1 minute elle ne peut pas réagir, sa vitesse est divisée par deux, elle subit -2 à la CA et aux JS de Dextérité, et ne fait qu'une action ou une action bonus par tour, avec une seule attaque ; elle refait le JS à la fin de chacun de ses tours. Immunisé contre le poison, les dégâts psychiques et les dégâts physiques d'armes non magiques. Immunisé contre les états charmé, épuisé, effrayé, paralysé, pétrifié et empoisonné. Forme immuable : aucun sort ni effet ne peut changer sa forme. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Armes magiques : ses attaques sont magiques.",
+      "particularity": "Le plus grand rocher de la montagne, debout. (MJ : bloc SRD Golem de pierre. Même origine que les golems de fer de l'Eismark, mais dans la roche des autres montagnes (Greyspine, Graufels, Schwarzgebirge, l'échine de Fleuraine, les monts de Velencia) : plus petits, plus faibles. Jusqu'à la phase 2, ce ne sont que des rochers. Sans malice : il suit les veines de la roche, écrase ce qui se trouve sur son chemin et frappe ce qui le frappe. À partir de la phase 5 : il reste en deçà du Grand Eisenmann.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Xorn",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "elemental",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 6
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 73,
+          "max": 73,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 6
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Griffe",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "1d3",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Creusement 6 m. Vision dans le noir 18 m, perception des vibrations 18 m. Attaques multiples : trois griffes et une morsure. Glissement dans la roche. Camouflage de pierre : avantage aux tests de Discrétion en terrain rocheux. Sens du métal vivant : il perçoit les êtres magiques de métal (filons éveillés, Eisenmann) à 18 m, à travers la roche ; le reste ne l'intéresse pas. Résistance aux dégâts perforants et tranchants d'armes non magiques. Discrétion +3, Perception +6.",
+      "particularity": "Une gueule ronde au sommet d'un corps de pierre, trois bras, trois yeux. Il traverse la roche en quête de métal vivant, et passe à côté d'un mineur sans le voir. (MJ : bloc SRD Xorn, sauf qu'il ne capte que les êtres magiques de métal. Passif avec les êtres de chair : il ne s'en soucie pas et ne se bat que si on l'attaque. Il chasse les filons éveillés et les Eisenmann : un allié possible, sans le vouloir. À partir de la phase 3, dans les galeries de l'Eismark.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "altenmark"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.26.0] - 2026-11-23
+
+**Les filons s'éveillent : golems de fer, golems de pierre et xorn.**
+- Les golems sont des agrégats nés dans les profondeurs et pris dans la pierre. Jusqu'à la phase 2, ce
+  ne sont que des filons ou des rochers.
+- **Eismark**, seuls filons assez grands pour le fer :
+  - **filon éveillé** (phase 3, bloc Élémentaire de terre en fer, FP 5) ;
+  - **Eisenmann** (phase 4, dérivé du Golem de fer, FP 10 recalculé) ;
+  - **grand Eisenmann** (phase 5, bloc SRD Golem de fer, FP 16).
+- **Autres montagnes**, des golems plus faibles :
+  - **rocher éveillé** (phase 3, FP 3) ;
+  - **homme de pierre** (phase 4, FP 7), tous deux dérivés et recalculés ;
+  - **golem de pierre** (phase 5, bloc SRD, FP 10).
+- **Xorn** (phase 3, bloc SRD) : il ne perçoit que les êtres magiques de métal, chasse les golems de
+  fer et ignore les êtres de chair.
+- Page « Les phases du retour » : la phase 3 cite les filons et les rochers qui s'éveillent.
+
 ## [1.25.0] - 2026-11-23
 
 **Les prières trouvent d'autres oreilles : cultes et prêtres exaucés.**
