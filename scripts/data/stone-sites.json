@@ -542,13 +542,13 @@
               "2 — L'éveil",
               "3",
               "quelques semaines",
-              "Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages."
+              "Fées hostiles, guenaudes, banshie, fantômes, petits esprits des eaux ; premiers prêtres et mages ; les premiers cadavres des profondeurs s'échouent."
             ],
             [
               "3 — Retour de la magie",
               "4",
               "quelques mois",
-              "Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent."
+              "Élémentaires, arbres éveillés, premiers peuples magiques, cultes et démons mineurs, petits dieux anciens ; filons de fer et rochers qui s'éveillent ; les êtres des profondeurs remontent vers les côtes."
             ],
             [
               "4 — Âge des prodiges",
@@ -579,6 +579,35 @@
           {
             "label": "Les humains",
             "text": "À mesure que la magie revient, chacun peut recouvrer des pouvoirs ; les porteurs d'éclats restent les plus puissants."
+          }
+        ]
+      },
+      {
+        "title": "Les êtres des profondeurs",
+        "items": [
+          {
+            "label": "Phases 0 et 1",
+            "text": "Ils vivent au fond de la Mer intérieure depuis toujours, hors de portée des pierres. Personne ne les voit."
+          },
+          {
+            "label": "Phase 2",
+            "text": "Un ou deux cadavres s'échouent sur les côtes : un homme-poisson, un crabe trop grand, une bête qu'on prend pour un serpent de mer."
+          },
+          {
+            "label": "À partir de la phase 3",
+            "text": "Ils remontent vers les côtes, mais restent très craintifs et fuient souvent. Ils ne sortent pas de l'eau : ils y respirent mal et préfèrent rester dessous."
+          },
+          {
+            "label": "Les hommes-poissons",
+            "text": "Neutres tant qu'on ne les chasse pas ; chassés, ils se défendent et ne pardonnent pas."
+          },
+          {
+            "label": "Les anciens",
+            "text": "Des présences psychiques qui ne se montrent jamais. Ils parlent dans la tête des pêcheurs, parfois pour les aider, parfois pour les perdre. Ils ne remontent pas : ils n'atteignent les côtes que par l'esprit."
+          },
+          {
+            "label": "Les pirates",
+            "text": "Ils n'ont aucun pouvoir propre, mais ce sont les premiers sur la route de ce qui remonte, et le retour de la magie les change comme les autres humains, la mer d'abord (carrière dans la page « Les humains face au retour »)."
           }
         ]
       }
@@ -742,6 +771,14 @@
               "Maître d'armes de la Mesure",
               "Capitaine de garnison",
               "Sabre du Sultan"
+            ],
+            [
+              "Flottes pirates (Mer intérieure)",
+              "Matelot pirate",
+              "Écumeur",
+              "Maître d'abordage",
+              "Capitaine corsaire",
+              "Seigneur des courants"
             ]
           ]
         }
@@ -807,7 +844,7 @@
           },
           {
             "label": "Qui répond aux ordres",
-            "text": "L'Aube Blanche et l'Ordre de la Flamme reçoivent une grâce dont personne ne connaît la source ; le MJ choisit, la fiche ne change pas. Les Passwachten, les Veilleurs et les guerriers de la Mesure tirent leur pouvoir d'eux-mêmes ; les Compagnies l'achètent."
+            "text": "L'Aube Blanche et l'Ordre de la Flamme reçoivent une grâce dont personne ne connaît la source ; le MJ choisit, la fiche ne change pas. Les Passwachten, les Veilleurs et les guerriers de la Mesure tirent leur pouvoir d'eux-mêmes ; les Compagnies l'achètent ; les pirates le reçoivent de la mer, sans l'avoir demandé."
           },
           {
             "label": "Les ritualistes",

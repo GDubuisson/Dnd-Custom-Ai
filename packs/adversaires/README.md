@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-260 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+271 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -58,6 +58,12 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   méphites (phase 1) ; ombre, spectre, blême, fantôme, esprit follet, satyre, dryade (phase 2) ;
   nécrophage, momie, âme-en-peine, les quatre élémentaires, gargouille (phase 3) ; traqueur invisible
   (phase 4) ; djinn et éfrit (phase 5). Ni vampires ni liches dans cette campagne.
+  Les êtres des profondeurs de la Mer intérieure, invisibles en phases 0 et 1, échoués morts en phase 2,
+  remontent vers les côtes à partir de la phase 3, craintifs et sans sortir de l'eau : homme-poisson
+  (neutre tant qu'on ne le chasse pas), sahuagin, merrow, guenaude marine, plésiosaure, crabe géant, et
+  l'ancien des profondeurs, présence psychique qui ne se montre jamais (dérivé de l'Aboleth, FP 4). Les
+  flottes pirates ont leur carrière (écumeur, maître d'abordage, capitaine corsaire, seigneur des
+  courants) : sans pouvoir propre, elles changent avec la mer.
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

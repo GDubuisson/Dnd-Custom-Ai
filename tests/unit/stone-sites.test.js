@@ -77,7 +77,7 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     const page = SITES.find((site) => site.name === "Les humains face au retour");
     const { table } = page.sections.find((section) => section.title === "Les ordres : une carrière par phase");
     const columnPhases = [0, 2, 3, 4, 5];
-    assert.equal(table.rows.length, 6);
+    assert.equal(table.rows.length, 7);
     for (const [order, ...careers] of table.rows) {
       careers.forEach((name, index) => {
         assert.ok(NPC_NAMES.has(name), `${order} : fiche absente : ${name}`);

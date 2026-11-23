@@ -5,6 +5,27 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.30.0] - 2026-11-23
+
+**Les êtres des profondeurs, et les pirates qui changent avec la mer.**
+- Les êtres des profondeurs de la Mer intérieure, au fond depuis toujours, hors de portée des pierres :
+  - phases 0 et 1 : personne ne les voit ;
+  - phase 2 : un ou deux cadavres s'échouent ;
+  - phase 3 et au-delà : ils remontent vers les côtes, craintifs, fuient souvent et ne sortent pas de
+    l'eau (ils y respirent mal).
+- 7 fiches :
+  - **homme-poisson**, neutre tant qu'on ne le chasse pas, **sahuagin**, **merrow**, **guenaude
+    marine**, **plésiosaure** et **crabe géant**, blocs SRD ;
+  - l'**ancien des profondeurs**, une présence psychique qui ne se montre jamais, parfois bienveillante
+    avec les pêcheurs, parfois cruelle (dérivé de l'Aboleth, FP 4).
+- Carrière des **flottes pirates**, un rang par phase de 2 à 5 (FP 4, 6, 9, 12 recalculés) : écumeur,
+  maître d'abordage, capitaine corsaire, seigneur des courants. Ils n'ont pas de pouvoir propre, mais
+  le retour de la magie les change comme les autres humains, à commencer par la mer. Le Noyé garde sa
+  propre fiche.
+- Journal du MJ :
+  - page « Les phases du retour » : une section « Les êtres des profondeurs » ;
+  - page « Les humains face au retour » : les pirates entrent dans le tableau des carrières.
+
 ## [1.29.1] - 2026-11-23
 
 - Page « Les phases du retour » : la phase 4 ne cite plus de « grands morts-vivants » (ni vampires ni
