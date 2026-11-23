@@ -22778,6 +22778,194 @@
     }
   },
   {
+    "name": "Ceniza (incarnée)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "13",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 7
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 190,
+          "max": 190,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 12
+      },
+      "xpReward": 10000,
+      "attacks": [
+        {
+          "name": "Épée de foudre (allonge 3 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d8",
+            "type": "lightning"
+          }
+        },
+        {
+          "name": "Fouet de feu (allonge 9 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vol 24 m. Attaques multiples : une attaque d'épée et une de fouet. Fouet : la cible fait un JS de Force DD 18 ou est attirée de 7,5 m vers elle. Aura de feu : au début de chacun de ses tours, chaque créature à 1,50 m subit 3d6 dégâts de feu ; qui la touche au corps à corps à 1,50 m en subit autant. Téléportation (action) : jusqu'à 36 m, vers un espace libre qu'elle voit. Agonie : réduite à 0 PV, elle explose ; chaque créature à 9 m fait un JS de Dextérité DD 18, 12d6 dégâts de feu (moitié si réussi). Vision véritable 36 m. Télépathie 36 m. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Armes magiques. Résistance au froid, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au feu et au poison ; immunisée contre l'état empoisonné. Jets de sauvegarde : For +12, Con +10, Sag +8, Cha +10.",
+      "particularity": "Une femme de cendre aux ailes de braise, haute comme trois hommes, qui ne tient pas encore tout à fait dans le monde : ses contours fument et se défont. Elle connaît par cœur le Cantar d'Inés. (MJ : le démon qui prend le contrôle du culte d'Inés, à partir de la phase 4. Dérivé du Balor SRD, affaibli. Phases : en phase 2, des rêves de feu chez les plus fervents ; en phase 3, une voix et des visions, qui répond aux prières adressées à Inés et possède un frère de la Flamme ou un prêtre du culte (fiches de l'Ordre et du culte démoniaque, pas de fiche propre) ; en phase 4, elle s'incarne, affaiblie ; en phase 5, pleine puissance. À chaque phase, elle tient le culte un peu plus et se sert de lui un peu plus : l'Ordre de la Flamme, la ferveur populaire, l'impatience pour la canonisation. Elle peut se faire passer pour Inés revenue, au choix du MJ ; rien n'est mis en scène, le MJ décide de ce qu'elle obtient. Détruite, elle n'est que chassée du monde ; elle peut revenir, plus forte, au choix du MJ. FP recalculé par la méthode de création de monstres : 190 PV, ×1,25 pour les résistances (237 effectifs), CA 18 et +2 pour la résistance à la magie → FP défensif 13 ; une épée (34), un fouet (24,5) et l'aura de feu (10,5), 69 dégâts par round à +12 → FP offensif 13 ; FP 13.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
+    "name": "Ceniza (pleine puissance)",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "19",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 8
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 6
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 6
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 262,
+          "max": 262,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 12
+      },
+      "xpReward": 22000,
+      "attacks": [
+        {
+          "name": "Épée de foudre (allonge 3 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d8",
+            "type": "lightning"
+          }
+        },
+        {
+          "name": "Fouet de feu (allonge 9 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vol 24 m. Attaques multiples : une attaque d'épée et une de fouet. Épée : sur un coup critique, les dés de dégâts sont triplés au lieu d'être doublés. Fouet : la cible fait un JS de Force DD 20 ou est attirée de 7,5 m vers elle. Aura de feu : 3d6 dégâts de feu au début de chacun de ses tours à chaque créature à 1,50 m, et à qui la touche au corps à corps. Téléportation (action) : jusqu'à 36 m. Agonie : réduite à 0 PV, elle explose ; chaque créature à 9 m fait un JS de Dextérité DD 20, 20d6 dégâts de feu (moitié si réussi) ; les objets inflammables s'embrasent et ses armes sont détruites. Vision véritable 36 m. Télépathie 36 m. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Armes magiques. Résistance au froid, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au feu et au poison ; immunisée contre l'état empoisonné. Jets de sauvegarde : For +14, Con +12, Sag +9, Cha +12.",
+      "particularity": "Elle tient enfin tout entière dans le monde. Là où elle passe, on chante le Cantar d'Inés, et l'on ne sait plus très bien pour qui. (MJ : bloc SRD Balor. Phases : en phase 2, des rêves de feu chez les plus fervents ; en phase 3, une voix et des visions, qui répond aux prières adressées à Inés et possède un frère de la Flamme ou un prêtre du culte (fiches de l'Ordre et du culte démoniaque, pas de fiche propre) ; en phase 4, elle s'incarne, affaiblie ; en phase 5, pleine puissance. À chaque phase, elle tient le culte un peu plus et se sert de lui un peu plus : l'Ordre de la Flamme, la ferveur populaire, l'impatience pour la canonisation. Elle peut se faire passer pour Inés revenue, au choix du MJ ; rien n'est mis en scène, le MJ décide de ce qu'elle obtient.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "valdera"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",

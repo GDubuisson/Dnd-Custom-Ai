@@ -9,7 +9,7 @@ chargement du monde**
 (hook `ready`, cf. `scripts/dnd-custom-ai.js` et `scripts/helpers/content-import.js`), sans
 doublon (comparaison par nom) et sans action du MJ.
 
-221 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
+223 créatures. L'ordre et l'auteur des ruptures de pierres dépendent de la table (seul le début est
 prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) ; le rangement le reflète :
 - **Phases de campagne** (six phases, du monde scellé à l'ancien monde : les pierres brisées en
   fixent le plafond, le temps fait monter jusqu'à lui ; guide dans le journal « Sites de pierre (MJ) »,
@@ -49,6 +49,8 @@ prévu : la forêt de Logne brisée par les PJ, puis Ulrich à la Sümpfenmark) 
   Golem de fer) ; dans les autres montagnes, plus faibles, rocher éveillé (phase 3, FP 3), homme de
   pierre (phase 4, FP 7) puis golem de pierre (phase 5, bloc SRD). Le xorn (phase 3, Eismark) ne
   perçoit que les êtres magiques de métal et ignore les êtres de chair.
+  Ceniza, le démon qui prend le contrôle du culte d'Inés (Valdera) : une voix en phase 3, incarnée et
+  affaiblie en phase 4 (dérivée du Balor, FP 13), pleine puissance en phase 5 (bloc SRD Balor, FP 19).
 - **Un dossier par site de pierre**, découpé en « Avant la rupture » et « Après la rupture », quel
   que soit le moment où il tombe. Forêt de Logne : gardien et faune aberrante avant, arbres éveillés (dont un jeune
   arbre calibré pour le premier combat, PJ niv. 1), arbustes éveillés, lutin et loup gris (liés à la Dame de Logne) après. Sümpfenmark : grenouille,

@@ -116,6 +116,15 @@ describe("scripts/data/stone-sites.json — pages des sites de pierre", () => {
     for (const name of ["Sectateur", "Fanatique de culte"]) assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);
   });
 
+  test("Ceniza : citée dans la page, une fiche incarnée (phase 4) et une à pleine puissance (phase 5), à Valdera", () => {
+    const npcs = JSON.parse(readFileSync(new URL("../../world-items/npcs.json", import.meta.url), "utf8"));
+    const flagsOf = new Map(npcs.map((npc) => [npc.name, npc.flags["dnd-custom-ai"]]));
+    assert.deepEqual(flagsOf.get("Ceniza (incarnée)"), { phase: 4, habitat: "valdera" });
+    assert.deepEqual(flagsOf.get("Ceniza (pleine puissance)"), { phase: 5, habitat: "valdera" });
+    const text = JSON.stringify(SITES.find((site) => site.name === "Les humains face au retour"));
+    assert.ok(text.includes("Ceniza et le culte d'Inés"));
+  });
+
   test("Kis : les fiches de Kisaeth et de Varhun citées existent dans le bestiaire", () => {
     for (const name of ["Kisaeth (renaissante)", "Kisaeth (éveillée)", "Kisaeth (pleine puissance)", "Varhun (oisillon)", "Varhun (jeune)", "Varhun (adulte)", "Champion d'Ulrich", "Lame d'Ulrich", "Exécuteur d'Ulrich", "Déserteur des Passwachten", "Mammouth de Kis", "Tigre à dents de sabre", "Loup arctique", "Méphite de glace"]) {
       assert.ok(NPC_NAMES.has(name), `fiche absente : ${name}`);

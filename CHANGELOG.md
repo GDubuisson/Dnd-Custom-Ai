@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.27.0] - 2026-11-23
+
+**Ceniza, le démon du culte d'Inés.**
+- Elle prend peu à peu le contrôle du culte et s'en sert de plus en plus :
+  - phase 2 : des rêves de feu ;
+  - phase 3 : une voix, des visions et des possessions, sans fiche propre ;
+  - phase 4 : **Ceniza (incarnée)**, dérivée du Balor, FP 13 recalculé ;
+  - phase 5 : **Ceniza (pleine puissance)**, bloc SRD Balor, FP 19.
+- Page « Les humains face au retour » : Ceniza et le culte d'Inés, phase par phase.
+
 ## [1.26.0] - 2026-11-23
 
 **Les filons s'éveillent : golems de fer, golems de pierre et xorn.**
