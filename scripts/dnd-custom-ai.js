@@ -1,6 +1,6 @@
 import { CharacterData } from "./data/character-data.js";
 import { NpcData } from "./data/npc-data.js";
-import { VehicleActorData } from "./data/vehicle-actor-data.js";
+import { VehicleActorData, MountActorData } from "./data/vehicle-actor-data.js";
 import { WeaponData, ArmorData, GearData, FeatureData, ToolData, SpellData, LanguageData } from "./data/item-data.js";
 import { OriginData } from "./data/origin-data.js";
 import { ClassData } from "./data/class-data.js";
@@ -51,8 +51,8 @@ Hooks.once("init", async () => {
   // Schéma de chaque type déclaré dans system.json fourni par son DataModel.
   CONFIG.Actor.dataModels.character = CharacterData;
   CONFIG.Actor.dataModels.npc = NpcData;
-  // Montures : même modèle et fiche que les PNJ.
-  CONFIG.Actor.dataModels.mount = NpcData;
+  // Montures : modèle et fiche de véhicule (inventaire, capacité de charge), plus la taille.
+  CONFIG.Actor.dataModels.mount = MountActorData;
   // Formes sauvages du Druide : même modèle et fiche que les PNJ.
   CONFIG.Actor.dataModels.wildShapeForm = NpcData;
   CONFIG.Actor.dataModels.vehicle = VehicleActorData;
@@ -86,10 +86,9 @@ Hooks.once("init", async () => {
     label: "DND_CUSTOM.SheetLabels.Npc"
   });
 
-  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, DndCustomNpcSheet, {
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, VehicleActorSheet, {
     types: ["mount"],
     makeDefault: true,
-    width: 726,
     label: "DND_CUSTOM.SheetLabels.Mount"
   });
 

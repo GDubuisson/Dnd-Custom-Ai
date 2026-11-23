@@ -4,185 +4,70 @@
     "type": "mount",
     "img": "icons/environment/creatures/horse-brown.webp",
     "system": {
-      "creatureType": "beast",
-      "challengeRating": "1/4",
       "size": "g",
-      "abilities": {
-        "str": { "mod": 3 },
-        "dex": { "mod": 0 },
-        "con": { "mod": 1 },
-        "int": { "mod": -4 },
-        "wis": { "mod": 0 },
-        "cha": { "mod": -2 }
-      },
       "attributes": {
-        "hp": { "value": 13, "max": 13, "temp": 0 },
-        "ac": { "value": 10 },
+        "hp": { "value": 13, "max": 13 },
         "speed": 18
       },
-      "xpReward": 50,
-      "attacks": [
-        {
-          "name": "Sabots",
-          "ability": "str",
-          "bonus": 2,
-          "magic": false,
-          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
-          "secondaryDamage": { "dice": "", "type": "" }
-        }
-      ],
-      "specialAbilities": "",
-      "particularity": "Prix : 75 po. La monture ordinaire des routes du continent, de la Grande Route du Nord aux pistes de Qasirah. Capacité de charge : 217 kg."
-    },
-    "items": []
+      "carryCapacity": 217,
+      "description": "Prix : 75 po. La monture ordinaire des routes du continent, de la Grande Route du Nord aux pistes de Qasirah. Classe d'armure 10."
+    }
   },
   {
     "name": "Destrier fleurainais",
     "type": "mount",
     "img": "icons/environment/creatures/horse-white.webp",
     "system": {
-      "creatureType": "beast",
-      "challengeRating": "1/2",
       "size": "g",
-      "abilities": {
-        "str": { "mod": 4 },
-        "dex": { "mod": 1 },
-        "con": { "mod": 1 },
-        "int": { "mod": -4 },
-        "wis": { "mod": 1 },
-        "cha": { "mod": -2 }
-      },
       "attributes": {
-        "hp": { "value": 19, "max": 19, "temp": 0 },
-        "ac": { "value": 11 },
+        "hp": { "value": 19, "max": 19 },
         "speed": 18
       },
-      "xpReward": 100,
-      "attacks": [
-        {
-          "name": "Sabots",
-          "ability": "str",
-          "bonus": 2,
-          "magic": false,
-          "damage": { "dice": "2d6", "bonus": 0, "type": "bludgeoning" },
-          "secondaryDamage": { "dice": "", "type": "" }
-        }
-      ],
-      "specialAbilities": "Charge piétinante : si le destrier se déplace d'au moins 6 m en ligne droite vers une créature puis la touche avec ses sabots au cours du même tour, la cible doit réussir une sauvegarde de Force DD 14 ou être jetée à terre. Si elle est à terre, le destrier peut l'attaquer de nouveau avec ses sabots par une action bonus.",
-      "particularity": "Prix : 400 po. Cheval de guerre de la cavalerie lourde de Fleuraine, dressé à charger sous le harnois, qui n'a plus chargé depuis la Paix de Vespera. Capacité de charge : 245 kg."
-    },
-    "items": []
+      "carryCapacity": 245,
+      "description": "Prix : 400 po. Cheval de guerre de la cavalerie lourde de Fleuraine, dressé à charger sous le harnois, qui n'a plus chargé depuis la Paix de Vespera. Classe d'armure 11."
+    }
   },
   {
     "name": "Cheval de trait",
     "type": "mount",
     "img": "icons/environment/creatures/horse-tan.webp",
     "system": {
-      "creatureType": "beast",
-      "challengeRating": "1/4",
       "size": "g",
-      "abilities": {
-        "str": { "mod": 4 },
-        "dex": { "mod": 0 },
-        "con": { "mod": 1 },
-        "int": { "mod": -4 },
-        "wis": { "mod": 0 },
-        "cha": { "mod": -2 }
-      },
       "attributes": {
-        "hp": { "value": 19, "max": 19, "temp": 0 },
-        "ac": { "value": 10 },
+        "hp": { "value": 19, "max": 19 },
         "speed": 12
       },
-      "xpReward": 50,
-      "attacks": [
-        {
-          "name": "Sabots",
-          "ability": "str",
-          "bonus": 2,
-          "magic": false,
-          "damage": { "dice": "2d4", "bonus": 0, "type": "bludgeoning" },
-          "secondaryDamage": { "dice": "", "type": "" }
-        }
-      ],
-      "specialAbilities": "",
-      "particularity": "Prix : 50 po. Tire les chariots des convois et les charrues lourdes des plaines de Bléval. Capacité de charge : 245 kg ; peut tirer jusqu'à cinq fois cette charge, véhicule compris."
-    },
-    "items": []
+      "carryCapacity": 245,
+      "description": "Prix : 50 po. Tire les chariots des convois et les charrues lourdes des plaines de Bléval ; il peut tirer jusqu'à cinq fois sa capacité de charge, véhicule compris. Classe d'armure 10."
+    }
   },
   {
     "name": "Mule de l'Eismark",
     "type": "mount",
     "img": "icons/environment/creatures/horses.webp",
     "system": {
-      "creatureType": "beast",
-      "challengeRating": "1/8",
       "size": "m",
-      "abilities": {
-        "str": { "mod": 2 },
-        "dex": { "mod": 0 },
-        "con": { "mod": 1 },
-        "int": { "mod": -4 },
-        "wis": { "mod": 0 },
-        "cha": { "mod": -3 }
-      },
       "attributes": {
-        "hp": { "value": 11, "max": 11, "temp": 0 },
-        "ac": { "value": 10 },
+        "hp": { "value": 11, "max": 11 },
         "speed": 12
       },
-      "xpReward": 25,
-      "attacks": [
-        {
-          "name": "Sabots",
-          "ability": "str",
-          "bonus": 2,
-          "magic": false,
-          "damage": { "dice": "1d4", "bonus": 0, "type": "bludgeoning" },
-          "secondaryDamage": { "dice": "", "type": "" }
-        }
-      ],
-      "specialAbilities": "Bête de somme : compte comme une créature de taille Grande pour sa capacité de charge. Pied sûr : avantage aux sauvegardes de Force et de Dextérité contre les effets qui la jetteraient à terre.",
-      "particularity": "Prix : 8 po. La bête des muletiers des cols de l'Eismark, qui descendent l'argent d'Eisengrund : c'est un muletier qui découvrit le grand filon en 594. Capacité de charge : 190 kg."
-    },
-    "items": []
+      "carryCapacity": 190,
+      "description": "Prix : 8 po. La bête des muletiers des cols de l'Eismark, qui descendent l'argent d'Eisengrund : c'est un muletier qui découvrit le grand filon en 594. Pied sûr, elle porte autant qu'une bête bien plus grande. Classe d'armure 10."
+    }
   },
   {
     "name": "Chameau de piste",
     "type": "mount",
     "img": "icons/environment/creatures/horse-tan.webp",
     "system": {
-      "creatureType": "beast",
-      "challengeRating": "1/8",
       "size": "g",
-      "abilities": {
-        "str": { "mod": 3 },
-        "dex": { "mod": -1 },
-        "con": { "mod": 2 },
-        "int": { "mod": -4 },
-        "wis": { "mod": -1 },
-        "cha": { "mod": -3 }
-      },
       "attributes": {
-        "hp": { "value": 15, "max": 15, "temp": 0 },
-        "ac": { "value": 9 },
+        "hp": { "value": 15, "max": 15 },
         "speed": 15
       },
-      "xpReward": 25,
-      "attacks": [
-        {
-          "name": "Morsure",
-          "ability": "str",
-          "bonus": 2,
-          "magic": false,
-          "damage": { "dice": "1d4", "bonus": -3, "type": "bludgeoning" },
-          "secondaryDamage": { "dice": "", "type": "" }
-        }
-      ],
-      "specialAbilities": "",
-      "particularity": "Prix : 50 po. La monture des caravanes qui se croisent à Qasirah, et la seule qui aille au-delà de Bir Azraq et de Ramlah. Capacité de charge : 217 kg."
-    },
-    "items": []
+      "carryCapacity": 217,
+      "description": "Prix : 50 po. La monture des caravanes qui se croisent à Qasirah, et la seule qui aille au-delà de Bir Azraq et de Ramlah. Classe d'armure 9."
+    }
   },
   {
     "name": "Chariot de convoi",

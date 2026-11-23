@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.33.0] - 2026-11-23
+
+**Les montures, des porteurs comme les véhicules.**
+- Les montures utilisent désormais la fiche des véhicules : vitesse, PV, capacité de charge,
+  description, inventaire par glisser-déposer et jauge du poids transporté. Elles gardent leur
+  taille (sélecteur sur la fiche), que compare le don Combat monté. Plus de caractéristiques,
+  d'attaques ni d'indice de dangerosité.
+- Les 5 montures du compendium « Montures et véhicules » reprennent leur prix, leur histoire et
+  leur classe d'armure dans la description ; leur capacité de charge devient un vrai champ.
+- Une monture déjà présente dans un monde est convertie à l'ouverture : sa particularité devient
+  la description (avec la CA), sa capacité de charge est lue dans le texte.
+- Fiche Véhicule/Monture : la description occupe toute la largeur et grandit avec son contenu.
+
 ## [1.32.0] - 2026-11-23
 
 **Des descriptions écrites pour les joueurs.**

@@ -341,16 +341,17 @@ de Blackwych) et 8 bêtes sauvages réelles du FI 0 au FI 1 (Rat, Corbeau,
 Loup, Sanglier, Serpent venimeux, Panthère, Crocodile, Ours brun). Seul compendium invisible aux joueurs (visible du MJ
 uniquement) — un bestiaire n'a pas vocation à être consulté à l'avance par la table.
 
-## Fiche Véhicule/Monture (Actor type `vehicle`)
+## Fiche Véhicule/Monture (Actor types `vehicle` et `mount`)
 
 Champs de base (vitesse, PV avec barre bornée, capacité de charge), description en texte libre (prix,
-attelage, contexte), inventaire.
+attelage, contexte, classe d'armure), inventaire alimenté par glisser-déposer et jauge du poids
+transporté. Les montures utilisent la même fiche, plus leur taille (comparée par le don Combat
+monté) : ce sont des porteurs, sans caractéristiques ni attaques.
 
 ### Compendium "Montures et véhicules"
-Visible des joueurs (Observateur). 5 montures (Actor `mount`, fiche PNJ, utilisables avec Combat
-monté) reprenant exactement les blocs SRD : Cheval de selle, Destrier fleurainais (cheval de guerre,
-Charge piétinante), Cheval de trait, Mule de l'Eismark (Bête de somme, Pied sûr), Chameau de piste —
-prix en tête de la particularité. 4 véhicules (Actor `vehicle`) : Chariot de convoi, Traîneau des
+Visible des joueurs (Observateur). 5 montures (Actor `mount`, fiche Véhicule, utilisables avec Combat
+monté) aux PV, vitesse, taille et capacité de charge SRD : Cheval de selle, Destrier fleurainais,
+Cheval de trait, Mule de l'Eismark, Chameau de piste — prix en tête de la description, CA à la fin. 4 véhicules (Actor `vehicle`) : Chariot de convoi, Traîneau des
 guides d'Eisengrund, Navire de cabotage, Barque de la Passe — prix SRD, PV de la table SRD des objets
 (bois résistant selon la taille), capacité = traction SRD de l'attelage (cinq fois sa charge,
 véhicule compris) ou cargaison SRD des bateaux ; prix et contexte dans la description.
@@ -444,7 +445,7 @@ Un porteur peut dépasser 20, jusqu'à 22.
   "Agrippé" posé automatiquement. Bousculer réussi : l'attaquant choisit d'avance entre "à terre"
   (état "Prone" posé automatiquement) et "repoussé de 1,50 m" (jamais automatisé — ce système ne
   déplace jamais un token, simple mention dans le message).
-- **Combat monté** (don) : un personnage "monté" sur une créature de type Monture bénéficie de
+- **Combat monté** (don) : un personnage "monté" sur un Actor de type Monture bénéficie de
   l'avantage automatique à ses jets d'attaque contre une cible strictement plus petite que sa
   monture ; un rappel textuel s'ajoute à ses jets de sauvegarde de Dextérité (résultat pour la
   monture laissé au MJ).

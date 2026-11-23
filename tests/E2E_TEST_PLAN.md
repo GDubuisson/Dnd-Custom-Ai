@@ -233,7 +233,8 @@ deux champs de texte libre ci-dessous.
 | T-VEH-002 | Barre de PV | P2 | E2E | Modifier les PV | Barre recalculée, bornée 0-100% |
 | T-VEH-003 | Inventaire embarqué | P2 | E2E | Ajouter un objet weapon/armor/gear/tool | Apparaît dans la liste d'inventaire du véhicule |
 | T-MOUNT-001 | Compendium Montures et véhicules | P2 | E2E | Ouvrir le compendium "Montures et véhicules" | 5 montures (Actor `mount`) et 4 véhicules (Actor `vehicle`) attendus, compendium consultable par un joueur |
-| T-MOUNT-002 | Monture importée | P2 | E2E | Importer le Destrier fleurainais dans le monde | Bloc SRD conservé (19 PV, sabots 2d6), fiche PNJ ouverte avec la Charge piétinante |
+| T-MOUNT-002 | Monture importée | P2 | E2E | Importer le Destrier fleurainais, ouvrir sa fiche, y déposer un objet | Fiche Véhicule (taille G, 245 kg, description commençant par le prix), plus de profil de créature ; l'objet rejoint l'inventaire et le poids transporté |
+| T-MOUNT-004 | Conversion d'une ancienne monture | P2 | E2E | Créer une monture au profil de créature (particularité, CA) | Description = particularité sans la charge, plus la CA ; capacité de charge lue dans la particularité |
 | T-MOUNT-003 | Description de véhicule | P2 | E2E | Importer le Chariot de convoi, ouvrir sa fiche | Capacité 2 270 kg, description commençant par le prix |
 | T-ADV-005 | Bestiaire par phases | P2 | E2E | Ouvrir le compendium "Adversaires" après l'import | Phase > milieu pour ce qui dépend du monde (Kraken au large en phase 0, Kraken affaibli sur les côtes en phase 1) ; un dossier par site de pierre découpé en avant/après la rupture (Logne, Sümpfenmark, Kis) ; « Ulrich et sa bande » en un seul dossier ; aucune créature hors dossier, aucun dossier vide laissé par un ancien rangement |
 | T-ADV-006 | Bestiaire invisible des joueurs | P1 | E2E | Se connecter en Joueur | Compendium "Adversaires" ni visible ni observable |

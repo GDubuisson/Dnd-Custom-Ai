@@ -39,7 +39,7 @@ async function reviveFromZeroHp(actor) {
 export function registerHitPointHooks() {
   // Pré-remplit l'XP rapporté selon le FI, sauf si l'XP est modifié dans le même envoi.
   Hooks.on("preUpdateActor", (actor, changes) => {
-    if (!["npc", "mount", "wildShapeForm"].includes(actor.type)) return;
+    if (!["npc", "wildShapeForm"].includes(actor.type)) return;
     const newChallengeRating = changes.system?.challengeRating;
     if (newChallengeRating === undefined || changes.system?.xpReward !== undefined) return;
   
@@ -69,7 +69,7 @@ export function registerHitPointHooks() {
   // Ramène PV et emplacements de sorts à leur maximum s'ils le dépassent.
   Hooks.on("updateActor", async (actor, changes, options, userId) => {
     if (game.user.id !== userId) return;
-    if (!["character", "npc", "mount", "wildShapeForm"].includes(actor.type)) return;
+    if (!["character", "npc", "mount", "vehicle", "wildShapeForm"].includes(actor.type)) return;
   
     const updates = {};
     const hp = actor.system.attributes?.hp;

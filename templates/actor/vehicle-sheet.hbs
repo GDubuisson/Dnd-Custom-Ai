@@ -1,10 +1,20 @@
 <div class="vehicle-sheet-root">
   <header class="vehicle-sheet-header">
     <img src="{{actor.img}}" alt="{{actor.name}}">
-    <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'TYPES.Actor.vehicle'}}">
+    <input type="text" name="name" value="{{actor.name}}" placeholder="{{namePlaceholder}}">
   </header>
 
   <div class="vehicle-sheet-stats">
+    {{#if isMount}}
+    <label>{{localize "DND_CUSTOM.Npc.Size"}}
+      <select name="system.size">
+        {{#each sizeOptions}}
+        <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </label>
+    {{/if}}
+
     <label>{{localize "DND_CUSTOM.Actor.Speed"}} (m)
       <input type="number" name="system.attributes.speed" value="{{system.attributes.speed}}" min="0">
     </label>

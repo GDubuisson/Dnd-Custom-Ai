@@ -353,10 +353,9 @@ describe("world-items/tools.json — compétence liée (ToolData#useEffect)", ()
   }
 });
 
-// Montures et véhicules (compendium « montures-vehicules ») : blocs SRD et véhicules cohérents.
+// Montures et véhicules (compendium « montures-vehicules ») : même fiche, inventaire et capacité de charge.
 describe("world-items/mounts.json — montures (Actor mount) et véhicules (Actor vehicle)", () => {
   const SIZE_KEYS = new Set(Object.keys(DND_CUSTOM.sizes));
-  const CR_KEYS = new Set(DND_CUSTOM.challengeRatings);
   const systemJson = JSON.parse(readFileSync(new URL("../../system.json", import.meta.url), "utf8"));
 
   test("compendium déclaré dans system.json (Actor, visible des joueurs)", () => {
@@ -373,16 +372,18 @@ describe("world-items/mounts.json — montures (Actor mount) et véhicules (Acto
     assert.equal(new Set(names).size, names.length);
   });
 
+  // Monture : même fiche qu'un véhicule (inventaire, capacité de charge), plus la taille (don Combat monté).
+  const CREATURE_FIELDS = ["creatureType", "challengeRating", "abilities", "attacks", "xpReward", "specialAbilities", "particularity"];
   for (const mount of WORLD_MOUNTS.filter((entry) => entry.type === "mount")) {
-    test(`${mount.name} : bête réelle, FI/XP SRD, taille valide, attaque à la Force`, () => {
+    test(`${mount.name} : taille valide, PV, vitesse et capacité positifs, prix en description, sans profil de créature`, () => {
       const system = mount.system;
-      assert.equal(system.creatureType, "beast");
       assert.ok(SIZE_KEYS.has(system.size));
-      assert.ok(CR_KEYS.has(system.challengeRating));
-      assert.equal(system.xpReward, DND_CUSTOM.challengeRatingXp[system.challengeRating]);
-      assert.ok(system.attributes.hp.max > 0 && system.attributes.ac.value > 0 && system.attributes.speed > 0);
-      assert.ok(system.attacks.length > 0 && system.attacks.every((attack) => attack.ability === "str"));
-      assert.match(system.particularity, /^Prix : /, "prix indiqué en tête de la particularité");
+      assert.ok(system.attributes.hp.max > 0 && system.attributes.hp.value === system.attributes.hp.max);
+      assert.ok(system.attributes.speed > 0 && Number.isInteger(system.attributes.speed));
+      assert.ok(system.carryCapacity > 0);
+      assert.match(system.description, /^Prix : /);
+      assert.match(system.description, /Classe d'armure \d+\./);
+      for (const field of CREATURE_FIELDS) assert.equal(system[field], undefined, `${field} : champ de créature hérité`);
     });
   }
 

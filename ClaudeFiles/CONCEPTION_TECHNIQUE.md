@@ -560,7 +560,10 @@ pour proposer une réaction — cadrage explicite du 2026-08-23, cf.
   Combattant PJ possédant Sentinelle avec réaction disponible à 1,50 m.
 - **Combat monté** : `character-data.js#combat.mountedActorId` référence un Actor de type
   "mount" ; avantage automatique aux jets d'attaque si la cible ciblée est plus petite que la
-  monture.
+  monture. Depuis la v1.33.0, "mount" utilise `MountActorData` (= `VehicleActorData` + `size`,
+  `vehicle-actor-data.js`) et la fiche `VehicleActorSheet` ; `MountActorData.migrateData` convertit
+  à la lecture les anciennes montures au profil de créature (particularité → description + CA,
+  « Capacité de charge : N kg » → `carryCapacity`).
 - **Suivi de l'Action/Action bonus du tour** (`helpers/action-economy.js`,
   `noteActionEconomyUsage`) : suivi **non-bloquant** (rappel de chat seulement, jamais de jet
   refusé), actif **uniquement en combat** (`isActorInActiveCombat`, même garde que
@@ -571,7 +574,7 @@ pour proposer une réaction — cadrage explicite du 2026-08-23, cf.
   tour propre) permet l'avantage de Volonté de fer/Défense contre les attaques multiples aux
   sauvegardes forcées.
 - **Forme sauvage** (Druide) : nouveau type d'Actor **"wildShapeForm"** (même `NpcData`/
-  `DndCustomNpcSheet` que "mount") dont la réserve de PV sert de 2e réserve pendant la
+  `DndCustomNpcSheet` que "npc") dont la réserve de PV sert de 2e réserve pendant la
   transformation. `character-data.js#combat.wildShapeActorId`, retour automatique à la forme
   normale à 0 PV (hook `updateActor`, `dnd-custom-ai.js`).
 
