@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.28.0] - 2026-11-23
+
+**Les démons.**
+- 11 fiches de démons et de fiélons, blocs SRD, dans le dossier commun, car un culte peut les appeler
+  n'importe où :
+  - phase 3 : **dretch**, **quasit**, **succube ou incube**, **guenaude nocturne** ;
+  - phase 4 : **destrier de cauchemar**, **vrock**, **hezrou**, **glabrezu** ;
+  - phase 5 : **nalfeshnee**, **marilith**, et un **balor** générique (Ceniza garde sa propre fiche).
+- Aucun céleste ni diable.
+
 ## [1.27.1] - 2026-11-23
 
 **Ni célestes ni diables dans ce monde.**

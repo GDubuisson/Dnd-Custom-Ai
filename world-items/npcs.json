@@ -22966,6 +22966,963 @@
     }
   },
   {
+    "name": "Dretch",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "1/4",
+      "size": "p",
+      "abilities": {
+        "str": {
+          "mod": 0
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": -1
+        },
+        "cha": {
+          "mod": -4
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 18,
+          "max": 18,
+          "temp": 0
+        },
+        "ac": {
+          "value": 11
+        },
+        "speed": 6
+      },
+      "xpReward": 50,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 18 m. Télépathie 18 m (avec qui comprend sa langue). Attaques multiples : une morsure et des griffes. Nuage fétide (1/jour) : gaz sur 3 m de rayon autour de lui pendant 1 minute ; une créature qui y commence son tour fait un JS de Constitution DD 11 ou est empoisonnée jusqu'au début de son tour suivant (une action ou une action bonus, pas les deux, et aucune réaction). Résistance au froid, au feu et à la foudre ; immunité au poison et à l'état empoisonné.",
+      "particularity": "Le plus misérable des démons : un petit corps gras et puant, qu'un culte débutant appelle sans le vouloir et dont il ne sait plus se débarrasser. (MJ : bloc SRD Dretch. À partir de la phase 3. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Quasit",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "1",
+      "size": "tp",
+      "abilities": {
+        "str": {
+          "mod": -3
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 0
+        },
+        "int": {
+          "mod": -2
+        },
+        "wis": {
+          "mod": 0
+        },
+        "cha": {
+          "mod": 0
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 7,
+          "max": 7,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 12
+      },
+      "xpReward": 200,
+      "attacks": [
+        {
+          "name": "Griffes",
+          "ability": "dex",
+          "bonus": 1,
+          "magic": false,
+          "damage": {
+            "dice": "1d4",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "2d4",
+            "type": "poison"
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Griffes : la cible fait un JS de Constitution DD 10 ; ratée, elle subit les 2d4 dégâts de poison et reste empoisonnée 1 minute (elle refait le JS à la fin de chacun de ses tours). Métamorphe : chauve-souris (vol 12 m), mille-pattes (escalade 12 m) ou crapaud (nage 12 m). Effroi (1/jour) : une créature à 6 m fait un JS de Sagesse DD 10 ou est effrayée 1 minute. Invisibilité à volonté. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Discrétion +5.",
+      "particularity": "Un démon de poche, qui sert de familier au chef d'un culte et lui souffle ce qu'il veut entendre. (MJ : bloc SRD Quasit. À partir de la phase 3. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Succube ou incube",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "4",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": -1
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 1
+        },
+        "int": {
+          "mod": 2
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 66,
+          "max": 66,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 9
+      },
+      "xpReward": 1100,
+      "attacks": [
+        {
+          "name": "Griffe (forme de fiélon)",
+          "ability": "dex",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "1d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "poison",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Vol 18 m. Vision dans le noir 18 m. Télépathie 18 m. Métamorphe : prend l'apparence d'un humanoïde de taille P ou M. Charme : un humanoïde à 9 m fait un JS de Sagesse DD 15 ou est charmé un jour, et obéit à ses ordres. Lien télépathique : sans limite de portée avec la créature qu'il a charmée. Baiser épuisant : une créature charmée fait un JS de Constitution DD 15, 5d10+5 dégâts psychiques (moitié si réussi), et ses PV maximum baissent d'autant. Forme éthérée : il entre dans le plan éthéré ou en sort. Résistance au froid, au feu, à la foudre, au poison et aux dégâts physiques d'armes non magiques. Tromperie +9, Persuasion +9, Perspicacité +5, Perception +5, Discrétion +7.",
+      "particularity": "Il ou elle prend le visage de ce que l'on désire, et c'est souvent par là qu'un culte commence : quelqu'un qui écoute, qui comprend, et qui promet. (MJ : bloc SRD Succube ou incube. À partir de la phase 3. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Guenaude nocturne",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "5",
+      "size": "m",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 3
+        },
+        "wis": {
+          "mod": 2
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 112,
+          "max": 112,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 9
+      },
+      "xpReward": 1800,
+      "attacks": [
+        {
+          "name": "Griffes (forme de guenaude)",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Incantation innée (Charisme, DD 14, +6 au toucher) : à volonté Détection de la magie, Projectile magique ; 2/jour chacun Changement de plan (elle seule), Rayon affaiblissant, Sommeil. Changement de forme : elle prend l'apparence d'un humanoïde de taille P ou M. Forme éthérée. Hantise des cauchemars (1/jour) : depuis le plan éthéré, elle hante le sommeil d'un humanoïde ; à son réveil, ses PV maximum baissent de 1d10, et il ne récupère rien de cette nuit-là. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu et aux dégâts physiques d'armes non magiques non argentées ; immunisée contre l'état charmé. Tromperie +7, Perspicacité +6, Perception +6, Discrétion +6.",
+      "particularity": "Elle vient la nuit, s'assoit sur la poitrine des dormeurs, et revient tant qu'ils n'ont pas cédé. Ce n'est pas une guenaude du pays : elle sert des démons, et marchande les âmes. (MJ : bloc SRD Guenaude nocturne. À partir de la phase 3. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 3,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Destrier de cauchemar",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "3",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 3
+        },
+        "int": {
+          "mod": 0
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 68,
+          "max": 68,
+          "temp": 0
+        },
+        "ac": {
+          "value": 13
+        },
+        "speed": 18
+      },
+      "xpReward": 700,
+      "attacks": [
+        {
+          "name": "Sabots",
+          "ability": "str",
+          "bonus": 2,
+          "magic": false,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "2d6",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageImmunities": [
+        "fire"
+      ],
+      "specialAbilities": "Vol 27 m. Comprend les langues des démons et le Commun, sans les parler. Illumination : lumière vive sur 3 m et faible sur 3 m de plus. Résistance au feu offerte : il peut accorder la résistance au feu à son cavalier. Foulée éthérée : lui et jusqu'à trois cavaliers consentants entrent dans le plan éthéré ou en sortent. Immunité au feu.",
+      "particularity": "Un cheval noir aux sabots de flamme et à la crinière de fumée, qui n'appartient qu'à ceux qui l'ont conquis. (MJ : bloc SRD Destrier de cauchemar. À partir de la phase 4. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Vrock",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "6",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 3
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 4
+        },
+        "int": {
+          "mod": -1
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": -1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 104,
+          "max": 104,
+          "temp": 0
+        },
+        "ac": {
+          "value": 15
+        },
+        "speed": 12
+      },
+      "xpReward": 2300,
+      "attacks": [
+        {
+          "name": "Bec",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Serres",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d10",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 18 m. Vision dans le noir 36 m. Télépathie 36 m. Attaques multiples : un bec et des serres. Spores (recharge 6) : nuage de 4,5 m de rayon ; chaque créature fait un JS de Constitution DD 14 ou est empoisonnée, et subit 1d10 dégâts de poison au début de chacun de ses tours (elle refait le JS ; une fiole d'eau bénite y met fin). Cri étourdissant (1/jour) : chaque créature à 6 m qui l'entend, sauf les démons, fait un JS de Constitution DD 14 ou est étourdie jusqu'à la fin de son prochain tour. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Jets de sauvegarde : Dex +5, Sag +4, Cha +2.",
+      "particularity": "Un vautour grand comme un homme, aux ailes de cuir, qui tourne au-dessus des champs de bataille et des villages vidés. (MJ : bloc SRD Vrock. À partir de la phase 4. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Hezrou",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "8",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 3
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": -3
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 1
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 136,
+          "max": 136,
+          "temp": 0
+        },
+        "ac": {
+          "value": 16
+        },
+        "speed": 9
+      },
+      "xpReward": 3900,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffes",
+          "ability": "str",
+          "bonus": 3,
+          "magic": false,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision dans le noir 36 m. Télépathie 36 m. Attaques multiples : une morsure et deux griffes. Puanteur : une créature qui commence son tour à 3 m fait un JS de Constitution DD 14 ou est empoisonnée jusqu'au début de son tour suivant ; réussi, elle y est immunisée 24 heures. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Jets de sauvegarde : For +7, Con +8, Sag +4.",
+      "particularity": "Un crapaud géant à la peau couverte de pustules, qui se tient debout. On le sent avant de le voir. (MJ : bloc SRD Hezrou. À partir de la phase 4. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Glabrezu",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "9",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 3
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 157,
+          "max": 157,
+          "temp": 0
+        },
+        "ac": {
+          "value": 17
+        },
+        "speed": 12
+      },
+      "xpReward": 5000,
+      "attacks": [
+        {
+          "name": "Pince (allonge 3 m)",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d10",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Poing",
+          "ability": "str",
+          "bonus": 4,
+          "magic": false,
+          "damage": {
+            "dice": "2d4",
+            "bonus": -3,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision véritable 36 m. Télépathie 36 m. Attaques multiples : deux pinces et deux poings, ou deux pinces et un sort. Pince : une créature de taille M ou moins est agrippée (évasion DD 15) ; chaque pince en tient une. Incantation innée (Intelligence, DD 16) : à volonté Ténèbres, Détection de la magie, Dissipation de la magie ; 1/jour chacun Confusion, Vol, Mot de pouvoir étourdissant. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Jets de sauvegarde : For +9, Con +9, Sag +7, Cha +7.",
+      "particularity": "Le démon des marchés : quatre bras, dont deux pinces, et une voix patiente qui propose exactement ce qu'on voulait. Il exauce, et il se paie. (MJ : bloc SRD Glabrezu. À partir de la phase 4. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 4,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Nalfeshnee",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "13",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 5
+        },
+        "dex": {
+          "mod": 0
+        },
+        "con": {
+          "mod": 6
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 1
+        },
+        "cha": {
+          "mod": 2
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 184,
+          "max": 184,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 6
+      },
+      "xpReward": 10000,
+      "attacks": [
+        {
+          "name": "Morsure",
+          "ability": "str",
+          "bonus": 5,
+          "magic": false,
+          "damage": {
+            "dice": "5d10",
+            "bonus": 0,
+            "type": "piercing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Griffe",
+          "ability": "str",
+          "bonus": 5,
+          "magic": false,
+          "damage": {
+            "dice": "3d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vol 9 m. Vision véritable 36 m. Télépathie 36 m. Attaques multiples : nimbe d'horreur s'il le peut, puis une morsure et deux griffes. Nimbe d'horreur (recharge 5-6) : chaque créature à 4,5 m qui le voit fait un JS de Sagesse DD 15 ou est effrayée 1 minute (elle refait le JS à la fin de chacun de ses tours). Téléportation (action) : jusqu'à 36 m. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Jets de sauvegarde : Con +11, Int +9, Sag +6, Cha +7.",
+      "particularity": "Un monstre ventru à tête de sanglier et aux ailes trop petites, qui juge et qui compte. Les grands démons lui confient leurs cultes. (MJ : bloc SRD Nalfeshnee. À partir de la phase 5. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Marilith",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "16",
+      "size": "g",
+      "abilities": {
+        "str": {
+          "mod": 4
+        },
+        "dex": {
+          "mod": 5
+        },
+        "con": {
+          "mod": 5
+        },
+        "int": {
+          "mod": 4
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 5
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 189,
+          "max": 189,
+          "temp": 0
+        },
+        "ac": {
+          "value": 18
+        },
+        "speed": 12
+      },
+      "xpReward": 15000,
+      "attacks": [
+        {
+          "name": "Épée longue",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        },
+        {
+          "name": "Queue (allonge 3 m)",
+          "ability": "str",
+          "bonus": 5,
+          "magic": true,
+          "damage": {
+            "dice": "2d10",
+            "bonus": 0,
+            "type": "bludgeoning"
+          },
+          "secondaryDamage": {
+            "dice": "",
+            "type": ""
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "fire",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "poison"
+      ],
+      "specialAbilities": "Vision véritable 36 m. Télépathie 36 m. Attaques multiples : six attaques d'épée longue et un coup de queue. Queue : une créature de taille M ou moins est agrippée (évasion DD 19) et entravée ; elle subit 2d10+4 dégâts contondants au début de chacun des tours de la marilith. Réactive : une réaction à chaque tour. Parade (réaction) : +5 à la CA contre une attaque de corps à corps. Téléportation (action) : jusqu'à 36 m. Armes magiques. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au poison et à l'état empoisonné. Jets de sauvegarde : For +9, Con +10, Sag +8, Cha +10.",
+      "particularity": "Un corps de femme aux six bras armés, sur une queue de serpent. Elle commande les armées des démons, et elle ne recule pas. (MJ : bloc SRD Marilith. À partir de la phase 5. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
+    "name": "Balor",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "creatureType": "fiend",
+      "challengeRating": "19",
+      "size": "tg",
+      "abilities": {
+        "str": {
+          "mod": 8
+        },
+        "dex": {
+          "mod": 2
+        },
+        "con": {
+          "mod": 6
+        },
+        "int": {
+          "mod": 5
+        },
+        "wis": {
+          "mod": 3
+        },
+        "cha": {
+          "mod": 6
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 262,
+          "max": 262,
+          "temp": 0
+        },
+        "ac": {
+          "value": 19
+        },
+        "speed": 12
+      },
+      "xpReward": 22000,
+      "attacks": [
+        {
+          "name": "Épée de foudre (allonge 3 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "3d8",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d8",
+            "type": "lightning"
+          }
+        },
+        {
+          "name": "Fouet de feu (allonge 9 m)",
+          "ability": "str",
+          "bonus": 6,
+          "magic": true,
+          "damage": {
+            "dice": "2d6",
+            "bonus": 0,
+            "type": "slashing"
+          },
+          "secondaryDamage": {
+            "dice": "3d6",
+            "type": "fire"
+          }
+        }
+      ],
+      "damageResistances": [
+        "cold",
+        "lightning",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "damageImmunities": [
+        "fire",
+        "poison"
+      ],
+      "specialAbilities": "Vol 24 m. Vision véritable 36 m. Télépathie 36 m. Attaques multiples : une attaque d'épée et une de fouet. Épée : sur un coup critique, les dés de dégâts sont triplés. Fouet : la cible fait un JS de Force DD 20 ou est attirée de 7,5 m vers lui. Aura de feu : 3d6 dégâts de feu au début de chacun de ses tours à chaque créature à 1,50 m, et à qui le touche au corps à corps. Téléportation (action) : jusqu'à 36 m. Agonie : réduit à 0 PV, il explose ; chaque créature à 9 m fait un JS de Dextérité DD 20, 20d6 dégâts de feu (moitié si réussi). Armes magiques. Résistance à la magie : avantage aux jets de sauvegarde contre les sorts et les effets magiques. Résistance au froid, au feu, à la foudre et aux dégâts physiques d'armes non magiques ; immunité au feu, au poison et à l'état empoisonné. Jets de sauvegarde : For +14, Con +12, Sag +9, Cha +12.",
+      "particularity": "Un seigneur démon d'ombre et de flamme, ailé, armé d'une épée de foudre et d'un fouet de feu. Ceniza n'est pas la seule de son espèce. (MJ : bloc SRD Balor (Ceniza a sa propre fiche, à Valdera ; celle-ci sert pour un autre, au cas où). À partir de la phase 5. Dossier commun : un culte peut l'appeler n'importe où. Détruit dans ce monde, un démon n'est que chassé ; il peut revenir, au choix du MJ.)"
+    },
+    "items": [],
+    "flags": {
+      "dnd-custom-ai": {
+        "phase": 5,
+        "habitat": "common"
+      }
+    }
+  },
+  {
     "name": "Homme de main d'Ulrich",
     "type": "npc",
     "img": "icons/svg/mystery-man.svg",
