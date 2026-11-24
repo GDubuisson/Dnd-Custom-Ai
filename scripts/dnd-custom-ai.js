@@ -40,6 +40,7 @@ import { registerTokenActorHooks } from "./helpers/token-actor-hooks.js";
 import { registerEquipmentHooks } from "./helpers/equipment-hooks.js";
 import { registerHitPointHooks } from "./helpers/hit-point-hooks.js";
 import { registerCombatEffectHooks } from "./helpers/combat-effect-hooks.js";
+import { registerLevelCapSettings, registerLevelCapHooks, currentLevelCap } from "./helpers/level-cap.js";
 import { loadSystemJson } from "./helpers/system-json.js";
 
 const SYSTEM_ID = "dnd-custom-ai";
@@ -118,6 +119,8 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, LanguageItemSheet, { types: ["language"], makeDefault: true });
 
   registerHandlebarsHelpers();
+  // Réglages de monde : pierres brisées et plafond de niveau.
+  registerLevelCapSettings();
 
   // Préchargement des partials hors PARTS : en-têtes de classe et parties communes des fiches d'Item.
   await foundry.applications.handlebars.loadTemplates([
@@ -138,7 +141,8 @@ Hooks.once("init", async () => {
     openAwardXpDialog,
     importSystemContent,
     resyncControlledToken,
-    configureCalendar
+    configureCalendar,
+    currentLevelCap
   };
 });
 
@@ -243,6 +247,7 @@ registerEquipmentHooks();
 registerHitPointHooks();
 registerCombatEffectHooks();
 registerChatMessageHooks();
+registerLevelCapHooks();
 
 async function loadGlossary() {
   const entries = await loadSystemJson("scripts/data/glossary.json");

@@ -350,6 +350,27 @@ Implémenté dans `cypress/e2e/calendar.cy.js`.
 
 ---
 
+## 20. Plafond de niveau des pierres brisées (`level-cap.js`, réglages de monde)
+
+Un réglage de monde par site de pierre (« Pierre brisée : … ») et un réglage « Désactiver le
+plafond de niveau ». 0-1 pierre : niv. 4, puis 8, 12, 16 et 20 à partir de cinq pierres ; l'XP
+est bloqué au seuil du niveau suivant le plafond. La spec rend aux réglages leur valeur initiale
+et supprime son personnage et ses messages ; `level-up.cy.js` désactive le plafond le temps de
+ses tests.
+
+| ID | Titre | Priorité | Couche | Étapes clés | Résultat attendu |
+|---|---|---|---|---|---|
+| T-CAP-001 | XP bloqué au plafond | P0 | E2E | Aucune pierre, niveau 1, XP porté à 999 999 | Plafond 4, XP figé à 6 500 |
+| T-CAP-002 | Cadenas au plafond | P1 | E2E | Niveau 4, XP 6 500, ouvrir la fiche | Pas de bouton « Monter de niveau », cadenas avec infobulle, plafond (« niv. 4 ») à côté de l'XP du MJ, dans la langue du client |
+| T-CAP-003 | Une pierre lève le plafond | P0 | E2E | Fiche ouverte au plafond, cocher Logne et Sümpfenmark | Plafond 8, la fiche se réaffiche avec le bouton, montée au niveau 5 ; XP ensuite figé à 48 000 |
+| T-CAP-004 | Cinq pierres | P1 | E2E | Cocher cinq sites | Plafond 20, plus aucune limite d'XP |
+| T-CAP-005 | Plafond désactivé | P1 | E2E | Cocher « Désactiver le plafond » | Plafond 20 sans pierre |
+| T-CAP-006 | XP jamais réduit | P1 | E2E | Niveau 5 avec 50 000 XP, plafond 4, ajouter de l'XP | XP conservé à 50 000, sans hausse |
+
+Implémenté dans `cypress/e2e/level-cap.cy.js`.
+
+---
+
 ## Hors scope (rappel, cf. `tests/README.md` et mémoire projet)
 
 - Pas de Hit Dice côté joueur : ne pas écrire de test qui en suppose l'existence.

@@ -23,6 +23,22 @@ export function levelForXp(xp) {
   return level;
 }
 
+/** Niveau maximal des personnages selon le nombre de pierres brisées (cf. DND_CUSTOM.levelCapByBrokenStones). */
+export function levelCapForBrokenStones(count) {
+  const table = DND_CUSTOM.levelCapByBrokenStones;
+  return table[Math.min(Math.max(count, 0), table.length - 1)];
+}
+
+/**
+ * XP maximal sous un plafond de niveau : le seuil du niveau suivant le plafond, sans réserve au-delà.
+ * Un personnage déjà au-dessus du plafond est bloqué au seuil de son propre niveau suivant.
+ * @returns {number} `Infinity` quand le plafond effectif est le niveau 20
+ */
+export function xpLimitForLevelCap(cap, level) {
+  const effectiveCap = Math.max(cap, level);
+  return effectiveCap >= 20 ? Infinity : DND_CUSTOM.xpThresholds[effectiveCap];
+}
+
 /** Capacité de charge, SRD 5e (règle "Détaillée") : Force x 15 lb (soit x 7,5 kg). */
 export function carryingCapacity(strengthScore, unit = "lb") {
   return strengthScore * DND_CUSTOM.carryCapacityPerStrength[unit];

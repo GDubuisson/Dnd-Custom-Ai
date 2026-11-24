@@ -41,6 +41,7 @@ import { itemFromTarget } from "../helpers/sheet-items.js";
 import { attackRollOptions, conditionRollEffects } from "../helpers/roll-modifiers.js";
 import { setTokensLight, applyTokensLight } from "../helpers/token-light.js";
 import { recordAttackOnTargets } from "../helpers/hunters-defense.js";
+import { currentLevelCap } from "../helpers/level-cap.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -268,7 +269,11 @@ export class DndCustomActorSheet extends SpellcastingSheetMixin(
     context.hpPercent = hitPointsPercent(hp);
 
     context.proficiencyBonus = proficiencyBonus(system.attributes.level);
-    context.levelUpAvailable = levelForXp(system.xp) > system.attributes.level;
+    // XP suffisant : bouton de montée de niveau, ou cadenas si le plafond des pierres est atteint.
+    const levelUpReady = levelForXp(system.xp) > system.attributes.level;
+    context.levelCap = currentLevelCap();
+    context.levelCapReached = levelUpReady && system.attributes.level >= context.levelCap;
+    context.levelUpAvailable = levelUpReady && !context.levelCapReached;
     // Choix Amélioration/Don dus (badge d'en-tête).
     context.pendingAsiChoices = system.attributes.pendingAsiChoices;
     // Seuil XP du niveau suivant (affiché au MJ), absent au niveau 20.

@@ -4,6 +4,8 @@ import {
   abilityModifier,
   proficiencyBonus,
   levelForXp,
+  levelCapForBrokenStones,
+  xpLimitForLevelCap,
   carryingCapacity,
   carriedWeight,
   carryingCapacityBonus,
@@ -122,6 +124,28 @@ describe("levelForXp (table SRD 5e)", () => {
   test("juste sous le seuil du niveau 2 = niveau 1", () => assert.equal(levelForXp(299), 1));
   test("pile le seuil du niveau 2 = niveau 2", () => assert.equal(levelForXp(300), 2));
   test("XP énorme plafonne au niveau 20", () => assert.equal(levelForXp(9_999_999), 20));
+});
+
+describe("levelCapForBrokenStones / xpLimitForLevelCap (plafond des pierres)", () => {
+  test("0 ou 1 pierre : niveau 4", () => {
+    assert.equal(levelCapForBrokenStones(0), 4);
+    assert.equal(levelCapForBrokenStones(1), 4);
+  });
+  test("puis 8, 12, 16 et 20 à cinq pierres", () => {
+    assert.deepEqual([2, 3, 4, 5].map(levelCapForBrokenStones), [8, 12, 16, 20]);
+  });
+  test("six pierres (ou plus) : niveau 20", () => {
+    assert.equal(levelCapForBrokenStones(6), 20);
+    assert.equal(levelCapForBrokenStones(9), 20);
+  });
+  test("XP bloqué au seuil du niveau qui suit le plafond (plafond 4 → 6 500)", () => {
+    assert.equal(xpLimitForLevelCap(4, 1), 6500);
+    assert.equal(xpLimitForLevelCap(4, 4), 6500);
+  });
+  test("personnage déjà au-dessus du plafond : seuil de son propre niveau suivant", () => {
+    assert.equal(xpLimitForLevelCap(4, 6), 23000);
+  });
+  test("plafond 20 : aucune limite", () => assert.equal(xpLimitForLevelCap(20, 12), Infinity));
 });
 
 describe("carryingCapacity / carriedWeight / carryingCapacityBonus", () => {

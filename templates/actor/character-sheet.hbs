@@ -78,13 +78,19 @@
           <i class="fa-solid fa-arrow-up"></i>
         </button>
         {{/if}}
+        {{! Cadenas : XP suffisant, mais le plafond des pierres brisées est atteint. }}
+        {{#if levelCapReached}}
+        <span class="level-up-btn level-cap-reached" role="img" data-tooltip="{{localize 'DND_CUSTOM.Actor.LevelCapReachedTooltip'}}" aria-label="{{localize 'DND_CUSTOM.Actor.LevelCapReachedTooltip'}}">
+          <i class="fa-solid fa-lock"></i>
+        </span>
+        {{/if}}
       </div>
       <div class="xp-field">
         {{#if isGM}}
         <div class="fixed-field xp-gm-field" data-tooltip="{{localize 'DND_CUSTOM.Actor.XpGmTooltip'}}">
           <span class="fixed-field-label">{{localize "DND_CUSTOM.Actor.XpGmLabel"}}</span>
           <span class="fixed-field-value">
-            {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}
+            {{system.xp}}{{#if xpNextThreshold}} / {{xpNextThreshold}}{{else}} ({{localize "DND_CUSTOM.Actor.XpMaxLevel"}}){{/if}}{{#if levelCapReached}} ({{localize "DND_CUSTOM.Actor.XpCapped" cap=levelCap}}){{/if}}
           </span>
         </div>
         {{else}}

@@ -509,6 +509,16 @@
   filter: brightness(1.1);
 }
 
+/* Plafond des pierres atteint : cadenas inerte à la place du bouton. */
+.dnd-custom-ai .level-up-btn.level-cap-reached {
+  background: var(--dca-outline);
+  cursor: help;
+}
+
+.dnd-custom-ai .level-up-btn.level-cap-reached:hover {
+  filter: none;
+}
+
 .dnd-custom-ai .level-up-badge {
   display: inline-flex;
   align-items: center;

@@ -221,6 +221,14 @@ restaurés à la montée de niveau, choix de sous-classe au niveau requis (verro
 choix Amélioration de caractéristiques/Don proposé aux niveaux prévus par le SRD (4, 8, 12, 16,
 19).
 
+**Plafond des pierres brisées (2026-11-24).** Le niveau des personnages est plafonné par le nombre
+de pierres brisées, quel qu'en soit l'auteur : niveau 4 jusqu'à une pierre, puis 8, 12, 16, et 20
+à partir de cinq pierres (Velencia peut donc tenir). Le MJ coche chaque pierre brisée dans les
+réglages du système ; un réglage « Désactiver le plafond de niveau » sert hors campagne. Plafond
+strict : au plafond, l'XP reste bloqué au seuil du niveau suivant, sans réserve, et la fiche montre
+un cadenas à la place du bouton, avec une infobulle qui ne parle pas des pierres. Seul le MJ voit
+le plafond chiffré. Dès la pierre suivante, le personnage peut monter d'un niveau.
+
 ### Points d'inspiration (règle maison, 2026-08-25)
 Distincts de l'Inspiration bardique du SRD (Capacité de Barde). Compteur libre, sans maximum,
 accordé manuellement par le MJ (champ éditable côté MJ uniquement, visible mais verrouillé côté

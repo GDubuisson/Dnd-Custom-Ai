@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet sont documentées dans ce fichier
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et ce projet suit le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.36.0] - 2026-11-24
+
+**Le plafond des pierres brisées.**
+- Le niveau des personnages dépend du nombre de pierres brisées, quel qu'en soit l'auteur : niveau 4
+  jusqu'à une pierre, puis 8, 12, 16, et 20 à partir de cinq pierres.
+- Le MJ coche chaque pierre brisée dans les réglages du système (« Pierre brisée : forêt de Logne »,
+  etc.). Un réglage « Désactiver le plafond de niveau » sert aux parties hors campagne.
+- Au plafond, l'XP s'arrête au seuil du niveau suivant, sans réserve. La fiche montre un cadenas à
+  la place du bouton de montée de niveau, avec une infobulle qui ne parle pas des pierres. Le MJ
+  voit le plafond à côté de l'XP, et le message d'attribution d'XP lui signale les personnages
+  bloqués.
+- Le Guide MJ explique le plafond dans sa page sur l'expérience.
+
 ## [1.35.0] - 2026-11-23
 
 **Les Cycles de Qasirah, le calendrier lunaire d'Azhar.**

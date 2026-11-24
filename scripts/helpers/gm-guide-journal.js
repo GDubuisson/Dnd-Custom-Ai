@@ -190,6 +190,11 @@ async function buildProgressionPage() {
   const crRows = DND_CUSTOM.challengeRatings
     .map((cr) => `<tr><td>${cr}</td><td>${DND_CUSTOM.challengeRatingXp[cr].toLocaleString("fr-FR")}</td></tr>`)
     .join("");
+  // « 1 pierre : niv. 4, 2 pierres : niv. 8… », généré depuis la table du plafond (sans le cas 0).
+  const capRows = DND_CUSTOM.levelCapByBrokenStones
+    .map((cap, stones) => `${stones} pierre${stones > 1 ? "s" : ""} : niv. ${cap}`)
+    .slice(1)
+    .join(", ");
   return `
     <h2>Distribuer de l'XP</h2>
     <p>Via la macro monde "Attribuer de l'XP", ou le bouton "Distribuer l'XP" d'une fiche PNJ
@@ -202,6 +207,16 @@ async function buildProgressionPage() {
     <h2>Indice de dangerosité (FI) → XP (PNJ)</h2>
     <p>Pré-remplit le champ XP rapporté d'une fiche PNJ selon sa FI (table SRD 5e) :</p>
     <table><thead><tr><th>FI</th><th>XP</th></tr></thead><tbody>${crRows}</tbody></table>
+    <h2>Plafond des pierres brisées</h2>
+    <p>Le niveau des personnages est plafonné par le nombre de pierres brisées, quel qu'en soit
+    l'auteur (PJ, Ulrich ou sa bande) : ${capRows}. Coche chaque pierre brisée dans
+    <em>Paramètres → Configurer les paramètres → Système</em> (« Pierre brisée : … ») dès que
+    la rupture a lieu.</p>
+    <p>Au plafond, l'XP reste bloqué au seuil du niveau suivant, sans réserve au-delà ; le chuchotement
+    d'attribution te signale les personnages concernés. La fiche montre alors un cadenas à la place du
+    bouton de montée de niveau, avec une infobulle qui ne parle pas des pierres ; toi seul vois le
+    plafond à côté de l'XP. Dès la pierre suivante, le personnage peut monter d'un niveau.
+    Hors campagne, « Désactiver le plafond de niveau » lève la limite.</p>
     <h2>Montée de niveau</h2>
     <p>Le bouton "Monter de niveau" n'apparaît sur la fiche que si l'XP accumulé atteint le seuil
     du niveau suivant. À l'usage, il octroie automatiquement les nouvelles Capacités/nouveaux

@@ -4,6 +4,7 @@ import { chooseSpellSlotRecovery } from "../helpers/spell-slot-choice.js";
 import { grantClassContent } from "../helpers/class-content.js";
 import { offerAbilityScoreOrFeatDialog } from "../helpers/level-up-choice.js";
 import { offerSubclassChoiceDialog } from "../helpers/subclass-choice.js";
+import { currentLevelCap } from "../helpers/level-cap.js";
 
 /** Mixin de fiche de personnage : repos, montée de niveau et ajustement manuel des caractéristiques. */
 export function RestAndLevelingSheetMixin(Base) {
@@ -149,6 +150,11 @@ export function RestAndLevelingSheetMixin(Base) {
     /** Monte d'un niveau : rend les PV, remplit les emplacements, octroie le contenu et propose les choix dus. */
     static async #onLevelUp() {
       const system = this.actor.system;
+      // Plafond strict : aucune montée au-delà de ce que permettent les pierres brisées.
+      if (system.attributes.level >= currentLevelCap()) {
+        ui.notifications.warn(game.i18n.localize("DND_CUSTOM.Actor.LevelCapReachedTooltip"));
+        return;
+      }
       const next = system.attributes.level + 1;
       await this.actor.update({ "system.attributes.level": next }, { dndCustomLevelUp: true });
       await this.actor.update({

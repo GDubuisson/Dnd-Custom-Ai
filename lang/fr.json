@@ -207,6 +207,8 @@
       "XpGmTooltip": "Total d'expérience du personnage, visible du MJ uniquement — jamais affiché aux joueurs",
       "XpMaxLevel": "niveau maximum",
       "XpBarTooltip": "Progression vers le niveau suivant",
+      "XpCapped": "plafond : niv. {cap}",
+      "LevelCapReachedTooltip": "Votre pouvoir bute sur une limite : le monde n'en porte pas davantage, pour l'instant.",
       "InspirationPoints": "Points d'inspiration",
       "DeathSuccesses": "Réussites",
       "DeathFailures": "Échecs",
@@ -389,6 +391,7 @@
       "AwardXpTooltip": "Répartit l'XP rapporté par ce PNJ entre les personnages sélectionnés.",
       "XpAmount": "Montant d'XP",
       "XpAwarded": "{amount} XP attribués à chacun : {names}.",
+      "XpBlockedByCap": "XP bloqué au seuil du plafond de niveau pour : {names}.",
       "NoXpAwarded": "Aucun personnage sélectionné ou montant nul : XP non attribué.",
       "NoCharacters": "Aucun personnage joueur dans ce monde.",
       "LevelUpTooltip": "Ce personnage a assez d'XP pour monter de niveau (le total d'XP reste caché, seul le MJ peut valider la montée de niveau).",
@@ -402,6 +405,21 @@
       "ActionEconomyReminder": "{name} a déjà utilisé son {action} ce tour-ci (rappel non-bloquant).",
       "ClassContentGranted": "{name} reçoit : {names}.",
       "FeatGranted": "{name} choisit le Don : {feat}."
+    },
+    "Settings": {
+      "BrokenStones": {
+        "siteLogne": "Pierre brisée : forêt de Logne",
+        "siteSumpfenmark": "Pierre brisée : Sümpfenmark",
+        "siteKis": "Pierre brisée : désert gelé de Kis",
+        "siteTirwen": "Pierre brisée : île de Tirwen",
+        "siteZahir": "Pierre brisée : désert de Zahir",
+        "siteVelencia": "Pierre brisée : souterrain de Velencia",
+        "Hint": "À cocher dès que la pierre de ce site est brisée, quel qu'en soit l'auteur. Le niveau maximal des personnages en dépend : 4 jusqu'à une pierre, puis 8, 12, 16 et 20 à partir de cinq pierres."
+      },
+      "LevelCapDisabled": {
+        "Name": "Désactiver le plafond de niveau",
+        "Hint": "Hors campagne uniquement : les personnages montent jusqu'au niveau 20 quel que soit le nombre de pierres brisées."
+      }
     },
     "Tabs": {
       "stats": "Statistiques",

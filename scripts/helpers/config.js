@@ -534,6 +534,12 @@ DND_CUSTOM.xpThresholds = [
   85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
 ];
 
+/**
+ * Niveau maximal des personnages selon le nombre de pierres brisées, par qui que ce soit (index = pierres, 0 à 6).
+ * Calé sur les paliers d'Ulrich ; cinq pierres suffisent pour le niveau 20 (Velencia peut tenir).
+ */
+DND_CUSTOM.levelCapByBrokenStones = [4, 4, 8, 12, 16, 20, 20];
+
 /** Niveaux offrant une Amélioration de caractéristiques. */
 DND_CUSTOM.abilityScoreImprovementLevels = [4, 8, 12, 16, 19];
 

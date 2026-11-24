@@ -28,18 +28,21 @@ export async function awardXp(amount, actors) {
     return;
   }
 
+  // Personnages dont l'XP a buté sur le plafond des pierres brisées (cf. level-cap.js).
+  const capped = [];
   for (const actor of recipients) {
-    await actor.update({ "system.xp": actor.system.xp + amount }); // NOSONAR : séquentiel voulu
+    const target = actor.system.xp + amount;
+    await actor.update({ "system.xp": target }); // NOSONAR : séquentiel voulu
+    if (actor.system.xp < target) capped.push(actor.name);
   }
 
   const gmIds = game.users.filter((user) => user.isGM).map((user) => user.id);
-  await ChatMessage.create({
-    content: game.i18n.format("DND_CUSTOM.Chat.XpAwarded", {
-      amount,
-      names: recipients.map((actor) => actor.name).join(", ")
-    }),
-    whisper: gmIds
+  let content = game.i18n.format("DND_CUSTOM.Chat.XpAwarded", {
+    amount,
+    names: recipients.map((actor) => actor.name).join(", ")
   });
+  if (capped.length) content += ` ${game.i18n.format("DND_CUSTOM.Chat.XpBlockedByCap", { names: capped.join(", ") })}`;
+  await ChatMessage.create({ content, whisper: gmIds });
 }
 
 /** Ouvre le dialogue MJ d'attribution d'XP (montant + personnages cochés). */

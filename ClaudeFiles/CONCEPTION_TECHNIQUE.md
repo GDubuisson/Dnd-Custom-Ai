@@ -99,6 +99,9 @@ scripts/
                                  # partagé par les DialogV2 de choix (sous-classe/Don/Forme sauvage)
     death.js                    # agonie/mort, stabilisation
     xp.js                       # attribution XP (entière à chaque participant, jamais divisée)
+    level-cap.js                # plafond de niveau des pierres brisées : réglages de monde (un booléen
+                                 # par site, `brokenSite<Site>`, + `levelCapDisabled`), currentLevelCap(),
+                                 # preUpdateActor qui bloque `system.xp` au seuil suivant le plafond
     calendar.js                 # macro MJ « Configurer le calendrier » (créée seulement si le module
                                  # Simple Calendar Reborn est actif) : buildCalendarConfig/buildFeastNotes
                                  # (purs, testés) depuis scripts/data/calendar.json → api.configureCalendar
@@ -730,6 +733,24 @@ chargement). Premier usage : les fiches « Ulrich (N pierres) » devenues « Ulr
   resynchronisation est encore en cours (course reproduite sur T-SYNC-001). Le hook `ready` pose donc
   `game.dndCustomAi.contentImported = true` après `importSystemContent()`, et
   `cy.waitForContentImport()` attend ce drapeau avant de vérifier le compte.
+
+## Plafond de niveau des pierres brisées — `level-cap.js` (2026-11-24)
+
+- Premiers réglages de monde du système, enregistrés dans le hook `init` : un booléen par site de
+  pierre (`brokenSiteLogne`… `brokenSiteVelencia`, dérivés de `DND_CUSTOM.bestiarySiteHabitats`) et
+  `levelCapDisabled` (hors campagne). `onChange` réaffiche les fiches de personnage ouvertes. Ces
+  réglages serviront aussi aux rencontres aléatoires (état de chaque site, pas seulement le compte).
+- Table `DND_CUSTOM.levelCapByBrokenStones` = `[4, 4, 8, 12, 16, 20, 20]` (index = pierres brisées,
+  quel qu'en soit l'auteur), calée sur les paliers d'Ulrich. Fonctions pures dans `rules.js` :
+  `levelCapForBrokenStones(count)` et `xpLimitForLevelCap(cap, level)` = seuil du niveau
+  `max(cap, level) + 1`, `Infinity` à 20.
+- Blocage strict, sans réserve : un `preUpdateActor` ramène `system.xp` à la limite, sans jamais
+  baisser un total existant (`max(limite, xp actuel)`). `#onLevelUp` refuse aussi la montée au
+  plafond. La fiche distingue `levelUpAvailable` (bouton) et `levelCapReached` (cadenas inerte avec
+  infobulle neutre, plafond affiché au seul MJ). `awardXp` signale au MJ les personnages bloqués.
+- Pas de lien avec les phases du bestiaire pour l'instant (à fixer avec les rencontres aléatoires).
+- Tests : `rules.test.js`, `templates.test.js`, E2E `level-cap.cy.js` ; `level-up.cy.js` désactive
+  le plafond le temps de ses tests et rend le réglage ensuite.
 
 ## Test opposé (Agripper/Bousculer) — `opposedCheckType`
 

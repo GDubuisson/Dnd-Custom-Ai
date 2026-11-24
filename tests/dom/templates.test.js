@@ -70,6 +70,11 @@ describe("character-sheet.hbs (en-tête)", () => {
     assert.match(xpField.textContent, /2700/);
   });
 
+  test("plafond des pierres atteint : le MJ voit le niveau maximal à côté de l'XP", () => {
+    const cappedDoc = parse(renderTemplate("actor/character-sheet.hbs", { ...context, levelCapReached: true, levelCap: 8 }));
+    assert.match(cappedDoc.querySelector(".xp-gm-field").textContent, /plafond : niv\. 8/);
+  });
+
   test("niveau 20 (aucun seuil suivant) : affiche 'niveau maximum' plutôt qu'un seuil vide", () => {
     const maxLevelDoc = parse(renderTemplate("actor/character-sheet.hbs", { ...context, xpNextThreshold: null }));
     const xpField = maxLevelDoc.querySelector(".xp-gm-field");
@@ -108,6 +113,17 @@ describe("character-sheet.hbs (en-tête) — vue joueur (pas MJ)", () => {
   test("le bouton 'monter de niveau' est accessible au joueur, pas seulement au MJ", () => {
     assert.ok(doc.querySelector(".level-up-btn"), "bouton rond de montée de niveau introuvable");
     assert.ok(doc.querySelector('[data-action="levelUp"]'), "bouton de montée de niveau introuvable côté joueur");
+  });
+
+  test("plafond des pierres atteint : cadenas sans action, avec infobulle, et aucun chiffre d'XP côté joueur", () => {
+    const cappedDoc = parse(
+      renderTemplate("actor/character-sheet.hbs", { ...context, levelUpAvailable: false, levelCapReached: true, levelCap: 4 })
+    );
+    assert.equal(cappedDoc.querySelector('[data-action="levelUp"]'), null, "aucun bouton cliquable au plafond");
+    const lock = cappedDoc.querySelector(".level-cap-reached");
+    assert.ok(lock, "cadenas de plafond introuvable");
+    assert.match(lock.getAttribute("data-tooltip"), /limite/);
+    assert.doesNotMatch(cappedDoc.body.textContent, /plafond : niv/);
   });
 
   test("Retour de test (sécurité) : le champ PV actuels est verrouillé côté Joueur, pas de self-dégâts en tapant une valeur", () => {

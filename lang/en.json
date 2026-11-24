@@ -207,6 +207,8 @@
       "XpGmTooltip": "Character's total experience, visible to the GM only — never shown to players",
       "XpMaxLevel": "max level",
       "XpBarTooltip": "Progress toward next level",
+      "XpCapped": "cap: level {cap}",
+      "LevelCapReachedTooltip": "Your power strains against a limit: the world cannot hold more of it, for now.",
       "InspirationPoints": "Inspiration Points",
       "DeathSuccesses": "Successes",
       "DeathFailures": "Failures",
@@ -389,6 +391,7 @@
       "AwardXpTooltip": "Splits this NPC's XP reward between the selected characters.",
       "XpAmount": "XP amount",
       "XpAwarded": "{amount} XP awarded to each: {names}.",
+      "XpBlockedByCap": "XP stopped at the level cap threshold for: {names}.",
       "NoXpAwarded": "No character selected or amount is zero: no XP awarded.",
       "NoCharacters": "No player character in this world.",
       "LevelUpTooltip": "This character has enough XP to level up (the XP total stays hidden, only the GM can confirm the level up).",
@@ -402,6 +405,21 @@
       "ActionEconomyReminder": "{name} already used their {action} this turn (non-blocking reminder).",
       "ClassContentGranted": "{name} gains: {names}.",
       "FeatGranted": "{name} chooses the Feat: {feat}."
+    },
+    "Settings": {
+      "BrokenStones": {
+        "siteLogne": "Broken stone: Logne forest",
+        "siteSumpfenmark": "Broken stone: Sümpfenmark",
+        "siteKis": "Broken stone: frozen desert of Kis",
+        "siteTirwen": "Broken stone: isle of Tirwen",
+        "siteZahir": "Broken stone: Zahir desert",
+        "siteVelencia": "Broken stone: Velencia undercroft",
+        "Hint": "Tick as soon as this site's stone is broken, whoever broke it. The characters' maximum level depends on it: 4 up to one stone, then 8, 12, 16 and 20 from five stones on."
+      },
+      "LevelCapDisabled": {
+        "Name": "Disable the level cap",
+        "Hint": "Outside the campaign only: characters rise to level 20 whatever the number of broken stones."
+      }
     },
     "Tabs": {
       "stats": "Stats",

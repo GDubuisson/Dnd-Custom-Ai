@@ -4,6 +4,8 @@
 
 const createdActorIds = [];
 let sharedActorId;
+// Plafond des pierres brisées (cf. level-cap.cy.js) : désactivé ici, rendu à sa valeur en fin de spec.
+let initialLevelCapDisabled;
 
 function sheetRoot() {
   return cy.get(".application.character");
@@ -33,6 +35,11 @@ function actorLevel(actorId) {
 }
 
 before(() => {
+  cy.loginAsGM();
+  cy.window().then((win) => {
+    initialLevelCapDisabled = win.game.settings.get("dnd-custom-ai", "levelCapDisabled");
+    return win.game.settings.set("dnd-custom-ai", "levelCapDisabled", true);
+  });
   cy.loginAsPlayer();
   cy.createReadyCharacter({
     name: "LevelUp Fighter",
@@ -46,9 +53,15 @@ before(() => {
 });
 
 after(() => {
-  if (!createdActorIds.length) return;
   cy.loginAsGM();
-  cy.window().then((win) => win.Actor.deleteDocuments(createdActorIds));
+  cy.window().then((win) =>
+    Promise.all([
+      initialLevelCapDisabled === undefined
+        ? null
+        : win.game.settings.set("dnd-custom-ai", "levelCapDisabled", initialLevelCapDisabled),
+      createdActorIds.length ? win.Actor.deleteDocuments(createdActorIds) : null
+    ])
+  );
 });
 
 describe("Montée de niveau — clic simple, PV, accessibilité Joueur", () => {
